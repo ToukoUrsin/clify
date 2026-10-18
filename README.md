@@ -1,7 +1,5 @@
 # clify: the web, rebuilt for agents
 
-[![test](https://github.com/ToukoUrsin/clify/actions/workflows/test.yml/badge.svg)](https://github.com/ToukoUrsin/clify/actions/workflows/test.yml)
-
 **clify turns most websites into a JSON CLI and an MCP server**: so far 133 of 160 public sites tried (open data and government, developer registries, science, maps and weather, culture, news, sports, jobs). An agent explores the site once in a headless browser, records the requests behind what it clicks, writes a typed command for each, and tests every command live before keeping it. After that, agents call the site's own endpoints instead of clicking through pages: same answers, a fraction of the time, tokens and RAM. When a site needs an account, clify signs in with its own identity (email and phone) or with yours. When it hits a CAPTCHA, it stops and asks a human.
 
 ![Replay of a live race: browser agent (left) vs clify agent (right), same model, same signed-in accounts, six real jobs](assets/race.gif)
