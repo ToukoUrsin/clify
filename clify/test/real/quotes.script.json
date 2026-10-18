@@ -1,0 +1,6 @@
+[
+  {"tool":"goto","input":{"url":"/js/","intent":"quotes rendered by JavaScript"}},
+  {"tool":"goto","input":{"url":"/tag/love/","intent":"filter by tag"}},
+  {"tool":"click","input":{"selector":"li.next a","intent":"next page"}},
+  {"tool":"goto","input":{"url":"/author/Albert-Einstein/","intent":"open author detail"}}
+]

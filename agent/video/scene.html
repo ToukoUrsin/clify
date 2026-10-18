@@ -1,0 +1,122 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { width: 1920px; height: 1080px; overflow: hidden; background: #0d1117; font-family: Inter, sans-serif; }
+  #top { position: absolute; left: 0; right: 0; top: 0; height: 84px; display: flex; align-items: center; padding: 0 40px; gap: 18px; color: #e6edf3; }
+  #top .logo { width: 44px; height: 44px; border-radius: 11px; background: linear-gradient(135deg, #7c5cff, #22d3ee); display: grid; place-items: center; font: 800 22px Inter; color: #fff; }
+  #top .name { font: 700 26px Inter; letter-spacing: -0.3px; }
+  #top .tag { font: 500 18px Inter; color: #8b949e; }
+  #top .chips { margin-left: auto; display: flex; gap: 10px; }
+  .chip { font: 600 14px Inter; color: #c9d1d9; border: 1px solid #30363d; border-radius: 999px; padding: 6px 12px; background: #161b22; }
+  .chip b { color: #3fb950; }
+  #mail { position: absolute; left: 40px; top: 100px; width: 1010px; height: 880px; background: #f6f8fa; border-radius: 14px; overflow: hidden; box-shadow: 0 10px 40px rgba(0,0,0,.45); }
+  #mail .hdr { height: 74px; background: #fff; border-bottom: 1px solid #d0d7de; padding: 14px 24px; }
+  #mail .hdr .subj { font: 700 22px Inter; color: #1f2328; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  #mail .hdr .meta { font: 500 14px Inter; color: #656d76; margin-top: 4px; }
+  #msgs { position: absolute; top: 74px; left: 0; right: 0; bottom: 0; overflow: hidden; }
+  #msgs .inner { position: absolute; left: 0; right: 0; padding: 18px 22px 30px; transition: none; }
+  .msg { background: #fff; border: 1px solid #d0d7de; border-radius: 12px; padding: 14px 18px; margin-bottom: 14px; opacity: 0; transform: translateY(14px); }
+    .msg.agent { border-left: 5px solid #7c5cff; }
+  .msg.peer { border-left: 5px solid #22d3ee; }
+  .msg.human { border-left: 5px solid #f0883e; }
+  .msg .from { display: flex; align-items: baseline; gap: 10px; }
+  .msg .from b { font: 700 16px Inter; color: #1f2328; }
+  .msg .from span { font: 500 13px Inter; color: #656d76; }
+  .msg .from .t { margin-left: auto; font: 500 13px 'JetBrains Mono'; color: #656d76; }
+  .msg .to { font: 500 13px Inter; color: #656d76; margin: 2px 0 8px; }
+  .msg .body { font: 400 15.5px/1.5 Inter; color: #1f2328; white-space: pre-wrap; }
+  .msg .att { display: inline-flex; gap: 8px; align-items: center; margin-top: 10px; font: 600 13px Inter; color: #0969da; background: #ddf4ff; border-radius: 8px; padding: 6px 10px; }
+  .msg .from .badge { font: 700 11px Inter; letter-spacing: .4px; text-transform: uppercase; padding: 2px 7px; border-radius: 5px; color: #fff; background: #7c5cff; }
+  .msg.peer .from .badge { background: #0891b2; } .msg.human .from .badge { background: #c2410c; } .msg.req .from .badge { background: #57606a; }
+  #term { position: absolute; left: 1074px; top: 100px; width: 806px; height: 880px; background: #010409; border: 1px solid #30363d; border-radius: 14px; overflow: hidden; box-shadow: 0 10px 40px rgba(0,0,0,.45); }
+  #term .bar { height: 44px; background: #161b22; border-bottom: 1px solid #30363d; display: flex; align-items: center; padding: 0 16px; gap: 8px; }
+  #term .dot { width: 12px; height: 12px; border-radius: 50%; }
+  #term .ttl { margin-left: 12px; font: 500 14px 'JetBrains Mono'; color: #8b949e; white-space: nowrap; overflow: hidden; }
+  #lines { position: absolute; top: 44px; left: 0; right: 0; bottom: 0; overflow: hidden; }
+  #lines .inner { position: absolute; left: 0; right: 0; padding: 12px 16px; }
+  .ln { font: 400 14.5px/1.55 'JetBrains Mono'; color: #c9d1d9; white-space: pre-wrap; word-break: break-all; }
+  .ln .ts { color: #6e7681; } .ln .job { color: #a5a0ff; } .ln .peerjob { color: #67e8f9; }
+  .ln.mail { color: #f0b72f; } .ln.ok { color: #7ee787; } .ln.model { color: #8b949e; } .ln.err { color: #ff7b72; } .ln.sys { color: #79c0ff; }
+  .ln.cmd { color: #e6edf3; font-weight: 600; }
+  #cap { position: absolute; left: 40px; right: 40px; bottom: 0; height: 100px; display: flex; align-items: center; justify-content: center; }
+  #cap div { font: 600 26px Inter; color: #e6edf3; background: rgba(124,92,255,.18); border: 1px solid rgba(124,92,255,.5); padding: 10px 26px; border-radius: 12px; opacity: 0; }
+  #cap div.show { opacity: 1; }
+  #card { position: absolute; inset: 0; background: radial-gradient(1200px 600px at 50% 40%, #1b1446, #0d1117); display: flex; flex-direction: column; align-items: center; justify-content: center; color: #e6edf3; opacity: 0; z-index: 5; }
+  #card.show { opacity: 1; }
+  #card h1 { font: 800 76px Inter; letter-spacing: -1.5px; }
+  #card h2 { font: 500 32px Inter; color: #b1bac4; margin-top: 18px; text-align: center; line-height: 1.4; }
+  #card .row { display: flex; gap: 14px; margin-top: 40px; }
+  #card .row .chip { font-size: 18px; padding: 9px 16px; }
+  #card pre { margin-top: 34px; font: 400 19px/1.5 'JetBrains Mono'; color: #c9d1d9; background: #010409; border: 1px solid #30363d; border-radius: 12px; padding: 18px 26px; text-align: left; }
+</style>
+</head>
+<body>
+<div id="top"><div class="logo">c</div><div class="name">clify agent</div><div class="tag">an AI agent that lives on its own computer and works by email</div>
+  <div class="chips"><div class="chip">InstaBox <b>clify-agent</b></div><div class="chip">clify@fine-vale.primitive.email</div><div class="chip">Claude Opus 5.5</div></div></div>
+<div id="mail"><div class="hdr"><div class="subj" id="subj"></div><div class="meta" id="meta"></div></div><div id="msgs"><div class="inner" id="msgin"></div></div></div>
+<div id="term"><div class="bar"><div class="dot" style="background:#ff5f57"></div><div class="dot" style="background:#febc2e"></div><div class="dot" style="background:#28c840"></div><div class="ttl" id="ttl">ubuntu@instabox-clify-agent:~$ journalctl -f -u clify-agent@main -u clify-agent@peer</div></div><div id="lines"><div class="inner" id="lnin"></div></div></div>
+<div id="cap"><div id="capt"></div></div>
+<div id="card"></div>
+<script>
+// window.DATA = { scenes: [...] } is injected by render.mjs. Each scene:
+//  { kind:"card", dur, html }  or
+//  { kind:"thread", subject, meta, events:[{t, type:"mail"|"line"|"cap", ...}], dur }
+const $ = (id) => document.getElementById(id);
+const esc = (s) => String(s).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+let built = -1;
+function buildScene(i) {
+  const s = DATA.scenes[i];
+  built = i;
+  $("msgin").innerHTML = ""; $("lnin").innerHTML = ""; $("capt").className = "";
+  if (s.kind === "card") { $("card").innerHTML = s.html; $("card").className = "show"; return; }
+  $("card").className = ""; $("card").style.opacity = 0;
+  $("subj").textContent = s.subject; $("meta").textContent = s.meta;
+  if (s.ttl) $("ttl").textContent = s.ttl;
+  for (const e of s.events) {
+    if (e.type === "mail") {
+      const d = document.createElement("div");
+      d.className = `msg ${e.role}`;
+      d.innerHTML = `<div class="from"><span class="badge">${esc(e.badge)}</span><b>${esc(e.fromName)}</b><span>&lt;${esc(e.from)}&gt;</span><span class="t">${esc(e.time)}</span></div>
+        <div class="to">to ${esc(e.to)}${e.cc ? ` · cc ${esc(e.cc)}` : ""}${e.subject ? ` · ${esc(e.subject)}` : ""}</div><div class="body">${esc(e.body)}</div>
+        ${(e.attachments || []).map((a) => `<div class="att">⬇ ${esc(a)}</div>`).join(" ")}`;
+      e.el = d; $("msgin").appendChild(d);
+    } else if (e.type === "line") {
+      const d = document.createElement("div");
+      d.className = `ln ${e.cls || ""}`;
+      d.innerHTML = e.html; d.style.display = "none";
+      e.el = d; $("lnin").appendChild(d);
+    }
+  }
+}
+function scroll(box, inner, last) {
+  if (!last) return;
+  const h = box.clientHeight, bottom = last.offsetTop + last.offsetHeight + 40; // keep the newest item in view
+  inner.style.top = `${Math.min(0, h - bottom)}px`;
+}
+window.setTime = (T) => {
+  let acc = 0, i = 0;
+  for (; i < DATA.scenes.length - 1 && T >= acc + DATA.scenes[i].dur; i++) acc += DATA.scenes[i].dur;
+  if (built !== i) buildScene(i);
+  const s = DATA.scenes[i], t = T - acc;
+  if (s.kind === "card") { $("card").style.opacity = Math.min(1, t / 0.4, (s.dur - t) / 0.4); return; }
+  let lastMsg = null, lastLn = null, cap = "";
+  for (const e of s.events) {
+    const on = t >= e.t;
+    if (e.type === "mail") {
+      const k = Math.max(0, Math.min(1, (t - e.t) / 0.4));
+      e.el.style.display = on ? "" : "none"; e.el.style.opacity = k; e.el.style.transform = `translateY(${(1 - k) * 14}px)`;
+      if (on) lastMsg = e.el;
+    }
+    else if (e.type === "line") { e.el.style.display = on ? "" : "none"; if (on) lastLn = e.el; }
+    else if (e.type === "cap" && on && t < (e.until ?? 1e9)) cap = e.text;
+  }
+  scroll($("msgs"), $("msgin"), lastMsg);
+  scroll($("lines"), $("lnin"), lastLn);
+  $("capt").textContent = cap; $("capt").className = cap ? "show" : "";
+};
+</script>
+</body>
+</html>

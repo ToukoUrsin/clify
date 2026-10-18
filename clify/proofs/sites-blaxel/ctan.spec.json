@@ -1,0 +1,694 @@
+{
+ "name": "ctan",
+ "startUrl": "https://ctan.org/",
+ "origin": "https://ctan.org",
+ "createdAt": "2026-10-18T09:20:35.878Z",
+ "description": "CTAN (Comprehensive TeX Archive Network): browse TeX/LaTeX packages, topics, contributors, announcements, licenses, archive directories, ratings and comments from the public ctan.org web pages and their XHR endpoints.",
+ "commands": [
+  {
+   "name": "list-packages",
+   "summary": "List CTAN packages whose name starts with a given letter (package slug and URL)",
+   "method": "GET",
+   "urlTemplate": "/pkg/:{letter}",
+   "params": [
+    {
+     "name": "letter",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Initial letter, uppercase A-Z",
+     "example": "T"
+    }
+   ],
+   "responseType": "html",
+   "extract": {
+    "list": "div.pkg-cols > div.dt",
+    "fields": {
+     "name": "a",
+     "url": "a@href"
+    }
+   },
+   "defaultFields": [
+    "name",
+    "url"
+   ],
+   "mutates": false,
+   "example": {
+    "letter": "T"
+   },
+   "source": "E12 GET https://ctan.org/pkg/:T",
+   "verified": true
+  },
+  {
+   "name": "get-package",
+   "summary": "Get a package's detail page: title and catalogue entry table (version, license, home page, etc.)",
+   "method": "GET",
+   "urlTemplate": "/pkg/{pkg}",
+   "params": [
+    {
+     "name": "pkg",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Package key, e.g. pgfplots. Aliases such as tikz redirect to the owning package (pgf)",
+     "example": "pgfplots"
+    }
+   ],
+   "responseType": "html",
+   "extract": {
+    "fields": {
+     "title": "h1",
+     "entry": "table.entry"
+    }
+   },
+   "defaultFields": [
+    "title",
+    "entry"
+   ],
+   "mutates": false,
+   "example": {
+    "pkg": "pgfplots"
+   },
+   "source": "E13 GET https://ctan.org/pkg/tikz",
+   "verified": true
+  },
+  {
+   "name": "get-package-history",
+   "summary": "Get a package's release timeline as [year, month, version] tuples",
+   "method": "GET",
+   "urlTemplate": "/pkg/summary/{pkg}",
+   "params": [
+    {
+     "name": "pkg",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Package key",
+     "example": "pgf"
+    }
+   ],
+   "headers": {
+    "X-Requested-With": "XMLHttpRequest"
+   },
+   "responseType": "json",
+   "mutates": false,
+   "example": {
+    "pkg": "pgf"
+   },
+   "source": "E2 E3 GET https://www.ctan.org/pkg/summary/pgf",
+   "verified": true
+  },
+  {
+   "name": "get-package-rating",
+   "summary": "Get a package's rating breakdown: the number of votes for each star level",
+   "method": "GET",
+   "urlTemplate": "/vote/ajaxSummary?verbose=true",
+   "params": [
+    {
+     "name": "pkg",
+     "in": "query",
+     "required": true,
+     "type": "string",
+     "description": "Package key",
+     "example": "pgf"
+    }
+   ],
+   "headers": {
+    "X-Requested-With": "XMLHttpRequest"
+   },
+   "responseType": "html",
+   "extract": {
+    "list": "table.voted tr",
+    "fields": {
+     "stars": "td.stars",
+     "votes": "td.num"
+    }
+   },
+   "defaultFields": [
+    "stars",
+    "votes"
+   ],
+   "mutates": false,
+   "example": {
+    "pkg": "pgf"
+   },
+   "source": "E8 E9 GET https://www.ctan.org/vote/ajaxSummary",
+   "verified": true
+  },
+  {
+   "name": "list-package-comments",
+   "summary": "List user comments on a package (commenter, profile link, date), paginated",
+   "method": "GET",
+   "urlTemplate": "/vote/ajaxComments?id=commentsDiv",
+   "params": [
+    {
+     "name": "pkg",
+     "in": "query",
+     "required": true,
+     "type": "string",
+     "description": "Package key",
+     "example": "pgf"
+    },
+    {
+     "name": "offset",
+     "in": "query",
+     "required": false,
+     "type": "number",
+     "description": "Page index, starting at 0 (the UI increments it by 1 per page)",
+     "default": 0
+    },
+    {
+     "name": "max",
+     "in": "query",
+     "required": false,
+     "type": "number",
+     "description": "Comments per page",
+     "default": 4
+    }
+   ],
+   "headers": {
+    "X-Requested-With": "XMLHttpRequest"
+   },
+   "responseType": "html",
+   "extract": {
+    "list": "div.cinfo",
+    "fields": {
+     "info": "",
+     "author": "a",
+     "profileUrl": "a@href"
+    }
+   },
+   "defaultFields": [
+    "author",
+    "info",
+    "profileUrl"
+   ],
+   "pagination": {
+    "type": "offset",
+    "param": "offset",
+    "step": 1
+   },
+   "mutates": false,
+   "example": {
+    "pkg": "pgf"
+   },
+   "source": "E6 GET https://www.ctan.org/vote/ajaxComments",
+   "verified": true
+  },
+  {
+   "name": "list-topics",
+   "summary": "List all topics with slug, URL and a tooltip containing the description and package count",
+   "method": "GET",
+   "urlTemplate": "/topics/cloud",
+   "params": [],
+   "responseType": "html",
+   "extract": {
+    "list": "div.cloud > span",
+    "fields": {
+     "name": "a",
+     "url": "a@href",
+     "info": "a@title"
+    }
+   },
+   "defaultFields": [
+    "name",
+    "url",
+    "info"
+   ],
+   "mutates": false,
+   "source": "E14",
+   "verified": true
+  },
+  {
+   "name": "list-topics-by-count",
+   "summary": "List topics ranked by number of packages",
+   "method": "GET",
+   "urlTemplate": "/topics/highscore",
+   "params": [],
+   "responseType": "html",
+   "extract": {
+    "list": "tr",
+    "fields": {
+     "topic": "td",
+     "description": "td@title",
+     "packages": "td + td"
+    }
+   },
+   "defaultFields": [
+    "topic",
+    "packages",
+    "description"
+   ],
+   "mutates": false,
+   "source": "E15 GET https://ctan.org/topics/highscore",
+   "verified": true
+  },
+  {
+   "name": "list-topic-packages",
+   "summary": "List the packages in a topic",
+   "method": "GET",
+   "urlTemplate": "/topic/{topic}",
+   "params": [
+    {
+     "name": "topic",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Topic slug from list-topics, e.g. biomedical, font-sample",
+     "example": "biomedical"
+    }
+   ],
+   "responseType": "html",
+   "extract": {
+    "list": "div.pkg-cols > div.dt",
+    "fields": {
+     "name": "a",
+     "url": "a@href"
+    }
+   },
+   "defaultFields": [
+    "name",
+    "url"
+   ],
+   "mutates": false,
+   "example": {
+    "topic": "biomedical"
+   },
+   "source": "E14 GET https://ctan.org/topics/cloud",
+   "verified": true
+  },
+  {
+   "name": "list-top-contributors",
+   "summary": "List top contributors with their package counts",
+   "method": "GET",
+   "urlTemplate": "/author",
+   "params": [],
+   "responseType": "html",
+   "extract": {
+    "list": "table.highscore.zebra tr",
+    "fields": {
+     "name": "a",
+     "url": "a@href",
+     "packages": "td + td"
+    }
+   },
+   "defaultFields": [
+    "name",
+    "url",
+    "packages"
+   ],
+   "mutates": false,
+   "source": "E17 GET https://ctan.org/author",
+   "verified": true
+  },
+  {
+   "name": "list-contributors",
+   "summary": "List contributors whose surname starts with a given letter",
+   "method": "GET",
+   "urlTemplate": "/author/:{letter}",
+   "params": [
+    {
+     "name": "letter",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Initial letter, uppercase A-Z",
+     "example": "M"
+    }
+   ],
+   "responseType": "html",
+   "extract": {
+    "list": "div.author-cols > a",
+    "fields": {
+     "name": "",
+     "url": "@href"
+    }
+   },
+   "defaultFields": [
+    "name",
+    "url"
+   ],
+   "mutates": false,
+   "example": {
+    "letter": "M"
+   },
+   "source": "E18 GET https://ctan.org/author/:M",
+   "verified": true
+  },
+  {
+   "name": "get-contributor",
+   "summary": "List the packages maintained by a contributor",
+   "method": "GET",
+   "urlTemplate": "/author/{id}",
+   "params": [
+    {
+     "name": "id",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Contributor id: the last segment of /author/{id} URLs",
+     "example": "feuersaenger"
+    }
+   ],
+   "responseType": "html",
+   "extract": {
+    "list": "div.pkg-cols > div.dt",
+    "fields": {
+     "package": "a",
+     "url": "a@href"
+    }
+   },
+   "defaultFields": [
+    "package",
+    "url"
+   ],
+   "mutates": false,
+   "example": {
+    "id": "feuersaenger"
+   },
+   "source": "E16 GET https://ctan.org/author/feuersaenger",
+   "verified": true
+  },
+  {
+   "name": "list-announcements",
+   "summary": "List the latest CTAN-ann announcements (package uploads and updates)",
+   "method": "GET",
+   "urlTemplate": "/ctan-ann",
+   "params": [],
+   "responseType": "html",
+   "extract": {
+    "list": "ul.announcements > li",
+    "fields": {
+     "title": "a",
+     "url": "a@href"
+    }
+   },
+   "defaultFields": [
+    "title",
+    "url"
+   ],
+   "mutates": false,
+   "source": "E19 GET https://ctan.org/ctan-ann",
+   "verified": true
+  },
+  {
+   "name": "get-announcement",
+   "summary": "Get the full text of an announcement and the package it concerns",
+   "method": "GET",
+   "urlTemplate": "/ctan-ann/id/{msgid}",
+   "params": [
+    {
+     "name": "msgid",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Message id: the last path segment of /ctan-ann/id/... links",
+     "example": "atSHIZY-1kTjw378@prptp"
+    }
+   ],
+   "responseType": "html",
+   "extract": {
+    "fields": {
+     "title": "h1",
+     "text": "div.mail",
+     "package": "table.entry a",
+     "packageUrl": "table.entry a@href",
+     "details": "table.entry"
+    }
+   },
+   "defaultFields": [
+    "title",
+    "package",
+    "details",
+    "text"
+   ],
+   "mutates": false,
+   "example": {
+    "msgid": "atSHIZY-1kTjw378@prptp"
+   },
+   "source": "E20 GET https://ctan.org/ctan-ann/id/atSHIZY-1kTjw378@prptp",
+   "verified": true
+  },
+  {
+   "name": "list-package-announcements",
+   "summary": "List all announcements for one package",
+   "method": "GET",
+   "urlTemplate": "/ctan-ann/pkg/{pkg}",
+   "params": [
+    {
+     "name": "pkg",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Package key",
+     "example": "luatexja"
+    }
+   ],
+   "responseType": "html",
+   "extract": {
+    "list": "div.left ul.announcements > li",
+    "fields": {
+     "title": "a",
+     "url": "a@href"
+    }
+   },
+   "defaultFields": [
+    "title",
+    "url"
+   ],
+   "mutates": false,
+   "example": {
+    "pkg": "luatexja"
+   },
+   "source": "E21 GET https://ctan.org/ctan-ann/pkg/luatexja",
+   "verified": true
+  },
+  {
+   "name": "browse-archive",
+   "summary": "List subdirectories and files (size, date, download URL) in a CTAN archive directory",
+   "method": "GET",
+   "urlTemplate": "/texarchive/ajaxFiles",
+   "params": [
+    {
+     "name": "path",
+     "in": "query",
+     "required": true,
+     "type": "string",
+     "description": "Archive path without a leading slash, e.g. graphics/pgf/contrib/pgfplots",
+     "example": "graphics/pgf/contrib/pgfplots"
+    }
+   ],
+   "headers": {
+    "X-Requested-With": "XMLHttpRequest"
+   },
+   "responseType": "html",
+   "extract": {
+    "list": "table.browse tr",
+    "fields": {
+     "name": "td.name-col a",
+     "url": "td.name-col a@href",
+     "size": "td.size-col@title",
+     "date": "td.date-col@title",
+     "note": "td.note-col"
+    }
+   },
+   "defaultFields": [
+    "name",
+    "url",
+    "size",
+    "date"
+   ],
+   "mutates": false,
+   "example": {
+    "path": "graphics/pgf/contrib/pgfplots"
+   },
+   "source": "E10 GET https://ctan.org/texarchive/ajaxFiles",
+   "verified": true
+  },
+  {
+   "name": "list-licenses",
+   "summary": "List the license keys used in the TeX Catalogue (free and non-free)",
+   "method": "GET",
+   "urlTemplate": "/license",
+   "params": [],
+   "responseType": "html",
+   "extract": {
+    "list": "div.right dl > dt",
+    "fields": {
+     "name": "a",
+     "url": "a@href"
+    }
+   },
+   "defaultFields": [
+    "name",
+    "url"
+   ],
+   "mutates": false,
+   "source": "E25 GET https://ctan.org/license",
+   "verified": true
+  },
+  {
+   "name": "get-license",
+   "summary": "Get a license's name, text and reference link",
+   "method": "GET",
+   "urlTemplate": "/license/{key}",
+   "params": [
+    {
+     "name": "key",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "License key from list-licenses, e.g. mit, gpl3, lppl1.3c",
+     "example": "mit"
+    }
+   ],
+   "responseType": "html",
+   "extract": {
+    "fields": {
+     "name": "h1",
+     "text": "div.left",
+     "reference": "div.right p a@href"
+    }
+   },
+   "defaultFields": [
+    "name",
+    "reference",
+    "text"
+   ],
+   "mutates": false,
+   "example": {
+    "key": "mit"
+   },
+   "source": "E26 GET https://ctan.org/license/mit",
+   "verified": true
+  },
+  {
+   "name": "get-license-stats",
+   "summary": "Get how many packages use a license, out of the total package count",
+   "method": "GET",
+   "urlTemplate": "/license/-stat/{key}",
+   "params": [
+    {
+     "name": "key",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "License key, e.g. mit",
+     "example": "mit"
+    }
+   ],
+   "headers": {
+    "X-Requested-With": "XMLHttpRequest"
+   },
+   "responseType": "json",
+   "defaultFields": [
+    "license",
+    "count",
+    "packages"
+   ],
+   "mutates": false,
+   "example": {
+    "key": "mit"
+   },
+   "source": "E4 GET https://ctan.org/license/-stat/mit",
+   "verified": true
+  },
+  {
+   "name": "get-upload-stats",
+   "summary": "Get monthly CTAN upload counts as [year, month, count] tuples",
+   "method": "GET",
+   "urlTemplate": "/upload/summary",
+   "params": [],
+   "headers": {
+    "X-Requested-With": "XMLHttpRequest"
+   },
+   "responseType": "json",
+   "mutates": false,
+   "source": "E5 GET https://ctan.org/upload/summary",
+   "verified": true
+  },
+  {
+   "name": "get-random-package",
+   "summary": "Get a random featured package (key, name, caption, description)",
+   "method": "GET",
+   "urlTemplate": "/teaser/random/pkg",
+   "params": [],
+   "headers": {
+    "X-Requested-With": "XMLHttpRequest"
+   },
+   "responseType": "json",
+   "defaultFields": [
+    "key",
+    "name",
+    "caption",
+    "descriptions"
+   ],
+   "mutates": false,
+   "source": "E1 GET https://ctan.org/teaser/random/pkg",
+   "verified": true
+  }
+ ],
+ "blockers": [],
+ "notes": [
+  "Keyword search (/search, /search/json) and the JSON API (/json/2.0/*) are disallowed by robots.txt. Find things through the letter listings, topics and contributors instead.",
+  "Package keys are the last segment of /pkg/{key} URLs. They are lowercase and may differ from display names (e.g. T1Subset -> t1subset).",
+  "Package lists give names and URLs only. In the HTML, the one-line descriptions sit in sibling div.dd elements and cannot be paired with each package.",
+  "list-package-comments returns the commenter, profile link and date. The comment text sits in a sibling <p> and is not extracted.",
+  "The offset parameter of list-package-comments is a page index (0, 1, 2, ...), not an item offset.",
+  "get-package-rating returns per-star vote counts. The average is shown on the page as text like '\u2205 4.97 [30 votes]'.",
+  "Archive file URLs point to mirrors.ctan.org for download. get-archive-directory also gives a zip of the whole directory.",
+  "Related packages (/recommendations/{pkg}) and RSS/Atom feeds (/ctan-ann/rss/{pkg}.xml, /ctan-ann/atom) exist, but their response structure was not recorded.",
+  "Voting and commenting require a logged-in account and are not covered."
+ ],
+ "dropped": [
+  {
+   "name": "get-archive-directory",
+   "summary": "Get an archive directory's README, its zip download link and the package catalogue entry",
+   "method": "GET",
+   "urlTemplate": "/tex-archive/{path}",
+   "params": [
+    {
+     "name": "path",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Archive path without a leading slash, e.g. graphics/pgf/contrib/pgfplots (slashes are kept)",
+     "example": "graphics/pgf/contrib/pgfplots"
+    }
+   ],
+   "responseType": "html",
+   "extract": {
+    "fields": {
+     "directory": "h1 code",
+     "readme": "pre.readme",
+     "zipUrl": "p.download a@href",
+     "title": "div.right h2",
+     "package": "table.entry a",
+     "entry": "table.entry"
+    }
+   },
+   "defaultFields": [
+    "directory",
+    "title",
+    "package",
+    "zipUrl",
+    "readme"
+   ],
+   "mutates": false,
+   "example": {
+    "path": "graphics/pgf/contrib/pgfplots"
+   },
+   "source": "E24 GET https://ctan.org/tex-archive/graphics/pgf/contrib/pgfplots",
+   "verified": false,
+   "verifyNote": "The path param's slashes get URL-encoded to %2F, so the server returns 404. The template cannot hold a path of variable depth. browse-archive already lists directory contents and get-package returns the catalogue entry."
+  }
+ ],
+ "generated": {
+  "by": "clify add",
+  "model": "claude-opus-5-5",
+  "exploredSteps": 25,
+  "recorded": 36,
+  "verifiedAt": "2026-10-18T09:22:12.571Z",
+  "seconds": 292
+ }
+}

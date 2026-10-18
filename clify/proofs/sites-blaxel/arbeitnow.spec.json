@@ -1,0 +1,288 @@
+{
+ "name": "arbeitnow",
+ "startUrl": "https://www.arbeitnow.com/",
+ "origin": "https://www.arbeitnow.com",
+ "createdAt": "2026-10-18T08:36:42.389Z",
+ "description": "Arbeitnow: a job board for jobs in Germany (remote, visa sponsorship, English speaking). This CLI searches and filters jobs, lists a company's jobs, reads the free public job-feed API, opens job details and lists hiring companies.",
+ "commands": [
+  {
+   "name": "search-jobs",
+   "summary": "Search jobs by keyword, with optional tag, location/category, date-posted filter, sort order and page. Returns paging info plus the result list as rendered HTML; each <li data-slug> holds a job slug a",
+   "method": "GET",
+   "urlTemplate": "/api/jobs?locale=en",
+   "params": [
+    {
+     "name": "search",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Keyword query, e.g. 'python developer'. Empty means all jobs.",
+     "example": "python developer"
+    },
+    {
+     "name": "tags",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "JSON array of tag slugs, e.g. [\"remote\"]. Use [] for no tag filter.",
+     "default": "[]",
+     "example": "[\"remote\"]"
+    },
+    {
+     "name": "category",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Location/category slug, the same as /jobs/locations/{slug}. Examples: 'remote', 'berlin', 'munich'. Empty means any.",
+     "example": "remote"
+    },
+    {
+     "name": "sort_by",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Sort order. 'null' is the site default; 'relevance' sorts by relevance; 'newest' puts the most recent first.",
+     "enum": [
+      "null",
+      "relevance",
+      "newest"
+     ],
+     "default": "null"
+    },
+    {
+     "name": "date_posted",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Posting-date window. Observed values: 'all' and '7d'. The UI likely also offers '24h' and '3d'.",
+     "default": "all",
+     "example": "7d"
+    },
+    {
+     "name": "page",
+     "in": "query",
+     "required": false,
+     "type": "number",
+     "description": "Result page number, starting at 1.",
+     "default": 1
+    }
+   ],
+   "responseType": "json",
+   "defaultFields": [
+    "current_page",
+    "last_page",
+    "per_page",
+    "total",
+    "next_page_url",
+    "data"
+   ],
+   "pagination": {
+    "type": "page",
+    "param": "page"
+   },
+   "mutates": false,
+   "example": {
+    "search": "python developer"
+   },
+   "source": "E1",
+   "verified": true
+  },
+  {
+   "name": "list-company-jobs",
+   "summary": "List the open jobs of one company. Needs both the display name and the slug. Returns paging info plus the result list as rendered HTML; each <li data-slug> holds a job slug for get-job.",
+   "method": "GET",
+   "urlTemplate": "/api/jobs?locale=en&search=&category=&tags=%5B%5D&date_posted=all",
+   "params": [
+    {
+     "name": "company_name",
+     "in": "query",
+     "required": true,
+     "type": "string",
+     "description": "Company display name exactly as shown on the site, e.g. 'Duck Duck Go'.",
+     "example": "Duck Duck Go"
+    },
+    {
+     "name": "company_slug",
+     "in": "query",
+     "required": true,
+     "type": "string",
+     "description": "Company slug from /jobs/companies/{slug}, e.g. 'duck-duck-go'.",
+     "example": "duck-duck-go"
+    },
+    {
+     "name": "sort_by",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Sort order.",
+     "enum": [
+      "null",
+      "relevance",
+      "newest"
+     ],
+     "default": "null"
+    },
+    {
+     "name": "page",
+     "in": "query",
+     "required": false,
+     "type": "number",
+     "description": "Result page number, starting at 1.",
+     "default": 1
+    }
+   ],
+   "responseType": "json",
+   "defaultFields": [
+    "current_page",
+    "last_page",
+    "per_page",
+    "total",
+    "next_page_url",
+    "data"
+   ],
+   "pagination": {
+    "type": "page",
+    "param": "page"
+   },
+   "mutates": false,
+   "example": {
+    "company_name": "Duck Duck Go",
+    "company_slug": "duck-duck-go"
+   },
+   "source": "E1",
+   "verified": true
+  },
+  {
+   "name": "list-jobs-feed",
+   "summary": "Free public job-board API feed: newest jobs as clean JSON (slug, company, title, description, remote flag, tags, job types, location, created_at), paginated.",
+   "method": "GET",
+   "urlTemplate": "/api/job-board-api",
+   "params": [
+    {
+     "name": "page",
+     "in": "query",
+     "required": false,
+     "type": "number",
+     "description": "Feed page number, starting at 1.",
+     "default": 1,
+     "example": "2"
+    },
+    {
+     "name": "visa_sponsorship",
+     "in": "query",
+     "required": false,
+     "type": "boolean",
+     "description": "Documented on /blog/job-board-api but not exercised: true returns only jobs that offer visa sponsorship."
+    }
+   ],
+   "responseType": "json",
+   "resultPath": "data",
+   "defaultFields": [
+    "slug",
+    "title",
+    "company_name",
+    "location",
+    "remote",
+    "tags",
+    "job_types",
+    "url",
+    "created_at"
+   ],
+   "pagination": {
+    "type": "page",
+    "param": "page"
+   },
+   "mutates": false,
+   "example": {
+    "page": "2"
+   },
+   "source": "E4 GET https://www.arbeitnow.com/api/job-board-api",
+   "verified": true
+  },
+  {
+   "name": "get-job",
+   "summary": "Get full details of one job posting: title, HTML description, salary, employment type, remote/location, dates and hiring company.",
+   "method": "GET",
+   "urlTemplate": "/jobs/companies/{company_slug}/{job_slug}",
+   "params": [
+    {
+     "name": "company_slug",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Company slug, e.g. 'duck-duck-go'.",
+     "example": "duck-duck-go"
+    },
+    {
+     "name": "job_slug",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Job slug ending in the numeric job id, e.g. 'remote-director-data-science-440507'. It is the 'slug' field from list-jobs-feed or the data-slug in search results.",
+     "example": "remote-director-data-science-440507"
+    }
+   ],
+   "responseType": "html",
+   "resultPath": "@graph.0",
+   "extract": {
+    "jsonScript": "script[type=\"application/ld+json\"]"
+   },
+   "defaultFields": [
+    "title",
+    "hiringOrganization.name",
+    "datePosted",
+    "validThrough",
+    "employmentType",
+    "jobLocationType",
+    "baseSalary",
+    "description"
+   ],
+   "mutates": false,
+   "example": {
+    "company_slug": "duck-duck-go",
+    "job_slug": "remote-director-data-science-440507"
+   },
+   "source": "E8 E9 GET https://www.arbeitnow.com/jobs/companies/duck-duck-go/remote-director-data-science-440507",
+   "verified": true
+  },
+  {
+   "name": "list-companies",
+   "summary": "List the companies hiring on Arbeitnow with their open-job count. The company slug is the last segment of url; use it with list-company-jobs.",
+   "method": "GET",
+   "urlTemplate": "/jobs/companies",
+   "params": [],
+   "responseType": "html",
+   "extract": {
+    "list": "a[href*=\"/jobs/companies/\"]",
+    "fields": {
+     "job_count": "",
+     "url": "@href"
+    }
+   },
+   "defaultFields": [
+    "job_count",
+    "url"
+   ],
+   "mutates": false,
+   "source": "E11",
+   "verified": true
+  }
+ ],
+ "blockers": [],
+ "notes": [
+  "search-jobs and list-company-jobs return JSON whose 'data' field is a rendered HTML fragment of <li data-slug=...> items. Each item's data-link is the job URL /jobs/companies/{company_slug}/{job_slug}. Pass those two parts to get-job.",
+  "For clean structured JSON without keyword filtering, use list-jobs-feed (the public, keyless /api/job-board-api). Its 'slug' field is the job_slug for get-job; the company slug is in the 'url' field.",
+  "tags must be a JSON array string, e.g. [\"remote\"]. category takes a location slug from /jobs/locations/{slug}, e.g. 'remote'.",
+  "/visa-sponsorship-jobs and /remote-jobs redirect: visa sponsorship goes to the home page, remote goes to /jobs/locations/remote. Use category=remote or the feed's visa_sponsorship parameter instead.",
+  "No login needed. Every command is read-only; analytics events on stats.arbeitnow.com are skipped."
+ ],
+ "dropped": [],
+ "generated": {
+  "by": "clify add",
+  "model": "claude-opus-5-5",
+  "exploredSteps": 19,
+  "recorded": 41,
+  "verifiedAt": "2026-10-18T08:37:52.629Z",
+  "seconds": 188
+ }
+}

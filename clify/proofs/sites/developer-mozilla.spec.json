@@ -1,0 +1,210 @@
+{
+ "name": "developer-mozilla",
+ "startUrl": "https://developer.mozilla.org/en-US/",
+ "origin": "https://developer.mozilla.org",
+ "createdAt": "2026-10-18T07:14:28.249Z",
+ "description": "MDN Web Docs (developer.mozilla.org) is Mozilla's web developer documentation. This CLI searches the docs, fetches any doc page as structured JSON, lists every doc title/URL for a locale, and looks up browser compatibility data.",
+ "commands": [
+  {
+   "name": "search-docs",
+   "summary": "Full-text search of MDN documentation, 10 results per page, optionally limited to one locale",
+   "method": "GET",
+   "urlTemplate": "/api/v1/search",
+   "params": [
+    {
+     "name": "q",
+     "in": "query",
+     "required": true,
+     "type": "string",
+     "description": "Search keywords",
+     "example": "fetch"
+    },
+    {
+     "name": "page",
+     "in": "query",
+     "required": false,
+     "type": "number",
+     "description": "1-based results page (10 results per page)",
+     "default": 1,
+     "example": "2"
+    },
+    {
+     "name": "locale",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Docs locale to search, e.g. en-US, fr, de, es, ja, ko, pt-BR, ru, zh-CN, zh-TW",
+     "default": "en-US",
+     "example": "fr"
+    }
+   ],
+   "responseType": "json",
+   "resultPath": "documents",
+   "defaultFields": [
+    "title",
+    "mdn_url",
+    "summary",
+    "locale",
+    "slug",
+    "score",
+    "popularity"
+   ],
+   "pagination": {
+    "type": "page",
+    "param": "page"
+   },
+   "mutates": false,
+   "example": {
+    "q": "fetch",
+    "page": "1",
+    "locale": "en-US"
+   },
+   "source": "E2 GET https://developer.mozilla.org/api/v1/search",
+   "verified": true
+  },
+  {
+   "name": "get-doc",
+   "summary": "Get one MDN doc page as structured JSON: title, summary, body sections (HTML), TOC, parents, translations, and BCD keys",
+   "method": "GET",
+   "urlTemplate": "/{locale}/docs/{path}/index.json",
+   "params": [
+    {
+     "name": "locale",
+     "in": "path",
+     "required": false,
+     "type": "string",
+     "description": "Docs locale, e.g. en-US, fr, de, ja",
+     "default": "en-US",
+     "example": "en-US"
+    },
+    {
+     "name": "path",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Doc path after /{locale}/docs/, with slashes kept, e.g. Web/API/Fetch_API or Web/HTML/Reference/Elements. Take it from a search result's mdn_url by removing the '/{locale}/docs/' prefix.",
+     "example": "Web/API/Fetch_API"
+    }
+   ],
+   "responseType": "json",
+   "resultPath": "doc",
+   "defaultFields": [
+    "title",
+    "mdn_url",
+    "summary",
+    "pageType",
+    "modified",
+    "parents",
+    "toc",
+    "browserCompat"
+   ],
+   "mutates": false,
+   "example": {
+    "locale": "en-US",
+    "path": "Web/API/Fetch_API"
+   },
+   "source": "E7 E8 E10 GET https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API/index.json",
+   "verified": true
+  },
+  {
+   "name": "list-docs",
+   "summary": "List every doc in a locale as {title, url}, ordered by popularity (MDN's quick-search index)",
+   "method": "GET",
+   "urlTemplate": "/{locale}/search-index.json",
+   "params": [
+    {
+     "name": "locale",
+     "in": "path",
+     "required": false,
+     "type": "string",
+     "description": "Docs locale, e.g. en-US, fr, de, ja",
+     "default": "en-US",
+     "example": "en-US"
+    }
+   ],
+   "responseType": "json",
+   "defaultFields": [
+    "title",
+    "url"
+   ],
+   "mutates": false,
+   "example": {
+    "locale": "en-US"
+   },
+   "source": "E9 GET https://developer.mozilla.org/en-US/search-index.json",
+   "verified": true
+  },
+  {
+   "name": "get-browser-compat",
+   "summary": "Get browser compatibility data (support per browser/version, status, spec URL) for a BCD feature key such as api.fetch or html.elements.details",
+   "method": "GET",
+   "urlTemplate": "https://bcd.developer.mozilla.org/bcd/api/v0/current/{feature}.json",
+   "params": [
+    {
+     "name": "feature",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Dot-separated BCD feature path, e.g. api.fetch, api.Window.fetchLater, html.elements.details, css.properties.display. get-doc lists these keys in its browserCompat field.",
+     "example": "api.fetch"
+    }
+   ],
+   "responseType": "json",
+   "resultPath": "data",
+   "defaultFields": [
+    "__compat.mdn_url",
+    "__compat.spec_url",
+    "__compat.status",
+    "__compat.support",
+    "__compat.tags"
+   ],
+   "mutates": false,
+   "example": {
+    "feature": "api.fetch"
+   },
+   "source": "E3 E4 E5 GET https://bcd.developer.mozilla.org/bcd/api/v0/current/api.fetch.json",
+   "verified": true
+  }
+ ],
+ "blockers": [],
+ "notes": [
+  "search-docs has no sort option. The site's sort=popularity URL parameter is not passed to the API. Each result includes a popularity score you can sort by yourself.",
+  "search-docs accepts one locale per call. The site can search several locales at once by repeating locale=; to do that here, run the command once per locale.",
+  "To get a doc's path for get-doc, take mdn_url (from search-docs) or url (from list-docs) and drop the leading '/{locale}/docs/'. Example: '/en-US/docs/Web/API/Fetch_API' becomes path 'Web/API/Fetch_API' with locale 'en-US'. The slashes in path must be kept literally.",
+  "get-doc body sections are HTML strings in body[].value.content. Category pages such as Web/HTML/Reference/Elements contain their listings as HTML tables inside those sections.",
+  "get-doc returns a browserCompat array of BCD keys. Pass those keys to get-browser-compat as the feature argument.",
+  "list-docs returns a very large array covering every doc in the locale. Prefer search-docs for targeted lookups.",
+  "The HTTP Observatory (/en-US/observatory/analyze?host=) starts each scan with a write request that was not recorded, so no command is provided for it.",
+  "The explorer was not signed in, so no signed-in user features were recorded. get-current-user works anonymously and returns null user fields."
+ ],
+ "dropped": [
+  {
+   "name": "get-current-user",
+   "summary": "Show the current session's user info (username, subscription, settings) and geo country. All user fields are null when not signed in.",
+   "method": "GET",
+   "urlTemplate": "/api/v1/whoami",
+   "params": [],
+   "responseType": "json",
+   "defaultFields": [
+    "username",
+    "is_authenticated",
+    "is_subscriber",
+    "subscription_type",
+    "geo.country",
+    "geo.country_iso"
+   ],
+   "mutates": false,
+   "source": "E1 GET https://developer.mozilla.org/api/v1/whoami",
+   "verified": false,
+   "verifyNote": "No session exists, so every user field is null and only geo country comes back. That is not useful site data for an agent, and the user info needs a login to mean anything."
+  }
+ ],
+ "generated": {
+  "by": "clify add",
+  "model": "claude-opus-5-5",
+  "exploredSteps": 15,
+  "recorded": 42,
+  "verifiedAt": "2026-10-18T07:15:01.680Z",
+  "seconds": 127
+ }
+}

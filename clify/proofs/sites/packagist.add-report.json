@@ -1,0 +1,108 @@
+{
+ "ok": true,
+ "site": "packagist",
+ "url": "https://packagist.org/",
+ "commands": [
+  {
+   "name": "search-packages",
+   "summary": "Search Packagist packages by keyword, optionally filtered by package type and tags. Uses the official search.json API.",
+   "verified": true
+  },
+  {
+   "name": "search-packages-faceted",
+   "summary": "Search packages through the site's Algolia index. Returns hits plus facet counts per tag and type. Supports Algolia filter expressions; page is 0-based.",
+   "verified": true
+  },
+  {
+   "name": "search-facet-values",
+   "summary": "Search the values of a search facet (tags or type) by prefix, with counts within a keyword query. Useful for finding valid tag names to filter on.",
+   "verified": true
+  },
+  {
+   "name": "get-package",
+   "summary": "Get full package metadata as JSON: description, maintainers, repository, download totals, favers, and all versions with their requirements.",
+   "verified": true
+  },
+  {
+   "name": "get-package-install-stats",
+   "summary": "Get a time series of daily installs for a package, averaged daily, weekly or monthly, starting from a date.",
+   "verified": true
+  },
+  {
+   "name": "get-package-major-version-stats",
+   "summary": "Get a time series of daily installs for a package, split by major version (1, 2, 3, ...).",
+   "verified": true
+  },
+  {
+   "name": "get-package-php-stats",
+   "summary": "Get a time series of installs for a package, split by the PHP version (and HHVM) used by installers.",
+   "verified": true
+  },
+  {
+   "name": "get-version-details",
+   "summary": "Get the rendered detail block for one package version by its numeric version id: version number, release date, and requires/suggests/provides/conflicts. Returned as an HTML fragment inside JSON.",
+   "verified": true
+  },
+  {
+   "name": "list-dependents",
+   "summary": "List packages that depend on a given package. Can sort by downloads and filter by require or require-dev.",
+   "verified": true
+  },
+  {
+   "name": "list-suggesters",
+   "summary": "List packages that suggest a given package in their composer.json 'suggest' section.",
+   "verified": true
+  },
+  {
+   "name": "list-security-advisories",
+   "summary": "List known security advisories (PKSA id, CVE, affected versions, severity) for a package via the official API.",
+   "verified": true
+  },
+  {
+   "name": "get-security-advisory",
+   "summary": "Get one security advisory by its PKSA id: severity, title, CVE/GHSA ids, affected package and versions, and reporting sources.",
+   "verified": true
+  },
+  {
+   "name": "list-vendor-packages",
+   "summary": "List all package names published under a vendor, optionally filtered by package type.",
+   "verified": true
+  },
+  {
+   "name": "list-popular-packages",
+   "summary": "List the most popular packages on Packagist, paginated.",
+   "verified": true
+  },
+  {
+   "name": "browse-explore",
+   "summary": "Get the Browse page lists, in this order: New Releases (with version), New Packages, Popular Packages and Random Packages.",
+   "verified": true
+  },
+  {
+   "name": "list-php-extensions",
+   "summary": "List PHP extension packages that can be installed with PIE, paginated.",
+   "verified": true
+  },
+  {
+   "name": "get-global-statistics",
+   "summary": "Get Packagist-wide totals: packages registered, versions available, and total package installs since 2012.",
+   "verified": true
+  }
+ ],
+ "verified": 17,
+ "writes": 0,
+ "dropped": [],
+ "blockers": [],
+ "loggedIn": false,
+ "seconds": 266,
+ "next": [
+  "clify packagist",
+  "clify packagist search-packages --q \"logger\" --type \"library\" --per_page \"5\""
+ ],
+ "installed": "/home/ubuntu/clify-runs/batch2/home/bin/packagist",
+ "explored": {
+  "steps": 30,
+  "recorded": 69,
+  "heldWrites": 15
+ }
+}

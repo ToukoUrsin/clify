@@ -1,0 +1,291 @@
+{
+ "url": "https://www.ensembl.org/",
+ "category": "science",
+ "sandbox": "clify-www-ensembl-org",
+ "startedAt": "2026-10-18T09:18:57.474Z",
+ "region": "us-pdx-1",
+ "chrome": "Chrome/148.0.7778.96",
+ "sandboxStartMs": 1835,
+ "addSeconds": 264,
+ "addExit": 0,
+ "add": {
+  "ok": true,
+  "site": "ensembl",
+  "url": "https://www.ensembl.org/",
+  "commands": [
+   {
+    "name": "search-genomes",
+    "summary": "Search genome assemblies by name. Can list every assembly of one species by taxonomy id, and can sort (e.g. by contig N50) and paginate.",
+    "verified": true
+   },
+   {
+    "name": "export-genomes-csv",
+    "summary": "Download genome search results as CSV text, matching search-genomes for the same query.",
+    "verified": true
+   },
+   {
+    "name": "get-genome",
+    "summary": "Get metadata for one genome by its UUID: assembly, providers, annotation version/date, release and reference status.",
+    "verified": true
+   },
+   {
+    "name": "get-genome-stats",
+    "summary": "Get statistics for a genome: assembly (N50, length, GC%), coding, non-coding, pseudogene and variation counts.",
+    "verified": true
+   },
+   {
+    "name": "get-genome-example-objects",
+    "summary": "Get example gene, location and variant ids for a genome. These are handy starting points for gene and variant lookups.",
+    "verified": true
+   },
+   {
+    "name": "list-popular-species",
+    "summary": "List popular species with their taxonomy id and number of available genomes.",
+    "verified": true
+   },
+   {
+    "name": "list-genome-groups",
+    "summary": "List genome group categories, such as external projects like VGP and BGE, with genome counts.",
+    "verified": true
+   },
+   {
+    "name": "get-genome-counts",
+    "summary": "Get the total number of genomes in Ensembl and the count per taxonomic group (Animals, Archaea, \u2026).",
+    "verified": true
+   },
+   {
+    "name": "list-releases",
+    "summary": "List Ensembl data releases (name, type integrated/partial, is_current).",
+    "verified": true
+   },
+   {
+    "name": "search-genes",
+    "summary": "Search genes by symbol, name or stable id within one genome. Returns stable ids, biotype and location.",
+    "verified": true
+   },
+   {
+    "name": "search-variants",
+    "summary": "Search variants (e.g. by rsID) within one genome.",
+    "verified": true
+   },
+   {
+    "name": "get-gene-summary",
+    "summary": "Get a gene's versioned stable id, symbol, chromosome location, strand and biotype.",
+    "verified": true
+   },
+   {
+    "name": "get-gene-overview",
+    "summary": "Get a gene's full name, alternative symbols (synonyms), HGNC accession and biotype.",
+    "verified": true
+   },
+   {
+    "name": "get-gene-structure",
+    "summary": "Get a gene's transcripts with exon layout, CDS coordinates, protein product ids and canonical/MANE flags. This is what the feature explorer gene view draws.",
+    "verified": true
+   },
+   {
+    "name": "list-gene-transcripts",
+    "summary": "List all transcripts of a gene with biotype, length, canonical/MANE status and protein length. Also returns the gene location and region checksum.",
+    "verified": true
+   },
+   {
+    "name": "get-gene-external-references",
+    "summary": "Get cross-references (NCBI Gene, HGNC, OMIM, GeneCards, UniProt, RefSeq, \u2026) for a gene and for each of its transcripts and proteins.",
+    "verified": true
+   },
+   {
+    "name": "get-gene-homologies",
+    "summary": "List homologues/orthologues of a gene in other species, with homology type and percent identity/coverage.",
+    "verified": true
+   },
+   {
+    "name": "get-transcript",
+    "summary": "Get one transcript's location, exons, CDS coordinates and protein product (id, length, sequence checksum).",
+    "verified": true
+   },
+   {
+    "name": "get-protein-domains",
+    "summary": "Get a protein's length and its domain/family matches (Pfam, PANTHER, InterPro, \u2026) with positions.",
+    "verified": true
+   },
+   {
+    "name": "get-protein-structure-stats",
+    "summary": "Get PDBe summary counts for a UniProt accession: number of PDB structures, ligands, interaction partners and similar proteins.",
+    "verified": true
+   },
+   {
+    "name": "get-variant",
+    "summary": "Get variant details: location, alleles, allele type, dbSNP source, VEP prediction, citation count, phenotype assertions and population allele frequencies.",
+    "verified": true
+   },
+   {
+    "name": "get-variant-consequences",
+    "summary": "Get the predicted molecular consequences of each allele of a variant on overlapping transcripts: consequence terms plus cDNA, CDS and protein positions with ref/alt.",
+    "verified": true
+   },
+   {
+    "name": "get-region",
+    "summary": "Get a chromosome/region's length, topology and sequence checksum. Use the checksum with get-sequence.",
+    "verified": true
+   },
+   {
+    "name": "get-sequence",
+    "summary": "Fetch raw DNA or protein sequence (plain text) for a sequence checksum over a coordinate range, via refget. Uses 0-based start and exclusive end.",
+    "verified": true
+   }
+  ],
+  "verified": 24,
+  "writes": 0,
+  "dropped": [
+   {
+    "name": "get-help-menu",
+    "reason": "Output is the help navigation menu tree, not site data, and no command fetches the article content."
+   }
+  ],
+  "blockers": [],
+  "loggedIn": false,
+  "seconds": 263,
+  "next": [
+   "clify ensembl",
+   "clify ensembl search-genomes --query \"mouse\" --page \"1\" --per_page \"20\""
+  ],
+  "installed": "/home/ubuntu/clify-runs/blaxel-w2/home/bin/ensembl",
+  "explored": {
+   "steps": 25,
+   "recorded": 57,
+   "heldWrites": 0
+  }
+ },
+ "check": {
+  "on": "blaxel",
+  "node": "v24.22.0",
+  "seconds": 9,
+  "reads": 24,
+  "verified": 24,
+  "failed": [],
+  "results": [
+   {
+    "name": "search-genomes",
+    "ok": true,
+    "ms": 700
+   },
+   {
+    "name": "export-genomes-csv",
+    "ok": true,
+    "ms": 796
+   },
+   {
+    "name": "get-genome",
+    "ok": true,
+    "ms": 161
+   },
+   {
+    "name": "get-genome-stats",
+    "ok": true,
+    "ms": 155
+   },
+   {
+    "name": "get-genome-example-objects",
+    "ok": true,
+    "ms": 157
+   },
+   {
+    "name": "list-popular-species",
+    "ok": true,
+    "ms": 169
+   },
+   {
+    "name": "list-genome-groups",
+    "ok": true,
+    "ms": 161
+   },
+   {
+    "name": "get-genome-counts",
+    "ok": true,
+    "ms": 154
+   },
+   {
+    "name": "list-releases",
+    "ok": true,
+    "ms": 157
+   },
+   {
+    "name": "search-genes",
+    "ok": true,
+    "ms": 166
+   },
+   {
+    "name": "search-variants",
+    "ok": true,
+    "ms": 180
+   },
+   {
+    "name": "get-gene-summary",
+    "ok": true,
+    "ms": 167
+   },
+   {
+    "name": "get-gene-overview",
+    "ok": true,
+    "ms": 164
+   },
+   {
+    "name": "get-gene-structure",
+    "ok": true,
+    "ms": 262
+   },
+   {
+    "name": "list-gene-transcripts",
+    "ok": true,
+    "ms": 179
+   },
+   {
+    "name": "get-gene-external-references",
+    "ok": true,
+    "ms": 227
+   },
+   {
+    "name": "get-gene-homologies",
+    "ok": true,
+    "ms": 231
+   },
+   {
+    "name": "get-transcript",
+    "ok": true,
+    "ms": 169
+   },
+   {
+    "name": "get-protein-domains",
+    "ok": true,
+    "ms": 165
+   },
+   {
+    "name": "get-protein-structure-stats",
+    "ok": true,
+    "ms": 765
+   },
+   {
+    "name": "get-variant",
+    "ok": true,
+    "ms": 427
+   },
+   {
+    "name": "get-variant-consequences",
+    "ok": true,
+    "ms": 242
+   },
+   {
+    "name": "get-region",
+    "ok": true,
+    "ms": 163
+   },
+   {
+    "name": "get-sequence",
+    "ok": true,
+    "ms": 155
+   }
+  ]
+ },
+ "deleted": true,
+ "seconds": 275
+}

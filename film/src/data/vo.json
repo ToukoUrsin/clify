@@ -1,0 +1,96 @@
+{
+ "voice": "nPczCjzI2devNBz1zQrb",
+ "lines": [
+  {
+   "scene": "struggle",
+   "at": 1.2,
+   "text": "This is how agents use websites today. Page by page: read, count, repeat.",
+   "file": "audio/vo-00.mp3"
+  },
+  {
+   "scene": "struggle",
+   "at": 10.5,
+   "text": "Forty-nine seconds, twenty-three tool calls, about four hundred thousand tokens. For one question.",
+   "file": "audio/vo-01.mp3"
+  },
+  {
+   "scene": "side",
+   "at": 0.3,
+   "text": "Same task. Same model. This time, the website is a command.",
+   "file": "audio/vo-02.mp3"
+  },
+  {
+   "scene": "side",
+   "at": 7.5,
+   "text": "Done in twenty-one seconds. Same answer.",
+   "file": "audio/vo-03.mp3"
+  },
+  {
+   "scene": "title",
+   "at": 0.4,
+   "text": "clify turns websites into CLIs and MCP tools for agents.",
+   "file": "audio/vo-04.mp3"
+  },
+  {
+   "scene": "record",
+   "at": 0.6,
+   "text": "A headless browser clicks through the site, and clify records the request behind every click.",
+   "file": "audio/vo-05.mp3"
+  },
+  {
+   "scene": "spec",
+   "at": 0.4,
+   "text": "That becomes typed commands. One help page, and any agent knows the whole site.",
+   "file": "audio/vo-06.mp3"
+  },
+  {
+   "scene": "wall",
+   "at": 0.8,
+   "text": "We've built one hundred and twenty-five of them, and re-checked every one live today.",
+   "file": "audio/vo-07.mp3"
+  },
+  {
+   "scene": "race",
+   "at": 0.5,
+   "text": "Then we raced: twenty real tasks, three ways, every answer graded against the live site.",
+   "file": "audio/vo-08.mp3"
+  },
+  {
+   "scene": "results",
+   "at": 0.4,
+   "text": "Same answers, in just over half the time, with nearly five times fewer tokens.",
+   "file": "audio/vo-09.mp3"
+  },
+  {
+   "scene": "writes",
+   "at": 0.5,
+   "text": "Anything that changes data waits for a human to confirm.",
+   "file": "audio/vo-10.mp3"
+  },
+  {
+   "scene": "captcha",
+   "at": 0.4,
+   "text": "And if a site shows a CAPTCHA, clify stops. It never solves one.",
+   "file": "audio/vo-11.mp3"
+  },
+  {
+   "scene": "outro",
+   "at": 0.5,
+   "text": "clify. Give your agent the website as a CLI.",
+   "file": "audio/vo-12.mp3"
+  }
+ ],
+ "music": "audio/music.mp3",
+ "basis": {
+  "uiMedianSec": 16.08,
+  "cliMedianSec": 9.0475,
+  "uiMedianTokens": 79363.5,
+  "cliMedianTokens": 16464,
+  "nTasks": 20,
+  "wallCount": 125,
+  "heroUiMs": 48626,
+  "heroCliMs": 20522,
+  "heroUiTools": 23,
+  "heroUiTokens": 421743
+ }
+}

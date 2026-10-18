@@ -1,0 +1,6 @@
+On Web Scraper's test e-commerce site (webscraper.io/test-sites/e-commerce/allinone), which laptop is the most expensive, and what is its price?
+
+Start from https://webscraper.io/test-sites/e-commerce/allinone. Work it out using only the tools you have, then end your reply with one final line exactly in the form:
+ANSWER: <short answer>
+
+You have a web browser (Playwright tools). Use it to find the answer on the website.

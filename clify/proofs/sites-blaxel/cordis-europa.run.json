@@ -1,0 +1,151 @@
+{
+ "url": "https://cordis.europa.eu/",
+ "category": "gov-eu",
+ "sandbox": "clify-cordis-europa-eu",
+ "startedAt": "2026-10-18T08:17:54.195Z",
+ "region": "us-pdx-1",
+ "chrome": "Chrome/148.0.7778.96",
+ "sandboxStartMs": 2712,
+ "addSeconds": 298,
+ "addExit": 0,
+ "add": {
+  "ok": true,
+  "site": "cordis-europa",
+  "url": "https://cordis.europa.eu/",
+  "commands": [
+   {
+    "name": "get-project",
+    "summary": "Get the full fact sheet of an EU research project (Horizon Europe, H2020, FP7\u2026) as JSON, looked up by grant agreement ID",
+    "verified": true
+   },
+   {
+    "name": "get-project-reporting",
+    "summary": "Get a project's periodic or final report summary: context and objectives, work performed, and results so far",
+    "verified": true
+   },
+   {
+    "name": "list-project-deliverables",
+    "summary": "List a project's public deliverables, data management plans and publications, with download links (from the project's Results tab)",
+    "verified": true
+   },
+   {
+    "name": "get-project-openaire",
+    "summary": "Get the publications, datasets, software and other research outputs that OpenAIRE links to a project",
+    "verified": true
+   },
+   {
+    "name": "get-result-report",
+    "summary": "Get a result/report record as JSON (periodic report summary, work performed, final results, related project), looked up by its RCN",
+    "verified": true
+   },
+   {
+    "name": "get-article",
+    "summary": "Get a CORDIS article (news, Results in Brief, Ask an expert\u2026) as JSON, including body, keywords and related projects/articles",
+    "verified": true
+   },
+   {
+    "name": "list-news",
+    "summary": "List the latest CORDIS news articles shown on the news hub, by section (Scientific advances, Ask an expert\u2026)",
+    "verified": true
+   },
+   {
+    "name": "list-domain-articles",
+    "summary": "List recent articles for a domain of application (Energy, Health, Digital Economy, Climate Change and Environment, \u2026)",
+    "verified": true
+   },
+   {
+    "name": "search-projects-map",
+    "summary": "Keyword search over EU-funded projects and participating organisations (Projects Map data): returns hit counts plus organisations with address, coordinates and their projects (budget, dates, scheme); ",
+    "verified": true
+   },
+   {
+    "name": "get-data-extraction-api-spec",
+    "summary": "Get the OpenAPI spec of the CORDIS Data Extraction Tool API (bulk extractions; using the API needs a personal API key)",
+    "verified": true
+   }
+  ],
+  "verified": 10,
+  "writes": 0,
+  "dropped": [
+   {
+    "name": "get-project-widget",
+    "reason": "Returns error WID-004 'Widget type unsupported'. It needs a widget type parameter, and no valid value is known."
+   }
+  ],
+  "blockers": [],
+  "loggedIn": false,
+  "seconds": 298,
+  "next": [
+   "clify cordis-europa",
+   "clify cordis-europa get-project --id \"101070320\""
+  ],
+  "installed": "/home/ubuntu/clify-runs/blaxel-w1/home/bin/cordis-europa",
+  "explored": {
+   "steps": 20,
+   "recorded": 87,
+   "heldWrites": 13
+  }
+ },
+ "check": {
+  "on": "blaxel",
+  "node": "v24.22.0",
+  "seconds": 8,
+  "reads": 10,
+  "verified": 10,
+  "failed": [],
+  "results": [
+   {
+    "name": "get-project",
+    "ok": true,
+    "ms": 937
+   },
+   {
+    "name": "get-project-reporting",
+    "ok": true,
+    "ms": 232
+   },
+   {
+    "name": "list-project-deliverables",
+    "ok": true,
+    "ms": 225
+   },
+   {
+    "name": "get-project-openaire",
+    "ok": true,
+    "ms": 341
+   },
+   {
+    "name": "get-result-report",
+    "ok": true,
+    "ms": 172
+   },
+   {
+    "name": "get-article",
+    "ok": true,
+    "ms": 171
+   },
+   {
+    "name": "list-news",
+    "ok": true,
+    "ms": 187
+   },
+   {
+    "name": "list-domain-articles",
+    "ok": true,
+    "ms": 240
+   },
+   {
+    "name": "search-projects-map",
+    "ok": true,
+    "ms": 2633
+   },
+   {
+    "name": "get-data-extraction-api-spec",
+    "ok": true,
+    "ms": 192
+   }
+  ]
+ },
+ "deleted": true,
+ "seconds": 309
+}

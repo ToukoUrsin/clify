@@ -1,0 +1,116 @@
+{
+ "url": "https://pxdata.stat.fi/",
+ "category": "gov-nordic",
+ "sandbox": "clify-pxdata-stat-fi",
+ "startedAt": "2026-10-18T08:18:17.005Z",
+ "region": "us-pdx-1",
+ "chrome": "Chrome/148.0.7778.96",
+ "sandboxStartMs": 2335,
+ "addSeconds": 191,
+ "addExit": 0,
+ "add": {
+  "ok": true,
+  "site": "pxdata-stat",
+  "url": "https://pxdata.stat.fi/",
+  "commands": [
+   {
+    "name": "list-databases",
+    "summary": "List all databases on the server (StatFin, Postinumeroalueittainen_avoin_tieto, Hyvinvointialueet, ...)",
+    "verified": true
+   },
+   {
+    "name": "list-subject-areas",
+    "summary": "List the top-level subject areas (folders) of a database, e.g. StatFin subject areas like vaerak (population structure)",
+    "verified": true
+   },
+   {
+    "name": "list-tables",
+    "summary": "List the tables (type 't') or sub-levels (type 'l') inside a subject area of a database",
+    "verified": true
+   },
+   {
+    "name": "search-tables",
+    "summary": "Search a database's tables by free text, title words or variable value codes; query=* with filter=* lists every table with publish dates",
+    "verified": true
+   },
+   {
+    "name": "get-table-metadata",
+    "summary": "Get a table's title and variables, with each variable's code, value codes and value texts (needed before querying data)",
+    "verified": true
+   },
+   {
+    "name": "get-table-data",
+    "summary": "Query a table's data values, selecting on one variable (e.g. latest N years with filter=top on timeperiod_y); all other variables return all values",
+    "verified": true
+   },
+   {
+    "name": "get-api-limits",
+    "summary": "Get the API's usage limits: max cells/values per query, max calls per time window, CORS",
+    "verified": true
+   }
+  ],
+  "verified": 7,
+  "writes": 0,
+  "dropped": [],
+  "blockers": [],
+  "loggedIn": false,
+  "seconds": 191,
+  "next": [
+   "clify pxdata-stat",
+   "clify pxdata-stat list-databases --lang \"en\""
+  ],
+  "installed": "/home/ubuntu/clify-runs/blaxel-w1/home/bin/pxdata-stat",
+  "explored": {
+   "steps": 14,
+   "recorded": 22,
+   "heldWrites": 3
+  }
+ },
+ "check": {
+  "on": "blaxel",
+  "node": "v24.22.0",
+  "seconds": 5,
+  "reads": 7,
+  "verified": 7,
+  "failed": [],
+  "results": [
+   {
+    "name": "list-databases",
+    "ok": true,
+    "ms": 990
+   },
+   {
+    "name": "list-subject-areas",
+    "ok": true,
+    "ms": 535
+   },
+   {
+    "name": "list-tables",
+    "ok": true,
+    "ms": 193
+   },
+   {
+    "name": "search-tables",
+    "ok": true,
+    "ms": 353
+   },
+   {
+    "name": "get-table-metadata",
+    "ok": true,
+    "ms": 194
+   },
+   {
+    "name": "get-table-data",
+    "ok": true,
+    "ms": 180
+   },
+   {
+    "name": "get-api-limits",
+    "ok": true,
+    "ms": 195
+   }
+  ]
+ },
+ "deleted": true,
+ "seconds": 199
+}

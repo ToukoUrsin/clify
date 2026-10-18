@@ -1,0 +1,78 @@
+{
+ "url": "https://collection.sciencemuseumgroup.org.uk/",
+ "category": "culture",
+ "sandbox": "clify-collection-sciencemuseumgroup-org-uk",
+ "startedAt": "2026-10-18T08:43:56.243Z",
+ "region": "us-pdx-1",
+ "chrome": "Chrome/148.0.7778.96",
+ "sandboxStartMs": 2367,
+ "addSeconds": 102,
+ "addExit": 0,
+ "add": {
+  "ok": true,
+  "site": "collection-sciencemuseumgroup",
+  "url": "https://collection.sciencemuseumgroup.org.uk/",
+  "commands": [
+   {
+    "name": "list-featured-collections",
+    "summary": "List the featured collections shown in the homepage 'Explore' carousel (for example BBC Heritage Collection), with title, description and link",
+    "verified": true
+   },
+   {
+    "name": "list-collection-categories",
+    "summary": "List the top-level collection themes on the homepage (for example Medicine), with their description and subcategory text (for example Pharmacology, Surgery, Asian medicine)",
+    "verified": true
+   },
+   {
+    "name": "list-anniversaries",
+    "summary": "List the homepage 'anniversary' highlights: collection objects linked to events from N years ago today, with the anniversary text and a link to the object",
+    "verified": true
+   }
+  ],
+  "verified": 3,
+  "writes": 0,
+  "dropped": [],
+  "blockers": [
+   "captcha"
+  ],
+  "loggedIn": false,
+  "seconds": 102,
+  "next": [
+   "clify collection-sciencemuseumgroup",
+   "clify collection-sciencemuseumgroup list-featured-collections"
+  ],
+  "installed": "/home/ubuntu/clify-runs/blaxel-w1/home/bin/collection-sciencemuseumgroup",
+  "explored": {
+   "steps": 12,
+   "recorded": 18,
+   "heldWrites": 0
+  }
+ },
+ "check": {
+  "on": "blaxel",
+  "node": "v24.22.0",
+  "seconds": 3,
+  "reads": 3,
+  "verified": 3,
+  "failed": [],
+  "results": [
+   {
+    "name": "list-featured-collections",
+    "ok": true,
+    "ms": 551
+   },
+   {
+    "name": "list-collection-categories",
+    "ok": true,
+    "ms": 484
+   },
+   {
+    "name": "list-anniversaries",
+    "ok": true,
+    "ms": 459
+   }
+  ]
+ },
+ "deleted": true,
+ "seconds": 108
+}

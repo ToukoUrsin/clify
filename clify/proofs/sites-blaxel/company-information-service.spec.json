@@ -1,0 +1,1218 @@
+{
+ "name": "company-information-service",
+ "startUrl": "https://find-and-update.company-information.service.gov.uk/",
+ "origin": "https://find-and-update.company-information.service.gov.uk",
+ "createdAt": "2026-10-18T08:45:06.804Z",
+ "description": "Companies House public register (UK): search companies, officers and disqualified directors, and read company profiles, filing history, officers, PSCs, charges, officer appointments, dissolved and alphabetical company searches, name availability, advanced search with CSV export, and filing document PDFs.",
+ "commands": [
+  {
+   "name": "search-all",
+   "summary": "Search companies and officers together by keyword. Results are mixed; the item class is type-company or type-officer.",
+   "method": "GET",
+   "urlTemplate": "/search",
+   "params": [
+    {
+     "name": "q",
+     "in": "query",
+     "required": true,
+     "type": "string",
+     "description": "Search keyword: a company name, company number or person name",
+     "example": "tesco"
+    },
+    {
+     "name": "page",
+     "in": "query",
+     "required": false,
+     "type": "number",
+     "description": "Result page number, starting at 1",
+     "example": "2"
+    }
+   ],
+   "responseType": "html",
+   "extract": {
+    "list": "ul#results > li",
+    "fields": {
+     "kind": "@class",
+     "name": "h3 > a",
+     "url": "h3 > a@href",
+     "previousNames": "p.meta.crumbtrail span",
+     "meta": "p.meta.crumbtrail",
+     "text": ""
+    }
+   },
+   "defaultFields": [
+    "kind",
+    "name",
+    "url",
+    "meta",
+    "text"
+   ],
+   "pagination": {
+    "type": "page",
+    "param": "page"
+   },
+   "mutates": false,
+   "example": {
+    "q": "tesco"
+   },
+   "source": "E8 GET https://find-and-update.company-information.service.gov.uk/search",
+   "verified": true
+  },
+  {
+   "name": "search-companies",
+   "summary": "Search companies by name or number. Returns name, profile URL, company number, incorporation or dissolution date and address.",
+   "method": "GET",
+   "urlTemplate": "/search/companies",
+   "params": [
+    {
+     "name": "q",
+     "in": "query",
+     "required": true,
+     "type": "string",
+     "description": "Company name or company number",
+     "example": "tesco"
+    },
+    {
+     "name": "page",
+     "in": "query",
+     "required": false,
+     "type": "number",
+     "description": "Result page number (20 results per page)",
+     "example": "2"
+    },
+    {
+     "name": "searchType",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Set to 'dissolved' to search dissolved companies",
+     "enum": [
+      "dissolved"
+     ],
+     "example": "dissolved"
+    }
+   ],
+   "responseType": "html",
+   "extract": {
+    "list": "ul#results > li.type-company",
+    "fields": {
+     "name": "h3 > a",
+     "url": "h3 > a@href",
+     "previousNames": "p.meta.crumbtrail span",
+     "meta": "p.meta.crumbtrail",
+     "text": ""
+    }
+   },
+   "defaultFields": [
+    "name",
+    "url",
+    "previousNames",
+    "text"
+   ],
+   "pagination": {
+    "type": "page",
+    "param": "page"
+   },
+   "mutates": false,
+   "example": {
+    "q": "tesco"
+   },
+   "source": "E1 GET https://find-and-update.company-information.service.gov.uk/search/companies",
+   "verified": true
+  },
+  {
+   "name": "search-officers",
+   "summary": "Search company officers (directors, secretaries, corporate officers) by name. Returns links to each officer's appointments.",
+   "method": "GET",
+   "urlTemplate": "/search/officers",
+   "params": [
+    {
+     "name": "q",
+     "in": "query",
+     "required": true,
+     "type": "string",
+     "description": "Officer name. Can include a location filter, e.g. John Smith location:\"CF14\"",
+     "example": "tesco"
+    },
+    {
+     "name": "page",
+     "in": "query",
+     "required": false,
+     "type": "number",
+     "description": "Result page number (20 results per page)",
+     "example": "2"
+    }
+   ],
+   "responseType": "html",
+   "extract": {
+    "list": "ul#results > li.type-officer",
+    "fields": {
+     "name": "h3 > a",
+     "url": "h3 > a@href",
+     "appointments": "p.meta.crumbtrail",
+     "text": ""
+    }
+   },
+   "defaultFields": [
+    "name",
+    "url",
+    "appointments",
+    "text"
+   ],
+   "pagination": {
+    "type": "page",
+    "param": "page"
+   },
+   "mutates": false,
+   "example": {
+    "q": "tesco"
+   },
+   "source": "E9 GET https://find-and-update.company-information.service.gov.uk/search/officers",
+   "verified": true
+  },
+  {
+   "name": "search-disqualified-officers",
+   "summary": "Search disqualified directors by name. Returns links to each disqualification detail page.",
+   "method": "GET",
+   "urlTemplate": "/search/disqualified-officers",
+   "params": [
+    {
+     "name": "q",
+     "in": "query",
+     "required": true,
+     "type": "string",
+     "description": "Person or company name",
+     "example": "smith"
+    },
+    {
+     "name": "page",
+     "in": "query",
+     "required": false,
+     "type": "number",
+     "description": "Result page number",
+     "example": "2"
+    }
+   ],
+   "responseType": "html",
+   "extract": {
+    "list": "ul#results > li",
+    "fields": {
+     "name": "h3 > a",
+     "url": "h3 > a@href",
+     "meta": "p.meta.crumbtrail",
+     "text": ""
+    }
+   },
+   "defaultFields": [
+    "name",
+    "url",
+    "meta",
+    "text"
+   ],
+   "pagination": {
+    "type": "page",
+    "param": "page"
+   },
+   "mutates": false,
+   "example": {
+    "q": "smith"
+   },
+   "source": "E3 GET https://find-and-update.company-information.service.gov.uk/search/disqualified-officers",
+   "verified": true
+  },
+  {
+   "name": "get-disqualified-officer",
+   "summary": "Get disqualification details for a person or company: date of birth, nationality, disqualification type, start and end dates, case reference, companies involved and reason.",
+   "method": "GET",
+   "urlTemplate": "/disqualified-officers/{kind}/{officerId}",
+   "params": [
+    {
+     "name": "kind",
+     "in": "path",
+     "required": false,
+     "type": "string",
+     "description": "'natural' for a person, 'corporate' for a company. Take it from the search result URL.",
+     "enum": [
+      "natural",
+      "corporate"
+     ],
+     "default": "natural",
+     "example": "natural"
+    },
+    {
+     "name": "officerId",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Disqualified officer id, the last segment of the URL returned by search-disqualified-officers",
+     "example": "b0FM3wgkYJ_p3TGirZotCfndF7c"
+    }
+   ],
+   "responseType": "html",
+   "extract": {
+    "fields": {
+     "name": "header.text > h1.heading-xlarge",
+     "dateOfBirth": "dl.column-quarter dd.data",
+     "disqualificationType": "div.disqualification h3.heading-medium",
+     "disqualifications": "div.disqualification",
+     "conductWhileActingFor": "dl.text ul.list-bullet",
+     "reason": "dl.text dd.data"
+    }
+   },
+   "defaultFields": [
+    "name",
+    "dateOfBirth",
+    "disqualificationType",
+    "disqualifications"
+   ],
+   "mutates": false,
+   "example": {
+    "kind": "natural",
+    "officerId": "b0FM3wgkYJ_p3TGirZotCfndF7c"
+   },
+   "source": "E10 GET https://find-and-update.company-information.service.gov.uk/disqualified-officers/natural/{id}",
+   "verified": true
+  },
+  {
+   "name": "get-company",
+   "summary": "Get a company overview by company number: name, registered office address, status, SIC code and previous names.",
+   "method": "GET",
+   "urlTemplate": "/company/{companyNumber}",
+   "params": [
+    {
+     "name": "companyNumber",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "8-character company number, with leading zeros or a prefix such as SC or NI, e.g. 00445790",
+     "example": "00445790"
+    }
+   ],
+   "responseType": "html",
+   "extract": {
+    "fields": {
+     "name": "div.company-name-row > h1.heading-xlarge",
+     "companyNumber": "p#company-number strong",
+     "registeredOfficeAddress": "span#roa-address",
+     "status": "dd#company-status",
+     "sic": "span#sic0",
+     "previousNames": "table#previousNameTable",
+     "overview": "div.govuk-tabs__panel"
+    }
+   },
+   "defaultFields": [
+    "name",
+    "companyNumber",
+    "registeredOfficeAddress",
+    "status",
+    "sic",
+    "previousNames"
+   ],
+   "mutates": false,
+   "example": {
+    "companyNumber": "00445790"
+   },
+   "source": "E4 GET https://find-and-update.company-information.service.gov.uk/company/{n}",
+   "verified": true
+  },
+  {
+   "name": "list-filing-history",
+   "summary": "List a company's filing history (date, type, description, PDF link), optionally filtered by category. Paginated.",
+   "method": "GET",
+   "urlTemplate": "/company/{companyNumber}/filing-history",
+   "params": [
+    {
+     "name": "companyNumber",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Company number, e.g. 00445790",
+     "example": "00445790"
+    },
+    {
+     "name": "category",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Filing category filter, e.g. accounts, confirmation-statement, officers, capital, mortgage, incorporation, resolution, address, persons-with-significant-control",
+     "example": "accounts"
+    },
+    {
+     "name": "page",
+     "in": "query",
+     "required": false,
+     "type": "number",
+     "description": "Result page number",
+     "example": "2"
+    }
+   ],
+   "responseType": "html",
+   "extract": {
+    "list": "table#fhTable tr",
+    "fields": {
+     "date": "td",
+     "text": "",
+     "documentUrl": "a@href"
+    }
+   },
+   "defaultFields": [
+    "date",
+    "text",
+    "documentUrl"
+   ],
+   "pagination": {
+    "type": "page",
+    "param": "page"
+   },
+   "mutates": false,
+   "example": {
+    "companyNumber": "00445790"
+   },
+   "source": "E2 GET https://find-and-update.company-information.service.gov.uk/company/{n}/filing-history",
+   "verified": true
+  },
+  {
+   "name": "get-filing-document",
+   "summary": "Download a filing document PDF. The server redirects to a signed S3 URL.",
+   "method": "GET",
+   "urlTemplate": "/company/{companyNumber}/filing-history/{transactionId}/document",
+   "params": [
+    {
+     "name": "companyNumber",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Company number",
+     "example": "00445790"
+    },
+    {
+     "name": "transactionId",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Filing transaction id, the path segment after /filing-history/ in a documentUrl from list-filing-history",
+     "example": "MzUzNDMwNDQ5M2FkaXF6a2N4"
+    },
+    {
+     "name": "format",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Document format",
+     "enum": [
+      "pdf"
+     ],
+     "default": "pdf"
+    },
+    {
+     "name": "download",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "1 to force a download (attachment), 0 to view inline",
+     "enum": [
+      "0",
+      "1"
+     ],
+     "default": "0"
+    }
+   ],
+   "responseType": "text",
+   "mutates": false,
+   "example": {
+    "companyNumber": "00445790",
+    "transactionId": "MzUzNDMwNDQ5M2FkaXF6a2N4"
+   },
+   "source": "E20 GET https://find-and-update.company-information.service.gov.uk/company/{n}/filing-history/{id}/document",
+   "verified": true
+  },
+  {
+   "name": "list-company-officers",
+   "summary": "List a company's officers (directors and secretaries) with role, appointment date, date of birth and links to their appointments.",
+   "method": "GET",
+   "urlTemplate": "/company/{companyNumber}/officers",
+   "params": [
+    {
+     "name": "companyNumber",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Company number",
+     "example": "00445790"
+    },
+    {
+     "name": "filter",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Set to 'active' to show only current officers",
+     "enum": [
+      "active"
+     ]
+    },
+    {
+     "name": "page",
+     "in": "query",
+     "required": false,
+     "type": "number",
+     "description": "Result page number",
+     "example": "2"
+    }
+   ],
+   "responseType": "html",
+   "extract": {
+    "list": "div.appointments-list > div",
+    "fields": {
+     "name": "h2 a || a",
+     "url": "h2 a@href || a@href",
+     "details": ""
+    }
+   },
+   "defaultFields": [
+    "name",
+    "url",
+    "details"
+   ],
+   "pagination": {
+    "type": "page",
+    "param": "page"
+   },
+   "mutates": false,
+   "example": {
+    "companyNumber": "00445790"
+   },
+   "source": "E11 GET https://find-and-update.company-information.service.gov.uk/company/{n}/officers",
+   "verified": true
+  },
+  {
+   "name": "list-company-pscs",
+   "summary": "List a company's persons with significant control (owners and controllers), or the reason the company is exempt.",
+   "method": "GET",
+   "urlTemplate": "/company/{companyNumber}/persons-with-significant-control",
+   "params": [
+    {
+     "name": "companyNumber",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Company number",
+     "example": "00519500"
+    },
+    {
+     "name": "page",
+     "in": "query",
+     "required": false,
+     "type": "number",
+     "description": "Result page number",
+     "example": "2"
+    }
+   ],
+   "responseType": "html",
+   "extract": {
+    "list": "div.appointments-list > div",
+    "fields": {
+     "name": "h2 || a",
+     "url": "a@href",
+     "details": ""
+    }
+   },
+   "defaultFields": [
+    "name",
+    "url",
+    "details"
+   ],
+   "pagination": {
+    "type": "page",
+    "param": "page"
+   },
+   "mutates": false,
+   "example": {
+    "companyNumber": "00519500"
+   },
+   "source": "E12 GET https://find-and-update.company-information.service.gov.uk/company/{n}/persons-with-significant-control",
+   "verified": true
+  },
+  {
+   "name": "list-company-charges",
+   "summary": "List a company's registered charges (mortgages and security agreements), with links to each charge's details.",
+   "method": "GET",
+   "urlTemplate": "/company/{companyNumber}/charges",
+   "params": [
+    {
+     "name": "companyNumber",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Company number",
+     "example": "00445790"
+    },
+    {
+     "name": "page",
+     "in": "query",
+     "required": false,
+     "type": "number",
+     "description": "Result page number",
+     "example": "2"
+    }
+   ],
+   "responseType": "html",
+   "extract": {
+    "list": "a[href*='/charges/']",
+    "fields": {
+     "title": "",
+     "url": "@href"
+    }
+   },
+   "defaultFields": [
+    "title",
+    "url"
+   ],
+   "pagination": {
+    "type": "page",
+    "param": "page"
+   },
+   "mutates": false,
+   "example": {
+    "companyNumber": "00445790"
+   },
+   "source": "E13 GET https://find-and-update.company-information.service.gov.uk/company/{n}/charges",
+   "verified": true
+  },
+  {
+   "name": "get-charge",
+   "summary": "Get one charge's details: type, created and delivered dates, status, filing transaction with PDF link, and persons entitled.",
+   "method": "GET",
+   "urlTemplate": "/company/{companyNumber}/charges/{chargeId}",
+   "params": [
+    {
+     "name": "companyNumber",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Company number",
+     "example": "00445790"
+    },
+    {
+     "name": "chargeId",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Charge id, the last segment of a URL from list-company-charges",
+     "example": "5QU1lSudRI2jTIfUv_AOVxfLxVE"
+    }
+   ],
+   "responseType": "html",
+   "extract": {
+    "fields": {
+     "title": "h2#mortgage-heading",
+     "createdOn": "dd#mortgage-created-on",
+     "deliveredOn": "dd#mortgage-delivered-on",
+     "status": "dd#mortgage-status",
+     "transaction": "span#mortgage-created-type",
+     "documentUrl": "a#mortgage-created-link@href",
+     "personsEntitled": "ul#persons-entitled"
+    }
+   },
+   "defaultFields": [
+    "title",
+    "createdOn",
+    "deliveredOn",
+    "status",
+    "transaction",
+    "documentUrl",
+    "personsEntitled"
+   ],
+   "mutates": false,
+   "example": {
+    "companyNumber": "00445790",
+    "chargeId": "5QU1lSudRI2jTIfUv_AOVxfLxVE"
+   },
+   "source": "E14 GET https://find-and-update.company-information.service.gov.uk/company/{n}/charges/{id}",
+   "verified": true
+  },
+  {
+   "name": "get-officer-appointments",
+   "summary": "List all company appointments held by one officer: company, company status, role, appointed and resigned dates, correspondence address.",
+   "method": "GET",
+   "urlTemplate": "/officers/{officerId}/appointments",
+   "params": [
+    {
+     "name": "officerId",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Officer id from a search-officers or list-company-officers URL (/officers/{id}/appointments)",
+     "example": "uJ_F_UGCbPiYELlJ_fHc-J_goqo"
+    },
+    {
+     "name": "filter",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Set to 'active' to show only current appointments",
+     "enum": [
+      "active"
+     ]
+    },
+    {
+     "name": "page",
+     "in": "query",
+     "required": false,
+     "type": "number",
+     "description": "Result page number",
+     "example": "2"
+    }
+   ],
+   "responseType": "html",
+   "extract": {
+    "list": "div.appointments-list > div",
+    "fields": {
+     "company": "h2 a",
+     "companyUrl": "h2 a@href",
+     "companyStatus": "dl.column-third dd",
+     "correspondenceAddress": "dl.column-two-thirds dd",
+     "details": ""
+    }
+   },
+   "defaultFields": [
+    "company",
+    "companyUrl",
+    "companyStatus",
+    "correspondenceAddress",
+    "details"
+   ],
+   "pagination": {
+    "type": "page",
+    "param": "page"
+   },
+   "mutates": false,
+   "example": {
+    "officerId": "uJ_F_UGCbPiYELlJ_fHc-J_goqo"
+   },
+   "source": "E16 GET https://find-and-update.company-information.service.gov.uk/officers/uJ_F_UGCbPiYELlJ_fHc-J_goqo/appointments",
+   "verified": true
+  },
+  {
+   "name": "advanced-search-companies",
+   "summary": "Advanced company search. Filter by name include/exclude, registered office address, incorporation and dissolution date ranges, status, SIC code and company type. Returns company names and profile URLs",
+   "method": "GET",
+   "urlTemplate": "/advanced-search/get-results",
+   "params": [
+    {
+     "name": "companyNameIncludes",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Company name must contain this text",
+     "example": "bakery"
+    },
+    {
+     "name": "companyNameExcludes",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Exclude company names containing this text"
+    },
+    {
+     "name": "registeredOfficeAddress",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Full or partial registered office address",
+     "example": "london"
+    },
+    {
+     "name": "incorporationFromDay",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Incorporated on or after: day (1-31)"
+    },
+    {
+     "name": "incorporationFromMonth",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Incorporated on or after: month (1-12)"
+    },
+    {
+     "name": "incorporationFromYear",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Incorporated on or after: year (YYYY)",
+     "example": "2015"
+    },
+    {
+     "name": "incorporationToDay",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Incorporated on or before: day"
+    },
+    {
+     "name": "incorporationToMonth",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Incorporated on or before: month"
+    },
+    {
+     "name": "incorporationToYear",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Incorporated on or before: year"
+    },
+    {
+     "name": "dissolvedFromDay",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Dissolved on or after: day"
+    },
+    {
+     "name": "dissolvedFromMonth",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Dissolved on or after: month"
+    },
+    {
+     "name": "dissolvedFromYear",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Dissolved on or after: year"
+    },
+    {
+     "name": "dissolvedToDay",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Dissolved on or before: day"
+    },
+    {
+     "name": "dissolvedToMonth",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Dissolved on or before: month"
+    },
+    {
+     "name": "dissolvedToYear",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Dissolved on or before: year"
+    },
+    {
+     "name": "status",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Company status",
+     "enum": [
+      "active",
+      "dissolved",
+      "open",
+      "closed",
+      "converted-closed",
+      "receivership",
+      "administration",
+      "liquidation",
+      "insolvency-proceedings",
+      "voluntary-arrangement"
+     ],
+     "example": "active"
+    },
+    {
+     "name": "sicCodes",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "SIC nature-of-business code, e.g. 10710 (bread and fresh pastry)",
+     "example": "10710"
+    },
+    {
+     "name": "type",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Company type code, e.g. ltd, plc, llp, private-unlimited, private-limited-guarant-nsc",
+     "example": "ltd"
+    },
+    {
+     "name": "page",
+     "in": "query",
+     "required": false,
+     "type": "number",
+     "description": "Result page number",
+     "example": "2"
+    }
+   ],
+   "responseType": "html",
+   "extract": {
+    "list": "h2.govuk-heading-m a",
+    "fields": {
+     "name": "",
+     "url": "@href"
+    }
+   },
+   "defaultFields": [
+    "name",
+    "url"
+   ],
+   "pagination": {
+    "type": "page",
+    "param": "page"
+   },
+   "mutates": false,
+   "example": {
+    "companyNameIncludes": "bakery",
+    "registeredOfficeAddress": "london",
+    "status": "active"
+   },
+   "source": "E18 E17",
+   "verified": true
+  },
+  {
+   "name": "export-advanced-search-csv",
+   "summary": "Download advanced company search results as CSV, using the same filters as advanced-search-companies.",
+   "method": "GET",
+   "urlTemplate": "/advanced-search/csv",
+   "params": [
+    {
+     "name": "companyNameIncludes",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Company name must contain this text",
+     "example": "bakery"
+    },
+    {
+     "name": "companyNameExcludes",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Exclude company names containing this text"
+    },
+    {
+     "name": "registeredOfficeAddress",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Full or partial registered office address",
+     "example": "london"
+    },
+    {
+     "name": "incorporationFromDay",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Incorporated on or after: day"
+    },
+    {
+     "name": "incorporationFromMonth",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Incorporated on or after: month"
+    },
+    {
+     "name": "incorporationFromYear",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Incorporated on or after: year"
+    },
+    {
+     "name": "incorporationToDay",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Incorporated on or before: day"
+    },
+    {
+     "name": "incorporationToMonth",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Incorporated on or before: month"
+    },
+    {
+     "name": "incorporationToYear",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Incorporated on or before: year"
+    },
+    {
+     "name": "dissolvedFromDay",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Dissolved on or after: day"
+    },
+    {
+     "name": "dissolvedFromMonth",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Dissolved on or after: month"
+    },
+    {
+     "name": "dissolvedFromYear",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Dissolved on or after: year"
+    },
+    {
+     "name": "dissolvedToDay",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Dissolved on or before: day"
+    },
+    {
+     "name": "dissolvedToMonth",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Dissolved on or before: month"
+    },
+    {
+     "name": "dissolvedToYear",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Dissolved on or before: year"
+    },
+    {
+     "name": "status",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Company status",
+     "enum": [
+      "active",
+      "dissolved",
+      "open",
+      "closed",
+      "converted-closed",
+      "receivership",
+      "administration",
+      "liquidation",
+      "insolvency-proceedings",
+      "voluntary-arrangement"
+     ],
+     "example": "active"
+    },
+    {
+     "name": "sicCodes",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "SIC code, e.g. 10710"
+    },
+    {
+     "name": "type",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Company type code, e.g. ltd, plc, llp"
+    }
+   ],
+   "responseType": "text",
+   "mutates": false,
+   "example": {
+    "companyNameIncludes": "bakery",
+    "registeredOfficeAddress": "london",
+    "status": "active"
+   },
+   "source": "E18 GET https://find-and-update.company-information.service.gov.uk/advanced-search/get-results",
+   "verified": true
+  },
+  {
+   "name": "search-dissolved-companies",
+   "summary": "Search companies dissolved since 1989 by their name at dissolution or by a previous name.",
+   "method": "GET",
+   "urlTemplate": "/dissolved-search/get-results",
+   "params": [
+    {
+     "name": "companyName",
+     "in": "query",
+     "required": true,
+     "type": "string",
+     "description": "Company name or number",
+     "example": "tesco"
+    },
+    {
+     "name": "changedName",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Match the name at dissolution, or match previous names",
+     "enum": [
+      "name-at-dissolution",
+      "previous-name-dissolved"
+     ],
+     "default": "name-at-dissolution",
+     "example": "name-at-dissolution"
+    },
+    {
+     "name": "searchType",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Set to 'alphabetical' to list results alphabetically. Numbers and previous names are unavailable in this mode.",
+     "enum": [
+      "alphabetical"
+     ]
+    },
+    {
+     "name": "page",
+     "in": "query",
+     "required": false,
+     "type": "number",
+     "description": "Result page number",
+     "example": "2"
+    }
+   ],
+   "responseType": "html",
+   "extract": {
+    "list": "tbody.govuk-table__body > tr.govuk-table__row",
+    "fields": {
+     "name": "a || td",
+     "url": "a@href",
+     "text": ""
+    }
+   },
+   "defaultFields": [
+    "name",
+    "url",
+    "text"
+   ],
+   "pagination": {
+    "type": "page",
+    "param": "page"
+   },
+   "mutates": false,
+   "example": {
+    "companyName": "tesco",
+    "changedName": "name-at-dissolution"
+   },
+   "source": "E5 E19",
+   "verified": true
+  },
+  {
+   "name": "alphabetical-search-companies",
+   "summary": "Browse the register alphabetically around a company name (40 rows per page). Returns name, number and status. Uses cursor paging via searchAfter/searchBefore.",
+   "method": "GET",
+   "urlTemplate": "/alphabetical-search/get-results",
+   "params": [
+    {
+     "name": "companyName",
+     "in": "query",
+     "required": true,
+     "type": "string",
+     "description": "Company name to start browsing from",
+     "example": "tesco"
+    },
+    {
+     "name": "searchAfter",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Next-page cursor: the last row's name, uppercase with no spaces or punctuation, plus ':' and the company number, e.g. TESCOBARBERSWOOD:07137692",
+     "example": "TESCOBARBERSWOOD:07137692"
+    },
+    {
+     "name": "searchBefore",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Previous-page cursor: the first row's name in the same format as searchAfter"
+    }
+   ],
+   "responseType": "html",
+   "extract": {
+    "list": "tbody.govuk-table__body > tr.govuk-table__row",
+    "fields": {
+     "name": "a",
+     "url": "a@href",
+     "text": ""
+    }
+   },
+   "defaultFields": [
+    "name",
+    "url",
+    "text"
+   ],
+   "mutates": false,
+   "example": {
+    "companyName": "tesco"
+   },
+   "source": "E6 GET https://find-and-update.company-information.service.gov.uk/alphabetical-search/get-results",
+   "verified": true
+  },
+  {
+   "name": "check-company-name-availability",
+   "summary": "Check whether a proposed company name is available by listing existing companies with the same or similar names.",
+   "method": "GET",
+   "urlTemplate": "/company-name-availability",
+   "params": [
+    {
+     "name": "q",
+     "in": "query",
+     "required": true,
+     "type": "string",
+     "description": "Proposed company name",
+     "example": "tesco"
+    }
+   ],
+   "responseType": "html",
+   "extract": {
+    "list": "ul#results > li",
+    "fields": {
+     "name": "h3 || a",
+     "url": "a@href",
+     "text": ""
+    }
+   },
+   "defaultFields": [
+    "name",
+    "url",
+    "text"
+   ],
+   "mutates": false,
+   "example": {
+    "q": "tesco"
+   },
+   "source": "E7",
+   "verified": true
+  }
+ ],
+ "blockers": [],
+ "notes": [
+  "All pages are server-rendered HTML. No sign-in is needed for any command.",
+  "Company numbers are 8 characters with leading zeros or a prefix (00445790, SC123456, NI012345). Get them from the /company/{number} URL in search results.",
+  "Officer ids come from /officers/{id}/appointments links in search-officers, search-all or list-company-officers. Disqualified officer ids come from /disqualified-officers/{natural|corporate}/{id} links.",
+  "Filing document links look like /company/{n}/filing-history/{transactionId}/document?format=pdf. get-filing-document redirects to a short-lived signed S3 URL that returns the PDF.",
+  "list-filing-history includes the table header row as the first item. Skip rows with an empty documentUrl or date.",
+  "Some companies (e.g. listed PLCs like 00445790) are exempt from PSC disclosure, so list-company-pscs returns no items for them.",
+  "For alphabetical-search-companies, build the next-page cursor from the last row returned: NAMEWITHOUTSPACES:COMPANYNUMBER.",
+  "The advanced search status, sicCodes and type filters accept multiple values on the website. This CLI sends one value each.",
+  "The public REST API (api.company-information.service.gov.uk, documented at developer.companieshouse.gov.uk) needs an API key and is not covered here."
+ ],
+ "dropped": [],
+ "generated": {
+  "by": "clify add",
+  "model": "claude-opus-5-5",
+  "exploredSteps": 30,
+  "recorded": 30,
+  "verifiedAt": "2026-10-18T08:47:36.132Z",
+  "seconds": 343
+ }
+}

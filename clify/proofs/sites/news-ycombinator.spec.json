@@ -1,0 +1,765 @@
+{
+ "name": "news-ycombinator",
+ "startUrl": "https://news.ycombinator.com/",
+ "origin": "https://news.ycombinator.com",
+ "createdAt": "2026-10-18T07:32:26.126Z",
+ "description": "Hacker News (news.ycombinator.com): read front page, new, past, Ask, Show and jobs listings, stories with comment trees, comment feeds, user profiles, submissions, comments and favorites, and post comments. Every command parses the server-rendered HTML.",
+ "commands": [
+  {
+   "name": "list-stories",
+   "summary": "List ranked stories from a Hacker News feed: front page (news), Ask HN, Show HN, best, or most active. Page-numbered.",
+   "method": "GET",
+   "urlTemplate": "/{feed}",
+   "params": [
+    {
+     "name": "feed",
+     "in": "path",
+     "required": false,
+     "type": "string",
+     "description": "Which feed to list: news = front page, ask = Ask HN, show = Show HN, best = highest-voted recent stories, active = most active discussions",
+     "enum": [
+      "news",
+      "ask",
+      "show",
+      "best",
+      "active"
+     ],
+     "default": "news",
+     "example": "news"
+    },
+    {
+     "name": "p",
+     "in": "query",
+     "required": false,
+     "type": "number",
+     "description": "Page number, 1-based, 30 stories per page",
+     "example": "2"
+    },
+    {
+     "name": "h",
+     "in": "query",
+     "required": false,
+     "type": "number",
+     "description": "Only for feed=best: look-back window in hours",
+     "example": "24"
+    }
+   ],
+   "responseType": "html",
+   "extract": {
+    "list": "table > tr.athing.submission",
+    "fields": {
+     "id": "@id",
+     "rank": "span.rank",
+     "title": "span.titleline > a",
+     "url": "span.titleline > a@href",
+     "site": "span.sitestr"
+    }
+   },
+   "defaultFields": [
+    "id",
+    "rank",
+    "title",
+    "url",
+    "site"
+   ],
+   "pagination": {
+    "type": "page",
+    "param": "p"
+   },
+   "mutates": false,
+   "example": {
+    "feed": "news",
+    "p": "2"
+   },
+   "source": "E22 E8 E11 E12 E16 E18 GET https://news.ycombinator.com/",
+   "verified": true
+  },
+  {
+   "name": "list-new-stories",
+   "summary": "List the newest submissions, newest Ask HN, newest Show HN, or job postings, in chronological order.",
+   "method": "GET",
+   "urlTemplate": "/{feed}",
+   "params": [
+    {
+     "name": "feed",
+     "in": "path",
+     "required": false,
+     "type": "string",
+     "description": "newest = all new links, asknew = new Ask HN, shownew = new Show HN, jobs = job postings",
+     "enum": [
+      "newest",
+      "asknew",
+      "shownew",
+      "jobs"
+     ],
+     "default": "newest",
+     "example": "newest"
+    },
+    {
+     "name": "next",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Pagination cursor: the item id from the page's 'More' link (normally the id of the last item shown). Omit for the first page.",
+     "example": "50138000"
+    },
+    {
+     "name": "n",
+     "in": "query",
+     "required": false,
+     "type": "number",
+     "description": "Rank number for the first item on the next page (e.g. 31). Use together with next.",
+     "example": "31"
+    }
+   ],
+   "responseType": "html",
+   "extract": {
+    "list": "table > tr.athing.submission",
+    "fields": {
+     "id": "@id",
+     "rank": "span.rank",
+     "title": "span.titleline > a",
+     "url": "span.titleline > a@href",
+     "site": "span.sitestr"
+    }
+   },
+   "defaultFields": [
+    "id",
+    "rank",
+    "title",
+    "url",
+    "site"
+   ],
+   "mutates": false,
+   "example": {
+    "feed": "newest"
+   },
+   "source": "E7 E20 E21 E13 GET https://news.ycombinator.com/newest",
+   "verified": true
+  },
+  {
+   "name": "list-front-page-by-day",
+   "summary": "List the stories that were on the Hacker News front page on a given past day.",
+   "method": "GET",
+   "urlTemplate": "/front",
+   "params": [
+    {
+     "name": "day",
+     "in": "query",
+     "required": true,
+     "type": "string",
+     "description": "Day in YYYY-MM-DD format, e.g. 2026-10-15",
+     "example": "2026-10-15"
+    },
+    {
+     "name": "p",
+     "in": "query",
+     "required": false,
+     "type": "number",
+     "description": "Page number, 1-based",
+     "example": "2"
+    }
+   ],
+   "responseType": "html",
+   "extract": {
+    "list": "table > tr.athing.submission",
+    "fields": {
+     "id": "@id",
+     "rank": "span.rank",
+     "title": "span.titleline > a",
+     "url": "span.titleline > a@href",
+     "site": "span.sitestr"
+    }
+   },
+   "defaultFields": [
+    "id",
+    "rank",
+    "title",
+    "url",
+    "site"
+   ],
+   "pagination": {
+    "type": "page",
+    "param": "p"
+   },
+   "mutates": false,
+   "example": {
+    "day": "2026-10-15"
+   },
+   "source": "E9 GET https://news.ycombinator.com/front",
+   "verified": true
+  },
+  {
+   "name": "list-site-stories",
+   "summary": "List Hacker News submissions from a given domain or site path (e.g. github.com/antirez).",
+   "method": "GET",
+   "urlTemplate": "/from",
+   "params": [
+    {
+     "name": "site",
+     "in": "query",
+     "required": true,
+     "type": "string",
+     "description": "Domain or site path as HN shows it next to titles, e.g. nytimes.com or github.com/antirez",
+     "example": "github.com/antirez"
+    },
+    {
+     "name": "next",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Pagination cursor: the item id from the 'More' link",
+     "example": "50000000"
+    },
+    {
+     "name": "n",
+     "in": "query",
+     "required": false,
+     "type": "number",
+     "description": "Rank number of the first item on the next page, e.g. 31",
+     "example": "31"
+    }
+   ],
+   "responseType": "html",
+   "extract": {
+    "list": "table > tr.athing.submission",
+    "fields": {
+     "id": "@id",
+     "rank": "span.rank",
+     "title": "span.titleline > a",
+     "url": "span.titleline > a@href",
+     "site": "span.sitestr"
+    }
+   },
+   "defaultFields": [
+    "id",
+    "rank",
+    "title",
+    "url",
+    "site"
+   ],
+   "mutates": false,
+   "example": {
+    "site": "github.com/antirez"
+   },
+   "source": "E14 GET https://news.ycombinator.com/from",
+   "verified": true
+  },
+  {
+   "name": "get-item",
+   "summary": "Get one story, Ask/Show post or comment by id: title, link, points, author, age, comment count and body text.",
+   "method": "GET",
+   "urlTemplate": "/item",
+   "params": [
+    {
+     "name": "id",
+     "in": "query",
+     "required": true,
+     "type": "string",
+     "description": "Hacker News item id (story or comment)",
+     "example": "50138531"
+    }
+   ],
+   "responseType": "html",
+   "extract": {
+    "fields": {
+     "id": "table.fatitem tr.athing@id",
+     "title": "table.fatitem span.titleline > a",
+     "url": "table.fatitem span.titleline > a@href",
+     "site": "table.fatitem span.sitestr",
+     "points": "table.fatitem span.score",
+     "author": "table.fatitem a.hnuser",
+     "age": "table.fatitem span.age@title",
+     "subtext": "table.fatitem span.subline || table.fatitem td.subtext",
+     "text": "table.fatitem div.toptext || table.fatitem div.commtext"
+    }
+   },
+   "defaultFields": [
+    "id",
+    "title",
+    "url",
+    "points",
+    "author",
+    "age",
+    "subtext",
+    "text"
+   ],
+   "mutates": false,
+   "example": {
+    "id": "50138531"
+   },
+   "source": "E2 GET https://news.ycombinator.com/item",
+   "verified": true
+  },
+  {
+   "name": "list-item-comments",
+   "summary": "List the comment tree of a story or comment (flattened in thread order, with indent depth).",
+   "method": "GET",
+   "urlTemplate": "/item",
+   "params": [
+    {
+     "name": "id",
+     "in": "query",
+     "required": true,
+     "type": "string",
+     "description": "Hacker News item id whose comments to list",
+     "example": "50138531"
+    },
+    {
+     "name": "p",
+     "in": "query",
+     "required": false,
+     "type": "number",
+     "description": "Page of comments, for very large threads",
+     "example": "2"
+    }
+   ],
+   "responseType": "html",
+   "extract": {
+    "list": "table.comment-tree > tr.athing.comtr",
+    "fields": {
+     "id": "@id",
+     "indent": "td.ind@indent",
+     "author": "a.hnuser",
+     "age": "span.age@title",
+     "text": "div.commtext"
+    }
+   },
+   "defaultFields": [
+    "id",
+    "indent",
+    "author",
+    "age",
+    "text"
+   ],
+   "pagination": {
+    "type": "page",
+    "param": "p"
+   },
+   "mutates": false,
+   "example": {
+    "id": "50138531"
+   },
+   "source": "E2 GET https://news.ycombinator.com/item",
+   "verified": true
+  },
+  {
+   "name": "list-new-comments",
+   "summary": "List the newest comments across Hacker News, with the story each one is on.",
+   "method": "GET",
+   "urlTemplate": "/newcomments",
+   "params": [
+    {
+     "name": "next",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Pagination cursor: the comment id from the page's 'More' link",
+     "example": "50138000"
+    }
+   ],
+   "responseType": "html",
+   "extract": {
+    "list": "table > tr.athing",
+    "fields": {
+     "id": "@id",
+     "author": "a.hnuser",
+     "age": "span.age@title",
+     "story_title": "span.onstory > a",
+     "story_link": "span.onstory > a@href",
+     "context": "span.navs > a@href",
+     "text": "div.commtext"
+    }
+   },
+   "defaultFields": [
+    "id",
+    "author",
+    "age",
+    "story_title",
+    "story_link",
+    "text"
+   ],
+   "mutates": false,
+   "source": "E10 GET https://news.ycombinator.com/newcomments",
+   "verified": true
+  },
+  {
+   "name": "list-best-comments",
+   "summary": "List the most-upvoted comments of the last N hours (48 by default).",
+   "method": "GET",
+   "urlTemplate": "/bestcomments",
+   "params": [
+    {
+     "name": "h",
+     "in": "query",
+     "required": false,
+     "type": "number",
+     "description": "Look-back window in hours. The site uses 48 when this is omitted.",
+     "example": "24"
+    },
+    {
+     "name": "p",
+     "in": "query",
+     "required": false,
+     "type": "number",
+     "description": "Page number",
+     "example": "2"
+    }
+   ],
+   "responseType": "html",
+   "extract": {
+    "list": "tr.athing",
+    "fields": {
+     "id": "@id",
+     "author": "a.hnuser",
+     "age": "span.age@title",
+     "story_title": "span.onstory > a",
+     "story_link": "span.onstory > a@href",
+     "text": "div.commtext"
+    }
+   },
+   "defaultFields": [
+    "id",
+    "author",
+    "age",
+    "story_title",
+    "story_link",
+    "text"
+   ],
+   "pagination": {
+    "type": "page",
+    "param": "p"
+   },
+   "mutates": false,
+   "source": "E17 GET https://news.ycombinator.com/bestcomments",
+   "verified": true
+  },
+  {
+   "name": "get-user",
+   "summary": "Get a Hacker News user's profile: username, account creation date, karma and about text, as label/value rows.",
+   "method": "GET",
+   "urlTemplate": "/user",
+   "params": [
+    {
+     "name": "id",
+     "in": "query",
+     "required": true,
+     "type": "string",
+     "description": "HN username (case-sensitive)",
+     "example": "fagnerbrack"
+    }
+   ],
+   "responseType": "html",
+   "extract": {
+    "list": "td > table:not([width]) > tr",
+    "fields": {
+     "label": "td[valign=top]",
+     "value": "td ~ td"
+    }
+   },
+   "defaultFields": [
+    "label",
+    "value"
+   ],
+   "mutates": false,
+   "example": {
+    "id": "fagnerbrack"
+   },
+   "source": "E3",
+   "verified": true
+  },
+  {
+   "name": "list-user-submissions",
+   "summary": "List the stories a user has submitted, newest first.",
+   "method": "GET",
+   "urlTemplate": "/submitted",
+   "params": [
+    {
+     "name": "id",
+     "in": "query",
+     "required": true,
+     "type": "string",
+     "description": "HN username",
+     "example": "fagnerbrack"
+    },
+    {
+     "name": "next",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Pagination cursor: the item id from the 'More' link",
+     "example": "50000000"
+    },
+    {
+     "name": "n",
+     "in": "query",
+     "required": false,
+     "type": "number",
+     "description": "Rank number of the first item on the next page, e.g. 31",
+     "example": "31"
+    }
+   ],
+   "responseType": "html",
+   "extract": {
+    "list": "table > tr.athing.submission",
+    "fields": {
+     "id": "@id",
+     "rank": "span.rank",
+     "title": "span.titleline > a",
+     "url": "span.titleline > a@href",
+     "site": "span.sitestr"
+    }
+   },
+   "defaultFields": [
+    "id",
+    "rank",
+    "title",
+    "url",
+    "site"
+   ],
+   "mutates": false,
+   "example": {
+    "id": "fagnerbrack"
+   },
+   "source": "E4 GET https://news.ycombinator.com/submitted",
+   "verified": true
+  },
+  {
+   "name": "list-user-comments",
+   "summary": "List a user's recent comments, with the story each one is on.",
+   "method": "GET",
+   "urlTemplate": "/threads",
+   "params": [
+    {
+     "name": "id",
+     "in": "query",
+     "required": true,
+     "type": "string",
+     "description": "HN username",
+     "example": "fagnerbrack"
+    },
+    {
+     "name": "next",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Pagination cursor: the comment id from the page's 'More' link",
+     "example": "50000000"
+    }
+   ],
+   "responseType": "html",
+   "extract": {
+    "list": "tr.athing.comtr",
+    "fields": {
+     "id": "@id",
+     "indent": "td.ind@indent",
+     "author": "a.hnuser",
+     "age": "span.age@title",
+     "story_title": "span.onstory > a",
+     "story_link": "span.onstory > a@href",
+     "text": "div.commtext"
+    }
+   },
+   "defaultFields": [
+    "id",
+    "author",
+    "age",
+    "story_title",
+    "story_link",
+    "text"
+   ],
+   "mutates": false,
+   "example": {
+    "id": "fagnerbrack"
+   },
+   "source": "E5 GET https://news.ycombinator.com/threads",
+   "verified": true
+  },
+  {
+   "name": "list-leaders",
+   "summary": "List the top 100 Hacker News users by karma, in rank order.",
+   "method": "GET",
+   "urlTemplate": "/leaders",
+   "params": [],
+   "responseType": "html",
+   "extract": {
+    "list": "table > tr.athing",
+    "fields": {
+     "rank": "td",
+     "user": "a.hnuser",
+     "user_url": "a.hnuser@href"
+    }
+   },
+   "defaultFields": [
+    "rank",
+    "user",
+    "user_url"
+   ],
+   "mutates": false,
+   "source": "E19",
+   "verified": true
+  },
+  {
+   "name": "list-lists",
+   "summary": "List Hacker News's special listing pages (front, best, active, leaders, etc.) with descriptions.",
+   "method": "GET",
+   "urlTemplate": "/lists",
+   "params": [],
+   "responseType": "html",
+   "extract": {
+    "list": "td > table:not([width]) > tr",
+    "fields": {
+     "name": "a",
+     "path": "a@href",
+     "description": "td ~ td"
+    }
+   },
+   "defaultFields": [
+    "name",
+    "path",
+    "description"
+   ],
+   "mutates": false,
+   "source": "E15",
+   "verified": true
+  },
+  {
+   "name": "add-comment",
+   "summary": "Post a new comment as the logged-in user, replying to a story or comment (parent id). Publishes the text publicly.",
+   "method": "POST",
+   "urlTemplate": "/comment",
+   "params": [
+    {
+     "name": "parent",
+     "in": "body",
+     "required": true,
+     "type": "string",
+     "description": "Id of the story or comment being replied to",
+     "example": "50100366"
+    },
+    {
+     "name": "text",
+     "in": "body",
+     "required": true,
+     "type": "string",
+     "description": "Comment text (HN formatting: blank line = paragraph, *italic*, 2-space indent = code)",
+     "example": "Very cool project, thanks for sharing."
+    }
+   ],
+   "bodyTemplate": {
+    "parent": "{parent}",
+    "goto": "item?id={parent}",
+    "text": "{text}"
+   },
+   "bodyEncoding": "form",
+   "responseType": "html",
+   "csrf": {
+    "from": "item?id={parent}",
+    "selector": "input[name=hmac]@value",
+    "field": "hmac"
+   },
+   "mutates": true,
+   "auth": true,
+   "example": {
+    "parent": "50100366",
+    "text": "Very cool project, thanks for sharing."
+   },
+   "source": "E1 POST https://news.ycombinator.com/comment",
+   "verified": false,
+   "verifyNote": "write: dry-run preview only, not sent"
+  }
+ ],
+ "blockers": [],
+ "notes": [
+  "All data comes from server-rendered HTML. In story listings, points, author, age and comment count sit in a sibling row that cannot be reached from the item, so list commands return id, title, url and site. Run get-item with the id for points, author and comment count.",
+  "Story and comment ids are the numeric HN item ids. Pass them to get-item / list-item-comments, or build the link https://news.ycombinator.com/item?id=<id>.",
+  "Pagination: news, ask, show, best, active, front, bestcomments and favorites use ?p=N. newest, asknew, shownew, jobs, from, submitted, threads and newcomments use the 'More' link cursor ?next=<id>&n=<rank>. In practice, next is the id of the last item on the current page.",
+  "get-user returns label/value rows (user, created, karma, about, ...).",
+  "add-comment needs a logged-in HN session. The hmac token is read from the reply form on item?id=<parent>. Comments are public and posted immediately.",
+  "Keyword search is not on this host: HN search is https://hn.algolia.com (API: https://hn.algolia.com/api/v1/search?query=...), which was not recorded.",
+  "Upvoting (vote?id=&how=up&auth=...) was not recorded and needs a per-item auth token on a logged-in page, so it is not included.",
+  "HN rate-limits rapid scraping. Keep request rates modest.",
+  "The list-user-favorites example (fagnerbrack) showed no items in the recording, so it may return an empty list."
+ ],
+ "auth": {
+  "headerNames": []
+ },
+ "dropped": [
+  {
+   "name": "list-user-favorites",
+   "summary": "List the stories a user has favorited. With comments=t, list their favorited comments instead.",
+   "method": "GET",
+   "urlTemplate": "/favorites",
+   "params": [
+    {
+     "name": "id",
+     "in": "query",
+     "required": true,
+     "type": "string",
+     "description": "HN username (case-sensitive)",
+     "example": "dang"
+    },
+    {
+     "name": "comments",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Set to 't' to list favorited comments instead of stories",
+     "enum": [
+      "t"
+     ]
+    },
+    {
+     "name": "p",
+     "in": "query",
+     "required": false,
+     "type": "number",
+     "description": "Page number, 1-based",
+     "example": "2"
+    }
+   ],
+   "responseType": "html",
+   "extract": {
+    "list": "tr.athing",
+    "fields": {
+     "id": "@id",
+     "rank": "span.rank",
+     "title": "span.titleline > a",
+     "url": "span.titleline > a@href",
+     "site": "span.sitestr",
+     "author": "a.hnuser",
+     "age": "span.age@title",
+     "story_title": "span.onstory > a",
+     "text": "div.commtext"
+    }
+   },
+   "defaultFields": [
+    "id",
+    "title",
+    "url",
+    "site",
+    "story_title",
+    "text"
+   ],
+   "pagination": {
+    "type": "page",
+    "param": "p"
+   },
+   "mutates": false,
+   "example": {
+    "id": "dang"
+   },
+   "source": "E6",
+   "verified": false,
+   "verifyNote": "empty list: the example args returned nothing or the selector/resultPath is wrong"
+  }
+ ],
+ "generated": {
+  "by": "clify add",
+  "model": "claude-opus-5-5",
+  "exploredSteps": 8,
+  "recorded": 24,
+  "verifiedAt": "2026-10-18T07:35:00.217Z",
+  "seconds": 236
+ }
+}

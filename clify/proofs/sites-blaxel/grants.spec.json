@@ -1,0 +1,407 @@
+{
+ "name": "grants",
+ "startUrl": "https://www.grants.gov/",
+ "origin": "https://www.grants.gov",
+ "createdAt": "2026-10-18T09:16:31.358Z",
+ "description": "Grants.gov / Simpler.Grants.gov: US federal grant opportunities. The CLI searches and exports funding opportunities, gets opportunity details from the classic Grants.gov web service, looks up agencies, searches site content, reads CMS pages, and lists the daily XML database extracts and RSS feeds.",
+ "commands": [
+  {
+   "name": "search-opportunities",
+   "summary": "Search federal funding opportunities on simpler.grants.gov by keyword, with status, funding-instrument, eligibility and category filters, sort and paging. Returns the raw Next.js RSC text payload, whi",
+   "method": "GET",
+   "urlTemplate": "https://simpler.grants.gov/search",
+   "params": [
+    {
+     "name": "query",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Keyword search text",
+     "example": "climate resilience"
+    },
+    {
+     "name": "sortby",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Sort order. Relevancy is the default.",
+     "enum": [
+      "relevancy",
+      "postedDateDesc",
+      "postedDateAsc",
+      "closeDateDesc",
+      "closeDateAsc",
+      "opportunityTitleAsc",
+      "opportunityTitleDesc",
+      "agencyAsc",
+      "agencyDesc",
+      "opportunityNumberAsc",
+      "opportunityNumberDesc"
+     ]
+    },
+    {
+     "name": "status",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Opportunity status. Comma-separate multiple values: forecasted, posted, closed, archived. The UI default is forecasted,posted.",
+     "example": "posted"
+    },
+    {
+     "name": "fundingInstrument",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Funding instrument. Comma-separate multiple values: grant, cooperative_agreement, procurement_contract, other.",
+     "example": "grant"
+    },
+    {
+     "name": "eligibility",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Eligible applicant type code, comma-separated, e.g. nonprofits_non_higher_education_with_501c3, state_governments, individuals",
+     "example": "nonprofits_non_higher_education_with_501c3"
+    },
+    {
+     "name": "category",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Funding category code, comma-separated, e.g. health, education, environment, science_technology_and_other_research_and_development",
+     "example": "health"
+    },
+    {
+     "name": "page",
+     "in": "query",
+     "required": false,
+     "type": "number",
+     "description": "Results page number, starting at 1",
+     "default": 1
+    }
+   ],
+   "headers": {
+    "rsc": "1"
+   },
+   "responseType": "text",
+   "pagination": {
+    "type": "page",
+    "param": "page"
+   },
+   "mutates": false,
+   "example": {
+    "query": "climate resilience"
+   },
+   "source": "E7 GET https://simpler.grants.gov/search",
+   "verified": true
+  },
+  {
+   "name": "export-opportunities-csv",
+   "summary": "Export opportunity search results as CSV. Takes the same keyword, filter and sort params as search-opportunities.",
+   "method": "GET",
+   "urlTemplate": "https://simpler.grants.gov/api/search/export",
+   "params": [
+    {
+     "name": "query",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Keyword search text",
+     "example": "health"
+    },
+    {
+     "name": "sortby",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Sort order",
+     "enum": [
+      "relevancy",
+      "postedDateDesc",
+      "postedDateAsc",
+      "closeDateDesc",
+      "closeDateAsc",
+      "opportunityTitleAsc",
+      "opportunityTitleDesc",
+      "agencyAsc",
+      "agencyDesc",
+      "opportunityNumberAsc",
+      "opportunityNumberDesc"
+     ]
+    },
+    {
+     "name": "status",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Comma-separated statuses: forecasted, posted, closed, archived"
+    },
+    {
+     "name": "fundingInstrument",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Comma-separated: grant, cooperative_agreement, procurement_contract, other"
+    },
+    {
+     "name": "eligibility",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Comma-separated eligible applicant type codes, e.g. nonprofits_non_higher_education_with_501c3"
+    },
+    {
+     "name": "category",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Comma-separated funding category codes, e.g. health"
+    }
+   ],
+   "responseType": "text",
+   "mutates": false,
+   "example": {
+    "query": "health",
+    "sortby": "postedDateDesc",
+    "status": "posted",
+    "fundingInstrument": "grant",
+    "eligibility": "nonprofits_non_higher_education_with_501c3",
+    "category": "health"
+   },
+   "source": "E9 GET https://simpler.grants.gov/api/search/export",
+   "verified": true
+  },
+  {
+   "name": "get-opportunity-details",
+   "summary": "Get full details of an opportunity from the classic Grants.gov web service, by numeric opportunity ID. Includes synopsis, forecast, eligibility, attachments and version history.",
+   "method": "POST",
+   "urlTemplate": "https://apply07.grants.gov/grantsws/rest/opportunity/details",
+   "params": [
+    {
+     "name": "oppId",
+     "in": "body",
+     "required": true,
+     "type": "string",
+     "description": "Numeric Grants.gov opportunity ID, as in www.grants.gov/search-results-detail/{id}",
+     "example": "364057"
+    }
+   ],
+   "bodyTemplate": {
+    "oppId": "{oppId}"
+   },
+   "bodyEncoding": "form",
+   "responseType": "json",
+   "defaultFields": [
+    "id",
+    "opportunityNumber",
+    "opportunityTitle",
+    "owningAgencyCode",
+    "synopsis.synopsisDesc",
+    "synopsis.responseDate",
+    "synopsis.awardCeiling",
+    "synopsis.awardFloor"
+   ],
+   "mutates": true,
+   "example": {
+    "oppId": "364057"
+   },
+   "source": "E5 E10 POST https://apply07.grants.gov/grantsws/rest/opportunity/details",
+   "verified": false,
+   "verifyNote": "write: dry-run preview only, not sent"
+  },
+  {
+   "name": "search-agencies",
+   "summary": "Search funding agencies by name, for use as the agency filter in opportunity search.",
+   "method": "POST",
+   "urlTemplate": "https://simpler.grants.gov/api/agencies",
+   "params": [
+    {
+     "name": "keyword",
+     "in": "body",
+     "required": true,
+     "type": "string",
+     "description": "Agency name fragment",
+     "example": "Health"
+    },
+    {
+     "name": "status",
+     "in": "body",
+     "required": false,
+     "type": "string",
+     "description": "Only agencies that have opportunities in this status",
+     "enum": [
+      "forecasted",
+      "posted",
+      "closed",
+      "archived"
+     ],
+     "default": "posted"
+    }
+   ],
+   "bodyTemplate": {
+    "keyword": "{keyword}",
+    "selectedStatuses": [
+     "{status}"
+    ]
+   },
+   "bodyEncoding": "json",
+   "responseType": "json",
+   "mutates": true,
+   "example": {
+    "keyword": "Health"
+   },
+   "source": "E4 POST https://simpler.grants.gov/api/agencies",
+   "verified": false,
+   "verifyNote": "write: dry-run preview only, not sent"
+  },
+  {
+   "name": "search-site-content",
+   "summary": "Search Grants.gov website content (help articles, forms, learning pages) through the Search.gov API.",
+   "method": "GET",
+   "urlTemplate": "https://api.gsa.gov/technology/searchgov/v2/results/i14y?affiliate=prod_grants&access_key=YNhIX2DaXaH2XZFS6cVf5O6hySoFtg5WsiiKCoV3eEg=",
+   "params": [
+    {
+     "name": "query",
+     "in": "query",
+     "required": true,
+     "type": "string",
+     "description": "Search text",
+     "example": "SF-424"
+    },
+    {
+     "name": "offset",
+     "in": "query",
+     "required": false,
+     "type": "number",
+     "description": "Result offset",
+     "default": 0
+    },
+    {
+     "name": "api_limit",
+     "key": "limit",
+     "in": "query",
+     "required": false,
+     "type": "number",
+     "description": "Results per page (sent to the site as \"limit\"; clify's own --limit only shapes the output)",
+     "default": 5
+    }
+   ],
+   "responseType": "json",
+   "resultPath": "web.results",
+   "defaultFields": [
+    "title",
+    "url",
+    "snippet",
+    "publication_date"
+   ],
+   "pagination": {
+    "type": "offset",
+    "param": "offset",
+    "step": 5
+   },
+   "mutates": false,
+   "example": {
+    "query": "SF-424"
+   },
+   "source": "E3 GET https://api.gsa.gov/technology/searchgov/v2/results/i14y",
+   "verified": true
+  },
+  {
+   "name": "get-content-page",
+   "summary": "Get a published Grants.gov CMS page (Storyblok story) by slug.",
+   "method": "GET",
+   "urlTemplate": "https://api.storyblok.grants.gov/v2/cdn/stories/{slug}?version=published&token=KIwvzIDcwl5IkPrTFQ342Qtt",
+   "params": [
+    {
+     "name": "slug",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Page slug (full_slug), e.g. site-search-results",
+     "example": "site-search-results"
+    }
+   ],
+   "responseType": "json",
+   "resultPath": "story",
+   "defaultFields": [
+    "name",
+    "full_slug",
+    "uuid",
+    "published_at",
+    "updated_at",
+    "content.body"
+   ],
+   "mutates": false,
+   "example": {
+    "slug": "site-search-results"
+   },
+   "source": "E2 E8 GET https://api.storyblok.grants.gov/v2/cdn/stories/site-search-results",
+   "verified": true
+  },
+  {
+   "name": "list-xml-extracts",
+   "summary": "List the daily Grants.gov XML database extract files (GrantsDBExtractYYYYMMDDv2.zip), with download URL, size and date.",
+   "method": "GET",
+   "urlTemplate": "/xml-extract",
+   "params": [],
+   "responseType": "html",
+   "extract": {
+    "list": "tbody > tr",
+    "fields": {
+     "file": "a.usa-link",
+     "url": "a.usa-link@href",
+     "row": ""
+    }
+   },
+   "defaultFields": [
+    "file",
+    "url",
+    "row"
+   ],
+   "mutates": false,
+   "source": "E11 GET https://www.grants.gov/xml-extract",
+   "verified": true
+  },
+  {
+   "name": "list-rss-feeds",
+   "summary": "List the Grants.gov RSS feed links for new and modified opportunities, by agency and by category.",
+   "method": "GET",
+   "urlTemplate": "/connect/rss-feeds",
+   "params": [],
+   "responseType": "html",
+   "extract": {
+    "list": "div.gg-text a.usa-link",
+    "fields": {
+     "name": "",
+     "url": "@href"
+    }
+   },
+   "defaultFields": [
+    "name",
+    "url"
+   ],
+   "mutates": false,
+   "source": "E12 GET https://www.grants.gov/connect/rss-feeds",
+   "verified": true
+  }
+ ],
+ "blockers": [],
+ "notes": [
+  "Opportunity search runs on simpler.grants.gov. search-opportunities returns raw Next.js RSC text, not clean JSON; the result records are embedded in that text. export-opportunities-csv returns the same results as CSV, but it returned 0 bytes in the headless browser, so it may need a real client.",
+  "Simpler.grants.gov detail pages are /opportunity/{uuid}, and attachments are hosted on files.simpler.grants.gov. No detail page UUID was captured in the recording. Use get-opportunity-details with the numeric classic opportunity ID instead.",
+  "Saving an opportunity requires signing in with Login.gov. The explorer was not logged in, so no save request was captured and no save command exists.",
+  "The 'Download all' attachments action on detail pages closed the browser page, so no request was captured for it.",
+  "XML extract files are large (about 78 MB zip) and hosted on S3 (prod-grants-gov-chatbot.s3.amazonaws.com/extracts/). Download them directly from the url field.",
+  "RSS feed URLs from list-rss-feeds may redirect to page-not-found. GG_NewOppByCategory.xml did when tried.",
+  "The Search.gov access_key and the Storyblok token are public keys the site's own web app sends; they are fixed in the URLs."
+ ],
+ "dropped": [],
+ "generated": {
+  "by": "clify add",
+  "model": "claude-opus-5-5",
+  "exploredSteps": 30,
+  "recorded": 37,
+  "verifiedAt": "2026-10-18T09:17:38.079Z",
+  "seconds": 235
+ }
+}

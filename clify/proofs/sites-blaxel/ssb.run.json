@@ -1,0 +1,156 @@
+{
+ "url": "https://www.ssb.no/",
+ "category": "gov-nordic",
+ "sandbox": "clify-www-ssb-no",
+ "startedAt": "2026-10-18T08:30:58.504Z",
+ "region": "us-pdx-1",
+ "chrome": "Chrome/148.0.7778.96",
+ "sandboxStartMs": 1687,
+ "addSeconds": 255,
+ "addExit": 0,
+ "add": {
+  "ok": true,
+  "site": "ssb",
+  "url": "https://www.ssb.no/",
+  "commands": [
+   {
+    "name": "search-content",
+    "summary": "Full-text search of ssb.no content (statistics, articles, analyses, fact pages), with subject/content-type filters and date sort",
+    "verified": true
+   },
+   {
+    "name": "get-topic",
+    "summary": "List the sub-topics (category links) on an ssb.no main topic page",
+    "verified": true
+   },
+   {
+    "name": "get-statistic",
+    "summary": "Get a statistic page's overview: title, ingress, last and next update, subjects and keywords",
+    "verified": true
+   },
+   {
+    "name": "get-statistic-tables",
+    "summary": "Get the 'selected figures' tables shown on a statistic page (caption, header and rows as text)",
+    "verified": true
+   },
+   {
+    "name": "get-article",
+    "summary": "Get an ssb.no article: title, ingress, publish date, authors and body text",
+    "verified": true
+   },
+   {
+    "name": "search-tables",
+    "summary": "Search or list Statbank (PxWebApi v2) tables by keyword",
+    "verified": true
+   },
+   {
+    "name": "get-table",
+    "summary": "Get Statbank table info: label, period range, variables, subject paths, update time",
+    "verified": true
+   },
+   {
+    "name": "get-table-metadata",
+    "summary": "Get Statbank table metadata (json-stat2): dimensions with all value codes and labels, notes, roles",
+    "verified": true
+   },
+   {
+    "name": "get-table-default-selection",
+    "summary": "Get the default variable/value selection and layout the Statbank uses for a table",
+    "verified": true
+   },
+   {
+    "name": "get-table-data",
+    "summary": "Fetch Statbank table data (json-stat2). Without selections it returns the table's default selection.",
+    "verified": true
+   },
+   {
+    "name": "search-classifications",
+    "summary": "Search Klass, SSB's statistical classifications and code lists (e.g. NACE, municipalities, occupations)",
+    "verified": true
+   }
+  ],
+  "verified": 11,
+  "writes": 0,
+  "dropped": [],
+  "blockers": [],
+  "loggedIn": false,
+  "seconds": 254,
+  "next": [
+   "clify ssb",
+   "clify ssb search-content --query \"befolkning\""
+  ],
+  "installed": "/home/ubuntu/clify-runs/blaxel-w1/home/bin/ssb",
+  "explored": {
+   "steps": 30,
+   "recorded": 29,
+   "heldWrites": 1
+  }
+ },
+ "check": {
+  "on": "blaxel",
+  "node": "v24.22.0",
+  "seconds": 10,
+  "reads": 11,
+  "verified": 11,
+  "failed": [],
+  "results": [
+   {
+    "name": "search-content",
+    "ok": true,
+    "ms": 575
+   },
+   {
+    "name": "get-topic",
+    "ok": true,
+    "ms": 742
+   },
+   {
+    "name": "get-statistic",
+    "ok": true,
+    "ms": 868
+   },
+   {
+    "name": "get-statistic-tables",
+    "ok": true,
+    "ms": 861
+   },
+   {
+    "name": "get-article",
+    "ok": true,
+    "ms": 702
+   },
+   {
+    "name": "search-tables",
+    "ok": true,
+    "ms": 582
+   },
+   {
+    "name": "get-table",
+    "ok": true,
+    "ms": 517
+   },
+   {
+    "name": "get-table-metadata",
+    "ok": true,
+    "ms": 522
+   },
+   {
+    "name": "get-table-default-selection",
+    "ok": true,
+    "ms": 519
+   },
+   {
+    "name": "get-table-data",
+    "ok": true,
+    "ms": 683
+   },
+   {
+    "name": "search-classifications",
+    "ok": true,
+    "ms": 679
+   }
+  ]
+ },
+ "deleted": true,
+ "seconds": 266
+}

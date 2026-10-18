@@ -1,0 +1,28 @@
+{
+ "name": "speedrun",
+ "startUrl": "https://www.speedrun.com/",
+ "origin": "https://www.speedrun.com",
+ "createdAt": "2026-10-18T08:21:50.072Z",
+ "description": "speedrun.com is a speedrunning leaderboard site with games, categories, runs and runners. No commands could be generated because every request was blocked by Cloudflare.",
+ "commands": [],
+ "blockers": [
+  "bot-check at https://www.speedrun.com/",
+  "bot-check at https://www.speedrun.com/games",
+  "captcha"
+ ],
+ "notes": [
+  "The only recorded request was GET https://www.speedrun.com/. It returned a 307 redirect to a Cloudflare 'Performing security verification' page, and no JSON or content data was captured. Every page the explorer tried, including /games, showed the same challenge.",
+  "The site's robots.txt disallows the public REST API path (/api/v1/...). No API request appeared in the recording, so none was added. Adding unrecorded endpoints would mean guessing at their shapes, and robots.txt says automated clients should not use that path.",
+  "To build this CLI, the site owner would need to allow automated access, for example through an API key, a non-Cloudflare-challenged API host, or a robots.txt change permitting /api/v1. Exploration would then need to be re-run so real endpoints can be recorded.",
+  "Agents needing speedrun.com data should currently use a browser or another sanctioned data source; this CLI exposes no working commands."
+ ],
+ "dropped": [],
+ "generated": {
+  "by": "clify add",
+  "model": "claude-opus-5-5",
+  "exploredSteps": 3,
+  "recorded": 4,
+  "verifiedAt": "2026-10-18T08:21:57.089Z",
+  "seconds": 19
+ }
+}

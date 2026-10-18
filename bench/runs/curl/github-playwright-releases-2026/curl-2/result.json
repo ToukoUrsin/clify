@@ -1,0 +1,33 @@
+{
+ "task": "github-playwright-releases-2026",
+ "site": "github",
+ "mode": "curl",
+ "trial": 2,
+ "tag": "curl",
+ "ok": true,
+ "why": "all expected values present",
+ "answer": "13",
+ "expected": {
+  "number": 13,
+  "moves": true
+ },
+ "wallMs": 8774,
+ "apiMs": 8337,
+ "turns": 2,
+ "toolCalls": 1,
+ "tokens": {
+  "input": 4,
+  "output": 343,
+  "cacheWrite": 3379,
+  "cacheRead": 6677,
+  "total": 10403
+ },
+ "costUsd": 0.0251064,
+ "models": [
+  "claude-opus-5-5"
+ ],
+ "exitCode": 0,
+ "timedOut": false,
+ "subtype": "success",
+ "startedAt": "2026-10-18T12:44:15.265Z"
+}

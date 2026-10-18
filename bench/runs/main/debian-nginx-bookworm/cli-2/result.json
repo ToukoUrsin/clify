@@ -1,0 +1,37 @@
+{
+ "task": "debian-nginx-bookworm",
+ "site": "debian",
+ "mode": "cli",
+ "trial": 2,
+ "tag": "main",
+ "ok": true,
+ "why": "all expected values present",
+ "answer": "1.22.1-9+deb12u10",
+ "expected": {
+  "expect": [
+   "1.22.1-9+deb12u10"
+  ],
+  "detail": {
+   "h": "Package: nginx (1.22.1-9+deb12u10 and others) [security]"
+  }
+ },
+ "wallMs": 11784,
+ "apiMs": 10230,
+ "turns": 4,
+ "toolCalls": 3,
+ "tokens": {
+  "input": 8,
+  "output": 398,
+  "cacheWrite": 3742,
+  "cacheRead": 15360,
+  "total": 19508
+ },
+ "costUsd": 0.029774,
+ "models": [
+  "claude-opus-5-5"
+ ],
+ "exitCode": 0,
+ "timedOut": false,
+ "subtype": "success",
+ "startedAt": "2026-10-17T23:22:52.488Z"
+}

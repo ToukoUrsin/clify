@@ -1,0 +1,38 @@
+{
+ "url": "https://kitsu.app/",
+ "category": "sports-ent",
+ "sandbox": "clify-kitsu-app",
+ "startedAt": "2026-10-18T08:39:23.528Z",
+ "region": "us-pdx-1",
+ "chrome": "Chrome/148.0.7778.96",
+ "sandboxStartMs": 1669,
+ "addSeconds": 21,
+ "addExit": 1,
+ "add": {
+  "ok": false,
+  "site": "kitsu",
+  "url": "https://kitsu.app/",
+  "commands": [],
+  "verified": 0,
+  "writes": 0,
+  "dropped": [],
+  "blockers": [
+   "bot-check at https://kitsu.app/",
+   "bot-check at https://kitsu.app/anime?text=naruto",
+   "captcha"
+  ],
+  "loggedIn": false,
+  "seconds": 20,
+  "next": [
+   "clify kitsu",
+   "clify repair kitsu --goal \"<what you need from the site>\""
+  ],
+  "explored": {
+   "steps": 3,
+   "recorded": 4,
+   "heldWrites": 0
+  }
+ },
+ "deleted": true,
+ "seconds": 23
+}

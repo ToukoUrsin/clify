@@ -1,0 +1,196 @@
+{
+ "url": "https://anilist.co/",
+ "category": "sports-ent",
+ "sandbox": "clify-anilist-co",
+ "startedAt": "2026-10-18T09:32:56.413Z",
+ "region": "us-pdx-1",
+ "chrome": "Chrome/148.0.7778.96",
+ "sandboxStartMs": 1791,
+ "addSeconds": 300,
+ "addExit": 0,
+ "add": {
+  "ok": true,
+  "site": "anilist",
+  "url": "https://anilist.co/",
+  "commands": [
+   {
+    "name": "search-media",
+    "summary": "Search or browse anime/manga by keyword, with filters for type, format, status, season, year, genre and tag, plus sorting. Covers trending, popular, this-season and top-100 lists via sort and season.",
+    "verified": true
+   },
+   {
+    "name": "get-media",
+    "summary": "Get full details of one anime or manga by AniList id, or the best match for a title: titles, synopsis, dates, episodes/chapters, genres, tags, scores, studios, next airing episode, links.",
+    "verified": true
+   },
+   {
+    "name": "list-media-characters",
+    "summary": "List the characters of an anime or manga (the Characters tab), with role (MAIN/SUPPORTING/BACKGROUND) and voice actors in the chosen language.",
+    "verified": true
+   },
+   {
+    "name": "list-media-staff",
+    "summary": "List the staff of an anime or manga (the Staff tab) with their roles, e.g. Original Story, Director.",
+    "verified": true
+   },
+   {
+    "name": "get-media-relations",
+    "summary": "List the media related to an anime or manga (adaptations, sequels, prequels, side stories, spin-offs) with the relation type.",
+    "verified": true
+   },
+   {
+    "name": "list-media-recommendations",
+    "summary": "List the titles users recommend for a given anime or manga, ranked by recommendation rating.",
+    "verified": true
+   },
+   {
+    "name": "list-media-reviews",
+    "summary": "List user reviews of an anime or manga (the Reviews tab): summary, the reviewer's score and how many users found it helpful.",
+    "verified": true
+   },
+   {
+    "name": "get-media-stats",
+    "summary": "Get statistics for an anime or manga (the Stats tab): rankings, score distribution, distribution of user list statuses (completed, planning, etc.), popularity and favourites.",
+    "verified": true
+   },
+   {
+    "name": "get-character",
+    "summary": "Get a character by id, or the best match for a name: name, description, age, birthday, favourites, and the anime/manga they appear in with Japanese voice actors.",
+    "verified": true
+   },
+   {
+    "name": "search-characters",
+    "summary": "Search characters by name and return ids, names, favourites and their most popular media.",
+    "verified": true
+   },
+   {
+    "name": "search-staff",
+    "summary": "Search staff and voice actors by name and return ids, occupations and language.",
+    "verified": true
+   },
+   {
+    "name": "get-staff",
+    "summary": "Get a staff member or voice actor by id, or the best match for a name: bio, occupations, birthday, the media they worked on with roles, and characters voiced.",
+    "verified": true
+   },
+   {
+    "name": "get-studio",
+    "summary": "Get an animation studio or producer by id or name, with the media it produced, newest first.",
+    "verified": true
+   },
+   {
+    "name": "list-genres",
+    "summary": "List all genre names accepted by the search-media --genre filter.",
+    "verified": true
+   },
+   {
+    "name": "list-tags",
+    "summary": "List all media tags (name, category, description, adult flag) accepted by the search-media --tag filter.",
+    "verified": true
+   }
+  ],
+  "verified": 15,
+  "writes": 0,
+  "dropped": [],
+  "blockers": [],
+  "loggedIn": false,
+  "seconds": 299,
+  "next": [
+   "clify anilist",
+   "clify anilist search-media --search \"naruto\" --type \"ANIME\""
+  ],
+  "installed": "/home/ubuntu/clify-runs/blaxel-retry/home/bin/anilist",
+  "explored": {
+   "steps": 14,
+   "recorded": 108,
+   "heldWrites": 39
+  }
+ },
+ "check": {
+  "on": "blaxel",
+  "node": "v24.22.0",
+  "seconds": 4,
+  "reads": 15,
+  "verified": 15,
+  "failed": [],
+  "results": [
+   {
+    "name": "search-media",
+    "ok": true,
+    "ms": 163
+   },
+   {
+    "name": "get-media",
+    "ok": true,
+    "ms": 103
+   },
+   {
+    "name": "list-media-characters",
+    "ok": true,
+    "ms": 126
+   },
+   {
+    "name": "list-media-staff",
+    "ok": true,
+    "ms": 116
+   },
+   {
+    "name": "get-media-relations",
+    "ok": true,
+    "ms": 179
+   },
+   {
+    "name": "list-media-recommendations",
+    "ok": true,
+    "ms": 116
+   },
+   {
+    "name": "list-media-reviews",
+    "ok": true,
+    "ms": 111
+   },
+   {
+    "name": "get-media-stats",
+    "ok": true,
+    "ms": 103
+   },
+   {
+    "name": "get-character",
+    "ok": true,
+    "ms": 116
+   },
+   {
+    "name": "search-characters",
+    "ok": true,
+    "ms": 108
+   },
+   {
+    "name": "search-staff",
+    "ok": true,
+    "ms": 108
+   },
+   {
+    "name": "get-staff",
+    "ok": true,
+    "ms": 150
+   },
+   {
+    "name": "get-studio",
+    "ok": true,
+    "ms": 121
+   },
+   {
+    "name": "list-genres",
+    "ok": true,
+    "ms": 98
+   },
+   {
+    "name": "list-tags",
+    "ok": true,
+    "ms": 227
+   }
+  ]
+ },
+ "deleted": true,
+ "seconds": 306
+}

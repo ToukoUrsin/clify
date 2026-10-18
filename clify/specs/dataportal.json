@@ -1,0 +1,662 @@
+{
+ "name": "dataportal",
+ "startUrl": "https://www.dataportal.se/",
+ "origin": "https://www.dataportal.se",
+ "createdAt": "2026-10-18T08:47:42.558Z",
+ "description": "Sveriges dataportal (dataportal.se), Sweden's national open-data catalogue. This CLI searches and reads datasets, APIs (data services), organisations, specifications, concepts and terminologies through the public EntryScape/EntryStore backends (admin.dataportal.se and editera.dataportal.se). No login is needed.",
+ "commands": [
+  {
+   "name": "search-datasets",
+   "summary": "Full-text search of public datasets (dcat:Dataset) in the national catalogue, with sorting and offset paging",
+   "method": "GET",
+   "urlTemplate": "https://admin.dataportal.se/store/search?type=solr&query=public:true+AND+rdfType:http%5C%3A%2F%2Fwww.w3.org%2Fns%2Fdcat%23Dataset+AND+(title:{q}+OR+description:{q}+OR+tag.literal:{q}+OR+all:{q})",
+   "params": [
+    {
+     "name": "q",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "A single search word, matched against title, description, keywords and all text. Use * for everything. Do not use spaces; see notes.",
+     "default": "*",
+     "example": "trafik"
+    },
+    {
+     "name": "api_limit",
+     "key": "limit",
+     "in": "query",
+     "required": false,
+     "type": "number",
+     "description": "Results per page (sent to the site as \"limit\"; clify's own --limit only shapes the output)",
+     "default": 20
+    },
+    {
+     "name": "offset",
+     "in": "query",
+     "required": false,
+     "type": "number",
+     "description": "Number of results to skip, used for paging",
+     "default": 0
+    },
+    {
+     "name": "sort",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Sort order: relevance, or most recently modified/created first",
+     "enum": [
+      "score desc",
+      "modified desc",
+      "created desc"
+     ],
+     "default": "score desc"
+    }
+   ],
+   "responseType": "json",
+   "resultPath": "resource.children",
+   "defaultFields": [
+    "entryId",
+    "contextId",
+    "metadata",
+    "info"
+   ],
+   "pagination": {
+    "type": "offset",
+    "param": "offset",
+    "step": 20
+   },
+   "mutates": false,
+   "example": {
+    "q": "trafik"
+   },
+   "source": "E12 GET https://admin.dataportal.se/store/search",
+   "verified": true
+  },
+  {
+   "name": "search-data-services",
+   "summary": "Full-text search of public APIs / data services (dcat:DataService) in the catalogue",
+   "method": "GET",
+   "urlTemplate": "https://admin.dataportal.se/store/search?type=solr&query=public:true+AND+rdfType:http%5C%3A%2F%2Fwww.w3.org%2Fns%2Fdcat%23DataService+AND+(title:{q}+OR+description:{q}+OR+tag.literal:{q}+OR+all:{q})",
+   "params": [
+    {
+     "name": "q",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "A single search word. Use * for all data services.",
+     "default": "*",
+     "example": "trafik"
+    },
+    {
+     "name": "api_limit",
+     "key": "limit",
+     "in": "query",
+     "required": false,
+     "type": "number",
+     "description": "Results per page (sent to the site as \"limit\"; clify's own --limit only shapes the output)",
+     "default": 20
+    },
+    {
+     "name": "offset",
+     "in": "query",
+     "required": false,
+     "type": "number",
+     "description": "Number of results to skip",
+     "default": 0
+    },
+    {
+     "name": "sort",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Sort order",
+     "enum": [
+      "score desc",
+      "modified desc",
+      "created desc"
+     ],
+     "default": "score desc"
+    }
+   ],
+   "responseType": "json",
+   "resultPath": "resource.children",
+   "defaultFields": [
+    "entryId",
+    "contextId",
+    "metadata",
+    "info"
+   ],
+   "pagination": {
+    "type": "offset",
+    "param": "offset",
+    "step": 20
+   },
+   "mutates": false,
+   "example": {
+    "q": "trafik"
+   },
+   "source": "E12 GET https://admin.dataportal.se/store/search",
+   "verified": true
+  },
+  {
+   "name": "search-organisations",
+   "summary": "Search publishing organisations (foaf:Agent / foaf:Organization) by name or text",
+   "method": "GET",
+   "urlTemplate": "https://admin.dataportal.se/store/search?type=solr&query=public:true+AND+(rdfType:http%5C%3A%2F%2Fxmlns.com%2Ffoaf%2F0.1%2FAgent+OR+rdfType:http%5C%3A%2F%2Fxmlns.com%2Ffoaf%2F0.1%2FOrganization)+AND+(title:{q}+OR+all:{q})",
+   "params": [
+    {
+     "name": "q",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "A single search word, e.g. part of the organisation name. Use * for all organisations.",
+     "default": "*",
+     "example": "trafik"
+    },
+    {
+     "name": "api_limit",
+     "key": "limit",
+     "in": "query",
+     "required": false,
+     "type": "number",
+     "description": "Results per page (sent to the site as \"limit\"; clify's own --limit only shapes the output)",
+     "default": 20
+    },
+    {
+     "name": "offset",
+     "in": "query",
+     "required": false,
+     "type": "number",
+     "description": "Number of results to skip",
+     "default": 0
+    },
+    {
+     "name": "sort",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Sort order",
+     "enum": [
+      "score desc",
+      "modified desc"
+     ],
+     "default": "score desc"
+    }
+   ],
+   "responseType": "json",
+   "resultPath": "resource.children",
+   "defaultFields": [
+    "entryId",
+    "contextId",
+    "metadata",
+    "info"
+   ],
+   "pagination": {
+    "type": "offset",
+    "param": "offset",
+    "step": 20
+   },
+   "mutates": false,
+   "example": {
+    "q": "trafik"
+   },
+   "source": "E12 GET https://admin.dataportal.se/store/search",
+   "verified": true
+  },
+  {
+   "name": "search-catalog-solr",
+   "summary": "Advanced: run a raw Solr query against the admin.dataportal.se catalogue store (filter by theme, access rights, publisher, type, with optional facets)",
+   "method": "GET",
+   "urlTemplate": "https://admin.dataportal.se/store/search?type=solr",
+   "params": [
+    {
+     "name": "query",
+     "in": "query",
+     "required": true,
+     "type": "string",
+     "description": "Solr query in EntryStore syntax. Escape colons inside unquoted URIs as \\: (e.g. rdfType:http\\://www.w3.org/ns/dcat#Dataset). Always include public:true.",
+     "example": "public:true AND rdfType:http\\://www.w3.org/ns/dcat#Dataset AND (title:trafik OR description:trafik)"
+    },
+    {
+     "name": "api_limit",
+     "key": "limit",
+     "in": "query",
+     "required": false,
+     "type": "number",
+     "description": "Results per page (sent to the site as \"limit\"; clify's own --limit only shapes the output)",
+     "default": 20
+    },
+    {
+     "name": "offset",
+     "in": "query",
+     "required": false,
+     "type": "number",
+     "description": "Number of results to skip",
+     "default": 0
+    },
+    {
+     "name": "sort",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Sort order, e.g. 'score desc' or 'modified desc'",
+     "default": "score desc"
+    },
+    {
+     "name": "facetFields",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Comma-separated facet fields, e.g. metadata.predicate.uri.<hash>"
+    }
+   ],
+   "responseType": "json",
+   "resultPath": "resource.children",
+   "defaultFields": [
+    "entryId",
+    "contextId",
+    "metadata",
+    "info"
+   ],
+   "pagination": {
+    "type": "offset",
+    "param": "offset",
+    "step": 20
+   },
+   "mutates": false,
+   "example": {
+    "query": "public:true AND rdfType:http\\://www.w3.org/ns/dcat#Dataset AND (title:trafik OR description:trafik)"
+   },
+   "source": "E12 GET https://admin.dataportal.se/store/search",
+   "verified": true
+  },
+  {
+   "name": "get-entry",
+   "summary": "Get full DCAT metadata for a dataset, data service (API) or organisation by catalog and entry id (site URL ids like 389_8203 = catalog 389, entry 8203)",
+   "method": "GET",
+   "urlTemplate": "https://admin.dataportal.se/store/{catalog}/entry/{entry}?includeAll&limit=50&sort=title&prio=List",
+   "params": [
+    {
+     "name": "catalog",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Catalog (context) id: the part before '_' in the site URL, e.g. 389 in /datasets/389_8203",
+     "example": "389"
+    },
+    {
+     "name": "entry",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Entry id: the part after '_', e.g. 8203",
+     "example": "8203"
+    }
+   ],
+   "responseType": "json",
+   "defaultFields": [
+    "entryId",
+    "metadata",
+    "info",
+    "relations"
+   ],
+   "mutates": false,
+   "example": {
+    "catalog": "389",
+    "entry": "8203"
+   },
+   "source": "E14 GET https://admin.dataportal.se/store/{n}/entry/{n}",
+   "verified": true
+  },
+  {
+   "name": "get-catalog-quality",
+   "summary": "Get the metadata-quality score (MQA percentage, score, rating) for a catalog",
+   "method": "GET",
+   "urlTemplate": "https://admin.dataportal.se/store/{catalog}/entry/_quality?includeAll&limit=50&sort=title&prio=List",
+   "params": [
+    {
+     "name": "catalog",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Catalog (context) id, e.g. 778",
+     "example": "778"
+    }
+   ],
+   "responseType": "json",
+   "resultPath": "metadata",
+   "mutates": false,
+   "example": {
+    "catalog": "778"
+   },
+   "source": "E16 GET https://admin.dataportal.se/store/{n}/entry/_quality",
+   "verified": true
+  },
+  {
+   "name": "export-metadata",
+   "summary": "Export an entry's RDF metadata (dataset/API/organisation) as JSON-LD, Turtle, N-Triples or RDF/XML",
+   "method": "GET",
+   "urlTemplate": "https://admin.dataportal.se/store/{catalog}/metadata/{entry}",
+   "params": [
+    {
+     "name": "catalog",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Catalog (context) id",
+     "example": "389"
+    },
+    {
+     "name": "entry",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Entry id",
+     "example": "8203"
+    },
+    {
+     "name": "format",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "RDF serialization (MIME type)",
+     "enum": [
+      "application/ld+json",
+      "text/turtle",
+      "text/n-triples",
+      "application/rdf+xml"
+     ],
+     "default": "application/ld+json"
+    }
+   ],
+   "responseType": "text",
+   "mutates": false,
+   "example": {
+    "catalog": "389",
+    "entry": "8203"
+   },
+   "source": "E14 GET https://admin.dataportal.se/store/{n}/entry/{n}",
+   "verified": true
+  },
+  {
+   "name": "search-concepts",
+   "summary": "Search concepts/terms (skos:Concept) in the national terminology store",
+   "method": "GET",
+   "urlTemplate": "https://editera.dataportal.se/store/search?type=solr&query=public:true+AND+(rdfType:http%5C%3A%2F%2Fwww.w3.org%2F2004%2F02%2Fskos%2Fcore%23Concept)+AND+(title:{q}+OR+description:{q}+OR+tag.literal:{q}+OR+all:{q})",
+   "params": [
+    {
+     "name": "q",
+     "in": "query",
+     "required": true,
+     "type": "string",
+     "description": "A single search word",
+     "example": "trafik"
+    },
+    {
+     "name": "api_limit",
+     "key": "limit",
+     "in": "query",
+     "required": false,
+     "type": "number",
+     "description": "Results per page (sent to the site as \"limit\"; clify's own --limit only shapes the output)",
+     "default": 20
+    },
+    {
+     "name": "offset",
+     "in": "query",
+     "required": false,
+     "type": "number",
+     "description": "Number of results to skip",
+     "default": 0
+    },
+    {
+     "name": "sort",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Sort order",
+     "enum": [
+      "score desc",
+      "modified desc"
+     ],
+     "default": "score desc"
+    }
+   ],
+   "responseType": "json",
+   "resultPath": "resource.children",
+   "defaultFields": [
+    "entryId",
+    "contextId",
+    "metadata",
+    "cached-external-metadata",
+    "info"
+   ],
+   "pagination": {
+    "type": "offset",
+    "param": "offset",
+    "step": 20
+   },
+   "mutates": false,
+   "example": {
+    "q": "trafik"
+   },
+   "source": "E15",
+   "verified": true
+  },
+  {
+   "name": "list-terminologies",
+   "summary": "List public terminologies (skos:ConceptScheme) in the terminology store",
+   "method": "GET",
+   "urlTemplate": "https://editera.dataportal.se/store/search?type=solr&query=public:true+AND+rdfType:http%5C%3A%2F%2Fwww.w3.org%2F2004%2F02%2Fskos%2Fcore%23ConceptScheme",
+   "params": [
+    {
+     "name": "api_limit",
+     "key": "limit",
+     "in": "query",
+     "required": false,
+     "type": "number",
+     "description": "Max results (sent to the site as \"limit\"; clify's own --limit only shapes the output)",
+     "default": 100
+    },
+    {
+     "name": "offset",
+     "in": "query",
+     "required": false,
+     "type": "number",
+     "description": "Number of results to skip",
+     "default": 0
+    }
+   ],
+   "responseType": "json",
+   "resultPath": "resource.children",
+   "defaultFields": [
+    "entryId",
+    "contextId",
+    "metadata",
+    "info"
+   ],
+   "pagination": {
+    "type": "offset",
+    "param": "offset",
+    "step": 100
+   },
+   "mutates": false,
+   "source": "E15 GET https://editera.dataportal.se/store/search",
+   "verified": true
+  },
+  {
+   "name": "search-specifications",
+   "summary": "Search specifications (information/data models, dx-prof Profiles) in the editera store",
+   "method": "GET",
+   "urlTemplate": "https://editera.dataportal.se/store/search?type=solr&query=public:true+AND+rdfType:http%5C%3A%2F%2Fwww.w3.org%2Fns%2Fdx%2Fprof%2FProfile+AND+(title:{q}+OR+description:{q}+OR+tag.literal:{q}+OR+all:{q})",
+   "params": [
+    {
+     "name": "q",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "A single search word. Use * for all specifications.",
+     "default": "*",
+     "example": "*"
+    },
+    {
+     "name": "api_limit",
+     "key": "limit",
+     "in": "query",
+     "required": false,
+     "type": "number",
+     "description": "Results per page (sent to the site as \"limit\"; clify's own --limit only shapes the output)",
+     "default": 20
+    },
+    {
+     "name": "offset",
+     "in": "query",
+     "required": false,
+     "type": "number",
+     "description": "Number of results to skip",
+     "default": 0
+    }
+   ],
+   "responseType": "json",
+   "resultPath": "resource.children",
+   "defaultFields": [
+    "entryId",
+    "contextId",
+    "metadata",
+    "info"
+   ],
+   "pagination": {
+    "type": "offset",
+    "param": "offset",
+    "step": 20
+   },
+   "mutates": false,
+   "example": {
+    "q": "*"
+   },
+   "source": "E15 GET https://editera.dataportal.se/store/search",
+   "verified": true
+  },
+  {
+   "name": "get-concept",
+   "summary": "Get a concept, terminology or specification entry from the editera store by catalog and entry id (site ids like /concepts/202_4778 or /terminology/202_1)",
+   "method": "GET",
+   "urlTemplate": "https://editera.dataportal.se/store/{catalog}/entry/{entry}?includeAll&limit=50&sort=title&prio=List",
+   "params": [
+    {
+     "name": "catalog",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Context id, the part before '_' (e.g. 202)",
+     "example": "202"
+    },
+    {
+     "name": "entry",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Entry id, the part after '_' (e.g. 4778)",
+     "example": "4778"
+    }
+   ],
+   "responseType": "json",
+   "defaultFields": [
+    "entryId",
+    "metadata",
+    "cached-external-metadata",
+    "info",
+    "relations"
+   ],
+   "mutates": false,
+   "example": {
+    "catalog": "202",
+    "entry": "4778"
+   },
+   "source": "E20 GET https://editera.dataportal.se/store/{n}/entry/{n}",
+   "verified": true
+  },
+  {
+   "name": "list-detected-apis",
+   "summary": "List catalogue entries with an automatically detected OpenAPI definition (definition URL, version, format, CORS)",
+   "method": "GET",
+   "urlTemplate": "https://admin.dataportal.se/detectedapis.json",
+   "params": [],
+   "responseType": "json",
+   "resultPath": "data",
+   "defaultFields": [
+    "contextId",
+    "entryId",
+    "detections"
+   ],
+   "mutates": false,
+   "source": "E18 GET https://admin.dataportal.se/detectedapis.json",
+   "verified": true
+  },
+  {
+   "name": "get-theme-stats",
+   "summary": "Count of datasets per EU data theme (Transport, Economy, ...)",
+   "method": "GET",
+   "urlTemplate": "https://admin.dataportal.se/charts/themeData.json",
+   "params": [],
+   "responseType": "json",
+   "mutates": false,
+   "source": "E27 GET https://admin.dataportal.se/charts/themeData.json",
+   "verified": true
+  },
+  {
+   "name": "get-organisation-stats",
+   "summary": "Organisations ranked by number of published datasets (labels and counts)",
+   "method": "GET",
+   "urlTemplate": "https://admin.dataportal.se/charts/orgData.json",
+   "params": [],
+   "responseType": "json",
+   "mutates": false,
+   "source": "E21 GET https://admin.dataportal.se/charts/orgData.json",
+   "verified": true
+  },
+  {
+   "name": "get-dataset-history",
+   "summary": "Monthly history of the total number of datasets in the catalogue",
+   "method": "GET",
+   "urlTemplate": "https://admin.dataportal.se/stats/historyData.json",
+   "params": [],
+   "responseType": "json",
+   "mutates": false,
+   "source": "E24 GET https://admin.dataportal.se/stats/historyData.json",
+   "verified": true
+  },
+  {
+   "name": "get-entity-counts",
+   "summary": "Total counts of concepts, terminologies and specifications",
+   "method": "GET",
+   "urlTemplate": "https://editera.dataportal.se/stats/entityData.json",
+   "params": [],
+   "responseType": "json",
+   "mutates": false,
+   "source": "E22 GET https://editera.dataportal.se/stats/entityData.json",
+   "verified": true
+  }
+ ],
+ "blockers": [],
+ "notes": [
+  "Site URLs use {catalog}_{entry} ids: /datasets/389_8203, /dataservice/50_6104 and /organisations/827_223 map to get-entry catalog=389 entry=8203 (and so on). Concepts (/concepts/202_4778) and terminologies (/terminology/202_1) map to get-concept.",
+  "Search results come from EntryStore. Each child has entryId and info, whose URI contains .../store/{catalog}/entry/{entry}. Its metadata is keyed by resource URI and holds the dcterms:title, dcterms:description and dcat:keyword values.",
+  "q in the search commands is put straight into a Solr expression. Use one word or a wildcard (traf*). For multi-word or complex queries, use search-catalog-solr.",
+  "Filters in search-catalog-solr:",
+  "- Open data: add AND metadata.object.uri:\"http://publications.europa.eu/resource/authority/access-right/PUBLIC\"",
+  "- Transport theme: add AND metadata.object.uri:\"http://publications.europa.eu/resource/authority/data-theme/TRAN\"",
+  "- One publisher's datasets: add AND metadata.object.uri:\"http://dataportal.se/organisation/SE2021006297\"",
+  "- Data services: use rdfType:http\\://www.w3.org/ns/dcat#DataService",
+  "Paging uses offset. The response field 'results' is the total hit count. The website's s=8 ('Senast \u00e4ndrad') corresponds to sort='modified desc'.",
+  "The organisation and specification rdfType filters were inferred from the DCAT-AP-SE and dx-prof models, not captured exactly in the recording."
+ ],
+ "dropped": [],
+ "generated": {
+  "by": "clify add",
+  "model": "claude-opus-5-5",
+  "exploredSteps": 28,
+  "recorded": 360,
+  "verifiedAt": "2026-10-18T08:49:40.588Z",
+  "seconds": 371
+ }
+}

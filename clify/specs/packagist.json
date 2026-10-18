@@ -1,0 +1,881 @@
+{
+ "name": "packagist",
+ "startUrl": "https://packagist.org/",
+ "origin": "https://packagist.org",
+ "createdAt": "2026-10-18T07:07:10.812Z",
+ "description": "Packagist.org is the main PHP/Composer package repository. This CLI searches packages, faceted by tags and type, and reads package metadata, install and PHP-version statistics, dependents, suggesters, security advisories, vendor package lists, popular and new packages, PHP extensions and global stats.",
+ "commands": [
+  {
+   "name": "search-packages",
+   "summary": "Search Packagist packages by keyword, optionally filtered by package type and tags. Uses the official search.json API.",
+   "method": "GET",
+   "urlTemplate": "/search.json",
+   "params": [
+    {
+     "name": "q",
+     "in": "query",
+     "required": true,
+     "type": "string",
+     "description": "Search keywords, e.g. 'logger'",
+     "example": "logger"
+    },
+    {
+     "name": "type",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Package type filter, e.g. library, project, symfony-bundle, composer-plugin, php-ext, wordpress-plugin, magento2-module",
+     "example": "library"
+    },
+    {
+     "name": "tags",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Tag/keyword filter, e.g. 'psr-3' or 'logging'"
+    },
+    {
+     "name": "per_page",
+     "in": "query",
+     "required": false,
+     "type": "number",
+     "description": "Results per page (max 100)",
+     "default": 15,
+     "example": "5"
+    },
+    {
+     "name": "page",
+     "in": "query",
+     "required": false,
+     "type": "number",
+     "description": "1-based page number",
+     "default": 1
+    }
+   ],
+   "responseType": "json",
+   "resultPath": "results",
+   "defaultFields": [
+    "name",
+    "description",
+    "url",
+    "repository",
+    "downloads",
+    "favers"
+   ],
+   "pagination": {
+    "type": "page",
+    "param": "page"
+   },
+   "mutates": false,
+   "example": {
+    "q": "logger",
+    "type": "library",
+    "per_page": "5"
+   },
+   "source": "E9 GET https://packagist.org/search.json",
+   "verified": true
+  },
+  {
+   "name": "search-packages-faceted",
+   "summary": "Search packages through the site's Algolia index. Returns hits plus facet counts per tag and type. Supports Algolia filter expressions; page is 0-based.",
+   "method": "POST",
+   "urlTemplate": "https://m58222sh95-dsn.algolia.net/1/indexes/*/queries?x-algolia-agent=Algolia%20for%20JavaScript%20(4.26.0)%3B%20Browser%20(lite)%3B%20instantsearch.js%20(4.92.0)%3B%20JS%20Helper%20(3.28.0)&x-algolia-api-key=0cdb98d788b15a422a65e7f2fcecff5b&x-algolia-application-id=M58222SH95",
+   "params": [
+    {
+     "name": "query",
+     "in": "body",
+     "required": true,
+     "type": "string",
+     "description": "Search keywords (URL-encode spaces as %20)",
+     "example": "logger"
+    },
+    {
+     "name": "filters",
+     "in": "body",
+     "required": false,
+     "type": "string",
+     "description": "Algolia filter expression on facets 'type' and 'tags'. Use %20 for spaces. Examples: 'type:library', 'tags:logging', 'type:library%20AND%20tags:logging'. Empty means no filter.",
+     "example": "type:library"
+    },
+    {
+     "name": "page",
+     "in": "body",
+     "required": false,
+     "type": "number",
+     "description": "0-based page number",
+     "default": 0
+    },
+    {
+     "name": "hits_per_page",
+     "in": "body",
+     "required": false,
+     "type": "number",
+     "description": "Hits per page",
+     "default": 20
+    }
+   ],
+   "bodyTemplate": {
+    "requests": [
+     {
+      "indexName": "packagist",
+      "params": "query={query}&page={page}&hitsPerPage={hits_per_page}&filters={filters}&facets=%5B%22tags%22%2C%22type%22%5D&maxValuesPerFacet=20&attributesToRetrieve=%5B%22name%22%2C%22description%22%2C%22type%22%2C%22repository%22%2C%22tags%22%2C%22meta%22%2C%22abandoned%22%2C%22replacementPackage%22%5D&attributesToHighlight=%5B%5D"
+     }
+    ]
+   },
+   "bodyEncoding": "json",
+   "headers": {
+    "content-type": "application/x-www-form-urlencoded"
+   },
+   "responseType": "json",
+   "resultPath": "results.0",
+   "defaultFields": [
+    "nbHits",
+    "page",
+    "nbPages",
+    "hits",
+    "facets"
+   ],
+   "pagination": {
+    "type": "page",
+    "param": "page"
+   },
+   "mutates": false,
+   "example": {
+    "query": "logger",
+    "filters": "type:library"
+   },
+   "source": "E1 POST https://m58222sh95-dsn.algolia.net/{n}/indexes/*/queries",
+   "verified": true
+  },
+  {
+   "name": "search-facet-values",
+   "summary": "Search the values of a search facet (tags or type) by prefix, with counts within a keyword query. Useful for finding valid tag names to filter on.",
+   "method": "POST",
+   "urlTemplate": "https://m58222sh95-dsn.algolia.net/1/indexes/packagist/facets/{facet}/query?x-algolia-agent=Algolia%20for%20JavaScript%20(4.26.0)%3B%20Browser%20(lite)%3B%20instantsearch.js%20(4.92.0)%3B%20JS%20Helper%20(3.28.0)&x-algolia-api-key=0cdb98d788b15a422a65e7f2fcecff5b&x-algolia-application-id=M58222SH95",
+   "params": [
+    {
+     "name": "facet",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Facet to search",
+     "enum": [
+      "tags",
+      "type"
+     ],
+     "example": "tags"
+    },
+    {
+     "name": "facet_query",
+     "key": "facetQuery",
+     "in": "body",
+     "required": true,
+     "type": "string",
+     "description": "Prefix of the facet value, e.g. 'sym'",
+     "example": "sym"
+    },
+    {
+     "name": "query",
+     "in": "body",
+     "required": false,
+     "type": "string",
+     "description": "Package keyword query that restricts which packages are counted",
+     "example": "logger"
+    }
+   ],
+   "bodyTemplate": {
+    "facetQuery": "{facet_query}",
+    "query": "{query}",
+    "maxFacetHits": 15
+   },
+   "bodyEncoding": "json",
+   "headers": {
+    "content-type": "application/x-www-form-urlencoded"
+   },
+   "responseType": "json",
+   "resultPath": "facetHits",
+   "defaultFields": [
+    "value",
+    "count"
+   ],
+   "mutates": false,
+   "example": {
+    "facet": "tags",
+    "facet_query": "sym",
+    "query": "logger"
+   },
+   "source": "E3 POST https://m58222sh95-dsn.algolia.net/{n}/indexes/packagist/facets/tags/query",
+   "verified": true
+  },
+  {
+   "name": "get-package",
+   "summary": "Get full package metadata as JSON: description, maintainers, repository, download totals, favers, and all versions with their requirements.",
+   "method": "GET",
+   "urlTemplate": "/packages/{vendor}/{package}.json",
+   "params": [
+    {
+     "name": "vendor",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Vendor name, the part before the slash",
+     "example": "monolog"
+    },
+    {
+     "name": "package",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Package name, the part after the slash",
+     "example": "monolog"
+    }
+   ],
+   "responseType": "json",
+   "resultPath": "package",
+   "defaultFields": [
+    "name",
+    "description",
+    "type",
+    "repository",
+    "downloads",
+    "favers",
+    "github_stars",
+    "time"
+   ],
+   "mutates": false,
+   "example": {
+    "vendor": "monolog",
+    "package": "monolog"
+   },
+   "source": "E10 GET https://packagist.org/packages/monolog/monolog.json",
+   "verified": true
+  },
+  {
+   "name": "get-package-install-stats",
+   "summary": "Get a time series of daily installs for a package, averaged daily, weekly or monthly, starting from a date.",
+   "method": "GET",
+   "urlTemplate": "/packages/{vendor}/{package}/stats/all.json",
+   "params": [
+    {
+     "name": "vendor",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Vendor name",
+     "example": "monolog"
+    },
+    {
+     "name": "package",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Package name",
+     "example": "monolog"
+    },
+    {
+     "name": "average",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Aggregation granularity",
+     "enum": [
+      "daily",
+      "weekly",
+      "monthly"
+     ],
+     "example": "weekly"
+    },
+    {
+     "name": "from",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Start date, ISO format YYYY-MM-DD",
+     "example": "2025-10-18"
+    }
+   ],
+   "responseType": "json",
+   "defaultFields": [
+    "labels",
+    "values",
+    "average"
+   ],
+   "mutates": false,
+   "example": {
+    "vendor": "monolog",
+    "package": "monolog",
+    "average": "weekly",
+    "from": "2025-10-18"
+   },
+   "source": "E2 E7 GET https://packagist.org/packages/monolog/monolog/stats/all.json",
+   "verified": true
+  },
+  {
+   "name": "get-package-major-version-stats",
+   "summary": "Get a time series of daily installs for a package, split by major version (1, 2, 3, ...).",
+   "method": "GET",
+   "urlTemplate": "/packages/{vendor}/{package}/stats/major/all.json",
+   "params": [
+    {
+     "name": "vendor",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Vendor name",
+     "example": "monolog"
+    },
+    {
+     "name": "package",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Package name",
+     "example": "monolog"
+    },
+    {
+     "name": "average",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Aggregation granularity",
+     "enum": [
+      "daily",
+      "weekly",
+      "monthly"
+     ],
+     "default": "monthly",
+     "example": "monthly"
+    },
+    {
+     "name": "from",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Start date, ISO format YYYY-MM-DD",
+     "example": "2012-04-13"
+    }
+   ],
+   "responseType": "json",
+   "defaultFields": [
+    "labels",
+    "values",
+    "average"
+   ],
+   "mutates": false,
+   "example": {
+    "vendor": "monolog",
+    "package": "monolog",
+    "average": "monthly",
+    "from": "2012-04-13"
+   },
+   "source": "E5 E16 GET https://packagist.org/packages/monolog/monolog/stats/major/all.json",
+   "verified": true
+  },
+  {
+   "name": "get-package-php-stats",
+   "summary": "Get a time series of installs for a package, split by the PHP version (and HHVM) used by installers.",
+   "method": "GET",
+   "urlTemplate": "/packages/{vendor}/{package}/php-stats/platform/all.json",
+   "params": [
+    {
+     "name": "vendor",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Vendor name",
+     "example": "monolog"
+    },
+    {
+     "name": "package",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Package name",
+     "example": "monolog"
+    },
+    {
+     "name": "average",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Aggregation granularity",
+     "enum": [
+      "daily",
+      "weekly",
+      "monthly"
+     ],
+     "default": "monthly",
+     "example": "monthly"
+    },
+    {
+     "name": "from",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Start date, ISO format YYYY-MM-DD",
+     "example": "2021-05-18"
+    }
+   ],
+   "responseType": "json",
+   "defaultFields": [
+    "labels",
+    "values",
+    "average"
+   ],
+   "mutates": false,
+   "example": {
+    "vendor": "monolog",
+    "package": "monolog",
+    "average": "monthly",
+    "from": "2021-05-18"
+   },
+   "source": "E6 E17 GET https://packagist.org/packages/monolog/monolog/php-stats/platform/all.json",
+   "verified": true
+  },
+  {
+   "name": "get-version-details",
+   "summary": "Get the rendered detail block for one package version by its numeric version id: version number, release date, and requires/suggests/provides/conflicts. Returned as an HTML fragment inside JSON.",
+   "method": "GET",
+   "urlTemplate": "/versions/{id}.json",
+   "params": [
+    {
+     "name": "id",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Numeric version id, as used on package pages",
+     "example": "9642653"
+    }
+   ],
+   "headers": {
+    "x-requested-with": "XMLHttpRequest"
+   },
+   "responseType": "json",
+   "defaultFields": [
+    "content"
+   ],
+   "mutates": false,
+   "example": {
+    "id": "9642653"
+   },
+   "source": "E4 GET https://packagist.org/versions/9642653.json",
+   "verified": true
+  },
+  {
+   "name": "list-dependents",
+   "summary": "List packages that depend on a given package. Can sort by downloads and filter by require or require-dev.",
+   "method": "GET",
+   "urlTemplate": "/packages/{vendor}/{package}/dependents",
+   "params": [
+    {
+     "name": "vendor",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Vendor name",
+     "example": "monolog"
+    },
+    {
+     "name": "package",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Package name",
+     "example": "monolog"
+    },
+    {
+     "name": "order_by",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Sort order",
+     "enum": [
+      "downloads",
+      "none"
+     ],
+     "default": "downloads",
+     "example": "downloads"
+    },
+    {
+     "name": "requires",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Which dependency kind to include",
+     "enum": [
+      "all",
+      "require",
+      "require-dev"
+     ],
+     "default": "all"
+    },
+    {
+     "name": "page",
+     "in": "query",
+     "required": false,
+     "type": "number",
+     "description": "1-based page number (15 per page)",
+     "default": 1
+    }
+   ],
+   "responseType": "html",
+   "extract": {
+    "list": "ul.packages > li.row",
+    "fields": {
+     "name": "h4 a",
+     "url": "h4 a@href",
+     "description": "h4 + p",
+     "requirement": "p.meta",
+     "language": "p.language",
+     "downloads": "span.metadata-block",
+     "stars": "span.metadata-block + span.metadata-block"
+    }
+   },
+   "defaultFields": [
+    "name",
+    "url",
+    "description",
+    "requirement",
+    "downloads",
+    "stars"
+   ],
+   "pagination": {
+    "type": "page",
+    "param": "page"
+   },
+   "mutates": false,
+   "example": {
+    "vendor": "monolog",
+    "package": "monolog",
+    "order_by": "downloads"
+   },
+   "source": "E14 GET https://packagist.org/packages/monolog/monolog/dependents",
+   "verified": true
+  },
+  {
+   "name": "list-suggesters",
+   "summary": "List packages that suggest a given package in their composer.json 'suggest' section.",
+   "method": "GET",
+   "urlTemplate": "/packages/{vendor}/{package}/suggesters",
+   "params": [
+    {
+     "name": "vendor",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Vendor name",
+     "example": "monolog"
+    },
+    {
+     "name": "package",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Package name",
+     "example": "monolog"
+    },
+    {
+     "name": "page",
+     "in": "query",
+     "required": false,
+     "type": "number",
+     "description": "1-based page number (15 per page)",
+     "default": 1
+    }
+   ],
+   "responseType": "html",
+   "extract": {
+    "list": "ul.packages > li.row",
+    "fields": {
+     "name": "h4 a",
+     "url": "h4 a@href",
+     "description": "h4 + p",
+     "language": "p.language",
+     "downloads": "span.metadata-block",
+     "stars": "span.metadata-block + span.metadata-block"
+    }
+   },
+   "defaultFields": [
+    "name",
+    "url",
+    "description",
+    "downloads",
+    "stars"
+   ],
+   "pagination": {
+    "type": "page",
+    "param": "page"
+   },
+   "mutates": false,
+   "example": {
+    "vendor": "monolog",
+    "package": "monolog"
+   },
+   "source": "E18 GET https://packagist.org/packages/monolog/monolog/suggesters",
+   "verified": true
+  },
+  {
+   "name": "list-security-advisories",
+   "summary": "List known security advisories (PKSA id, CVE, affected versions, severity) for a package via the official API.",
+   "method": "GET",
+   "urlTemplate": "/api/security-advisories/",
+   "params": [
+    {
+     "name": "packages",
+     "key": "packages[]",
+     "in": "query",
+     "required": true,
+     "type": "string",
+     "description": "Full package name vendor/package",
+     "example": "monolog/monolog"
+    },
+    {
+     "name": "updatedSince",
+     "in": "query",
+     "required": false,
+     "type": "number",
+     "description": "Only advisories updated after this Unix timestamp"
+    }
+   ],
+   "responseType": "json",
+   "resultPath": "advisories",
+   "mutates": false,
+   "example": {
+    "packages": "monolog/monolog"
+   },
+   "source": "E11 E19 GET https://packagist.org/api/security-advisories/",
+   "verified": true
+  },
+  {
+   "name": "get-security-advisory",
+   "summary": "Get one security advisory by its PKSA id: severity, title, CVE/GHSA ids, affected package and versions, and reporting sources.",
+   "method": "GET",
+   "urlTemplate": "/security-advisories/{advisory_id}",
+   "params": [
+    {
+     "name": "advisory_id",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Packagist advisory id, e.g. PKSA-dw7n-x7f5-zf63",
+     "example": "PKSA-dw7n-x7f5-zf63"
+    }
+   ],
+   "responseType": "html",
+   "extract": {
+    "fields": {
+     "heading": "div.package-item h4",
+     "title": "div.package-item h4 a",
+     "link": "div.package-item h4 a@href",
+     "ids": "div.package-item div.col-md-8 p",
+     "package": "div.package-item a[href^='/packages/']",
+     "details": "div.package-item div.col-md-8",
+     "reported_by": "div.package-item div.col-md-4 p"
+    }
+   },
+   "defaultFields": [
+    "heading",
+    "title",
+    "ids",
+    "package",
+    "details",
+    "reported_by"
+   ],
+   "mutates": false,
+   "example": {
+    "advisory_id": "PKSA-dw7n-x7f5-zf63"
+   },
+   "source": "E20 GET https://packagist.org/security-advisories/PKSA-dw7n-x7f5-zf63",
+   "verified": true
+  },
+  {
+   "name": "list-vendor-packages",
+   "summary": "List all package names published under a vendor, optionally filtered by package type.",
+   "method": "GET",
+   "urlTemplate": "/packages/list.json",
+   "params": [
+    {
+     "name": "vendor",
+     "in": "query",
+     "required": true,
+     "type": "string",
+     "description": "Vendor name, e.g. 'symfony'",
+     "example": "monolog"
+    },
+    {
+     "name": "type",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Package type filter, e.g. library, symfony-bundle, composer-plugin"
+    }
+   ],
+   "responseType": "json",
+   "resultPath": "packageNames",
+   "mutates": false,
+   "example": {
+    "vendor": "monolog"
+   },
+   "source": "E13 E22 GET https://packagist.org/packages/list.json",
+   "verified": true
+  },
+  {
+   "name": "list-popular-packages",
+   "summary": "List the most popular packages on Packagist, paginated.",
+   "method": "GET",
+   "urlTemplate": "/explore/popular.json",
+   "params": [
+    {
+     "name": "per_page",
+     "in": "query",
+     "required": false,
+     "type": "number",
+     "description": "Results per page (max 100)",
+     "default": 15,
+     "example": "5"
+    },
+    {
+     "name": "page",
+     "in": "query",
+     "required": false,
+     "type": "number",
+     "description": "1-based page number",
+     "default": 1
+    }
+   ],
+   "responseType": "json",
+   "resultPath": "packages",
+   "defaultFields": [
+    "name",
+    "description",
+    "url",
+    "downloads",
+    "favers"
+   ],
+   "pagination": {
+    "type": "page",
+    "param": "page"
+   },
+   "mutates": false,
+   "example": {
+    "per_page": "5"
+   },
+   "source": "E12 E26 GET https://packagist.org/explore/popular.json",
+   "verified": true
+  },
+  {
+   "name": "browse-explore",
+   "summary": "Get the Browse page lists, in this order: New Releases (with version), New Packages, Popular Packages and Random Packages.",
+   "method": "GET",
+   "urlTemplate": "/explore/",
+   "params": [],
+   "responseType": "html",
+   "extract": {
+    "list": "section.packages-short li",
+    "fields": {
+     "name": "a",
+     "url": "a@href",
+     "version": "strong",
+     "text": ""
+    }
+   },
+   "defaultFields": [
+    "name",
+    "url",
+    "version",
+    "text"
+   ],
+   "mutates": false,
+   "source": "E25 GET https://packagist.org/explore/",
+   "verified": true
+  },
+  {
+   "name": "list-php-extensions",
+   "summary": "List PHP extension packages that can be installed with PIE, paginated.",
+   "method": "GET",
+   "urlTemplate": "/extensions",
+   "params": [
+    {
+     "name": "page",
+     "in": "query",
+     "required": false,
+     "type": "number",
+     "description": "1-based page number (15 per page)",
+     "default": 1
+    }
+   ],
+   "responseType": "html",
+   "extract": {
+    "list": "ul.packages > li.row",
+    "fields": {
+     "name": "h4 a",
+     "url": "h4 a@href",
+     "description": "h4 + p",
+     "language": "p.language",
+     "downloads": "span.metadata-block",
+     "stars": "span.metadata-block + span.metadata-block"
+    }
+   },
+   "defaultFields": [
+    "name",
+    "url",
+    "description",
+    "language",
+    "downloads",
+    "stars"
+   ],
+   "pagination": {
+    "type": "page",
+    "param": "page"
+   },
+   "mutates": false,
+   "source": "E27 GET https://packagist.org/extensions",
+   "verified": true
+  },
+  {
+   "name": "get-global-statistics",
+   "summary": "Get Packagist-wide totals: packages registered, versions available, and total package installs since 2012.",
+   "method": "GET",
+   "urlTemplate": "/statistics",
+   "params": [],
+   "responseType": "html",
+   "extract": {
+    "fields": {
+     "packages_registered": "dl.dl-horizontal dt + dd",
+     "versions_available": "dl.dl-horizontal dd + dt + dd",
+     "packages_installed": "dl.dl-horizontal dd + dt + dd + dt + dd"
+    }
+   },
+   "defaultFields": [
+    "packages_registered",
+    "versions_available",
+    "packages_installed"
+   ],
+   "mutates": false,
+   "source": "E29 GET https://packagist.org/statistics",
+   "verified": true
+  }
+ ],
+ "blockers": [],
+ "notes": [
+  "Package names are vendor/package. Commands that take them as path params need 'vendor' and 'package' separately, e.g. monolog and monolog.",
+  "search-packages (search.json) and list-popular-packages use 1-based 'page'. search-packages-faceted (Algolia) uses 0-based 'page'.",
+  "In search-packages-faceted, 'filters' is an Algolia filter expression on the facets 'type' and 'tags', e.g. type:library or tags:logging. URL-encode spaces (%20) because the value goes inside an Algolia params string. The Algolia API key in the URL is the site's public search-only key.",
+  "Numbers in HTML-extracted results (downloads, stars, statistics) use spaces as thousands separators, e.g. '598 232 593'.",
+  "Stats endpoints return {labels: [...dates], values: {series: [...numbers]}, average}. The last data point is partial.",
+  "list-security-advisories returns an object keyed by package name, each holding an array of advisories.",
+  "In browse-explore, the 'name' text also contains the version string for New Releases items, e.g. 'imagewize/winespringv1.7.2'.",
+  "Not available: the vendor transparency log needs login; repo.packagist.org/p2/ Composer metadata is blocked by robots.txt. Use get-package for the same data.",
+  "Packagist asks API users to send a User-Agent with contact info and to avoid scheduling jobs exactly on the hour.",
+  "No write commands are included: the only recorded POSTs were the /api/event pageview analytics, which was skipped, and the Algolia search requests, which are reads."
+ ],
+ "dropped": [],
+ "generated": {
+  "by": "clify add",
+  "model": "claude-opus-5-5",
+  "exploredSteps": 30,
+  "recorded": 69,
+  "verifiedAt": "2026-10-18T07:09:17.988Z",
+  "seconds": 266
+ }
+}

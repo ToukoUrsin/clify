@@ -1,0 +1,1025 @@
+{
+ "name": "uniprot",
+ "startUrl": "https://www.uniprot.org/",
+ "origin": "https://www.uniprot.org",
+ "createdAt": "2026-10-18T08:22:14.731Z",
+ "description": "UniProt, the Universal Protein Resource. This CLI wraps the public rest.uniprot.org JSON API to search and fetch UniProtKB protein entries, sequences, publications, version history, taxonomy, keywords, diseases, UniRef clusters and proteomes, plus AlphaFold structure predictions.",
+ "commands": [
+  {
+   "name": "search-proteins",
+   "summary": "Search UniProtKB protein entries with a query; filters such as reviewed or organism go inside the query string",
+   "method": "GET",
+   "urlTemplate": "https://rest.uniprot.org/uniprotkb/search?format=json",
+   "params": [
+    {
+     "name": "query",
+     "in": "query",
+     "required": true,
+     "type": "string",
+     "description": "UniProt query syntax. Free text or field queries joined with AND/OR/NOT, e.g. 'hemoglobin', '(hemoglobin) AND (reviewed:true)', '(hemoglobin) AND (model_organism:9606)', 'gene:HBB AND organism_id:9606",
+     "example": "hemoglobin"
+    },
+    {
+     "name": "api_fields",
+     "key": "fields",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Comma-separated result fields. list-result-fields --database uniprotkb lists the valid names (sent to the site as \"fields\"; clify's own --fields only shapes the output)",
+     "default": "accession,reviewed,id,protein_name,gene_names,organism_name,length"
+    },
+    {
+     "name": "sort",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Sort as '<field> asc|desc'. Sortable fields include accession, id, gene, length, mass, organism_name, protein_name, annotation_score. Example: 'length desc'",
+     "example": "length desc"
+    },
+    {
+     "name": "size",
+     "in": "query",
+     "required": false,
+     "type": "number",
+     "description": "Number of results to return (max 500)",
+     "default": 25
+    }
+   ],
+   "headers": {
+    "Accept": "application/json"
+   },
+   "responseType": "json",
+   "resultPath": "results",
+   "defaultFields": [
+    "primaryAccession",
+    "uniProtkbId",
+    "entryType",
+    "proteinDescription.recommendedName.fullName.value",
+    "genes",
+    "organism.scientificName",
+    "organism.taxonId",
+    "sequence.length"
+   ],
+   "mutates": false,
+   "example": {
+    "query": "(hemoglobin) AND (reviewed:true)"
+   },
+   "source": "E2",
+   "verified": true
+  },
+  {
+   "name": "count-protein-facets",
+   "summary": "Get facet counts (reviewed status, model organism, existence level, annotation score, length bins, etc.) for a UniProtKB query without fetching entries",
+   "method": "GET",
+   "urlTemplate": "https://rest.uniprot.org/uniprotkb/search?size=0&format=json",
+   "params": [
+    {
+     "name": "query",
+     "in": "query",
+     "required": true,
+     "type": "string",
+     "description": "UniProt query, e.g. 'hemoglobin' or '*' for everything",
+     "example": "hemoglobin"
+    },
+    {
+     "name": "facets",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Comma-separated facet names: reviewed, model_organism, proteins_with, existence, annotation_score, length",
+     "default": "reviewed,model_organism,proteins_with,existence,annotation_score,length"
+    }
+   ],
+   "headers": {
+    "Accept": "application/json"
+   },
+   "responseType": "json",
+   "resultPath": "facets",
+   "defaultFields": [
+    "name",
+    "label",
+    "values"
+   ],
+   "mutates": false,
+   "example": {
+    "query": "hemoglobin"
+   },
+   "source": "E2",
+   "verified": true
+  },
+  {
+   "name": "get-protein",
+   "summary": "Get the full UniProtKB entry (names, genes, organism, function comments, features, cross-references, sequence) for an accession",
+   "method": "GET",
+   "urlTemplate": "https://rest.uniprot.org/uniprotkb/{accession}?format=json",
+   "params": [
+    {
+     "name": "accession",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "UniProtKB accession, e.g. P68871",
+     "example": "P68871"
+    },
+    {
+     "name": "api_fields",
+     "key": "fields",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Optional comma-separated fields that limit the returned entry, e.g. 'accession,protein_name,cc_function,sequence' (sent to the site as \"fields\"; clify's own --fields only shapes the output)"
+    }
+   ],
+   "headers": {
+    "Accept": "application/json"
+   },
+   "responseType": "json",
+   "defaultFields": [
+    "primaryAccession",
+    "uniProtkbId",
+    "entryType",
+    "proteinDescription.recommendedName.fullName.value",
+    "genes",
+    "organism.scientificName",
+    "proteinExistence",
+    "sequence.length"
+   ],
+   "mutates": false,
+   "example": {
+    "accession": "P68871"
+   },
+   "source": "E7",
+   "verified": true
+  },
+  {
+   "name": "download-protein",
+   "summary": "Download a UniProtKB entry as plain text: a FASTA sequence, the flat file, or GFF features",
+   "method": "GET",
+   "urlTemplate": "https://rest.uniprot.org/uniprotkb/{accession}.{format}",
+   "params": [
+    {
+     "name": "accession",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "UniProtKB accession",
+     "example": "P68871"
+    },
+    {
+     "name": "format",
+     "in": "path",
+     "required": false,
+     "type": "string",
+     "description": "Download format: fasta (sequence), txt (UniProt flat file) or gff (features)",
+     "enum": [
+      "fasta",
+      "txt",
+      "gff"
+     ],
+     "default": "fasta"
+    }
+   ],
+   "responseType": "text",
+   "mutates": false,
+   "example": {
+    "accession": "P68871",
+    "format": "fasta"
+   },
+   "source": "E34 GET https://rest.uniprot.org/uniprotkb/P68871.fasta",
+   "verified": true
+  },
+  {
+   "name": "get-protein-gene-centric",
+   "summary": "Get the gene-centric view of a protein: the canonical protein of its proteome plus related isoforms and fragments from the same gene",
+   "method": "GET",
+   "urlTemplate": "https://rest.uniprot.org/genecentric/search?query=accession%3A{accession}&format=json",
+   "params": [
+    {
+     "name": "accession",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "UniProtKB accession",
+     "example": "P68871"
+    }
+   ],
+   "headers": {
+    "Accept": "application/json"
+   },
+   "responseType": "json",
+   "resultPath": "results",
+   "defaultFields": [
+    "proteomeId",
+    "canonicalProtein.id",
+    "canonicalProtein.proteinName",
+    "canonicalProtein.geneName",
+    "canonicalProtein.sequence.length",
+    "relatedProteins"
+   ],
+   "mutates": false,
+   "example": {
+    "accession": "P68871"
+   },
+   "source": "E16",
+   "verified": true
+  },
+  {
+   "name": "get-protein-history",
+   "summary": "List all historical versions of a UniProtKB entry (UniSave) with release dates and sequence versions",
+   "method": "GET",
+   "urlTemplate": "https://rest.uniprot.org/unisave/{accession}?format=json",
+   "params": [
+    {
+     "name": "accession",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "UniProtKB accession",
+     "example": "P68871"
+    }
+   ],
+   "responseType": "json",
+   "resultPath": "results",
+   "defaultFields": [
+    "accession",
+    "entryVersion",
+    "sequenceVersion",
+    "database",
+    "name",
+    "firstRelease",
+    "firstReleaseDate",
+    "lastReleaseDate"
+   ],
+   "mutates": false,
+   "example": {
+    "accession": "P68871"
+   },
+   "source": "E19 GET https://rest.uniprot.org/unisave/P68871",
+   "verified": true
+  },
+  {
+   "name": "list-result-fields",
+   "summary": "List the valid result field names (for --fields) and the sortable fields of a UniProt database",
+   "method": "GET",
+   "urlTemplate": "https://rest.uniprot.org/configure/{database}/result-fields",
+   "params": [
+    {
+     "name": "database",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Database name",
+     "enum": [
+      "uniprotkb",
+      "taxonomy",
+      "keywords",
+      "diseases",
+      "uniref",
+      "proteomes"
+     ],
+     "example": "uniprotkb"
+    }
+   ],
+   "responseType": "json",
+   "defaultFields": [
+    "groupName",
+    "id",
+    "fields"
+   ],
+   "mutates": false,
+   "example": {
+    "database": "uniprotkb"
+   },
+   "source": "E3 E22 E23 E25 E27 E28 GET https://rest.uniprot.org/configure/uniprotkb/result-fields",
+   "verified": true
+  },
+  {
+   "name": "list-protein-search-fields",
+   "summary": "List the query field terms usable in UniProtKB queries (e.g. accession, gene, organism_id, reviewed), with examples",
+   "method": "GET",
+   "urlTemplate": "https://rest.uniprot.org/configure/uniprotkb/search-fields",
+   "params": [],
+   "responseType": "json",
+   "defaultFields": [
+    "id",
+    "label",
+    "term",
+    "dataType",
+    "example",
+    "items"
+   ],
+   "mutates": false,
+   "source": "E13 GET https://rest.uniprot.org/configure/uniprotkb/search-fields",
+   "verified": true
+  },
+  {
+   "name": "search-taxonomy",
+   "summary": "Search taxonomy nodes by name, or list children/descendants with parent:<taxId> or ancestor:<taxId>",
+   "method": "GET",
+   "urlTemplate": "https://rest.uniprot.org/taxonomy/search?format=json",
+   "params": [
+    {
+     "name": "query",
+     "in": "query",
+     "required": true,
+     "type": "string",
+     "description": "Name text (e.g. 'mouse') or field query such as 'parent:9606' or 'ancestor:9605'",
+     "example": "mouse"
+    },
+    {
+     "name": "api_fields",
+     "key": "fields",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Comma-separated result fields (sent to the site as \"fields\"; clify's own --fields only shapes the output)",
+     "default": "id,common_name,scientific_name,lineage,links"
+    },
+    {
+     "name": "size",
+     "in": "query",
+     "required": false,
+     "type": "number",
+     "description": "Number of results (max 500)",
+     "default": 25
+    }
+   ],
+   "headers": {
+    "Accept": "application/json"
+   },
+   "responseType": "json",
+   "resultPath": "results",
+   "defaultFields": [
+    "taxonId",
+    "scientificName",
+    "commonName",
+    "rank",
+    "lineage"
+   ],
+   "mutates": false,
+   "example": {
+    "query": "mouse"
+   },
+   "source": "E5",
+   "verified": true
+  },
+  {
+   "name": "get-taxonomy",
+   "summary": "Get a taxonomy node by NCBI taxon id: names, rank, parent, full lineage, links and protein/proteome counts",
+   "method": "GET",
+   "urlTemplate": "https://rest.uniprot.org/taxonomy/{taxonId}?format=json",
+   "params": [
+    {
+     "name": "taxonId",
+     "in": "path",
+     "required": true,
+     "type": "number",
+     "description": "NCBI taxonomy id, e.g. 9606 for human",
+     "example": "9606"
+    }
+   ],
+   "headers": {
+    "Accept": "application/json"
+   },
+   "responseType": "json",
+   "defaultFields": [
+    "taxonId",
+    "scientificName",
+    "commonName",
+    "mnemonic",
+    "rank",
+    "parent",
+    "lineage",
+    "statistics"
+   ],
+   "mutates": false,
+   "example": {
+    "taxonId": "9606"
+   },
+   "source": "E8",
+   "verified": true
+  },
+  {
+   "name": "search-keywords",
+   "summary": "Search UniProt controlled keywords (KW-xxxx) by name",
+   "method": "GET",
+   "urlTemplate": "https://rest.uniprot.org/keywords/search?format=json",
+   "params": [
+    {
+     "name": "query",
+     "in": "query",
+     "required": true,
+     "type": "string",
+     "description": "Keyword text, e.g. 'heme'",
+     "example": "heme"
+    },
+    {
+     "name": "api_fields",
+     "key": "fields",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Comma-separated result fields (sent to the site as \"fields\"; clify's own --fields only shapes the output)",
+     "default": "id,name,category,gene_ontologies"
+    },
+    {
+     "name": "size",
+     "in": "query",
+     "required": false,
+     "type": "number",
+     "description": "Number of results",
+     "default": 25
+    }
+   ],
+   "headers": {
+    "Accept": "application/json"
+   },
+   "responseType": "json",
+   "resultPath": "results",
+   "defaultFields": [
+    "keyword.id",
+    "keyword.name",
+    "category",
+    "geneOntologies"
+   ],
+   "mutates": false,
+   "example": {
+    "query": "heme"
+   },
+   "source": "E9",
+   "verified": true
+  },
+  {
+   "name": "get-keyword",
+   "summary": "Get a UniProt keyword: definition, synonyms, parent hierarchy, category and protein counts",
+   "method": "GET",
+   "urlTemplate": "https://rest.uniprot.org/keywords/{keywordId}?format=json",
+   "params": [
+    {
+     "name": "keywordId",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Keyword id, e.g. KW-0349",
+     "example": "KW-0349"
+    }
+   ],
+   "headers": {
+    "Accept": "application/json"
+   },
+   "responseType": "json",
+   "defaultFields": [
+    "keyword",
+    "definition",
+    "synonyms",
+    "category",
+    "parents",
+    "statistics"
+   ],
+   "mutates": false,
+   "example": {
+    "keywordId": "KW-0349"
+   },
+   "source": "E24",
+   "verified": true
+  },
+  {
+   "name": "search-diseases",
+   "summary": "Search UniProt human disease entries (DI-xxxxx) by name",
+   "method": "GET",
+   "urlTemplate": "https://rest.uniprot.org/diseases/search?format=json",
+   "params": [
+    {
+     "name": "query",
+     "in": "query",
+     "required": true,
+     "type": "string",
+     "description": "Disease text, e.g. 'thalassemia'",
+     "example": "thalassemia"
+    },
+    {
+     "name": "api_fields",
+     "key": "fields",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Comma-separated result fields (sent to the site as \"fields\"; clify's own --fields only shapes the output)",
+     "default": "id,name,keywords"
+    },
+    {
+     "name": "size",
+     "in": "query",
+     "required": false,
+     "type": "number",
+     "description": "Number of results",
+     "default": 25
+    }
+   ],
+   "headers": {
+    "Accept": "application/json"
+   },
+   "responseType": "json",
+   "resultPath": "results",
+   "defaultFields": [
+    "id",
+    "name",
+    "acronym",
+    "keywords"
+   ],
+   "mutates": false,
+   "example": {
+    "query": "thalassemia"
+   },
+   "source": "E10",
+   "verified": true
+  },
+  {
+   "name": "get-disease",
+   "summary": "Get a disease entry: definition, alternative names, cross-references (MIM, MedGen, etc.), keywords and protein counts",
+   "method": "GET",
+   "urlTemplate": "https://rest.uniprot.org/diseases/{diseaseId}?format=json",
+   "params": [
+    {
+     "name": "diseaseId",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Disease id, e.g. DI-01275",
+     "example": "DI-01275"
+    }
+   ],
+   "headers": {
+    "Accept": "application/json"
+   },
+   "responseType": "json",
+   "defaultFields": [
+    "id",
+    "name",
+    "acronym",
+    "definition",
+    "alternativeNames",
+    "crossReferences",
+    "keywords",
+    "statistics"
+   ],
+   "mutates": false,
+   "example": {
+    "diseaseId": "DI-01275"
+   },
+   "source": "E26",
+   "verified": true
+  },
+  {
+   "name": "search-uniref",
+   "summary": "Search UniRef sequence clusters (100%, 90% and 50% identity); filter identity in the query, e.g. 'hemoglobin AND identity:0.9'",
+   "method": "GET",
+   "urlTemplate": "https://rest.uniprot.org/uniref/search?format=json",
+   "params": [
+    {
+     "name": "query",
+     "in": "query",
+     "required": true,
+     "type": "string",
+     "description": "UniRef query; add 'AND identity:1.0|0.9|0.5' to restrict the cluster level",
+     "example": "hemoglobin"
+    },
+    {
+     "name": "api_fields",
+     "key": "fields",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Comma-separated result fields (sent to the site as \"fields\"; clify's own --fields only shapes the output)",
+     "default": "id,name,types,count,organism,length,identity"
+    },
+    {
+     "name": "size",
+     "in": "query",
+     "required": false,
+     "type": "number",
+     "description": "Number of results",
+     "default": 25
+    }
+   ],
+   "headers": {
+    "Accept": "application/json"
+   },
+   "responseType": "json",
+   "resultPath": "results",
+   "defaultFields": [
+    "id",
+    "name",
+    "entryType",
+    "memberCount",
+    "organismCount",
+    "commonTaxon.scientificName",
+    "representativeMember.sequenceLength",
+    "updated"
+   ],
+   "mutates": false,
+   "example": {
+    "query": "hemoglobin"
+   },
+   "source": "E11",
+   "verified": true
+  },
+  {
+   "name": "search-proteomes",
+   "summary": "Search proteomes by organism name; filter in the query, e.g. 'human AND proteome_type:1' for reference proteomes",
+   "method": "GET",
+   "urlTemplate": "https://rest.uniprot.org/proteomes/search?format=json",
+   "params": [
+    {
+     "name": "query",
+     "in": "query",
+     "required": true,
+     "type": "string",
+     "description": "Proteome query, e.g. 'human' or 'organism_id:9606'",
+     "example": "human"
+    },
+    {
+     "name": "api_fields",
+     "key": "fields",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Comma-separated result fields (sent to the site as \"fields\"; clify's own --fields only shapes the output)",
+     "default": "upid,organism,organism_id,protein_count,busco,cpd"
+    },
+    {
+     "name": "size",
+     "in": "query",
+     "required": false,
+     "type": "number",
+     "description": "Number of results",
+     "default": 25
+    }
+   ],
+   "headers": {
+    "Accept": "application/json"
+   },
+   "responseType": "json",
+   "resultPath": "results",
+   "defaultFields": [
+    "id",
+    "taxonomy.scientificName",
+    "taxonomy.taxonId",
+    "proteomeType",
+    "proteinCount",
+    "proteomeCompletenessReport"
+   ],
+   "mutates": false,
+   "example": {
+    "query": "human"
+   },
+   "source": "E12",
+   "verified": true
+  },
+  {
+   "name": "get-proteome",
+   "summary": "Get a proteome by UPID: description, taxonomy, type, and components (chromosomes) with protein counts",
+   "method": "GET",
+   "urlTemplate": "https://rest.uniprot.org/proteomes/{upid}?format=json",
+   "params": [
+    {
+     "name": "upid",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Proteome id, e.g. UP000005640 (human reference proteome)",
+     "example": "UP000005640"
+    }
+   ],
+   "headers": {
+    "Accept": "application/json"
+   },
+   "responseType": "json",
+   "defaultFields": [
+    "id",
+    "taxonomy",
+    "proteomeType",
+    "modified",
+    "proteinCount",
+    "components",
+    "proteomeCompletenessReport",
+    "description"
+   ],
+   "mutates": false,
+   "example": {
+    "upid": "UP000005640"
+   },
+   "source": "E30",
+   "verified": true
+  },
+  {
+   "name": "get-alphafold-prediction",
+   "summary": "Get the AlphaFold predicted structure for a UniProt accession: confidence (pLDDT) and download URLs for PDB, CIF and PAE files",
+   "method": "GET",
+   "urlTemplate": "https://alphafold.ebi.ac.uk/api/prediction/{accession}",
+   "params": [
+    {
+     "name": "accession",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "UniProtKB accession",
+     "example": "P68871"
+    }
+   ],
+   "responseType": "json",
+   "defaultFields": [
+    "entryId",
+    "uniprotAccession",
+    "uniprotDescription",
+    "globalMetricValue",
+    "latestVersion",
+    "pdbUrl",
+    "cifUrl",
+    "paeImageUrl"
+   ],
+   "mutates": false,
+   "example": {
+    "accession": "P68871"
+   },
+   "source": "E21 GET https://alphafold.ebi.ac.uk/api/prediction/P68871",
+   "verified": true
+  }
+ ],
+ "blockers": [],
+ "notes": [
+  "Everything is a public read-only API at rest.uniprot.org. No login is needed.",
+  "Website facet filters become query clauses. Examples: reviewed:true (Swiss-Prot), model_organism:9606, organism_id:10090, existence:1, annotation_score:5, length:[100 TO 500]. Combine them with AND, e.g. '(hemoglobin) AND (reviewed:true)'.",
+  "Sort syntax for the REST API is '<field> asc|desc', e.g. 'length desc'. The website URL form sort=length&dir=descend does not work against the API.",
+  "Pagination is cursor-based. The next-page URL is returned in the HTTP 'Link' response header, not in the JSON body. Use --size (max 500) and narrow the query rather than paging.",
+  "Use list-result-fields to find valid --fields names and list-protein-search-fields to find query terms. Use suggest-terms to resolve keyword, organism or taxonomy names to ids.",
+  "Ids chain between commands: search-proteins primaryAccession \u2192 get-protein, download-protein, list-protein-publications, get-protein-history, get-alphafold-prediction. The organism.taxonId field \u2192 get-taxonomy. search-uniref id \u2192 get-uniref-cluster and list-uniref-members. search-proteomes id \u2192 get-proteome.",
+  "BLAST, ID mapping and basket features were not recorded, so they are not covered."
+ ],
+ "dropped": [
+  {
+   "name": "list-protein-publications",
+   "summary": "List the literature cited for or mapped to a UniProtKB entry, with optional facet filtering",
+   "method": "GET",
+   "urlTemplate": "https://rest.uniprot.org/uniprotkb/{accession}/publications",
+   "params": [
+    {
+     "name": "accession",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "UniProtKB accession",
+     "example": "P68871"
+    },
+    {
+     "name": "facetFilter",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Facet filter expression, e.g. '(types:\"0\")'. Facets: types, categories, is_large_scale",
+     "example": "(types:\"0\")"
+    },
+    {
+     "name": "size",
+     "in": "query",
+     "required": false,
+     "type": "number",
+     "description": "Number of publications to return",
+     "default": 25
+    }
+   ],
+   "headers": {
+    "Accept": "application/json"
+   },
+   "responseType": "json",
+   "resultPath": "results",
+   "defaultFields": [
+    "citation.id",
+    "citation.title",
+    "citation.authors",
+    "citation.journal",
+    "citation.publicationDate",
+    "citation.citationCrossReferences",
+    "references"
+   ],
+   "mutates": false,
+   "example": {
+    "accession": "P68871"
+   },
+   "source": "E4",
+   "verified": false,
+   "verifyNote": "HTTP 500 (HTTP 500)"
+  },
+  {
+   "name": "get-protein-accession-events",
+   "summary": "Get the accession status events of an entry (merges, replacements, deletions with reasons)",
+   "method": "GET",
+   "urlTemplate": "https://rest.uniprot.org/unisave/{accession}/status",
+   "params": [
+    {
+     "name": "accession",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "UniProtKB accession",
+     "example": "P68871"
+    }
+   ],
+   "headers": {
+    "Accept": "application/json"
+   },
+   "responseType": "json",
+   "resultPath": "events",
+   "defaultFields": [
+    "targetAccession",
+    "eventType",
+    "release",
+    "deletedReason"
+   ],
+   "mutates": false,
+   "example": {
+    "accession": "P68871"
+   },
+   "source": "E20",
+   "verified": false,
+   "verifyNote": "HTTP 500 (HTTP 500)"
+  },
+  {
+   "name": "group-proteins-by-keyword",
+   "summary": "Group the results of a UniProtKB query by keyword category, with counts; drill down by passing a group id as parent",
+   "method": "GET",
+   "urlTemplate": "https://rest.uniprot.org/uniprotkb/groups/keyword",
+   "params": [
+    {
+     "name": "query",
+     "in": "query",
+     "required": true,
+     "type": "string",
+     "description": "UniProt query, e.g. '(hemoglobin) AND (reviewed:true) AND (model_organism:10090)'",
+     "example": "(hemoglobin) AND (reviewed:true) AND (model_organism:10090)"
+    },
+    {
+     "name": "parent",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Keyword group id to expand (from a previous result with expandable=true), e.g. KW-9999"
+    }
+   ],
+   "headers": {
+    "Accept": "application/json"
+   },
+   "responseType": "json",
+   "resultPath": "groups",
+   "defaultFields": [
+    "id",
+    "label",
+    "count",
+    "expandable"
+   ],
+   "mutates": false,
+   "example": {
+    "query": "(hemoglobin) AND (reviewed:true) AND (model_organism:10090)"
+   },
+   "source": "E14",
+   "verified": false,
+   "verifyNote": "HTTP 500 (HTTP 500)"
+  },
+  {
+   "name": "suggest-terms",
+   "summary": "Autocomplete controlled-vocabulary terms (keywords, organisms, taxonomy) and return their ids for use in queries",
+   "method": "GET",
+   "urlTemplate": "https://rest.uniprot.org/suggester",
+   "params": [
+    {
+     "name": "dict",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Dictionary to search",
+     "enum": [
+      "keyword",
+      "organism",
+      "taxonomy"
+     ],
+     "default": "keyword"
+    },
+    {
+     "name": "query",
+     "in": "query",
+     "required": true,
+     "type": "string",
+     "description": "Partial term text",
+     "example": "heme"
+    }
+   ],
+   "headers": {
+    "Accept": "application/json"
+   },
+   "responseType": "json",
+   "resultPath": "suggestions",
+   "defaultFields": [
+    "value",
+    "id"
+   ],
+   "mutates": false,
+   "example": {
+    "dict": "keyword",
+    "query": "heme"
+   },
+   "source": "E15",
+   "verified": false,
+   "verifyNote": "HTTP 500 (HTTP 500)"
+  },
+  {
+   "name": "get-uniref-cluster",
+   "summary": "Get a UniRef cluster summary: representative member and its sequence, common taxon, member and organism counts",
+   "method": "GET",
+   "urlTemplate": "https://rest.uniprot.org/uniref/{clusterId}/light",
+   "params": [
+    {
+     "name": "clusterId",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "UniRef cluster id, e.g. UniRef100_A0A017HFU3 or UniRef90_P68871",
+     "example": "UniRef100_A0A017HFU3"
+    }
+   ],
+   "headers": {
+    "Accept": "application/json"
+   },
+   "responseType": "json",
+   "defaultFields": [
+    "id",
+    "name",
+    "entryType",
+    "commonTaxon",
+    "memberCount",
+    "organismCount",
+    "representativeMember",
+    "members"
+   ],
+   "mutates": false,
+   "example": {
+    "clusterId": "UniRef100_A0A017HFU3"
+   },
+   "source": "E29",
+   "verified": false,
+   "verifyNote": "HTTP 500 (HTTP 500)"
+  },
+  {
+   "name": "list-uniref-members",
+   "summary": "List the member sequences of a UniRef cluster",
+   "method": "GET",
+   "urlTemplate": "https://rest.uniprot.org/uniref/{clusterId}/members",
+   "params": [
+    {
+     "name": "clusterId",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "UniRef cluster id",
+     "example": "UniRef100_A0A017HFU3"
+    },
+    {
+     "name": "size",
+     "in": "query",
+     "required": false,
+     "type": "number",
+     "description": "Number of members",
+     "default": 25
+    }
+   ],
+   "headers": {
+    "Accept": "application/json"
+   },
+   "responseType": "json",
+   "resultPath": "results",
+   "defaultFields": [
+    "memberId",
+    "memberIdType",
+    "accessions",
+    "proteinName",
+    "organismName",
+    "organismTaxId",
+    "sequenceLength",
+    "seed"
+   ],
+   "mutates": false,
+   "example": {
+    "clusterId": "UniRef100_A0A017HFU3"
+   },
+   "source": "E6",
+   "verified": false,
+   "verifyNote": "HTTP 500 (HTTP 500)"
+  }
+ ],
+ "generated": {
+  "by": "clify add",
+  "model": "claude-opus-5-5",
+  "exploredSteps": 30,
+  "recorded": 172,
+  "verifiedAt": "2026-10-18T08:25:23.226Z",
+  "seconds": 395
+ }
+}

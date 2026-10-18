@@ -1,0 +1,354 @@
+{
+ "name": "cordis-europa",
+ "startUrl": "https://cordis.europa.eu/",
+ "origin": "https://cordis.europa.eu",
+ "createdAt": "2026-10-18T08:21:29.645Z",
+ "description": "CORDIS (EU research results portal): look up EU-funded research projects and their reports, deliverables, OpenAIRE publications, Results-in-Brief and news articles, browse news and domain-of-application listings, and run keyword searches over the Projects Map data.",
+ "commands": [
+  {
+   "name": "get-project",
+   "summary": "Get the full fact sheet of an EU research project (Horizon Europe, H2020, FP7\u2026) as JSON, looked up by grant agreement ID",
+   "method": "GET",
+   "urlTemplate": "/project/id/{id}?format=json",
+   "params": [
+    {
+     "name": "id",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Grant agreement / project ID, e.g. 101070320",
+     "example": "101070320"
+    }
+   ],
+   "responseType": "json",
+   "defaultFields": [
+    "id",
+    "rcn",
+    "acronym",
+    "title",
+    "teaser",
+    "startDate",
+    "endDate",
+    "status",
+    "ecMaxContribution",
+    "totalCost"
+   ],
+   "mutates": false,
+   "example": {
+    "id": "101070320"
+   },
+   "source": "E18",
+   "verified": true
+  },
+  {
+   "name": "get-project-reporting",
+   "summary": "Get a project's periodic or final report summary: context and objectives, work performed, and results so far",
+   "method": "GET",
+   "urlTemplate": "/project/id/{id}/reporting",
+   "params": [
+    {
+     "name": "id",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Grant agreement / project ID",
+     "example": "101070320"
+    }
+   ],
+   "responseType": "html",
+   "extract": {
+    "list": "article.col-12.col-lg-8 > div.c-collapse.c-selector-collapse",
+    "fields": {
+     "section": "span.c-collapse__title",
+     "text": "div.c-article__text"
+    }
+   },
+   "defaultFields": [
+    "section",
+    "text"
+   ],
+   "mutates": false,
+   "example": {
+    "id": "101070320"
+   },
+   "source": "E22 GET https://cordis.europa.eu/project/id/{n}/reporting",
+   "verified": true
+  },
+  {
+   "name": "list-project-deliverables",
+   "summary": "List a project's public deliverables, data management plans and publications, with download links (from the project's Results tab)",
+   "method": "GET",
+   "urlTemplate": "/project/id/{id}/results",
+   "params": [
+    {
+     "name": "id",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Grant agreement / project ID",
+     "example": "101070320"
+    }
+   ],
+   "responseType": "html",
+   "extract": {
+    "list": "div.c-collapse__content > a.noDescription",
+    "fields": {
+     "title": "",
+     "url": "@href"
+    }
+   },
+   "defaultFields": [
+    "title",
+    "url"
+   ],
+   "mutates": false,
+   "example": {
+    "id": "101070320"
+   },
+   "source": "E21 GET https://cordis.europa.eu/project/id/{n}/results",
+   "verified": true
+  },
+  {
+   "name": "get-project-openaire",
+   "summary": "Get the publications, datasets, software and other research outputs that OpenAIRE links to a project",
+   "method": "GET",
+   "urlTemplate": "/api/details/openaire?paramType=id",
+   "params": [
+    {
+     "name": "project_id",
+     "key": "rcn",
+     "in": "query",
+     "required": true,
+     "type": "string",
+     "description": "Grant agreement / project ID (sent as rcn together with paramType=id)",
+     "example": "101070320"
+    }
+   ],
+   "responseType": "json",
+   "resultPath": "payload",
+   "mutates": false,
+   "example": {
+    "project_id": "101070320"
+   },
+   "source": "E3 GET https://cordis.europa.eu/api/details/openaire",
+   "verified": true
+  },
+  {
+   "name": "get-result-report",
+   "summary": "Get a result/report record as JSON (periodic report summary, work performed, final results, related project), looked up by its RCN",
+   "method": "GET",
+   "urlTemplate": "/result/rcn/{rcn}/en?format=json",
+   "params": [
+    {
+     "name": "rcn",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "CORDIS record number (RCN) of the result, e.g. 1169591",
+     "example": "1169591"
+    }
+   ],
+   "responseType": "json",
+   "defaultFields": [
+    "rcn",
+    "id",
+    "title",
+    "reportTypeDescription",
+    "periodFrom",
+    "periodTo",
+    "summary",
+    "finalResults"
+   ],
+   "mutates": false,
+   "example": {
+    "rcn": "1169591"
+   },
+   "source": "E15 GET https://cordis.europa.eu/result/rcn/{n}/en",
+   "verified": true
+  },
+  {
+   "name": "get-article",
+   "summary": "Get a CORDIS article (news, Results in Brief, Ask an expert\u2026) as JSON, including body, keywords and related projects/articles",
+   "method": "GET",
+   "urlTemplate": "/article/id/{id}?format=json",
+   "params": [
+    {
+     "name": "id",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Article id with slug as it appears in article URLs, e.g. 467900-can-birds-understand-the-songs-of-other-species",
+     "example": "467900-can-birds-understand-the-songs-of-other-species"
+    }
+   ],
+   "responseType": "json",
+   "defaultFields": [
+    "rcn",
+    "id",
+    "title",
+    "teaser",
+    "keywords",
+    "contentCreationDate",
+    "body",
+    "relations.associations"
+   ],
+   "mutates": false,
+   "example": {
+    "id": "467900-can-birds-understand-the-songs-of-other-species"
+   },
+   "source": "E14 GET https://cordis.europa.eu/article/id/467900-can-birds-understand-the-songs-of-other-species",
+   "verified": true
+  },
+  {
+   "name": "list-news",
+   "summary": "List the latest CORDIS news articles shown on the news hub, by section (Scientific advances, Ask an expert\u2026)",
+   "method": "GET",
+   "urlTemplate": "/news",
+   "params": [],
+   "responseType": "html",
+   "extract": {
+    "list": "a.c-card",
+    "fields": {
+     "title": "span.c-card__main-link",
+     "section": "span.c-card__label",
+     "type": "div.c-card__caption",
+     "date": "p.c-card__date",
+     "url": "@href"
+    }
+   },
+   "defaultFields": [
+    "title",
+    "section",
+    "date",
+    "url"
+   ],
+   "mutates": false,
+   "source": "E24 GET https://cordis.europa.eu/news",
+   "verified": true
+  },
+  {
+   "name": "list-domain-articles",
+   "summary": "List recent articles for a domain of application (Energy, Health, Digital Economy, Climate Change and Environment, \u2026)",
+   "method": "GET",
+   "urlTemplate": "/domain-of-application/{domain}",
+   "params": [
+    {
+     "name": "domain",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Domain slug, e.g. energy, digital-economy, climate-change-and-environment (the lowercase, hyphenated domain name)",
+     "example": "energy"
+    }
+   ],
+   "responseType": "html",
+   "extract": {
+    "list": "a.c-card-horizontal-clickable",
+    "fields": {
+     "title": "@title",
+     "url": "@href"
+    }
+   },
+   "defaultFields": [
+    "title",
+    "url"
+   ],
+   "mutates": false,
+   "example": {
+    "domain": "energy"
+   },
+   "source": "E25 GET https://cordis.europa.eu/domain-of-application/energy",
+   "verified": true
+  },
+  {
+   "name": "search-projects-map",
+   "summary": "Keyword search over EU-funded projects and participating organisations (Projects Map data): returns hit counts plus organisations with address, coordinates and their projects (budget, dates, scheme); ",
+   "method": "POST",
+   "urlTemplate": "/datalab/visualisations/p2co/asset/getParallelResults.php",
+   "params": [
+    {
+     "name": "query",
+     "in": "body",
+     "required": true,
+     "type": "string",
+     "description": "Free-text keyword(s), e.g. hydrogen",
+     "example": "hydrogen"
+    }
+   ],
+   "bodyTemplate": {
+    "query": "{query}"
+   },
+   "bodyEncoding": "form",
+   "headers": {
+    "X-Requested-With": "XMLHttpRequest"
+   },
+   "responseType": "json",
+   "mutates": false,
+   "example": {
+    "query": "hydrogen"
+   },
+   "source": "E16",
+   "verified": true
+  },
+  {
+   "name": "get-data-extraction-api-spec",
+   "summary": "Get the OpenAPI spec of the CORDIS Data Extraction Tool API (bulk extractions; using the API needs a personal API key)",
+   "method": "GET",
+   "urlTemplate": "/dataextractions/api-docs",
+   "params": [],
+   "responseType": "json",
+   "resultPath": "paths",
+   "mutates": false,
+   "source": "E12 GET https://cordis.europa.eu/dataextractions/api-docs",
+   "verified": true
+  }
+ ],
+ "blockers": [],
+ "notes": [
+  "robots.txt disallows /search and /programme/id/*, so the site's main keyword search, its filters, sort orders, pagination and framework-programme pages are not exposed. Use search-projects-map for keyword search instead.",
+  "search-projects-map returns two fields, 'number' and 'content'. Both are JSON-encoded strings, so parse them a second time. 'number' holds totals and budget/date ranges. 'content' maps organisation IDs to {name, country, city, lat, lon, projects{projectId: {...}}}.",
+  "The web app also sent search-projects-map queries such as 'hydrogen&&&2' and 'hydrogen&&&3' to get further result chunks or views. To try these, append '&&&N' to --query.",
+  "IDs: projects use the grant agreement ID (e.g. 101070320). Result reports use an RCN (e.g. 1169591), found in a project's relations or on its reporting page. Articles use 'rcn-slug' ids (e.g. 467900-can-birds-understand-the-songs-of-other-species), found in list-news, list-domain-articles or a project's relations.",
+  "Project fact sheets can also be exported as XML (?format=xml) and fetched in other languages at /project/id/{id}/{lang} (de, en, es, fr, it, pl).",
+  "Bulk datasets of all Horizon Europe and H2020 projects (CSV/JSON/XML) are on data.europa.eu, not on CORDIS itself.",
+  "The Data Extraction Tool endpoints (/api/dataextractions/*) need a personal API key from a CORDIS account, so they are not wrapped here.",
+  "The SPARQL endpoint (EURIO Knowledge Graph) exists, but no query was recorded, so it is not wrapped.",
+  "Not wrapped because the recording did not give enough detail: per-project news (/project/id/{id}/news) and the thematic-packs listing.",
+  "get-project-widget is based only on the explorer's summary: its exact parameters and response were not recorded.",
+  "get-project and list-domain-articles were not fully verified against the recording. For get-project, only the HTML fact sheet's structure was recorded, so the JSON fields of the export are unknown. For list-domain-articles, the extract selectors come from a truncated page outline."
+ ],
+ "dropped": [
+  {
+   "name": "get-project-widget",
+   "summary": "Get the embeddable project widget data for a project (JSONP, returned as raw text)",
+   "method": "GET",
+   "urlTemplate": "/datalab/visualisations/widget/api/renderWidget.php",
+   "params": [
+    {
+     "name": "pid",
+     "in": "query",
+     "required": true,
+     "type": "string",
+     "description": "Grant agreement / project ID",
+     "example": "101070320"
+    }
+   ],
+   "responseType": "text",
+   "mutates": false,
+   "example": {
+    "pid": "101070320"
+   },
+   "source": "",
+   "verified": false,
+   "verifyNote": "Returns error WID-004 'Widget type unsupported'. It needs a widget type parameter, and no valid value is known."
+  }
+ ],
+ "generated": {
+  "by": "clify add",
+  "model": "claude-opus-5-5",
+  "exploredSteps": 20,
+  "recorded": 87,
+  "verifiedAt": "2026-10-18T08:22:55.043Z",
+  "seconds": 298
+ }
+}

@@ -1,0 +1,322 @@
+{
+ "name": "yle",
+ "startUrl": "https://yle.fi/news",
+ "origin": "https://yle.fi",
+ "createdAt": "2026-10-18T08:38:14.635Z",
+ "description": "Yle (Finnish public broadcaster) News in English: search articles and Areena programs, read articles, browse latest, front-page and topic news lists, and look up video metadata.",
+ "commands": [
+  {
+   "name": "search",
+   "summary": "Keyword search across Yle articles and Areena programs, with filters for type, service, language and author",
+   "method": "GET",
+   "urlTemplate": "https://yle-fi-search.api.yle.fi/v1/search?app_id=hakuylefi_v2_prod&app_key=4c1422b466ee676e03c4ba9866c0921f&uiLanguage=en",
+   "params": [
+    {
+     "name": "query",
+     "in": "query",
+     "required": true,
+     "type": "string",
+     "description": "Search keywords",
+     "example": "helsinki"
+    },
+    {
+     "name": "type",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Restrict to one content type. Leave it out to search all types.",
+     "enum": [
+      "article",
+      "areena"
+     ],
+     "example": "article"
+    },
+    {
+     "name": "service",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Restrict to one Yle service, e.g. 'uutiset' (news)",
+     "example": "uutiset"
+    },
+    {
+     "name": "language",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Content language",
+     "enum": [
+      "en",
+      "fi"
+     ],
+     "default": "en"
+    },
+    {
+     "name": "author",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Exact author name, e.g. 'Wif Stenger'",
+     "example": "Wif Stenger"
+    },
+    {
+     "name": "api_limit",
+     "key": "limit",
+     "in": "query",
+     "required": false,
+     "type": "number",
+     "description": "Results per page (sent to the site as \"limit\"; clify's own --limit only shapes the output)",
+     "default": 20
+    },
+    {
+     "name": "offset",
+     "in": "query",
+     "required": false,
+     "type": "number",
+     "description": "Number of results to skip, used for paging",
+     "default": 0
+    }
+   ],
+   "responseType": "json",
+   "resultPath": "data",
+   "defaultFields": [
+    "id",
+    "headline",
+    "datePublished",
+    "type",
+    "url.full",
+    "lead",
+    "author",
+    "services"
+   ],
+   "pagination": {
+    "type": "offset",
+    "param": "offset",
+    "step": 20
+   },
+   "mutates": false,
+   "example": {
+    "query": "helsinki"
+   },
+   "source": "E1 GET https://yle-fi-search.api.yle.fi/v1/search",
+   "verified": true
+  },
+  {
+   "name": "get-article",
+   "summary": "Get an article's metadata (headline, description, publish and modify dates, keywords, author, images) from its JSON-LD",
+   "method": "GET",
+   "urlTemplate": "/a/{id}",
+   "params": [
+    {
+     "name": "id",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Article id from the yle.fi/a/<id> URL, e.g. 74-20250494",
+     "example": "74-20250494"
+    }
+   ],
+   "responseType": "html",
+   "resultPath": "@graph.0",
+   "extract": {
+    "jsonScript": "script#json-ld-microdata"
+   },
+   "defaultFields": [
+    "@id",
+    "headline",
+    "description",
+    "datePublished",
+    "dateModified",
+    "keywords",
+    "author",
+    "mainEntityOfPage.@id"
+   ],
+   "mutates": false,
+   "example": {
+    "id": "74-20250494"
+   },
+   "source": "E10 E11 GET https://yle.fi/a/74-20250494",
+   "verified": true
+  },
+  {
+   "name": "get-article-text",
+   "summary": "Get an article's body text as an ordered list of paragraphs and subheadings",
+   "method": "GET",
+   "urlTemplate": "/a/{id}",
+   "params": [
+    {
+     "name": "id",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Article id from the yle.fi/a/<id> URL, e.g. 74-20215566",
+     "example": "74-20215566"
+    }
+   ],
+   "responseType": "html",
+   "extract": {
+    "list": "section.yle__article__content > p, section.yle__article__content > h2",
+    "fields": {
+     "text": ""
+    }
+   },
+   "defaultFields": [
+    "text"
+   ],
+   "mutates": false,
+   "example": {
+    "id": "74-20215566"
+   },
+   "source": "E10 E11 GET https://yle.fi/a/74-20250494",
+   "verified": true
+  },
+  {
+   "name": "list-latest",
+   "summary": "List the latest Yle News (English) articles, newest first",
+   "method": "GET",
+   "urlTemplate": "/news/tuoreimmat",
+   "params": [],
+   "responseType": "html",
+   "extract": {
+    "list": "div.GridSystem__GridCell-sc-86161e7b-0.fCleeP",
+    "fields": {
+     "headline": "h2",
+     "url": "h2 a.underlay-link@href",
+     "category": "div.MQTpy a",
+     "categoryUrl": "div.MQTpy a@href",
+     "published": "time@datetime"
+    }
+   },
+   "defaultFields": [
+    "headline",
+    "url",
+    "category",
+    "published"
+   ],
+   "mutates": false,
+   "source": "E13",
+   "verified": true
+  },
+  {
+   "name": "list-front-page",
+   "summary": "List the stories currently on the Yle News (English) front page, with leads",
+   "method": "GET",
+   "urlTemplate": "/news",
+   "params": [],
+   "responseType": "html",
+   "extract": {
+    "list": "div.GridSystem__GridCell-sc-86161e7b-0.fCleeP",
+    "fields": {
+     "headline": "h2",
+     "url": "h2 a.underlay-link@href",
+     "lead": "div.GenericStory__Lead-sc-540a27ad-4 p",
+     "category": "div.MQTpy a",
+     "published": "time@datetime"
+    }
+   },
+   "defaultFields": [
+    "headline",
+    "url",
+    "lead",
+    "category",
+    "published"
+   ],
+   "mutates": false,
+   "source": "E14",
+   "verified": true
+  },
+  {
+   "name": "list-topic",
+   "summary": "List recent English articles for a topic (e.g. 18-220306 Politics, 18-34837 Domestic news, 18-204933 Economy)",
+   "method": "GET",
+   "urlTemplate": "/t/{topic_id}/en",
+   "params": [
+    {
+     "name": "topic_id",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Topic id from the yle.fi/t/<id>/en URL, e.g. 18-220306 (Politics)",
+     "example": "18-220306"
+    }
+   ],
+   "responseType": "html",
+   "extract": {
+    "list": "div.GridSystem__GridCell-sc-86161e7b-0.fCleeP",
+    "fields": {
+     "headline": "h2",
+     "url": "h2 a.underlay-link@href",
+     "category": "div.MQTpy a",
+     "categoryUrl": "div.MQTpy a@href",
+     "published": "time@datetime"
+    }
+   },
+   "defaultFields": [
+    "headline",
+    "url",
+    "category",
+    "published"
+   ],
+   "mutates": false,
+   "example": {
+    "topic_id": "18-220306"
+   },
+   "source": "E12",
+   "verified": true
+  },
+  {
+   "name": "get-video-preview",
+   "summary": "Get metadata for a Yle/Areena video program (title, series, duration, start time, HLS manifest URL)",
+   "method": "GET",
+   "urlTemplate": "https://player.api.yle.fi/v1/preview/{id}.json?app_id=player_static_prod&app_key=8930d72170e48303cf5f3867780d549b&language=eng&countryCode=US&host=yle.fi&isMobile=false&isPortabilityRegion=false&ssl=true",
+   "params": [
+    {
+     "name": "id",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Areena program id, e.g. 1-78744762 (from areena.yle.fi/1-<id> links in search results)",
+     "example": "1-78744762"
+    }
+   ],
+   "responseType": "json",
+   "resultPath": "data.ongoing_ondemand",
+   "defaultFields": [
+    "program_id",
+    "title",
+    "series.title",
+    "start_time",
+    "duration.duration_in_seconds",
+    "content_type",
+    "region",
+    "manifest_url"
+   ],
+   "mutates": false,
+   "example": {
+    "id": "1-78744762"
+   },
+   "source": "E5 GET https://player.api.yle.fi/v1/preview/1-78744762.json",
+   "verified": true
+  }
+ ],
+ "blockers": [],
+ "notes": [
+  "Article ids look like 74-20250494. Search results return them as 'id', and list commands return them inside the 'url' (https://yle.fi/a/<id>).",
+  "Search: to search all content types, leave out --type. Set --type areena for Areena programs; these link to areena.yle.fi/1-<id>, and that id works with get-video-preview.",
+  "Search paging: set --offset in steps of --limit. meta.count in the raw response gives the total number of hits.",
+  "The time-range filter on the search page could not be set during exploration, so no date filter is available.",
+  "List commands (list-latest, list-front-page, list-topic) are scraped from server-rendered HTML and return only the cards visible on the first page.",
+  "For a topic page, the JSON-LD script#json-ld-microdata lists up to 40 article URLs at @graph.0.mainEntity.itemListElement.",
+  "get-video-preview responses vary by region. The manifest URL is a signed token that expires.",
+  "The 'Most popular' list and sort options exist only on the rendered page and have no API."
+ ],
+ "dropped": [],
+ "generated": {
+  "by": "clify add",
+  "model": "claude-opus-5-5",
+  "exploredSteps": 18,
+  "recorded": 70,
+  "verifiedAt": "2026-10-18T08:39:20.780Z",
+  "seconds": 234
+ }
+}

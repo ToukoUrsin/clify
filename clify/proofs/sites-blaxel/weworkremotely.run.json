@@ -1,0 +1,71 @@
+{
+ "url": "https://weworkremotely.com/",
+ "category": "jobs-market",
+ "sandbox": "clify-weworkremotely-com",
+ "startedAt": "2026-10-18T08:21:57.219Z",
+ "region": "us-pdx-1",
+ "chrome": "Chrome/148.0.7778.96",
+ "sandboxStartMs": 3435,
+ "addSeconds": 67,
+ "addExit": 0,
+ "add": {
+  "ok": true,
+  "site": "weworkremotely",
+  "url": "https://weworkremotely.com/",
+  "commands": [
+   {
+    "name": "list-jobs",
+    "summary": "List the latest remote job postings across all categories (public RSS feed)",
+    "verified": true
+   },
+   {
+    "name": "list-category-jobs",
+    "summary": "List the latest remote job postings in one job category, such as full-stack programming, design or devops (public RSS feed)",
+    "verified": true
+   }
+  ],
+  "verified": 2,
+  "writes": 0,
+  "dropped": [],
+  "blockers": [
+   "bot-check at https://weworkremotely.com/",
+   "bot-check at https://weworkremotely.com/remote-jobs/search?term=python",
+   "bot-check at https://weworkremotely.com/remote-jobs/search.rss?term=python",
+   "captcha"
+  ],
+  "loggedIn": false,
+  "seconds": 66,
+  "next": [
+   "clify weworkremotely",
+   "clify weworkremotely list-jobs"
+  ],
+  "installed": "/home/ubuntu/clify-runs/blaxel-w1/home/bin/weworkremotely",
+  "explored": {
+   "steps": 7,
+   "recorded": 9,
+   "heldWrites": 0
+  }
+ },
+ "check": {
+  "on": "blaxel",
+  "node": "v24.22.0",
+  "seconds": 4,
+  "reads": 2,
+  "verified": 2,
+  "failed": [],
+  "results": [
+   {
+    "name": "list-jobs",
+    "ok": true,
+    "ms": 532
+   },
+   {
+    "name": "list-category-jobs",
+    "ok": true,
+    "ms": 669
+   }
+  ]
+ },
+ "deleted": true,
+ "seconds": 74
+}

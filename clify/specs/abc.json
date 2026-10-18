@@ -1,0 +1,420 @@
+{
+ "name": "abc",
+ "startUrl": "https://www.abc.net.au/news",
+ "origin": "https://www.abc.net.au",
+ "createdAt": "2026-10-18T09:25:35.245Z",
+ "description": "ABC News (Australian Broadcasting Corporation): search news, read top stories by state edition, browse topics, sections, authors and article metadata from abc.net.au/news.",
+ "commands": [
+  {
+   "name": "search-news",
+   "summary": "Keyword search across ABC News content (articles, video, audio) via the site's Algolia index",
+   "method": "POST",
+   "urlTemplate": "https://mr0jflpbar-dsn.algolia.net/1/indexes/news_prod_all/query?x-algolia-api-key=f46301a6a5e4638a18fca5b391f07beb&x-algolia-application-id=MR0JFLPBAR",
+   "params": [
+    {
+     "name": "query",
+     "in": "body",
+     "required": true,
+     "type": "string",
+     "description": "Search keywords",
+     "example": "climate change"
+    },
+    {
+     "name": "page",
+     "in": "body",
+     "required": false,
+     "type": "number",
+     "description": "0-based results page",
+     "default": 0
+    },
+    {
+     "name": "hitsPerPage",
+     "in": "body",
+     "required": false,
+     "type": "number",
+     "description": "Results per page",
+     "default": 10
+    },
+    {
+     "name": "filters",
+     "in": "body",
+     "required": false,
+     "type": "string",
+     "description": "Algolia filter expression. Empty means no filter. Read (articles): 'contentType:Article OR contentType:article OR contentType:Recipe OR contentType:recipe'. Watch: 'contentType:video'. Listen: 'conten"
+    }
+   ],
+   "bodyTemplate": {
+    "query": "{query}",
+    "page": "{page}",
+    "hitsPerPage": "{hitsPerPage}",
+    "filters": "{filters}",
+    "analyticsTags": [
+     "news"
+    ],
+    "facets": [
+     "contentType",
+     "siteTitle"
+    ]
+   },
+   "bodyEncoding": "json",
+   "responseType": "json",
+   "resultPath": "hits",
+   "defaultFields": [
+    "objectID",
+    "title",
+    "canonicalURL",
+    "contentType",
+    "siteTitle",
+    "dates.firstUpdated",
+    "caption"
+   ],
+   "pagination": {
+    "type": "page",
+    "param": "page"
+   },
+   "mutates": false,
+   "example": {
+    "query": "climate change"
+   },
+   "source": "E2 POST https://mr0jflpbar-dsn.algolia.net/{n}/indexes/*/queries",
+   "verified": true
+  },
+  {
+   "name": "get-top-stories",
+   "summary": "Homepage top stories for the national edition or a state edition",
+   "method": "GET",
+   "urlTemplate": "/news-web/api/loader/homeView",
+   "params": [
+    {
+     "name": "view",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Edition: national, or a state/territory code such as nsw, vic, qld, wa, sa, tas, act, nt (national and nsw were recorded)",
+     "default": "national",
+     "example": "nsw"
+    }
+   ],
+   "responseType": "json",
+   "resultPath": "topStories.items",
+   "defaultFields": [
+    "id",
+    "title",
+    "link",
+    "type",
+    "label",
+    "dates.firstPublished"
+   ],
+   "mutates": false,
+   "example": {
+    "view": "national"
+   },
+   "source": "E4 E6 GET https://www.abc.net.au/news-web/api/loader/homeView",
+   "verified": true
+  },
+  {
+   "name": "list-topic-stories",
+   "summary": "Paginated JSON list of stories for a topic, by the topic's internal documentId (e.g. 1450 = Climate Change)",
+   "method": "GET",
+   "urlTemplate": "/news-web/api/loader/topicstoriesmore?name=PaginationArticles&prepareParams=%7B%22timestampFormat%22%3A%22relativeLong%22%2C%22imagePosition%22%3A%7B%22mobile%22%3A%22right%22%2C%22tablet%22%3A%22right%22%2C%22desktop%22%3A%22right%22%7D%7D",
+   "params": [
+    {
+     "name": "documentId",
+     "in": "query",
+     "required": true,
+     "type": "string",
+     "description": "Internal topic collection id (Climate Change = 1450). Found in the topic page's embedded data.",
+     "example": "1450"
+    },
+    {
+     "name": "offset",
+     "in": "query",
+     "required": false,
+     "type": "number",
+     "description": "Number of stories to skip",
+     "default": 0
+    },
+    {
+     "name": "size",
+     "in": "query",
+     "required": false,
+     "type": "number",
+     "description": "Stories per request",
+     "default": 20
+    }
+   ],
+   "responseType": "json",
+   "resultPath": "collection",
+   "defaultFields": [
+    "id",
+    "title",
+    "link",
+    "dates.firstPublished",
+    "tags.0.title",
+    "mediaIndicator.docType"
+   ],
+   "pagination": {
+    "type": "offset",
+    "param": "offset",
+    "step": 20
+   },
+   "mutates": false,
+   "example": {
+    "documentId": "1450",
+    "offset": "25"
+   },
+   "source": "E5 GET https://www.abc.net.au/news-web/api/loader/topicstoriesmore",
+   "verified": true
+  },
+  {
+   "name": "list-topic-page",
+   "summary": "Latest stories on a topic page by topic slug (first page, server-rendered)",
+   "method": "GET",
+   "urlTemplate": "/news/topic/{topic}",
+   "params": [
+    {
+     "name": "topic",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Topic slug as in /news/topic/{slug}, e.g. climate-change",
+     "example": "climate-change"
+    }
+   ],
+   "responseType": "html",
+   "extract": {
+    "list": "h3 a",
+    "fields": {
+     "title": "",
+     "url": "@href"
+    }
+   },
+   "defaultFields": [
+    "title",
+    "url"
+   ],
+   "mutates": false,
+   "example": {
+    "topic": "climate-change"
+   },
+   "source": "E13 GET https://www.abc.net.au/news/topic/climate-change",
+   "verified": true
+  },
+  {
+   "name": "list-section-stories",
+   "summary": "Story headlines from a news section page, e.g. justin (latest news), politics, world, business",
+   "method": "GET",
+   "urlTemplate": "/news/{section}",
+   "params": [
+    {
+     "name": "section",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Section slug: justin (Just In / latest), politics, world, business, health, science, environment, sport, ...",
+     "example": "justin"
+    }
+   ],
+   "responseType": "html",
+   "extract": {
+    "list": "h3 a",
+    "fields": {
+     "title": "",
+     "url": "@href"
+    }
+   },
+   "defaultFields": [
+    "title",
+    "url"
+   ],
+   "mutates": false,
+   "example": {
+    "section": "justin"
+   },
+   "source": "E14 E16 GET https://www.abc.net.au/news/justin",
+   "verified": true
+  },
+  {
+   "name": "get-article",
+   "summary": "Article metadata (headline, description, dates, authors, keywords) from an article URL's date, slug and id",
+   "method": "GET",
+   "urlTemplate": "/news/{date}/{slug}/{id}",
+   "params": [
+    {
+     "name": "date",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Date segment of the article URL, YYYY-MM-DD",
+     "example": "2026-07-02"
+    },
+    {
+     "name": "slug",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Slug segment of the article URL",
+     "example": "canberra-water-catchment-climate-change"
+    },
+    {
+     "name": "id",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Numeric article id (last URL segment)",
+     "example": "106867134"
+    }
+   ],
+   "responseType": "html",
+   "resultPath": "@graph.1",
+   "extract": {
+    "jsonScript": "script[type=\"application/ld+json\"]"
+   },
+   "defaultFields": [
+    "headline",
+    "description",
+    "datePublished",
+    "dateModified",
+    "author",
+    "keywords",
+    "mainEntityOfPage"
+   ],
+   "mutates": false,
+   "example": {
+    "date": "2026-07-02",
+    "slug": "canberra-water-catchment-climate-change",
+    "id": "106867134"
+   },
+   "source": "E12 E15 GET https://www.abc.net.au/news/2026-07-02/canberra-water-catchment-climate-change/{n}",
+   "verified": true
+  },
+  {
+   "name": "list-author-stories",
+   "summary": "Latest stories by an ABC reporter, from their profile page",
+   "method": "GET",
+   "urlTemplate": "/news/{author}/{id}",
+   "params": [
+    {
+     "name": "author",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Author slug, e.g. erin-handley",
+     "example": "erin-handley"
+    },
+    {
+     "name": "id",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Numeric author id from the profile URL",
+     "example": "10359156"
+    }
+   ],
+   "responseType": "html",
+   "extract": {
+    "list": "a.DetailCard_link__qM1Oi",
+    "fields": {
+     "title": "",
+     "url": "@href"
+    }
+   },
+   "defaultFields": [
+    "title",
+    "url"
+   ],
+   "mutates": false,
+   "example": {
+    "author": "erin-handley",
+    "id": "10359156"
+   },
+   "source": "E17 GET https://www.abc.net.au/news/erin-handley/{n}",
+   "verified": true
+  },
+  {
+   "name": "list-topics",
+   "summary": "A-Z topics library: topics starting with a letter (links to /news/topic/{slug})",
+   "method": "GET",
+   "urlTemplate": "/news/topics/{letter}",
+   "params": [
+    {
+     "name": "letter",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Lowercase letter a-z, or 0-9 for numeric topics",
+     "example": "c"
+    }
+   ],
+   "responseType": "html",
+   "extract": {
+    "list": "a[href*=\"/news/topic/\"]",
+    "fields": {
+     "name": "",
+     "url": "@href"
+    }
+   },
+   "defaultFields": [
+    "name",
+    "url"
+   ],
+   "mutates": false,
+   "example": {
+    "letter": "c"
+   },
+   "source": "E18 E19 GET https://www.abc.net.au/news/topics",
+   "verified": true
+  },
+  {
+   "name": "list-location-topics",
+   "summary": "A-Z location topics (places) starting with a letter",
+   "method": "GET",
+   "urlTemplate": "/news/topics/location/{letter}",
+   "params": [
+    {
+     "name": "letter",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Lowercase letter a-z, or 0-9",
+     "example": "a"
+    }
+   ],
+   "responseType": "html",
+   "extract": {
+    "list": "a[href*=\"/news/topic/\"]",
+    "fields": {
+     "name": "",
+     "url": "@href"
+    }
+   },
+   "defaultFields": [
+    "name",
+    "url"
+   ],
+   "mutates": false,
+   "example": {
+    "letter": "a"
+   },
+   "source": "E20 E21 GET https://www.abc.net.au/news/topics/location/",
+   "verified": true
+  }
+ ],
+ "blockers": [],
+ "notes": [
+  "Public site, no login needed. Search uses ABC's public search-only Algolia key (index news_prod_all), which covers all ABC content (news, iview, listen). Use the filters param to restrict by contentType or siteTitle.",
+  "Article links from listings look like /news/YYYY-MM-DD/slug/id. Split such a link into date, slug and id for get-article.",
+  "list-topic-stories needs the topic's internal documentId (Climate Change = 1450), not the slug. For a quick first page by slug, use list-topic-page.",
+  "get-top-stories returns state editions via view=nsw|vic|qld|wa|sa|tas|act|nt. Only national and nsw were observed.",
+  "Search pages are 0-based: page=1 is the second page."
+ ],
+ "dropped": [],
+ "generated": {
+  "by": "clify add",
+  "model": "claude-opus-5-5",
+  "exploredSteps": 26,
+  "recorded": 142,
+  "verifiedAt": "2026-10-18T09:26:57.109Z",
+  "seconds": 308
+ }
+}

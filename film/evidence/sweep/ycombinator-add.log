@@ -1,0 +1,76 @@
+07:34:17 🔭 exploring https://www.ycombinator.com/companies
+07:34:17 🌐 https://www.ycombinator.com/companies
+07:34:18   ⛔ held write POST https://us.i.posthog.com/flags/?v=2
+07:34:23 → type {"i":63,"text":"developer tools","submit":true,"intent":"search companies by keyword"}
+07:34:26 → click {"i":12,"intent":"filter companies that are hiring"}
+07:34:30 → click {"i":21,"intent":"filter companies by batch"}
+07:34:35 → goto {"url":"https://www.ycombinator.com/companies?industry=Fintech&query=payments","intent":"filter companies by industry"}
+07:34:35 → select {"i":10,"option":"Launch Date","intent":"sort companies by launch date"}
+07:34:39 → click {"i":24,"intent":"filter companies by industry"}
+07:34:44 → click {"i":54,"intent":"filter companies by region"}
+07:34:49 → click {"i":68,"intent":"open company detail page"}
+07:34:50   ⛔ held write POST https://jnn-pa.googleapis.com/$rpc/google.internal.waa.v1.Waa/GenerateIT
+07:34:50   ⛔ held write POST https://us.i.posthog.com/flags/?v=2
+07:34:54 → click {"i":17,"intent":"list company jobs"}
+07:34:55   ⛔ held write POST https://us.i.posthog.com/flags/?v=2
+07:35:00 → click {"i":14,"intent":"open job detail"}
+07:35:01   ⛔ held write POST https://us.i.posthog.com/flags/?v=2
+07:35:04 → click {"i":21,"intent":"open company detail page"}
+07:35:05   ⛔ held write POST https://jnn-pa.googleapis.com/$rpc/google.internal.waa.v1.Waa/GenerateIT
+07:35:05   ⛔ held write POST https://us.i.posthog.com/flags/?v=2
+07:35:13 → click {"i":14,"intent":"list companies by industry tag"}
+07:35:14   ⛔ held write POST https://us.i.posthog.com/flags/?v=2
+07:35:19 → goto {"url":"https://www.ycombinator.com/companies/location/san-francisco-bay-area","intent":"list companies by location"}
+07:35:20   ⛔ held write POST https://us.i.posthog.com/flags/?v=2
+07:35:26 → click {"i":9,"intent":"open startup directory"}
+07:35:27   ⛔ held write POST https://us.i.posthog.com/flags/?v=2
+07:35:30 → type {"i":63,"text":"ai","submit":true,"intent":"search companies by keyword"}
+07:35:34 → scroll {"direction":"down"}
+07:35:38 → scroll {"direction":"down"}
+07:35:42 → scroll {"direction":"down"}
+07:35:46 → scroll {"direction":"down"}
+07:35:52 → goto {"url":"https://www.ycombinator.com/launches","intent":"list latest company launches"}
+07:35:52   ⛔ held write POST https://us.i.posthog.com/flags/?v=2
+07:35:58 → type {"i":9,"text":"voice agent","submit":true,"intent":"search launches by keyword"}
+07:36:02 → select {"i":12,"option":"Votes","intent":"sort launches by votes"}
+07:36:07 → select {"i":10,"option":"Fall 2025","intent":"filter launches by batch"}
+07:36:08 → click {"i":15,"intent":"open launch detail"}
+07:36:09   ⛔ held write POST https://jnn-pa.googleapis.com/$rpc/google.internal.waa.v1.Waa/GenerateIT
+07:36:09   ⛔ held write POST https://jnn-pa.googleapis.com/$rpc/google.internal.waa.v1.Waa/GenerateIT
+07:36:09   ⛔ held write POST https://jnn-pa.googleapis.com/$rpc/google.internal.waa.v1.Waa/GenerateIT
+07:36:10   ⛔ held write POST https://us.i.posthog.com/flags/?v=2
+07:36:18 → goto {"url":"https://www.ycombinator.com/jobs","intent":"list startup jobs"}
+07:36:19   ⛔ held write POST https://us.i.posthog.com/flags/?v=2
+07:36:24 → click {"i":13,"intent":"list jobs by role"}
+07:36:25   ⛔ held write POST https://us.i.posthog.com/flags/?v=2
+07:36:30 → click {"i":17,"intent":"list jobs by role and location"}
+07:36:32   ⛔ held write POST https://us.i.posthog.com/flags/?v=2
+07:36:35 → goto {"url":"https://www.ycombinator.com/people/jared-friedman","intent":"open partner profile"}
+07:36:36   ⛔ held write POST https://us.i.posthog.com/flags/?v=2
+07:36:41 → click {"i":10,"intent":"list YC people"}
+07:36:42   ⛔ held write POST https://us.i.posthog.com/flags/?v=2
+07:36:47 → goto {"url":"https://www.ycombinator.com/companies/airbnb","intent":"open company detail page"}
+07:36:48   ⛔ held write POST https://us.i.posthog.com/flags/?v=2
+07:37:00 → done {"summary":"Explored the YC public site without logging in.\n- Startup Directory: keyword search (\"developer tools\", \"ai\"). The results 
+07:37:01 📼 recorded 65 calls, 21 held writes
+07:37:01 🧠 synthesizing from 21 endpoints (29k chars)
+07:39:00 🔎 verify round 0: search-companies, list-company-facets, list-directory-categories, get-company, list-company-jobs, get-job, get-launch, list-jobs, list-jobs-by-role, list-jobs-by-role-location, list-people, get-person
+07:39:01   ✗ search-companies: HTTP 403: this endpoint needs a login or the site refused the request. (HTTP 403) (623 ms)
+07:39:01   ✗ list-company-facets: HTTP 403: this endpoint needs a login or the site refused the request. (HTTP 403) (619 ms)
+07:39:01   ✓ list-directory-categories (286 ms)
+07:39:01   ✓ get-company (205 ms)
+07:39:01   ✓ list-company-jobs (125 ms)
+07:39:01   ✓ get-job (208 ms)
+07:39:01   ✓ get-launch (130 ms)
+07:39:01   ✓ list-jobs (155 ms)
+07:39:01   ✓ list-jobs-by-role (178 ms)
+07:39:01   ✓ list-jobs-by-role-location (109 ms)
+07:39:01   ✓ list-people (100 ms)
+07:39:01   ✓ get-person (141 ms)
+07:39:21   🗑 search-companies: Algolia rejects the request with 'Invalid Application-ID or API key'. The embedded API key is truncated or rotated. The full secured key lives in a JS variable on /companies, which selector-based CSRF extraction can't read reliably. No working replay without it.
+07:39:21   🗑 list-company-facets: Uses the same invalid Algolia API key as search-companies (403 'Invalid Application-ID or API key'). Can't be replayed without a valid key.
+07:39:21   🔧 get-company: The page has no h1, so 'name' just repeated the title; removed it. Renamed 'website' to 'url' because og:url is the YC profile URL, not the company's own website.
+07:39:21   🔧 get-launch: The 'company' field returned a launches URL instead of the company name. Removed it; companyUrl already gives the company slug.
+07:39:21 🔎 verify round 1: get-company, get-launch
+07:39:21   ✓ get-company (157 ms)
+07:39:21   ✓ get-launch (149 ms)

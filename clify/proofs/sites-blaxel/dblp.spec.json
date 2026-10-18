@@ -1,0 +1,279 @@
+{
+ "name": "dblp",
+ "startUrl": "https://dblp.org/",
+ "origin": "https://dblp.org",
+ "createdAt": "2026-10-18T09:06:44.931Z",
+ "description": "dblp computer science bibliography. The CLI searches publications, authors and venues through dblp's public search API, and fetches author bibliographies and single records (XML/BibTeX).",
+ "commands": [],
+ "blockers": [
+  "captcha"
+ ],
+ "notes": [
+  "The recording has no working endpoints. Every request, including the homepage and /pid/, returned the Anubis bot wall ('Oh noes!' / 'Access Denied'). None of these commands has been verified against a live response.",
+  "All six commands are based on dblp's publicly documented API (dblp FAQ: 'How to use the dblp search API') and its standard XML/BibTeX record exports, not on observed traffic. Response paths (result.hits.hit, dblpperson, dblp) follow that documentation.",
+  "If Anubis still blocks non-browser clients, every command will return an HTML 'Access Denied' page instead of data. Try the mirror origin https://dblp.uni-trier.de with the same paths. Callers should check for an 'Oh noes!' title.",
+  "robots.txt disallows /search. dblp asks API users to keep requests modest (roughly no more than one per second) and to cache results.",
+  "Typical flow: search-authors \u2192 take the pid from info.url (the part after https://dblp.org/pid/) \u2192 get-author-publications. Or: search-publications \u2192 info.key \u2192 get-record / export-bibtex.",
+  "Paging: limit (h) is capped at 1000, and offset (f) is the 0-based index of the first hit. result.hits['@total'] gives the total match count."
+ ],
+ "dropped": [
+  {
+   "name": "search-publications",
+   "summary": "Full-text search of dblp publications by title words, author names, venue, year, etc.; returns titles, authors, venue, year, DOI and dblp record key",
+   "method": "GET",
+   "urlTemplate": "/search/publ/api?format=json",
+   "params": [
+    {
+     "name": "query",
+     "key": "q",
+     "in": "query",
+     "required": true,
+     "type": "string",
+     "description": "Search terms. dblp syntax: words are ANDed, '|' for OR, trailing '$' for an exact word match, e.g. 'graph neural network' or 'author:Donald_E._Knuth:'",
+     "example": "graph neural networks"
+    },
+    {
+     "name": "api_limit",
+     "key": "h",
+     "in": "query",
+     "required": false,
+     "type": "number",
+     "description": "Max hits to return (dblp caps at 1000) (sent to the site as \"limit\"; clify's own --limit only shapes the output)",
+     "default": 30
+    },
+    {
+     "name": "offset",
+     "key": "f",
+     "in": "query",
+     "required": false,
+     "type": "number",
+     "description": "Index of the first hit (0-based) for paging",
+     "default": 0
+    }
+   ],
+   "responseType": "json",
+   "resultPath": "result.hits.hit",
+   "defaultFields": [
+    "info.key",
+    "info.title",
+    "info.authors.author",
+    "info.venue",
+    "info.year",
+    "info.type",
+    "info.doi",
+    "info.url"
+   ],
+   "pagination": {
+    "type": "offset",
+    "param": "offset",
+    "step": 30
+   },
+   "mutates": false,
+   "example": {
+    "query": "graph neural networks"
+   },
+   "source": "",
+   "verified": false,
+   "verifyNote": "dblp returned an Anubis bot challenge (HTTP 202 'Making sure you're not a bot!') instead of the API's JSON. The command itself looks correct. The site is blocking this automated client, and I won't solve the challenge, spoof a browser User-Agent or switch to mirror hosts to get around it. Re-add once dblp grants access, for example by allowlisting the clify User-Agent on request."
+  },
+  {
+   "name": "search-authors",
+   "summary": "Search dblp author profiles by name; returns the canonical name and the profile URL (which contains the pid used by get-author-publications)",
+   "method": "GET",
+   "urlTemplate": "/search/author/api?format=json",
+   "params": [
+    {
+     "name": "query",
+     "key": "q",
+     "in": "query",
+     "required": true,
+     "type": "string",
+     "description": "Author name or name fragment, e.g. 'Knuth'",
+     "example": "Donald Knuth"
+    },
+    {
+     "name": "api_limit",
+     "key": "h",
+     "in": "query",
+     "required": false,
+     "type": "number",
+     "description": "Max hits to return (dblp caps at 1000) (sent to the site as \"limit\"; clify's own --limit only shapes the output)",
+     "default": 30
+    },
+    {
+     "name": "offset",
+     "key": "f",
+     "in": "query",
+     "required": false,
+     "type": "number",
+     "description": "Index of the first hit (0-based)",
+     "default": 0
+    }
+   ],
+   "responseType": "json",
+   "resultPath": "result.hits.hit",
+   "defaultFields": [
+    "info.author",
+    "info.url",
+    "info.aliases.alias",
+    "info.notes.note"
+   ],
+   "pagination": {
+    "type": "offset",
+    "param": "offset",
+    "step": 30
+   },
+   "mutates": false,
+   "example": {
+    "query": "Donald Knuth"
+   },
+   "source": "",
+   "verified": false,
+   "verifyNote": "Same Anubis bot challenge (HTTP 202 HTML) instead of JSON. The spec looks correct, but access is deliberately gated for this client. Restore if dblp allowlists it."
+  },
+  {
+   "name": "search-venues",
+   "summary": "Search dblp conferences and journals by name or acronym; returns venue name, acronym, type and dblp URL",
+   "method": "GET",
+   "urlTemplate": "/search/venue/api?format=json",
+   "params": [
+    {
+     "name": "query",
+     "key": "q",
+     "in": "query",
+     "required": true,
+     "type": "string",
+     "description": "Venue name or acronym, e.g. 'NeurIPS' or 'Communications of the ACM'",
+     "example": "NeurIPS"
+    },
+    {
+     "name": "api_limit",
+     "key": "h",
+     "in": "query",
+     "required": false,
+     "type": "number",
+     "description": "Max hits to return (dblp caps at 1000) (sent to the site as \"limit\"; clify's own --limit only shapes the output)",
+     "default": 30
+    },
+    {
+     "name": "offset",
+     "key": "f",
+     "in": "query",
+     "required": false,
+     "type": "number",
+     "description": "Index of the first hit (0-based)",
+     "default": 0
+    }
+   ],
+   "responseType": "json",
+   "resultPath": "result.hits.hit",
+   "defaultFields": [
+    "info.venue",
+    "info.acronym",
+    "info.type",
+    "info.url"
+   ],
+   "pagination": {
+    "type": "offset",
+    "param": "offset",
+    "step": 30
+   },
+   "mutates": false,
+   "example": {
+    "query": "NeurIPS"
+   },
+   "source": "",
+   "verified": false,
+   "verifyNote": "Same Anubis bot challenge (HTTP 202 HTML) instead of JSON. The spec looks correct, but access is deliberately gated for this client. Restore if dblp allowlists it."
+  },
+  {
+   "name": "get-author-publications",
+   "summary": "Get an author's full dblp bibliography (all records) by pid, e.g. 'k/DonaldEKnuth'",
+   "method": "GET",
+   "urlTemplate": "/pid/{pid}.xml",
+   "params": [
+    {
+     "name": "pid",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "dblp person id: the path after /pid/ in the author URL returned by search-authors, e.g. 'k/DonaldEKnuth' or '123/4567'",
+     "example": "k/DonaldEKnuth"
+    }
+   ],
+   "responseType": "json",
+   "resultPath": "dblpperson",
+   "defaultFields": [
+    "@name",
+    "@pid",
+    "@n",
+    "person",
+    "r"
+   ],
+   "mutates": false,
+   "example": {
+    "pid": "k/DonaldEKnuth"
+   },
+   "source": "E1 GET https://dblp.org/pid/",
+   "verified": false,
+   "verifyNote": "Same Anubis bot challenge (HTTP 202 HTML). If it is restored later, the spec also needs a fix: /pid/{pid}.xml returns XML, not JSON, so responseType 'json' and resultPath 'dblpperson' would fail even with access."
+  },
+  {
+   "name": "get-record",
+   "summary": "Get one dblp publication record (authors, title, venue, year, pages, DOI/ee links) by its dblp key",
+   "method": "GET",
+   "urlTemplate": "/rec/{key}.xml",
+   "params": [
+    {
+     "name": "key",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "dblp record key as returned in info.key by search-publications, e.g. 'journals/cacm/Knuth74'",
+     "example": "journals/cacm/Knuth74"
+    }
+   ],
+   "responseType": "json",
+   "resultPath": "dblp",
+   "mutates": false,
+   "example": {
+    "key": "journals/cacm/Knuth74"
+   },
+   "source": "",
+   "verified": false,
+   "verifyNote": "Same Anubis bot challenge (HTTP 202 HTML). If it is restored later, the spec also needs a fix: /rec/{key}.xml returns XML, not JSON, so responseType 'json' and resultPath 'dblp' would fail even with access."
+  },
+  {
+   "name": "export-bibtex",
+   "summary": "Export one dblp publication record as a BibTeX entry by its dblp key",
+   "method": "GET",
+   "urlTemplate": "/rec/{key}.bib",
+   "params": [
+    {
+     "name": "key",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "dblp record key, e.g. 'journals/cacm/Knuth74'",
+     "example": "journals/cacm/Knuth74"
+    }
+   ],
+   "responseType": "text",
+   "mutates": false,
+   "example": {
+    "key": "journals/cacm/Knuth74"
+   },
+   "source": "",
+   "verified": false,
+   "verifyNote": "It 'passed' only because responseType is text. The output is the Anubis challenge page ('Making sure you're not a bot!'), not a BibTeX entry. The spec is otherwise correct, but the endpoint is gated for this client."
+  }
+ ],
+ "generated": {
+  "by": "clify add",
+  "model": "claude-opus-5-5",
+  "exploredSteps": 3,
+  "recorded": 2,
+  "verifiedAt": "2026-10-18T09:07:35.961Z",
+  "seconds": 67
+ }
+}

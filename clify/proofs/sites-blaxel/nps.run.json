@@ -1,0 +1,246 @@
+{
+ "url": "https://www.nps.gov/",
+ "category": "gov-us",
+ "sandbox": "clify-www-nps-gov",
+ "startedAt": "2026-10-18T09:01:58.102Z",
+ "region": "us-pdx-1",
+ "chrome": "Chrome/148.0.7778.96",
+ "sandboxStartMs": 2199,
+ "addSeconds": 354,
+ "addExit": 0,
+ "add": {
+  "ok": true,
+  "site": "nps",
+  "url": "https://www.nps.gov/",
+  "commands": [
+   {
+    "name": "search-parks",
+    "summary": "Find National Park Service units, filtered by state, activity or topic, or sorted by distance from a lat/lng point",
+    "verified": true
+   },
+   {
+    "name": "search-parks-by-name",
+    "summary": "Search parks by name or keyword (e.g. 'Yosemite') and get park codes, descriptions and coordinates",
+    "verified": true
+   },
+   {
+    "name": "list-park-filters",
+    "summary": "List all filter values for search-parks: topic ids, activity ids, state codes, and every park code with its name",
+    "verified": true
+   },
+   {
+    "name": "list-related-subjects",
+    "summary": "Get NPS subject/topic pages related to a set of activity and topic ids, with the park codes linked to each",
+    "verified": true
+   },
+   {
+    "name": "get-park",
+    "summary": "Get a park's overview (schema.org linked data): description, phone, address, visitor centers and opening hours",
+    "verified": true
+   },
+   {
+    "name": "get-park-facilities",
+    "summary": "Get a park's structured operational data: addresses plus parking lots with capacity, live status, schedules and predicted occupancy",
+    "verified": true
+   },
+   {
+    "name": "get-park-alerts",
+    "summary": "Get current alerts for one park: closures, road closures, cautions and information",
+    "verified": true
+   },
+   {
+    "name": "list-nps-alerts",
+    "summary": "List the nationwide sitewide alerts for all parks (closures, dangers, information) with park and state",
+    "verified": true
+   },
+   {
+    "name": "get-park-banner-image",
+    "summary": "Get a park's banner photo: image path, credit, alt text and crops",
+    "verified": true
+   },
+   {
+    "name": "search-multimedia",
+    "summary": "Search NPS photos, videos, audio and webcams by keyword, with optional Solr filter (type, park) and sort",
+    "verified": true
+   },
+   {
+    "name": "search-articles",
+    "summary": "Search NPS articles, people and places pages by keyword (returns /articles/... URLs)",
+    "verified": true
+   },
+   {
+    "name": "get-article",
+    "summary": "Read an NPS article page by slug (/articles/{slug}.htm)",
+    "verified": true
+   },
+   {
+    "name": "get-photo",
+    "summary": "Get NPGallery photo/asset metadata: title, description, credit/copyright, license, dimensions and EXIF",
+    "verified": true
+   },
+   {
+    "name": "get-video-captions",
+    "summary": "Download the WebVTT closed-caption transcript of an NPS video",
+    "verified": true
+   },
+   {
+    "name": "geocode-suggest",
+    "summary": "Get place suggestions for a location string, with magicKeys to resolve into coordinates (US only)",
+    "verified": true
+   },
+   {
+    "name": "geocode-location",
+    "summary": "Resolve a geocode-suggest magicKey into lat/lng (location.y / location.x) for search-parks",
+    "verified": true
+   },
+   {
+    "name": "get-weather-point",
+    "summary": "Look up the NWS forecast grid (office, gridX, gridY), nearest city, time zone and sunrise/sunset for a lat/lng",
+    "verified": true
+   },
+   {
+    "name": "get-weather-forecast",
+    "summary": "Get the 7-day NWS forecast periods for a grid point (from get-weather-point)",
+    "verified": true
+   },
+   {
+    "name": "get-weather-alerts",
+    "summary": "Get active NWS watches, warnings and advisories, optionally limited to a lat,lng point (e.g. a park location) or a state/area code",
+    "verified": true
+   },
+   {
+    "name": "get-weather-observation",
+    "summary": "Get the latest observed conditions (temperature, wind, etc.) from an NWS weather station",
+    "verified": true
+   }
+  ],
+  "verified": 20,
+  "writes": 0,
+  "dropped": [],
+  "blockers": [],
+  "loggedIn": false,
+  "seconds": 354,
+  "next": [
+   "clify nps",
+   "clify nps search-parks --states \"CA\" --topics \"125\" --activities \"3\""
+  ],
+  "installed": "/home/ubuntu/clify-runs/blaxel-w1/home/bin/nps",
+  "explored": {
+   "steps": 30,
+   "recorded": 178,
+   "heldWrites": 24
+  }
+ },
+ "check": {
+  "on": "blaxel",
+  "node": "v24.22.0",
+  "seconds": 3,
+  "reads": 20,
+  "verified": 20,
+  "failed": [],
+  "results": [
+   {
+    "name": "search-parks",
+    "ok": true,
+    "ms": 343
+   },
+   {
+    "name": "search-parks-by-name",
+    "ok": true,
+    "ms": 269
+   },
+   {
+    "name": "list-park-filters",
+    "ok": true,
+    "ms": 35
+   },
+   {
+    "name": "list-related-subjects",
+    "ok": true,
+    "ms": 242
+   },
+   {
+    "name": "get-park",
+    "ok": true,
+    "ms": 6
+   },
+   {
+    "name": "get-park-facilities",
+    "ok": true,
+    "ms": 9
+   },
+   {
+    "name": "get-park-alerts",
+    "ok": true,
+    "ms": 6
+   },
+   {
+    "name": "list-nps-alerts",
+    "ok": true,
+    "ms": 11
+   },
+   {
+    "name": "get-park-banner-image",
+    "ok": true,
+    "ms": 6
+   },
+   {
+    "name": "search-multimedia",
+    "ok": true,
+    "ms": 94
+   },
+   {
+    "name": "search-articles",
+    "ok": true,
+    "ms": 96
+   },
+   {
+    "name": "get-article",
+    "ok": true,
+    "ms": 15
+   },
+   {
+    "name": "get-photo",
+    "ok": true,
+    "ms": 5
+   },
+   {
+    "name": "get-video-captions",
+    "ok": true,
+    "ms": 17
+   },
+   {
+    "name": "geocode-suggest",
+    "ok": true,
+    "ms": 50
+   },
+   {
+    "name": "geocode-location",
+    "ok": true,
+    "ms": 9
+   },
+   {
+    "name": "get-weather-point",
+    "ok": true,
+    "ms": 70
+   },
+   {
+    "name": "get-weather-forecast",
+    "ok": true,
+    "ms": 23
+   },
+   {
+    "name": "get-weather-alerts",
+    "ok": true,
+    "ms": 52
+   },
+   {
+    "name": "get-weather-observation",
+    "ok": true,
+    "ms": 39
+   }
+  ]
+ },
+ "deleted": true,
+ "seconds": 359
+}

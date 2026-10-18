@@ -1,0 +1,63 @@
+{
+ "ok": true,
+ "site": "images-nasa",
+ "url": "https://images.nasa.gov/",
+ "commands": [
+  {
+   "name": "search-media",
+   "summary": "Search NASA images, videos and audio by free text, keyword tags, NASA center, media type and year range (paged, 100 per page by default)",
+   "verified": true
+  },
+  {
+   "name": "get-asset",
+   "summary": "List the downloadable file URLs (original, large, medium, small, thumb; video encodings, captions, metadata) for a NASA media item",
+   "verified": true
+  },
+  {
+   "name": "get-metadata",
+   "summary": "Get the full technical and descriptive metadata (EXIF/QuickTime/AVAIL fields: dates, dimensions, duration, keywords, credits) of a NASA media item",
+   "verified": true
+  },
+  {
+   "name": "get-metadata-location",
+   "summary": "Resolve the URL of a media item's metadata.json via the official API (use when you don't know the item's media type)",
+   "verified": true
+  },
+  {
+   "name": "get-video-captions",
+   "summary": "Get the SRT caption/subtitle transcript of a NASA video",
+   "verified": true
+  },
+  {
+   "name": "get-album",
+   "summary": "List the media items in a named NASA album (e.g. Apollo), paged",
+   "verified": true
+  },
+  {
+   "name": "list-popular",
+   "summary": "List currently trending/popular media items shown on the home page",
+   "verified": true
+  },
+  {
+   "name": "list-recent",
+   "summary": "List the newest uploads to the NASA Image and Video Library",
+   "verified": true
+  }
+ ],
+ "verified": 8,
+ "writes": 0,
+ "dropped": [],
+ "blockers": [],
+ "loggedIn": false,
+ "seconds": 143,
+ "next": [
+  "clify images-nasa",
+  "clify images-nasa search-media --q \"Apollo 11\" --media_type \"image,video\" --year_start \"1969\" --year_end \"1970\""
+ ],
+ "installed": "/home/ubuntu/clify-runs/batch2/home/bin/images-nasa",
+ "explored": {
+  "steps": 19,
+  "recorded": 588,
+  "heldWrites": 0
+ }
+}

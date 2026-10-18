@@ -1,0 +1,101 @@
+{
+ "ok": true,
+ "site": "hankintailmoitukset",
+ "url": "https://www.hankintailmoitukset.fi/fi/",
+ "commands": [
+  {
+   "name": "search-notices",
+   "summary": "Full-text search of Hilma procurement notices and plans (Azure Search, Lucene syntax), with filter, sort and paging",
+   "verified": true
+  },
+  {
+   "name": "get-enotice",
+   "summary": "Get the full eForms notice detail (lots, buyer, criteria, deadlines) by procedureId and noticeId",
+   "verified": true
+  },
+  {
+   "name": "get-procedure",
+   "summary": "Get an eForms procurement procedure (overview and its notices) by procedureId",
+   "verified": true
+  },
+  {
+   "name": "get-procurement-plan",
+   "summary": "Get a procurement plan (upcoming procurement) by planId",
+   "verified": true
+  },
+  {
+   "name": "search-organisations",
+   "summary": "Search buyer organisations by name (used by the buyer filter)",
+   "verified": true
+  },
+  {
+   "name": "search-cpv",
+   "summary": "Autocomplete search of CPV procurement classification codes by name or code",
+   "verified": true
+  },
+  {
+   "name": "get-cpv-tree",
+   "summary": "Get the full hierarchical CPV code tree with labels (large response)",
+   "verified": true
+  },
+  {
+   "name": "get-nuts-tree",
+   "summary": "Get the NUTS region code tree used for location filters",
+   "verified": true
+  },
+  {
+   "name": "get-value-statistics",
+   "summary": "Get homepage procurement value statistics",
+   "verified": true
+  },
+  {
+   "name": "get-notice-statistics",
+   "summary": "Get homepage notice count statistics",
+   "verified": true
+  },
+  {
+   "name": "get-cms-ref",
+   "summary": "Get the current Prismic content ref, which the announcement commands need",
+   "verified": true
+  },
+  {
+   "name": "list-announcements",
+   "summary": "List public Hilma announcements and news, newest first",
+   "verified": true
+  },
+  {
+   "name": "get-announcement",
+   "summary": "Get one Hilma announcement by its uid",
+   "verified": true
+  }
+ ],
+ "verified": 13,
+ "writes": 0,
+ "dropped": [
+  {
+   "name": "get-legacy-notice",
+   "reason": "The example id 500000 returned 404. No real legacy notice id appears in the recording or any live output, so the endpoint cannot be verified."
+  },
+  {
+   "name": "get-legacy-procurement",
+   "reason": "The example id 80000 returned 404. No real oldProcurementProjectId value appears in the observed search output, so a working example cannot be picked."
+  },
+  {
+   "name": "list-legacy-procurement-notices",
+   "reason": "Returned an empty list for the guessed id 80000. No real legacy procurement id is available to build a non-empty example."
+  }
+ ],
+ "blockers": [],
+ "loggedIn": false,
+ "seconds": 223,
+ "next": [
+  "clify hankintailmoitukset",
+  "clify hankintailmoitukset search-notices --query \"((siivous OR siivous*))\""
+ ],
+ "installed": "/home/ubuntu/clify-runs/batch2/home/bin/hankintailmoitukset",
+ "explored": {
+  "steps": 29,
+  "recorded": 322,
+  "heldWrites": 1
+ }
+}

@@ -1,0 +1,5 @@
+[
+  {"tool":"goto","input":{"url":"/wiki/Hacker_News","intent":"open article"}},
+  {"tool":"click","input":{"selector":"#mw-content-text p a[href*='/wiki/']","intent":"follow a link to another article"}},
+  {"tool":"goto","input":{"url":"/api/rest_v1/page/summary/Y_Combinator","intent":"article summary (REST API the page-preview popups use)"}}
+]

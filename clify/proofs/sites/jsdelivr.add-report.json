@@ -1,0 +1,108 @@
+{
+ "ok": true,
+ "site": "jsdelivr",
+ "url": "https://www.jsdelivr.com/",
+ "commands": [
+  {
+   "name": "search-packages",
+   "summary": "Full-text search of npm packages hosted on jsDelivr (Algolia index), with optional facet filters such as module type, style type or author",
+   "verified": true
+  },
+  {
+   "name": "get-npm-package-info",
+   "summary": "Get full npm metadata for a package from the search index: description, latest version, version release dates, npm downloads, jsDelivr hits, repo and owner",
+   "verified": true
+  },
+  {
+   "name": "list-package-versions",
+   "summary": "List all versions and dist-tags of an npm package or GitHub repo hosted on jsDelivr",
+   "verified": true
+  },
+  {
+   "name": "list-package-files",
+   "summary": "Get the file tree (names, sizes, SHA-256 hashes) and default file of a specific package version",
+   "verified": true
+  },
+  {
+   "name": "get-package-entrypoints",
+   "summary": "Get the resolved JS/CSS entrypoint files of an npm package version (the file served by the short CDN URL)",
+   "verified": true
+  },
+  {
+   "name": "get-package-readme",
+   "summary": "Get the rendered README (HTML) of an npm package or GitHub repo",
+   "verified": true
+  },
+  {
+   "name": "get-package-stats",
+   "summary": "Get CDN hits and bandwidth for a package over a period, with daily breakdown, rank and previous-period comparison",
+   "verified": true
+  },
+  {
+   "name": "get-package-version-stats",
+   "summary": "List a package's versions ranked by CDN hits or bandwidth over a period",
+   "verified": true
+  },
+  {
+   "name": "get-package-file-stats",
+   "summary": "List the files of a specific package version ranked by CDN hits or bandwidth over a period",
+   "verified": true
+  },
+  {
+   "name": "list-top-packages",
+   "summary": "List the most-used packages on jsDelivr, ranked by hits or bandwidth, optionally restricted to npm or GitHub",
+   "verified": true
+  },
+  {
+   "name": "get-network-stats",
+   "summary": "Get total jsDelivr network hits and bandwidth per CDN provider (Cloudflare, Fastly) over a period, optionally for one country",
+   "verified": true
+  },
+  {
+   "name": "get-network-content-stats",
+   "summary": "Get network hits and bandwidth split by content type (packages vs. proxies) with a daily breakdown",
+   "verified": true
+  },
+  {
+   "name": "list-network-countries",
+   "summary": "Get jsDelivr network hits broken down by country (country code, name, total hits, previous-period hits)",
+   "verified": true
+  },
+  {
+   "name": "list-top-browsers",
+   "summary": "List browsers by share of jsDelivr traffic, optionally for one country",
+   "verified": true
+  },
+  {
+   "name": "list-top-platforms",
+   "summary": "List operating systems/platforms by share of jsDelivr traffic, optionally for one country",
+   "verified": true
+  },
+  {
+   "name": "get-proxy-stats",
+   "summary": "Get CDN hits and bandwidth for one of jsDelivr's proxy endpoints (e.g. pyodide, fontsource, ghost) over a period",
+   "verified": true
+  },
+  {
+   "name": "list-stats-periods",
+   "summary": "List the fixed statistics periods available (calendar months/quarters/years such as 2026-09 or 2026-Q3) with links to their stats",
+   "verified": true
+  }
+ ],
+ "verified": 17,
+ "writes": 0,
+ "dropped": [],
+ "blockers": [],
+ "loggedIn": false,
+ "seconds": 173,
+ "next": [
+  "clify jsdelivr",
+  "clify jsdelivr search-packages --query \"react\""
+ ],
+ "installed": "/home/ubuntu/clify-runs/batch2/home/bin/jsdelivr",
+ "explored": {
+  "steps": 19,
+  "recorded": 90,
+  "heldWrites": 0
+ }
+}

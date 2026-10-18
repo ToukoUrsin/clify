@@ -1,0 +1,216 @@
+{
+ "url": "https://www.themoviedb.org/",
+ "category": "sports-ent",
+ "sandbox": "clify-www-themoviedb-org",
+ "startedAt": "2026-10-18T09:26:17.694Z",
+ "region": "us-pdx-1",
+ "chrome": "Chrome/148.0.7778.96",
+ "sandboxStartMs": 1817,
+ "addSeconds": 350,
+ "addExit": 0,
+ "add": {
+  "ok": true,
+  "site": "themoviedb",
+  "url": "https://www.themoviedb.org/",
+  "commands": [
+   {
+    "name": "get-trending",
+    "summary": "Trending movies and TV shows today or this week (home page scroller, 20 items)",
+    "verified": true
+   },
+   {
+    "name": "list-popular-home",
+    "summary": "Home page 'What's Popular' titles by channel (streaming, on TV, in theatres)",
+    "verified": true
+   },
+   {
+    "name": "search",
+    "summary": "Keyword search on TMDB, filtered to one result type (movie, tv, person, collection, keyword, company, network)",
+    "verified": true
+   },
+   {
+    "name": "discover-movies",
+    "summary": "Discover movies with filters (genres, keywords, rating, vote count, dates, language, runtime) and sort order, paginated",
+    "verified": true
+   },
+   {
+    "name": "list-movies",
+    "summary": "Preset movie listings: top rated, now playing, upcoming (use discover-movies with sort_by=popularity.desc for popular)",
+    "verified": true
+   },
+   {
+    "name": "list-tv",
+    "summary": "Preset TV listings: shows airing today or currently on the air",
+    "verified": true
+   },
+   {
+    "name": "get-movie",
+    "summary": "Movie details: title, year, certification, US release date, genres, runtime, tagline, overview, director, user score",
+    "verified": true
+   },
+   {
+    "name": "get-movie-cast",
+    "summary": "Full cast and crew of a movie (name, character or job, person url)",
+    "verified": true
+   },
+   {
+    "name": "get-movie-reviews",
+    "summary": "User reviews of a movie (author/heading, teaser text, link)",
+    "verified": true
+   },
+   {
+    "name": "get-tv-show",
+    "summary": "TV series details: name, first-air year, certification, genres, overview, creator, user score, latest season",
+    "verified": true
+   },
+   {
+    "name": "get-tv-season",
+    "summary": "Episodes of one TV season (number, title, air date, runtime, overview)",
+    "verified": true
+   },
+   {
+    "name": "get-tv-popularity",
+    "summary": "Daily popularity-rank change chart for a TV show (last 7 days)",
+    "verified": true
+   },
+   {
+    "name": "get-person",
+    "summary": "Person details: name, biography, personal info (known for, birthday, birthplace), aliases, top known-for title",
+    "verified": true
+   },
+   {
+    "name": "list-popular-people",
+    "summary": "Popular people on TMDB with their best-known titles, paginated",
+    "verified": true
+   },
+   {
+    "name": "get-collection",
+    "summary": "Cast and crew credits across a movie collection/franchise (name, roles, person url)",
+    "verified": true
+   },
+   {
+    "name": "list-movies-by-keyword",
+    "summary": "Movies tagged with a keyword (e.g. space opera), paginated",
+    "verified": true
+   },
+   {
+    "name": "list-movies-by-genre",
+    "summary": "Movies in a genre (e.g. 878-science-fiction), paginated",
+    "verified": true
+   }
+  ],
+  "verified": 17,
+  "writes": 0,
+  "dropped": [],
+  "blockers": [],
+  "loggedIn": false,
+  "seconds": 350,
+  "next": [
+   "clify themoviedb",
+   "clify themoviedb get-trending --group \"today\""
+  ],
+  "installed": "/home/ubuntu/clify-runs/blaxel-w2/home/bin/themoviedb",
+  "explored": {
+   "steps": 30,
+   "recorded": 133,
+   "heldWrites": 15
+  }
+ },
+ "check": {
+  "on": "blaxel",
+  "node": "v24.22.0",
+  "seconds": 4,
+  "reads": 17,
+  "verified": 17,
+  "failed": [],
+  "results": [
+   {
+    "name": "get-trending",
+    "ok": true,
+    "ms": 173
+   },
+   {
+    "name": "list-popular-home",
+    "ok": true,
+    "ms": 113
+   },
+   {
+    "name": "search",
+    "ok": true,
+    "ms": 168
+   },
+   {
+    "name": "discover-movies",
+    "ok": true,
+    "ms": 128
+   },
+   {
+    "name": "list-movies",
+    "ok": true,
+    "ms": 187
+   },
+   {
+    "name": "list-tv",
+    "ok": true,
+    "ms": 171
+   },
+   {
+    "name": "get-movie",
+    "ok": true,
+    "ms": 132
+   },
+   {
+    "name": "get-movie-cast",
+    "ok": true,
+    "ms": 148
+   },
+   {
+    "name": "get-movie-reviews",
+    "ok": true,
+    "ms": 125
+   },
+   {
+    "name": "get-tv-show",
+    "ok": true,
+    "ms": 137
+   },
+   {
+    "name": "get-tv-season",
+    "ok": true,
+    "ms": 132
+   },
+   {
+    "name": "get-tv-popularity",
+    "ok": true,
+    "ms": 86
+   },
+   {
+    "name": "get-person",
+    "ok": true,
+    "ms": 172
+   },
+   {
+    "name": "list-popular-people",
+    "ok": true,
+    "ms": 133
+   },
+   {
+    "name": "get-collection",
+    "ok": true,
+    "ms": 272
+   },
+   {
+    "name": "list-movies-by-keyword",
+    "ok": true,
+    "ms": 122
+   },
+   {
+    "name": "list-movies-by-genre",
+    "ok": true,
+    "ms": 128
+   }
+  ]
+ },
+ "deleted": true,
+ "seconds": 357
+}

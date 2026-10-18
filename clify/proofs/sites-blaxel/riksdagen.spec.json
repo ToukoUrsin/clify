@@ -1,0 +1,440 @@
+{
+ "name": "riksdagen",
+ "startUrl": "https://www.riksdagen.se/",
+ "origin": "https://www.riksdagen.se",
+ "createdAt": "2026-10-18T09:11:49.862Z",
+ "description": "Sveriges riksdag (riksdagen.se) is the Swedish Parliament's public website. This CLI searches parliamentary documents, members, web-TV, the calendar and news, and fetches detail pages (motions, committee reports, member profiles, videos, calendar events, parties) as CMS JSON through the site's /api/data proxy.",
+ "commands": [
+  {
+   "name": "search",
+   "summary": "Search riksdagen.se by keyword. Filter by category (documents, members, web-TV, calendar, news, web pages), document type, party and riksm\u00f6te, sort the results, and page through them.",
+   "method": "GET",
+   "urlTemplate": "/api/data/?url=%2Fsv%2Fsok%2F%3Favd%3D{avd}%26q%3D{sok}%26sok%3D{sok}%26doktyp%3D{doktyp}%26parti%3D{parti}%26rm%3D{rm}%26sort%3D{sort}%26sortorder%3D{sortorder}%26p%3D{p}",
+   "params": [
+    {
+     "name": "sok",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Search keyword(s)",
+     "example": "klimat"
+    },
+    {
+     "name": "avd",
+     "in": "path",
+     "required": false,
+     "type": "string",
+     "description": "Result category",
+     "enum": [
+      "dokument",
+      "ledamot",
+      "webbtv",
+      "kalender",
+      "aktuellt",
+      "webbsida"
+     ],
+     "default": "dokument"
+    },
+    {
+     "name": "doktyp",
+     "in": "path",
+     "required": false,
+     "type": "string",
+     "description": "Document type filter, e.g. mot (motion), bet (bet\u00e4nkande), prop (proposition), ip (interpellation), fr (skriftlig fr\u00e5ga). Leave empty for all types.",
+     "example": "mot"
+    },
+    {
+     "name": "parti",
+     "in": "path",
+     "required": false,
+     "type": "string",
+     "description": "Party abbreviation filter, e.g. S, M, SD, C, V, KD, L, MP. Leave empty for all parties.",
+     "example": "V"
+    },
+    {
+     "name": "rm",
+     "in": "path",
+     "required": false,
+     "type": "string",
+     "description": "Riksm\u00f6te (parliamentary session) filter, format YYYY/YY, e.g. 2025/26. Leave empty for all sessions.",
+     "example": "2025/26"
+    },
+    {
+     "name": "sort",
+     "in": "path",
+     "required": false,
+     "type": "string",
+     "description": "Sort key: relevans (relevance), datum (date) or debattdatum (debate date)",
+     "default": "relevans"
+    },
+    {
+     "name": "sortorder",
+     "in": "path",
+     "required": false,
+     "type": "string",
+     "description": "Sort direction",
+     "enum": [
+      "desc",
+      "asc"
+     ],
+     "default": "desc"
+    },
+    {
+     "name": "p",
+     "in": "path",
+     "required": false,
+     "type": "number",
+     "description": "Result page number, starting at 1",
+     "default": 1
+    }
+   ],
+   "responseType": "json",
+   "pagination": {
+    "type": "page",
+    "param": "p"
+   },
+   "mutates": false,
+   "example": {
+    "sok": "klimat",
+    "avd": "dokument",
+    "doktyp": "mot"
+   },
+   "source": "E2 GET https://www.riksdagen.se/api/data/",
+   "verified": true
+  },
+  {
+   "name": "list-members",
+   "summary": "List current members of parliament (ledam\u00f6ter), optionally filtered by party.",
+   "method": "GET",
+   "urlTemplate": "/api/data/?url=%2Fsv%2Fledamoter-och-partier%2Fledamoterna%2F%3Fparti%3D{parti}",
+   "params": [
+    {
+     "name": "parti",
+     "in": "path",
+     "required": false,
+     "type": "string",
+     "description": "Party code in lowercase. Leave empty for all members.",
+     "enum": [
+      "s",
+      "m",
+      "sd",
+      "c",
+      "v",
+      "kd",
+      "l",
+      "mp"
+     ],
+     "example": "mp"
+    }
+   ],
+   "responseType": "json",
+   "mutates": false,
+   "example": {
+    "parti": "s"
+   },
+   "source": "E2 E134 GET https://www.riksdagen.se/api/data/",
+   "verified": true
+  },
+  {
+   "name": "get-member",
+   "summary": "Get a member of parliament's profile: party, constituency, assignments and recent activity (motions, speeches, questions).",
+   "method": "GET",
+   "urlTemplate": "/api/data/?url=%2Fsv%2Fledamoter-och-partier%2Fledamot%2F{slug}%2F",
+   "params": [
+    {
+     "name": "slug",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Member slug in the form name_<intressent-guid>, taken from member listings or search results",
+     "example": "daniel-hellden_164a2468-a56f-45a7-a8a1-5ab6af559e19"
+    }
+   ],
+   "responseType": "json",
+   "mutates": false,
+   "example": {
+    "slug": "daniel-hellden_164a2468-a56f-45a7-a8a1-5ab6af559e19"
+   },
+   "source": "E2 E95 E98 E114 GET https://www.riksdagen.se/api/data/",
+   "verified": true
+  },
+  {
+   "name": "get-party",
+   "summary": "Get a party page: description, leadership and members.",
+   "method": "GET",
+   "urlTemplate": "/api/data/?url=%2Fsv%2Fledamoter-och-partier%2Fpartierna%2F{party}%2F",
+   "params": [
+    {
+     "name": "party",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Party page slug",
+     "enum": [
+      "socialdemokraterna",
+      "moderaterna",
+      "sverigedemokraterna",
+      "centerpartiet",
+      "vansterpartiet",
+      "kristdemokraterna",
+      "liberalerna",
+      "miljopartiet"
+     ],
+     "example": "miljopartiet"
+    }
+   ],
+   "responseType": "json",
+   "mutates": false,
+   "example": {
+    "party": "miljopartiet"
+   },
+   "source": "E115 GET https://www.riksdagen.se/_next/data/{id}/sv/ledamoter-och-partier/partierna/miljopartiet.json",
+   "verified": true
+  },
+  {
+   "name": "get-document",
+   "summary": "Get a parliamentary document's detail page (motion, bet\u00e4nkande/committee report, f\u00f6redragningslista, talarlista, etc.) including its proposals, case history, debate and decision.",
+   "method": "GET",
+   "urlTemplate": "/api/data/?url=%2Fsv%2Fdokument-och-lagar%2Fdokument%2F{doctype}%2F{slug}%2F",
+   "params": [
+    {
+     "name": "doctype",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Document type path segment",
+     "enum": [
+      "motion",
+      "betankande",
+      "proposition",
+      "kammarens-foredragningslista",
+      "talarlista",
+      "uttag"
+     ],
+     "example": "motion"
+    },
+    {
+     "name": "slug",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Document slug, title-slug_<dok_id lowercase>, e.g. klimatpolitik_hd01mju16. Take it from search results.",
+     "example": "forsvarets-klimat-och-miljopaverkan_hd023408"
+    }
+   ],
+   "responseType": "json",
+   "mutates": false,
+   "example": {
+    "doctype": "motion",
+    "slug": "forsvarets-klimat-och-miljopaverkan_hd023408"
+   },
+   "source": "E3 E5 E83 GET https://www.riksdagen.se/_next/data/{id}/sv/dokument-och-lagar/dokument/motion/forsvarets-klimat-och-miljopaverkan_hd023408.json",
+   "verified": true
+  },
+  {
+   "name": "get-planned-chamber-items",
+   "summary": "Get the list of planned items (upcoming debates and decisions) for the Chamber (kammaren).",
+   "method": "GET",
+   "urlTemplate": "/api/data/?url=%2Fsv%2Fdokument-och-lagar%2Fdokument%2Futtag%2Fplanerade-arenden-for-kammaren_h6d1plan%2F",
+   "params": [],
+   "responseType": "json",
+   "mutates": false,
+   "source": "E4 GET https://www.riksdagen.se/_next/data/{id}/sv/dokument-och-lagar/dokument/_H6D1plan.json",
+   "verified": true
+  },
+  {
+   "name": "get-webtv-video",
+   "summary": "Get a web-TV video (debate) detail: metadata, speaker list and related documents (talarlista, f\u00f6redragningslista).",
+   "method": "GET",
+   "urlTemplate": "/api/data/?url=%2Fsv%2Fwebb-tv%2Fvideo%2F{category}%2F{slug}%2F",
+   "params": [
+    {
+     "name": "category",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Video category slug, e.g. allmanpolitisk-debatt, partiledardebatt, debatt-om-forslag",
+     "example": "allmanpolitisk-debatt"
+    },
+    {
+     "name": "slug",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Video slug, title_<id>, from web-TV search results",
+     "example": "allmanpolitisk-debatt_hec120261014al"
+    }
+   ],
+   "responseType": "json",
+   "mutates": false,
+   "example": {
+    "category": "allmanpolitisk-debatt",
+    "slug": "allmanpolitisk-debatt_hec120261014al"
+   },
+   "source": "E97 E116 E123 E128 GET https://www.riksdagen.se/_next/data/{id}/sv/webb-tv/video/allmanpolitisk-debatt/allmanpolitisk-debatt_hec120261014al.json",
+   "verified": true
+  },
+  {
+   "name": "get-calendar",
+   "summary": "Get the parliament calendar page (upcoming chamber sessions, committee meetings and events).",
+   "method": "GET",
+   "urlTemplate": "/api/data/?url=%2Fsv%2Faktuellt%2Fkalendersida%2F",
+   "params": [],
+   "responseType": "json",
+   "mutates": false,
+   "source": "E117 E136 GET https://www.riksdagen.se/_next/data/{id}/sv/aktuellt/kalendersida.json",
+   "verified": true
+  },
+  {
+   "name": "get-calendar-event",
+   "summary": "Get a single calendar event's detail (time, place, agenda, related documents).",
+   "method": "GET",
+   "urlTemplate": "/api/data/?url=%2Fsv%2Faktuellt%2Fkalendersida%2Fkalenderhandelse%2F{category}%2F{year}%2F{month}%2F{day}%2F{slug}%2F",
+   "params": [
+    {
+     "name": "category",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Event category slug",
+     "example": "allmanpolitisk-debatt"
+    },
+    {
+     "name": "year",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Year, e.g. 2026",
+     "example": "2026"
+    },
+    {
+     "name": "month",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Swedish three-letter month abbreviation, lowercase",
+     "enum": [
+      "jan",
+      "feb",
+      "mar",
+      "apr",
+      "maj",
+      "jun",
+      "jul",
+      "aug",
+      "sep",
+      "okt",
+      "nov",
+      "dec"
+     ],
+     "example": "okt"
+    },
+    {
+     "name": "day",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Day of month, e.g. 14",
+     "example": "14"
+    },
+    {
+     "name": "slug",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Event slug, title_<id>, from calendar search results",
+     "example": "allmanpolitisk-debatt_rdhec120261014al"
+    }
+   ],
+   "responseType": "json",
+   "mutates": false,
+   "example": {
+    "category": "allmanpolitisk-debatt",
+    "year": "2026",
+    "month": "okt",
+    "day": "14",
+    "slug": "allmanpolitisk-debatt_rdhec120261014al"
+   },
+   "source": "E96 GET https://www.riksdagen.se/_next/data/{id}/sv/aktuellt/kalendersida/kalenderhandelse/allmanpolitisk-debatt/{n}/okt/{n}/allmanpolitisk-debatt_rdhec120261014al.json",
+   "verified": true
+  },
+  {
+   "name": "list-news",
+   "summary": "Get the latest news (Aktuellt) from the Riksdag.",
+   "method": "GET",
+   "urlTemplate": "/api/data/?url=%2Fsv%2Faktuellt%2F",
+   "params": [],
+   "responseType": "json",
+   "mutates": false,
+   "source": "E87 E135 GET https://www.riksdagen.se/_next/data/{id}/sv/aktuellt.json",
+   "verified": true
+  },
+  {
+   "name": "get-news-category",
+   "summary": "Get a news/theme page under Aktuellt, e.g. valet-2026 or allmanna-motionstiden.",
+   "method": "GET",
+   "urlTemplate": "/api/data/?url=%2Fsv%2Faktuellt%2F{slug}%2F",
+   "params": [
+    {
+     "name": "slug",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "News category/theme slug",
+     "example": "allmanna-motionstiden"
+    }
+   ],
+   "responseType": "json",
+   "mutates": false,
+   "example": {
+    "slug": "allmanna-motionstiden"
+   },
+   "source": "E130 E131 GET https://www.riksdagen.se/_next/data/{id}/sv/aktuellt/allmanna-motionstiden.json",
+   "verified": true
+  },
+  {
+   "name": "get-page",
+   "summary": "Generic fallback: fetch the CMS JSON for any riksdagen.se page path, e.g. a search URL with extra filters, an open-data documentation page, or a member page with an activity filter.",
+   "method": "GET",
+   "urlTemplate": "/api/data/",
+   "params": [
+    {
+     "name": "path",
+     "key": "url",
+     "in": "query",
+     "required": true,
+     "type": "string",
+     "description": "Site path including any query string, starting with /sv/, e.g. /sv/dokument-och-lagar/riksdagens-oppna-data/dokument/",
+     "example": "/sv/dokument-och-lagar/riksdagens-oppna-data/dokument/"
+    }
+   ],
+   "responseType": "json",
+   "mutates": false,
+   "example": {
+    "path": "/sv/dokument-och-lagar/riksdagens-oppna-data/dokument/"
+   },
+   "source": "E2 E118 E122 E137 E139 GET https://www.riksdagen.se/api/data/",
+   "verified": true
+  }
+ ],
+ "blockers": [],
+ "notes": [
+  "All commands go through GET /api/data/?url=<site path>. This proxy returns the Episerver headless-CMS JSON (contentApiData) for any page.",
+  "The site's own _next/data/<buildId>/\u2026 URLs depend on a build id that changes on every deploy, so they are not used.",
+  "Response shapes are large CMS objects. Search hits, member lists and document metadata are nested inside them, so look for the result or list arrays in the returned JSON.",
+  "Slugs for get-document, get-member, get-webtv-video and get-calendar-event come from the URLs in search results. A document slug ends in _<dok_id lowercased>, e.g. _hd023408 for motion 2025/26:3408.",
+  "Some slugs contain non-ASCII characters (e.g. militara-fragor_ha01f\u00f6u4). Pass them unencoded.",
+  "Search parti uses uppercase codes (V, S, MP\u2026). list-members parti uses lowercase codes (s, mp\u2026).",
+  "The member activity filter (by type) and the calendar day/week views use query parameters that were not fully captured. Use get-page with the full site path, e.g. /sv/ledamoter-och-partier/ledamot/<slug>/?doktyp=mot.",
+  "For bulk or structured data (documents, votes, speeches, members), Riksdagen also offers the open REST API at https://data.riksdagen.se/ (dokumentlista, voteringlista, anforandelista, personlista; JSON/XML/CSV). It was not exercised here."
+ ],
+ "dropped": [],
+ "generated": {
+  "by": "clify add",
+  "model": "claude-opus-5-5",
+  "exploredSteps": 30,
+  "recorded": 520,
+  "verifiedAt": "2026-10-18T09:13:22.160Z",
+  "seconds": 415
+ }
+}

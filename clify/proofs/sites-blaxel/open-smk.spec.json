@@ -1,0 +1,373 @@
+{
+ "name": "open-smk",
+ "startUrl": "https://open.smk.dk/",
+ "origin": "https://open.smk.dk",
+ "createdAt": "2026-10-18T09:17:50.205Z",
+ "description": "SMK Open, the art collection of Statens Museum for Kunst (the National Gallery of Denmark). The CLI searches and filters artworks through the public SMK API and fetches artwork details, similar works, enrichment data, curated themes and IIIF image metadata.",
+ "commands": [
+  {
+   "name": "search-artworks",
+   "summary": "Search the SMK collection by keyword, with optional facet filters, a date or geo range, language and offset pagination.",
+   "method": "GET",
+   "urlTemplate": "https://api.smk.dk/api/v1/art/search/",
+   "params": [
+    {
+     "name": "query",
+     "key": "keys",
+     "in": "query",
+     "required": true,
+     "type": "string",
+     "description": "Free-text search keywords. Use * to match all artworks.",
+     "default": "*",
+     "example": "hammersh\u00f8i"
+    },
+    {
+     "name": "lang",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Language of the returned metadata.",
+     "enum": [
+      "da",
+      "en"
+     ],
+     "default": "da"
+    },
+    {
+     "name": "filters",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Comma-separated filters, each written [field:value]. Fields include artist, creator, object_names, colors, content_person, has_image and public_domain.",
+     "example": "[artist:Vilhelm Hammersh\u00f8i],[has_image:true]"
+    },
+    {
+     "name": "range",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Range filter on a date or geo field. Use * for an open end.",
+     "example": "[production_dates_end:{1900-01-01T00:00:00.000Z;*}]"
+    },
+    {
+     "name": "offset",
+     "in": "query",
+     "required": false,
+     "type": "number",
+     "description": "Index of the first result to return (0-based).",
+     "default": 0
+    },
+    {
+     "name": "rows",
+     "in": "query",
+     "required": false,
+     "type": "number",
+     "description": "Number of results per page.",
+     "default": 24
+    }
+   ],
+   "responseType": "json",
+   "resultPath": "items",
+   "defaultFields": [
+    "object_number",
+    "titles.0.title",
+    "production.0.creator",
+    "production_date.0.period",
+    "object_names.0.name",
+    "public_domain",
+    "image_thumbnail"
+   ],
+   "pagination": {
+    "type": "offset",
+    "param": "offset",
+    "step": 24
+   },
+   "mutates": false,
+   "example": {
+    "query": "hammersh\u00f8i",
+    "filters": "[artist:Vilhelm Hammersh\u00f8i]"
+   },
+   "source": "E2 E11 GET https://api.smk.dk/api/v1/art/search/",
+   "verified": true
+  },
+  {
+   "name": "list-search-facets",
+   "summary": "List facet values with counts (artists, creators, work types, colours and so on) for a keyword search. Use the values as filters in search-artworks.",
+   "method": "GET",
+   "urlTemplate": "https://api.smk.dk/api/v1/art/search/?facetNum=-1&rows=1&offset=0",
+   "params": [
+    {
+     "name": "query",
+     "key": "keys",
+     "in": "query",
+     "required": true,
+     "type": "string",
+     "description": "Free-text search keywords. Use * to match all artworks.",
+     "default": "*",
+     "example": "hammersh\u00f8i"
+    },
+    {
+     "name": "facets",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Comma-separated facet fields to return, e.g. creator, artist, colors, object_names, content_person, role_attributed_to, role_workshop_of, role_after, role_school.",
+     "default": "creator,artist,object_names,colors,content_person"
+    },
+    {
+     "name": "filters",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Optional filters to narrow the facets, each written [field:value] and comma-separated.",
+     "example": "[has_image:true]"
+    },
+    {
+     "name": "lang",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Language of the facet values.",
+     "enum": [
+      "da",
+      "en"
+     ],
+     "default": "da"
+    }
+   ],
+   "responseType": "json",
+   "resultPath": "facets",
+   "mutates": false,
+   "example": {
+    "query": "hammersh\u00f8i"
+   },
+   "source": "E2 E12 E14 E18 GET https://api.smk.dk/api/v1/art/search/",
+   "verified": true
+  },
+  {
+   "name": "get-artworks",
+   "summary": "Get full metadata for one or more artworks by object number (comma-separated): title, creator, dates, dimensions, exhibitions, literature and image URLs.",
+   "method": "GET",
+   "urlTemplate": "https://api.smk.dk/api/v1/art/",
+   "params": [
+    {
+     "name": "object_number",
+     "in": "query",
+     "required": true,
+     "type": "string",
+     "description": "Artwork object number, or several separated by commas (case-insensitive).",
+     "example": "KMS6658"
+    },
+    {
+     "name": "lang",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Language of the returned metadata.",
+     "enum": [
+      "da",
+      "en"
+     ],
+     "default": "da"
+    }
+   ],
+   "responseType": "json",
+   "resultPath": "items",
+   "defaultFields": [
+    "object_number",
+    "titles.0.title",
+    "production.0.creator",
+    "production_date.0.period",
+    "object_names.0.name",
+    "content_description",
+    "public_domain",
+    "image_native"
+   ],
+   "mutates": false,
+   "example": {
+    "object_number": "KMS6658"
+   },
+   "source": "E3 GET https://api.smk.dk/api/v1/art/",
+   "verified": true
+  },
+  {
+   "name": "get-similar-artworks",
+   "summary": "Get the object numbers of artworks that are visually similar to an artwork.",
+   "method": "GET",
+   "urlTemplate": "https://similar.api.smk.dk/similar/",
+   "params": [
+    {
+     "name": "object_number",
+     "in": "query",
+     "required": true,
+     "type": "string",
+     "description": "Artwork object number.",
+     "example": "KMS6658"
+    }
+   ],
+   "responseType": "json",
+   "resultPath": "object_numbers",
+   "mutates": false,
+   "example": {
+    "object_number": "KMS6658"
+   },
+   "source": "E4 GET https://similar.api.smk.dk/similar/",
+   "verified": true
+  },
+  {
+   "name": "get-artwork-enrichment",
+   "summary": "Get enrichment records for an artwork, such as visual feature extraction (brightness, contrast, saturation, colour temperature) and similar-image data.",
+   "method": "GET",
+   "urlTemplate": "https://enrichment.api.smk.dk/api/enrichment/{object_number}",
+   "params": [
+    {
+     "name": "object_number",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Artwork object number.",
+     "example": "KMS6658"
+    }
+   ],
+   "responseType": "json",
+   "defaultFields": [
+    "id",
+    "type",
+    "data"
+   ],
+   "mutates": false,
+   "example": {
+    "object_number": "KMS6658"
+   },
+   "source": "E5 E6 GET https://enrichment.api.smk.dk/api/enrichment/KMS6658",
+   "verified": true
+  },
+  {
+   "name": "list-themes",
+   "summary": "List curated themes (e.g. '10 Highlights', 'Animals') with their Danish and English titles and the object numbers of their artworks.",
+   "method": "GET",
+   "urlTemplate": "https://enrichment.api.smk.dk/api/themes",
+   "params": [],
+   "responseType": "json",
+   "defaultFields": [
+    "id",
+    "title_en",
+    "title_da",
+    "artwork_ids"
+   ],
+   "mutates": false,
+   "source": "E7 E13",
+   "verified": true
+  },
+  {
+   "name": "get-theme",
+   "summary": "Get one curated theme: titles, HTML description in Danish and English, and the object numbers of its artworks.",
+   "method": "GET",
+   "urlTemplate": "https://enrichment.api.smk.dk/api/themes/{id}",
+   "params": [
+    {
+     "name": "id",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Theme id, as returned by list-themes.",
+     "example": "2"
+    }
+   ],
+   "responseType": "json",
+   "defaultFields": [
+    "id",
+    "title_en",
+    "title_da",
+    "content_en",
+    "artwork_ids"
+   ],
+   "mutates": false,
+   "example": {
+    "id": "2"
+   },
+   "source": "E8 GET https://enrichment.api.smk.dk/api/themes/{n}",
+   "verified": true
+  },
+  {
+   "name": "get-iiif-manifest",
+   "summary": "Get the IIIF Presentation 3 manifest for an artwork: label, rights, attribution, metadata, and canvases with image size and image service URLs.",
+   "method": "GET",
+   "urlTemplate": "https://api.smk.dk/api/v1/iiif/manifest",
+   "params": [
+    {
+     "name": "id",
+     "in": "query",
+     "required": true,
+     "type": "string",
+     "description": "Artwork object number.",
+     "example": "KMS6658"
+    }
+   ],
+   "responseType": "json",
+   "defaultFields": [
+    "label",
+    "rights",
+    "requiredStatement",
+    "thumbnail",
+    "items"
+   ],
+   "mutates": false,
+   "example": {
+    "id": "KMS6658"
+   },
+   "source": "E9 E16 GET https://api.smk.dk/api/v1/iiif/manifest",
+   "verified": true
+  },
+  {
+   "name": "get-iiif-image-info",
+   "summary": "Get IIIF Image API info.json for an artwork image: full width and height, available sizes, tiles and supported formats, for building zoom or crop URLs.",
+   "method": "GET",
+   "urlTemplate": "https://iip.smk.dk/iiif/jp2/{image_id}/info.json",
+   "params": [
+    {
+     "name": "image_id",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "IIIF image identifier: the last path segment of the service id in the manifest's thumbnail or canvas, e.g. 5x21tg258_KMS6658.tif.jp2.",
+     "example": "5x21tg258_KMS6658.tif.jp2"
+    }
+   ],
+   "responseType": "json",
+   "defaultFields": [
+    "@id",
+    "width",
+    "height",
+    "sizes",
+    "tiles",
+    "profile"
+   ],
+   "mutates": false,
+   "example": {
+    "image_id": "5x21tg258_KMS6658.tif.jp2"
+   },
+   "source": "E10 GET https://iip.smk.dk/iiif/jp2/5x21tg258_KMS6658.tif.jp2/info.json",
+   "verified": true
+  }
+ ],
+ "blockers": [],
+ "notes": [
+  "All data is public; no login is needed.",
+  "Artworks are identified by object_number (e.g. KMS6658, KMS1). Matching is case-insensitive. get-artworks accepts several numbers separated by commas; this is also how saved and shared lists (/shared-list?list=IDs) are resolved.",
+  "Filters syntax in search-artworks: [field:value] items separated by commas, e.g. [artist:Vilhelm Hammersh\u00f8i],[has_image:true]. To find the related works of an artist or a portrayed person, filter by artist or content_person.",
+  "Values for filters can be discovered with list-search-facets. The facet values come back in the chosen language.",
+  "The web app sends an authorization header to similar.api.smk.dk and to enrichment.api.smk.dk/api/themes. If get-similar-artworks, list-themes or get-theme fail with 401/403, that header is required and cannot be replayed.",
+  "To build an image URL from a IIIF image service, use https://iip.smk.dk/iiif/jp2/{image_id}/full/!1024,/0/default.jpg (IIIF Image API 2, level 2).",
+  "Search pages hold 24 results by default; paginate with offset in steps of rows."
+ ],
+ "dropped": [],
+ "generated": {
+  "by": "clify add",
+  "model": "claude-opus-5-5",
+  "exploredSteps": 26,
+  "recorded": 107,
+  "verifiedAt": "2026-10-18T09:18:47.861Z",
+  "seconds": 305
+ }
+}

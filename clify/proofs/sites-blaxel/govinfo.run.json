@@ -1,0 +1,246 @@
+{
+ "url": "https://www.govinfo.gov/",
+ "category": "gov-us",
+ "sandbox": "clify-www-govinfo-gov",
+ "startedAt": "2026-10-18T08:55:41.559Z",
+ "region": "us-pdx-1",
+ "chrome": "Chrome/148.0.7778.96",
+ "sandboxStartMs": 2447,
+ "addSeconds": 285,
+ "addExit": 0,
+ "add": {
+  "ok": true,
+  "site": "govinfo",
+  "url": "https://www.govinfo.gov/",
+  "commands": [
+   {
+    "name": "list-categories",
+    "summary": "List GovInfo collection categories and the collections (code, slug) in each",
+    "verified": true
+   },
+   {
+    "name": "get-collection",
+    "summary": "Get metadata for a collection: title, description, help/RSS links and related resources",
+    "verified": true
+   },
+   {
+    "name": "browse-collection",
+    "summary": "List the top-level browse nodes of a collection (congresses for bills, years for the Federal Register) with document counts",
+    "verified": true
+   },
+   {
+    "name": "list-bill-types",
+    "summary": "List the bill types (hr, s, hres, hjres, hconres, ...) in a Congress, with counts",
+    "verified": true
+   },
+   {
+    "name": "list-bill-ranges",
+    "summary": "List the bill-number ranges (e.g. [0-99]) for one bill type in a Congress, with counts",
+    "verified": true
+   },
+   {
+    "name": "list-bills",
+    "summary": "List bill versions (package IDs, titles, publish dates, file links) in a bill-number range of a Congress and bill type",
+    "verified": true
+   },
+   {
+    "name": "list-fr-months",
+    "summary": "List the months of a Federal Register year, with document counts",
+    "verified": true
+   },
+   {
+    "name": "list-fr-issues",
+    "summary": "List the daily Federal Register issues in a month (issue labels like 'Friday, January 31, Pages 8625-8752') with whole-issue download links",
+    "verified": true
+   },
+   {
+    "name": "list-fr-issue-agencies",
+    "summary": "List the agencies that have documents in one daily Federal Register issue, with counts",
+    "verified": true
+   },
+   {
+    "name": "list-fr-agency-documents",
+    "summary": "List one agency's documents in a daily Federal Register issue (granule IDs, titles, sections, pages)",
+    "verified": true
+   },
+   {
+    "name": "get-fr-toc",
+    "summary": "Get the Federal Register table of contents for a date: every agency with its document subjects, pages and FR doc numbers",
+    "verified": true
+   },
+   {
+    "name": "get-content-details",
+    "summary": "Get details for a document (granule) or package: title, metadata table, download links (PDF/HTML/MODS/ZIP), citations and dates",
+    "verified": true
+   },
+   {
+    "name": "list-related-collections",
+    "summary": "List the kinds of related documents available for a granule (e.g. FR-DOCKETID: documents sharing a docket ID)",
+    "verified": true
+   },
+   {
+    "name": "list-related-documents",
+    "summary": "List documents related to a granule within a related collection, e.g. Federal Register documents sharing its docket ID",
+    "verified": true
+   },
+   {
+    "name": "get-document-in-context",
+    "summary": "Show where a granule sits in its package (issue/agency browse node) plus whole-issue download renditions",
+    "verified": true
+   },
+   {
+    "name": "list-government-authors",
+    "summary": "List government authors (agencies, courts, congressional bodies) grouped by executive, judicial and legislative branch",
+    "verified": true
+   },
+   {
+    "name": "browse-committee",
+    "summary": "List the publication collections (bills, reports, hearings, ...) available for a congressional committee",
+    "verified": true
+   },
+   {
+    "name": "browse-committee-collection",
+    "summary": "List the Congresses for which a committee has publications in one collection (e.g. hearings, reports, bills)",
+    "verified": true
+   },
+   {
+    "name": "get-document-html",
+    "summary": "Fetch the full text (HTML rendition) of a bill version or a Federal Register document",
+    "verified": true
+   },
+   {
+    "name": "get-package-mods",
+    "summary": "Get the MODS bibliographic metadata of a package (converted from XML to JSON): titles, names/sponsors, dates, identifiers, links",
+    "verified": true
+   }
+  ],
+  "verified": 20,
+  "writes": 0,
+  "dropped": [],
+  "blockers": [],
+  "loggedIn": false,
+  "seconds": 284,
+  "next": [
+   "clify govinfo",
+   "clify govinfo list-categories"
+  ],
+  "installed": "/home/ubuntu/clify-runs/blaxel-w1/home/bin/govinfo",
+  "explored": {
+   "steps": 30,
+   "recorded": 80,
+   "heldWrites": 0
+  }
+ },
+ "check": {
+  "on": "blaxel",
+  "node": "v24.22.0",
+  "seconds": 9,
+  "reads": 20,
+  "verified": 20,
+  "failed": [],
+  "results": [
+   {
+    "name": "list-categories",
+    "ok": true,
+    "ms": 177
+   },
+   {
+    "name": "get-collection",
+    "ok": true,
+    "ms": 86
+   },
+   {
+    "name": "browse-collection",
+    "ok": true,
+    "ms": 93
+   },
+   {
+    "name": "list-bill-types",
+    "ok": true,
+    "ms": 84
+   },
+   {
+    "name": "list-bill-ranges",
+    "ok": true,
+    "ms": 96
+   },
+   {
+    "name": "list-bills",
+    "ok": true,
+    "ms": 201
+   },
+   {
+    "name": "list-fr-months",
+    "ok": true,
+    "ms": 126
+   },
+   {
+    "name": "list-fr-issues",
+    "ok": true,
+    "ms": 1110
+   },
+   {
+    "name": "list-fr-issue-agencies",
+    "ok": true,
+    "ms": 158
+   },
+   {
+    "name": "list-fr-agency-documents",
+    "ok": true,
+    "ms": 234
+   },
+   {
+    "name": "get-fr-toc",
+    "ok": true,
+    "ms": 411
+   },
+   {
+    "name": "get-content-details",
+    "ok": true,
+    "ms": 114
+   },
+   {
+    "name": "list-related-collections",
+    "ok": true,
+    "ms": 102
+   },
+   {
+    "name": "list-related-documents",
+    "ok": true,
+    "ms": 202
+   },
+   {
+    "name": "get-document-in-context",
+    "ok": true,
+    "ms": 197
+   },
+   {
+    "name": "list-government-authors",
+    "ok": true,
+    "ms": 2336
+   },
+   {
+    "name": "browse-committee",
+    "ok": true,
+    "ms": 83
+   },
+   {
+    "name": "browse-committee-collection",
+    "ok": true,
+    "ms": 504
+   },
+   {
+    "name": "get-document-html",
+    "ok": true,
+    "ms": 107
+   },
+   {
+    "name": "get-package-mods",
+    "ok": true,
+    "ms": 116
+   }
+  ]
+ },
+ "deleted": true,
+ "seconds": 296
+}

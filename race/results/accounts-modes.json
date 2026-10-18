@@ -1,0 +1,50 @@
+{
+  "model": "claude-opus-5-5",
+  "runs": [
+    "2026-10-18T09-53-07-807Z",
+    "2026-10-18T09-57-57-642Z",
+    "2026-10-18T10-04-32-128Z",
+    "2026-10-18T10-08-55-638Z",
+    "2026-10-18T10-14-12-380Z",
+    "2026-10-18T10-39-45-000Z-live"
+  ],
+  "A": {
+    "runs": 5,
+    "timeMs": 287860.4,
+    "fresh": 123564.6,
+    "total": 4896082.2,
+    "cost": 2.05883072,
+    "peakRamMB": 3636.8599999999997,
+    "avgCpu": 31.946059794466343,
+    "success": 6,
+    "label": "A browser, clicks + screenshots"
+  },
+  "B": {
+    "runs": 3,
+    "timeMs": 374383,
+    "fresh": 91394.66666666667,
+    "total": 4255130.666666667,
+    "cost": 1.6867458666666666,
+    "peakRamMB": 3318.233333333333,
+    "avgCpu": 25.553003388718214,
+    "success": 6,
+    "label": "B browser + page JavaScript",
+    "runIds": [
+      "2026-10-18T09-12-17-352Z",
+      "2026-10-18T09-19-43-239Z",
+      "2026-10-18T10-14-12-380Z"
+    ]
+  },
+  "C": {
+    "runs": 6,
+    "timeMs": 86974.5,
+    "fresh": 23565.166666666668,
+    "total": 339217,
+    "cost": 0.2827070333333333,
+    "peakRamMB": 381.1333333333334,
+    "avgCpu": 5.303190745626068,
+    "success": 6,
+    "label": "C clify (Bash only)"
+  },
+  "note": "A and C: round 5 runs (generated specs, polished synthesizer). B: the browser racer does not use the specs, so its mean pools the B runs of rounds 4 and 5 (runIds)."
+}

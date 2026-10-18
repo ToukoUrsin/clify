@@ -1,0 +1,103 @@
+{
+ "ok": true,
+ "site": "huggingface",
+ "url": "https://huggingface.co/models",
+ "commands": [
+  {
+   "name": "search-models",
+   "summary": "Search and filter Hub models by keyword, task, library, app, parameter count, inference provider or license, with sorting and pages",
+   "verified": true
+  },
+  {
+   "name": "quick-search",
+   "summary": "Autocomplete-style quick search that returns matching models, datasets, Spaces, orgs and users together",
+   "verified": true
+  },
+  {
+   "name": "full-text-search",
+   "summary": "Full-text search inside model, dataset or Space cards (README content), with highlighted matches",
+   "verified": true
+  },
+  {
+   "name": "list-model-tags",
+   "summary": "List all model license tag ids (e.g. license:apache-2.0) usable in search-models --license",
+   "verified": true
+  },
+  {
+   "name": "get-model",
+   "summary": "Get full public metadata for a model: tags, downloads, likes, config, card data, file list (siblings), parameter counts, gating",
+   "verified": true
+  },
+  {
+   "name": "get-model-scan",
+   "summary": "Get the security (malware/pickle) scan status of a model repository's files",
+   "verified": true
+  },
+  {
+   "name": "list-model-files",
+   "summary": "List files on a model repository's main branch with sizes, last commit message, date and download links",
+   "verified": true
+  },
+  {
+   "name": "get-model-file",
+   "summary": "Download the raw text of a file from a model repository's main branch, e.g. README.md or config.json",
+   "verified": true
+  },
+  {
+   "name": "search-datasets",
+   "summary": "Search and filter Hub datasets by keyword, modality and format, with sorting and pages",
+   "verified": true
+  },
+  {
+   "name": "get-dataset",
+   "summary": "Get a dataset's Croissant metadata (name, description, license, splits, fields, file distribution) from its page",
+   "verified": true
+  },
+  {
+   "name": "get-dataset-scan",
+   "summary": "Get the security scan status of a dataset repository's files",
+   "verified": true
+  },
+  {
+   "name": "check-dataset-viewer",
+   "summary": "Check which dataset-viewer features (viewer, preview, search, filter, statistics) are available for a dataset split",
+   "verified": true
+  },
+  {
+   "name": "get-dataset-statistics",
+   "summary": "Get per-column statistics (types, null counts, unique values, label frequencies, length histograms) for a dataset split",
+   "verified": true
+  },
+  {
+   "name": "search-spaces",
+   "summary": "Search Hugging Face Spaces (AI demo apps) by keyword, with sorting",
+   "verified": true
+  },
+  {
+   "name": "get-organization",
+   "summary": "List the repositories shown in an organization's or user's profile collections (models and datasets with stats)",
+   "verified": true
+  }
+ ],
+ "verified": 15,
+ "writes": 0,
+ "dropped": [
+  {
+   "name": "semantic-search-spaces",
+   "reason": "Returned an empty array for a common query. The required wire params are unknown and can't be confirmed, and search-spaces already covers Space search."
+  }
+ ],
+ "blockers": [],
+ "loggedIn": false,
+ "seconds": 262,
+ "next": [
+  "clify huggingface",
+  "clify huggingface search-models --search \"llama\" --pipeline_tag \"text-generation\" --sort \"downloads\""
+ ],
+ "installed": "/home/ubuntu/clify-runs/batch2/home/bin/huggingface",
+ "explored": {
+  "steps": 30,
+  "recorded": 70,
+  "heldWrites": 24
+ }
+}

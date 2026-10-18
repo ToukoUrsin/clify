@@ -1,0 +1,614 @@
+{
+ "name": "rijksmuseum",
+ "startUrl": "https://www.rijksmuseum.nl/en/collection",
+ "origin": "https://www.rijksmuseum.nl",
+ "createdAt": "2026-10-18T08:34:42.355Z",
+ "description": "Rijksmuseum online collection (rijksmuseum.nl): search artworks and library publications, browse facets, and look up artwork, person/topic node and publication details through the site's public JSON API.",
+ "commands": [
+  {
+   "name": "search-collection",
+   "summary": "Search Rijksmuseum artworks by keyword with optional sort and up to two facet filters (object type, century, maker/person, ...); 20 results per page",
+   "method": "GET",
+   "urlTemplate": "/api/v1/collection/search?language=en&collectionSearchContext=Art",
+   "params": [
+    {
+     "name": "query",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Free-text search, e.g. an artist, title or subject. May be omitted when filtering only by facet.",
+     "example": "rembrandt"
+    },
+    {
+     "name": "sort",
+     "key": "sortingType",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Sort order. Recorded values: Popularity (default) and TimeAscending (old to new). The UI also offers relevance, new to old, maker A-Z/Z-A and object number A-Z/Z-A, but their wire names were not recor",
+     "default": "Popularity",
+     "example": "TimeAscending"
+    },
+    {
+     "name": "facet1_id",
+     "key": "facets[0].id",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "First facet node id, from list-search-facets, search-facet-values, autocomplete or get-node. Examples: painting = 3159edbfc6b22de59dfb2522fecc2706; Rachel Ruysch = 3eaff215275e2ebd47d02cfba2044cc8.",
+     "example": "3159edbfc6b22de59dfb2522fecc2706"
+    },
+    {
+     "name": "facet1_relation",
+     "key": "facets[0].nodeRelationType",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Relation type for facet1_id, e.g. HasObjectType, MadeInCentury, HasPrimaryMaker or HasMuseumLocation. Use the nodeRelationType returned with the facet.",
+     "example": "HasObjectType"
+    },
+    {
+     "name": "facet2_id",
+     "key": "facets[1].id",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Second facet node id. Example: century 1600-1700 = 7600f7d20164d7c752cf402c0b0762ad.",
+     "example": "7600f7d20164d7c752cf402c0b0762ad"
+    },
+    {
+     "name": "facet2_relation",
+     "key": "facets[1].nodeRelationType",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Relation type for facet2_id, e.g. MadeInCentury.",
+     "example": "MadeInCentury"
+    },
+    {
+     "name": "page",
+     "in": "query",
+     "required": false,
+     "type": "number",
+     "description": "Result page, 1-based, 20 items per page. Check hasMoreResults in the raw response.",
+     "default": 1,
+     "example": "2"
+    }
+   ],
+   "responseType": "json",
+   "resultPath": "artObjects",
+   "defaultFields": [
+    "objectNodeId",
+    "objectNumber",
+    "title",
+    "makerSubtitleLine",
+    "periodCoding",
+    "museumLocationFacet.value",
+    "micrioImage.micrioId",
+    "micrioImage.isDownloadable"
+   ],
+   "pagination": {
+    "type": "page",
+    "param": "page"
+   },
+   "mutates": false,
+   "example": {
+    "query": "rembrandt",
+    "sort": "Popularity"
+   },
+   "source": "E1 GET https://www.rijksmuseum.nl/api/v1/collection/search",
+   "verified": true
+  },
+  {
+   "name": "search-library",
+   "summary": "Search Rijksmuseum library publications (books, articles) by keyword; 20 results per page",
+   "method": "GET",
+   "urlTemplate": "/api/v1/collection/search?language=en&collectionSearchContext=Library",
+   "params": [
+    {
+     "name": "query",
+     "in": "query",
+     "required": true,
+     "type": "string",
+     "description": "Free-text search for publications",
+     "example": "Rachel Ruysch"
+    },
+    {
+     "name": "sort",
+     "key": "sortingType",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Sort order, e.g. Popularity (default) or TimeAscending",
+     "default": "Popularity"
+    },
+    {
+     "name": "facet1_id",
+     "key": "facets[0].id",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Optional facet node id to filter by"
+    },
+    {
+     "name": "facet1_relation",
+     "key": "facets[0].nodeRelationType",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Relation type for facet1_id, e.g. HasObjectType"
+    },
+    {
+     "name": "page",
+     "in": "query",
+     "required": false,
+     "type": "number",
+     "description": "Result page, 1-based",
+     "default": 1
+    }
+   ],
+   "responseType": "json",
+   "resultPath": "libraryObjects",
+   "pagination": {
+    "type": "page",
+    "param": "page"
+   },
+   "mutates": false,
+   "example": {
+    "query": "Rachel Ruysch"
+   },
+   "source": "E1 GET https://www.rijksmuseum.nl/api/v1/collection/search",
+   "verified": true
+  },
+  {
+   "name": "autocomplete",
+   "summary": "Type-ahead suggestions for a search term: matching facet nodes (object types, places, people) and objects",
+   "method": "POST",
+   "urlTemplate": "/api/v1/collection/search/autocomplete",
+   "params": [
+    {
+     "name": "query",
+     "in": "body",
+     "required": true,
+     "type": "string",
+     "description": "Partial or full search term",
+     "example": "rembrandt"
+    },
+    {
+     "name": "context",
+     "key": "collectionSearchContext",
+     "in": "body",
+     "required": false,
+     "type": "string",
+     "description": "Which collection to suggest from",
+     "enum": [
+      "Art",
+      "Library"
+     ],
+     "default": "Art"
+    },
+    {
+     "name": "page_size",
+     "key": "pageSize",
+     "in": "body",
+     "required": false,
+     "type": "number",
+     "description": "Maximum number of suggestions per group",
+     "default": 5
+    }
+   ],
+   "bodyTemplate": {
+    "language": "en",
+    "facets": [],
+    "query": "{query}",
+    "collectionSearchContext": "{context}",
+    "inMuseum": false,
+    "hasImage": false,
+    "page": 1,
+    "pageSize": "{page_size}"
+   },
+   "bodyEncoding": "json",
+   "responseType": "json",
+   "mutates": false,
+   "example": {
+    "query": "rembrandt"
+   },
+   "source": "E5 POST https://www.rijksmuseum.nl/api/v1/collection/search/autocomplete",
+   "verified": true
+  },
+  {
+   "name": "list-search-facets",
+   "summary": "List the filter groups (Maker, Object type, Century, Place, ...) with facet ids, relation types and counts for a search query",
+   "method": "POST",
+   "urlTemplate": "/api/v1/collection/search/recommendations/extensive",
+   "params": [
+    {
+     "name": "query",
+     "in": "body",
+     "required": true,
+     "type": "string",
+     "description": "Search term to compute facets for",
+     "example": "rembrandt"
+    },
+    {
+     "name": "context",
+     "key": "collectionSearchContext",
+     "in": "body",
+     "required": false,
+     "type": "string",
+     "description": "Collection to search",
+     "enum": [
+      "Art",
+      "Library"
+     ],
+     "default": "Art"
+    },
+    {
+     "name": "in_museum",
+     "key": "inMuseum",
+     "in": "body",
+     "required": false,
+     "type": "boolean",
+     "description": "Only objects currently on display in the museum",
+     "default": false
+    },
+    {
+     "name": "has_image",
+     "key": "hasImage",
+     "in": "body",
+     "required": false,
+     "type": "boolean",
+     "description": "Only objects that have an image",
+     "default": false
+    }
+   ],
+   "bodyTemplate": {
+    "query": "{query}",
+    "facets": [],
+    "language": "en",
+    "collectionSearchContext": "{context}",
+    "inMuseum": "{in_museum}",
+    "hasImage": "{has_image}"
+   },
+   "bodyEncoding": "json",
+   "responseType": "json",
+   "resultPath": "nodeTypeGroups",
+   "defaultFields": [
+    "nodeType",
+    "title",
+    "selectedRelationBinId",
+    "facets"
+   ],
+   "mutates": false,
+   "example": {
+    "query": "rembrandt"
+   },
+   "source": "E2 POST https://www.rijksmuseum.nl/api/v1/collection/search/recommendations/extensive",
+   "verified": true
+  },
+  {
+   "name": "search-facet-values",
+   "summary": "Search within one facet group (e.g. Object type, Maker, Place) for facet values matching text, scoped to a search query; returns facet ids and relation types for search-collection",
+   "method": "POST",
+   "urlTemplate": "/api/v1/collection/search/recommendations/extensive/nodetypegroup",
+   "params": [
+    {
+     "name": "query",
+     "in": "body",
+     "required": true,
+     "type": "string",
+     "description": "Main search term the facet values are scoped to",
+     "example": "rembrandt"
+    },
+    {
+     "name": "node_type",
+     "key": "nodeType",
+     "in": "body",
+     "required": true,
+     "type": "string",
+     "description": "Facet group node type, as returned by list-search-facets (nodeType), e.g. ObjectType, Artist, Place, Century",
+     "example": "ObjectType"
+    },
+    {
+     "name": "facet_query",
+     "key": "facetQuery",
+     "in": "body",
+     "required": true,
+     "type": "string",
+     "description": "Text to match within the facet group's values. Uses the collection's own English terms, e.g. 'print' or 'drawing' for object types; 'etching' finds nothing.",
+     "example": "print"
+    },
+    {
+     "name": "relation_bin_id",
+     "key": "selectedRelationBinId",
+     "in": "body",
+     "required": false,
+     "type": "string",
+     "description": "Relation bin id from the group's relationGroups or the selectedRelationBinId in list-search-facets. Bins differ per group: the default is 'Everything related to' for ObjectType, while Artist uses b24e",
+     "default": "fcb8daae-cb51-4506-9124-6b787d81ac1c"
+    },
+    {
+     "name": "context",
+     "key": "collectionSearchContext",
+     "in": "body",
+     "required": false,
+     "type": "string",
+     "description": "Collection to search",
+     "enum": [
+      "Art",
+      "Library"
+     ],
+     "default": "Art"
+    }
+   ],
+   "bodyTemplate": {
+    "query": "{query}",
+    "facets": [],
+    "facetQuery": "{facet_query}",
+    "language": "en",
+    "selectedRelationBinId": "{relation_bin_id}",
+    "collectionSearchContext": "{context}",
+    "inMuseum": false,
+    "hasImage": false,
+    "nodeType": "{node_type}"
+   },
+   "bodyEncoding": "json",
+   "responseType": "json",
+   "resultPath": "facets",
+   "defaultFields": [
+    "id",
+    "value",
+    "nodeRelationType",
+    "nodeType",
+    "connectedObjectNodesCount"
+   ],
+   "mutates": false,
+   "example": {
+    "query": "rembrandt",
+    "node_type": "ObjectType",
+    "facet_query": "print"
+   },
+   "source": "E9",
+   "verified": true
+  },
+  {
+   "name": "get-artwork",
+   "summary": "Get full details of an artwork: title, maker, dating, dimensions, materials, description, location, image id and the full data tab",
+   "method": "GET",
+   "urlTemplate": "/api/v1/collection/art",
+   "params": [
+    {
+     "name": "object_node_id",
+     "key": "objectNodeId",
+     "in": "query",
+     "required": true,
+     "type": "string",
+     "description": "Artwork objectNodeId (32-char hex) from search-collection, or the part after '--' in an /en/collection/object/... URL",
+     "example": "7b8c9a4a2618f75528c6bcf8b813e9a6"
+    },
+    {
+     "name": "language",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Response language",
+     "enum": [
+      "en",
+      "nl"
+     ],
+     "default": "en"
+    }
+   ],
+   "responseType": "json",
+   "defaultFields": [
+    "title",
+    "makerSubtitleLine",
+    "dimensions",
+    "hasObjectType",
+    "usedMaterial",
+    "preferredDescription",
+    "museumLocationFacet.value",
+    "micrioImage.micrioId"
+   ],
+   "mutates": false,
+   "example": {
+    "object_node_id": "7b8c9a4a2618f75528c6bcf8b813e9a6"
+   },
+   "source": "E10 GET https://www.rijksmuseum.nl/api/v1/collection/art",
+   "verified": true
+  },
+  {
+   "name": "get-object-titles",
+   "summary": "Get an artwork's or publication's title in each available language (en, nl)",
+   "method": "GET",
+   "urlTemplate": "/api/v1/collection/object/information",
+   "params": [
+    {
+     "name": "object_node_id",
+     "key": "objectNodeId",
+     "in": "query",
+     "required": true,
+     "type": "string",
+     "description": "objectNodeId of the artwork or library object",
+     "example": "7b8c9a4a2618f75528c6bcf8b813e9a6"
+    },
+    {
+     "name": "domain",
+     "key": "collectionDomain",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Art for artworks, Library for publications",
+     "enum": [
+      "Art",
+      "Library"
+     ],
+     "default": "Art"
+    }
+   ],
+   "responseType": "json",
+   "resultPath": "objectInformation",
+   "mutates": false,
+   "example": {
+    "object_node_id": "7b8c9a4a2618f75528c6bcf8b813e9a6",
+    "domain": "Art"
+   },
+   "source": "E6 GET https://www.rijksmuseum.nl/api/v1/collection/object/information",
+   "verified": true
+  },
+  {
+   "name": "get-node",
+   "summary": "Get a collection node page (person/maker, object type, topic, place): its title, type and featured artworks such as most viewed and works through the years",
+   "method": "GET",
+   "urlTemplate": "/api/v1/collection/node",
+   "params": [
+    {
+     "name": "node_id",
+     "key": "nodeId",
+     "in": "query",
+     "required": true,
+     "type": "string",
+     "description": "Node/facet id (32-char hex), e.g. painting = 3159edbfc6b22de59dfb2522fecc2706, Rachel Ruysch = 3eaff215275e2ebd47d02cfba2044cc8",
+     "example": "3159edbfc6b22de59dfb2522fecc2706"
+    },
+    {
+     "name": "language",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Response language",
+     "enum": [
+      "en",
+      "nl"
+     ],
+     "default": "en"
+    }
+   ],
+   "responseType": "json",
+   "defaultFields": [
+    "title",
+    "nodePageNode",
+    "components"
+   ],
+   "mutates": false,
+   "example": {
+    "node_id": "3159edbfc6b22de59dfb2522fecc2706"
+   },
+   "source": "E8 GET https://www.rijksmuseum.nl/api/v1/collection/node",
+   "verified": true
+  },
+  {
+   "name": "get-facet-info",
+   "summary": "Resolve a facet/node id to its name and node type (e.g. Person 'Rachel Ruysch')",
+   "method": "POST",
+   "urlTemplate": "/api/v1/collection/facets/information",
+   "params": [
+    {
+     "name": "facet_id",
+     "in": "body",
+     "required": true,
+     "type": "string",
+     "description": "Facet/node id (32-char hex)",
+     "example": "3eaff215275e2ebd47d02cfba2044cc8"
+    },
+    {
+     "name": "language",
+     "in": "body",
+     "required": false,
+     "type": "string",
+     "description": "Response language",
+     "enum": [
+      "en",
+      "nl"
+     ],
+     "default": "en"
+    }
+   ],
+   "bodyTemplate": {
+    "facets": [
+     {
+      "id": "{facet_id}"
+     }
+    ],
+    "language": "{language}"
+   },
+   "bodyEncoding": "json",
+   "responseType": "json",
+   "resultPath": "facets",
+   "defaultFields": [
+    "id",
+    "value",
+    "nodeType",
+    "nodeTypeValue"
+   ],
+   "mutates": false,
+   "example": {
+    "facet_id": "3eaff215275e2ebd47d02cfba2044cc8"
+   },
+   "source": "E12 POST https://www.rijksmuseum.nl/api/v1/collection/facets/information",
+   "verified": true
+  },
+  {
+   "name": "get-library-item",
+   "summary": "Get details of a Rijksmuseum library publication: title, type, authors and properties, ISBN, and a link to the library catalogue",
+   "method": "GET",
+   "urlTemplate": "/api/v1/collection/library",
+   "params": [
+    {
+     "name": "object_node_id",
+     "key": "objectNodeId",
+     "in": "query",
+     "required": true,
+     "type": "string",
+     "description": "Library objectNodeId from search-library",
+     "example": "a2da6b4c23d5d0180354b7fd869e40f7"
+    },
+    {
+     "name": "language",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Response language",
+     "enum": [
+      "en",
+      "nl"
+     ],
+     "default": "en"
+    }
+   ],
+   "responseType": "json",
+   "defaultFields": [
+    "title",
+    "publicationTypes",
+    "isbn",
+    "visitLibraryLink",
+    "components"
+   ],
+   "mutates": false,
+   "example": {
+    "object_node_id": "a2da6b4c23d5d0180354b7fd869e40f7"
+   },
+   "source": "E13 GET https://www.rijksmuseum.nl/api/v1/collection/library",
+   "verified": true
+  }
+ ],
+ "blockers": [],
+ "notes": [
+  "All ids (objectNodeId, nodeId, facet id) are 32-char hex strings. Public web URLs follow the patterns /en/collection/object/{Title-Slug}--{objectNodeId} and /en/collection/node/{Name-Slug}--{nodeId}.",
+  "To filter a search: get facet ids and their nodeRelationType from list-search-facets, search-facet-values, autocomplete or get-node, then pass them as facet1_id/facet1_relation (and facet2_*) to search-collection.",
+  "To list all artworks for a person or topic: call search-collection with facet1_id set to that node id and the facet's relation type. query may be left empty.",
+  "Search returns 20 items per page. Use hasMoreResults and the totalItems* counts in the raw response to decide whether to fetch more pages.",
+  "Only sortingType values Popularity and TimeAscending were observed. Other sort orders exist in the UI, but their wire names are unknown.",
+  "micrioImage.micrioId identifies the zoomable image hosted on Micrio. Downloading full-resolution images on the site requires a login and is not covered.",
+  "Not covered: visual search, visitor stories, and user accounts/sets."
+ ],
+ "dropped": [],
+ "generated": {
+  "by": "clify add",
+  "model": "claude-opus-5-5",
+  "exploredSteps": 29,
+  "recorded": 37,
+  "verifiedAt": "2026-10-18T08:35:58.200Z",
+  "seconds": 234
+ }
+}

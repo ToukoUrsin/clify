@@ -1,0 +1,186 @@
+{
+ "url": "https://endoflife.date/",
+ "category": "dev",
+ "sandbox": "clify-endoflife-date",
+ "startedAt": "2026-10-18T09:05:01.336Z",
+ "region": "us-pdx-1",
+ "chrome": "Chrome/148.0.7778.96",
+ "sandboxStartMs": 2025,
+ "addSeconds": 147,
+ "addExit": 0,
+ "add": {
+  "ok": true,
+  "site": "endoflife",
+  "url": "https://endoflife.date/",
+  "commands": [
+   {
+    "name": "list-products",
+    "summary": "List all tracked products (slug, label, category, tags, aliases)",
+    "verified": true
+   },
+   {
+    "name": "export-products-full",
+    "summary": "Dump all products with full details including every release cycle (large response)",
+    "verified": true
+   },
+   {
+    "name": "get-product",
+    "summary": "Get a product's metadata: label, category, tags, aliases, identifiers, version command, links",
+    "verified": true
+   },
+   {
+    "name": "list-releases",
+    "summary": "List all release cycles of a product with release, LTS, end-of-active-support and EOL dates",
+    "verified": true
+   },
+   {
+    "name": "get-latest-release",
+    "summary": "Get the latest release cycle of a product with its support and EOL dates",
+    "verified": true
+   },
+   {
+    "name": "get-release",
+    "summary": "Get one release cycle of a product (e.g. python 3.12) with its support and EOL status and dates",
+    "verified": true
+   },
+   {
+    "name": "list-categories",
+    "summary": "List product categories (e.g. framework, server-app, database, lang, os, service)",
+    "verified": true
+   },
+   {
+    "name": "list-products-by-category",
+    "summary": "List products in a category",
+    "verified": true
+   },
+   {
+    "name": "list-tags",
+    "summary": "List all product tags (e.g. amazon, linux-distribution, java-distribution)",
+    "verified": true
+   },
+   {
+    "name": "list-products-by-tag",
+    "summary": "List products that have a given tag",
+    "verified": true
+   },
+   {
+    "name": "list-identifier-types",
+    "summary": "List supported product identifier types (purl, cpe, ...)",
+    "verified": true
+   },
+   {
+    "name": "list-identifiers",
+    "summary": "List all identifiers of a given type (e.g. CPE or purl strings) mapped to product slugs; use it to resolve a CPE/purl to a product",
+    "verified": true
+   },
+   {
+    "name": "list-new-products",
+    "summary": "Recently added products, newest first (Atom feed)",
+    "verified": true
+   },
+   {
+    "name": "list-product-events",
+    "summary": "Timeline of a product's release and end-of-life events (Atom feed)",
+    "verified": true
+   }
+  ],
+  "verified": 14,
+  "writes": 0,
+  "dropped": [],
+  "blockers": [],
+  "loggedIn": false,
+  "seconds": 146,
+  "next": [
+   "clify endoflife",
+   "clify endoflife list-products"
+  ],
+  "installed": "/home/ubuntu/clify-runs/blaxel-w1/home/bin/endoflife",
+  "explored": {
+   "steps": 9,
+   "recorded": 26,
+   "heldWrites": 0
+  }
+ },
+ "check": {
+  "on": "blaxel",
+  "node": "v24.22.0",
+  "seconds": 4,
+  "reads": 14,
+  "verified": 14,
+  "failed": [],
+  "results": [
+   {
+    "name": "list-products",
+    "ok": true,
+    "ms": 335
+   },
+   {
+    "name": "export-products-full",
+    "ok": true,
+    "ms": 160
+   },
+   {
+    "name": "get-product",
+    "ok": true,
+    "ms": 24
+   },
+   {
+    "name": "list-releases",
+    "ok": true,
+    "ms": 25
+   },
+   {
+    "name": "get-latest-release",
+    "ok": true,
+    "ms": 110
+   },
+   {
+    "name": "get-release",
+    "ok": true,
+    "ms": 163
+   },
+   {
+    "name": "list-categories",
+    "ok": true,
+    "ms": 107
+   },
+   {
+    "name": "list-products-by-category",
+    "ok": true,
+    "ms": 110
+   },
+   {
+    "name": "list-tags",
+    "ok": true,
+    "ms": 107
+   },
+   {
+    "name": "list-products-by-tag",
+    "ok": true,
+    "ms": 105
+   },
+   {
+    "name": "list-identifier-types",
+    "ok": true,
+    "ms": 98
+   },
+   {
+    "name": "list-identifiers",
+    "ok": true,
+    "ms": 111
+   },
+   {
+    "name": "list-new-products",
+    "ok": true,
+    "ms": 174
+   },
+   {
+    "name": "list-product-events",
+    "ok": true,
+    "ms": 117
+   }
+  ]
+ },
+ "deleted": true,
+ "seconds": 153
+}

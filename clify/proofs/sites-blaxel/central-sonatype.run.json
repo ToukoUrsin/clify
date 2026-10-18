@@ -1,0 +1,126 @@
+{
+ "url": "https://central.sonatype.com/",
+ "category": "dev",
+ "sandbox": "clify-central-sonatype-com",
+ "startedAt": "2026-10-18T09:08:35.282Z",
+ "region": "us-pdx-1",
+ "chrome": "Chrome/148.0.7778.96",
+ "sandboxStartMs": 1700,
+ "addSeconds": 178,
+ "addExit": 0,
+ "add": {
+  "ok": true,
+  "site": "central-sonatype",
+  "url": "https://central.sonatype.com/",
+  "commands": [
+   {
+    "name": "search-components",
+    "summary": "Keyword search over Maven Central components (groupId/artifactId); returns latest version, description, popularity",
+    "verified": true
+   },
+   {
+    "name": "list-namespace-components",
+    "summary": "List all components (artifacts) published under a Maven namespace/groupId, optionally narrowed by keyword",
+    "verified": true
+   },
+   {
+    "name": "search-components-by-category",
+    "summary": "Search or browse components within a category (e.g. JSON, Web Frameworks, Testing)",
+    "verified": true
+   },
+   {
+    "name": "get-component",
+    "summary": "Get full details of one artifact version: description, licenses, URLs (scm/issues), files, classifiers, categories, popularity",
+    "verified": true
+   },
+   {
+    "name": "list-versions",
+    "summary": "List all published versions of an artifact (newest first by default) with publish dates and dependent counts",
+    "verified": true
+   },
+   {
+    "name": "list-dependencies",
+    "summary": "List the dependencies of a specific artifact version (direct or transitive), with scope and versions",
+    "verified": true
+   },
+   {
+    "name": "list-dependents",
+    "summary": "List artifacts that depend on a specific artifact version (reverse dependencies)",
+    "verified": true
+   },
+   {
+    "name": "get-homepage-url",
+    "summary": "Get the project homepage URL for an artifact version given its package URL (purl)",
+    "verified": true
+   }
+  ],
+  "verified": 8,
+  "writes": 0,
+  "dropped": [],
+  "blockers": [],
+  "loggedIn": false,
+  "seconds": 177,
+  "next": [
+   "clify central-sonatype",
+   "clify central-sonatype search-components --query \"jackson\""
+  ],
+  "installed": "/home/ubuntu/clify-runs/blaxel-w1/home/bin/central-sonatype",
+  "explored": {
+   "steps": 22,
+   "recorded": 325,
+   "heldWrites": 1
+  }
+ },
+ "check": {
+  "on": "blaxel",
+  "node": "v24.22.0",
+  "seconds": 4,
+  "reads": 8,
+  "verified": 8,
+  "failed": [],
+  "results": [
+   {
+    "name": "search-components",
+    "ok": true,
+    "ms": 412
+   },
+   {
+    "name": "list-namespace-components",
+    "ok": true,
+    "ms": 190
+   },
+   {
+    "name": "search-components-by-category",
+    "ok": true,
+    "ms": 330
+   },
+   {
+    "name": "get-component",
+    "ok": true,
+    "ms": 44
+   },
+   {
+    "name": "list-versions",
+    "ok": true,
+    "ms": 215
+   },
+   {
+    "name": "list-dependencies",
+    "ok": true,
+    "ms": 202
+   },
+   {
+    "name": "list-dependents",
+    "ok": true,
+    "ms": 201
+   },
+   {
+    "name": "get-homepage-url",
+    "ok": true,
+    "ms": 33
+   }
+  ]
+ },
+ "deleted": true,
+ "seconds": 183
+}

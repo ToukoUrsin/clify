@@ -1,0 +1,1584 @@
+{
+ "name": "open-meteo",
+ "startUrl": "https://open-meteo.com/",
+ "origin": "https://open-meteo.com",
+ "createdAt": "2026-10-18T08:12:13.743Z",
+ "description": "Open-Meteo: free, keyless weather APIs. The CLI provides forecasts, historical reanalysis, archived and previous model runs, ensembles, seasonal and climate projections, marine, air quality, satellite radiation, flood, elevation, geocoding and CSV export.",
+ "commands": [
+  {
+   "name": "search-locations",
+   "summary": "Find places by name or postal code and get their coordinates, timezone, country and population. Use this first to turn a city name into latitude/longitude.",
+   "method": "GET",
+   "urlTemplate": "https://geocoding-api.open-meteo.com/v1/search?format=json",
+   "params": [
+    {
+     "name": "name",
+     "in": "query",
+     "required": true,
+     "type": "string",
+     "description": "Location name or postal code. You can narrow it with ', <country or admin1>', e.g. 'Paris, Texas'. Two characters must match exactly; three or more are prefix-matched.",
+     "example": "London"
+    },
+    {
+     "name": "count",
+     "in": "query",
+     "required": false,
+     "type": "number",
+     "description": "Maximum number of results (1-100)",
+     "default": 10,
+     "example": "10"
+    },
+    {
+     "name": "language",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Language for the returned names, as an ISO 639-1 code (en, fr, de, ...)",
+     "default": "en",
+     "example": "en"
+    },
+    {
+     "name": "countryCode",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Return only results in this ISO 3166-1 alpha-2 country, e.g. US, GB, DE",
+     "example": "US"
+    }
+   ],
+   "responseType": "json",
+   "resultPath": "results",
+   "defaultFields": [
+    "id",
+    "name",
+    "latitude",
+    "longitude",
+    "country",
+    "admin1",
+    "timezone",
+    "population"
+   ],
+   "mutates": false,
+   "example": {
+    "name": "London",
+    "count": "10",
+    "language": "en"
+   },
+   "source": "E1 E16 GET https://geocoding-api.open-meteo.com/v1/search",
+   "verified": true
+  },
+  {
+   "name": "get-forecast",
+   "summary": "Weather forecast for one or more coordinates: current conditions plus hourly and daily variables, up to 16 days ahead and 92 past days, with an optional national model (e.g. DWD ICON).",
+   "method": "GET",
+   "urlTemplate": "https://api.open-meteo.com/v1/forecast?format=json",
+   "params": [
+    {
+     "name": "latitude",
+     "in": "query",
+     "required": true,
+     "type": "string",
+     "description": "Latitude in WGS84 decimal degrees. Comma-separate values for several locations, e.g. 52.52,48.85",
+     "example": "48.85"
+    },
+    {
+     "name": "longitude",
+     "in": "query",
+     "required": true,
+     "type": "string",
+     "description": "Longitude in decimal degrees. For several locations, comma-separate in the same order as latitude",
+     "example": "2.35"
+    },
+    {
+     "name": "hourly",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Comma-separated hourly variables, e.g. temperature_2m,relative_humidity_2m,precipitation,wind_speed_10m,weather_code,cloud_cover",
+     "example": "temperature_2m,precipitation"
+    },
+    {
+     "name": "daily",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Comma-separated daily variables, e.g. temperature_2m_max,temperature_2m_min,precipitation_sum,sunrise,sunset,weather_code. Needs timezone.",
+     "example": "temperature_2m_max,temperature_2m_min,sunrise,sunset"
+    },
+    {
+     "name": "current",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Comma-separated current-condition variables, e.g. temperature_2m,wind_speed_10m,weather_code",
+     "example": "temperature_2m,wind_speed_10m,weather_code"
+    },
+    {
+     "name": "timezone",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "IANA timezone for timestamps and daily aggregation, e.g. Europe/Paris, or 'auto' for the location's timezone. Defaults to GMT.",
+     "example": "Europe/Paris"
+    },
+    {
+     "name": "forecast_days",
+     "in": "query",
+     "required": false,
+     "type": "number",
+     "description": "Number of forecast days (0-16). Defaults to 7.",
+     "example": "3"
+    },
+    {
+     "name": "past_days",
+     "in": "query",
+     "required": false,
+     "type": "number",
+     "description": "Number of past days to include (0-92)",
+     "example": "2"
+    },
+    {
+     "name": "start_date",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Explicit start date (yyyy-mm-dd). Use together with end_date instead of forecast_days/past_days.",
+     "example": "2026-10-18"
+    },
+    {
+     "name": "end_date",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Explicit end date (yyyy-mm-dd)",
+     "example": "2026-10-20"
+    },
+    {
+     "name": "models",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Weather model(s), comma-separated, e.g. dwd_icon_seamless, ecmwf_ifs025, gfs_seamless, meteofrance_seamless, ukmo_seamless, jma_seamless. Defaults to best_match.",
+     "example": "dwd_icon_seamless"
+    },
+    {
+     "name": "temperature_unit",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Temperature unit",
+     "enum": [
+      "celsius",
+      "fahrenheit"
+     ]
+    },
+    {
+     "name": "wind_speed_unit",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Wind speed unit",
+     "enum": [
+      "kmh",
+      "ms",
+      "mph",
+      "kn"
+     ]
+    },
+    {
+     "name": "precipitation_unit",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Precipitation unit",
+     "enum": [
+      "mm",
+      "inch"
+     ]
+    },
+    {
+     "name": "timeformat",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Timestamp format: ISO8601 local strings, or unix seconds",
+     "enum": [
+      "iso8601",
+      "unixtime"
+     ],
+     "default": "iso8601"
+    }
+   ],
+   "responseType": "json",
+   "mutates": false,
+   "example": {
+    "latitude": "48.85",
+    "longitude": "2.35",
+    "hourly": "temperature_2m,precipitation",
+    "daily": "temperature_2m_max,temperature_2m_min,sunrise,sunset",
+    "current": "temperature_2m,wind_speed_10m,weather_code",
+    "timezone": "Europe/Paris",
+    "forecast_days": "3"
+   },
+   "source": "E2 E15 E30 GET https://api.open-meteo.com/v1/forecast",
+   "verified": true
+  },
+  {
+   "name": "export-forecast-csv",
+   "summary": "Download a weather forecast as CSV text (the docs page's CSV export), for spreadsheets or bulk processing.",
+   "method": "GET",
+   "urlTemplate": "https://api.open-meteo.com/v1/forecast?format=csv",
+   "params": [
+    {
+     "name": "latitude",
+     "in": "query",
+     "required": true,
+     "type": "string",
+     "description": "Latitude in decimal degrees; comma-separate for several locations",
+     "example": "52.52"
+    },
+    {
+     "name": "longitude",
+     "in": "query",
+     "required": true,
+     "type": "string",
+     "description": "Longitude in decimal degrees; comma-separate for several locations",
+     "example": "13.41"
+    },
+    {
+     "name": "hourly",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Comma-separated hourly variables, e.g. temperature_2m,precipitation",
+     "example": "temperature_2m"
+    },
+    {
+     "name": "daily",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Comma-separated daily variables, e.g. temperature_2m_max,precipitation_sum",
+     "example": "temperature_2m_max"
+    },
+    {
+     "name": "timezone",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "IANA timezone or 'auto'",
+     "example": "auto"
+    },
+    {
+     "name": "forecast_days",
+     "in": "query",
+     "required": false,
+     "type": "number",
+     "description": "Number of forecast days (0-16)",
+     "example": "3"
+    },
+    {
+     "name": "past_days",
+     "in": "query",
+     "required": false,
+     "type": "number",
+     "description": "Number of past days (0-92)",
+     "example": "0"
+    },
+    {
+     "name": "models",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Weather model, e.g. dwd_icon_seamless",
+     "example": "dwd_icon_seamless"
+    }
+   ],
+   "responseType": "text",
+   "mutates": false,
+   "example": {
+    "latitude": "52.52",
+    "longitude": "13.41",
+    "hourly": "temperature_2m"
+   },
+   "source": "E2 GET https://api.open-meteo.com/v1/forecast",
+   "verified": true
+  },
+  {
+   "name": "get-historical-weather",
+   "summary": "Historical observed-like weather (ERA5 reanalysis, 1940 to a few days ago) for coordinates over a date range, as hourly and/or daily variables.",
+   "method": "GET",
+   "urlTemplate": "https://archive-api.open-meteo.com/v1/archive?format=json",
+   "params": [
+    {
+     "name": "latitude",
+     "in": "query",
+     "required": true,
+     "type": "string",
+     "description": "Latitude in decimal degrees; comma-separate for several locations",
+     "example": "52.52"
+    },
+    {
+     "name": "longitude",
+     "in": "query",
+     "required": true,
+     "type": "string",
+     "description": "Longitude in decimal degrees; comma-separate for several locations",
+     "example": "13.41"
+    },
+    {
+     "name": "start_date",
+     "in": "query",
+     "required": true,
+     "type": "string",
+     "description": "Start date, yyyy-mm-dd (from 1940-01-01)",
+     "example": "2024-01-01"
+    },
+    {
+     "name": "end_date",
+     "in": "query",
+     "required": true,
+     "type": "string",
+     "description": "End date, yyyy-mm-dd",
+     "example": "2024-01-31"
+    },
+    {
+     "name": "hourly",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Comma-separated hourly variables, e.g. temperature_2m,precipitation,wind_speed_10m",
+     "example": "temperature_2m"
+    },
+    {
+     "name": "daily",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Comma-separated daily variables, e.g. temperature_2m_max,temperature_2m_min,precipitation_sum",
+     "example": "temperature_2m_max,precipitation_sum"
+    },
+    {
+     "name": "timezone",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "IANA timezone or 'auto'. Needed for daily values.",
+     "example": "auto"
+    },
+    {
+     "name": "models",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Reanalysis model, e.g. era5, era5_land, era5_seamless, cerra, ecmwf_ifs",
+     "example": "era5"
+    },
+    {
+     "name": "temperature_unit",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Temperature unit",
+     "enum": [
+      "celsius",
+      "fahrenheit"
+     ]
+    },
+    {
+     "name": "wind_speed_unit",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Wind speed unit",
+     "enum": [
+      "kmh",
+      "ms",
+      "mph",
+      "kn"
+     ]
+    },
+    {
+     "name": "precipitation_unit",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Precipitation unit",
+     "enum": [
+      "mm",
+      "inch"
+     ]
+    },
+    {
+     "name": "timeformat",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Timestamp format",
+     "enum": [
+      "iso8601",
+      "unixtime"
+     ],
+     "default": "iso8601"
+    }
+   ],
+   "responseType": "json",
+   "mutates": false,
+   "example": {
+    "latitude": "52.52",
+    "longitude": "13.41",
+    "start_date": "2024-01-01",
+    "end_date": "2024-01-31",
+    "daily": "temperature_2m_max,precipitation_sum",
+    "timezone": "auto"
+   },
+   "source": "E4 E17 GET https://archive-api.open-meteo.com/v1/archive",
+   "verified": true
+  },
+  {
+   "name": "export-historical-csv",
+   "summary": "Download historical (ERA5) weather for a date range as CSV text.",
+   "method": "GET",
+   "urlTemplate": "https://archive-api.open-meteo.com/v1/archive?format=csv",
+   "params": [
+    {
+     "name": "latitude",
+     "in": "query",
+     "required": true,
+     "type": "string",
+     "description": "Latitude in decimal degrees",
+     "example": "52.52"
+    },
+    {
+     "name": "longitude",
+     "in": "query",
+     "required": true,
+     "type": "string",
+     "description": "Longitude in decimal degrees",
+     "example": "13.41"
+    },
+    {
+     "name": "start_date",
+     "in": "query",
+     "required": true,
+     "type": "string",
+     "description": "Start date, yyyy-mm-dd",
+     "example": "2024-01-01"
+    },
+    {
+     "name": "end_date",
+     "in": "query",
+     "required": true,
+     "type": "string",
+     "description": "End date, yyyy-mm-dd",
+     "example": "2024-01-31"
+    },
+    {
+     "name": "hourly",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Comma-separated hourly variables",
+     "example": "temperature_2m"
+    },
+    {
+     "name": "daily",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Comma-separated daily variables",
+     "example": "temperature_2m_max,precipitation_sum"
+    },
+    {
+     "name": "timezone",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "IANA timezone or 'auto'",
+     "example": "auto"
+    }
+   ],
+   "responseType": "text",
+   "mutates": false,
+   "example": {
+    "latitude": "52.52",
+    "longitude": "13.41",
+    "start_date": "2024-01-01",
+    "end_date": "2024-01-31",
+    "daily": "temperature_2m_max,precipitation_sum",
+    "timezone": "auto"
+   },
+   "source": "E4 GET https://archive-api.open-meteo.com/v1/archive",
+   "verified": true
+  },
+  {
+   "name": "get-historical-forecast",
+   "summary": "Archived high-resolution model forecasts (from 2022 onward) for coordinates and a date range, with the same variables and models as the forecast API.",
+   "method": "GET",
+   "urlTemplate": "https://historical-forecast-api.open-meteo.com/v1/forecast?format=json",
+   "params": [
+    {
+     "name": "latitude",
+     "in": "query",
+     "required": true,
+     "type": "string",
+     "description": "Latitude in decimal degrees; comma-separate for several locations",
+     "example": "52.52"
+    },
+    {
+     "name": "longitude",
+     "in": "query",
+     "required": true,
+     "type": "string",
+     "description": "Longitude in decimal degrees",
+     "example": "13.41"
+    },
+    {
+     "name": "start_date",
+     "in": "query",
+     "required": true,
+     "type": "string",
+     "description": "Start date, yyyy-mm-dd (2022 or later)",
+     "example": "2025-06-01"
+    },
+    {
+     "name": "end_date",
+     "in": "query",
+     "required": true,
+     "type": "string",
+     "description": "End date, yyyy-mm-dd",
+     "example": "2025-06-07"
+    },
+    {
+     "name": "hourly",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Comma-separated hourly variables",
+     "example": "temperature_2m"
+    },
+    {
+     "name": "daily",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Comma-separated daily variables (needs timezone)",
+     "example": "temperature_2m_max"
+    },
+    {
+     "name": "timezone",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "IANA timezone or 'auto'",
+     "example": "auto"
+    },
+    {
+     "name": "models",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Weather model(s), e.g. dwd_icon_seamless, ecmwf_ifs025, gfs_seamless",
+     "example": "dwd_icon_seamless"
+    },
+    {
+     "name": "temperature_unit",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Temperature unit",
+     "enum": [
+      "celsius",
+      "fahrenheit"
+     ]
+    },
+    {
+     "name": "wind_speed_unit",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Wind speed unit",
+     "enum": [
+      "kmh",
+      "ms",
+      "mph",
+      "kn"
+     ]
+    },
+    {
+     "name": "precipitation_unit",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Precipitation unit",
+     "enum": [
+      "mm",
+      "inch"
+     ]
+    },
+    {
+     "name": "timeformat",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Timestamp format",
+     "enum": [
+      "iso8601",
+      "unixtime"
+     ],
+     "default": "iso8601"
+    }
+   ],
+   "responseType": "json",
+   "mutates": false,
+   "example": {
+    "latitude": "52.52",
+    "longitude": "13.41",
+    "start_date": "2025-06-01",
+    "end_date": "2025-06-07",
+    "hourly": "temperature_2m"
+   },
+   "source": "E11 E25",
+   "verified": true
+  },
+  {
+   "name": "get-previous-runs",
+   "summary": "Compare forecasts from earlier model runs at fixed lead times by requesting <variable>_previous_dayN variables alongside the current run.",
+   "method": "GET",
+   "urlTemplate": "https://previous-runs-api.open-meteo.com/v1/forecast?format=json",
+   "params": [
+    {
+     "name": "latitude",
+     "in": "query",
+     "required": true,
+     "type": "string",
+     "description": "Latitude in decimal degrees",
+     "example": "52.52"
+    },
+    {
+     "name": "longitude",
+     "in": "query",
+     "required": true,
+     "type": "string",
+     "description": "Longitude in decimal degrees",
+     "example": "13.41"
+    },
+    {
+     "name": "hourly",
+     "in": "query",
+     "required": true,
+     "type": "string",
+     "description": "Comma-separated hourly variables; append _previous_day1 ... _previous_day7 to get the forecast issued N days earlier, e.g. temperature_2m,temperature_2m_previous_day1",
+     "example": "temperature_2m,temperature_2m_previous_day1"
+    },
+    {
+     "name": "past_days",
+     "in": "query",
+     "required": false,
+     "type": "number",
+     "description": "Past days to include (0-92). Do not combine with start_date/end_date.",
+     "example": "7"
+    },
+    {
+     "name": "forecast_days",
+     "in": "query",
+     "required": false,
+     "type": "number",
+     "description": "Forecast days to include (0-16). Do not combine with start_date/end_date.",
+     "example": "1"
+    },
+    {
+     "name": "start_date",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Explicit start date yyyy-mm-dd (data from Jan 2024; some models from March 2021). Use with end_date instead of past_days/forecast_days.",
+     "example": "2026-10-10"
+    },
+    {
+     "name": "end_date",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Explicit end date yyyy-mm-dd",
+     "example": "2026-10-17"
+    },
+    {
+     "name": "models",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Weather model(s), e.g. ecmwf_ifs025, gfs_seamless, dwd_icon_seamless",
+     "example": "ecmwf_ifs025"
+    },
+    {
+     "name": "timezone",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "IANA timezone or 'auto'",
+     "example": "auto"
+    },
+    {
+     "name": "timeformat",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Timestamp format",
+     "enum": [
+      "iso8601",
+      "unixtime"
+     ],
+     "default": "iso8601"
+    }
+   ],
+   "responseType": "json",
+   "mutates": false,
+   "example": {
+    "latitude": "52.52",
+    "longitude": "13.41",
+    "hourly": "temperature_2m,temperature_2m_previous_day1",
+    "past_days": "7",
+    "forecast_days": "1"
+   },
+   "source": "E12 E26",
+   "verified": true
+  },
+  {
+   "name": "get-single-run",
+   "summary": "Full forecast horizon of one specific model run, identified by its initialisation time.",
+   "method": "GET",
+   "urlTemplate": "https://single-runs-api.open-meteo.com/v1/forecast?format=json",
+   "params": [
+    {
+     "name": "latitude",
+     "in": "query",
+     "required": true,
+     "type": "string",
+     "description": "Latitude in decimal degrees",
+     "example": "52.52"
+    },
+    {
+     "name": "longitude",
+     "in": "query",
+     "required": true,
+     "type": "string",
+     "description": "Longitude in decimal degrees",
+     "example": "13.41"
+    },
+    {
+     "name": "run",
+     "in": "query",
+     "required": true,
+     "type": "string",
+     "description": "Model initialisation time in UTC, yyyy-mm-ddThh:mm, e.g. 2026-10-17T00:00",
+     "example": "2026-10-17T00:00"
+    },
+    {
+     "name": "models",
+     "in": "query",
+     "required": true,
+     "type": "string",
+     "description": "Model, e.g. ecmwf_ifs, gfs_seamless, dwd_icon",
+     "example": "ecmwf_ifs"
+    },
+    {
+     "name": "hourly",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Comma-separated hourly variables",
+     "example": "temperature_2m"
+    },
+    {
+     "name": "forecast_days",
+     "in": "query",
+     "required": false,
+     "type": "number",
+     "description": "Number of days of the run to return. Defaults to 7.",
+     "example": "7"
+    },
+    {
+     "name": "timeformat",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Timestamp format",
+     "enum": [
+      "iso8601",
+      "unixtime"
+     ],
+     "default": "iso8601"
+    }
+   ],
+   "responseType": "json",
+   "mutates": false,
+   "example": {
+    "latitude": "52.52",
+    "longitude": "13.41",
+    "run": "2026-10-17T00:00",
+    "models": "ecmwf_ifs",
+    "hourly": "temperature_2m"
+   },
+   "source": "E14 E29 GET https://single-runs-api.open-meteo.com/v1/forecast",
+   "verified": true
+  },
+  {
+   "name": "get-ensemble-forecast",
+   "summary": "Ensemble forecast with every perturbed member (variable_memberNN), or ensemble mean/spread when you pass a *_ensemble_mean_* model.",
+   "method": "GET",
+   "urlTemplate": "https://ensemble-api.open-meteo.com/v1/ensemble?format=json",
+   "params": [
+    {
+     "name": "latitude",
+     "in": "query",
+     "required": true,
+     "type": "string",
+     "description": "Latitude in decimal degrees",
+     "example": "52.52"
+    },
+    {
+     "name": "longitude",
+     "in": "query",
+     "required": true,
+     "type": "string",
+     "description": "Longitude in decimal degrees",
+     "example": "13.41"
+    },
+    {
+     "name": "models",
+     "in": "query",
+     "required": true,
+     "type": "string",
+     "description": "Ensemble model(s), e.g. icon_seamless, icon_global, gfs_seamless, ecmwf_ifs025. For means use dwd_icon_eps_ensemble_mean_seamless or ncep_gefs_ensemble_mean_seamless.",
+     "example": "icon_seamless"
+    },
+    {
+     "name": "hourly",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Comma-separated hourly variables",
+     "example": "temperature_2m"
+    },
+    {
+     "name": "daily",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Comma-separated daily variables (needs timezone)",
+     "example": "temperature_2m_max"
+    },
+    {
+     "name": "forecast_days",
+     "in": "query",
+     "required": false,
+     "type": "number",
+     "description": "Forecast days (default 7, up to 35 depending on model)",
+     "example": "7"
+    },
+    {
+     "name": "past_days",
+     "in": "query",
+     "required": false,
+     "type": "number",
+     "description": "Past days to include",
+     "example": "0"
+    },
+    {
+     "name": "timezone",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "IANA timezone or 'auto'",
+     "example": "auto"
+    },
+    {
+     "name": "temperature_unit",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Temperature unit",
+     "enum": [
+      "celsius",
+      "fahrenheit"
+     ]
+    },
+    {
+     "name": "wind_speed_unit",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Wind speed unit",
+     "enum": [
+      "kmh",
+      "ms",
+      "mph",
+      "kn"
+     ]
+    },
+    {
+     "name": "precipitation_unit",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Precipitation unit",
+     "enum": [
+      "mm",
+      "inch"
+     ]
+    },
+    {
+     "name": "timeformat",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Timestamp format",
+     "enum": [
+      "iso8601",
+      "unixtime"
+     ],
+     "default": "iso8601"
+    }
+   ],
+   "responseType": "json",
+   "mutates": false,
+   "example": {
+    "latitude": "52.52",
+    "longitude": "13.41",
+    "hourly": "temperature_2m",
+    "models": "dwd_icon_eps_ensemble_mean_seamless"
+   },
+   "source": "E3 E22 E28 GET https://ensemble-api.open-meteo.com/v1/ensemble",
+   "verified": true
+  },
+  {
+   "name": "get-seasonal-forecast",
+   "summary": "Long-range seasonal and sub-seasonal forecast (ECMWF SEAS5 / EC46, about 6-7 months) with ensemble members.",
+   "method": "GET",
+   "urlTemplate": "https://seasonal-api.open-meteo.com/v1/seasonal?format=json",
+   "params": [
+    {
+     "name": "latitude",
+     "in": "query",
+     "required": true,
+     "type": "string",
+     "description": "Latitude in decimal degrees",
+     "example": "52.52"
+    },
+    {
+     "name": "longitude",
+     "in": "query",
+     "required": true,
+     "type": "string",
+     "description": "Longitude in decimal degrees",
+     "example": "13.41"
+    },
+    {
+     "name": "daily",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Comma-separated daily variables, e.g. temperature_2m_max,temperature_2m_min,precipitation_sum",
+     "example": "temperature_2m_max"
+    },
+    {
+     "name": "forecast_days",
+     "in": "query",
+     "required": false,
+     "type": "number",
+     "description": "Forecast days (default 183, i.e. 6 months)",
+     "example": "45"
+    },
+    {
+     "name": "past_days",
+     "in": "query",
+     "required": false,
+     "type": "number",
+     "description": "Past days to include",
+     "example": "0"
+    },
+    {
+     "name": "models",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Seasonal model, e.g. ecmwf_seas5, ecmwf_ec46",
+     "example": "ecmwf_seas5"
+    },
+    {
+     "name": "timezone",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "IANA timezone or 'auto'",
+     "example": "auto"
+    },
+    {
+     "name": "timeformat",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Timestamp format",
+     "enum": [
+      "iso8601",
+      "unixtime"
+     ],
+     "default": "iso8601"
+    }
+   ],
+   "responseType": "json",
+   "mutates": false,
+   "example": {
+    "latitude": "52.52",
+    "longitude": "13.41",
+    "daily": "temperature_2m_max"
+   },
+   "source": "E10 E24 GET https://seasonal-api.open-meteo.com/v1/seasonal",
+   "verified": true
+  },
+  {
+   "name": "get-climate-projection",
+   "summary": "Downscaled daily climate-change projections from CMIP6 models for 1950-2050 at a location.",
+   "method": "GET",
+   "urlTemplate": "https://climate-api.open-meteo.com/v1/climate?format=json",
+   "params": [
+    {
+     "name": "latitude",
+     "in": "query",
+     "required": true,
+     "type": "string",
+     "description": "Latitude in decimal degrees",
+     "example": "52.52"
+    },
+    {
+     "name": "longitude",
+     "in": "query",
+     "required": true,
+     "type": "string",
+     "description": "Longitude in decimal degrees",
+     "example": "13.41"
+    },
+    {
+     "name": "start_date",
+     "in": "query",
+     "required": true,
+     "type": "string",
+     "description": "Start date yyyy-mm-dd (1950-01-01 to 2050-12-31)",
+     "example": "2050-01-01"
+    },
+    {
+     "name": "end_date",
+     "in": "query",
+     "required": true,
+     "type": "string",
+     "description": "End date yyyy-mm-dd",
+     "example": "2050-12-31"
+    },
+    {
+     "name": "models",
+     "in": "query",
+     "required": true,
+     "type": "string",
+     "description": "Climate model(s), comma-separated: CMCC_CM2_VHR4, FGOALS_f3_H, HiRAM_SIT_HR, MRI_AGCM3_2_S, EC_Earth3P_HR, MPI_ESM1_2_XR, NICAM16_8S",
+     "example": "MRI_AGCM3_2_S"
+    },
+    {
+     "name": "daily",
+     "in": "query",
+     "required": true,
+     "type": "string",
+     "description": "Comma-separated daily variables, e.g. temperature_2m_mean,temperature_2m_max,temperature_2m_min,precipitation_sum,relative_humidity_2m_mean",
+     "example": "temperature_2m_max"
+    },
+    {
+     "name": "temperature_unit",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Temperature unit",
+     "enum": [
+      "celsius",
+      "fahrenheit"
+     ]
+    },
+    {
+     "name": "precipitation_unit",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Precipitation unit",
+     "enum": [
+      "mm",
+      "inch"
+     ]
+    },
+    {
+     "name": "timeformat",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Timestamp format",
+     "enum": [
+      "iso8601",
+      "unixtime"
+     ],
+     "default": "iso8601"
+    }
+   ],
+   "responseType": "json",
+   "mutates": false,
+   "example": {
+    "latitude": "52.52",
+    "longitude": "13.41",
+    "start_date": "2050-01-01",
+    "end_date": "2050-12-31",
+    "models": "MRI_AGCM3_2_S",
+    "daily": "temperature_2m_max"
+   },
+   "source": "E9 E23 GET https://climate-api.open-meteo.com/v1/climate",
+   "verified": true
+  },
+  {
+   "name": "get-marine-forecast",
+   "summary": "Marine forecast for a sea location: wave height, direction and period, swell, and ocean currents.",
+   "method": "GET",
+   "urlTemplate": "https://marine-api.open-meteo.com/v1/marine?format=json",
+   "params": [
+    {
+     "name": "latitude",
+     "in": "query",
+     "required": true,
+     "type": "string",
+     "description": "Latitude in decimal degrees (must be over sea)",
+     "example": "54.54"
+    },
+    {
+     "name": "longitude",
+     "in": "query",
+     "required": true,
+     "type": "string",
+     "description": "Longitude in decimal degrees",
+     "example": "10.23"
+    },
+    {
+     "name": "hourly",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Comma-separated hourly variables, e.g. wave_height,wave_direction,wave_period,swell_wave_height,sea_surface_temperature",
+     "example": "wave_height,wave_direction,wave_period"
+    },
+    {
+     "name": "daily",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Comma-separated daily variables, e.g. wave_height_max,wave_direction_dominant",
+     "example": "wave_height_max"
+    },
+    {
+     "name": "current",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Comma-separated current variables, e.g. wave_height",
+     "example": "wave_height"
+    },
+    {
+     "name": "forecast_days",
+     "in": "query",
+     "required": false,
+     "type": "number",
+     "description": "Forecast days (default 7, max 16)",
+     "example": "7"
+    },
+    {
+     "name": "past_days",
+     "in": "query",
+     "required": false,
+     "type": "number",
+     "description": "Past days to include",
+     "example": "0"
+    },
+    {
+     "name": "timezone",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "IANA timezone or 'auto'",
+     "example": "auto"
+    },
+    {
+     "name": "timeformat",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Timestamp format",
+     "enum": [
+      "iso8601",
+      "unixtime"
+     ],
+     "default": "iso8601"
+    }
+   ],
+   "responseType": "json",
+   "mutates": false,
+   "example": {
+    "latitude": "54.54",
+    "longitude": "10.23",
+    "hourly": "wave_height,wave_direction,wave_period",
+    "forecast_days": "7"
+   },
+   "source": "E6 E19 GET https://marine-api.open-meteo.com/v1/marine",
+   "verified": true
+  },
+  {
+   "name": "get-air-quality",
+   "summary": "Air quality forecast: pollutants (PM10, PM2.5, ozone, NO2, ...), pollen, and European/US AQI, both hourly and current.",
+   "method": "GET",
+   "urlTemplate": "https://air-quality-api.open-meteo.com/v1/air-quality?format=json",
+   "params": [
+    {
+     "name": "latitude",
+     "in": "query",
+     "required": true,
+     "type": "string",
+     "description": "Latitude in decimal degrees",
+     "example": "48.85"
+    },
+    {
+     "name": "longitude",
+     "in": "query",
+     "required": true,
+     "type": "string",
+     "description": "Longitude in decimal degrees",
+     "example": "2.35"
+    },
+    {
+     "name": "hourly",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Comma-separated hourly variables, e.g. pm10,pm2_5,ozone,nitrogen_dioxide,carbon_monoxide,european_aqi,us_aqi,birch_pollen",
+     "example": "pm10,pm2_5,ozone"
+    },
+    {
+     "name": "current",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Comma-separated current variables, e.g. european_aqi,us_aqi,pm2_5",
+     "example": "european_aqi"
+    },
+    {
+     "name": "forecast_days",
+     "in": "query",
+     "required": false,
+     "type": "number",
+     "description": "Forecast days (default 5, max 7)",
+     "example": "5"
+    },
+    {
+     "name": "past_days",
+     "in": "query",
+     "required": false,
+     "type": "number",
+     "description": "Past days to include",
+     "example": "0"
+    },
+    {
+     "name": "timezone",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "IANA timezone or 'auto'",
+     "example": "auto"
+    },
+    {
+     "name": "timeformat",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Timestamp format",
+     "enum": [
+      "iso8601",
+      "unixtime"
+     ],
+     "default": "iso8601"
+    }
+   ],
+   "responseType": "json",
+   "mutates": false,
+   "example": {
+    "latitude": "48.85",
+    "longitude": "2.35",
+    "hourly": "pm10,pm2_5,ozone",
+    "current": "european_aqi"
+   },
+   "source": "E5 E18 GET https://air-quality-api.open-meteo.com/v1/air-quality",
+   "verified": true
+  },
+  {
+   "name": "get-satellite-radiation",
+   "summary": "Satellite-derived solar irradiance (GHI, direct, diffuse, DNI) for a location, near-real-time and archive.",
+   "method": "GET",
+   "urlTemplate": "https://satellite-api.open-meteo.com/v1/archive?format=json",
+   "params": [
+    {
+     "name": "latitude",
+     "in": "query",
+     "required": true,
+     "type": "string",
+     "description": "Latitude in decimal degrees",
+     "example": "52.52"
+    },
+    {
+     "name": "longitude",
+     "in": "query",
+     "required": true,
+     "type": "string",
+     "description": "Longitude in decimal degrees",
+     "example": "13.41"
+    },
+    {
+     "name": "hourly",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Comma-separated radiation variables, e.g. shortwave_radiation,direct_radiation,diffuse_radiation,direct_normal_irradiance",
+     "example": "shortwave_radiation"
+    },
+    {
+     "name": "models",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Satellite source model",
+     "default": "satellite_radiation_seamless",
+     "example": "satellite_radiation_seamless"
+    },
+    {
+     "name": "temporal_resolution",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "'native' returns the satellite's native interval (e.g. 10 min); 'hourly' aggregates to hours",
+     "enum": [
+      "native",
+      "hourly"
+     ],
+     "example": "native"
+    },
+    {
+     "name": "forecast_days",
+     "in": "query",
+     "required": false,
+     "type": "number",
+     "description": "Days to return starting today (default 1)",
+     "example": "1"
+    },
+    {
+     "name": "past_days",
+     "in": "query",
+     "required": false,
+     "type": "number",
+     "description": "Past days to include",
+     "example": "0"
+    },
+    {
+     "name": "start_date",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Explicit start date yyyy-mm-dd",
+     "example": "2026-10-10"
+    },
+    {
+     "name": "end_date",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Explicit end date yyyy-mm-dd",
+     "example": "2026-10-11"
+    },
+    {
+     "name": "timezone",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "IANA timezone or 'auto'",
+     "example": "auto"
+    },
+    {
+     "name": "timeformat",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Timestamp format",
+     "enum": [
+      "iso8601",
+      "unixtime"
+     ],
+     "default": "iso8601"
+    }
+   ],
+   "responseType": "json",
+   "mutates": false,
+   "example": {
+    "latitude": "52.52",
+    "longitude": "13.41",
+    "hourly": "shortwave_radiation",
+    "models": "satellite_radiation_seamless",
+    "temporal_resolution": "native"
+   },
+   "source": "E13 E27 GET https://satellite-api.open-meteo.com/v1/archive",
+   "verified": true
+  },
+  {
+   "name": "get-flood-forecast",
+   "summary": "Simulated river discharge (GloFAS) near a location, for flood forecasting: 1984 up to about 7 months ahead.",
+   "method": "GET",
+   "urlTemplate": "https://flood-api.open-meteo.com/v1/flood?format=json",
+   "params": [
+    {
+     "name": "latitude",
+     "in": "query",
+     "required": true,
+     "type": "string",
+     "description": "Latitude in decimal degrees (snaps to the nearest river)",
+     "example": "59.91"
+    },
+    {
+     "name": "longitude",
+     "in": "query",
+     "required": true,
+     "type": "string",
+     "description": "Longitude in decimal degrees",
+     "example": "10.75"
+    },
+    {
+     "name": "daily",
+     "in": "query",
+     "required": true,
+     "type": "string",
+     "description": "Comma-separated daily variables: river_discharge, river_discharge_mean, river_discharge_median, river_discharge_max, river_discharge_min, river_discharge_p25, river_discharge_p75",
+     "example": "river_discharge"
+    },
+    {
+     "name": "forecast_days",
+     "in": "query",
+     "required": false,
+     "type": "number",
+     "description": "Forecast days (default 92, max 210)",
+     "example": "92"
+    },
+    {
+     "name": "past_days",
+     "in": "query",
+     "required": false,
+     "type": "number",
+     "description": "Past days to include",
+     "example": "0"
+    },
+    {
+     "name": "start_date",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Explicit start date yyyy-mm-dd (from 1984)",
+     "example": "2024-01-01"
+    },
+    {
+     "name": "end_date",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Explicit end date yyyy-mm-dd",
+     "example": "2024-03-31"
+    },
+    {
+     "name": "ensemble",
+     "in": "query",
+     "required": false,
+     "type": "boolean",
+     "description": "Return all 50 ensemble members"
+    },
+    {
+     "name": "timeformat",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Timestamp format",
+     "enum": [
+      "iso8601",
+      "unixtime"
+     ],
+     "default": "iso8601"
+    }
+   ],
+   "responseType": "json",
+   "mutates": false,
+   "example": {
+    "latitude": "59.91",
+    "longitude": "10.75",
+    "daily": "river_discharge"
+   },
+   "source": "E8 E21 GET https://flood-api.open-meteo.com/v1/flood",
+   "verified": true
+  },
+  {
+   "name": "get-elevation",
+   "summary": "Terrain elevation in meters (Copernicus DEM, 90 m) for one or more coordinates.",
+   "method": "GET",
+   "urlTemplate": "https://api.open-meteo.com/v1/elevation",
+   "params": [
+    {
+     "name": "latitude",
+     "in": "query",
+     "required": true,
+     "type": "string",
+     "description": "Latitude(s), comma-separated (up to 100)",
+     "example": "47.37"
+    },
+    {
+     "name": "longitude",
+     "in": "query",
+     "required": true,
+     "type": "string",
+     "description": "Longitude(s), comma-separated in the same order",
+     "example": "8.55"
+    }
+   ],
+   "responseType": "json",
+   "mutates": false,
+   "example": {
+    "latitude": "47.37",
+    "longitude": "8.55"
+   },
+   "source": "E7 E20 GET https://api.open-meteo.com/v1/elevation",
+   "verified": true
+  }
+ ],
+ "blockers": [],
+ "notes": [
+  "No API key or login is needed. The free tier is for non-commercial use and has rate limits (about 10k calls/day).",
+  "All weather endpoints take coordinates. Use search-locations to turn a place name into latitude/longitude (and timezone).",
+  "Multiple locations: pass comma-separated latitude and longitude in the same order. The response is then a JSON array with one object per location.",
+  "Responses hold parallel arrays: hourly.time[i] belongs to hourly.<variable>[i]. Units are in hourly_units, daily_units and current_units.",
+  "Daily variables need a timezone (use timezone=auto). Without one, timestamps are in GMT.",
+  "timeformat defaults to iso8601 here for readability (the web docs use unixtime). With unixtime, add utc_offset_seconds to get local time.",
+  "weather_code values are WMO codes: 0 clear, 1-3 partly cloudy to overcast, 45/48 fog, 51-57 drizzle, 61-67 rain, 71-77 snow, 80-82 showers, 95-99 thunderstorm.",
+  "Ensemble and seasonal responses repeat each variable per member (temperature_2m_member01..memberNN), so they can be large. Request few variables and days.",
+  "The CSV export commands return raw text. The xlsx format is also available on the API, but it is binary and not exposed here."
+ ],
+ "dropped": [],
+ "generated": {
+  "by": "clify add",
+  "model": "claude-opus-5-5",
+  "exploredSteps": 24,
+  "recorded": 42,
+  "verifiedAt": "2026-10-18T08:14:39.784Z",
+  "seconds": 290
+ }
+}

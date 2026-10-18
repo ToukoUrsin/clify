@@ -1,0 +1,41 @@
+{
+ "task": "scrapethis-hockey-detroit-1995",
+ "site": "scrapethis",
+ "mode": "browser-ui",
+ "trial": 1,
+ "tag": "ui2",
+ "ok": true,
+ "why": "all expected values present",
+ "answer": "62",
+ "expected": {
+  "number": 62,
+  "detail": {
+   "name": "Detroit Red Wings",
+   "year": "1995",
+   "wins": "62",
+   "losses": "13",
+   "winPct": "0.756",
+   "goalsFor": "325",
+   "goalsAgainst": "181"
+  }
+ },
+ "wallMs": 13393,
+ "apiMs": 10695,
+ "turns": 6,
+ "toolCalls": 5,
+ "tokens": {
+  "input": 8,
+  "output": 476,
+  "cacheWrite": 6671,
+  "cacheRead": 43852,
+  "total": 51007
+ },
+ "costUsd": 0.0516774,
+ "models": [
+  "claude-opus-5-5"
+ ],
+ "exitCode": 0,
+ "timedOut": false,
+ "subtype": "success",
+ "startedAt": "2026-10-17T23:32:24.628Z"
+}

@@ -1,0 +1,145 @@
+{
+ "name": "citybik",
+ "startUrl": "https://citybik.es/",
+ "origin": "https://citybik.es",
+ "createdAt": "2026-10-18T08:52:05.666Z",
+ "description": "CityBikes (citybik.es) collects open bike-sharing data from around the world. This CLI queries the public CityBikes API (api.citybik.es/v2) for networks, network details and live station availability, and lists the projects showcased as built on CityBikes.",
+ "commands": [
+  {
+   "name": "list-networks",
+   "summary": "List all bike-sharing networks worldwide, with id, name, city, country, operating company and API href",
+   "method": "GET",
+   "urlTemplate": "https://api.citybik.es/v2/networks",
+   "params": [
+    {
+     "name": "api_fields",
+     "key": "fields",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Comma-separated list of network fields to return, which keeps the response small. Available fields: id, name, location, href, company, gbfs_href, system, source (sent to the site as \"fields\"; clify's own --fields only shapes the output)",
+     "example": "id,name,href"
+    }
+   ],
+   "responseType": "json",
+   "resultPath": "networks",
+   "defaultFields": [
+    "id",
+    "name",
+    "location.city",
+    "location.country",
+    "company",
+    "href"
+   ],
+   "mutates": false,
+   "source": "E1 GET https://api.citybik.es/v2/networks",
+   "verified": true
+  },
+  {
+   "name": "get-network",
+   "summary": "Get details of one bike-sharing network by id (name, location, company, GBFS feed, system), without the station list",
+   "method": "GET",
+   "urlTemplate": "https://api.citybik.es/v2/networks/{network_id}?fields=id,name,location,href,company,gbfs_href,system,source",
+   "params": [
+    {
+     "name": "network_id",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Network id (slug) as returned by list-networks, e.g. velib, bicing",
+     "example": "velib"
+    }
+   ],
+   "responseType": "json",
+   "resultPath": "network",
+   "defaultFields": [
+    "id",
+    "name",
+    "location.city",
+    "location.country",
+    "location.latitude",
+    "location.longitude",
+    "company",
+    "gbfs_href"
+   ],
+   "mutates": false,
+   "example": {
+    "network_id": "velib"
+   },
+   "source": "E1 GET https://api.citybik.es/v2/networks",
+   "verified": true
+  },
+  {
+   "name": "list-network-stations",
+   "summary": "List the live stations of a bike-sharing network, with available bikes, empty docks, coordinates and last update time",
+   "method": "GET",
+   "urlTemplate": "https://api.citybik.es/v2/networks/{network_id}?fields=stations",
+   "params": [
+    {
+     "name": "network_id",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Network id (slug) as returned by list-networks, e.g. bicing, velib",
+     "example": "bicing"
+    }
+   ],
+   "responseType": "json",
+   "resultPath": "network.stations",
+   "defaultFields": [
+    "id",
+    "name",
+    "free_bikes",
+    "empty_slots",
+    "latitude",
+    "longitude",
+    "timestamp"
+   ],
+   "mutates": false,
+   "example": {
+    "network_id": "bicing"
+   },
+   "source": "E1 GET https://api.citybik.es/v2/networks",
+   "verified": true
+  },
+  {
+   "name": "list-projects",
+   "summary": "List the apps and projects that the CityBikes showcase page lists as built on CityBikes data",
+   "method": "GET",
+   "urlTemplate": "/projects",
+   "params": [],
+   "responseType": "html",
+   "extract": {
+    "list": "div.more-projects li",
+    "fields": {
+     "name": "a",
+     "url": "a@href"
+    }
+   },
+   "defaultFields": [
+    "name",
+    "url"
+   ],
+   "mutates": false,
+   "source": "E3 GET https://citybik.es/projects",
+   "verified": true
+  }
+ ],
+ "blockers": [],
+ "notes": [
+  "All network data comes from the public, unauthenticated CityBikes API at https://api.citybik.es/v2. No login is needed.",
+  "list-networks returns every network (several hundred), and the API has no server-side search or pagination. Use --fields (e.g. id,name,location) to shrink the payload, then filter on location.city or location.country client-side to find a network id.",
+  "Station data is live. free_bikes is the number of bikes available to rent, and empty_slots is the number of free docks to return a bike. Some stations also carry an 'extra' object (e.g. ebikes, address), which you can request via --fields on the raw output.",
+  "The city search box on the homepage map did not load during exploration and sent no API calls, so it has no command. Use list-networks instead.",
+  "Analytics calls to stats.citybik.es were skipped."
+ ],
+ "dropped": [],
+ "generated": {
+  "by": "clify add",
+  "model": "claude-opus-5-5",
+  "exploredSteps": 6,
+  "recorded": 6,
+  "verifiedAt": "2026-10-18T08:52:31.843Z",
+  "seconds": 76
+ }
+}

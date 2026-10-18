@@ -1,0 +1,201 @@
+{
+ "url": "https://jsr.io/",
+ "category": "dev",
+ "sandbox": "clify-jsr-io",
+ "startedAt": "2026-10-18T08:36:02.468Z",
+ "region": "us-pdx-1",
+ "chrome": "Chrome/148.0.7778.96",
+ "sandboxStartMs": 1527,
+ "addSeconds": 315,
+ "addExit": 0,
+ "add": {
+  "ok": true,
+  "site": "jsr",
+  "url": "https://jsr.io/",
+  "commands": [
+   {
+    "name": "search-packages",
+    "summary": "Search JSR packages by keyword, or list all packages when no query is given (public management API)",
+    "verified": true
+   },
+   {
+    "name": "search-packages-by-runtime",
+    "summary": "Full-text package search with an optional runtime-compatibility filter, using the site's Algolia autocomplete index",
+    "verified": true
+   },
+   {
+    "name": "get-package",
+    "summary": "Get metadata for one package: description, latest version, score, runtime compatibility, GitHub repo",
+    "verified": true
+   },
+   {
+    "name": "get-package-meta",
+    "summary": "Registry meta.json for a package: latest version and the map of all versions (with yanked flags)",
+    "verified": true
+   },
+   {
+    "name": "list-package-dependencies",
+    "summary": "List the dependencies (jsr:/npm: specifiers and version constraints) of a specific package version",
+    "verified": true
+   },
+   {
+    "name": "list-package-dependents",
+    "summary": "List packages that depend on a given package",
+    "verified": true
+   },
+   {
+    "name": "get-package-score",
+    "summary": "Get the JSR score breakdown for a package: readme, docs coverage, fast check, provenance, runtime compat",
+    "verified": true
+   },
+   {
+    "name": "get-package-docs-index",
+    "summary": "Get the structured docs index of a package version: entrypoints, module docs and their symbols (used for symbol search)",
+    "verified": true
+   },
+   {
+    "name": "list-package-files",
+    "summary": "List the files of a package version (path, size, checksum) and its exports map, from the registry version metadata",
+    "verified": true
+   },
+   {
+    "name": "get-package-file",
+    "summary": "Get the raw source of one file in a package version, e.g. deno.json or mod.ts",
+    "verified": true
+   },
+   {
+    "name": "get-scope",
+    "summary": "Get public info about a scope (creator, creation date, publishing settings)",
+    "verified": true
+   },
+   {
+    "name": "list-scope-packages",
+    "summary": "List all packages published in a scope",
+    "verified": true
+   },
+   {
+    "name": "list-scope-members",
+    "summary": "List the members of a scope with their roles and user profile links",
+    "verified": true
+   },
+   {
+    "name": "list-user-packages",
+    "summary": "List packages a JSR user recently published (user id is the UUID from a /user/{id} link)",
+    "verified": true
+   },
+   {
+    "name": "get-registry-stats",
+    "summary": "Get the homepage lists: newest packages, recently updated package versions and featured packages",
+    "verified": true
+   }
+  ],
+  "verified": 15,
+  "writes": 0,
+  "dropped": [
+   {
+    "name": "list-package-versions",
+    "reason": "Output was {}: the response shape does not match the defaultFields or array assumption, so the version list is not produced. get-package-meta already gives every version with createdAt and yanked flags."
+   }
+  ],
+  "blockers": [],
+  "loggedIn": false,
+  "seconds": 315,
+  "next": [
+   "clify jsr",
+   "clify jsr search-packages --query \"http server\""
+  ],
+  "installed": "/home/ubuntu/clify-runs/blaxel-w1/home/bin/jsr",
+  "explored": {
+   "steps": 29,
+   "recorded": 25,
+   "heldWrites": 0
+  }
+ },
+ "check": {
+  "on": "blaxel",
+  "node": "v24.22.0",
+  "seconds": 10,
+  "reads": 15,
+  "verified": 15,
+  "failed": [],
+  "results": [
+   {
+    "name": "search-packages",
+    "ok": true,
+    "ms": 3042
+   },
+   {
+    "name": "search-packages-by-runtime",
+    "ok": true,
+    "ms": 478
+   },
+   {
+    "name": "get-package",
+    "ok": true,
+    "ms": 417
+   },
+   {
+    "name": "get-package-meta",
+    "ok": true,
+    "ms": 209
+   },
+   {
+    "name": "list-package-dependencies",
+    "ok": true,
+    "ms": 384
+   },
+   {
+    "name": "list-package-dependents",
+    "ok": true,
+    "ms": 141
+   },
+   {
+    "name": "get-package-score",
+    "ok": true,
+    "ms": 145
+   },
+   {
+    "name": "get-package-docs-index",
+    "ok": true,
+    "ms": 309
+   },
+   {
+    "name": "list-package-files",
+    "ok": true,
+    "ms": 217
+   },
+   {
+    "name": "get-package-file",
+    "ok": true,
+    "ms": 792
+   },
+   {
+    "name": "get-scope",
+    "ok": true,
+    "ms": 275
+   },
+   {
+    "name": "list-scope-packages",
+    "ok": true,
+    "ms": 140
+   },
+   {
+    "name": "list-scope-members",
+    "ok": true,
+    "ms": 310
+   },
+   {
+    "name": "list-user-packages",
+    "ok": true,
+    "ms": 480
+   },
+   {
+    "name": "get-registry-stats",
+    "ok": true,
+    "ms": 41
+   }
+  ]
+ },
+ "deleted": true,
+ "seconds": 327
+}

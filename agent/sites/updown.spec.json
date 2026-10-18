@@ -1,0 +1,257 @@
+{
+  "name": "updown",
+  "startUrl": "https://updown.io/checks",
+  "origin": "https://updown.io",
+  "createdAt": "2026-10-18T07:20:00Z",
+  "description": "updown.io uptime monitoring, signed in as the clify agent (saved session). Commands are the dashboard's own requests. To add a check: run form-token, then create-check --authenticity_token <token> ... For a public status page: status-page-checks and status-page-form, then create-status-page, then list-status-pages for its link.",
+  "auth": {
+    "headerNames": []
+  },
+  "commands": [
+    {
+      "name": "list-checks",
+      "summary": "Your checks (token is the last part of link, e.g. /checks/ab12 -> ab12)",
+      "method": "GET",
+      "urlTemplate": "/checks",
+      "responseType": "html",
+      "mutates": false,
+      "auth": true,
+      "params": [],
+      "extract": {
+        "list": "li:not(.form)",
+        "fields": {
+          "link": "a.internal@href",
+          "alias": ".alias",
+          "url": "a.external@href",
+          "interval": ".resolution"
+        }
+      },
+      "source": "GET https://updown.io/checks"
+    },
+    {
+      "name": "form-token",
+      "summary": "CSRF token for the new-check form (needed by create-check)",
+      "method": "GET",
+      "urlTemplate": "/checks",
+      "responseType": "html",
+      "mutates": false,
+      "auth": true,
+      "params": [],
+      "extract": {
+        "fields": {
+          "authenticity_token": "#new_check input[name=authenticity_token]@value"
+        }
+      },
+      "source": "GET https://updown.io/checks"
+    },
+    {
+      "name": "create-check",
+      "summary": "Add a check (the dashboard's new-check form). Returns your checks list afterwards.",
+      "method": "POST",
+      "urlTemplate": "/checks",
+      "responseType": "html",
+      "bodyEncoding": "form",
+      "mutates": true,
+      "auth": true,
+      "headers": {
+        "origin": "https://updown.io",
+        "referer": "https://updown.io/checks"
+      },
+      "bodyTemplate": {
+        "authenticity_token": "{authenticity_token}",
+        "check[type]": "{type}",
+        "check[url]": "{url}",
+        "check[period]": "{period}",
+        "check[alias]": "{alias}"
+      },
+      "params": [
+        {
+          "name": "authenticity_token",
+          "in": "body",
+          "required": true,
+          "type": "string",
+          "description": "from form-token"
+        },
+        {
+          "name": "url",
+          "in": "body",
+          "required": true,
+          "type": "string",
+          "description": "URL without the scheme, e.g. example.com/path (scheme goes in --type)"
+        },
+        {
+          "name": "type",
+          "in": "body",
+          "required": false,
+          "type": "string",
+          "default": "https",
+          "enum": [
+            "https",
+            "http",
+            "icmp",
+            "pulse",
+            "tcp",
+            "tcps"
+          ]
+        },
+        {
+          "name": "period",
+          "in": "body",
+          "required": false,
+          "type": "string",
+          "default": "30",
+          "enum": [
+            "15",
+            "30",
+            "60",
+            "120",
+            "300",
+            "600",
+            "1800",
+            "3600"
+          ],
+          "description": "check interval in seconds"
+        },
+        {
+          "name": "alias",
+          "in": "body",
+          "required": false,
+          "type": "string",
+          "description": "display name"
+        }
+      ],
+      "extract": {
+        "list": "li:not(.form)",
+        "fields": {
+          "link": "a.internal@href",
+          "alias": ".alias",
+          "url": "a.external@href",
+          "interval": ".resolution"
+        }
+      },
+      "source": "POST https://updown.io/checks"
+    },
+    {
+      "name": "status-page-checks",
+      "summary": "Token for a new status page plus your checks with their internal check_id (needed by create-status-page; not the short token).",
+      "method": "GET",
+      "urlTemplate": "/status_pages/new",
+      "responseType": "html",
+      "mutates": false,
+      "auth": true,
+      "params": [],
+      "extract": {
+        "list": "ul.sortable li",
+        "fields": {
+          "check_id": "input@value",
+          "check": "label"
+        }
+      },
+      "source": "GET https://updown.io/status_pages/new"
+    },
+    {
+      "name": "status-page-form",
+      "summary": "CSRF token for the new-status-page form (needed by create-status-page)",
+      "method": "GET",
+      "urlTemplate": "/status_pages/new",
+      "responseType": "html",
+      "mutates": false,
+      "auth": true,
+      "params": [],
+      "extract": {
+        "fields": {
+          "authenticity_token": "#new_status_page input[name=authenticity_token]@value"
+        }
+      },
+      "source": "GET https://updown.io/status_pages/new"
+    },
+    {
+      "name": "create-status-page",
+      "summary": "Create a status page showing one check (the dashboard's new-status-page form). visibility public = anyone with the link. Afterwards run list-status-pages for the public link.",
+      "method": "POST",
+      "urlTemplate": "/status_pages",
+      "responseType": "html",
+      "bodyEncoding": "form",
+      "mutates": true,
+      "auth": true,
+      "headers": {
+        "origin": "https://updown.io",
+        "referer": "https://updown.io/status_pages/new"
+      },
+      "bodyTemplate": {
+        "authenticity_token": "{authenticity_token}",
+        "status_page[visibility]": "{visibility}",
+        "status_page[name]": "{name}",
+        "status_page[description]": "{description}",
+        "status_page[wide]": "0",
+        "status_page[check_ids][]": "{check_id}"
+      },
+      "params": [
+        {
+          "name": "authenticity_token",
+          "in": "body",
+          "required": true,
+          "type": "string",
+          "description": "from status-page-form"
+        },
+        {
+          "name": "check_id",
+          "in": "body",
+          "required": true,
+          "type": "string",
+          "description": "internal check id from status-page-checks"
+        },
+        {
+          "name": "name",
+          "in": "body",
+          "required": true,
+          "type": "string"
+        },
+        {
+          "name": "description",
+          "in": "body",
+          "required": false,
+          "type": "string",
+          "default": ""
+        },
+        {
+          "name": "visibility",
+          "in": "body",
+          "required": false,
+          "type": "string",
+          "default": "public",
+          "enum": [
+            "public",
+            "protected",
+            "private"
+          ]
+        }
+      ],
+      "extract": {
+        "fields": {
+          "title": "title"
+        }
+      },
+      "source": "POST https://updown.io/status_pages"
+    },
+    {
+      "name": "list-status-pages",
+      "summary": "Your status pages and their public links",
+      "method": "GET",
+      "urlTemplate": "/status_pages",
+      "responseType": "html",
+      "mutates": false,
+      "auth": true,
+      "params": [],
+      "extract": {
+        "list": "#status_pages ul.list li",
+        "fields": {
+          "name": "div:first-child a",
+          "public_link": "div:first-child a@href",
+          "info": "div:first-child"
+        }
+      },
+      "source": "GET https://updown.io/status_pages"
+    }
+  ]
+}

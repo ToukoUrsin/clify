@@ -1,0 +1,200 @@
+{
+ "url": "https://slashdot.org/",
+ "category": "news",
+ "sandbox": "clify-slashdot-org",
+ "startedAt": "2026-10-18T09:27:01.321Z",
+ "region": "us-pdx-1",
+ "chrome": "Chrome/148.0.7778.96",
+ "sandboxStartMs": 1843,
+ "addSeconds": 333,
+ "addExit": 0,
+ "add": {
+  "ok": true,
+  "site": "slashdot",
+  "url": "https://slashdot.org/",
+  "commands": [
+   {
+    "name": "list-stories",
+    "summary": "List the latest front-page stories on Slashdot, with id, title, link, byline and summary.",
+    "verified": true
+   },
+   {
+    "name": "list-section-stories",
+    "summary": "List the stories on a section front page (subdomain such as science, yro, linux, hardware, developers, news).",
+    "verified": true
+   },
+   {
+    "name": "list-by-tag",
+    "summary": "List firehose items (stories and submissions) filtered by a tag or topic keyword, e.g. ubuntu, space, crime, medicine.",
+    "verified": true
+   },
+   {
+    "name": "list-popular",
+    "summary": "List popular firehose submissions.",
+    "verified": true
+   },
+   {
+    "name": "list-recent-submissions",
+    "summary": "List the most recent user submissions to the firehose, with pagination. The summary starts with '<submitter> writes:'.",
+    "verified": true
+   },
+   {
+    "name": "get-story",
+    "summary": "Get a story's title, byline, summary text and firehose id. The story is identified by its sid date path yy/mm/dd/id.",
+    "verified": true
+   },
+   {
+    "name": "list-story-comments",
+    "summary": "List the comments shown on a story page (the default threshold view), with subject, author, score and text.",
+    "verified": true
+   },
+   {
+    "name": "fetch-all-comments",
+    "summary": "Fetch the full comment tree of a discussion through the site's AJAX endpoint (read-only, despite being a POST).",
+    "verified": false,
+    "writes": true
+   },
+   {
+    "name": "list-polls",
+    "summary": "List Slashdot polls. Each summary has the comment count, question, vote count and posting date; the url holds the poll id for get-poll-results.",
+    "verified": true
+   },
+   {
+    "name": "get-poll-results",
+    "summary": "Get the results of a poll by id: each answer with its vote count and percentage.",
+    "verified": true
+   },
+   {
+    "name": "vote-poll",
+    "summary": "Cast a vote in a poll. This submits answer aid for poll qid, and Slashdot allows one vote per IP.",
+    "verified": false,
+    "writes": true
+   },
+   {
+    "name": "get-user-activity",
+    "summary": "Get a user's profile page: their recent activity (comments, stories, submissions) with scores and links.",
+    "verified": true
+   },
+   {
+    "name": "list-user-comments",
+    "summary": "List a user's recent comments with subject, comment link, date and the story each is attached to.",
+    "verified": true
+   },
+   {
+    "name": "list-archive-stories",
+    "summary": "Browse the story archive: last week by default, or stories for a topic/section keyword and year, or by time for a year.",
+    "verified": true
+   },
+   {
+    "name": "get-rss-feed",
+    "summary": "Get the main Slashdot RSS (RDF) feed of current stories, with title, link, author, date and description.",
+    "verified": true
+   }
+  ],
+  "verified": 13,
+  "writes": 2,
+  "dropped": [],
+  "blockers": [
+   "bot-check at https://news.slashdot.org/comments.pl?sid=24125078&cid=66377906"
+  ],
+  "loggedIn": false,
+  "seconds": 333,
+  "next": [
+   "clify slashdot",
+   "clify slashdot list-stories"
+  ],
+  "installed": "/home/ubuntu/clify-runs/blaxel-w2/home/bin/slashdot",
+  "explored": {
+   "steps": 28,
+   "recorded": 62,
+   "heldWrites": 10
+  }
+ },
+ "check": {
+  "on": "blaxel",
+  "node": "v24.22.0",
+  "seconds": 11,
+  "reads": 13,
+  "verified": 13,
+  "failed": [],
+  "results": [
+   {
+    "name": "list-stories",
+    "ok": true,
+    "ms": 331
+   },
+   {
+    "name": "list-section-stories",
+    "ok": true,
+    "ms": 233
+   },
+   {
+    "name": "list-by-tag",
+    "ok": true,
+    "ms": 1477
+   },
+   {
+    "name": "list-popular",
+    "ok": true,
+    "ms": 75
+   },
+   {
+    "name": "list-recent-submissions",
+    "ok": true,
+    "ms": 1556
+   },
+   {
+    "name": "get-story",
+    "ok": true,
+    "ms": 122
+   },
+   {
+    "name": "list-story-comments",
+    "ok": true,
+    "ms": 259
+   },
+   {
+    "name": "fetch-all-comments",
+    "ok": true,
+    "reason": "write: dry-run preview only, not sent"
+   },
+   {
+    "name": "list-polls",
+    "ok": true,
+    "ms": 439
+   },
+   {
+    "name": "get-poll-results",
+    "ok": true,
+    "ms": 74
+   },
+   {
+    "name": "vote-poll",
+    "ok": true,
+    "reason": "write: dry-run preview only, not sent"
+   },
+   {
+    "name": "get-user-activity",
+    "ok": true,
+    "ms": 780
+   },
+   {
+    "name": "list-user-comments",
+    "ok": true,
+    "ms": 503
+   },
+   {
+    "name": "list-archive-stories",
+    "ok": true,
+    "ms": 2700
+   },
+   {
+    "name": "get-rss-feed",
+    "ok": true,
+    "ms": 134
+   }
+  ]
+ },
+ "deleted": true,
+ "seconds": 346
+}

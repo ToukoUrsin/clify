@@ -1,0 +1,78 @@
+{
+ "ok": true,
+ "site": "weather",
+ "url": "https://www.weather.gov/",
+ "commands": [
+  {
+   "name": "get-point",
+   "summary": "Resolve a lat/lon to its NWS forecast office, grid x/y, forecast URLs, forecast zone, county and nearby city. Run this first to get the wfo/x/y that the forecast commands take.",
+   "verified": true
+  },
+  {
+   "name": "get-forecast",
+   "summary": "Get the 7-day forecast (day/night periods) for an NWS grid point (office + x,y from get-point).",
+   "verified": true
+  },
+  {
+   "name": "get-hourly-forecast",
+   "summary": "Get the hour-by-hour forecast (about 7 days) for an NWS grid point.",
+   "verified": true
+  },
+  {
+   "name": "list-active-alerts",
+   "summary": "List currently active NWS watches, warnings and advisories. Filter by state/marine area, zone, event type, severity or urgency.",
+   "verified": true
+  },
+  {
+   "name": "list-stations",
+   "summary": "List NWS observation stations, optionally filtered by state. Returns station IDs for get-latest-observation.",
+   "verified": true
+  },
+  {
+   "name": "get-latest-observation",
+   "summary": "Get the latest current-conditions observation from a station: temperature, dewpoint, wind, pressure, humidity and sky text.",
+   "verified": true
+  },
+  {
+   "name": "list-office-products",
+   "summary": "List issued text products of one type from a forecast office, newest first (e.g. Area Forecast Discussions from BOU).",
+   "verified": true
+  },
+  {
+   "name": "get-latest-product",
+   "summary": "Get the full text of the most recent product of a type from an office, e.g. the latest Area Forecast Discussion.",
+   "verified": true
+  },
+  {
+   "name": "export-forecast-dwml",
+   "summary": "Export the point forecast as DWML (NWS Digital Weather Markup Language, converted to JSON): time layouts, temperatures, precipitation probabilities, weather and current observations for a lat/lon.",
+   "verified": true
+  },
+  {
+   "name": "get-zone-boundary",
+   "summary": "Get the KML boundary polygon and description (area name) of an NWS public forecast zone.",
+   "verified": true
+  },
+  {
+   "name": "lookup-glossary-term",
+   "summary": "Look up the definition of a weather term in the NWS glossary.",
+   "verified": true
+  }
+ ],
+ "verified": 11,
+ "writes": 0,
+ "dropped": [],
+ "blockers": [],
+ "loggedIn": false,
+ "seconds": 177,
+ "next": [
+  "clify weather",
+  "clify weather get-point --lat \"39.7456\" --lon \"-97.0892\""
+ ],
+ "installed": "/home/ubuntu/clify-runs/batch2/home/bin/weather",
+ "explored": {
+  "steps": 11,
+  "recorded": 24,
+  "heldWrites": 0
+ }
+}

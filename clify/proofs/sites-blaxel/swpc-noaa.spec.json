@@ -1,0 +1,289 @@
+{
+ "name": "swpc-noaa",
+ "startUrl": "https://www.swpc.noaa.gov/",
+ "origin": "https://www.swpc.noaa.gov",
+ "createdAt": "2026-10-18T08:40:46.889Z",
+ "description": "NOAA Space Weather Prediction Center (SWPC): a CLI for live space-weather data. It reads the NOAA R/S/G scales, the planetary K-index, solar wind and F10.7 summaries, GOES X-ray, proton and electron feeds, alerts, text forecasts and the HAPI time-series API.",
+ "commands": [
+  {
+   "name": "get-noaa-scales",
+   "summary": "Current NOAA space weather scales and forecast probabilities: R (radio blackout), S (solar radiation) and G (geomagnetic storm). Key -1 is yesterday, 0 is now, 1-3 are forecast days.",
+   "method": "GET",
+   "urlTemplate": "https://services.swpc.noaa.gov/products/noaa-scales.json",
+   "params": [],
+   "responseType": "json",
+   "mutates": false,
+   "source": "E1 GET https://services.swpc.noaa.gov/products/noaa-scales.json",
+   "verified": true
+  },
+  {
+   "name": "get-planetary-k-index",
+   "summary": "Observed 3-hourly planetary Kp index for the last ~7 days, with running a-index and station count.",
+   "method": "GET",
+   "urlTemplate": "https://services.swpc.noaa.gov/products/noaa-planetary-k-index.json",
+   "params": [],
+   "responseType": "json",
+   "defaultFields": [
+    "time_tag",
+    "Kp",
+    "a_running",
+    "station_count"
+   ],
+   "mutates": false,
+   "source": "E3 GET https://services.swpc.noaa.gov/products/noaa-planetary-k-index.json",
+   "verified": true
+  },
+  {
+   "name": "get-kp-forecast",
+   "summary": "Planetary K-index observations plus the 3-day forecast (observed, estimated and predicted Kp per 3-hour slot).",
+   "method": "GET",
+   "urlTemplate": "https://services.swpc.noaa.gov/products/noaa-planetary-k-index-forecast.json",
+   "params": [],
+   "responseType": "json",
+   "mutates": false,
+   "source": "",
+   "verified": true
+  },
+  {
+   "name": "get-summary",
+   "summary": "Latest single-value summary: solar wind speed, solar wind magnetic field (Bt/Bz) or the 10.7cm radio flux.",
+   "method": "GET",
+   "urlTemplate": "https://services.swpc.noaa.gov/products/summary/{metric}.json",
+   "params": [
+    {
+     "name": "metric",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Which summary to fetch",
+     "enum": [
+      "solar-wind-speed",
+      "solar-wind-mag-field",
+      "10cm-flux"
+     ],
+     "example": "solar-wind-speed"
+    }
+   ],
+   "responseType": "json",
+   "mutates": false,
+   "example": {
+    "metric": "solar-wind-speed"
+   },
+   "source": "E5 E6 E7 GET https://services.swpc.noaa.gov/products/summary/solar-wind-mag-field.json",
+   "verified": true
+  },
+  {
+   "name": "get-goes-feed",
+   "summary": "GOES satellite particle/X-ray time series (flux per energy band) for a satellite slot, instrument and time range.",
+   "method": "GET",
+   "urlTemplate": "https://services.swpc.noaa.gov/json/goes/{satellite}/{instrument}-{range}.json",
+   "params": [
+    {
+     "name": "satellite",
+     "in": "path",
+     "required": false,
+     "type": "string",
+     "description": "Satellite slot",
+     "enum": [
+      "primary",
+      "secondary"
+     ],
+     "default": "primary",
+     "example": "primary"
+    },
+    {
+     "name": "instrument",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Feed type, e.g. xrays, integral-protons, integral-electrons, magnetometers (see the /json/goes/primary/ directory listing)",
+     "example": "xrays"
+    },
+    {
+     "name": "range",
+     "in": "path",
+     "required": false,
+     "type": "string",
+     "description": "Time window",
+     "enum": [
+      "6-hour",
+      "1-day",
+      "3-day",
+      "7-day"
+     ],
+     "default": "3-day",
+     "example": "3-day"
+    }
+   ],
+   "responseType": "json",
+   "defaultFields": [
+    "time_tag",
+    "satellite",
+    "energy",
+    "flux"
+   ],
+   "mutates": false,
+   "example": {
+    "satellite": "primary",
+    "instrument": "xrays",
+    "range": "3-day"
+   },
+   "source": "E8 E9 E10 GET https://services.swpc.noaa.gov/json/goes/primary/integral-protons-3-day.json",
+   "verified": true
+  },
+  {
+   "name": "list-alerts",
+   "summary": "Active and recent SWPC space weather alerts, watches and warnings with their full message text.",
+   "method": "GET",
+   "urlTemplate": "https://services.swpc.noaa.gov/products/alerts.json",
+   "params": [],
+   "responseType": "json",
+   "defaultFields": [
+    "product_id",
+    "issue_datetime",
+    "message"
+   ],
+   "mutates": false,
+   "source": "",
+   "verified": true
+  },
+  {
+   "name": "get-text-product",
+   "summary": "Plain-text SWPC bulletin: 3-day forecast, 27-day outlook or forecast discussion.",
+   "method": "GET",
+   "urlTemplate": "https://services.swpc.noaa.gov/text/{product}.txt",
+   "params": [
+    {
+     "name": "product",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Bulletin name (file name under services.swpc.noaa.gov/text/ without .txt)",
+     "enum": [
+      "3-day-forecast",
+      "27-day-outlook",
+      "discussion"
+     ],
+     "example": "3-day-forecast"
+    }
+   ],
+   "responseType": "text",
+   "mutates": false,
+   "example": {
+    "product": "3-day-forecast"
+   },
+   "source": "",
+   "verified": true
+  },
+  {
+   "name": "list-hapi-datasets",
+   "summary": "Catalog of the roughly 85 HAPI time-series datasets (ACE/DSCOVR/active mag and plasma, Kp, etc.) with ids for get-hapi-info and get-hapi-data.",
+   "method": "GET",
+   "urlTemplate": "https://tlv-swpc.woc.noaa.gov/hapi/catalog",
+   "params": [],
+   "responseType": "json",
+   "resultPath": "catalog",
+   "defaultFields": [
+    "id",
+    "title"
+   ],
+   "mutates": false,
+   "source": "E15 GET https://tlv-swpc.woc.noaa.gov/hapi/catalog",
+   "verified": true
+  },
+  {
+   "name": "get-hapi-info",
+   "summary": "Metadata for one HAPI dataset: available parameters, units, cadence and start/stop dates.",
+   "method": "GET",
+   "urlTemplate": "https://tlv-swpc.woc.noaa.gov/hapi/info",
+   "params": [
+    {
+     "name": "id",
+     "in": "query",
+     "required": true,
+     "type": "string",
+     "description": "HAPI dataset id from list-hapi-datasets, e.g. kp-pt1h, active-plasma-pt1m, active-mag-pt1m",
+     "example": "kp-pt1h"
+    }
+   ],
+   "responseType": "json",
+   "mutates": false,
+   "example": {
+    "id": "kp-pt1h"
+   },
+   "source": "E4 GET https://tlv-swpc.woc.noaa.gov/hapi/info",
+   "verified": true
+  },
+  {
+   "name": "get-hapi-data",
+   "summary": "Download a HAPI dataset as CSV (time_tag plus the chosen parameters) over a time range: solar wind speed/density, IMF Bt/Bz, Kp/ap, etc.",
+   "method": "GET",
+   "urlTemplate": "https://tlv-swpc.woc.noaa.gov/hapi/data",
+   "params": [
+    {
+     "name": "id",
+     "in": "query",
+     "required": true,
+     "type": "string",
+     "description": "HAPI dataset id, e.g. kp-pt1h, active-plasma-pt1m, active-mag-pt1m",
+     "example": "kp-pt1h"
+    },
+    {
+     "name": "parameters",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Comma-separated parameter names from get-hapi-info, e.g. kp,ap or speed,density,temperature or bt,bz_gsm. Omit for all.",
+     "example": "kp,ap"
+    },
+    {
+     "name": "time_min",
+     "key": "time.min",
+     "in": "query",
+     "required": true,
+     "type": "string",
+     "description": "Start time, ISO 8601 UTC, e.g. 2026-10-15T07:00:00Z",
+     "example": "2026-10-11T00:00:00Z"
+    },
+    {
+     "name": "time_max",
+     "key": "time.max",
+     "in": "query",
+     "required": true,
+     "type": "string",
+     "description": "End time, ISO 8601 UTC, e.g. 2026-10-18T16:59:59Z",
+     "example": "2026-10-22T23:59:59Z"
+    }
+   ],
+   "responseType": "text",
+   "mutates": false,
+   "example": {
+    "id": "kp-pt1h",
+    "parameters": "kp,ap",
+    "time_min": "2026-10-11T00:00:00Z",
+    "time_max": "2026-10-22T23:59:59Z"
+   },
+   "source": "E16 GET https://tlv-swpc.woc.noaa.gov/hapi/data",
+   "verified": true
+  }
+ ],
+ "blockers": [],
+ "notes": [
+  "All data is public and needs no login. Most commands hit services.swpc.noaa.gov or the HAPI server at tlv-swpc.woc.noaa.gov, not the www site.",
+  "The site has no keyword search, filters or sorting. Pick data by command and path parameters instead.",
+  "get-noaa-scales returns an object keyed by day offset. \"-1\" is the previous day, \"0\" is current conditions, and \"1\"-\"3\" are forecast days with R MinorProb/MajorProb, S Prob and the G scale.",
+  "get-goes-feed responses can be large (one row per minute per energy band). Use range 6-hour or 1-day for recent values. Field 'electron_contaminaton' is misspelled as in the source.",
+  "get-hapi-data returns CSV text whose first line is the header. Keep time ranges short for 1-minute datasets (pt1m). Fill value is -1e30.",
+  "get-kp-forecast, list-alerts and get-text-product use feeds the explorer named in its summary; their exact URLs did not appear in the endpoint list.",
+  "News articles (/news-archive?page=N, /news/{slug}) and product pages (/products/{slug}) are server-rendered HTML that redirect (301) to spaceweather.gov. They are not covered because no page structure was recorded."
+ ],
+ "dropped": [],
+ "generated": {
+  "by": "clify add",
+  "model": "claude-opus-5-5",
+  "exploredSteps": 13,
+  "recorded": 47,
+  "verifiedAt": "2026-10-18T08:41:45.976Z",
+  "seconds": 183
+ }
+}

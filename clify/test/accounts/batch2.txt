@@ -1,0 +1,16 @@
+composio https://composio.dev/
+e2b https://e2b.dev/
+mem0 https://mem0.ai/
+wandb https://wandb.ai/
+agentmail https://www.agentmail.to/
+anchorbrowser https://anchorbrowser.io/
+glama https://glama.ai/
+langfuse https://langfuse.com/
+steel https://www.steel.dev/
+homeassistant https://community.home-assistant.io/
+julialang https://discourse.julialang.org/
+kotlinlang https://discuss.kotlinlang.org/
+duplicati https://forum.duplicati.com/
+obsidian https://forum.obsidian.md/
+rclone https://forum.rclone.org/
+sublimetext https://forum.sublimetext.com/

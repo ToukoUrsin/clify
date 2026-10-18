@@ -1,0 +1,24 @@
+{
+ "name": "search-crossref",
+ "startUrl": "https://search.crossref.org/",
+ "origin": "https://search.crossref.org",
+ "createdAt": "2026-10-18T08:43:46.292Z",
+ "description": "Crossref Metadata Search (search.crossref.org) is a web UI for searching scholarly metadata such as works, funders and references. The recording yields no usable commands for this CLI.",
+ "commands": [],
+ "blockers": [],
+ "notes": [
+  "No commands were generated. The explorer could only load the static landing page (E1), which contains no data beyond a search form and navigation links.",
+  "Every data-bearing path on this host (/search/works, /search/funders, /search/references and /?q=...) is disallowed by robots.txt and was not fetched. clify should not generate commands that replay robots-disallowed URLs, so the landing form (action=/search/works, inputs q and from_ui=yes) is not exposed as a command.",
+  "The data behind this site is served by Crossref's documented public REST API at https://api.crossref.org, for example /works?query=..., /works/{doi}, /funders?query=..., /funders/{id}/works, /journals/{issn}/works and /members. It is a separate host, and none of its requests appeared in this recording.",
+  "To get a working CLI, run clify against https://api.crossref.org directly, for example as a separate 'crossref-api' CLI. The API returns clean JSON with results under message.items, offset paging via 'rows' and 'offset', and deep paging via cursor=* with message.next-cursor. Crossref asks clients to add a mailto= query param or a User-Agent with contact info to use the 'polite' pool."
+ ],
+ "dropped": [],
+ "generated": {
+  "by": "clify add",
+  "model": "claude-opus-5-5",
+  "exploredSteps": 4,
+  "recorded": 1,
+  "verifiedAt": "2026-10-18T08:43:56.126Z",
+  "seconds": 25
+ }
+}

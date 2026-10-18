@@ -1,0 +1,4 @@
+[
+  {"tool":"type","input":{"selector":"input[type=search]","text":"playwright","intent":"keyword search"}},
+  {"tool":"goto","input":{"url":"https://hn.algolia.com/?dateRange=pastYear&query=playwright&sort=byDate&type=story","intent":"filter past year, sort by date"}}
+]

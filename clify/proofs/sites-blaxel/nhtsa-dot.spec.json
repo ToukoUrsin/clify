@@ -1,0 +1,590 @@
+{
+ "name": "nhtsa-dot",
+ "startUrl": "https://vpic.nhtsa.dot.gov/",
+ "origin": "https://vpic.nhtsa.dot.gov",
+ "createdAt": "2026-10-18T08:39:45.686Z",
+ "description": "NHTSA vPIC (Product Information Catalog and Vehicle Listing): decode VINs and WMIs, look up makes, models and manufacturers through the public vPIC REST API, browse Canadian Vehicle Specifications, list approved replica manufacturers, and view MID manufacturer and vehicle-modifier detail pages.",
+ "commands": [
+  {
+   "name": "decode-vin",
+   "summary": "Decode a full or partial VIN (use * as a wildcard) into a flat record with make, model, year, body, engine, safety equipment, plant and more",
+   "method": "GET",
+   "urlTemplate": "/api/vehicles/decodevinvalues/{vin}?format=json",
+   "params": [
+    {
+     "name": "vin",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "17-character VIN or partial VIN; use * for unknown positions, e.g. 5UXWX7C5*BA",
+     "example": "1HGCM82633A004352"
+    },
+    {
+     "name": "modelyear",
+     "in": "query",
+     "required": false,
+     "type": "number",
+     "description": "Model year. Recommended for partial VINs; when set it overrides the year decoded from the VIN",
+     "example": "2011"
+    }
+   ],
+   "responseType": "json",
+   "resultPath": "Results",
+   "defaultFields": [
+    "Make",
+    "Model",
+    "ModelYear",
+    "Trim",
+    "BodyClass",
+    "VehicleType",
+    "Manufacturer",
+    "ErrorText"
+   ],
+   "mutates": false,
+   "example": {
+    "vin": "1HGCM82633A004352"
+   },
+   "source": "E6 E9 GET https://vpic.nhtsa.dot.gov/api/vehicles/decodevinvalues/{id}",
+   "verified": true
+  },
+  {
+   "name": "decode-wmi",
+   "summary": "Decode a World Manufacturer Identifier (the first 3 or 6 VIN characters) into its manufacturer, make and vehicle type",
+   "method": "GET",
+   "urlTemplate": "/api/vehicles/decodewmi/{wmi}?format=json",
+   "params": [
+    {
+     "name": "wmi",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "WMI code, 3 or 6 characters, e.g. 1FD",
+     "example": "1FD"
+    }
+   ],
+   "responseType": "json",
+   "resultPath": "Results",
+   "defaultFields": [
+    "ManufacturerName",
+    "Make",
+    "CommonName",
+    "VehicleType",
+    "ParentCompanyName",
+    "URL",
+    "CreatedOn"
+   ],
+   "mutates": false,
+   "example": {
+    "wmi": "1FD"
+   },
+   "source": "E8 GET https://vpic.nhtsa.dot.gov/api/vehicles/decodewmi/1FD",
+   "verified": true
+  },
+  {
+   "name": "list-models-for-make-year",
+   "summary": "List the models a make offers in a given model year",
+   "method": "GET",
+   "urlTemplate": "/api/vehicles/getmodelsformakeyear/make/{make}/modelyear/{year}?format=json",
+   "params": [
+    {
+     "name": "make",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Make name, case-insensitive, e.g. honda",
+     "example": "honda"
+    },
+    {
+     "name": "year",
+     "in": "path",
+     "required": true,
+     "type": "number",
+     "description": "Model year, e.g. 2015",
+     "example": "2015"
+    }
+   ],
+   "responseType": "json",
+   "resultPath": "Results",
+   "defaultFields": [
+    "Make_ID",
+    "Make_Name",
+    "Model_ID",
+    "Model_Name"
+   ],
+   "mutates": false,
+   "example": {
+    "make": "honda",
+    "year": "2015"
+   },
+   "source": "E7 GET https://vpic.nhtsa.dot.gov/api/vehicles/getmodelsformakeyear/make/honda/modelyear/{n}",
+   "verified": true
+  },
+  {
+   "name": "list-models-for-make-id",
+   "summary": "List all models for a make, identified by its numeric vPIC Make_ID",
+   "method": "GET",
+   "urlTemplate": "/api/vehicles/GetModelsForMakeId/{makeId}?format=json",
+   "params": [
+    {
+     "name": "makeId",
+     "in": "path",
+     "required": true,
+     "type": "number",
+     "description": "vPIC Make_ID, e.g. 474 for HONDA (from list-all-makes or list-models-for-make-year)",
+     "example": "474"
+    }
+   ],
+   "responseType": "json",
+   "resultPath": "Results",
+   "defaultFields": [
+    "Make_ID",
+    "Make_Name",
+    "Model_ID",
+    "Model_Name"
+   ],
+   "mutates": false,
+   "example": {
+    "makeId": "474"
+   },
+   "source": "E20 GET https://vpic.nhtsa.dot.gov/api/",
+   "verified": true
+  },
+  {
+   "name": "list-all-makes",
+   "summary": "List every make in vPIC with its Make_ID (a large list, roughly 10k entries)",
+   "method": "GET",
+   "urlTemplate": "/api/vehicles/getallmakes?format=json",
+   "params": [],
+   "responseType": "json",
+   "resultPath": "Results",
+   "defaultFields": [
+    "Make_ID",
+    "Make_Name"
+   ],
+   "mutates": false,
+   "source": "E20",
+   "verified": true
+  },
+  {
+   "name": "get-manufacturer-details",
+   "summary": "Look up manufacturers by full or partial name (or numeric manufacturer ID) and get address, country and vehicle types",
+   "method": "GET",
+   "urlTemplate": "/api/vehicles/getmanufacturerdetails/{manufacturer}?format=json",
+   "params": [
+    {
+     "name": "manufacturer",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Manufacturer name (partial match) or numeric Mfr_ID, e.g. tesla or 955",
+     "example": "tesla"
+    },
+    {
+     "name": "page",
+     "in": "query",
+     "required": false,
+     "type": "number",
+     "description": "Results page, 100 per page",
+     "default": 1
+    }
+   ],
+   "responseType": "json",
+   "resultPath": "Results",
+   "defaultFields": [
+    "Mfr_ID",
+    "Mfr_Name",
+    "Mfr_CommonName",
+    "Country",
+    "StateProvince",
+    "City",
+    "VehicleTypes"
+   ],
+   "pagination": {
+    "type": "page",
+    "param": "page"
+   },
+   "mutates": false,
+   "example": {
+    "manufacturer": "tesla"
+   },
+   "source": "E20 GET https://vpic.nhtsa.dot.gov/api/",
+   "verified": true
+  },
+  {
+   "name": "list-wmis-for-manufacturer",
+   "summary": "List the WMI codes assigned to a manufacturer, matched by full or partial name or ID",
+   "method": "GET",
+   "urlTemplate": "/api/vehicles/GetWMIsForManufacturer/{manufacturer}?format=json",
+   "params": [
+    {
+     "name": "manufacturer",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Manufacturer name (partial match) or ID, e.g. hon",
+     "example": "hon"
+    }
+   ],
+   "responseType": "json",
+   "resultPath": "Results",
+   "defaultFields": [
+    "WMI",
+    "Name",
+    "Country",
+    "VehicleType",
+    "CreatedOn",
+    "DateAvailableToPublic"
+   ],
+   "mutates": false,
+   "example": {
+    "manufacturer": "hon"
+   },
+   "source": "E20 GET https://vpic.nhtsa.dot.gov/api/",
+   "verified": true
+  },
+  {
+   "name": "list-canadian-spec-makes",
+   "summary": "List the makes that have Canadian Vehicle Specifications data for a model year",
+   "method": "GET",
+   "urlTemplate": "/decoder/CaVehSpec/GetMakes",
+   "params": [
+    {
+     "name": "year",
+     "in": "query",
+     "required": true,
+     "type": "number",
+     "description": "Model year, e.g. 2020",
+     "example": "2020"
+    }
+   ],
+   "headers": {
+    "X-Requested-With": "XMLHttpRequest"
+   },
+   "responseType": "json",
+   "mutates": false,
+   "example": {
+    "year": "2020"
+   },
+   "source": "E5 GET https://vpic.nhtsa.dot.gov/decoder/CaVehSpec/GetMakes",
+   "verified": true
+  },
+  {
+   "name": "list-canadian-spec-models",
+   "summary": "List the Canadian Vehicle Specifications model names for a year, optionally limited to one make",
+   "method": "GET",
+   "urlTemplate": "/decoder/CaVehSpec/GetModels",
+   "params": [
+    {
+     "name": "year",
+     "in": "query",
+     "required": true,
+     "type": "number",
+     "description": "Model year, e.g. 2003",
+     "example": "2003"
+    },
+    {
+     "name": "make",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Make name in upper case as returned by list-canadian-spec-makes, e.g. FORD; empty for all makes",
+     "example": "FORD"
+    }
+   ],
+   "headers": {
+    "X-Requested-With": "XMLHttpRequest"
+   },
+   "responseType": "json",
+   "mutates": false,
+   "example": {
+    "year": "2003",
+    "make": "FORD"
+   },
+   "source": "E3 GET https://vpic.nhtsa.dot.gov/decoder/CaVehSpec/GetModels",
+   "verified": true
+  },
+  {
+   "name": "get-canadian-specs",
+   "summary": "Get Canadian Vehicle Specifications dimensions (length, width, height, wheelbase, curb weight, track, weight distribution) for a year and make, optionally one model",
+   "method": "GET",
+   "urlTemplate": "/decoder/CaVehSpec/CVSData",
+   "params": [
+    {
+     "name": "year",
+     "in": "query",
+     "required": true,
+     "type": "number",
+     "description": "Model year, e.g. 2003",
+     "example": "2003"
+    },
+    {
+     "name": "make",
+     "in": "query",
+     "required": true,
+     "type": "string",
+     "description": "Make in upper case, e.g. HONDA",
+     "example": "HONDA"
+    },
+    {
+     "name": "model",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Exact model name from list-canadian-spec-models, e.g. ACCORD 2DR COUPE LX-G/EX-L; empty for all models of the make"
+    },
+    {
+     "name": "units",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Unit system: Metric (cm/kg) or US (in/lb)",
+     "enum": [
+      "Metric",
+      "US"
+     ],
+     "default": "Metric"
+    }
+   ],
+   "headers": {
+    "X-Requested-With": "XMLHttpRequest"
+   },
+   "responseType": "json",
+   "resultPath": "aaData",
+   "defaultFields": [
+    "Model",
+    "MYR",
+    "OL",
+    "OW",
+    "OH",
+    "WB",
+    "CW",
+    "WD"
+   ],
+   "mutates": false,
+   "example": {
+    "year": "2003",
+    "make": "HONDA",
+    "units": "Metric"
+   },
+   "source": "E2 E13 GET https://vpic.nhtsa.dot.gov/decoder/CaVehSpec/CVSData",
+   "verified": true
+  },
+  {
+   "name": "list-replica-manufacturers",
+   "summary": "List NHTSA-approved low-volume replica vehicle manufacturers with their approved vehicles and status, paginated and searchable",
+   "method": "POST",
+   "urlTemplate": "/mid/AjaxHandler/ApprovedReplicaManufacturer",
+   "params": [
+    {
+     "name": "search",
+     "key": "search[value]",
+     "in": "body",
+     "required": false,
+     "type": "string",
+     "description": "Keyword filter applied across all columns"
+    },
+    {
+     "name": "start",
+     "in": "body",
+     "required": false,
+     "type": "number",
+     "description": "Zero-based row offset",
+     "default": 0
+    },
+    {
+     "name": "length",
+     "in": "body",
+     "required": false,
+     "type": "number",
+     "description": "Rows per page",
+     "enum": [
+      "10",
+      "25",
+      "50",
+      "100"
+     ],
+     "default": 10
+    },
+    {
+     "name": "sort_column",
+     "key": "order[0][column]",
+     "in": "body",
+     "required": false,
+     "type": "number",
+     "description": "Sort column: 0=mfrId, 1=manufacturerName, 2=vehicles, 3=status, 4=expirationDate, 5=expirationReason",
+     "enum": [
+      "0",
+      "1",
+      "2",
+      "3",
+      "4",
+      "5"
+     ],
+     "default": 0
+    },
+    {
+     "name": "sort_dir",
+     "key": "order[0][dir]",
+     "in": "body",
+     "required": false,
+     "type": "string",
+     "description": "Sort direction",
+     "enum": [
+      "asc",
+      "desc"
+     ],
+     "default": "asc"
+    }
+   ],
+   "bodyTemplate": {
+    "draw": "1",
+    "columns[0][data]": "mfrId",
+    "columns[0][name]": "",
+    "columns[0][searchable]": "true",
+    "columns[0][orderable]": "true",
+    "columns[0][search][value]": "",
+    "columns[0][search][regex]": "false",
+    "columns[1][data]": "manufacturerName",
+    "columns[1][name]": "",
+    "columns[1][searchable]": "true",
+    "columns[1][orderable]": "true",
+    "columns[1][search][value]": "",
+    "columns[1][search][regex]": "false",
+    "columns[2][data]": "vehicles",
+    "columns[2][name]": "",
+    "columns[2][searchable]": "true",
+    "columns[2][orderable]": "true",
+    "columns[2][search][value]": "",
+    "columns[2][search][regex]": "false",
+    "columns[3][data]": "status",
+    "columns[3][name]": "",
+    "columns[3][searchable]": "true",
+    "columns[3][orderable]": "true",
+    "columns[3][search][value]": "",
+    "columns[3][search][regex]": "false",
+    "columns[4][data]": "expirationDate",
+    "columns[4][name]": "",
+    "columns[4][searchable]": "true",
+    "columns[4][orderable]": "true",
+    "columns[4][search][value]": "",
+    "columns[4][search][regex]": "false",
+    "columns[5][data]": "expirationReason",
+    "columns[5][name]": "ExpirationReason",
+    "columns[5][searchable]": "true",
+    "columns[5][orderable]": "true",
+    "columns[5][search][value]": "",
+    "columns[5][search][regex]": "false",
+    "order[0][column]": "{sort_column}",
+    "order[0][dir]": "{sort_dir}",
+    "order[0][name]": "",
+    "start": "{start}",
+    "length": "{length}",
+    "search[value]": "{search}",
+    "search[regex]": "false"
+   },
+   "bodyEncoding": "form",
+   "headers": {
+    "X-Requested-With": "XMLHttpRequest"
+   },
+   "responseType": "json",
+   "resultPath": "aaData",
+   "defaultFields": [
+    "mfrId",
+    "manufacturerName",
+    "vehicles",
+    "status",
+    "expirationDate",
+    "expirationReason"
+   ],
+   "pagination": {
+    "type": "offset",
+    "param": "start",
+    "step": 10
+   },
+   "mutates": false,
+   "source": "E4 E19",
+   "verified": true
+  },
+  {
+   "name": "get-mid-manufacturer",
+   "summary": "Get a manufacturer's MID profile by manufacturer ID: contacts, address, makes and models, WMIs, manufacturer types and Part 565/566 filings",
+   "method": "GET",
+   "urlTemplate": "/mid/manufacturer/details/{id}",
+   "params": [
+    {
+     "name": "id",
+     "in": "path",
+     "required": true,
+     "type": "number",
+     "description": "Manufacturer ID (Mfr_ID), e.g. 955 for Tesla or 988 for American Honda",
+     "example": "955"
+    }
+   ],
+   "responseType": "html",
+   "extract": {
+    "fields": {
+     "name": "div#searchform h2",
+     "profile": "div.row.mb-5",
+     "makesAndModels": "div.mb-4.ps-3",
+     "wmis": "section#SectionWMI1 div.col-sm-9",
+     "manufacturerTypes": "section#SectionManufacturerType1 div.col-sm-9",
+     "plants": "section#SectionManufacturingPlants",
+     "filings": "tbody.table-group-divider"
+    }
+   },
+   "mutates": false,
+   "example": {
+    "id": "955"
+   },
+   "source": "E10 E12 GET https://vpic.nhtsa.dot.gov/mid/manufacturer/details/{n}",
+   "verified": true
+  },
+  {
+   "name": "get-modifier",
+   "summary": "Get a registered adapted-vehicle modifier's details (DBAs, address, phone, contact) by modifier ID",
+   "method": "GET",
+   "urlTemplate": "/mid/modifier/details/{id}",
+   "params": [
+    {
+     "name": "id",
+     "in": "path",
+     "required": true,
+     "type": "number",
+     "description": "Modifier ID, e.g. 893",
+     "example": "893"
+    }
+   ],
+   "responseType": "html",
+   "extract": {
+    "fields": {
+     "name": "div#searchForm h2",
+     "details": "dl.row.mb-0"
+    }
+   },
+   "mutates": false,
+   "example": {
+    "id": "893"
+   },
+   "source": "E18 GET https://vpic.nhtsa.dot.gov/mid/modifier/details/{n}",
+   "verified": true
+  }
+ ],
+ "blockers": [],
+ "notes": [
+  "The /api/vehicles/* endpoints are NHTSA's documented public REST API. They need no auth, and results are always under 'Results'. The API docs ask clients to rate-limit themselves (no hammering).",
+  "decode-vin accepts partial VINs with * wildcards. For partial VINs, pass modelyear. Check ErrorText or ErrorCode in the result ('0' means a clean decode).",
+  "Canadian spec make and model values are upper case and must match exactly. Get them from list-canadian-spec-makes and list-canadian-spec-models.",
+  "The MID manufacturer search (POST /mid/ then AjaxHandler565TopLevel/566TopLevel) and the modifier search (POST /mid/home/ModifierSearch then AjaxHandler595TopLevel) keep their search criteria in the server session behind an anti-forgery token, so they are not exposed as standalone commands. Use get-manufacturer-details or list-wmis-for-manufacturer to find manufacturer IDs, then get-mid-manufacturer.",
+  "MID manufacturer IDs are the same numbers as the API's Mfr_ID, e.g. 955 = Tesla, 988 = American Honda.",
+  "CSV exports (/mid/Export/ExportToCSV565, ExportToCSV566, ExportToCSV595, ExportAllToCSV595, ExportReplicaToCSV) are browser file downloads tied to the session's last search, so they are not included."
+ ],
+ "dropped": [],
+ "generated": {
+  "by": "clify add",
+  "model": "claude-opus-5-5",
+  "exploredSteps": 28,
+  "recorded": 34,
+  "verifiedAt": "2026-10-18T08:41:12.209Z",
+  "seconds": 278
+ }
+}

@@ -1,0 +1,5 @@
+raw/*.stderr
+raw/*.log
+raw/inspector/session.webm
+out/frames/
+__pycache__/

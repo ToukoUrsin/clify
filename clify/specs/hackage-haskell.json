@@ -1,0 +1,486 @@
+{
+ "name": "hackage-haskell",
+ "startUrl": "https://hackage.haskell.org/",
+ "origin": "https://hackage.haskell.org",
+ "createdAt": "2026-10-18T08:25:45.977Z",
+ "description": "Hackage, the Haskell community's package archive: search packages, read package metadata, versions, dependencies, reverse dependencies, changelogs, documentation indexes, tags, categories, recent uploads, deprecated and candidate packages, and maintainer profiles.",
+ "commands": [
+  {
+   "name": "search-packages",
+   "summary": "Search Hackage packages by keyword, with optional filter expressions in the query, sorting and pagination (50 results per page)",
+   "method": "POST",
+   "urlTemplate": "/packages/search",
+   "params": [
+    {
+     "name": "query",
+     "key": "searchQuery",
+     "in": "body",
+     "required": true,
+     "type": "string",
+     "description": "Search words, optionally followed by filter expressions in parentheses. Examples: (tag:json), (downloads > 10), (maintainer:SimonMarlow), (not tag:network), (lastUpload < 2021-10-29)",
+     "example": "json parser (tag:json) (downloads > 10)"
+    },
+    {
+     "name": "sort",
+     "key": "sortColumn",
+     "in": "body",
+     "required": false,
+     "type": "string",
+     "description": "Column to sort by",
+     "enum": [
+      "default",
+      "name",
+      "downloads",
+      "rating",
+      "description",
+      "tags",
+      "lastUpload",
+      "maintainers"
+     ],
+     "default": "default"
+    },
+    {
+     "name": "direction",
+     "key": "sortDirection",
+     "in": "body",
+     "required": false,
+     "type": "string",
+     "description": "Sort direction",
+     "enum": [
+      "ascending",
+      "descending"
+     ],
+     "default": "ascending"
+    },
+    {
+     "name": "page",
+     "in": "body",
+     "required": false,
+     "type": "number",
+     "description": "Zero-based page number. Each page has 50 results.",
+     "default": 0
+    }
+   ],
+   "bodyTemplate": {
+    "page": "{page}",
+    "sortColumn": "{sort}",
+    "sortDirection": "{direction}",
+    "searchQuery": "{query}"
+   },
+   "bodyEncoding": "json",
+   "headers": {
+    "Sec-Fetch-Site": "same-origin",
+    "Sec-Fetch-Mode": "cors",
+    "Sec-Fetch-Dest": "empty"
+   },
+   "responseType": "json",
+   "resultPath": "pageContents",
+   "defaultFields": [
+    "name.display",
+    "description",
+    "referenceVersion",
+    "downloads",
+    "votes",
+    "lastUpload",
+    "maintainers",
+    "tags"
+   ],
+   "pagination": {
+    "type": "page",
+    "param": "page"
+   },
+   "mutates": false,
+   "example": {
+    "query": "json parser"
+   },
+   "source": "E1",
+   "verified": true
+  },
+  {
+   "name": "get-package",
+   "summary": "Get a package's detail page: synopsis, description, latest version, modules and changelog link",
+   "method": "GET",
+   "urlTemplate": "/package/{package}",
+   "params": [
+    {
+     "name": "package",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Package name, optionally with a version (e.g. parsec or parsec-3.1.18.0)",
+     "example": "parsec3"
+    }
+   ],
+   "responseType": "html",
+   "extract": {
+    "fields": {
+     "name": "h1 > a",
+     "synopsis": "h1 small",
+     "description": "div#description",
+     "latestVersion": "table.properties td strong",
+     "changelogUrl": "td.word-wrap > a@href",
+     "modules": "ul.modules > li",
+     "properties": "table.properties"
+    }
+   },
+   "mutates": false,
+   "example": {
+    "package": "parsec3"
+   },
+   "source": "E7 E6 GET https://hackage.haskell.org/package/parsec3",
+   "verified": true
+  },
+  {
+   "name": "get-package-versions",
+   "summary": "List all versions of a package with their status (normal or deprecated), as JSON",
+   "method": "GET",
+   "urlTemplate": "/package/{package}.json",
+   "params": [
+    {
+     "name": "package",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Package name without a version",
+     "example": "parsec"
+    }
+   ],
+   "responseType": "json",
+   "mutates": false,
+   "example": {
+    "package": "parsec"
+   },
+   "source": "E4 GET https://hackage.haskell.org/package/parsec.json",
+   "verified": true
+  },
+  {
+   "name": "get-preferred-versions",
+   "summary": "Get a package's preferred versions (normal-version list, plus deprecated versions if any), as JSON",
+   "method": "GET",
+   "urlTemplate": "/package/{package}/preferred.json",
+   "params": [
+    {
+     "name": "package",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Package name without a version",
+     "example": "parsec"
+    }
+   ],
+   "responseType": "json",
+   "mutates": false,
+   "example": {
+    "package": "parsec"
+   },
+   "source": "E3 GET https://hackage.haskell.org/package/parsec/preferred.json",
+   "verified": true
+  },
+  {
+   "name": "get-package-dependencies",
+   "summary": "List the dependencies and version constraints of a specific package version",
+   "method": "GET",
+   "urlTemplate": "/package/{package_version}/dependencies",
+   "params": [
+    {
+     "name": "package_version",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Package name with version, e.g. parsec3-1.0.1.8",
+     "example": "parsec3-1.0.1.8"
+    }
+   ],
+   "responseType": "html",
+   "extract": {
+    "list": "ul#detailed-dependencies > li",
+    "fields": {
+     "name": "a",
+     "url": "a@href",
+     "constraint": "span"
+    }
+   },
+   "defaultFields": [
+    "name",
+    "constraint",
+    "url"
+   ],
+   "mutates": false,
+   "example": {
+    "package_version": "parsec3-1.0.1.8"
+   },
+   "source": "E8 GET https://hackage.haskell.org/package/parsec3-1.0.1.8/dependencies",
+   "verified": true
+  },
+  {
+   "name": "list-reverse-dependencies",
+   "summary": "List the packages that depend on a given package (reverse dependencies of its latest version)",
+   "method": "GET",
+   "urlTemplate": "/package/{package}/reverse",
+   "params": [
+    {
+     "name": "package",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Package name without a version",
+     "example": "parsec"
+    }
+   ],
+   "responseType": "html",
+   "extract": {
+    "list": "tr.odd, tr.even",
+    "fields": {
+     "name": "td > a",
+     "url": "td > a@href",
+     "row": ""
+    }
+   },
+   "defaultFields": [
+    "name",
+    "url",
+    "row"
+   ],
+   "mutates": false,
+   "example": {
+    "package": "parsec"
+   },
+   "source": "E16 GET https://hackage.haskell.org/package/parsec/reverse",
+   "verified": true
+  },
+  {
+   "name": "get-changelog",
+   "summary": "Get the changelog of a specific package version",
+   "method": "GET",
+   "urlTemplate": "/package/{package_version}/changelog",
+   "params": [
+    {
+     "name": "package_version",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Package name with version, e.g. parsec-3.1.18.0",
+     "example": "parsec-3.1.18.0"
+    }
+   ],
+   "responseType": "html",
+   "extract": {
+    "fields": {
+     "title": "h2",
+     "changelog": "div.embedded-author-content"
+    }
+   },
+   "mutates": false,
+   "example": {
+    "package_version": "parsec-3.1.18.0"
+   },
+   "source": "E19 GET https://hackage.haskell.org/package/parsec-3.1.18.0/changelog",
+   "verified": true
+  },
+  {
+   "name": "get-docs-index",
+   "summary": "Get the Haddock identifier index (functions, types and their modules) for a package version, as JSON",
+   "method": "GET",
+   "urlTemplate": "/package/{package_version}/docs/doc-index.json",
+   "params": [
+    {
+     "name": "package_version",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Package name with version, e.g. commonmark-extensions-0.2.7.3",
+     "example": "commonmark-extensions-0.2.7.3"
+    }
+   ],
+   "responseType": "json",
+   "defaultFields": [
+    "name",
+    "module",
+    "link"
+   ],
+   "mutates": false,
+   "example": {
+    "package_version": "commonmark-extensions-0.2.7.3"
+   },
+   "source": "E2 GET https://hackage.haskell.org/package/commonmark-extensions-0.2.7.3/docs/doc-index.json",
+   "verified": true
+  },
+  {
+   "name": "list-recent-uploads",
+   "summary": "List the 20 most recently uploaded package versions on Hackage, newest first, from the recent-uploads RSS feed. Each item has the package-version title, package link, upload date, and a description na",
+   "method": "GET",
+   "urlTemplate": "/packages/recent.rss",
+   "params": [],
+   "responseType": "html",
+   "resultPath": "rss.channel.item",
+   "defaultFields": [
+    "title",
+    "link",
+    "pubDate",
+    "description"
+   ],
+   "mutates": false,
+   "source": "E10 E9",
+   "verified": true
+  },
+  {
+   "name": "list-packages-by-tag",
+   "summary": "List all packages that have a given tag (e.g. parsing, json, network)",
+   "method": "GET",
+   "urlTemplate": "/packages/tag/{tag}",
+   "params": [
+    {
+     "name": "tag",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Tag name, e.g. parsing, json, bsd3",
+     "example": "parsing"
+    }
+   ],
+   "responseType": "html",
+   "extract": {
+    "list": "tr",
+    "fields": {
+     "name": "td > a",
+     "url": "td > a@href",
+     "row": ""
+    }
+   },
+   "defaultFields": [
+    "name",
+    "url",
+    "row"
+   ],
+   "mutates": false,
+   "example": {
+    "tag": "parsing"
+   },
+   "source": "E11 GET https://hackage.haskell.org/packages/tag/parsing",
+   "verified": true
+  },
+  {
+   "name": "list-categories",
+   "summary": "List all package categories with their package counts",
+   "method": "GET",
+   "urlTemplate": "/packages/",
+   "params": [],
+   "responseType": "html",
+   "extract": {
+    "list": "a[href^='#cat:']",
+    "fields": {
+     "category": "",
+     "anchor": "@href"
+    }
+   },
+   "defaultFields": [
+    "category",
+    "anchor"
+   ],
+   "mutates": false,
+   "source": "E12 GET https://hackage.haskell.org/packages/",
+   "verified": true
+  },
+  {
+   "name": "list-deprecated-packages",
+   "summary": "List deprecated packages and the packages that replace them",
+   "method": "GET",
+   "urlTemplate": "/packages/deprecated",
+   "params": [],
+   "responseType": "html",
+   "extract": {
+    "list": "div#content li",
+    "fields": {
+     "package": "a",
+     "url": "a@href",
+     "text": ""
+    }
+   },
+   "defaultFields": [
+    "package",
+    "text",
+    "url"
+   ],
+   "mutates": false,
+   "source": "E15",
+   "verified": true
+  },
+  {
+   "name": "list-candidates",
+   "summary": "List candidate package versions (uploaded for review but not yet published)",
+   "method": "GET",
+   "urlTemplate": "/packages/candidates/",
+   "params": [],
+   "responseType": "html",
+   "extract": {
+    "list": "div#content li",
+    "fields": {
+     "package": "a",
+     "url": "a@href",
+     "text": ""
+    }
+   },
+   "defaultFields": [
+    "package",
+    "text",
+    "url"
+   ],
+   "mutates": false,
+   "source": "E18 E17",
+   "verified": true
+  },
+  {
+   "name": "get-user",
+   "summary": "Get a Hackage user's profile: the package groups (maintainers, candidates) they belong to",
+   "method": "GET",
+   "urlTemplate": "/user/{username}",
+   "params": [
+    {
+     "name": "username",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Hackage username, e.g. EdwardKmett",
+     "example": "EdwardKmett"
+    }
+   ],
+   "responseType": "html",
+   "extract": {
+    "list": "div#content ul > li",
+    "fields": {
+     "membership": "",
+     "groupUrl": "a@href"
+    }
+   },
+   "defaultFields": [
+    "membership",
+    "groupUrl"
+   ],
+   "mutates": false,
+   "example": {
+    "username": "EdwardKmett"
+   },
+   "source": "E14",
+   "verified": true
+  }
+ ],
+ "blockers": [],
+ "notes": [
+  "search-packages: the page number starts at 0. list-recent-uploads: the page number starts at 1.",
+  "Search filters go inside the query string as parenthesized expressions, e.g. 'json parser (tag:json) (downloads > 10)'. Deprecated packages are hidden unless the query includes (deprecated:any) or (deprecated:true).",
+  "The values name.uri and maintainers[].uri in search results are site paths. Strip the '/package/' prefix to get the argument for get-package or get-package-versions, and the '/user/' prefix to get the argument for get-user.",
+  "These commands need a versioned package id (name-version, e.g. parsec-3.1.18.0): get-package-dependencies, get-changelog and get-docs-index. To find the latest version, call get-package-versions or get-preferred-versions.",
+  "The working reverse-dependency path is /package/{name}/reverse. /packages/reverse/{name} returns 404.",
+  "Some HTML list extractions also match header or menu rows (tr/li). Skip items with empty package or name fields.",
+  "Hackage documents its server API at /api. Many resources are also served as JSON, e.g. /package/{name}.json and /user/{name}."
+ ],
+ "dropped": [],
+ "generated": {
+  "by": "clify add",
+  "model": "claude-opus-5-5",
+  "exploredSteps": 20,
+  "recorded": 26,
+  "verifiedAt": "2026-10-18T08:28:03.622Z",
+  "seconds": 297
+ }
+}

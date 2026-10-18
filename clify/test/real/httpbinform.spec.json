@@ -1,0 +1,12 @@
+{
+  "name": "httpbinform",
+  "startUrl": "https://httpbin.org/forms/post",
+  "origin": "https://httpbin.org",
+  "createdAt": "2026-10-17T08:15:00Z",
+  "description": "httpbin pizza order form (echo test service). The submit was held during recording; here it is a write command.",
+  "commands": [
+    { "name": "place-order", "summary": "Submit the pizza order form (httpbin echoes it back)", "method": "POST", "urlTemplate": "/post", "responseType": "json", "bodyEncoding": "form", "mutates": true, "resultPath": "form",
+      "params": [ { "name": "custname", "in": "body", "required": true, "type": "string" }, { "name": "size", "in": "body", "required": false, "type": "string", "enum": ["small", "medium", "large"] }, { "name": "comments", "in": "body", "required": false, "type": "string" } ],
+      "source": "POST https://httpbin.org/post (held)" }
+  ]
+}

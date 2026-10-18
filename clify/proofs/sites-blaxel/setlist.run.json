@@ -1,0 +1,97 @@
+{
+ "url": "https://www.setlist.fm/",
+ "category": "sports-ent",
+ "sandbox": "clify-www-setlist-fm",
+ "startedAt": "2026-10-18T09:15:02.528Z",
+ "region": "us-pdx-1",
+ "chrome": "Chrome/148.0.7778.96",
+ "sandboxStartMs": 2535,
+ "addSeconds": 133,
+ "addExit": 1,
+ "add": {
+  "ok": false,
+  "site": "setlist",
+  "url": "https://www.setlist.fm/",
+  "commands": [],
+  "verified": 0,
+  "writes": 0,
+  "dropped": [
+   {
+    "name": "search-artists",
+    "reason": "api.setlist.fm returns 403 Forbidden for every request that lacks a personal x-api-key. No key is available and credentials can't be embedded, so this can't be fixed or verified."
+   },
+   {
+    "name": "get-artist",
+    "reason": "403 Forbidden: the setlist.fm API needs a personal x-api-key on every request, and none is available."
+   },
+   {
+    "name": "list-artist-setlists",
+    "reason": "403 Forbidden: the setlist.fm API needs a personal x-api-key on every request, and none is available."
+   },
+   {
+    "name": "search-setlists",
+    "reason": "403 Forbidden: the setlist.fm API needs a personal x-api-key on every request, and none is available."
+   },
+   {
+    "name": "get-setlist",
+    "reason": "403 Forbidden: the setlist.fm API needs a personal x-api-key on every request, and none is available."
+   },
+   {
+    "name": "get-setlist-version",
+    "reason": "403 Forbidden: the setlist.fm API needs a personal x-api-key on every request, and none is available."
+   },
+   {
+    "name": "search-venues",
+    "reason": "403 Forbidden: the setlist.fm API needs a personal x-api-key on every request, and none is available."
+   },
+   {
+    "name": "get-venue",
+    "reason": "403 Forbidden: the setlist.fm API needs a personal x-api-key on every request, and none is available."
+   },
+   {
+    "name": "list-venue-setlists",
+    "reason": "403 Forbidden: the setlist.fm API needs a personal x-api-key on every request, and none is available."
+   },
+   {
+    "name": "search-cities",
+    "reason": "403 Forbidden: the setlist.fm API needs a personal x-api-key on every request, and none is available."
+   },
+   {
+    "name": "get-city",
+    "reason": "403 Forbidden: the setlist.fm API needs a personal x-api-key on every request, and none is available."
+   },
+   {
+    "name": "list-countries",
+    "reason": "403 Forbidden: the setlist.fm API needs a personal x-api-key on every request, and none is available."
+   },
+   {
+    "name": "get-user",
+    "reason": "403 Forbidden: the setlist.fm API needs a personal x-api-key on every request, and none is available."
+   },
+   {
+    "name": "list-user-attended",
+    "reason": "403 Forbidden: the setlist.fm API needs a personal x-api-key on every request, and none is available."
+   },
+   {
+    "name": "list-user-edited",
+    "reason": "403 Forbidden: the setlist.fm API needs a personal x-api-key on every request, and none is available."
+   }
+  ],
+  "blockers": [
+   "captcha"
+  ],
+  "loggedIn": false,
+  "seconds": 132,
+  "next": [
+   "clify setlist",
+   "clify repair setlist --goal \"<what you need from the site>\""
+  ],
+  "explored": {
+   "steps": 7,
+   "recorded": 10,
+   "heldWrites": 3
+  }
+ },
+ "deleted": true,
+ "seconds": 136
+}

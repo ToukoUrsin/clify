@@ -1,0 +1,251 @@
+{
+ "url": "https://www.uniprot.org/",
+ "category": "science",
+ "sandbox": "clify-www-uniprot-org",
+ "startedAt": "2026-10-18T08:18:44.772Z",
+ "region": "us-pdx-1",
+ "chrome": "Chrome/148.0.7778.96",
+ "sandboxStartMs": 2648,
+ "addSeconds": 396,
+ "addExit": 0,
+ "add": {
+  "ok": true,
+  "site": "uniprot",
+  "url": "https://www.uniprot.org/",
+  "commands": [
+   {
+    "name": "search-proteins",
+    "summary": "Search UniProtKB protein entries with a query; filters such as reviewed or organism go inside the query string",
+    "verified": true
+   },
+   {
+    "name": "count-protein-facets",
+    "summary": "Get facet counts (reviewed status, model organism, existence level, annotation score, length bins, etc.) for a UniProtKB query without fetching entries",
+    "verified": true
+   },
+   {
+    "name": "get-protein",
+    "summary": "Get the full UniProtKB entry (names, genes, organism, function comments, features, cross-references, sequence) for an accession",
+    "verified": true
+   },
+   {
+    "name": "download-protein",
+    "summary": "Download a UniProtKB entry as plain text: a FASTA sequence, the flat file, or GFF features",
+    "verified": true
+   },
+   {
+    "name": "get-protein-gene-centric",
+    "summary": "Get the gene-centric view of a protein: the canonical protein of its proteome plus related isoforms and fragments from the same gene",
+    "verified": true
+   },
+   {
+    "name": "get-protein-history",
+    "summary": "List all historical versions of a UniProtKB entry (UniSave) with release dates and sequence versions",
+    "verified": true
+   },
+   {
+    "name": "list-result-fields",
+    "summary": "List the valid result field names (for --fields) and the sortable fields of a UniProt database",
+    "verified": true
+   },
+   {
+    "name": "list-protein-search-fields",
+    "summary": "List the query field terms usable in UniProtKB queries (e.g. accession, gene, organism_id, reviewed), with examples",
+    "verified": true
+   },
+   {
+    "name": "search-taxonomy",
+    "summary": "Search taxonomy nodes by name, or list children/descendants with parent:<taxId> or ancestor:<taxId>",
+    "verified": true
+   },
+   {
+    "name": "get-taxonomy",
+    "summary": "Get a taxonomy node by NCBI taxon id: names, rank, parent, full lineage, links and protein/proteome counts",
+    "verified": true
+   },
+   {
+    "name": "search-keywords",
+    "summary": "Search UniProt controlled keywords (KW-xxxx) by name",
+    "verified": true
+   },
+   {
+    "name": "get-keyword",
+    "summary": "Get a UniProt keyword: definition, synonyms, parent hierarchy, category and protein counts",
+    "verified": true
+   },
+   {
+    "name": "search-diseases",
+    "summary": "Search UniProt human disease entries (DI-xxxxx) by name",
+    "verified": true
+   },
+   {
+    "name": "get-disease",
+    "summary": "Get a disease entry: definition, alternative names, cross-references (MIM, MedGen, etc.), keywords and protein counts",
+    "verified": true
+   },
+   {
+    "name": "search-uniref",
+    "summary": "Search UniRef sequence clusters (100%, 90% and 50% identity); filter identity in the query, e.g. 'hemoglobin AND identity:0.9'",
+    "verified": true
+   },
+   {
+    "name": "search-proteomes",
+    "summary": "Search proteomes by organism name; filter in the query, e.g. 'human AND proteome_type:1' for reference proteomes",
+    "verified": true
+   },
+   {
+    "name": "get-proteome",
+    "summary": "Get a proteome by UPID: description, taxonomy, type, and components (chromosomes) with protein counts",
+    "verified": true
+   },
+   {
+    "name": "get-alphafold-prediction",
+    "summary": "Get the AlphaFold predicted structure for a UniProt accession: confidence (pLDDT) and download URLs for PDB, CIF and PAE files",
+    "verified": true
+   }
+  ],
+  "verified": 18,
+  "writes": 0,
+  "dropped": [
+   {
+    "name": "list-protein-publications",
+    "reason": "HTTP 500 (HTTP 500)"
+   },
+   {
+    "name": "get-protein-accession-events",
+    "reason": "HTTP 500 (HTTP 500)"
+   },
+   {
+    "name": "group-proteins-by-keyword",
+    "reason": "HTTP 500 (HTTP 500)"
+   },
+   {
+    "name": "suggest-terms",
+    "reason": "HTTP 500 (HTTP 500)"
+   },
+   {
+    "name": "get-uniref-cluster",
+    "reason": "HTTP 500 (HTTP 500)"
+   },
+   {
+    "name": "list-uniref-members",
+    "reason": "HTTP 500 (HTTP 500)"
+   }
+  ],
+  "blockers": [],
+  "loggedIn": false,
+  "seconds": 395,
+  "next": [
+   "clify uniprot",
+   "clify uniprot search-proteins --query \"(hemoglobin) AND (reviewed:true)\""
+  ],
+  "installed": "/home/ubuntu/clify-runs/blaxel-w1/home/bin/uniprot",
+  "explored": {
+   "steps": 30,
+   "recorded": 172,
+   "heldWrites": 0
+  }
+ },
+ "check": {
+  "on": "blaxel",
+  "node": "v24.22.0",
+  "seconds": 8,
+  "reads": 18,
+  "verified": 18,
+  "failed": [],
+  "results": [
+   {
+    "name": "search-proteins",
+    "ok": true,
+    "ms": 640
+   },
+   {
+    "name": "count-protein-facets",
+    "ok": true,
+    "ms": 162
+   },
+   {
+    "name": "get-protein",
+    "ok": true,
+    "ms": 440
+   },
+   {
+    "name": "download-protein",
+    "ok": true,
+    "ms": 531
+   },
+   {
+    "name": "get-protein-gene-centric",
+    "ok": true,
+    "ms": 153
+   },
+   {
+    "name": "get-protein-history",
+    "ok": true,
+    "ms": 175
+   },
+   {
+    "name": "list-result-fields",
+    "ok": true,
+    "ms": 160
+   },
+   {
+    "name": "list-protein-search-fields",
+    "ok": true,
+    "ms": 166
+   },
+   {
+    "name": "search-taxonomy",
+    "ok": true,
+    "ms": 156
+   },
+   {
+    "name": "get-taxonomy",
+    "ok": true,
+    "ms": 153
+   },
+   {
+    "name": "search-keywords",
+    "ok": true,
+    "ms": 152
+   },
+   {
+    "name": "get-keyword",
+    "ok": true,
+    "ms": 1009
+   },
+   {
+    "name": "search-diseases",
+    "ok": true,
+    "ms": 153
+   },
+   {
+    "name": "get-disease",
+    "ok": true,
+    "ms": 153
+   },
+   {
+    "name": "search-uniref",
+    "ok": true,
+    "ms": 155
+   },
+   {
+    "name": "search-proteomes",
+    "ok": true,
+    "ms": 177
+   },
+   {
+    "name": "get-proteome",
+    "ok": true,
+    "ms": 178
+   },
+   {
+    "name": "get-alphafold-prediction",
+    "ok": true,
+    "ms": 313
+   }
+  ]
+ },
+ "deleted": true,
+ "seconds": 406
+}

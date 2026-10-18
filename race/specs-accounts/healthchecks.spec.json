@@ -1,0 +1,28 @@
+{
+  "name": "healthchecks",
+  "startUrl": "https://healthchecks.io/",
+  "origin": "https://healthchecks.io",
+  "createdAt": "2026-10-18T07:20:00Z",
+  "description": "Healthchecks.io cron monitoring, signed in as the clify agent (saved session). --project defaults to the account's only project. To add a check: run form-token, then add-check --csrfmiddlewaretoken <token> ...",
+  "auth": { "headerNames": [] },
+  "commands": [
+    { "name": "list-checks", "summary": "Checks in the project (id, name, tags, ping URL, period and grace in seconds)", "method": "GET", "urlTemplate": "/projects/{project}/checks/", "responseType": "html", "mutates": false, "auth": true,
+      "params": [ { "name": "project", "in": "path", "required": false, "type": "string", "default": "0d103ac6-8389-4868-8f5f-944911961863" } ],
+      "extract": { "list": "tr.checks-row", "fields": { "id": "@id", "name": ".my-checks-name@data-name", "tags": ".my-checks-name@data-tags", "ping_url": ".my-checks-url", "period_seconds": ".timeout-grace@data-timeout", "grace_seconds": ".timeout-grace@data-grace" } }, "source": "GET https://healthchecks.io/projects/<project>/checks/" },
+    { "name": "form-token", "summary": "CSRF token for the add-check form", "method": "GET", "urlTemplate": "/projects/{project}/checks/", "responseType": "html", "mutates": false, "auth": true,
+      "params": [ { "name": "project", "in": "path", "required": false, "type": "string", "default": "0d103ac6-8389-4868-8f5f-944911961863" } ],
+      "extract": { "fields": { "csrfmiddlewaretoken": "input[name=csrfmiddlewaretoken]@value" } }, "source": "GET https://healthchecks.io/projects/<project>/checks/" },
+    { "name": "add-check", "summary": "Add a simple (period + grace) check. Returns the project's checks afterwards.", "method": "POST", "urlTemplate": "/projects/{project}/checks/add/", "responseType": "html", "bodyEncoding": "form", "mutates": true, "auth": true,
+      "headers": { "origin": "https://healthchecks.io", "referer": "https://healthchecks.io/" },
+      "bodyTemplate": { "csrfmiddlewaretoken": "{csrfmiddlewaretoken}", "name": "{name}", "slug": "{slug}", "tags": "{tags}", "kind": "simple", "timeout": "{period}", "grace": "{grace}", "schedule": "* * * * *", "tz": "UTC" },
+      "params": [
+        { "name": "project", "in": "path", "required": false, "type": "string", "default": "0d103ac6-8389-4868-8f5f-944911961863" },
+        { "name": "csrfmiddlewaretoken", "in": "body", "required": true, "type": "string", "description": "from form-token" },
+        { "name": "name", "in": "body", "required": true, "type": "string" },
+        { "name": "slug", "in": "body", "required": false, "type": "string" },
+        { "name": "tags", "in": "body", "required": false, "type": "string", "description": "space-separated" },
+        { "name": "period", "in": "body", "required": true, "type": "number", "description": "seconds, e.g. 3600 = 1 hour" },
+        { "name": "grace", "in": "body", "required": true, "type": "number", "description": "seconds, e.g. 600 = 10 minutes" } ],
+      "extract": { "list": "tr.checks-row", "fields": { "id": "@id", "name": ".my-checks-name@data-name", "tags": ".my-checks-name@data-tags", "ping_url": ".my-checks-url", "period_seconds": ".timeout-grace@data-timeout", "grace_seconds": ".timeout-grace@data-grace" } }, "source": "POST https://healthchecks.io/projects/<project>/checks/add/" }
+  ]
+}

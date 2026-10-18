@@ -1,0 +1,100 @@
+{
+ "url": "https://www.loc.gov/",
+ "category": "culture",
+ "sandbox": "clify-www-loc-gov",
+ "startedAt": "2026-10-18T08:19:05.748Z",
+ "region": "us-pdx-1",
+ "chrome": "Chrome/148.0.7778.96",
+ "sandboxStartMs": 2258,
+ "addSeconds": 55,
+ "addExit": 0,
+ "add": {
+  "ok": true,
+  "site": "loc",
+  "url": "https://www.loc.gov/",
+  "commands": [
+   {
+    "name": "list-featured-stories",
+    "summary": "List the featured stories in the rotating banner on the Library of Congress homepage (title, description, link).",
+    "verified": true
+   },
+   {
+    "name": "list-trending",
+    "summary": "List trending items on the homepage (blog posts, magazine articles, videos), with their format (Blog, Magazine, Watch) and link.",
+    "verified": true
+   },
+   {
+    "name": "list-top-searches",
+    "summary": "List the 'Top Searches' terms shown on the homepage, with their loc.gov search URLs.",
+    "verified": true
+   },
+   {
+    "name": "list-gallery-highlights",
+    "summary": "List the captioned collection photos in the homepage masonry gallery.",
+    "verified": true
+   },
+   {
+    "name": "get-webcast-captions",
+    "summary": "Fetch the WebVTT caption/transcript track for a Library of Congress webcast video served from tile.loc.gov.",
+    "verified": true
+   }
+  ],
+  "verified": 5,
+  "writes": 0,
+  "dropped": [],
+  "blockers": [
+   "bot-check at https://www.loc.gov/photos/?q=abraham+lincoln",
+   "bot-check at https://www.loc.gov/collections/",
+   "captcha"
+  ],
+  "loggedIn": false,
+  "seconds": 55,
+  "next": [
+   "clify loc",
+   "clify loc list-featured-stories"
+  ],
+  "installed": "/home/ubuntu/clify-runs/blaxel-w1/home/bin/loc",
+  "explored": {
+   "steps": 4,
+   "recorded": 7,
+   "heldWrites": 0
+  }
+ },
+ "check": {
+  "on": "blaxel",
+  "node": "v24.22.0",
+  "seconds": 3,
+  "reads": 5,
+  "verified": 5,
+  "failed": [],
+  "results": [
+   {
+    "name": "list-featured-stories",
+    "ok": true,
+    "ms": 94
+   },
+   {
+    "name": "list-trending",
+    "ok": true,
+    "ms": 49
+   },
+   {
+    "name": "list-top-searches",
+    "ok": true,
+    "ms": 26
+   },
+   {
+    "name": "list-gallery-highlights",
+    "ok": true,
+    "ms": 27
+   },
+   {
+    "name": "get-webcast-captions",
+    "ok": true,
+    "ms": 54
+   }
+  ]
+ },
+ "deleted": true,
+ "seconds": 60
+}

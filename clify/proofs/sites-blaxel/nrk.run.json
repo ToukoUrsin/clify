@@ -1,0 +1,186 @@
+{
+ "url": "https://www.nrk.no/",
+ "category": "news",
+ "sandbox": "clify-www-nrk-no",
+ "startedAt": "2026-10-18T08:46:16.783Z",
+ "region": "us-pdx-1",
+ "chrome": "Chrome/148.0.7778.96",
+ "sandboxStartMs": 1856,
+ "addSeconds": 288,
+ "addExit": 0,
+ "add": {
+  "ok": true,
+  "site": "nrk",
+  "url": "https://www.nrk.no/",
+  "commands": [
+   {
+    "name": "get-content",
+    "summary": "Get an nrk.no content item (article teaser, news collection or stream such as 'Krigen i Ukraina' or the sports news stream) by its 1.<id>, including its latest related items",
+    "verified": true
+   },
+   {
+    "name": "list-topic-articles",
+    "summary": "List articles on an nrk.no topic/tag page (e.g. /atomkraft/, /sverige/) by topic id, newest first, with cursor paging",
+    "verified": true
+   },
+   {
+    "name": "list-author-articles",
+    "summary": "List articles written by an NRK journalist (author profile /forfatter/<slug>-<id>) by author id, with cursor paging",
+    "verified": true
+   },
+   {
+    "name": "list-reviews",
+    "summary": "List NRK reviews (anmeldelser) of a given category, e.g. books, with score and cursor paging",
+    "verified": true
+   },
+   {
+    "name": "list-related-articles",
+    "summary": "List articles topically related to a given (newer-format /artikkel/<slug>-<id>) article id",
+    "verified": true
+   },
+   {
+    "name": "get-epg",
+    "summary": "Get the broadcast schedule (EPG) for one or more NRK TV/radio channels on a given date",
+    "verified": true
+   },
+   {
+    "name": "get-playback-metadata",
+    "summary": "Get playback metadata (title, duration, availability, geoblocking, manifest link) for a video clip, TV/radio program, podcast episode or live channel",
+    "verified": true
+   },
+   {
+    "name": "get-playback-manifest",
+    "summary": "Get the playback manifest (stream URLs such as HLS, plus subtitles) for a playable clip, program, podcast episode or channel",
+    "verified": true
+   },
+   {
+    "name": "get-radio-catalog",
+    "summary": "Get an NRK radio series or podcast catalog entry, including its seasons (months) and links",
+    "verified": true
+   },
+   {
+    "name": "get-podcast-episode",
+    "summary": "Get details of a single NRK podcast episode (title, date, duration, contributors, playback link)",
+    "verified": true
+   },
+   {
+    "name": "get-latest-episode",
+    "summary": "Get the latest (or next upcoming) episode of an NRK TV series, e.g. dagsrevyen or nyheter",
+    "verified": true
+   },
+   {
+    "name": "get-tv-page",
+    "summary": "Get an NRK TV page (e.g. the front page) with its sections and plug references",
+    "verified": true
+   },
+   {
+    "name": "get-tv-plug",
+    "summary": "Resolve an NRK TV plug reference (from get-tv-page plugRefs) to its series/program title, description, images and ids",
+    "verified": true
+   },
+   {
+    "name": "list-clip-collections",
+    "summary": "List the related video collections shown alongside an nrk.no video clip",
+    "verified": true
+   }
+  ],
+  "verified": 14,
+  "writes": 0,
+  "dropped": [],
+  "blockers": [],
+  "loggedIn": false,
+  "seconds": 287,
+  "next": [
+   "clify nrk",
+   "clify nrk get-content --id \"1.11480927\""
+  ],
+  "installed": "/home/ubuntu/clify-runs/blaxel-w1/home/bin/nrk",
+  "explored": {
+   "steps": 30,
+   "recorded": 288,
+   "heldWrites": 113
+  }
+ },
+ "check": {
+  "on": "blaxel",
+  "node": "v24.22.0",
+  "seconds": 6,
+  "reads": 14,
+  "verified": 14,
+  "failed": [],
+  "results": [
+   {
+    "name": "get-content",
+    "ok": true,
+    "ms": 293
+   },
+   {
+    "name": "list-topic-articles",
+    "ok": true,
+    "ms": 198
+   },
+   {
+    "name": "list-author-articles",
+    "ok": true,
+    "ms": 236
+   },
+   {
+    "name": "list-reviews",
+    "ok": true,
+    "ms": 223
+   },
+   {
+    "name": "list-related-articles",
+    "ok": true,
+    "ms": 203
+   },
+   {
+    "name": "get-epg",
+    "ok": true,
+    "ms": 261
+   },
+   {
+    "name": "get-playback-metadata",
+    "ok": true,
+    "ms": 224
+   },
+   {
+    "name": "get-playback-manifest",
+    "ok": true,
+    "ms": 216
+   },
+   {
+    "name": "get-radio-catalog",
+    "ok": true,
+    "ms": 322
+   },
+   {
+    "name": "get-podcast-episode",
+    "ok": true,
+    "ms": 183
+   },
+   {
+    "name": "get-latest-episode",
+    "ok": true,
+    "ms": 316
+   },
+   {
+    "name": "get-tv-page",
+    "ok": true,
+    "ms": 520
+   },
+   {
+    "name": "get-tv-plug",
+    "ok": true,
+    "ms": 46
+   },
+   {
+    "name": "list-clip-collections",
+    "ok": true,
+    "ms": 201
+   }
+  ]
+ },
+ "deleted": true,
+ "seconds": 296
+}

@@ -1,0 +1,166 @@
+{
+ "url": "https://tyomarkkinatori.fi/",
+ "category": "jobs-market",
+ "sandbox": "clify-tyomarkkinatori-fi",
+ "startedAt": "2026-10-18T09:15:33.287Z",
+ "region": "us-pdx-1",
+ "chrome": "Chrome/148.0.7778.96",
+ "sandboxStartMs": 1783,
+ "addSeconds": 265,
+ "addExit": 0,
+ "add": {
+  "ok": true,
+  "site": "tyomarkkinatori",
+  "url": "https://tyomarkkinatori.fi/",
+  "commands": [
+   {
+    "name": "search-jobs",
+    "summary": "Full-text search of open job postings, with optional municipality and publish-date filters, sorting and paging",
+    "verified": true
+   },
+   {
+    "name": "get-job-posting",
+    "summary": "Get the full public details of one job posting by its UUID: description, employer, location, contacts, application info",
+    "verified": true
+   },
+   {
+    "name": "list-codes",
+    "summary": "List the codes in a KOPA code list, e.g. municipalities, regions, working time, employment relationship or languages. Use these codes to interpret job posting fields and job search filters.",
+    "verified": true
+   },
+   {
+    "name": "list-isco-occupations",
+    "summary": "Get the ISCO occupation group hierarchy (notation codes with fi/sv/en labels and nested narrower groups). Job search uses these as occupation groups.",
+    "verified": true
+   },
+   {
+    "name": "search-trainings",
+    "summary": "Search public trainings and services (courses, labour market training) by keyword, with offset paging",
+    "verified": true
+   },
+   {
+    "name": "get-training",
+    "summary": "Get one training or course implementation by token: dates, location, description, language requirements, registration link and provider",
+    "verified": true
+   },
+   {
+    "name": "get-service",
+    "summary": "Get the general description of a service or training product (description, requirements, target groups, category, its offerings) by service token",
+    "verified": true
+   },
+   {
+    "name": "list-service-categories",
+    "summary": "List the service and training categories (codes like PK1, PK7.3 with names) used in the trainings and services catalogue",
+    "verified": true
+   },
+   {
+    "name": "list-service-codes",
+    "summary": "List a code set used by the trainings and services catalogue, e.g. target groups, language skill levels or education codes",
+    "verified": true
+   },
+   {
+    "name": "list-professions",
+    "summary": "List all occupations that have an occupation info page (label and slug path), for use with get-profession",
+    "verified": true
+   },
+   {
+    "name": "list-profession-fields",
+    "summary": "List occupational fields (ammattialat) with their info page paths",
+    "verified": true
+   },
+   {
+    "name": "get-profession",
+    "summary": "Read an occupation info page (job description, education, outlook) by slug",
+    "verified": true
+   }
+  ],
+  "verified": 12,
+  "writes": 0,
+  "dropped": [],
+  "blockers": [],
+  "loggedIn": false,
+  "seconds": 264,
+  "next": [
+   "clify tyomarkkinatori",
+   "clify tyomarkkinatori search-jobs --query \"sairaanhoitaja\" --municipality \"837\""
+  ],
+  "installed": "/home/ubuntu/clify-runs/blaxel-w2/home/bin/tyomarkkinatori",
+  "explored": {
+   "steps": 30,
+   "recorded": 144,
+   "heldWrites": 1
+  }
+ },
+ "check": {
+  "on": "blaxel",
+  "node": "v24.22.0",
+  "seconds": 7,
+  "reads": 12,
+  "verified": 12,
+  "failed": [],
+  "results": [
+   {
+    "name": "search-jobs",
+    "ok": true,
+    "ms": 707
+   },
+   {
+    "name": "get-job-posting",
+    "ok": true,
+    "ms": 180
+   },
+   {
+    "name": "list-codes",
+    "ok": true,
+    "ms": 168
+   },
+   {
+    "name": "list-isco-occupations",
+    "ok": true,
+    "ms": 346
+   },
+   {
+    "name": "search-trainings",
+    "ok": true,
+    "ms": 344
+   },
+   {
+    "name": "get-training",
+    "ok": true,
+    "ms": 562
+   },
+   {
+    "name": "get-service",
+    "ok": true,
+    "ms": 181
+   },
+   {
+    "name": "list-service-categories",
+    "ok": true,
+    "ms": 173
+   },
+   {
+    "name": "list-service-codes",
+    "ok": true,
+    "ms": 170
+   },
+   {
+    "name": "list-professions",
+    "ok": true,
+    "ms": 570
+   },
+   {
+    "name": "list-profession-fields",
+    "ok": true,
+    "ms": 165
+   },
+   {
+    "name": "get-profession",
+    "ok": true,
+    "ms": 707
+   }
+  ]
+ },
+ "deleted": true,
+ "seconds": 274
+}

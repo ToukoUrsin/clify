@@ -1,0 +1,156 @@
+{
+ "url": "https://avoindata.prh.fi/",
+ "category": "gov-nordic",
+ "sandbox": "clify-avoindata-prh-fi",
+ "startedAt": "2026-10-18T09:02:21.684Z",
+ "region": "us-pdx-1",
+ "chrome": "Chrome/148.0.7778.96",
+ "sandboxStartMs": 2434,
+ "addSeconds": 231,
+ "addExit": 0,
+ "add": {
+  "ok": true,
+  "site": "avoindata-prh",
+  "url": "https://avoindata.prh.fi/",
+  "commands": [
+   {
+    "name": "search-companies",
+    "summary": "Search Finnish companies (YTJ) by name, location, company form, main business line and registration date range",
+    "verified": true
+   },
+   {
+    "name": "get-company",
+    "summary": "Get full YTJ basic details of one company by business ID (Y-tunnus)",
+    "verified": true
+   },
+   {
+    "name": "get-company-notices",
+    "summary": "Get a company's trade register details and its list of registered notices by business ID",
+    "verified": true
+   },
+   {
+    "name": "get-notice",
+    "summary": "Get one registered trade register notice by its record year and number (record number YYYY/NNNNNN)",
+    "verified": true
+   },
+   {
+    "name": "search-notices",
+    "summary": "Search companies with registered trade register notices by entry code and notice registration date range",
+    "verified": true
+   },
+   {
+    "name": "list-code-descriptions",
+    "summary": "Get a YTJ code list (e.g. company forms YRMU) as tab-separated text: abbreviation, code, description",
+    "verified": true
+   },
+   {
+    "name": "list-financial-periods",
+    "summary": "List the fiscal periods for which a company has digital (XBRL) financial statement data",
+    "verified": true
+   },
+   {
+    "name": "get-financial-statement",
+    "summary": "Get one company's digital financial statement (XBRL income statement and balance sheet facts) for a fiscal period end date",
+    "verified": true
+   },
+   {
+    "name": "list-financials-by-period",
+    "summary": "List all companies that have digital financial statements for a given fiscal period end date",
+    "verified": true
+   },
+   {
+    "name": "list-financial-statements",
+    "summary": "List filed digital financial statements (businessId, period end, registration date), optionally by registration date range",
+    "verified": true
+   },
+   {
+    "name": "get-api-schema",
+    "summary": "Get the OpenAPI (YAML) specification of one PRH open-data API, including all parameters and code meanings",
+    "verified": true
+   }
+  ],
+  "verified": 11,
+  "writes": 0,
+  "dropped": [],
+  "blockers": [],
+  "loggedIn": false,
+  "seconds": 230,
+  "next": [
+   "clify avoindata-prh",
+   "clify avoindata-prh search-companies --name \"Nokia\""
+  ],
+  "installed": "/home/ubuntu/clify-runs/blaxel-w1/home/bin/avoindata-prh",
+  "explored": {
+   "steps": 15,
+   "recorded": 39,
+   "heldWrites": 0
+  }
+ },
+ "check": {
+  "on": "blaxel",
+  "node": "v24.22.0",
+  "seconds": 12,
+  "reads": 11,
+  "verified": 11,
+  "failed": [],
+  "results": [
+   {
+    "name": "search-companies",
+    "ok": true,
+    "ms": 1347
+   },
+   {
+    "name": "get-company",
+    "ok": true,
+    "ms": 567
+   },
+   {
+    "name": "get-company-notices",
+    "ok": true,
+    "ms": 945
+   },
+   {
+    "name": "get-notice",
+    "ok": true,
+    "ms": 756
+   },
+   {
+    "name": "search-notices",
+    "ok": true,
+    "ms": 1310
+   },
+   {
+    "name": "list-code-descriptions",
+    "ok": true,
+    "ms": 751
+   },
+   {
+    "name": "list-financial-periods",
+    "ok": true,
+    "ms": 755
+   },
+   {
+    "name": "get-financial-statement",
+    "ok": true,
+    "ms": 945
+   },
+   {
+    "name": "list-financials-by-period",
+    "ok": true,
+    "ms": 755
+   },
+   {
+    "name": "list-financial-statements",
+    "ok": true,
+    "ms": 758
+   },
+   {
+    "name": "get-api-schema",
+    "ok": true,
+    "ms": 955
+   }
+  ]
+ },
+ "deleted": true,
+ "seconds": 245
+}

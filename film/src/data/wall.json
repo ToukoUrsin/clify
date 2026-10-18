@@ -1,0 +1,1809 @@
+{
+ "verifiedAt": "2026-10-17T23:08:54.252Z",
+ "checked": 252,
+ "count": 125,
+ "dropped": {
+  "aviationweather": "website showed a bot check during screenshot"
+ },
+ "categories": {
+  "Scraping sandboxes": 4,
+  "Developer tools": 36,
+  "Communities": 17,
+  "Media & culture": 20,
+  "Markets & finance": 14,
+  "Government & open data": 12,
+  "Science & space": 18,
+  "Sports": 4
+ },
+ "sites": [
+  {
+   "site": "books",
+   "title": "Books to Scrape",
+   "host": "books.toscrape.com",
+   "category": "Scraping sandboxes",
+   "commands": [
+    "list-books",
+    "list-category",
+    "get-book"
+   ],
+   "ms": [
+    482,
+    475,
+    378
+   ],
+   "img": "wall/books.jpg"
+  },
+  {
+   "site": "github",
+   "title": "Public read-only GitHub endpoints used by the website.",
+   "host": "github.com",
+   "category": "Developer tools",
+   "commands": [
+    "repo",
+    "search"
+   ],
+   "ms": [
+    336,
+    491
+   ],
+   "img": "wall/github.jpg"
+  },
+  {
+   "site": "hn",
+   "title": "Hacker News",
+   "host": "news.ycombinator.com",
+   "category": "Communities",
+   "commands": [
+    "top",
+    "new",
+    "item"
+   ],
+   "ms": [
+    243,
+    245,
+    319
+   ],
+   "img": "wall/hn.jpg"
+  },
+  {
+   "site": "crates",
+   "title": "crates.io",
+   "host": "crates.io",
+   "category": "Developer tools",
+   "commands": [
+    "get-crate",
+    "search"
+   ],
+   "ms": [
+    570,
+    419
+   ],
+   "img": "wall/crates.jpg"
+  },
+  {
+   "site": "stackoverflow",
+   "title": "Stack Overflow",
+   "host": "stackoverflow.com",
+   "category": "Developer tools",
+   "commands": [
+    "questions",
+    "search"
+   ],
+   "ms": [
+    280,
+    355
+   ],
+   "img": "wall/stackoverflow.jpg"
+  },
+  {
+   "site": "endoflife",
+   "title": "Public read-only endoflife.date endpoints used by the website.",
+   "host": "endoflife.date",
+   "category": "Developer tools",
+   "commands": [
+    "product",
+    "release"
+   ],
+   "ms": [
+    255,
+    246
+   ],
+   "img": "wall/endoflife.jpg"
+  },
+  {
+   "site": "homebrew",
+   "title": "Homebrew Formulae",
+   "host": "formulae.brew.sh",
+   "category": "Developer tools",
+   "commands": [
+    "get-formula",
+    "search"
+   ],
+   "ms": [
+    288,
+    941
+   ],
+   "img": "wall/homebrew.jpg"
+  },
+  {
+   "site": "nodejs",
+   "title": "Node.js Releases",
+   "host": "nodejs.org",
+   "category": "Developer tools",
+   "commands": [
+    "releases",
+    "release"
+   ],
+   "ms": [
+    180,
+    173
+   ],
+   "img": "wall/nodejs.jpg"
+  },
+  {
+   "site": "debian",
+   "title": "Debian Packages",
+   "host": "packages.debian.org",
+   "category": "Developer tools",
+   "commands": [
+    "search",
+    "package"
+   ],
+   "ms": [
+    716,
+    832
+   ],
+   "img": "wall/debian.jpg"
+  },
+  {
+   "site": "hex",
+   "title": "Public read-only Hex.pm endpoints used by the website.",
+   "host": "hex.pm",
+   "category": "Developer tools",
+   "commands": [
+    "get-package",
+    "search"
+   ],
+   "ms": [
+    358,
+    1074
+   ],
+   "img": "wall/hex.jpg"
+  },
+  {
+   "site": "mdn",
+   "title": "MDN Web Docs:",
+   "host": "developer.mozilla.org",
+   "category": "Developer tools",
+   "commands": [
+    "home",
+    "page"
+   ],
+   "ms": [
+    210,
+    286
+   ],
+   "img": "wall/mdn.jpg"
+  },
+  {
+   "site": "quotes",
+   "title": "Quotes to Scrape",
+   "host": "quotes.toscrape.com",
+   "category": "Scraping sandboxes",
+   "commands": [
+    "list-quotes",
+    "by-tag",
+    "get-author"
+   ],
+   "ms": [
+    377,
+    372,
+    379
+   ],
+   "img": "wall/quotes.jpg"
+  },
+  {
+   "site": "scrapethis",
+   "title": "Scrape This Site",
+   "host": "scrapethissite.com",
+   "category": "Scraping sandboxes",
+   "commands": [
+    "oscar-films",
+    "search-teams"
+   ],
+   "ms": [
+    343,
+    476
+   ],
+   "img": "wall/scrapethis.jpg"
+  },
+  {
+   "site": "webscraper",
+   "title": "Web Scraper Test Sites",
+   "host": "webscraper.io",
+   "category": "Scraping sandboxes",
+   "commands": [
+    "home",
+    "page"
+   ],
+   "ms": [
+    483,
+    444
+   ],
+   "img": "wall/webscraper.jpg"
+  },
+  {
+   "site": "python",
+   "title": "Public read-only Python.org endpoints used by the website.",
+   "host": "python.org",
+   "category": "Developer tools",
+   "commands": [
+    "downloads",
+    "pep"
+   ],
+   "ms": [
+    223,
+    283
+   ],
+   "img": "wall/python.jpg"
+  },
+  {
+   "site": "docker",
+   "title": "Docker Hub",
+   "host": "hub.docker.com",
+   "category": "Developer tools",
+   "commands": [
+    "get-repository",
+    "search"
+   ],
+   "ms": [
+    316,
+    444
+   ],
+   "img": "wall/docker.jpg"
+  },
+  {
+   "site": "adviceslip",
+   "title": "adviceslip",
+   "host": "api.adviceslip.com",
+   "category": "Media & culture",
+   "commands": [
+    "get-advice"
+   ],
+   "ms": [
+    628
+   ],
+   "img": "wall/adviceslip.jpg"
+  },
+  {
+   "site": "alternative",
+   "title": "Crypto Fear and Greed Index public read-only data.",
+   "host": "alternative.me",
+   "category": "Markets & finance",
+   "commands": [
+    "index",
+    "historical"
+   ],
+   "ms": [
+    372,
+    379
+   ],
+   "img": "wall/alternative.jpg"
+  },
+  {
+   "site": "anilist",
+   "title": "anilist",
+   "host": "graphql.anilist.co",
+   "category": "Media & culture",
+   "commands": [
+    "search-anime"
+   ],
+   "ms": [
+    308
+   ],
+   "img": "wall/anilist.jpg"
+  },
+  {
+   "site": "askubuntu",
+   "title": "Ask Ubuntu",
+   "host": "askubuntu.com",
+   "category": "Developer tools",
+   "commands": [
+    "questions",
+    "search"
+   ],
+   "ms": [
+    295,
+    338
+   ],
+   "img": "wall/askubuntu.jpg"
+  },
+  {
+   "site": "blockchain",
+   "title": "blockchain",
+   "host": "blockchain.info",
+   "category": "Markets & finance",
+   "commands": [
+    "latest-block",
+    "stats"
+   ],
+   "ms": [
+    432,
+    771
+   ],
+   "img": "wall/blockchain.jpg"
+  },
+  {
+   "site": "census",
+   "title": "US Census API",
+   "host": "data.census.gov",
+   "category": "Government & open data",
+   "commands": [
+    "population"
+   ],
+   "ms": [
+    787
+   ],
+   "img": "wall/census.jpg"
+  },
+  {
+   "site": "chicago",
+   "title": "chicago",
+   "host": "data.cityofchicago.org",
+   "category": "Government & open data",
+   "commands": [
+    "query",
+    "metadata"
+   ],
+   "ms": [
+    943,
+    437
+   ],
+   "img": "wall/chicago.jpg"
+  },
+  {
+   "site": "chucknorris",
+   "title": "chucknorris",
+   "host": "api.chucknorris.io",
+   "category": "Media & culture",
+   "commands": [
+    "search-jokes"
+   ],
+   "ms": [
+    683
+   ],
+   "img": "wall/chucknorris.jpg"
+  },
+  {
+   "site": "cocktaildb",
+   "title": "cocktaildb",
+   "host": "thecocktaildb.com",
+   "category": "Media & culture",
+   "commands": [
+    "search-cocktails"
+   ],
+   "ms": [
+    591
+   ],
+   "img": "wall/cocktaildb.jpg"
+  },
+  {
+   "site": "coinbase",
+   "title": "Coinbase public prices public read-only data.",
+   "host": "coinbase.com",
+   "category": "Markets & finance",
+   "commands": [
+    "spot",
+    "buy"
+   ],
+   "ms": [
+    231,
+    208
+   ],
+   "img": "wall/coinbase.jpg"
+  },
+  {
+   "site": "coinlore",
+   "title": "CoinLore crypto market data public read-only data.",
+   "host": "coinlore.com",
+   "category": "Markets & finance",
+   "commands": [
+    "ticker",
+    "global"
+   ],
+   "ms": [
+    561,
+    180
+   ],
+   "img": "wall/coinlore.jpg"
+  },
+  {
+   "site": "crossref",
+   "title": "Crossref scholarly metadata",
+   "host": "api.crossref.org",
+   "category": "Science & space",
+   "commands": [
+    "search",
+    "work"
+   ],
+   "ms": [
+    379,
+    336
+   ],
+   "img": "wall/crossref.jpg"
+  },
+  {
+   "site": "datamuse",
+   "title": "datamuse",
+   "host": "api.datamuse.com",
+   "category": "Media & culture",
+   "commands": [
+    "means-like",
+    "rhyme"
+   ],
+   "ms": [
+    169,
+    170
+   ],
+   "img": "wall/datamuse.jpg"
+  },
+  {
+   "site": "devto",
+   "title": "DEV Community",
+   "host": "dev.to",
+   "category": "Communities",
+   "commands": [
+    "articles",
+    "search"
+   ],
+   "ms": [
+    223,
+    240
+   ],
+   "img": "wall/devto.jpg"
+  },
+  {
+   "site": "discourse",
+   "title": "Discourse Meta",
+   "host": "meta.discourse.org",
+   "category": "Communities",
+   "commands": [
+    "latest",
+    "top"
+   ],
+   "ms": [
+    300,
+    410
+   ],
+   "img": "wall/discourse.jpg"
+  },
+  {
+   "site": "discussgodot",
+   "title": "Godot Forum",
+   "host": "forum.godotengine.org",
+   "category": "Communities",
+   "commands": [
+    "latest",
+    "top"
+   ],
+   "ms": [
+    899,
+    903
+   ],
+   "img": "wall/discussgodot.jpg"
+  },
+  {
+   "site": "discussgohugo",
+   "title": "Hugo Forum",
+   "host": "discourse.gohugo.io",
+   "category": "Communities",
+   "commands": [
+    "latest",
+    "top"
+   ],
+   "ms": [
+    451,
+    477
+   ],
+   "img": "wall/discussgohugo.jpg"
+  },
+  {
+   "site": "discusskde",
+   "title": "KDE Discuss",
+   "host": "discuss.kde.org",
+   "category": "Communities",
+   "commands": [
+    "latest",
+    "top"
+   ],
+   "ms": [
+    914,
+    1108
+   ],
+   "img": "wall/discusskde.jpg"
+  },
+  {
+   "site": "django",
+   "title": "Django",
+   "host": "djangoproject.com",
+   "category": "Developer tools",
+   "commands": [
+    "home",
+    "page"
+   ],
+   "ms": [
+    369,
+    397
+   ],
+   "img": "wall/django.jpg"
+  },
+  {
+   "site": "dogapi",
+   "title": "Dog CEO",
+   "host": "dog.ceo",
+   "category": "Media & culture",
+   "commands": [
+    "random-image"
+   ],
+   "ms": [
+    302
+   ],
+   "img": "wall/dogapi.jpg"
+  },
+  {
+   "site": "dummyjson",
+   "title": "dummyjson",
+   "host": "dummyjson.com",
+   "category": "Media & culture",
+   "commands": [
+    "get-product"
+   ],
+   "ms": [
+    221
+   ],
+   "img": "wall/dummyjson.jpg"
+  },
+  {
+   "site": "eurostat",
+   "title": "Eurostat",
+   "host": "ec.europa.eu",
+   "category": "Government & open data",
+   "commands": [
+    "data"
+   ],
+   "ms": [
+    687
+   ],
+   "img": "wall/eurostat.jpg"
+  },
+  {
+   "site": "exoplanet",
+   "title": "exoplanet",
+   "host": "exoplanetarchive.ipac.caltech.edu",
+   "category": "Science & space",
+   "commands": [
+    "get"
+   ],
+   "ms": [
+    1392
+   ],
+   "img": "wall/exoplanet.jpg"
+  },
+  {
+   "site": "fda",
+   "title": "fda",
+   "host": "api.fda.gov",
+   "category": "Government & open data",
+   "commands": [
+    "recalls"
+   ],
+   "ms": [
+    292
+   ],
+   "img": "wall/fda.jpg"
+  },
+  {
+   "site": "federalregister",
+   "title": "federalregister",
+   "host": "federalregister.gov",
+   "category": "Government & open data",
+   "commands": [
+    "search",
+    "document"
+   ],
+   "ms": [
+    425,
+    422
+   ],
+   "img": "wall/federalregister.jpg"
+  },
+  {
+   "site": "flask",
+   "title": "Flask",
+   "host": "flask.palletsprojects.com",
+   "category": "Developer tools",
+   "commands": [
+    "home",
+    "page"
+   ],
+   "ms": [
+    371,
+    233
+   ],
+   "img": "wall/flask.jpg"
+  },
+  {
+   "site": "fosstodon",
+   "title": "Fosstodon",
+   "host": "fosstodon.org",
+   "category": "Communities",
+   "commands": [
+    "public",
+    "tag"
+   ],
+   "ms": [
+    397,
+    404
+   ],
+   "img": "wall/fosstodon.jpg"
+  },
+  {
+   "site": "frankfurter",
+   "title": "Frankfurter public read-only CLI.",
+   "host": "frankfurter.app",
+   "category": "Markets & finance",
+   "commands": [
+    "convert-rate"
+   ],
+   "ms": [
+    248
+   ],
+   "img": "wall/frankfurter.jpg"
+  },
+  {
+   "site": "gateio",
+   "title": "Gate.io public market data public read-only data.",
+   "host": "gate.io",
+   "category": "Markets & finance",
+   "commands": [
+    "ticker",
+    "currencies"
+   ],
+   "ms": [
+    591,
+    562
+   ],
+   "img": "wall/gateio.jpg"
+  },
+  {
+   "site": "gemini",
+   "title": "Gemini public exchange public read-only data.",
+   "host": "gemini.com",
+   "category": "Markets & finance",
+   "commands": [
+    "ticker",
+    "symbols"
+   ],
+   "ms": [
+    438,
+    406
+   ],
+   "img": "wall/gemini.jpg"
+  },
+  {
+   "site": "ghibli",
+   "title": "Studio Ghibli API",
+   "host": "ghibliapi.vercel.app",
+   "category": "Media & culture",
+   "commands": [
+    "get-film"
+   ],
+   "ms": [
+    272
+   ],
+   "img": "wall/ghibli.jpg"
+  },
+  {
+   "site": "go-dev",
+   "title": "Go:",
+   "host": "go.dev",
+   "category": "Developer tools",
+   "commands": [
+    "home",
+    "page"
+   ],
+   "ms": [
+    385,
+    299
+   ],
+   "img": "wall/go-dev.jpg"
+  },
+  {
+   "site": "gutenberg",
+   "title": "Project Gutenberg:",
+   "host": "gutenberg.org",
+   "category": "Media & culture",
+   "commands": [
+    "home",
+    "get-page"
+   ],
+   "ms": [
+    488,
+    468
+   ],
+   "img": "wall/gutenberg.jpg"
+  },
+  {
+   "site": "hachyderm",
+   "title": "Hachyderm",
+   "host": "hachyderm.io",
+   "category": "Communities",
+   "commands": [
+    "public",
+    "tag"
+   ],
+   "ms": [
+    642,
+    654
+   ],
+   "img": "wall/hachyderm.jpg"
+  },
+  {
+   "site": "hackernews",
+   "title": "Hacker News",
+   "host": "news.ycombinator.com",
+   "category": "Communities",
+   "commands": [
+    "get-item"
+   ],
+   "ms": [
+    313
+   ],
+   "img": "wall/hackernews.jpg"
+  },
+  {
+   "site": "huobi",
+   "title": "HTX public market data public read-only data.",
+   "host": "htx.com",
+   "category": "Markets & finance",
+   "commands": [
+    "ticker",
+    "symbols"
+   ],
+   "ms": [
+    277,
+    264
+   ],
+   "img": "wall/huobi.jpg"
+  },
+  {
+   "site": "iana",
+   "title": "IANA:",
+   "host": "iana.org",
+   "category": "Developer tools",
+   "commands": [
+    "home",
+    "page"
+   ],
+   "ms": [
+    216,
+    449
+   ],
+   "img": "wall/iana.jpg"
+  },
+  {
+   "site": "jokes",
+   "title": "Official Joke API",
+   "host": "official-joke-api.appspot.com",
+   "category": "Media & culture",
+   "commands": [
+    "list-jokes"
+   ],
+   "ms": [
+    334
+   ],
+   "img": "wall/jokes.jpg"
+  },
+  {
+   "site": "jolpica",
+   "title": "Jolpica F1 API public read-only data.",
+   "host": "api.jolpi.ca",
+   "category": "Sports",
+   "commands": [
+    "results",
+    "drivers"
+   ],
+   "ms": [
+    698,
+    727
+   ],
+   "img": "wall/jolpica.jpg"
+  },
+  {
+   "site": "jpl",
+   "title": "jpl",
+   "host": "ssd-api.jpl.nasa.gov",
+   "category": "Science & space",
+   "commands": [
+    "lookup"
+   ],
+   "ms": [
+    167
+   ],
+   "img": "wall/jpl.jpg"
+  },
+  {
+   "site": "jpl-cad",
+   "title": "jpl-cad",
+   "host": "ssd-api.jpl.nasa.gov",
+   "category": "Science & space",
+   "commands": [
+    "get"
+   ],
+   "ms": [
+    161
+   ],
+   "img": "wall/jpl-cad.jpg"
+  },
+  {
+   "site": "jpl-sbdb",
+   "title": "jpl-sbdb",
+   "host": "ssd-api.jpl.nasa.gov",
+   "category": "Science & space",
+   "commands": [
+    "get"
+   ],
+   "ms": [
+    201
+   ],
+   "img": "wall/jpl-sbdb.jpg"
+  },
+  {
+   "site": "jsonplaceholder",
+   "title": "jsonplaceholder",
+   "host": "jsonplaceholder.typicode.com",
+   "category": "Media & culture",
+   "commands": [
+    "get-post"
+   ],
+   "ms": [
+    217
+   ],
+   "img": "wall/jsonplaceholder.jpg"
+  },
+  {
+   "site": "juliaforum",
+   "title": "Julia Discourse",
+   "host": "discourse.julialang.org",
+   "category": "Communities",
+   "commands": [
+    "latest",
+    "top"
+   ],
+   "ms": [
+    322,
+    419
+   ],
+   "img": "wall/juliaforum.jpg"
+  },
+  {
+   "site": "kraken",
+   "title": "Kraken public market data public read-only data.",
+   "host": "kraken.com",
+   "category": "Markets & finance",
+   "commands": [
+    "ticker",
+    "asset-pairs"
+   ],
+   "ms": [
+    214,
+    351
+   ],
+   "img": "wall/kraken.jpg"
+  },
+  {
+   "site": "kubernetes",
+   "title": "Kubernetes:",
+   "host": "kubernetes.io",
+   "category": "Developer tools",
+   "commands": [
+    "home",
+    "page"
+   ],
+   "ms": [
+    264,
+    306
+   ],
+   "img": "wall/kubernetes.jpg"
+  },
+  {
+   "site": "kucoin",
+   "title": "KuCoin public market data public read-only data.",
+   "host": "kucoin.com",
+   "category": "Markets & finance",
+   "commands": [
+    "ticker",
+    "symbols"
+   ],
+   "ms": [
+    310,
+    311
+   ],
+   "img": "wall/kucoin.jpg"
+  },
+  {
+   "site": "lemmyca",
+   "title": "Lemmy CA",
+   "host": "lemmy.ca",
+   "category": "Communities",
+   "commands": [
+    "posts",
+    "communities"
+   ],
+   "ms": [
+    204,
+    191
+   ],
+   "img": "wall/lemmyca.jpg"
+  },
+  {
+   "site": "lemmyml",
+   "title": "Lemmy ML",
+   "host": "lemmy.ml",
+   "category": "Communities",
+   "commands": [
+    "posts",
+    "communities"
+   ],
+   "ms": [
+    632,
+    601
+   ],
+   "img": "wall/lemmyml.jpg"
+  },
+  {
+   "site": "lemmyworld",
+   "title": "Lemmy World",
+   "host": "lemmy.world",
+   "category": "Communities",
+   "commands": [
+    "posts",
+    "communities"
+   ],
+   "ms": [
+    474,
+    398
+   ],
+   "img": "wall/lemmyworld.jpg"
+  },
+  {
+   "site": "lemmyzip",
+   "title": "Lemmy.zip",
+   "host": "lemmy.zip",
+   "category": "Communities",
+   "commands": [
+    "posts",
+    "communities"
+   ],
+   "ms": [
+    801,
+    414
+   ],
+   "img": "wall/lemmyzip.jpg"
+  },
+  {
+   "site": "llspacedevs",
+   "title": "llspacedevs",
+   "host": "ll.thespacedevs.com",
+   "category": "Science & space",
+   "commands": [
+    "get"
+   ],
+   "ms": [
+    589
+   ],
+   "img": "wall/llspacedevs.jpg"
+  },
+  {
+   "site": "loc",
+   "title": "loc",
+   "host": "loc.gov",
+   "category": "Government & open data",
+   "commands": [
+    "search"
+   ],
+   "ms": [
+    214
+   ],
+   "img": "wall/loc.jpg"
+  },
+  {
+   "site": "man7",
+   "title": "Linux man-pages:",
+   "host": "man7.org",
+   "category": "Developer tools",
+   "commands": [
+    "home",
+    "get-page"
+   ],
+   "ms": [
+    692,
+    679
+   ],
+   "img": "wall/man7.jpg"
+  },
+  {
+   "site": "manifold",
+   "title": "Manifold Markets public API public read-only data.",
+   "host": "manifold.markets",
+   "category": "Markets & finance",
+   "commands": [
+    "markets",
+    "market"
+   ],
+   "ms": [
+    404,
+    707
+   ],
+   "img": "wall/manifold.jpg"
+  },
+  {
+   "site": "mempool",
+   "title": "mempool Bitcoin explorer public read-only data.",
+   "host": "mempool.space",
+   "category": "Markets & finance",
+   "commands": [
+    "blocks",
+    "address"
+   ],
+   "ms": [
+    418,
+    407
+   ],
+   "img": "wall/mempool.jpg"
+  },
+  {
+   "site": "mitre",
+   "title": "MITRE ATT&CK:",
+   "host": "attack.mitre.org",
+   "category": "Developer tools",
+   "commands": [
+    "home",
+    "page"
+   ],
+   "ms": [
+    364,
+    292
+   ],
+   "img": "wall/mitre.jpg"
+  },
+  {
+   "site": "mlb",
+   "title": "MLB Stats API public read-only data.",
+   "host": "mlb.com",
+   "category": "Sports",
+   "commands": [
+    "sports",
+    "schedule"
+   ],
+   "ms": [
+    230,
+    218
+   ],
+   "img": "wall/mlb.jpg"
+  },
+  {
+   "site": "nbp",
+   "title": "National Bank of Poland rates public read-only data.",
+   "host": "nbp.pl",
+   "category": "Markets & finance",
+   "commands": [
+    "rate",
+    "table"
+   ],
+   "ms": [
+    715,
+    709
+   ],
+   "img": "wall/nbp.jpg"
+  },
+  {
+   "site": "nhl",
+   "title": "nhl",
+   "host": "api-web.nhle.com",
+   "category": "Sports",
+   "commands": [
+    "standings",
+    "schedule"
+   ],
+   "ms": [
+    235,
+    244
+   ],
+   "img": "wall/nhl.jpg"
+  },
+  {
+   "site": "nobel",
+   "title": "nobel",
+   "host": "api.nobelprize.org",
+   "category": "Science & space",
+   "commands": [
+    "get-prizes"
+   ],
+   "ms": [
+    215
+   ],
+   "img": "wall/nobel.jpg"
+  },
+  {
+   "site": "nuget",
+   "title": "NuGet",
+   "host": "nuget.org",
+   "category": "Developer tools",
+   "commands": [
+    "get-package",
+    "search"
+   ],
+   "ms": [
+    238,
+    473
+   ],
+   "img": "wall/nuget.jpg"
+  },
+  {
+   "site": "numpy",
+   "title": "NumPy:",
+   "host": "numpy.org",
+   "category": "Developer tools",
+   "commands": [
+    "home",
+    "page"
+   ],
+   "ms": [
+    235,
+    294
+   ],
+   "img": "wall/numpy.jpg"
+  },
+  {
+   "site": "nvdapi",
+   "title": "nvdapi",
+   "host": "services.nvd.nist.gov",
+   "category": "Developer tools",
+   "commands": [
+    "cves"
+   ],
+   "ms": [
+    287
+   ],
+   "img": "wall/nvdapi.jpg"
+  },
+  {
+   "site": "nyc",
+   "title": "nyc",
+   "host": "data.cityofnewyork.us",
+   "category": "Government & open data",
+   "commands": [
+    "query",
+    "metadata"
+   ],
+   "ms": [
+    575,
+    506
+   ],
+   "img": "wall/nyc.jpg"
+  },
+  {
+   "site": "okx",
+   "title": "OKX public market data public read-only data.",
+   "host": "okx.com",
+   "category": "Markets & finance",
+   "commands": [
+    "ticker",
+    "instruments"
+   ],
+   "ms": [
+    305,
+    310
+   ],
+   "img": "wall/okx.jpg"
+  },
+  {
+   "site": "open-notify",
+   "title": "open-notify",
+   "host": "api.open-notify.org",
+   "category": "Science & space",
+   "commands": [
+    "get"
+   ],
+   "ms": [
+    195
+   ],
+   "img": "wall/open-notify.jpg"
+  },
+  {
+   "site": "openligadb",
+   "title": "openligadb",
+   "host": "api.openligadb.de",
+   "category": "Sports",
+   "commands": [
+    "matches",
+    "teams"
+   ],
+   "ms": [
+    858,
+    687
+   ],
+   "img": "wall/openligadb.jpg"
+  },
+  {
+   "site": "opentdb",
+   "title": "opentdb",
+   "host": "opentdb.com",
+   "category": "Media & culture",
+   "commands": [
+    "get-questions"
+   ],
+   "ms": [
+    399
+   ],
+   "img": "wall/opentdb.jpg"
+  },
+  {
+   "site": "opentopodata",
+   "title": "opentopodata",
+   "host": "api.opentopodata.org",
+   "category": "Science & space",
+   "commands": [
+    "elevation"
+   ],
+   "ms": [
+    352
+   ],
+   "img": "wall/opentopodata.jpg"
+  },
+  {
+   "site": "ourairports",
+   "title": "ourairports",
+   "host": "ourairports.com",
+   "category": "Science & space",
+   "commands": [
+    "get"
+   ],
+   "ms": [
+    691
+   ],
+   "img": "wall/ourairports.jpg"
+  },
+  {
+   "site": "pandas",
+   "title": "pandas",
+   "host": "pandas.pydata.org",
+   "category": "Developer tools",
+   "commands": [
+    "home",
+    "page"
+   ],
+   "ms": [
+    327,
+    303
+   ],
+   "img": "wall/pandas.jpg"
+  },
+  {
+   "site": "postgresql",
+   "title": "PostgreSQL",
+   "host": "postgresql.org",
+   "category": "Developer tools",
+   "commands": [
+    "home",
+    "page"
+   ],
+   "ms": [
+    885,
+    705
+   ],
+   "img": "wall/postgresql.jpg"
+  },
+  {
+   "site": "python-docs",
+   "title": "Python Documentation:",
+   "host": "docs.python.org",
+   "category": "Developer tools",
+   "commands": [
+    "home",
+    "page"
+   ],
+   "ms": [
+    221,
+    185
+   ],
+   "img": "wall/python-docs.jpg"
+  },
+  {
+   "site": "pythonforum",
+   "title": "Discuss Python",
+   "host": "discuss.python.org",
+   "category": "Communities",
+   "commands": [
+    "latest",
+    "top"
+   ],
+   "ms": [
+    358,
+    375
+   ],
+   "img": "wall/pythonforum.jpg"
+  },
+  {
+   "site": "r-project",
+   "title": "R Project:",
+   "host": "r-project.org",
+   "category": "Developer tools",
+   "commands": [
+    "home",
+    "page"
+   ],
+   "ms": [
+    635,
+    627
+   ],
+   "img": "wall/r-project.jpg"
+  },
+  {
+   "site": "randomdog",
+   "title": "randomdog",
+   "host": "random.dog",
+   "category": "Media & culture",
+   "commands": [
+    "random-dog"
+   ],
+   "ms": [
+    577
+   ],
+   "img": "wall/randomdog.jpg"
+  },
+  {
+   "site": "randomuser",
+   "title": "randomuser",
+   "host": "randomuser.me",
+   "category": "Media & culture",
+   "commands": [
+    "list-users"
+   ],
+   "ms": [
+    245
+   ],
+   "img": "wall/randomuser.jpg"
+  },
+  {
+   "site": "restcountries",
+   "title": "restcountries",
+   "host": "restcountries.com",
+   "category": "Science & space",
+   "commands": [
+    "get"
+   ],
+   "ms": [
+    246
+   ],
+   "img": "wall/restcountries.jpg"
+  },
+  {
+   "site": "rfc",
+   "title": "RFC Editor",
+   "host": "rfc-editor.org",
+   "category": "Developer tools",
+   "commands": [
+    "rfc",
+    "text"
+   ],
+   "ms": [
+    670,
+    321
+   ],
+   "img": "wall/rfc.jpg"
+  },
+  {
+   "site": "rickmorty",
+   "title": "rickmorty",
+   "host": "rickandmortyapi.com",
+   "category": "Media & culture",
+   "commands": [
+    "get-character"
+   ],
+   "ms": [
+    220
+   ],
+   "img": "wall/rickmorty.jpg"
+  },
+  {
+   "site": "ruby-lang",
+   "title": "Ruby Language",
+   "host": "ruby-lang.org",
+   "category": "Developer tools",
+   "commands": [
+    "home",
+    "page"
+   ],
+   "ms": [
+    301,
+    294
+   ],
+   "img": "wall/ruby-lang.jpg"
+  },
+  {
+   "site": "rustforum",
+   "title": "Rust Users Forum",
+   "host": "users.rust-lang.org",
+   "category": "Communities",
+   "commands": [
+    "latest",
+    "top"
+   ],
+   "ms": [
+    302,
+    401
+   ],
+   "img": "wall/rustforum.jpg"
+  },
+  {
+   "site": "scryfall",
+   "title": "scryfall",
+   "host": "api.scryfall.com",
+   "category": "Media & culture",
+   "commands": [
+    "get-card"
+   ],
+   "ms": [
+    213
+   ],
+   "img": "wall/scryfall.jpg"
+  },
+  {
+   "site": "serverfault",
+   "title": "Server Fault",
+   "host": "serverfault.com",
+   "category": "Developer tools",
+   "commands": [
+    "questions",
+    "search"
+   ],
+   "ms": [
+    342,
+    335
+   ],
+   "img": "wall/serverfault.jpg"
+  },
+  {
+   "site": "spaceflightnews",
+   "title": "spaceflightnews",
+   "host": "api.spaceflightnewsapi.net",
+   "category": "Science & space",
+   "commands": [
+    "latest-articles"
+   ],
+   "ms": [
+    717
+   ],
+   "img": "wall/spaceflightnews.jpg"
+  },
+  {
+   "site": "sqlite",
+   "title": "SQLite",
+   "host": "sqlite.org",
+   "category": "Developer tools",
+   "commands": [
+    "home",
+    "page"
+   ],
+   "ms": [
+    478,
+    486
+   ],
+   "img": "wall/sqlite.jpg"
+  },
+  {
+   "site": "stackexchange",
+   "title": "Stack Exchange",
+   "host": "stackexchange.com",
+   "category": "Developer tools",
+   "commands": [
+    "search",
+    "questions"
+   ],
+   "ms": [
+    310,
+    288
+   ],
+   "img": "wall/stackexchange.jpg"
+  },
+  {
+   "site": "statbank",
+   "title": "statbank",
+   "host": "api.statbank.dk",
+   "category": "Government & open data",
+   "commands": [
+    "table"
+   ],
+   "ms": [
+    942
+   ],
+   "img": "wall/statbank.jpg"
+  },
+  {
+   "site": "superuser",
+   "title": "Super User",
+   "host": "superuser.com",
+   "category": "Developer tools",
+   "commands": [
+    "questions",
+    "search"
+   ],
+   "ms": [
+    277,
+    321
+   ],
+   "img": "wall/superuser.jpg"
+  },
+  {
+   "site": "tensorflow",
+   "title": "TensorFlow",
+   "host": "tensorflow.org",
+   "category": "Developer tools",
+   "commands": [
+    "home",
+    "page"
+   ],
+   "ms": [
+    471,
+    458
+   ],
+   "img": "wall/tensorflow.jpg"
+  },
+  {
+   "site": "themealdb",
+   "title": "themealdb",
+   "host": "themealdb.com",
+   "category": "Media & culture",
+   "commands": [
+    "search-meals"
+   ],
+   "ms": [
+    324
+   ],
+   "img": "wall/themealdb.jpg"
+  },
+  {
+   "site": "thespacedevs",
+   "title": "thespacedevs",
+   "host": "ll.thespacedevs.com",
+   "category": "Science & space",
+   "commands": [
+    "get"
+   ],
+   "ms": [
+    623
+   ],
+   "img": "wall/thespacedevs.jpg"
+  },
+  {
+   "site": "tides",
+   "title": "tides",
+   "host": "api.tidesandcurrents.noaa.gov",
+   "category": "Government & open data",
+   "commands": [
+    "observations"
+   ],
+   "ms": [
+    438
+   ],
+   "img": "wall/tides.jpg"
+  },
+  {
+   "site": "timeapi",
+   "title": "timeapi",
+   "host": "timeapi.io",
+   "category": "Science & space",
+   "commands": [
+    "get"
+   ],
+   "ms": [
+    726
+   ],
+   "img": "wall/timeapi.jpg"
+  },
+  {
+   "site": "tiobe",
+   "title": "TIOBE Index",
+   "host": "tiobe.com",
+   "category": "Developer tools",
+   "commands": [
+    "home",
+    "page"
+   ],
+   "ms": [
+    967,
+    986
+   ],
+   "img": "wall/tiobe.jpg"
+  },
+  {
+   "site": "tvmaze",
+   "title": "tvmaze",
+   "host": "api.tvmaze.com",
+   "category": "Media & culture",
+   "commands": [
+    "search-shows"
+   ],
+   "ms": [
+    657
+   ],
+   "img": "wall/tvmaze.jpg"
+  },
+  {
+   "site": "ukpolice",
+   "title": "ukpolice",
+   "host": "data.police.uk",
+   "category": "Government & open data",
+   "commands": [
+    "stops",
+    "forces"
+   ],
+   "ms": [
+    19321,
+    490
+   ],
+   "img": "wall/ukpolice.jpg"
+  },
+  {
+   "site": "uselessfacts",
+   "title": "uselessfacts",
+   "host": "uselessfacts.jsph.pl",
+   "category": "Media & culture",
+   "commands": [
+    "random-fact"
+   ],
+   "ms": [
+    688
+   ],
+   "img": "wall/uselessfacts.jpg"
+  },
+  {
+   "site": "vim",
+   "title": "Vim:",
+   "host": "vim.org",
+   "category": "Developer tools",
+   "commands": [
+    "home",
+    "page"
+   ],
+   "ms": [
+    656,
+    648
+   ],
+   "img": "wall/vim.jpg"
+  },
+  {
+   "site": "vivaldi_social",
+   "title": "Vivaldi Social",
+   "host": "social.vivaldi.net",
+   "category": "Communities",
+   "commands": [
+    "public",
+    "tag"
+   ],
+   "ms": [
+    484,
+    545
+   ],
+   "img": "wall/vivaldi_social.jpg"
+  },
+  {
+   "site": "w3",
+   "title": "W3C:",
+   "host": "w3.org",
+   "category": "Developer tools",
+   "commands": [
+    "home",
+    "page"
+   ],
+   "ms": [
+    227,
+    975
+   ],
+   "img": "wall/w3.jpg"
+  },
+  {
+   "site": "worldbank",
+   "title": "World Bank Data",
+   "host": "data.worldbank.org",
+   "category": "Government & open data",
+   "commands": [
+    "indicator"
+   ],
+   "ms": [
+    239
+   ],
+   "img": "wall/worldbank.jpg"
+  },
+  {
+   "site": "worldcities",
+   "title": "worldcities",
+   "host": "secure.geonames.org",
+   "category": "Science & space",
+   "commands": [
+    "timezone"
+   ],
+   "ms": [
+    668
+   ],
+   "img": "wall/worldcities.jpg"
+  },
+  {
+   "site": "yesno",
+   "title": "yesno",
+   "host": "yesno.wtf",
+   "category": "Media & culture",
+   "commands": [
+    "answer"
+   ],
+   "ms": [
+    716
+   ],
+   "img": "wall/yesno.jpg"
+  },
+  {
+   "site": "zippopotam",
+   "title": "zippopotam",
+   "host": "api.zippopotam.us",
+   "category": "Science & space",
+   "commands": [
+    "get"
+   ],
+   "ms": [
+    178
+   ],
+   "img": "wall/zippopotam.jpg"
+  },
+  {
+   "site": "bigdatacloud-geo",
+   "title": "bigdatacloud-geo",
+   "host": "api.bigdatacloud.net",
+   "category": "Science & space",
+   "commands": [
+    "get"
+   ],
+   "ms": [
+    217
+   ],
+   "img": null
+  },
+  {
+   "site": "open-elevation",
+   "title": "open-elevation",
+   "host": "api.open-elevation.com",
+   "category": "Science & space",
+   "commands": [
+    "get"
+   ],
+   "ms": [
+    671
+   ],
+   "img": null
+  },
+  {
+   "site": "tides-noaa",
+   "title": "tides-noaa",
+   "host": "api.tidesandcurrents.noaa.gov",
+   "category": "Government & open data",
+   "commands": [
+    "get"
+   ],
+   "ms": [
+    416
+   ],
+   "img": null
+  }
+ ]
+}

@@ -1,0 +1,148 @@
+{
+ "ok": true,
+ "site": "tvmaze",
+ "url": "https://www.tvmaze.com/",
+ "commands": [
+  {
+   "name": "search-shows",
+   "summary": "Fuzzy-search shows by name; returns scored matches with full show objects",
+   "verified": true
+  },
+  {
+   "name": "search-people",
+   "summary": "Fuzzy-search people (actors, crew) by name",
+   "verified": true
+  },
+  {
+   "name": "single-search-show",
+   "summary": "Return the single best-matching show for a name, optionally with embedded episodes, cast or other data",
+   "verified": true
+  },
+  {
+   "name": "lookup-show",
+   "summary": "Find a show by external ID (IMDb, TheTVDB or TVRage). Pass exactly one ID.",
+   "verified": true
+  },
+  {
+   "name": "get-show",
+   "summary": "Get a show's main details by TVmaze show ID, optionally with embedded cast or next/previous episode",
+   "verified": true
+  },
+  {
+   "name": "list-show-episodes",
+   "summary": "List all episodes of a show in airing order, optionally including specials",
+   "verified": true
+  },
+  {
+   "name": "get-episode-by-number",
+   "summary": "Get one episode of a show by season and episode number",
+   "verified": true
+  },
+  {
+   "name": "list-episodes-by-date",
+   "summary": "List a show's episodes that aired on a given date",
+   "verified": true
+  },
+  {
+   "name": "list-show-seasons",
+   "summary": "List a show's seasons with their season IDs, dates, episode counts and networks",
+   "verified": true
+  },
+  {
+   "name": "list-season-episodes",
+   "summary": "List the episodes of a season by its TVmaze season ID (from list-show-seasons)",
+   "verified": true
+  },
+  {
+   "name": "list-show-cast",
+   "summary": "List a show's main cast: each person with the character they play",
+   "verified": true
+  },
+  {
+   "name": "list-show-crew",
+   "summary": "List a show's crew (creators, producers and so on) with their crew type",
+   "verified": true
+  },
+  {
+   "name": "list-show-akas",
+   "summary": "List a show's alternate titles (AKAs) by country",
+   "verified": true
+  },
+  {
+   "name": "list-show-images",
+   "summary": "List a show's images (posters, banners, backgrounds) with their URLs",
+   "verified": true
+  },
+  {
+   "name": "list-shows",
+   "summary": "Page through the full show index, ordered by show ID (up to 250 shows per page)",
+   "verified": true
+  },
+  {
+   "name": "get-episode",
+   "summary": "Get an episode's details by episode ID, with its parent show embedded",
+   "verified": true
+  },
+  {
+   "name": "list-episode-guest-cast",
+   "summary": "List the guest cast of an episode: each person with the character they play",
+   "verified": true
+  },
+  {
+   "name": "get-person",
+   "summary": "Get a person's details (birthday, country, gender, image) by person ID",
+   "verified": true
+  },
+  {
+   "name": "list-person-cast-credits",
+   "summary": "List the shows a person was main cast in, with show details embedded",
+   "verified": true
+  },
+  {
+   "name": "list-person-crew-credits",
+   "summary": "List a person's crew credits (for example Creator or Executive Producer), with show details embedded",
+   "verified": true
+  },
+  {
+   "name": "list-person-guest-credits",
+   "summary": "List the episodes a person guest-starred in, with episode details embedded",
+   "verified": true
+  },
+  {
+   "name": "get-character",
+   "summary": "Get a character's details by character ID",
+   "verified": true
+  },
+  {
+   "name": "get-schedule",
+   "summary": "List the episodes airing on broadcast/cable TV in a country on a date, with show details",
+   "verified": true
+  },
+  {
+   "name": "get-web-schedule",
+   "summary": "List the episodes released on web/streaming channels on a date, optionally for one country",
+   "verified": true
+  },
+  {
+   "name": "list-show-updates",
+   "summary": "Get the shows updated in a recent time window, as a map of show ID to last-updated Unix timestamp",
+   "verified": true
+  }
+ ],
+ "verified": 25,
+ "writes": 0,
+ "dropped": [],
+ "blockers": [],
+ "loggedIn": false,
+ "seconds": 182,
+ "next": [
+  "clify tvmaze",
+  "clify tvmaze search-shows --q \"breaking bad\""
+ ],
+ "installed": "/home/ubuntu/clify-runs/batch2/home/bin/tvmaze",
+ "explored": {
+  "steps": 9,
+  "recorded": 42,
+  "heldWrites": 25
+ }
+}

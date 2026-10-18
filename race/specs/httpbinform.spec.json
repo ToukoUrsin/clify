@@ -1,0 +1,20 @@
+{
+  "name": "httpbinform",
+  "startUrl": "https://httpbin.org/forms/post",
+  "origin": "https://httpbin.org",
+  "createdAt": "2026-10-18T06:40:00Z",
+  "description": "httpbin pizza order form (echo test service). Submitting POSTs the form to /post, which echoes the fields back.",
+  "commands": [
+    { "name": "place-order", "summary": "Submit the pizza order form; httpbin echoes the submitted fields", "method": "POST", "urlTemplate": "/post", "responseType": "json", "bodyEncoding": "form", "mutates": true, "resultPath": "form",
+      "bodyTemplate": { "topping": ["{topping}", "{topping2}"] },
+      "params": [
+        { "name": "custname", "in": "body", "required": true, "type": "string", "description": "customer name" },
+        { "name": "custtel", "in": "body", "required": false, "type": "string", "description": "telephone" },
+        { "name": "custemail", "in": "body", "required": false, "type": "string", "description": "e-mail address" },
+        { "name": "size", "in": "body", "required": false, "type": "string", "enum": ["small", "medium", "large"] },
+        { "name": "topping", "in": "body", "required": false, "type": "string", "enum": ["bacon", "cheese", "onion", "mushroom"], "default": "cheese" },
+        { "name": "topping2", "in": "body", "required": false, "type": "string", "description": "second topping (bacon, cheese, onion, mushroom)", "default": "" },
+        { "name": "delivery", "in": "body", "required": false, "type": "string", "description": "preferred delivery time, HH:MM" },
+        { "name": "comments", "in": "body", "required": false, "type": "string", "description": "delivery instructions" } ] }
+  ]
+}

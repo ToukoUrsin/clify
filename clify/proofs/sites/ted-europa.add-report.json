@@ -1,0 +1,23 @@
+{
+ "ok": false,
+ "site": "ted-europa",
+ "url": "https://ted.europa.eu/en/",
+ "commands": [],
+ "verified": 0,
+ "writes": 0,
+ "dropped": [],
+ "blockers": [
+  "captcha"
+ ],
+ "loggedIn": false,
+ "seconds": 27,
+ "next": [
+  "clify ted-europa",
+  "clify repair ted-europa --goal \"<what you need from the site>\""
+ ],
+ "explored": {
+  "steps": 4,
+  "recorded": 9,
+  "heldWrites": 3
+ }
+}

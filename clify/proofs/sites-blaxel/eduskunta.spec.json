@@ -1,0 +1,23 @@
+{
+ "name": "eduskunta",
+ "startUrl": "https://www.eduskunta.fi/",
+ "origin": "https://www.eduskunta.fi",
+ "createdAt": "2026-10-18T09:13:55.773Z",
+ "description": "CLI for www.eduskunta.fi",
+ "commands": [],
+ "blockers": [
+  "captcha"
+ ],
+ "notes": [
+  "nothing usable was recorded"
+ ],
+ "dropped": [],
+ "generated": {
+  "by": "clify add",
+  "model": "claude-opus-5-5",
+  "exploredSteps": 2,
+  "recorded": 2,
+  "verifiedAt": "2026-10-18T09:13:55.773Z",
+  "seconds": 13
+ }
+}

@@ -1,0 +1,606 @@
+{
+ "name": "artifacthub",
+ "startUrl": "https://artifacthub.io/",
+ "origin": "https://artifacthub.io",
+ "createdAt": "2026-10-18T08:49:14.605Z",
+ "description": "Artifact Hub (artifacthub.io) is the CNCF hub for cloud-native packages such as Helm charts, operators, kubectl/krew plugins and policies. This CLI searches packages and reads package details, versions, default values, templates, changelogs, security reports, views, stars, RSS feeds and site statistics through the public /api/v1 API.",
+ "commands": [
+  {
+   "name": "search-packages",
+   "summary": "Search Artifact Hub packages by keyword, with filters for kind, category, publisher, repo, org and license, plus sorting and offset paging.",
+   "method": "GET",
+   "urlTemplate": "/api/v1/packages/search",
+   "params": [
+    {
+     "name": "query",
+     "key": "ts_query_web",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Full-text search terms, e.g. 'nginx'. Words separated by ' or ' run an OR search, which the site uses for related packages.",
+     "example": "nginx"
+    },
+    {
+     "name": "kind",
+     "in": "query",
+     "required": false,
+     "type": "number",
+     "description": "Package kind id: 0=Helm chart, 1=Falco rules, 2=OPA policies, 3=OLM operator, 4=Tinkerbell action, 5=kubectl/krew plugin, 6=Helm plugin, 7=Tekton task, 8=KEDA scaler, 9=CoreDNS plugin, 10=Keptn integr",
+     "example": "0"
+    },
+    {
+     "name": "category",
+     "in": "query",
+     "required": false,
+     "type": "number",
+     "description": "Category id: 1=AI/Machine learning, 2=Database, 3=Integration and delivery, 4=Monitoring and logging, 5=Networking, 6=Security, 7=Storage, 8=Streaming and messaging",
+     "example": "5"
+    },
+    {
+     "name": "verified_publisher",
+     "in": "query",
+     "required": false,
+     "type": "boolean",
+     "description": "Only packages from verified publishers",
+     "example": "true"
+    },
+    {
+     "name": "official",
+     "in": "query",
+     "required": false,
+     "type": "boolean",
+     "description": "Only official packages"
+    },
+    {
+     "name": "cncf",
+     "in": "query",
+     "required": false,
+     "type": "boolean",
+     "description": "Only CNCF project packages"
+    },
+    {
+     "name": "operators",
+     "in": "query",
+     "required": false,
+     "type": "boolean",
+     "description": "Only Kubernetes operators"
+    },
+    {
+     "name": "deprecated",
+     "in": "query",
+     "required": false,
+     "type": "boolean",
+     "description": "Include deprecated packages"
+    },
+    {
+     "name": "license",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "SPDX license id, e.g. Apache-2.0, MIT",
+     "example": "Apache-2.0"
+    },
+    {
+     "name": "repo",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Repository name to restrict to, e.g. bitnami"
+    },
+    {
+     "name": "org",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Publisher organization name, e.g. bitnami"
+    },
+    {
+     "name": "sort",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Sort order",
+     "enum": [
+      "relevance",
+      "stars",
+      "last_updated"
+     ],
+     "default": "relevance"
+    },
+    {
+     "name": "facets",
+     "in": "query",
+     "required": false,
+     "type": "boolean",
+     "description": "Also return facet counts (kinds, categories, orgs, repos, licenses)",
+     "default": false
+    },
+    {
+     "name": "api_limit",
+     "key": "limit",
+     "in": "query",
+     "required": false,
+     "type": "number",
+     "description": "Results per page (max 60) (sent to the site as \"limit\"; clify's own --limit only shapes the output)",
+     "default": 20
+    },
+    {
+     "name": "offset",
+     "in": "query",
+     "required": false,
+     "type": "number",
+     "description": "Number of results to skip",
+     "default": 0
+    }
+   ],
+   "responseType": "json",
+   "resultPath": "packages",
+   "defaultFields": [
+    "package_id",
+    "name",
+    "version",
+    "repository.name",
+    "repository.kind",
+    "repository.organization_name",
+    "stars",
+    "description"
+   ],
+   "pagination": {
+    "type": "offset",
+    "param": "offset",
+    "step": 20
+   },
+   "mutates": false,
+   "example": {
+    "query": "nginx"
+   },
+   "source": "E1 E19",
+   "verified": true
+  },
+  {
+   "name": "get-package",
+   "summary": "Get full details of a package's latest version: readme, available versions, repository, keywords, links and data.",
+   "method": "GET",
+   "urlTemplate": "/api/v1/packages/{kind}/{repo}/{name}",
+   "params": [
+    {
+     "name": "kind",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Package kind slug as used in URLs",
+     "enum": [
+      "helm",
+      "falco",
+      "opa",
+      "olm",
+      "tbaction",
+      "krew",
+      "helm-plugin",
+      "tekton-task",
+      "keda-scaler",
+      "coredns",
+      "keptn",
+      "tekton-pipeline",
+      "container",
+      "kubewarden",
+      "gatekeeper",
+      "kyverno",
+      "knative-client-plugin",
+      "backstage",
+      "argo-template",
+      "kubearmor",
+      "kcl",
+      "headlamp"
+     ],
+     "example": "helm"
+    },
+    {
+     "name": "repo",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Repository name (repository.name in search results)",
+     "example": "ingress-nginx"
+    },
+    {
+     "name": "name",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Package normalized name",
+     "example": "ingress-nginx"
+    }
+   ],
+   "responseType": "json",
+   "defaultFields": [
+    "package_id",
+    "name",
+    "version",
+    "app_version",
+    "description",
+    "home_url",
+    "license",
+    "repository.url"
+   ],
+   "mutates": false,
+   "example": {
+    "kind": "helm",
+    "repo": "ingress-nginx",
+    "name": "ingress-nginx"
+   },
+   "source": "E4 E9 GET https://artifacthub.io/api/v1/packages/helm/ingress-nginx/ingress-nginx",
+   "verified": true
+  },
+  {
+   "name": "get-package-version",
+   "summary": "Get details of a specific version of a package.",
+   "method": "GET",
+   "urlTemplate": "/api/v1/packages/{kind}/{repo}/{name}/{version}",
+   "params": [
+    {
+     "name": "kind",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Package kind slug, e.g. helm, krew, olm",
+     "example": "helm"
+    },
+    {
+     "name": "repo",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Repository name",
+     "example": "ingress-nginx"
+    },
+    {
+     "name": "name",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Package normalized name",
+     "example": "ingress-nginx"
+    },
+    {
+     "name": "version",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Package version, e.g. 4.14.0",
+     "example": "4.14.0"
+    }
+   ],
+   "responseType": "json",
+   "defaultFields": [
+    "package_id",
+    "name",
+    "version",
+    "app_version",
+    "description",
+    "ts",
+    "contains_security_updates",
+    "repository.url"
+   ],
+   "mutates": false,
+   "example": {
+    "kind": "helm",
+    "repo": "ingress-nginx",
+    "name": "ingress-nginx",
+    "version": "4.14.0"
+   },
+   "source": "E7 GET https://artifacthub.io/api/v1/packages/helm/ingress-nginx/ingress-nginx/4.14.0",
+   "verified": true
+  },
+  {
+   "name": "get-package-values",
+   "summary": "Get the default values.yaml of a Helm chart version as raw YAML text.",
+   "method": "GET",
+   "urlTemplate": "/api/v1/packages/{package_id}/{version}/values",
+   "params": [
+    {
+     "name": "package_id",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Package UUID (package_id)",
+     "example": "625a0f57-5ab0-44ea-91ac-5e8cd8234ad0"
+    },
+    {
+     "name": "version",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Chart version",
+     "example": "4.15.1"
+    }
+   ],
+   "responseType": "text",
+   "mutates": false,
+   "example": {
+    "package_id": "625a0f57-5ab0-44ea-91ac-5e8cd8234ad0",
+    "version": "4.15.1"
+   },
+   "source": "E17 GET https://artifacthub.io/api/v1/packages/{id}/4.15.1/values",
+   "verified": true
+  },
+  {
+   "name": "get-package-templates",
+   "summary": "Get the template files of a Helm chart version. Each file's data field is base64-encoded.",
+   "method": "GET",
+   "urlTemplate": "/api/v1/packages/{package_id}/{version}/templates",
+   "params": [
+    {
+     "name": "package_id",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Package UUID (package_id)",
+     "example": "625a0f57-5ab0-44ea-91ac-5e8cd8234ad0"
+    },
+    {
+     "name": "version",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Chart version",
+     "example": "4.15.1"
+    }
+   ],
+   "responseType": "json",
+   "resultPath": "templates",
+   "defaultFields": [
+    "name",
+    "data"
+   ],
+   "mutates": false,
+   "example": {
+    "package_id": "625a0f57-5ab0-44ea-91ac-5e8cd8234ad0",
+    "version": "4.15.1"
+   },
+   "source": "E5 GET https://artifacthub.io/api/v1/packages/{id}/4.15.1/templates",
+   "verified": true
+  },
+  {
+   "name": "get-package-changelog",
+   "summary": "Get a package's changelog: changes per version, with timestamps and security-update flags.",
+   "method": "GET",
+   "urlTemplate": "/api/v1/packages/{package_id}/changelog",
+   "params": [
+    {
+     "name": "package_id",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Package UUID (package_id)",
+     "example": "625a0f57-5ab0-44ea-91ac-5e8cd8234ad0"
+    }
+   ],
+   "responseType": "json",
+   "defaultFields": [
+    "version",
+    "changes",
+    "ts",
+    "contains_security_updates",
+    "prerelease"
+   ],
+   "mutates": false,
+   "example": {
+    "package_id": "625a0f57-5ab0-44ea-91ac-5e8cd8234ad0"
+   },
+   "source": "E6 GET https://artifacthub.io/api/v1/packages/{id}/changelog",
+   "verified": true
+  },
+  {
+   "name": "get-security-report",
+   "summary": "Get the Trivy vulnerability scan report for each container image of a package version.",
+   "method": "GET",
+   "urlTemplate": "/api/v1/packages/{package_id}/{version}/security-report",
+   "params": [
+    {
+     "name": "package_id",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Package UUID (package_id)",
+     "example": "625a0f57-5ab0-44ea-91ac-5e8cd8234ad0"
+    },
+    {
+     "name": "version",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Package version",
+     "example": "4.14.0"
+    }
+   ],
+   "responseType": "json",
+   "mutates": false,
+   "example": {
+    "package_id": "625a0f57-5ab0-44ea-91ac-5e8cd8234ad0",
+    "version": "4.14.0"
+   },
+   "source": "E8 GET https://artifacthub.io/api/v1/packages/{id}/4.14.0/security-report",
+   "verified": true
+  },
+  {
+   "name": "get-package-views",
+   "summary": "Get daily view counts for a package over roughly the last 30 days, grouped by version.",
+   "method": "GET",
+   "urlTemplate": "/api/v1/packages/{package_id}/views",
+   "params": [
+    {
+     "name": "package_id",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Package UUID (package_id)",
+     "example": "625a0f57-5ab0-44ea-91ac-5e8cd8234ad0"
+    }
+   ],
+   "responseType": "json",
+   "mutates": false,
+   "example": {
+    "package_id": "625a0f57-5ab0-44ea-91ac-5e8cd8234ad0"
+   },
+   "source": "E2 GET https://artifacthub.io/api/v1/packages/{id}/views",
+   "verified": true
+  },
+  {
+   "name": "get-package-stars",
+   "summary": "Get the number of stars a package has.",
+   "method": "GET",
+   "urlTemplate": "/api/v1/packages/{package_id}/stars",
+   "params": [
+    {
+     "name": "package_id",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Package UUID (package_id)",
+     "example": "625a0f57-5ab0-44ea-91ac-5e8cd8234ad0"
+    }
+   ],
+   "responseType": "json",
+   "defaultFields": [
+    "stars"
+   ],
+   "mutates": false,
+   "example": {
+    "package_id": "625a0f57-5ab0-44ea-91ac-5e8cd8234ad0"
+   },
+   "source": "E3 GET https://artifacthub.io/api/v1/packages/{id}/stars",
+   "verified": true
+  },
+  {
+   "name": "get-package-feed",
+   "summary": "Get a package's release feed (RSS): versions with links and publish dates.",
+   "method": "GET",
+   "urlTemplate": "/api/v1/packages/{kind}/{repo}/{name}/feed/rss",
+   "params": [
+    {
+     "name": "kind",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Package kind slug, e.g. helm, krew",
+     "example": "helm"
+    },
+    {
+     "name": "repo",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Repository name",
+     "example": "ingress-nginx"
+    },
+    {
+     "name": "name",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Package normalized name",
+     "example": "ingress-nginx"
+    }
+   ],
+   "responseType": "json",
+   "resultPath": "rss.channel.item",
+   "defaultFields": [
+    "title",
+    "link",
+    "pubDate"
+   ],
+   "mutates": false,
+   "example": {
+    "kind": "helm",
+    "repo": "ingress-nginx",
+    "name": "ingress-nginx"
+   },
+   "source": "E26 GET https://artifacthub.io/api/v1/packages/helm/ingress-nginx/ingress-nginx/feed/rss",
+   "verified": true
+  },
+  {
+   "name": "random-packages",
+   "summary": "Get a random selection of packages, as shown on the home page.",
+   "method": "GET",
+   "urlTemplate": "/api/v1/packages/random",
+   "params": [],
+   "responseType": "json",
+   "defaultFields": [
+    "package_id",
+    "name",
+    "version",
+    "repository.name",
+    "repository.kind",
+    "stars",
+    "description"
+   ],
+   "mutates": false,
+   "source": "E14 GET https://artifacthub.io/api/v1/packages/random",
+   "verified": true
+  },
+  {
+   "name": "get-package-totals",
+   "summary": "Get the total number of packages and releases on Artifact Hub.",
+   "method": "GET",
+   "urlTemplate": "/api/v1/packages/stats",
+   "params": [],
+   "responseType": "json",
+   "defaultFields": [
+    "packages",
+    "releases"
+   ],
+   "mutates": false,
+   "source": "E15 GET https://artifacthub.io/api/v1/packages/stats",
+   "verified": true
+  },
+  {
+   "name": "get-site-stats",
+   "summary": "Get site-wide statistics: package, release, repository and organization totals and their growth over time.",
+   "method": "GET",
+   "urlTemplate": "/api/v1/stats",
+   "params": [],
+   "responseType": "json",
+   "defaultFields": [
+    "generated_at",
+    "packages.total",
+    "snapshots.total",
+    "repositories.total",
+    "organizations.total",
+    "users.total"
+   ],
+   "mutates": false,
+   "source": "E10 GET https://artifacthub.io/api/v1/stats",
+   "verified": true
+  },
+  {
+   "name": "get-openapi-spec",
+   "summary": "Get Artifact Hub's public OpenAPI 3 specification (YAML text) describing the full /api/v1 API.",
+   "method": "GET",
+   "urlTemplate": "/docs/api/openapi.yaml",
+   "params": [],
+   "responseType": "text",
+   "mutates": false,
+   "source": "E18 GET https://artifacthub.io/docs/api/openapi.yaml",
+   "verified": true
+  }
+ ],
+ "blockers": [],
+ "notes": [
+  "All commands are public reads; no login is needed.",
+  "Commands that take package_id need the UUID from search-packages or get-package. get-package and get-package-feed take kind/repo/name instead.",
+  "repository.kind in search results is numeric. Map it to the URL kind slug: 0=helm, 1=falco, 2=opa, 3=olm, 4=tbaction, 5=krew, 6=helm-plugin, 7=tekton-task, 8=keda-scaler, 9=coredns, 10=keptn, 11=tekton-pipeline, 12=container, 13=kubewarden, 14=gatekeeper, 15=kyverno, 16=knative-client-plugin, 17=backstage, 18=argo-template, 19=kubearmor, 20=kcl, 21=headlamp.",
+  "For related packages, run search-packages with an OR query, e.g. 'ingress or nginx'.",
+  "Template data is base64-encoded. Values are returned as raw YAML text.",
+  "The POST /api/v1/packages/{id}/{version}/views calls are view-tracking telemetry that needs a CSRF token, so they are not exposed. Starring a package needs login, and that request was not captured."
+ ],
+ "dropped": [],
+ "generated": {
+  "by": "clify add",
+  "model": "claude-opus-5-5",
+  "exploredSteps": 26,
+  "recorded": 78,
+  "verifiedAt": "2026-10-18T08:50:26.161Z",
+  "seconds": 242
+ }
+}

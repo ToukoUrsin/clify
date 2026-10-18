@@ -1,0 +1,69 @@
+09:44:54 🔭 exploring https://healthchecks.io/ (logged in from the vault)
+09:44:54 🌐 https://healthchecks.io/
+09:44:59 → click {"i":6,"intent":"list my checks in project"}
+09:45:03 → click {"i":12,"intent":"add check"}
+09:45:09 → type {"i":20,"text":"race-gen-1","intent":"set check name"}
+09:45:10 → type {"i":25,"text":"backup nightly","intent":"set check tags"}
+09:45:11 → type {"i":27,"text":"2","intent":"set period"}
+09:45:12 → select {"i":28,"option":"hours","intent":"set period unit"}
+09:45:13 → type {"i":30,"text":"30","intent":"set grace time"}
+09:45:14 → select {"i":31,"option":"minutes","intent":"set grace unit"}
+09:45:17 → click {"i":33,"intent":"create check with name, tags, period, grace"}
+09:45:17   ✉ write sent (--allow-writes) POST https://healthchecks.io/projects/0d103ac6-8389-4868-8f5f-944911961863/checks/add/
+09:45:22 → type {"i":10,"text":"race","intent":"search checks by keyword","submit":true}
+09:45:25 → goto {"url":"https://healthchecks.io/projects/0d103ac6-8389-4868-8f5f-944911961863/checks/?tag=backup&sort=last_ping","intent":"filter checks by 
+09:45:29 → click {"i":17,"intent":"open check details"}
+09:45:33 → click {"i":10,"intent":"open edit name/tags dialog"}
+09:45:37 → type {"i":35,"text":"clify test description","intent":"set check description"}
+09:45:38 → click {"i":37,"intent":"update check name, tags, description"}
+09:45:38   ✉ write sent (--allow-writes) POST https://healthchecks.io/checks/7a71a36e-ca2e-4b10-a82e-10de7dc104b9/name/
+09:45:42 → click {"i":20,"intent":"open change schedule dialog"}
+09:45:46 → type {"i":16,"text":"3","intent":"set new period"}
+09:45:47 → click {"i":22,"intent":"update check schedule (period, grace)"}
+09:45:47   ✉ write sent (--allow-writes) POST https://healthchecks.io/checks/7a71a36e-ca2e-4b10-a82e-10de7dc104b9/timeout/
+09:45:54 → click {"i":19,"intent":"ping check now"}
+09:45:54   ✉ write sent (--allow-writes) POST https://hc-ping.com/7a71a36e-ca2e-4b10-a82e-10de7dc104b9
+09:45:57 → click {"i":18,"intent":"pause check"}
+09:45:57   ✉ write sent (--allow-writes) POST https://healthchecks.io/checks/7a71a36e-ca2e-4b10-a82e-10de7dc104b9/pause/
+09:46:01 → click {"i":26,"intent":"view check event log"}
+09:46:05 → click {"i":20,"intent":"filter event log by type (include notifications)"}
+09:46:08 → click {"i":2,"intent":"list integrations"}
+09:46:13 → click {"i":3,"intent":"list status badges"}
+09:46:17 → click {"i":19,"intent":"open public API docs"}
+09:46:22 → goto {"url":"https://healthchecks.io/projects/0d103ac6-8389-4868-8f5f-944911961863/checks/","intent":"list my checks"}
+09:46:27 → click {"i":13,"intent":"sort checks by name"}
+09:46:31 → click {"i":17,"intent":"open check details"}
+09:46:36 → goto {"url":"https://healthchecks.io/checks/7a71a36e-ca2e-4b10-a82e-10de7dc104b9/details/","intent":"open check details"}
+09:46:39 → click {"i":24,"intent":"open remove check dialog"}
+09:46:42 → click {"i":18,"intent":"delete check"}
+09:46:42   ✉ write sent (--allow-writes) POST https://healthchecks.io/checks/7a71a36e-ca2e-4b10-a82e-10de7dc104b9/remove/
+09:46:50 → done {"summary":"Healthchecks.io, signed in (project 0d103ac6-8389-4868-8f5f-944911961863). Covered: list checks (GET /projects/<p>/checks/ with 
+09:46:50 📼 recorded 54 calls, 0 held writes
+09:46:50 🧠 synthesizing from 16 endpoints (37k chars)
+09:47:53 🔎 verify round 0: list-checks, add-check, get-checks-status, get-check, get-check-status, update-check-name, update-check-schedule, ping-check, pause-check, delete-check, list-projects, list-integrations, preview-cron-schedule, preview-oncalendar-schedule, get-badges
+09:47:56   ✓ list-checks (772 ms)
+09:47:56   ✓ add-check: write: dry-run preview only, not sent
+09:47:56   ✓ get-checks-status (844 ms)
+09:47:56   ✓ get-check (566 ms)
+09:47:56   ✓ get-check-status (642 ms)
+09:47:56   ✓ update-check-name: write: dry-run preview only, not sent
+09:47:56   ✓ update-check-schedule: write: dry-run preview only, not sent
+09:47:56   ✓ ping-check: write: dry-run preview only, not sent
+09:47:56   ✓ pause-check: write: dry-run preview only, not sent
+09:47:56   ✓ delete-check: write: dry-run preview only, not sent
+09:47:56   ✓ list-projects (381 ms)
+09:47:56   ✓ list-integrations (409 ms)
+09:47:56   ✗ preview-cron-schedule: HTTP 403: the site rejected the saved session and re-login did not fix it. (HTTP 403) (1285 ms)
+09:47:56   ✗ preview-oncalendar-schedule: HTTP 403: the site rejected the saved session and re-login did not fix it. (HTTP 403) (1309 ms)
+09:47:56   ✓ get-badges (403 ms)
+09:48:25   🔧 preview-cron-schedule: Django rejected the CSRF check. The root project page likely sets no csrftoken cookie. The fix takes the token from a form page (csrfmiddlewaretoken input) and sends it as X-CSRFToken. It also adds the same-origin Referer that Django's HTTPS CSRF check requires.
+09:48:25   🔧 preview-oncalendar-schedule: Same CSRF failure as cron preview. The fix takes the token from a form page's csrfmiddlewaretoken input and adds a same-origin Referer.
+09:48:25 🔎 verify round 1: preview-cron-schedule, preview-oncalendar-schedule
+09:48:26   ✗ preview-cron-schedule: HTTP 403: the site rejected the saved session and re-login did not fix it. (HTTP 403) (1455 ms)
+09:48:26   ✗ preview-oncalendar-schedule: HTTP 403: the site rejected the saved session and re-login did not fix it. (HTTP 403) (1351 ms)
+09:48:43   🔧 preview-cron-schedule: The 403 came from Django's CSRF check, not from the session. Over HTTPS, Django also checks that the Origin/Referer matches the site. Added same-origin Referer and Origin headers, and the token now goes in both the X-CSRFToken header and the csrfmiddlewaretoken form field. Not yet re-run.
+09:48:43   🔧 preview-oncalendar-schedule: Same Django CSRF failure as cron preview. Added same-origin Referer and Origin headers, and the token now goes in both the X-CSRFToken header and the csrfmiddlewaretoken form field. Not yet re-run.
+09:48:43 🔎 verify round 2: preview-cron-schedule, preview-oncalendar-schedule
+09:48:44   ✓ preview-cron-schedule (840 ms)
+09:48:44   ✓ preview-oncalendar-schedule (739 ms)
+09:48:44   ⚑ context projectId = 0d103ac6-8389-4868-8f5f-944911961863 (same value on every recorded request (list-checks, add-check, get-checks-status))

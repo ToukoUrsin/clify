@@ -1,0 +1,206 @@
+{
+ "url": "https://www.smhi.se/",
+ "category": "maps-weather",
+ "sandbox": "clify-www-smhi-se",
+ "startedAt": "2026-10-18T09:23:32.114Z",
+ "region": "us-pdx-1",
+ "chrome": "Chrome/148.0.7778.96",
+ "sandboxStartMs": 1702,
+ "addSeconds": 271,
+ "addExit": 0,
+ "add": {
+  "ok": true,
+  "site": "smhi",
+  "url": "https://www.smhi.se/",
+  "commands": [
+   {
+    "name": "search-places",
+    "summary": "Find places in Sweden by name. Returns the geonameid and lat/lon that the forecast and warning commands take.",
+    "verified": true
+   },
+   {
+    "name": "get-current-weather",
+    "summary": "Get the current weather (temperature and weather symbol) for a place, by geonameid.",
+    "verified": true
+   },
+   {
+    "name": "get-forecast",
+    "summary": "Get the 10-day weather forecast for a place, by geonameid. Returns one entry per day with a summary, midday values and hourly data.",
+    "verified": true
+   },
+   {
+    "name": "get-recent-weather",
+    "summary": "Get the analysed/observed weather for the past hours at a place (MESAN analysis), by geonameid.",
+    "verified": true
+   },
+   {
+    "name": "get-place-warnings",
+    "summary": "Get the most severe active warnings and advisories (level, type and count) at a lat/lon coordinate.",
+    "verified": true
+   },
+   {
+    "name": "get-national-warning-level",
+    "summary": "Get the most severe weather-warning level currently active anywhere in Sweden (e.g. YELLOW).",
+    "verified": true
+   },
+   {
+    "name": "list-warnings",
+    "summary": "List all active weather warnings and advisories in Sweden, with level, event type, area, time window and descriptions.",
+    "verified": true
+   },
+   {
+    "name": "search-open-data",
+    "summary": "Search SMHI's open-data catalog for datasets by keyword. Use query 'all' to list every dataset.",
+    "verified": true
+   },
+   {
+    "name": "get-open-data-dataset",
+    "summary": "Get full metadata for one open-data catalog dataset, by its name slug (from search-open-data).",
+    "verified": true
+   },
+   {
+    "name": "list-observation-stations",
+    "summary": "List the meteorological observation stations that measure a parameter (metobs open API). Returns station keys for get-station-observations.",
+    "verified": true
+   },
+   {
+    "name": "get-latest-observations-all-stations",
+    "summary": "Get the latest-hour observed value of a parameter from every active station in one call.",
+    "verified": true
+   },
+   {
+    "name": "get-station",
+    "summary": "Get details for one observation station and parameter: owner, position history, active status and available data periods.",
+    "verified": true
+   },
+   {
+    "name": "get-station-observations",
+    "summary": "Get observed values (timestamp in epoch ms, value, quality code) for one station, parameter and time period.",
+    "verified": true
+   },
+   {
+    "name": "search-knowledge-bank",
+    "summary": "Search SMHI's knowledge bank (Kunskapsbanken) articles on meteorology, hydrology, oceanography and climate. Optionally filter by topic.",
+    "verified": true
+   },
+   {
+    "name": "get-knowledge-article",
+    "summary": "Read a knowledge-bank article, by topic and slug (from the search-knowledge-bank url /kunskapsbanken/{topic}/{slug}).",
+    "verified": true
+   },
+   {
+    "name": "get-news-article",
+    "summary": "Read an SMHI news article, by slug (path segment after /nyheter/nyheter/).",
+    "verified": true
+   }
+  ],
+  "verified": 16,
+  "writes": 0,
+  "dropped": [],
+  "blockers": [],
+  "loggedIn": false,
+  "seconds": 271,
+  "next": [
+   "clify smhi",
+   "clify smhi search-places --query \"Uppsala\""
+  ],
+  "installed": "/home/ubuntu/clify-runs/blaxel-w2/home/bin/smhi",
+  "explored": {
+   "steps": 30,
+   "recorded": 87,
+   "heldWrites": 1
+  }
+ },
+ "check": {
+  "on": "blaxel",
+  "node": "v24.22.0",
+  "seconds": 8,
+  "reads": 16,
+  "verified": 16,
+  "failed": [],
+  "results": [
+   {
+    "name": "search-places",
+    "ok": true,
+    "ms": 692
+   },
+   {
+    "name": "get-current-weather",
+    "ok": true,
+    "ms": 171
+   },
+   {
+    "name": "get-forecast",
+    "ok": true,
+    "ms": 170
+   },
+   {
+    "name": "get-recent-weather",
+    "ok": true,
+    "ms": 169
+   },
+   {
+    "name": "get-place-warnings",
+    "ok": true,
+    "ms": 185
+   },
+   {
+    "name": "get-national-warning-level",
+    "ok": true,
+    "ms": 169
+   },
+   {
+    "name": "list-warnings",
+    "ok": true,
+    "ms": 508
+   },
+   {
+    "name": "search-open-data",
+    "ok": true,
+    "ms": 855
+   },
+   {
+    "name": "get-open-data-dataset",
+    "ok": true,
+    "ms": 177
+   },
+   {
+    "name": "list-observation-stations",
+    "ok": true,
+    "ms": 1055
+   },
+   {
+    "name": "get-latest-observations-all-stations",
+    "ok": true,
+    "ms": 176
+   },
+   {
+    "name": "get-station",
+    "ok": true,
+    "ms": 175
+   },
+   {
+    "name": "get-station-observations",
+    "ok": true,
+    "ms": 180
+   },
+   {
+    "name": "search-knowledge-bank",
+    "ok": true,
+    "ms": 879
+   },
+   {
+    "name": "get-knowledge-article",
+    "ok": true,
+    "ms": 181
+   },
+   {
+    "name": "get-news-article",
+    "ok": true,
+    "ms": 176
+   }
+  ]
+ },
+ "deleted": true,
+ "seconds": 281
+}

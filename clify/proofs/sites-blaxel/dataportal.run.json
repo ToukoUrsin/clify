@@ -1,0 +1,206 @@
+{
+ "url": "https://www.dataportal.se/",
+ "category": "gov-nordic",
+ "sandbox": "clify-www-dataportal-se",
+ "startedAt": "2026-10-18T08:43:25.935Z",
+ "region": "us-pdx-1",
+ "chrome": "Chrome/148.0.7778.96",
+ "sandboxStartMs": 2560,
+ "addSeconds": 372,
+ "addExit": 0,
+ "add": {
+  "ok": true,
+  "site": "dataportal",
+  "url": "https://www.dataportal.se/",
+  "commands": [
+   {
+    "name": "search-datasets",
+    "summary": "Full-text search of public datasets (dcat:Dataset) in the national catalogue, with sorting and offset paging",
+    "verified": true
+   },
+   {
+    "name": "search-data-services",
+    "summary": "Full-text search of public APIs / data services (dcat:DataService) in the catalogue",
+    "verified": true
+   },
+   {
+    "name": "search-organisations",
+    "summary": "Search publishing organisations (foaf:Agent / foaf:Organization) by name or text",
+    "verified": true
+   },
+   {
+    "name": "search-catalog-solr",
+    "summary": "Advanced: run a raw Solr query against the admin.dataportal.se catalogue store (filter by theme, access rights, publisher, type, with optional facets)",
+    "verified": true
+   },
+   {
+    "name": "get-entry",
+    "summary": "Get full DCAT metadata for a dataset, data service (API) or organisation by catalog and entry id (site URL ids like 389_8203 = catalog 389, entry 8203)",
+    "verified": true
+   },
+   {
+    "name": "get-catalog-quality",
+    "summary": "Get the metadata-quality score (MQA percentage, score, rating) for a catalog",
+    "verified": true
+   },
+   {
+    "name": "export-metadata",
+    "summary": "Export an entry's RDF metadata (dataset/API/organisation) as JSON-LD, Turtle, N-Triples or RDF/XML",
+    "verified": true
+   },
+   {
+    "name": "search-concepts",
+    "summary": "Search concepts/terms (skos:Concept) in the national terminology store",
+    "verified": true
+   },
+   {
+    "name": "list-terminologies",
+    "summary": "List public terminologies (skos:ConceptScheme) in the terminology store",
+    "verified": true
+   },
+   {
+    "name": "search-specifications",
+    "summary": "Search specifications (information/data models, dx-prof Profiles) in the editera store",
+    "verified": true
+   },
+   {
+    "name": "get-concept",
+    "summary": "Get a concept, terminology or specification entry from the editera store by catalog and entry id (site ids like /concepts/202_4778 or /terminology/202_1)",
+    "verified": true
+   },
+   {
+    "name": "list-detected-apis",
+    "summary": "List catalogue entries with an automatically detected OpenAPI definition (definition URL, version, format, CORS)",
+    "verified": true
+   },
+   {
+    "name": "get-theme-stats",
+    "summary": "Count of datasets per EU data theme (Transport, Economy, ...)",
+    "verified": true
+   },
+   {
+    "name": "get-organisation-stats",
+    "summary": "Organisations ranked by number of published datasets (labels and counts)",
+    "verified": true
+   },
+   {
+    "name": "get-dataset-history",
+    "summary": "Monthly history of the total number of datasets in the catalogue",
+    "verified": true
+   },
+   {
+    "name": "get-entity-counts",
+    "summary": "Total counts of concepts, terminologies and specifications",
+    "verified": true
+   }
+  ],
+  "verified": 16,
+  "writes": 0,
+  "dropped": [],
+  "blockers": [],
+  "loggedIn": false,
+  "seconds": 371,
+  "next": [
+   "clify dataportal",
+   "clify dataportal search-datasets --q \"trafik\""
+  ],
+  "installed": "/home/ubuntu/clify-runs/blaxel-w1/home/bin/dataportal",
+  "explored": {
+   "steps": 28,
+   "recorded": 360,
+   "heldWrites": 0
+  }
+ },
+ "check": {
+  "on": "blaxel",
+  "node": "v24.22.0",
+  "seconds": 14,
+  "reads": 16,
+  "verified": 16,
+  "failed": [],
+  "results": [
+   {
+    "name": "search-datasets",
+    "ok": true,
+    "ms": 965
+   },
+   {
+    "name": "search-data-services",
+    "ok": true,
+    "ms": 954
+   },
+   {
+    "name": "search-organisations",
+    "ok": true,
+    "ms": 673
+   },
+   {
+    "name": "search-catalog-solr",
+    "ok": true,
+    "ms": 1138
+   },
+   {
+    "name": "get-entry",
+    "ok": true,
+    "ms": 599
+   },
+   {
+    "name": "get-catalog-quality",
+    "ok": true,
+    "ms": 592
+   },
+   {
+    "name": "export-metadata",
+    "ok": true,
+    "ms": 589
+   },
+   {
+    "name": "search-concepts",
+    "ok": true,
+    "ms": 832
+   },
+   {
+    "name": "list-terminologies",
+    "ok": true,
+    "ms": 777
+   },
+   {
+    "name": "search-specifications",
+    "ok": true,
+    "ms": 600
+   },
+   {
+    "name": "get-concept",
+    "ok": true,
+    "ms": 576
+   },
+   {
+    "name": "list-detected-apis",
+    "ok": true,
+    "ms": 749
+   },
+   {
+    "name": "get-theme-stats",
+    "ok": true,
+    "ms": 562
+   },
+   {
+    "name": "get-organisation-stats",
+    "ok": true,
+    "ms": 767
+   },
+   {
+    "name": "get-dataset-history",
+    "ok": true,
+    "ms": 567
+   },
+   {
+    "name": "get-entity-counts",
+    "ok": true,
+    "ms": 582
+   }
+  ]
+ },
+ "deleted": true,
+ "seconds": 388
+}

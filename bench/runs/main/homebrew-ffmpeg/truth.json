@@ -1,0 +1,11 @@
+{
+ "expect": [
+  "9.0.2",
+  "GPL-3.0-or-later"
+ ],
+ "detail": {
+  "versions.stable": "9.0.2",
+  "license": "GPL-3.0-or-later"
+ },
+ "at": "2026-10-17T23:20:34.906Z"
+}

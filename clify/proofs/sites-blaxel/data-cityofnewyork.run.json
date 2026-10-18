@@ -1,0 +1,131 @@
+{
+ "url": "https://data.cityofnewyork.us/",
+ "category": "gov-us",
+ "sandbox": "clify-data-cityofnewyork-us",
+ "startedAt": "2026-10-18T08:29:22.807Z",
+ "region": "us-pdx-1",
+ "chrome": "Chrome/148.0.7778.96",
+ "sandboxStartMs": 1651,
+ "addSeconds": 210,
+ "addExit": 0,
+ "add": {
+  "ok": true,
+  "site": "data-cityofnewyork",
+  "url": "https://data.cityofnewyork.us/",
+  "commands": [
+   {
+    "name": "search-datasets",
+    "summary": "Search the NYC Open Data catalog by keyword, tag, category or asset type, with sorting and offset paging",
+    "verified": true
+   },
+   {
+    "name": "suggest-dataset-titles",
+    "summary": "Autocomplete dataset titles that match a partial keyword",
+    "verified": true
+   },
+   {
+    "name": "list-catalog-facets",
+    "summary": "List the catalog's browse facets: domain categories and custom facets such as Data Collection, with their options",
+    "verified": true
+   },
+   {
+    "name": "get-dataset",
+    "summary": "Get full metadata for a dataset by its 4x4 id: name, description, agency, category, view and download counts, update times and column definitions",
+    "verified": true
+   },
+   {
+    "name": "query-dataset",
+    "summary": "Run a SoQL query against a dataset's rows: select, filter, aggregate, count, or page with LIMIT/OFFSET",
+    "verified": true
+   },
+   {
+    "name": "export-dataset-csv",
+    "summary": "Download the entire dataset as CSV text (this can be very large for big datasets)",
+    "verified": true
+   },
+   {
+    "name": "list-dataset-changes",
+    "summary": "List a dataset's update/version history (archive entries with version number and timestamp), using cursor paging",
+    "verified": true
+   },
+   {
+    "name": "list-dataset-attachments",
+    "summary": "List the file ids of a dataset's attachments (data dictionaries, user guides) with their scan state",
+    "verified": true
+   }
+  ],
+  "verified": 8,
+  "writes": 0,
+  "dropped": [
+   {
+    "name": "download-attachment",
+    "reason": "Attachments are binary Office/ZIP files (the output starts with PK). Decoding them as text produces garbled bytes that an agent cannot use, and the command has no recorded source."
+   }
+  ],
+  "blockers": [],
+  "loggedIn": false,
+  "seconds": 210,
+  "next": [
+   "clify data-cityofnewyork",
+   "clify data-cityofnewyork search-datasets --q \"restaurant\""
+  ],
+  "installed": "/home/ubuntu/clify-runs/blaxel-w1/home/bin/data-cityofnewyork",
+  "explored": {
+   "steps": 25,
+   "recorded": 66,
+   "heldWrites": 0
+  }
+ },
+ "check": {
+  "on": "blaxel",
+  "node": "v24.22.0",
+  "seconds": 11,
+  "reads": 8,
+  "verified": 8,
+  "failed": [],
+  "results": [
+   {
+    "name": "search-datasets",
+    "ok": true,
+    "ms": 3354
+   },
+   {
+    "name": "suggest-dataset-titles",
+    "ok": true,
+    "ms": 147
+   },
+   {
+    "name": "list-catalog-facets",
+    "ok": true,
+    "ms": 161
+   },
+   {
+    "name": "get-dataset",
+    "ok": true,
+    "ms": 135
+   },
+   {
+    "name": "query-dataset",
+    "ok": true,
+    "ms": 219
+   },
+   {
+    "name": "export-dataset-csv",
+    "ok": true,
+    "ms": 3739
+   },
+   {
+    "name": "list-dataset-changes",
+    "ok": true,
+    "ms": 766
+   },
+   {
+    "name": "list-dataset-attachments",
+    "ok": true,
+    "ms": 148
+   }
+  ]
+ },
+ "deleted": true,
+ "seconds": 223
+}

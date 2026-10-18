@@ -1,0 +1,1062 @@
+{
+ "name": "tidesandcurrents-noaa",
+ "startUrl": "https://tidesandcurrents.noaa.gov/",
+ "origin": "https://tidesandcurrents.noaa.gov",
+ "createdAt": "2026-10-18T09:20:27.163Z",
+ "description": "NOAA Tides & Currents (CO-OPS): find tide, current and observation stations and fetch tide predictions, water levels, weather, current predictions, datums, harmonic constituents, sea level trends and storm surge alerts through NOAA's public metadata and data APIs.",
+ "commands": [
+  {
+   "name": "search-tide-stations",
+   "summary": "Search tide prediction stations by name (e.g. 'Boston'); returns station IDs, state, region and coordinates",
+   "method": "GET",
+   "urlTemplate": "https://api.tidesandcurrents.noaa.gov/mdapi/prod/webapi/tidepredstations.json",
+   "params": [
+    {
+     "name": "q",
+     "in": "query",
+     "required": true,
+     "type": "string",
+     "description": "Station or place name to search for",
+     "example": "Boston"
+    }
+   ],
+   "responseType": "json",
+   "resultPath": "stationList",
+   "defaultFields": [
+    "stationId",
+    "stationFullName",
+    "state",
+    "region",
+    "lat",
+    "lon",
+    "stationType",
+    "refStationId"
+   ],
+   "mutates": false,
+   "example": {
+    "q": "Boston"
+   },
+   "source": "E29 GET https://api.tidesandcurrents.noaa.gov/mdapi/prod/webapi/tidepredstations.json",
+   "verified": true
+  },
+  {
+   "name": "list-stations",
+   "summary": "List all CO-OPS stations offering a given product type (water levels, met, currents, current predictions, datums, harmonic constituents, etc.)",
+   "method": "GET",
+   "urlTemplate": "https://api.tidesandcurrents.noaa.gov/mdapi/prod/webapi/stations.json",
+   "params": [
+    {
+     "name": "type",
+     "in": "query",
+     "required": true,
+     "type": "string",
+     "description": "Station/product type to list",
+     "enum": [
+      "waterlevels",
+      "waterlevelsandmet",
+      "airgap",
+      "datums",
+      "supersededdatums",
+      "met",
+      "physocean",
+      "harcon",
+      "tidepredictions",
+      "highwater",
+      "lowwater",
+      "currents",
+      "historiccurrents",
+      "currentpredictions"
+     ],
+     "example": "waterlevels"
+    },
+    {
+     "name": "expand",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Comma-separated sub-resources to inline, e.g. 'products,sensors,notices,floodlevels,datums'. Omit for a compact list.",
+     "example": "products,sensors,notices"
+    },
+    {
+     "name": "units",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Units for expanded values",
+     "enum": [
+      "english",
+      "metric"
+     ]
+    }
+   ],
+   "responseType": "json",
+   "resultPath": "stations",
+   "defaultFields": [
+    "id",
+    "name",
+    "state",
+    "lat",
+    "lng",
+    "affiliations",
+    "timezone",
+    "tidal"
+   ],
+   "mutates": false,
+   "example": {
+    "type": "waterlevels"
+   },
+   "source": "E3 GET https://api.tidesandcurrents.noaa.gov/mdapi/prod/webapi/stations.json",
+   "verified": true
+  },
+  {
+   "name": "get-station",
+   "summary": "Get metadata for one station by ID (name, location, timezone, flags) with optional expanded products, datums, details, notices, benchmarks",
+   "method": "GET",
+   "urlTemplate": "https://api.tidesandcurrents.noaa.gov/mdapi/prod/webapi/stations/{id}.json",
+   "params": [
+    {
+     "name": "id",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Station ID, e.g. 9447130 (Seattle) or 8518750 (The Battery)",
+     "example": "9447130"
+    },
+    {
+     "name": "expand",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Comma-separated sub-resources to inline: products, datums, disclaimers, notices, details, benchmarks, sensors, floodlevels",
+     "default": "details,products",
+     "example": "datums,disclaimers,notices,details,benchmarks"
+    },
+    {
+     "name": "units",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Units for expanded values",
+     "enum": [
+      "english",
+      "metric"
+     ]
+    }
+   ],
+   "responseType": "json",
+   "resultPath": "stations",
+   "defaultFields": [
+    "id",
+    "name",
+    "state",
+    "lat",
+    "lng",
+    "timezone",
+    "affiliations",
+    "details",
+    "products"
+   ],
+   "mutates": false,
+   "example": {
+    "id": "9447130"
+   },
+   "source": "E7 E11 GET https://api.tidesandcurrents.noaa.gov/mdapi/prod/webapi/stations/9447130.json",
+   "verified": true
+  },
+  {
+   "name": "get-station-datums",
+   "summary": "Get tidal datums for a station (MLLW, MHHW, MSL, NAVD88 etc.) plus LAT/HAT and record min/max",
+   "method": "GET",
+   "urlTemplate": "https://api.tidesandcurrents.noaa.gov/mdapi/prod/webapi/stations/{id}/datums.json",
+   "params": [
+    {
+     "name": "id",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Station ID",
+     "example": "9447130"
+    },
+    {
+     "name": "units",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Units",
+     "enum": [
+      "english",
+      "metric"
+     ],
+     "default": "english"
+    }
+   ],
+   "responseType": "json",
+   "defaultFields": [
+    "epoch",
+    "units",
+    "OrthometricDatum",
+    "datums",
+    "LAT",
+    "HAT",
+    "min",
+    "max"
+   ],
+   "mutates": false,
+   "example": {
+    "id": "9447130"
+   },
+   "source": "E10 GET https://api.tidesandcurrents.noaa.gov/mdapi/prod/webapi/stations/{n}/datums.json",
+   "verified": true
+  },
+  {
+   "name": "get-station-sensors",
+   "summary": "List a station's sensors (water level, barometer, wind, temperature...) with status and elevation",
+   "method": "GET",
+   "urlTemplate": "https://api.tidesandcurrents.noaa.gov/mdapi/prod/webapi/stations/{id}/sensors.json",
+   "params": [
+    {
+     "name": "id",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Station ID",
+     "example": "9447130"
+    }
+   ],
+   "responseType": "json",
+   "resultPath": "sensors",
+   "defaultFields": [
+    "sensorID",
+    "name",
+    "status",
+    "elevation",
+    "refdatum",
+    "message"
+   ],
+   "mutates": false,
+   "example": {
+    "id": "9447130"
+   },
+   "source": "E19 GET https://api.tidesandcurrents.noaa.gov/mdapi/prod/webapi/stations/{n}/sensors.json",
+   "verified": true
+  },
+  {
+   "name": "get-harmonic-constituents",
+   "summary": "Get tidal harmonic constituents (M2, S2, K1...) for a station: amplitude, phase, speed",
+   "method": "GET",
+   "urlTemplate": "https://api.tidesandcurrents.noaa.gov/mdapi/prod/webapi/stations/{id}/harcon.json",
+   "params": [
+    {
+     "name": "id",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Station ID",
+     "example": "8518750"
+    },
+    {
+     "name": "units",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Units for amplitude",
+     "enum": [
+      "english",
+      "metric"
+     ]
+    }
+   ],
+   "responseType": "json",
+   "resultPath": "HarmonicConstituents",
+   "defaultFields": [
+    "number",
+    "name",
+    "description",
+    "amplitude",
+    "phase_GMT",
+    "phase_local",
+    "speed"
+   ],
+   "mutates": false,
+   "example": {
+    "id": "8518750"
+   },
+   "source": "E26 GET https://api.tidesandcurrents.noaa.gov/mdapi/prod/webapi/stations/{n}/harcon.json",
+   "verified": true
+  },
+  {
+   "name": "get-nearby-stations",
+   "summary": "List the stations nearest to a given station, with distance and station type",
+   "method": "GET",
+   "urlTemplate": "https://api.tidesandcurrents.noaa.gov/mdapi/prod/webapi/stations/{id}/nearby.json",
+   "params": [
+    {
+     "name": "id",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Station ID",
+     "example": "9447130"
+    }
+   ],
+   "responseType": "json",
+   "resultPath": "stations",
+   "defaultFields": [
+    "id",
+    "name",
+    "distance",
+    "stationType",
+    "lat",
+    "lng"
+   ],
+   "mutates": false,
+   "example": {
+    "id": "9447130"
+   },
+   "source": "E14 GET https://api.tidesandcurrents.noaa.gov/mdapi/prod/webapi/stations/{n}/nearby.json",
+   "verified": true
+  },
+  {
+   "name": "get-tide-prediction-offsets",
+   "summary": "Get tide prediction offsets for a station (reference vs. subordinate, time/height offsets to its reference station)",
+   "method": "GET",
+   "urlTemplate": "https://api.tidesandcurrents.noaa.gov/mdapi/prod/webapi/stations/{id}/tidepredoffsets.json",
+   "params": [
+    {
+     "name": "id",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Station ID",
+     "example": "9447130"
+    }
+   ],
+   "responseType": "json",
+   "defaultFields": [
+    "refStationId",
+    "type",
+    "heightOffsetHighTide",
+    "heightOffsetLowTide",
+    "timeOffsetHighTide",
+    "timeOffsetLowTide",
+    "heightAdjustedType"
+   ],
+   "mutates": false,
+   "example": {
+    "id": "9447130"
+   },
+   "source": "E20 GET https://api.tidesandcurrents.noaa.gov/mdapi/prod/webapi/stations/{n}/tidepredoffsets.json",
+   "verified": true
+  },
+  {
+   "name": "get-tide-predictions",
+   "summary": "Get tide predictions for a station: high/low times and heights or a regular time series, for a date or date range",
+   "method": "GET",
+   "urlTemplate": "https://api.tidesandcurrents.noaa.gov/api/prod/datagetter?product=predictions&format=json&application=NOS.COOPS.TAC.STATIONHOME",
+   "params": [
+    {
+     "name": "station",
+     "in": "query",
+     "required": true,
+     "type": "string",
+     "description": "Tide prediction station ID",
+     "example": "9447130"
+    },
+    {
+     "name": "date",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Relative date: today, latest or recent. Use this OR begin_date/end_date OR range.",
+     "enum": [
+      "today",
+      "latest",
+      "recent"
+     ],
+     "example": "today"
+    },
+    {
+     "name": "begin_date",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Start date, yyyyMMdd or 'yyyyMMdd HH:mm'",
+     "example": "20261017"
+    },
+    {
+     "name": "end_date",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "End date, yyyyMMdd or 'yyyyMMdd HH:mm'",
+     "example": "20261018"
+    },
+    {
+     "name": "range",
+     "in": "query",
+     "required": false,
+     "type": "number",
+     "description": "Number of hours (used with begin_date or end_date, or alone for the last N hours)"
+    },
+    {
+     "name": "interval",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "hilo = high/low tides only; h = hourly; or minutes",
+     "enum": [
+      "hilo",
+      "h",
+      "1",
+      "5",
+      "6",
+      "10",
+      "15",
+      "30",
+      "60"
+     ],
+     "default": "hilo"
+    },
+    {
+     "name": "datum",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Vertical datum",
+     "enum": [
+      "MLLW",
+      "MLW",
+      "MSL",
+      "MTL",
+      "MHW",
+      "MHHW",
+      "NAVD",
+      "STND"
+     ],
+     "default": "MLLW"
+    },
+    {
+     "name": "units",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "english (feet) or metric (meters)",
+     "enum": [
+      "english",
+      "metric"
+     ],
+     "default": "english"
+    },
+    {
+     "name": "time_zone",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "gmt, lst (local standard) or lst_ldt (local with daylight saving)",
+     "enum": [
+      "gmt",
+      "lst",
+      "lst_ldt"
+     ],
+     "default": "lst_ldt"
+    }
+   ],
+   "responseType": "json",
+   "resultPath": "predictions",
+   "defaultFields": [
+    "t",
+    "v",
+    "type"
+   ],
+   "mutates": false,
+   "example": {
+    "station": "9447130",
+    "date": "today"
+   },
+   "source": "E8 GET https://api.tidesandcurrents.noaa.gov/api/prod/datagetter",
+   "verified": true
+  },
+  {
+   "name": "get-observations",
+   "summary": "Get observed data for a station: water levels, air/water temperature, wind, air pressure, humidity, visibility, conductivity, salinity, air gap",
+   "method": "GET",
+   "urlTemplate": "https://api.tidesandcurrents.noaa.gov/api/prod/datagetter?format=json&application=NOS.COOPS.TAC.STATIONHOME",
+   "params": [
+    {
+     "name": "station",
+     "in": "query",
+     "required": true,
+     "type": "string",
+     "description": "Station ID",
+     "example": "9447130"
+    },
+    {
+     "name": "product",
+     "in": "query",
+     "required": true,
+     "type": "string",
+     "description": "Data product. Not every station offers every product; check get-station-sensors or get-data-inventory first.",
+     "enum": [
+      "water_level",
+      "hourly_height",
+      "high_low",
+      "daily_mean",
+      "monthly_mean",
+      "one_minute_water_level",
+      "air_temperature",
+      "water_temperature",
+      "wind",
+      "air_pressure",
+      "humidity",
+      "visibility",
+      "conductivity",
+      "salinity",
+      "air_gap"
+     ],
+     "example": "water_level"
+    },
+    {
+     "name": "date",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Relative date: today, latest or recent (last 72h). Use this OR begin_date/end_date OR range.",
+     "enum": [
+      "today",
+      "latest",
+      "recent"
+     ],
+     "example": "today"
+    },
+    {
+     "name": "begin_date",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Start, yyyyMMdd or 'yyyyMMdd HH:mm'",
+     "example": "20261017 12:00"
+    },
+    {
+     "name": "end_date",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "End, yyyyMMdd or 'yyyyMMdd HH:mm'",
+     "example": "20261018 23:59"
+    },
+    {
+     "name": "range",
+     "in": "query",
+     "required": false,
+     "type": "number",
+     "description": "Number of hours (with begin_date/end_date, or alone for the last N hours)"
+    },
+    {
+     "name": "datum",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Vertical datum (required for water level products, ignored otherwise)",
+     "enum": [
+      "MLLW",
+      "MLW",
+      "MSL",
+      "MTL",
+      "MHW",
+      "MHHW",
+      "NAVD",
+      "STND",
+      "IGLD",
+      "LWD"
+     ],
+     "default": "MLLW"
+    },
+    {
+     "name": "interval",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Set to h for hourly met data (default is 6-minute)",
+     "enum": [
+      "h",
+      "6"
+     ]
+    },
+    {
+     "name": "units",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "english or metric",
+     "enum": [
+      "english",
+      "metric"
+     ],
+     "default": "english"
+    },
+    {
+     "name": "time_zone",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "gmt, lst or lst_ldt",
+     "enum": [
+      "gmt",
+      "lst",
+      "lst_ldt"
+     ],
+     "default": "lst_ldt"
+    }
+   ],
+   "responseType": "json",
+   "resultPath": "data",
+   "defaultFields": [
+    "t",
+    "v",
+    "s",
+    "d",
+    "dr",
+    "f",
+    "q"
+   ],
+   "mutates": false,
+   "example": {
+    "station": "9447130",
+    "product": "water_level",
+    "date": "today"
+   },
+   "source": "E8 E32",
+   "verified": true
+  },
+  {
+   "name": "get-current-predictions",
+   "summary": "Get tidal current predictions for a current station: max flood/ebb and slack times and speeds, or a time series",
+   "method": "GET",
+   "urlTemplate": "https://api.tidesandcurrents.noaa.gov/api/prod/datagetter?product=currents_predictions&format=json&application=NOS.COOPS.TAC.STATIONHOME",
+   "params": [
+    {
+     "name": "station",
+     "in": "query",
+     "required": true,
+     "type": "string",
+     "description": "Current prediction station ID (find via list-stations --type currentpredictions)",
+     "example": "cb0102"
+    },
+    {
+     "name": "date",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Relative date: today, latest or recent. Use this OR begin_date/end_date OR range.",
+     "enum": [
+      "today",
+      "latest",
+      "recent"
+     ],
+     "example": "today"
+    },
+    {
+     "name": "begin_date",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Start date, yyyyMMdd or 'yyyyMMdd HH:mm'"
+    },
+    {
+     "name": "end_date",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "End date, yyyyMMdd or 'yyyyMMdd HH:mm'"
+    },
+    {
+     "name": "range",
+     "in": "query",
+     "required": false,
+     "type": "number",
+     "description": "Number of hours"
+    },
+    {
+     "name": "interval",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "MAX_SLACK = max flood/ebb and slack events only; or minutes for a time series",
+     "enum": [
+      "MAX_SLACK",
+      "h",
+      "1",
+      "6",
+      "10",
+      "30",
+      "60"
+     ],
+     "default": "MAX_SLACK"
+    },
+    {
+     "name": "bin",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Depth bin number (omit for the station's default bin)"
+    },
+    {
+     "name": "vel_type",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Speed/direction or default (flood/ebb signed speed)",
+     "enum": [
+      "speed_dir",
+      "default"
+     ]
+    },
+    {
+     "name": "units",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "english (knots) or metric (cm/s)",
+     "enum": [
+      "english",
+      "metric"
+     ],
+     "default": "english"
+    },
+    {
+     "name": "time_zone",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "gmt, lst or lst_ldt",
+     "enum": [
+      "gmt",
+      "lst",
+      "lst_ldt"
+     ],
+     "default": "lst_ldt"
+    }
+   ],
+   "responseType": "json",
+   "resultPath": "current_predictions.cp",
+   "defaultFields": [
+    "Time",
+    "Type",
+    "Velocity_Major",
+    "meanFloodDir",
+    "meanEbbDir",
+    "Bin",
+    "Depth"
+   ],
+   "mutates": false,
+   "example": {
+    "station": "cb0102",
+    "date": "today"
+   },
+   "source": "E8 GET https://api.tidesandcurrents.noaa.gov/api/prod/datagetter",
+   "verified": true
+  },
+  {
+   "name": "list-tide-prediction-regions",
+   "summary": "Browse tide prediction geographic groups: top-level regions (lvl=4), states (lvl=5), or children of a parent group",
+   "method": "GET",
+   "urlTemplate": "https://api.tidesandcurrents.noaa.gov/mdapi/prod/webapi/geogroups.json",
+   "params": [
+    {
+     "name": "lvl",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Group level: 4 = coasts/regions, 5 = states/areas",
+     "enum": [
+      "4",
+      "5"
+     ],
+     "example": "4"
+    },
+    {
+     "name": "parent",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Parent geoGroupId to list its sub-groups (e.g. 1743 = U.S. West Coast)",
+     "example": "1743"
+    },
+    {
+     "name": "type",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Group type",
+     "default": "ETIDES"
+    }
+   ],
+   "responseType": "json",
+   "resultPath": "geoGroupList",
+   "defaultFields": [
+    "geoGroupId",
+    "geoGroupName",
+    "parentGeoGroupId",
+    "level",
+    "seq"
+   ],
+   "mutates": false,
+   "example": {
+    "lvl": "4"
+   },
+   "source": "E12 GET https://api.tidesandcurrents.noaa.gov/mdapi/prod/webapi/geogroups.json",
+   "verified": true
+  },
+  {
+   "name": "list-tide-prediction-group-stations",
+   "summary": "List the sub-areas and tide prediction stations inside a geographic group (e.g. a state such as 1403 = Massachusetts)",
+   "method": "GET",
+   "urlTemplate": "https://api.tidesandcurrents.noaa.gov/mdapi/prod/webapi/geogroups/{id}/children.json",
+   "params": [
+    {
+     "name": "id",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "geoGroupId from list-tide-prediction-regions",
+     "example": "1403"
+    }
+   ],
+   "responseType": "json",
+   "resultPath": "stationList",
+   "defaultFields": [
+    "stationId",
+    "geoGroupName",
+    "geoGroupId",
+    "parentGeoGroupId",
+    "level",
+    "stationType",
+    "lat",
+    "lon"
+   ],
+   "mutates": false,
+   "example": {
+    "id": "1403"
+   },
+   "source": "E30 GET https://api.tidesandcurrents.noaa.gov/mdapi/prod/webapi/geogroups/{n}/children.json",
+   "verified": true
+  },
+  {
+   "name": "list-current-prediction-groups",
+   "summary": "Get the full hierarchy of current prediction regions and their stations (coast > state > area > station with bin)",
+   "method": "GET",
+   "urlTemplate": "https://api.tidesandcurrents.noaa.gov/mdapi/prod/webapi/current_geo_groups.json",
+   "params": [],
+   "responseType": "json",
+   "resultPath": "currPredGeoGroupList",
+   "defaultFields": [
+    "groupID",
+    "parentGroupID",
+    "groupName",
+    "level",
+    "stationID",
+    "stationName",
+    "bin",
+    "refStationID"
+   ],
+   "mutates": false,
+   "source": "E17 GET https://api.tidesandcurrents.noaa.gov/mdapi/prod/webapi/current_geo_groups.json",
+   "verified": true
+  },
+  {
+   "name": "list-ports-stations",
+   "summary": "List PORTS (Physical Oceanographic Real-Time System) stations with the sensors each provides",
+   "method": "GET",
+   "urlTemplate": "https://api.tidesandcurrents.noaa.gov/mdapi/prod/webapi/portsstation.json",
+   "params": [],
+   "responseType": "json",
+   "resultPath": "portsStationList",
+   "defaultFields": [
+    "stationID",
+    "label",
+    "PORTSCode",
+    "PORTSName",
+    "lat",
+    "lng",
+    "waterlevel",
+    "currents"
+   ],
+   "mutates": false,
+   "source": "E24 GET https://api.tidesandcurrents.noaa.gov/mdapi/prod/webapi/portsstation.json",
+   "verified": true
+  },
+  {
+   "name": "get-data-inventory",
+   "summary": "Get a station's data inventory: which parameters it has measured and over what date ranges",
+   "method": "GET",
+   "urlTemplate": "https://opendap.co-ops.nos.noaa.gov/axis/webservices/datainventory/response.jsp?format=xml&Submit=Submit",
+   "params": [
+    {
+     "name": "stationId",
+     "in": "query",
+     "required": true,
+     "type": "string",
+     "description": "Station ID",
+     "example": "9447130"
+    }
+   ],
+   "responseType": "json",
+   "resultPath": "soapenv:Envelope.soapenv:Body.DataInventory.station",
+   "mutates": false,
+   "example": {
+    "stationId": "9447130"
+   },
+   "source": "E36 GET https://opendap.co-ops.nos.noaa.gov/axis/webservices/datainventory/response.jsp",
+   "verified": true
+  },
+  {
+   "name": "list-sea-level-trends",
+   "summary": "List relative sea level trends (inches/decade, period of record) for all US or global stations, or one station",
+   "method": "GET",
+   "urlTemplate": "https://api.tidesandcurrents.noaa.gov/dpapi/prod/webapi/product/sealvltrends.json",
+   "params": [
+    {
+     "name": "affil",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Station group",
+     "enum": [
+      "US",
+      "Global"
+     ],
+     "default": "US"
+    },
+    {
+     "name": "station",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Limit to one station ID",
+     "example": "8518750"
+    }
+   ],
+   "responseType": "json",
+   "resultPath": "SeaLvlTrends",
+   "defaultFields": [
+    "stationId",
+    "stationName",
+    "trend",
+    "trendError",
+    "trendUnits",
+    "startDate",
+    "endDate",
+    "monthlyMeans"
+   ],
+   "mutates": false,
+   "example": {
+    "affil": "US"
+   },
+   "source": "E25 GET https://api.tidesandcurrents.noaa.gov/dpapi/prod/webapi/product/sealvltrends.json",
+   "verified": true
+  },
+  {
+   "name": "export-sea-level-trend-csv",
+   "summary": "Download a station's monthly mean sea level trend data as CSV (year, month, monthly MSL, linear trend, confidence bounds)",
+   "method": "GET",
+   "urlTemplate": "/sltrends/data/{id}_meantrend.csv",
+   "params": [
+    {
+     "name": "id",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Sea level trend station ID",
+     "example": "8518750"
+    }
+   ],
+   "responseType": "text",
+   "mutates": false,
+   "example": {
+    "id": "8518750"
+   },
+   "source": "E53 GET https://tidesandcurrents.noaa.gov/sltrends/sltrends_station.shtml",
+   "verified": true
+  },
+  {
+   "name": "list-storm-surge-events",
+   "summary": "List active storm surge / coastal inundation events (storm name, type, analysis, links)",
+   "method": "GET",
+   "urlTemplate": "https://api.tidesandcurrents.noaa.gov/dpapi/prod/webapi/product/storm_surge_events.json",
+   "params": [],
+   "responseType": "json",
+   "resultPath": "StormSurgeEvents",
+   "defaultFields": [
+    "stormname",
+    "stormtype",
+    "postdatetime",
+    "posttimezone",
+    "analysis",
+    "postedURL"
+   ],
+   "mutates": false,
+   "source": "E2 GET https://api.tidesandcurrents.noaa.gov/dpapi/prod/webapi/product/storm_surge_events.json",
+   "verified": true
+  },
+  {
+   "name": "list-news",
+   "summary": "List recent NOAA Tides & Currents news posts",
+   "method": "GET",
+   "urlTemplate": "/cms/wp-json/wp/v2/posts",
+   "params": [
+    {
+     "name": "per_page",
+     "in": "query",
+     "required": false,
+     "type": "number",
+     "description": "Posts per page",
+     "default": 4
+    },
+    {
+     "name": "page",
+     "in": "query",
+     "required": false,
+     "type": "number",
+     "description": "Page number (1-based)"
+    }
+   ],
+   "responseType": "json",
+   "defaultFields": [
+    "id",
+    "date",
+    "title.rendered",
+    "link",
+    "slug"
+   ],
+   "pagination": {
+    "type": "page",
+    "param": "page"
+   },
+   "mutates": false,
+   "example": {
+    "per_page": "4"
+   },
+   "source": "E31 GET https://tidesandcurrents.noaa.gov/cms/wp-json/wp/v2/posts",
+   "verified": true
+  }
+ ],
+ "blockers": [],
+ "notes": [
+  "No login needed; all endpoints are public NOAA APIs (metadata API mdapi/prod, data API api/prod/datagetter).",
+  "Station IDs are 7-digit strings for water level/tide stations (e.g. 9447130 Seattle, 8518750 The Battery); tide-prediction-only subordinate stations may look like 'TPT2705'; current stations look like 'cb0102' or 'PUG1515'.",
+  "For datagetter commands (get-tide-predictions, get-observations, get-current-predictions) give exactly one time spec: --date (today/latest/recent), or --begin_date + --end_date, or --range. Max span is about 31 days for 6-minute data and predictions, 1 year for hourly data.",
+  "Water level products need a datum (default MLLW); Great Lakes stations use IGLD or LWD.",
+  "Errors from datagetter come back as HTTP 200 with {\"error\":{\"message\":...}}, e.g. when a station doesn't have the requested product. Check get-station --expand products or list-stations --type to see what a station offers.",
+  "Use list-stations --type currentpredictions to find current prediction station IDs and bins. The site's current-station name search is just a client-side filter over that list.",
+  "list-stations without --expand returns a compact list; with expand, waterlevels and currentpredictions can return thousands of large entries."
+ ],
+ "dropped": [],
+ "generated": {
+  "by": "clify add",
+  "model": "claude-opus-5-5",
+  "exploredSteps": 29,
+  "recorded": 285,
+  "verifiedAt": "2026-10-18T09:22:25.538Z",
+  "seconds": 284
+ }
+}

@@ -1,0 +1,294 @@
+{
+ "name": "opam-ocaml",
+ "startUrl": "https://opam.ocaml.org/packages/",
+ "origin": "https://opam.ocaml.org",
+ "createdAt": "2026-10-18T09:25:09.858Z",
+ "description": "opam.ocaml.org is the official OCaml package repository site. This CLI lists all opam packages (by name or by last update), and fetches package and version details, dependencies and reverse dependencies, from the server-rendered HTML.",
+ "commands": [
+  {
+   "name": "list-packages",
+   "summary": "List every opam package alphabetically by name, with latest version and description. The full list comes back in one response; filter it yourself to search.",
+   "method": "GET",
+   "urlTemplate": "/packages/",
+   "params": [],
+   "responseType": "html",
+   "extract": {
+    "list": "tr[title]",
+    "fields": {
+     "name": "td > a",
+     "url": "td > a@href",
+     "latest_version": "td + td",
+     "description": "td + td + td",
+     "published": "@title"
+    }
+   },
+   "defaultFields": [
+    "name",
+    "latest_version",
+    "description",
+    "published",
+    "url"
+   ],
+   "mutates": false,
+   "source": "E6 GET https://opam.ocaml.org/packages/",
+   "verified": true
+  },
+  {
+   "name": "list-recent-packages",
+   "summary": "List opam packages sorted by their most recent publish date, newest first, with latest version and description.",
+   "method": "GET",
+   "urlTemplate": "/packages/index-date.html",
+   "params": [],
+   "responseType": "html",
+   "extract": {
+    "list": "tr[title]",
+    "fields": {
+     "name": "td > a",
+     "url": "td > a@href",
+     "latest_version": "td + td",
+     "description": "td + td + td",
+     "published": "@title"
+    }
+   },
+   "defaultFields": [
+    "name",
+    "latest_version",
+    "published",
+    "description",
+    "url"
+   ],
+   "mutates": false,
+   "source": "E1 GET https://opam.ocaml.org/packages/index-date.html",
+   "verified": true
+  },
+  {
+   "name": "get-package",
+   "summary": "Get details of the latest version of an opam package: synopsis, description, author, license and latest version.",
+   "method": "GET",
+   "urlTemplate": "/packages/{name}/",
+   "params": [
+    {
+     "name": "name",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "opam package name, e.g. yojson",
+     "example": "yojson"
+    }
+   ],
+   "responseType": "html",
+   "extract": {
+    "fields": {
+     "title": "title",
+     "latest_version": "a.dropdown-toggle span.package-version",
+     "synopsis": "div.well h4",
+     "description": "div.well",
+     "author": "table.package-info td",
+     "license": "table.package-info tr + tr td",
+     "info": "table.package-info"
+    }
+   },
+   "defaultFields": [
+    "title",
+    "latest_version",
+    "synopsis",
+    "author",
+    "license",
+    "info"
+   ],
+   "mutates": false,
+   "example": {
+    "name": "yojson"
+   },
+   "source": "E2 E3 GET https://opam.ocaml.org/packages/yojson",
+   "verified": true
+  },
+  {
+   "name": "list-package-versions",
+   "summary": "List all published versions of an opam package, with links to each version's detail page.",
+   "method": "GET",
+   "urlTemplate": "/packages/{name}/",
+   "params": [
+    {
+     "name": "name",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "opam package name, e.g. dune",
+     "example": "dune"
+    }
+   ],
+   "responseType": "html",
+   "extract": {
+    "list": "ul.dropdown-menu li > a[href*='.'][href$='/']",
+    "fields": {
+     "version": "span.package-version",
+     "url": "@href"
+    }
+   },
+   "defaultFields": [
+    "version",
+    "url"
+   ],
+   "mutates": false,
+   "example": {
+    "name": "dune"
+   },
+   "source": "E3 E4",
+   "verified": true
+  },
+  {
+   "name": "get-package-version",
+   "summary": "Get details of a specific version of an opam package: synopsis, description, author, license, source URL/checksums and other metadata.",
+   "method": "GET",
+   "urlTemplate": "/packages/{name}/{name}.{version}/",
+   "params": [
+    {
+     "name": "name",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "opam package name, e.g. dune",
+     "example": "dune"
+    },
+    {
+     "name": "version",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Package version string, e.g. 3.24.2",
+     "example": "3.24.2"
+    }
+   ],
+   "responseType": "html",
+   "extract": {
+    "fields": {
+     "title": "title",
+     "version": "a.dropdown-toggle span.package-version",
+     "synopsis": "div.well h4",
+     "description": "div.well",
+     "author": "table.package-info td",
+     "license": "table.package-info tr + tr td",
+     "info": "table.package-info"
+    }
+   },
+   "defaultFields": [
+    "title",
+    "version",
+    "synopsis",
+    "author",
+    "license",
+    "info"
+   ],
+   "mutates": false,
+   "example": {
+    "name": "dune",
+    "version": "2.9.3"
+   },
+   "source": "E4 E5 GET https://opam.ocaml.org/packages/dune/dune.3.24.2/",
+   "verified": true
+  },
+  {
+   "name": "get-package-dependencies",
+   "summary": "List the dependency formula entries (dependencies, optional deps and conflicts) of a specific opam package version, with version constraints.",
+   "method": "GET",
+   "urlTemplate": "/packages/{name}/{name}.{version}/",
+   "params": [
+    {
+     "name": "name",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "opam package name, e.g. dune",
+     "example": "dune"
+    },
+    {
+     "name": "version",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Package version string, e.g. 3.24.2",
+     "example": "3.24.2"
+    }
+   ],
+   "responseType": "html",
+   "extract": {
+    "list": "ul.formula > li",
+    "fields": {
+     "package": "span.formula-package",
+     "constraint": "span.version-constraint",
+     "text": "",
+     "url": "a@href"
+    }
+   },
+   "defaultFields": [
+    "package",
+    "constraint",
+    "text",
+    "url"
+   ],
+   "mutates": false,
+   "example": {
+    "name": "dune",
+    "version": "3.24.2"
+   },
+   "source": "E4 E5 GET https://opam.ocaml.org/packages/dune/dune.3.24.2/",
+   "verified": true
+  },
+  {
+   "name": "list-package-dependents",
+   "summary": "List the packages that require a given opam package (reverse dependencies, 'Required by'), with their version constraints.",
+   "method": "GET",
+   "urlTemplate": "/packages/{name}/",
+   "params": [
+    {
+     "name": "name",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "opam package name, e.g. yojson",
+     "example": "yojson"
+    }
+   ],
+   "responseType": "html",
+   "extract": {
+    "list": "div.revdeps-column li",
+    "fields": {
+     "package": "span.formula-package",
+     "url": "a@href",
+     "constraint": "span.version-constraint"
+    }
+   },
+   "defaultFields": [
+    "package",
+    "constraint",
+    "url"
+   ],
+   "mutates": false,
+   "example": {
+    "name": "yojson"
+   },
+   "source": "E3 GET https://opam.ocaml.org/packages/yojson/",
+   "verified": true
+  }
+ ],
+ "blockers": [],
+ "notes": [
+  "The site is fully static HTML with no API, no pagination and no login. All data is scraped from server-rendered pages.",
+  "Search on the site only filters the full list on the client. To search, run list-packages and filter by name or description locally.",
+  "Package detail URLs need a trailing slash (/packages/{name}/). Without it the server returns a 308 redirect.",
+  "Version detail pages use the form /packages/{name}/{name}.{version}/, e.g. /packages/dune/dune.3.24.2/. Use list-package-versions to find valid versions.",
+  "The 'published' field in list results is the row title attribute, e.g. 'Published: Oct 17, 2026'.",
+  "Dependency entries can contain nested 'any of' / 'all of' formulas. The 'text' field holds the full formula when package/constraint only show the first match.",
+  "Documentation for a package lives at https://ocaml.org/p/{name}/{version|latest}/doc/index.html."
+ ],
+ "dropped": [],
+ "generated": {
+  "by": "clify add",
+  "model": "claude-opus-5-5",
+  "exploredSteps": 8,
+  "recorded": 7,
+  "verifiedAt": "2026-10-18T09:26:07.812Z",
+  "seconds": 111
+ }
+}

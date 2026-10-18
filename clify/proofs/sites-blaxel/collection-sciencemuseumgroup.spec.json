@@ -1,0 +1,102 @@
+{
+ "name": "collection-sciencemuseumgroup",
+ "startUrl": "https://collection.sciencemuseumgroup.org.uk/",
+ "origin": "https://collection.sciencemuseumgroup.org.uk",
+ "createdAt": "2026-10-18T08:45:15.408Z",
+ "description": "Science Museum Group Collection (collection.sciencemuseumgroup.org.uk), the online catalogue of over 500,000 museum objects and archives. This CLI reads only the public homepage: featured collections, top-level collection categories, and 'on this day' anniversary highlights.",
+ "commands": [
+  {
+   "name": "list-featured-collections",
+   "summary": "List the featured collections shown in the homepage 'Explore' carousel (for example BBC Heritage Collection), with title, description and link",
+   "method": "GET",
+   "urlTemplate": "/",
+   "params": [],
+   "responseType": "html",
+   "extract": {
+    "list": "div.explore-carousel__cell",
+    "fields": {
+     "title": "h3.resultcard__title",
+     "description": "p.resultcard__description",
+     "url": "a@href",
+     "image": "figure.resultcard__figure img@src"
+    }
+   },
+   "defaultFields": [
+    "title",
+    "description",
+    "url"
+   ],
+   "mutates": false,
+   "source": "E3 GET https://collection.sciencemuseumgroup.org.uk/",
+   "verified": true
+  },
+  {
+   "name": "list-collection-categories",
+   "summary": "List the top-level collection themes on the homepage (for example Medicine), with their description and subcategory text (for example Pharmacology, Surgery, Asian medicine)",
+   "method": "GET",
+   "urlTemplate": "/",
+   "params": [],
+   "responseType": "html",
+   "extract": {
+    "list": "div.o-grid > article.resultcard--collection",
+    "fields": {
+     "title": "h3.resultcard__title",
+     "description": "p.resultcard__description",
+     "text": "",
+     "url": "a@href"
+    }
+   },
+   "defaultFields": [
+    "title",
+    "description",
+    "text",
+    "url"
+   ],
+   "mutates": false,
+   "source": "E3 GET https://collection.sciencemuseumgroup.org.uk/",
+   "verified": true
+  },
+  {
+   "name": "list-anniversaries",
+   "summary": "List the homepage 'anniversary' highlights: collection objects linked to events from N years ago today, with the anniversary text and a link to the object",
+   "method": "GET",
+   "urlTemplate": "/",
+   "params": [],
+   "responseType": "html",
+   "extract": {
+    "list": "div.anniversary__card",
+    "fields": {
+     "text": "",
+     "url": "a@href",
+     "image": "img@src"
+    }
+   },
+   "defaultFields": [
+    "text",
+    "url"
+   ],
+   "mutates": false,
+   "source": "E3 GET https://collection.sciencemuseumgroup.org.uk/",
+   "verified": true
+  }
+ ],
+ "blockers": [
+  "captcha"
+ ],
+ "notes": [
+  "Only the homepage could be loaded. Every request for keyword search (/search?q=...), category listings (/search/categories/...), object pages (/objects/{id}) and archive documents (/documents/{id}), including their ?ajax=true variants, got a CloudFront 403 'Request blocked' from the site's bot/WAF protection.",
+  "No search or detail commands are provided for three reasons: the recorded responses were 403 errors, the site's robots.txt disallows /api/, /iiif/, /mcp and any URL with a query string, and working around the bot block would not be appropriate.",
+  "The homepage returns curated, rotating content. Carousel items and anniversary cards change over time.",
+  "The 'url' fields point to collection, category or object pages on the site. These are links for a human to open. Fetching them programmatically is expected to be blocked.",
+  "For programmatic access to collection data, contact the Science Museum Group about official data or API access instead of scraping."
+ ],
+ "dropped": [],
+ "generated": {
+  "by": "clify add",
+  "model": "claude-opus-5-5",
+  "exploredSteps": 12,
+  "recorded": 18,
+  "verifiedAt": "2026-10-18T08:45:41.025Z",
+  "seconds": 102
+ }
+}

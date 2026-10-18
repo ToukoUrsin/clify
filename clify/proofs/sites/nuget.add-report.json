@@ -1,0 +1,98 @@
+{
+ "ok": true,
+ "site": "nuget",
+ "url": "https://www.nuget.org/",
+ "commands": [
+  {
+   "name": "search-packages",
+   "summary": "Search the NuGet gallery by keyword or tag (q=Tags:\"bson\"), with sort, framework, package-type and prerelease filters, 20 results per page",
+   "verified": true
+  },
+  {
+   "name": "search-packages-v2",
+   "summary": "Search packages through the OData v2 API, which returns structured metadata (id, version, downloads, description) with offset paging",
+   "verified": true
+  },
+  {
+   "name": "get-package",
+   "summary": "Get the gallery page for the latest version of a package: title, version, target frameworks, install command and README text",
+   "verified": true
+  },
+  {
+   "name": "get-package-version",
+   "summary": "Get metadata for one package version through the OData v2 API: dependencies, downloads, hash, size, dates, project URL",
+   "verified": true
+  },
+  {
+   "name": "list-package-versions",
+   "summary": "List all versions of a package with their per-version download counts and publish dates (OData v2 FindPackagesById)",
+   "verified": true
+  },
+  {
+   "name": "get-package-feed",
+   "summary": "Get the Atom feed of a package's versions, newest first, with update times and links",
+   "verified": true
+  },
+  {
+   "name": "get-package-license",
+   "summary": "Get the license text of a specific package version",
+   "verified": true
+  },
+  {
+   "name": "get-package-download-stats",
+   "summary": "Get download counts for a package, broken down by version, client name or client version",
+   "verified": true
+  },
+  {
+   "name": "get-package-version-download-stats",
+   "summary": "Get download counts for one package version, broken down by client name or client version",
+   "verified": true
+  },
+  {
+   "name": "get-gallery-totals",
+   "summary": "Get gallery-wide totals: total downloads, unique packages, total package versions, last update time",
+   "verified": true
+  },
+  {
+   "name": "get-stats-overview",
+   "summary": "Get the statistics overview: top 10 packages, top 10 package versions, and NuGet client usage over the last 6 weeks",
+   "verified": true
+  },
+  {
+   "name": "list-top-packages",
+   "summary": "List the top 100 most downloaded packages over the last 6 weeks (all packages, followed by community-only rows)",
+   "verified": true
+  },
+  {
+   "name": "list-top-package-versions",
+   "summary": "List the most downloaded package versions over the last 6 weeks",
+   "verified": true
+  },
+  {
+   "name": "get-owner-profile",
+   "summary": "Get a NuGet user or organization profile: package count, total downloads, and the packages they own",
+   "verified": true
+  },
+  {
+   "name": "list-client-downloads",
+   "summary": "List downloadable NuGet client tools (nuget.exe, VS VSIX, and others) with their versions, URLs and release dates",
+   "verified": true
+  }
+ ],
+ "verified": 15,
+ "writes": 0,
+ "dropped": [],
+ "blockers": [],
+ "loggedIn": false,
+ "seconds": 219,
+ "next": [
+  "clify nuget",
+  "clify nuget search-packages --q \"json\""
+ ],
+ "installed": "/home/ubuntu/clify-runs/batch2/home/bin/nuget",
+ "explored": {
+  "steps": 23,
+  "recorded": 27,
+  "heldWrites": 0
+ }
+}

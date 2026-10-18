@@ -1,0 +1,35 @@
+{
+ "task": "books-travel-over-40",
+ "site": "books",
+ "mode": "browser",
+ "trial": 1,
+ "tag": "main",
+ "ok": true,
+ "why": "all expected values present",
+ "answer": "5",
+ "expected": {
+  "number": 5,
+  "detail": {
+   "n": 11
+  }
+ },
+ "wallMs": 15463,
+ "apiMs": 12518,
+ "turns": 6,
+ "toolCalls": 5,
+ "tokens": {
+  "input": 8,
+  "output": 659,
+  "cacheWrite": 7005,
+  "cacheRead": 43514,
+  "total": 51186
+ },
+ "costUsd": 0.05693980000000001,
+ "models": [
+  "claude-opus-5-5"
+ ],
+ "exitCode": 0,
+ "timedOut": false,
+ "subtype": "success",
+ "startedAt": "2026-10-17T23:20:54.064Z"
+}

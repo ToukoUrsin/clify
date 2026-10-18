@@ -1,0 +1,1089 @@
+{
+ "name": "registry-terraform",
+ "startUrl": "https://registry.terraform.io/",
+ "origin": "https://registry.terraform.io",
+ "createdAt": "2026-10-18T08:44:10.753Z",
+ "description": "Terraform Registry (registry.terraform.io): search and browse Terraform providers, modules, provider docs, policy libraries and run tasks, and fetch details, versions, download stats and provider binaries through the registry's public v1/v2 JSON APIs and its Algolia search index.",
+ "commands": [
+  {
+   "name": "search-registry",
+   "summary": "Full-text search over one registry index (providers, modules, provider docs, policy libraries or run tasks) using the site's Algolia search",
+   "method": "POST",
+   "urlTemplate": "https://yy0ffni7mf-dsn.algolia.net/1/indexes/*/queries?x-algolia-api-key=0f94cddf85f28139b5a64c065a261696&x-algolia-application-id=YY0FFNI7MF",
+   "params": [
+    {
+     "name": "query",
+     "in": "body",
+     "required": true,
+     "type": "string",
+     "description": "Search keywords",
+     "example": "vpc"
+    },
+    {
+     "name": "index",
+     "in": "body",
+     "required": false,
+     "type": "string",
+     "description": "Which registry index to search",
+     "enum": [
+      "providers",
+      "modules",
+      "provider-docs",
+      "policy-libraries",
+      "run-tasks"
+     ],
+     "default": "providers",
+     "example": "providers"
+    },
+    {
+     "name": "page",
+     "in": "body",
+     "required": false,
+     "type": "number",
+     "description": "Zero-based result page",
+     "default": 0
+    },
+    {
+     "name": "hits_per_page",
+     "in": "body",
+     "required": false,
+     "type": "number",
+     "description": "Results per page",
+     "default": 20
+    }
+   ],
+   "bodyTemplate": {
+    "requests": [
+     {
+      "indexName": "tf-registry:prod:{index}",
+      "query": "{query}",
+      "type": "default",
+      "page": "{page}",
+      "hitsPerPage": "{hits_per_page}",
+      "getRankingInfo": false
+     }
+    ]
+   },
+   "bodyEncoding": "json",
+   "headers": {
+    "content-type": "text/plain"
+   },
+   "responseType": "json",
+   "resultPath": "results.0.hits",
+   "defaultFields": [
+    "objectID",
+    "full-name",
+    "namespace",
+    "name",
+    "description",
+    "tier",
+    "downloads",
+    "latest-version"
+   ],
+   "pagination": {
+    "type": "page",
+    "param": "page"
+   },
+   "mutates": false,
+   "example": {
+    "query": "kubernetes",
+    "index": "providers"
+   },
+   "source": "E6 POST https://yy0ffni7mf-dsn.algolia.net/{n}/indexes/*/queries",
+   "verified": true
+  },
+  {
+   "name": "search-modules",
+   "summary": "Search modules by keyword using the public v1 registry API, optionally filtered by provider, namespace or verified status",
+   "method": "GET",
+   "urlTemplate": "/v1/modules/search",
+   "params": [
+    {
+     "name": "q",
+     "in": "query",
+     "required": true,
+     "type": "string",
+     "description": "Search keywords",
+     "example": "vpc"
+    },
+    {
+     "name": "provider",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Only modules for this provider, e.g. aws, google, azurerm"
+    },
+    {
+     "name": "namespace",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Only modules published under this namespace, e.g. terraform-aws-modules"
+    },
+    {
+     "name": "verified",
+     "in": "query",
+     "required": false,
+     "type": "boolean",
+     "description": "Only verified (partner) modules when true"
+    },
+    {
+     "name": "api_limit",
+     "key": "limit",
+     "in": "query",
+     "required": false,
+     "type": "number",
+     "description": "Results per page (max 100) (sent to the site as \"limit\"; clify's own --limit only shapes the output)",
+     "default": 15
+    },
+    {
+     "name": "offset",
+     "in": "query",
+     "required": false,
+     "type": "number",
+     "description": "Result offset for paging",
+     "default": 0
+    }
+   ],
+   "responseType": "json",
+   "resultPath": "modules",
+   "defaultFields": [
+    "id",
+    "namespace",
+    "name",
+    "provider",
+    "version",
+    "description",
+    "downloads",
+    "verified"
+   ],
+   "pagination": {
+    "type": "offset",
+    "param": "offset",
+    "step": 15
+   },
+   "mutates": false,
+   "example": {
+    "q": "vpc"
+   },
+   "source": "E172 GET https://registry.terraform.io/v1/modules/search",
+   "verified": true
+  },
+  {
+   "name": "list-providers",
+   "summary": "Browse providers, filtered by tier, category or namespace, with sorting and pagination",
+   "method": "GET",
+   "urlTemplate": "/v2/providers",
+   "params": [
+    {
+     "name": "tier",
+     "key": "filter[tier]",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Provider tier",
+     "enum": [
+      "official",
+      "partner",
+      "community"
+     ]
+    },
+    {
+     "name": "category",
+     "key": "filter[category]",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Category slug from list-categories, e.g. database, public-cloud"
+    },
+    {
+     "name": "namespace",
+     "key": "filter[namespace]",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Only providers from this namespace, e.g. hashicorp"
+    },
+    {
+     "name": "sort",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Sort expression: '-featured,tier,name' (UI default) or '-downloads'",
+     "default": "-featured,tier,name"
+    },
+    {
+     "name": "page",
+     "key": "page[number]",
+     "in": "query",
+     "required": false,
+     "type": "number",
+     "description": "1-based page number",
+     "default": 1
+    },
+    {
+     "name": "page_size",
+     "key": "page[size]",
+     "in": "query",
+     "required": false,
+     "type": "number",
+     "description": "Results per page",
+     "default": 50
+    }
+   ],
+   "responseType": "json",
+   "resultPath": "data",
+   "defaultFields": [
+    "id",
+    "attributes.full-name",
+    "attributes.namespace",
+    "attributes.name",
+    "attributes.tier",
+    "attributes.downloads",
+    "attributes.description",
+    "attributes.source"
+   ],
+   "pagination": {
+    "type": "page",
+    "param": "page"
+   },
+   "mutates": false,
+   "example": {
+    "tier": "partner",
+    "category": "database"
+   },
+   "source": "E11 GET https://registry.terraform.io/v2/providers",
+   "verified": true
+  },
+  {
+   "name": "list-modules",
+   "summary": "Browse modules, filtered by provider or namespace, with latest version info, sorting and pagination",
+   "method": "GET",
+   "urlTemplate": "/v2/modules?include=latest-version",
+   "params": [
+    {
+     "name": "provider",
+     "key": "filter[provider]",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Provider name, e.g. aws, google, azurerm"
+    },
+    {
+     "name": "namespace",
+     "key": "filter[namespace]",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Publisher namespace, e.g. terraform-aws-modules"
+    },
+    {
+     "name": "sort",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Sort key",
+     "enum": [
+      "-verified",
+      "-downloads"
+     ],
+     "default": "-verified"
+    },
+    {
+     "name": "page",
+     "key": "page[number]",
+     "in": "query",
+     "required": false,
+     "type": "number",
+     "description": "1-based page number",
+     "default": 1
+    },
+    {
+     "name": "page_size",
+     "key": "page[size]",
+     "in": "query",
+     "required": false,
+     "type": "number",
+     "description": "Results per page",
+     "default": 9
+    }
+   ],
+   "responseType": "json",
+   "resultPath": "data",
+   "defaultFields": [
+    "id",
+    "attributes.full-name",
+    "attributes.namespace",
+    "attributes.name",
+    "attributes.provider-name",
+    "attributes.downloads",
+    "attributes.verified",
+    "attributes.source"
+   ],
+   "pagination": {
+    "type": "page",
+    "param": "page"
+   },
+   "mutates": false,
+   "example": {
+    "provider": "google"
+   },
+   "source": "E13 GET https://registry.terraform.io/v2/modules",
+   "verified": true
+  },
+  {
+   "name": "get-module",
+   "summary": "Get the latest version of a module: description, source, inputs, outputs, resources, submodules and the list of all versions",
+   "method": "GET",
+   "urlTemplate": "/v1/modules/{namespace}/{name}/{provider}",
+   "params": [
+    {
+     "name": "namespace",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Module namespace",
+     "example": "terraform-aws-modules"
+    },
+    {
+     "name": "name",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Module name",
+     "example": "vpc"
+    },
+    {
+     "name": "provider",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Module provider",
+     "example": "aws"
+    }
+   ],
+   "responseType": "json",
+   "defaultFields": [
+    "id",
+    "version",
+    "description",
+    "source",
+    "published_at",
+    "downloads",
+    "verified",
+    "versions"
+   ],
+   "mutates": false,
+   "example": {
+    "namespace": "terraform-aws-modules",
+    "name": "vpc",
+    "provider": "aws"
+   },
+   "source": "E175 E124 GET https://registry.terraform.io/v1/modules/terraform-aws-modules/vpc/aws",
+   "verified": true
+  },
+  {
+   "name": "get-module-version",
+   "summary": "Get one specific version of a module, including its submodules (v2 API)",
+   "method": "GET",
+   "urlTemplate": "/v2/modules/{namespace}/{name}/{provider}/{version}?include=submodules",
+   "params": [
+    {
+     "name": "namespace",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Module namespace",
+     "example": "terraform-aws-modules"
+    },
+    {
+     "name": "name",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Module name",
+     "example": "vpc"
+    },
+    {
+     "name": "provider",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Module provider",
+     "example": "aws"
+    },
+    {
+     "name": "version",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Semantic version, e.g. 6.7.3",
+     "example": "6.7.3"
+    }
+   ],
+   "responseType": "json",
+   "mutates": false,
+   "example": {
+    "namespace": "terraform-aws-modules",
+    "name": "vpc",
+    "provider": "aws",
+    "version": "6.7.3"
+   },
+   "source": "E125 GET https://registry.terraform.io/v2/modules/terraform-aws-modules/vpc/aws/6.7.3",
+   "verified": true
+  },
+  {
+   "name": "list-module-versions",
+   "summary": "List all published versions of a module",
+   "method": "GET",
+   "urlTemplate": "/v1/modules/{namespace}/{name}/{provider}/versions",
+   "params": [
+    {
+     "name": "namespace",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Module namespace",
+     "example": "terraform-aws-modules"
+    },
+    {
+     "name": "name",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Module name",
+     "example": "vpc"
+    },
+    {
+     "name": "provider",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Module provider",
+     "example": "aws"
+    }
+   ],
+   "responseType": "json",
+   "resultPath": "modules.0.versions",
+   "defaultFields": [
+    "version"
+   ],
+   "mutates": false,
+   "example": {
+    "namespace": "terraform-aws-modules",
+    "name": "vpc",
+    "provider": "aws"
+   },
+   "source": "E174 GET https://registry.terraform.io/v1/modules/terraform-aws-modules/vpc/aws/versions",
+   "verified": true
+  },
+  {
+   "name": "get-module-downloads",
+   "summary": "Get a module's download counts (week, month, year, total) by its numeric module id",
+   "method": "GET",
+   "urlTemplate": "/v2/modules/{module_id}/downloads/summary",
+   "params": [
+    {
+     "name": "module_id",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Numeric module id (the 'id' field from list-modules)",
+     "example": "23"
+    }
+   ],
+   "responseType": "json",
+   "resultPath": "data",
+   "defaultFields": [
+    "id",
+    "attributes.week",
+    "attributes.month",
+    "attributes.year",
+    "attributes.total"
+   ],
+   "mutates": false,
+   "example": {
+    "module_id": "23"
+   },
+   "source": "E15 GET https://registry.terraform.io/v2/modules/{n}/downloads/summary",
+   "verified": true
+  },
+  {
+   "name": "get-provider",
+   "summary": "Get provider details plus all of its provider-versions (the included versions carry the numeric provider-version ids that list-provider-docs needs)",
+   "method": "GET",
+   "urlTemplate": "/v2/providers/{namespace}/{name}?include=provider-versions",
+   "params": [
+    {
+     "name": "namespace",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Provider namespace",
+     "example": "hashicorp"
+    },
+    {
+     "name": "name",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Provider name",
+     "example": "aws"
+    }
+   ],
+   "responseType": "json",
+   "mutates": false,
+   "example": {
+    "namespace": "hashicorp",
+    "name": "aws"
+   },
+   "source": "E126 E129 GET https://registry.terraform.io/v2/providers/hashicorp/aws",
+   "verified": true
+  },
+  {
+   "name": "list-provider-versions",
+   "summary": "List every version of a provider with its supported protocols and OS/arch platforms (public v1 API)",
+   "method": "GET",
+   "urlTemplate": "/v1/providers/{namespace}/{name}/versions",
+   "params": [
+    {
+     "name": "namespace",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Provider namespace",
+     "example": "hashicorp"
+    },
+    {
+     "name": "name",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Provider name",
+     "example": "aws"
+    }
+   ],
+   "responseType": "json",
+   "resultPath": "versions",
+   "defaultFields": [
+    "version",
+    "protocols",
+    "platforms"
+   ],
+   "mutates": false,
+   "example": {
+    "namespace": "hashicorp",
+    "name": "aws"
+   },
+   "source": "E173 GET https://registry.terraform.io/v1/providers/hashicorp/aws/versions",
+   "verified": true
+  },
+  {
+   "name": "get-provider-downloads",
+   "summary": "Get a provider's download counts (week, month, year, total) by its numeric provider id",
+   "method": "GET",
+   "urlTemplate": "/v2/providers/{provider_id}/downloads/summary",
+   "params": [
+    {
+     "name": "provider_id",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Numeric provider id (the 'id' from list-providers or get-provider, e.g. 323 = hashicorp/aws)",
+     "example": "323"
+    }
+   ],
+   "responseType": "json",
+   "resultPath": "data",
+   "defaultFields": [
+    "id",
+    "attributes.week",
+    "attributes.month",
+    "attributes.year",
+    "attributes.total"
+   ],
+   "mutates": false,
+   "example": {
+    "provider_id": "323"
+   },
+   "source": "E12 GET https://registry.terraform.io/v2/providers/{n}/downloads/summary",
+   "verified": true
+  },
+  {
+   "name": "list-provider-docs",
+   "summary": "List the documentation pages (resources, data sources, guides, functions) of one provider version",
+   "method": "GET",
+   "urlTemplate": "/v2/provider-versions/{version_id}?include=provider-docs%2Chas-cdktf-docs",
+   "params": [
+    {
+     "name": "version_id",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Numeric provider-version id (from get-provider included provider-versions), e.g. 113259 = hashicorp/aws 6.69.1",
+     "example": "113259"
+    }
+   ],
+   "responseType": "json",
+   "resultPath": "included",
+   "defaultFields": [
+    "id",
+    "attributes.title",
+    "attributes.category",
+    "attributes.subcategory",
+    "attributes.slug",
+    "attributes.language"
+   ],
+   "mutates": false,
+   "example": {
+    "version_id": "113259"
+   },
+   "source": "E16 GET https://registry.terraform.io/v2/provider-versions/{n}",
+   "verified": true
+  },
+  {
+   "name": "find-provider-doc",
+   "summary": "Look up a provider doc page by provider-version id, category and slug (e.g. the aws_vpc resource) to get its doc id",
+   "method": "GET",
+   "urlTemplate": "/v2/provider-docs",
+   "params": [
+    {
+     "name": "provider_version",
+     "key": "filter[provider-version]",
+     "in": "query",
+     "required": true,
+     "type": "string",
+     "description": "Numeric provider-version id",
+     "example": "113259"
+    },
+    {
+     "name": "slug",
+     "key": "filter[slug]",
+     "in": "query",
+     "required": true,
+     "type": "string",
+     "description": "Doc slug: the resource name without the provider prefix, e.g. vpc for aws_vpc",
+     "example": "vpc"
+    },
+    {
+     "name": "category",
+     "key": "filter[category]",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Doc category",
+     "enum": [
+      "resources",
+      "data-sources",
+      "guides",
+      "overview",
+      "functions",
+      "ephemeral-resources",
+      "actions",
+      "list-resources"
+     ],
+     "default": "resources",
+     "example": "resources"
+    },
+    {
+     "name": "language",
+     "key": "filter[language]",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Doc language",
+     "default": "hcl"
+    }
+   ],
+   "responseType": "json",
+   "resultPath": "data",
+   "defaultFields": [
+    "id",
+    "attributes.title",
+    "attributes.category",
+    "attributes.slug",
+    "attributes.path",
+    "attributes.language"
+   ],
+   "mutates": false,
+   "example": {
+    "provider_version": "113259",
+    "category": "resources",
+    "slug": "vpc"
+   },
+   "source": "E127 GET https://registry.terraform.io/v2/provider-docs",
+   "verified": true
+  },
+  {
+   "name": "get-provider-doc",
+   "summary": "Get the full markdown content of one provider documentation page by doc id",
+   "method": "GET",
+   "urlTemplate": "/v2/provider-docs/{doc_id}",
+   "params": [
+    {
+     "name": "doc_id",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Numeric provider-doc id (from list-provider-docs or find-provider-doc)",
+     "example": "14189732"
+    }
+   ],
+   "responseType": "json",
+   "resultPath": "data",
+   "defaultFields": [
+    "id",
+    "attributes.title",
+    "attributes.category",
+    "attributes.subcategory",
+    "attributes.slug",
+    "attributes.content"
+   ],
+   "mutates": false,
+   "example": {
+    "doc_id": "14189732"
+   },
+   "source": "E128 GET https://registry.terraform.io/v2/provider-docs/{n}",
+   "verified": true
+  },
+  {
+   "name": "get-provider-download",
+   "summary": "Get the download URL, SHA256 sum and signing keys for a provider binary for a given version, OS and architecture",
+   "method": "GET",
+   "urlTemplate": "/v1/providers/{namespace}/{name}/{version}/download/{os}/{arch}",
+   "params": [
+    {
+     "name": "namespace",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Provider namespace",
+     "example": "hashicorp"
+    },
+    {
+     "name": "name",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Provider name",
+     "example": "aws"
+    },
+    {
+     "name": "version",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Provider version, e.g. 6.69.1",
+     "example": "6.69.1"
+    },
+    {
+     "name": "os",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Target OS: linux, darwin, windows, freebsd",
+     "example": "linux"
+    },
+    {
+     "name": "arch",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Target architecture: amd64, arm64, 386, arm",
+     "example": "amd64"
+    }
+   ],
+   "responseType": "json",
+   "defaultFields": [
+    "filename",
+    "download_url",
+    "shasum",
+    "shasums_url",
+    "protocols",
+    "os",
+    "arch"
+   ],
+   "mutates": false,
+   "example": {
+    "namespace": "hashicorp",
+    "name": "aws",
+    "version": "6.69.1",
+    "os": "linux",
+    "arch": "amd64"
+   },
+   "source": "E176 GET https://registry.terraform.io/v1/providers/hashicorp/aws/6.69.1/download/linux/amd64",
+   "verified": true
+  },
+  {
+   "name": "list-policies",
+   "summary": "Browse Sentinel/OPA policy libraries, optionally by namespace, with pagination",
+   "method": "GET",
+   "urlTemplate": "/v2/policies?include=latest-version%2Cproviders%2Ccategories",
+   "params": [
+    {
+     "name": "namespace",
+     "key": "filter[namespace]",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Only libraries from this namespace, e.g. hashicorp"
+    },
+    {
+     "name": "page",
+     "key": "page[number]",
+     "in": "query",
+     "required": false,
+     "type": "number",
+     "description": "1-based page number",
+     "default": 1
+    },
+    {
+     "name": "page_size",
+     "key": "page[size]",
+     "in": "query",
+     "required": false,
+     "type": "number",
+     "description": "Results per page",
+     "default": 9
+    }
+   ],
+   "responseType": "json",
+   "resultPath": "data",
+   "defaultFields": [
+    "id",
+    "attributes.full-name",
+    "attributes.namespace",
+    "attributes.name",
+    "attributes.title",
+    "attributes.downloads",
+    "attributes.verified",
+    "attributes.source"
+   ],
+   "pagination": {
+    "type": "page",
+    "param": "page"
+   },
+   "mutates": false,
+   "example": {
+    "page": "1"
+   },
+   "source": "E18 GET https://registry.terraform.io/v2/policies",
+   "verified": true
+  },
+  {
+   "name": "get-policy-library",
+   "summary": "Get a policy library's details and its versions",
+   "method": "GET",
+   "urlTemplate": "/v2/policies/{namespace}/{name}?include=versions%2Clatest-version",
+   "params": [
+    {
+     "name": "namespace",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Policy library namespace",
+     "example": "hashicorp"
+    },
+    {
+     "name": "name",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Policy library name",
+     "example": "aws-networking-terraform"
+    }
+   ],
+   "responseType": "json",
+   "mutates": false,
+   "example": {
+    "namespace": "hashicorp",
+    "name": "aws-networking-terraform"
+   },
+   "source": "E131 E133 GET https://registry.terraform.io/v2/policies/hashicorp/aws-networking-terraform",
+   "verified": true
+  },
+  {
+   "name": "get-policy-library-version",
+   "summary": "Get one version of a policy library together with the individual policies it contains",
+   "method": "GET",
+   "urlTemplate": "/v2/policies/{namespace}/{name}/{version}?include=policies",
+   "params": [
+    {
+     "name": "namespace",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Policy library namespace",
+     "example": "hashicorp"
+    },
+    {
+     "name": "name",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Policy library name",
+     "example": "aws-networking-terraform"
+    },
+    {
+     "name": "version",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Library version, e.g. 1.0.1",
+     "example": "1.0.1"
+    }
+   ],
+   "responseType": "json",
+   "mutates": false,
+   "example": {
+    "namespace": "hashicorp",
+    "name": "aws-networking-terraform",
+    "version": "1.0.1"
+   },
+   "source": "E132 GET https://registry.terraform.io/v2/policies/hashicorp/aws-networking-terraform/1.0.1",
+   "verified": true
+  },
+  {
+   "name": "list-run-tasks",
+   "summary": "Browse HCP Terraform run-task integrations, optionally filtered by category",
+   "method": "GET",
+   "urlTemplate": "/v2/run-tasks?include=categories",
+   "params": [
+    {
+     "name": "category",
+     "key": "filter[category]",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Run-task category slug from list-categories --resource run-tasks, e.g. code-quality, drift-detection"
+    },
+    {
+     "name": "page",
+     "key": "page[number]",
+     "in": "query",
+     "required": false,
+     "type": "number",
+     "description": "1-based page number",
+     "default": 1
+    },
+    {
+     "name": "page_size",
+     "key": "page[size]",
+     "in": "query",
+     "required": false,
+     "type": "number",
+     "description": "Results per page",
+     "default": 10
+    }
+   ],
+   "responseType": "json",
+   "resultPath": "data",
+   "defaultFields": [
+    "id",
+    "attributes.full-name",
+    "attributes.namespace",
+    "attributes.name",
+    "attributes.description",
+    "attributes.documentation-url"
+   ],
+   "pagination": {
+    "type": "page",
+    "param": "page"
+   },
+   "mutates": false,
+   "example": {
+    "page": "1"
+   },
+   "source": "E19 GET https://registry.terraform.io/v2/run-tasks",
+   "verified": true
+  },
+  {
+   "name": "list-categories",
+   "summary": "List categories (id, name, slug) used to filter providers, policy libraries or run tasks",
+   "method": "GET",
+   "urlTemplate": "/v2/categories",
+   "params": [
+    {
+     "name": "resource",
+     "key": "filter[resource]",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Only categories for this resource type (omit for all)",
+     "enum": [
+      "providers",
+      "policy-libraries",
+      "run-tasks"
+     ]
+    }
+   ],
+   "responseType": "json",
+   "resultPath": "data",
+   "defaultFields": [
+    "id",
+    "attributes.name",
+    "attributes.slug"
+   ],
+   "mutates": false,
+   "example": {
+    "resource": "providers"
+   },
+   "source": "E8 GET https://registry.terraform.io/v2/categories",
+   "verified": true
+  },
+  {
+   "name": "get-namespace-profile",
+   "summary": "Get the GitHub profile (name, avatar, location, website, bio) behind a registry namespace",
+   "method": "GET",
+   "urlTemplate": "/github/users/{namespace}",
+   "params": [
+    {
+     "name": "namespace",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Registry namespace / GitHub login, e.g. hashicorp, terraform-aws-modules",
+     "example": "terraform-aws-modules"
+    }
+   ],
+   "responseType": "json",
+   "defaultFields": [
+    "login",
+    "name",
+    "avatar_url",
+    "location",
+    "email",
+    "blog",
+    "bio"
+   ],
+   "mutates": false,
+   "example": {
+    "namespace": "terraform-aws-modules"
+   },
+   "source": "E5 E7 E9 E10 E14 E17 E20 E123 E130 E134 E171 GET https://registry.terraform.io/github/users/hashicorp",
+   "verified": true
+  }
+ ],
+ "blockers": [],
+ "notes": [
+  "No login is needed. Every command is a public read.",
+  "Workflow for provider docs: get-provider (namespace/name) returns numeric provider-version ids in 'included'; pass one to list-provider-docs, or to find-provider-doc with a category and slug; then pass the doc id to get-provider-doc for the markdown content.",
+  "get-provider can return a large response for providers with many versions (hashicorp/aws). list-provider-versions gives version strings but not the numeric v2 ids.",
+  "v2 endpoints are JSON:API: the useful fields sit under 'attributes', related records under 'included', and paging totals in 'meta.pagination'.",
+  "Numeric ids differ from names: get-module-downloads takes the numeric module id from list-modules (23 = terraform-aws-modules/vpc/aws), and get-provider-downloads takes the numeric provider id (323 = hashicorp/aws).",
+  "search-registry uses the site's public Algolia search key. Its page numbers are zero-based and its hit fields differ per index.",
+  "search-modules uses offset paging: set offset to a multiple of limit (the default step of 15 assumes limit=15).",
+  "Policy-library download stats are at /v2/policies/{namespace}/{name}/downloads/summary.",
+  "Home-page featured lists are at /v2/providers/home and /v2/modules/home.",
+  "Neither has its own command."
+ ],
+ "dropped": [],
+ "generated": {
+  "by": "clify add",
+  "model": "claude-opus-5-5",
+  "exploredSteps": 29,
+  "recorded": 286,
+  "verifiedAt": "2026-10-18T08:46:16.540Z",
+  "seconds": 296
+ }
+}

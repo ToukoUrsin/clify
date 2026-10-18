@@ -1,0 +1,1913 @@
+{
+ "name": "fec",
+ "startUrl": "https://www.fec.gov/data/",
+ "origin": "https://www.fec.gov",
+ "createdAt": "2026-10-18T08:12:15.257Z",
+ "description": "FEC.gov campaign finance data (via the public OpenFEC API at api.open.fec.gov/v1). The CLI covers candidate and committee lookups, fundraising and spending totals, itemized receipts and disbursements, outside spending, filings, elections, calendars and advisory opinions.",
+ "commands": [
+  {
+   "name": "search-candidate-names",
+   "summary": "Autocomplete or search candidates by name and get their FEC candidate IDs",
+   "method": "GET",
+   "urlTemplate": "https://api.open.fec.gov/v1/names/candidates/",
+   "params": [
+    {
+     "name": "q",
+     "in": "query",
+     "required": true,
+     "type": "string",
+     "description": "Candidate name or part of it",
+     "example": "Ossoff"
+    },
+    {
+     "name": "api_key",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "api.data.gov API key. DEMO_KEY works but is heavily rate-limited; a free key is available at api.data.gov/signup",
+     "default": "DEMO_KEY"
+    }
+   ],
+   "responseType": "json",
+   "resultPath": "results",
+   "defaultFields": [
+    "id",
+    "name",
+    "office_sought"
+   ],
+   "mutates": false,
+   "example": {
+    "q": "Ossoff"
+   },
+   "source": "E10",
+   "verified": true
+  },
+  {
+   "name": "search-committee-names",
+   "summary": "Autocomplete or search committees (campaigns, PACs, parties) by name and get their FEC committee IDs",
+   "method": "GET",
+   "urlTemplate": "https://api.open.fec.gov/v1/names/committees/",
+   "params": [
+    {
+     "name": "q",
+     "in": "query",
+     "required": true,
+     "type": "string",
+     "description": "Committee name or part of it",
+     "example": "Ossoff"
+    },
+    {
+     "name": "api_key",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "api.data.gov API key. DEMO_KEY works but is heavily rate-limited; a free key is available at api.data.gov/signup",
+     "default": "DEMO_KEY"
+    }
+   ],
+   "responseType": "json",
+   "resultPath": "results",
+   "defaultFields": [
+    "id",
+    "name",
+    "is_active"
+   ],
+   "mutates": false,
+   "example": {
+    "q": "Ossoff"
+   },
+   "source": "E11",
+   "verified": true
+  },
+  {
+   "name": "list-candidate-totals",
+   "summary": "Rank candidates by money raised, spent, or cash on hand for an election year, optionally filtered by office or state (raising/spending 'by the numbers')",
+   "method": "GET",
+   "urlTemplate": "https://api.open.fec.gov/v1/candidates/totals/?sort_hide_null=true",
+   "params": [
+    {
+     "name": "election_year",
+     "in": "query",
+     "required": true,
+     "type": "number",
+     "description": "Election year, e.g. 2026",
+     "example": "2026"
+    },
+    {
+     "name": "office",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Office sought: P=President, S=Senate, H=House",
+     "enum": [
+      "P",
+      "S",
+      "H"
+     ]
+    },
+    {
+     "name": "state",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Two-letter state code, e.g. GA"
+    },
+    {
+     "name": "sort",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Sort key. Prefix with - for descending.",
+     "enum": [
+      "-receipts",
+      "-disbursements",
+      "-individual_itemized_contributions",
+      "-cash_on_hand_end_period",
+      "-debts_owed_by_committee"
+     ],
+     "default": "-receipts"
+    },
+    {
+     "name": "is_active_candidate",
+     "in": "query",
+     "required": false,
+     "type": "boolean",
+     "description": "Only active candidates",
+     "default": true
+    },
+    {
+     "name": "election_full",
+     "in": "query",
+     "required": false,
+     "type": "boolean",
+     "description": "Totals for the full election period (true) or the two-year cycle only (false)",
+     "default": true
+    },
+    {
+     "name": "per_page",
+     "in": "query",
+     "required": false,
+     "type": "number",
+     "description": "Results per page (max 100)",
+     "default": 10
+    },
+    {
+     "name": "page",
+     "in": "query",
+     "required": false,
+     "type": "number",
+     "description": "Page number",
+     "default": 1
+    },
+    {
+     "name": "api_key",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "api.data.gov API key. DEMO_KEY works but is heavily rate-limited; a free key is available at api.data.gov/signup",
+     "default": "DEMO_KEY"
+    }
+   ],
+   "responseType": "json",
+   "resultPath": "results",
+   "defaultFields": [
+    "candidate_id",
+    "name",
+    "party",
+    "office",
+    "state",
+    "receipts",
+    "disbursements",
+    "cash_on_hand_end_period"
+   ],
+   "pagination": {
+    "type": "page",
+    "param": "page"
+   },
+   "mutates": false,
+   "example": {
+    "election_year": "2026",
+    "office": "S"
+   },
+   "source": "E3",
+   "verified": true
+  },
+  {
+   "name": "get-candidate-totals-aggregates",
+   "summary": "Get total receipts, disbursements and cash on hand summed across all candidates for an office, optionally broken down by party",
+   "method": "GET",
+   "urlTemplate": "https://api.open.fec.gov/v1/candidates/totals/aggregates/?sort=-election_year&per_page=20",
+   "params": [
+    {
+     "name": "election_year",
+     "in": "query",
+     "required": true,
+     "type": "number",
+     "description": "Election year, e.g. 2026",
+     "example": "2026"
+    },
+    {
+     "name": "office",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Office: P, S or H",
+     "enum": [
+      "P",
+      "S",
+      "H"
+     ]
+    },
+    {
+     "name": "aggregate_by",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Grouping: by office, or by office and party",
+     "enum": [
+      "office",
+      "office-party"
+     ],
+     "default": "office"
+    },
+    {
+     "name": "is_active_candidate",
+     "in": "query",
+     "required": false,
+     "type": "boolean",
+     "description": "Only active candidates",
+     "default": true
+    },
+    {
+     "name": "election_full",
+     "in": "query",
+     "required": false,
+     "type": "boolean",
+     "description": "Full election period totals",
+     "default": true
+    },
+    {
+     "name": "api_key",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "api.data.gov API key. DEMO_KEY works but is heavily rate-limited; a free key is available at api.data.gov/signup",
+     "default": "DEMO_KEY"
+    }
+   ],
+   "responseType": "json",
+   "resultPath": "results",
+   "defaultFields": [
+    "election_year",
+    "office",
+    "party",
+    "total_receipts",
+    "total_disbursements",
+    "total_cash_on_hand_end_period",
+    "total_individual_itemized_contributions",
+    "total_debts_owed_by_committee"
+   ],
+   "mutates": false,
+   "example": {
+    "election_year": "2026",
+    "office": "S"
+   },
+   "source": "E5",
+   "verified": true
+  },
+  {
+   "name": "get-candidate-totals",
+   "summary": "Get a candidate's detailed financial totals (receipts, contributions, loans, spending, cash on hand) for an election",
+   "method": "GET",
+   "urlTemplate": "https://api.open.fec.gov/v1/candidate/{candidate_id}/totals/?per_page=100",
+   "params": [
+    {
+     "name": "candidate_id",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "FEC candidate ID, e.g. S8GA00180",
+     "example": "S6TX00479"
+    },
+    {
+     "name": "cycle",
+     "in": "query",
+     "required": false,
+     "type": "number",
+     "description": "Election year / cycle, e.g. 2026",
+     "default": 2026
+    },
+    {
+     "name": "election_full",
+     "in": "query",
+     "required": false,
+     "type": "boolean",
+     "description": "Full election period (true) or two-year cycle (false)",
+     "default": true
+    },
+    {
+     "name": "api_key",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "api.data.gov API key. DEMO_KEY works but is heavily rate-limited; a free key is available at api.data.gov/signup",
+     "default": "DEMO_KEY"
+    }
+   ],
+   "responseType": "json",
+   "resultPath": "results",
+   "defaultFields": [
+    "candidate_id",
+    "receipts",
+    "disbursements",
+    "individual_contributions",
+    "individual_itemized_contributions",
+    "individual_unitemized_contributions",
+    "last_cash_on_hand_end_period",
+    "coverage_end_date"
+   ],
+   "mutates": false,
+   "example": {
+    "candidate_id": "S6TX00479",
+    "cycle": "2026"
+   },
+   "source": "E15",
+   "verified": true
+  },
+  {
+   "name": "get-candidate-committees",
+   "summary": "List a candidate's principal and authorized campaign committees for a cycle, with committee IDs, treasurer and address",
+   "method": "GET",
+   "urlTemplate": "https://api.open.fec.gov/v1/candidate/{candidate_id}/committees/history/{cycle}/?per_page=100&designation=P&designation=A",
+   "params": [
+    {
+     "name": "candidate_id",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "FEC candidate ID",
+     "example": "S6TX00479"
+    },
+    {
+     "name": "cycle",
+     "in": "path",
+     "required": true,
+     "type": "number",
+     "description": "Election cycle year, e.g. 2026",
+     "example": "2026"
+    },
+    {
+     "name": "election_full",
+     "in": "query",
+     "required": false,
+     "type": "boolean",
+     "description": "Full election period",
+     "default": true
+    },
+    {
+     "name": "api_key",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "api.data.gov API key. DEMO_KEY works but is heavily rate-limited; a free key is available at api.data.gov/signup",
+     "default": "DEMO_KEY"
+    }
+   ],
+   "responseType": "json",
+   "resultPath": "results",
+   "defaultFields": [
+    "committee_id",
+    "name",
+    "committee_label",
+    "designation_full",
+    "city",
+    "state",
+    "treasurer_name",
+    "last_file_date"
+   ],
+   "mutates": false,
+   "example": {
+    "candidate_id": "S6TX00479",
+    "cycle": "2026"
+   },
+   "source": "E22",
+   "verified": true
+  },
+  {
+   "name": "list-election-candidates",
+   "summary": "List the candidates in a specific race (President, a state's Senate seat, or a House district) with their receipts, spending and cash on hand",
+   "method": "GET",
+   "urlTemplate": "https://api.open.fec.gov/v1/elections/?sort_hide_null=false&sort_nulls_last=false",
+   "params": [
+    {
+     "name": "office",
+     "in": "query",
+     "required": true,
+     "type": "string",
+     "description": "Office of the race",
+     "enum": [
+      "president",
+      "senate",
+      "house"
+     ],
+     "example": "senate"
+    },
+    {
+     "name": "cycle",
+     "in": "query",
+     "required": true,
+     "type": "number",
+     "description": "Election year, e.g. 2026",
+     "example": "2026"
+    },
+    {
+     "name": "state",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Two-letter state code. Required for senate and house.",
+     "example": "GA"
+    },
+    {
+     "name": "district",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Two-digit House district, e.g. 05 (house only)"
+    },
+    {
+     "name": "election_full",
+     "in": "query",
+     "required": false,
+     "type": "boolean",
+     "description": "Totals over the full election period",
+     "default": true
+    },
+    {
+     "name": "sort",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Sort key",
+     "enum": [
+      "-total_receipts",
+      "-total_disbursements",
+      "-cash_on_hand_end_period"
+     ],
+     "default": "-total_receipts"
+    },
+    {
+     "name": "per_page",
+     "in": "query",
+     "required": false,
+     "type": "number",
+     "description": "Results per page",
+     "default": 100
+    },
+    {
+     "name": "page",
+     "in": "query",
+     "required": false,
+     "type": "number",
+     "description": "Page number",
+     "default": 1
+    },
+    {
+     "name": "api_key",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "api.data.gov API key. DEMO_KEY works but is heavily rate-limited; a free key is available at api.data.gov/signup",
+     "default": "DEMO_KEY"
+    }
+   ],
+   "responseType": "json",
+   "resultPath": "results",
+   "defaultFields": [
+    "candidate_id",
+    "candidate_name",
+    "party_full",
+    "incumbent_challenge_full",
+    "candidate_pcc_id",
+    "total_receipts",
+    "total_disbursements",
+    "cash_on_hand_end_period"
+   ],
+   "pagination": {
+    "type": "page",
+    "param": "page"
+   },
+   "mutates": false,
+   "example": {
+    "office": "senate",
+    "state": "GA",
+    "cycle": "2026"
+   },
+   "source": "E6",
+   "verified": true
+  },
+  {
+   "name": "search-elections",
+   "summary": "Find the federal races (office, state, district) for a cycle by state or ZIP code",
+   "method": "GET",
+   "urlTemplate": "https://api.open.fec.gov/v1/elections/search/?per_page=100",
+   "params": [
+    {
+     "name": "cycle",
+     "in": "query",
+     "required": true,
+     "type": "number",
+     "description": "Election year, e.g. 2026",
+     "example": "2026"
+    },
+    {
+     "name": "state",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Two-letter state code, or US for presidential",
+     "example": "GA"
+    },
+    {
+     "name": "zip",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "5-digit ZIP code (alternative to state)",
+     "example": "90210"
+    },
+    {
+     "name": "district",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Two-digit House district"
+    },
+    {
+     "name": "api_key",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "api.data.gov API key. DEMO_KEY works but is heavily rate-limited; a free key is available at api.data.gov/signup",
+     "default": "DEMO_KEY"
+    }
+   ],
+   "responseType": "json",
+   "resultPath": "results",
+   "defaultFields": [
+    "cycle",
+    "office",
+    "state",
+    "district",
+    "incumbent_id",
+    "incumbent_name"
+   ],
+   "mutates": false,
+   "example": {
+    "cycle": "2026",
+    "state": "GA"
+   },
+   "source": "E4",
+   "verified": true
+  },
+  {
+   "name": "list-election-dates",
+   "summary": "List upcoming (or past) federal election dates by state, office and election type",
+   "method": "GET",
+   "urlTemplate": "https://api.open.fec.gov/v1/election-dates/?sort=election_date",
+   "params": [
+    {
+     "name": "min_election_date",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Earliest election date, YYYY-MM-DD",
+     "example": "2026-10-18"
+    },
+    {
+     "name": "max_election_date",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Latest election date, YYYY-MM-DD"
+    },
+    {
+     "name": "election_state",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Two-letter state code"
+    },
+    {
+     "name": "per_page",
+     "in": "query",
+     "required": false,
+     "type": "number",
+     "description": "Results per page",
+     "default": 20
+    },
+    {
+     "name": "page",
+     "in": "query",
+     "required": false,
+     "type": "number",
+     "description": "Page number",
+     "default": 1
+    },
+    {
+     "name": "api_key",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "api.data.gov API key. DEMO_KEY works but is heavily rate-limited; a free key is available at api.data.gov/signup",
+     "default": "DEMO_KEY"
+    }
+   ],
+   "responseType": "json",
+   "resultPath": "results",
+   "defaultFields": [
+    "election_date",
+    "election_state",
+    "office_sought",
+    "election_district",
+    "election_type_full",
+    "election_party",
+    "election_notes"
+   ],
+   "pagination": {
+    "type": "page",
+    "param": "page"
+   },
+   "mutates": false,
+   "example": {
+    "min_election_date": "2026-10-18"
+   },
+   "source": "E14",
+   "verified": true
+  },
+  {
+   "name": "list-calendar-dates",
+   "summary": "List FEC calendar events (reporting deadlines, IE periods, elections, meetings) in a date range",
+   "method": "GET",
+   "urlTemplate": "https://api.open.fec.gov/v1/calendar-dates/?per_page=500",
+   "params": [
+    {
+     "name": "min_start_date",
+     "in": "query",
+     "required": true,
+     "type": "string",
+     "description": "Range start, YYYY-MM-DD",
+     "example": "2026-10-01"
+    },
+    {
+     "name": "max_start_date",
+     "in": "query",
+     "required": true,
+     "type": "string",
+     "description": "Range end, YYYY-MM-DD",
+     "example": "2026-11-01"
+    },
+    {
+     "name": "calendar_category_id",
+     "in": "query",
+     "required": false,
+     "type": "number",
+     "description": "Category ID filter (e.g. 25=Quarterly, 29=IE Periods)"
+    },
+    {
+     "name": "api_key",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "api.data.gov API key. DEMO_KEY works but is heavily rate-limited; a free key is available at api.data.gov/signup",
+     "default": "DEMO_KEY"
+    }
+   ],
+   "responseType": "json",
+   "resultPath": "results",
+   "defaultFields": [
+    "start_date",
+    "summary",
+    "category",
+    "location",
+    "description",
+    "url"
+   ],
+   "mutates": false,
+   "example": {
+    "min_start_date": "2026-10-01",
+    "max_start_date": "2026-11-01"
+   },
+   "source": "E16",
+   "verified": true
+  },
+  {
+   "name": "list-contributions-by-state",
+   "summary": "Break down a candidate's itemized individual contributions by contributor state (total and count per state)",
+   "method": "GET",
+   "urlTemplate": "https://api.open.fec.gov/v1/schedules/schedule_a/by_state/by_candidate/?sort_hide_null=false&sort_nulls_last=false&sort=-total",
+   "params": [
+    {
+     "name": "candidate_id",
+     "in": "query",
+     "required": true,
+     "type": "string",
+     "description": "FEC candidate ID",
+     "example": "S8GA00180"
+    },
+    {
+     "name": "cycle",
+     "in": "query",
+     "required": true,
+     "type": "number",
+     "description": "Election cycle, e.g. 2026",
+     "example": "2026"
+    },
+    {
+     "name": "election_full",
+     "in": "query",
+     "required": false,
+     "type": "boolean",
+     "description": "Full election period (true) or two-year cycle (false)",
+     "default": false
+    },
+    {
+     "name": "per_page",
+     "in": "query",
+     "required": false,
+     "type": "number",
+     "description": "Results per page",
+     "default": 99
+    },
+    {
+     "name": "page",
+     "in": "query",
+     "required": false,
+     "type": "number",
+     "description": "Page number",
+     "default": 1
+    },
+    {
+     "name": "api_key",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "api.data.gov API key. DEMO_KEY works but is heavily rate-limited; a free key is available at api.data.gov/signup",
+     "default": "DEMO_KEY"
+    }
+   ],
+   "responseType": "json",
+   "resultPath": "results",
+   "defaultFields": [
+    "candidate_id",
+    "state",
+    "state_full",
+    "total",
+    "count"
+   ],
+   "pagination": {
+    "type": "page",
+    "param": "page"
+   },
+   "mutates": false,
+   "example": {
+    "candidate_id": "S8GA00180",
+    "cycle": "2026"
+   },
+   "source": "E1",
+   "verified": true
+  },
+  {
+   "name": "get-contributions-by-state-total",
+   "summary": "Get a candidate's total itemized individual contributions summed across all states",
+   "method": "GET",
+   "urlTemplate": "https://api.open.fec.gov/v1/schedules/schedule_a/by_state/by_candidate/totals/?per_page=100",
+   "params": [
+    {
+     "name": "candidate_id",
+     "in": "query",
+     "required": true,
+     "type": "string",
+     "description": "FEC candidate ID",
+     "example": "S6TX00479"
+    },
+    {
+     "name": "cycle",
+     "in": "query",
+     "required": true,
+     "type": "number",
+     "description": "Election cycle",
+     "example": "2026"
+    },
+    {
+     "name": "office",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Office: P, S or H",
+     "enum": [
+      "P",
+      "S",
+      "H"
+     ]
+    },
+    {
+     "name": "election_full",
+     "in": "query",
+     "required": false,
+     "type": "boolean",
+     "description": "Full election period",
+     "default": true
+    },
+    {
+     "name": "api_key",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "api.data.gov API key. DEMO_KEY works but is heavily rate-limited; a free key is available at api.data.gov/signup",
+     "default": "DEMO_KEY"
+    }
+   ],
+   "responseType": "json",
+   "resultPath": "results",
+   "defaultFields": [
+    "candidate_id",
+    "cycle",
+    "total",
+    "count"
+   ],
+   "mutates": false,
+   "example": {
+    "candidate_id": "S6TX00479",
+    "cycle": "2026",
+    "office": "S"
+   },
+   "source": "E23",
+   "verified": true
+  },
+  {
+   "name": "list-contributions-by-size",
+   "summary": "Break down a candidate's individual contributions by contribution size bucket (0 = unitemized under $200, 200, 500, 1000, 2000)",
+   "method": "GET",
+   "urlTemplate": "https://api.open.fec.gov/v1/schedules/schedule_a/by_size/by_candidate/?sort_hide_null=false&sort_nulls_last=false&sort=size",
+   "params": [
+    {
+     "name": "candidate_id",
+     "in": "query",
+     "required": true,
+     "type": "string",
+     "description": "FEC candidate ID",
+     "example": "S8GA00180"
+    },
+    {
+     "name": "cycle",
+     "in": "query",
+     "required": true,
+     "type": "number",
+     "description": "Election cycle",
+     "example": "2026"
+    },
+    {
+     "name": "election_full",
+     "in": "query",
+     "required": false,
+     "type": "boolean",
+     "description": "Full election period",
+     "default": false
+    },
+    {
+     "name": "per_page",
+     "in": "query",
+     "required": false,
+     "type": "number",
+     "description": "Results per page",
+     "default": 10
+    },
+    {
+     "name": "api_key",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "api.data.gov API key. DEMO_KEY works but is heavily rate-limited; a free key is available at api.data.gov/signup",
+     "default": "DEMO_KEY"
+    }
+   ],
+   "responseType": "json",
+   "resultPath": "results",
+   "defaultFields": [
+    "candidate_id",
+    "size",
+    "total",
+    "count"
+   ],
+   "mutates": false,
+   "example": {
+    "candidate_id": "S8GA00180",
+    "cycle": "2026"
+   },
+   "source": "E12",
+   "verified": true
+  },
+  {
+   "name": "get-advisory-opinion",
+   "summary": "Get an FEC advisory opinion's documents (date, title, PDF link) by AO number",
+   "method": "GET",
+   "urlTemplate": "/data/legal/advisory-opinions/{ao_no}/",
+   "params": [
+    {
+     "name": "ao_no",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Advisory opinion number YYYY-NN, e.g. 2025-08",
+     "example": "2025-08"
+    }
+   ],
+   "responseType": "html",
+   "extract": {
+    "list": "section#documents tbody > tr",
+    "fields": {
+     "date": "td",
+     "name": "a",
+     "url": "a@href"
+    }
+   },
+   "defaultFields": [
+    "date",
+    "name",
+    "url"
+   ],
+   "mutates": false,
+   "example": {
+    "ao_no": "2025-08"
+   },
+   "source": "E41 GET https://www.fec.gov/data/legal/advisory-opinions/2025-08/",
+   "verified": true
+  },
+  {
+   "name": "export-election-candidates",
+   "summary": "Queue a CSV export of a race's candidate financial totals. This creates a server-side download task.",
+   "method": "POST",
+   "urlTemplate": "https://api.open.fec.gov/v1/download/elections/?api_key=SnX6CUbBUlOl83CgbtX2M6GqqcpcQELTgHijsOYF&sort_hide_null=false&sort_nulls_last=false&sort=-total_receipts",
+   "params": [
+    {
+     "name": "office",
+     "in": "query",
+     "required": true,
+     "type": "string",
+     "description": "Race office",
+     "enum": [
+      "president",
+      "senate",
+      "house"
+     ],
+     "example": "senate"
+    },
+    {
+     "name": "cycle",
+     "in": "query",
+     "required": true,
+     "type": "number",
+     "description": "Election year",
+     "example": "2026"
+    },
+    {
+     "name": "state",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Two-letter state code",
+     "example": "GA"
+    },
+    {
+     "name": "district",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Two-digit House district"
+    },
+    {
+     "name": "election_full",
+     "in": "query",
+     "required": false,
+     "type": "boolean",
+     "description": "Full election period",
+     "default": true
+    },
+    {
+     "name": "filename",
+     "in": "body",
+     "required": false,
+     "type": "string",
+     "description": "Name for the CSV file",
+     "default": "elections.csv"
+    }
+   ],
+   "bodyTemplate": {
+    "filename": "{filename}",
+    "task_id": ""
+   },
+   "bodyEncoding": "json",
+   "responseType": "json",
+   "mutates": true,
+   "example": {
+    "office": "senate",
+    "cycle": "2026",
+    "state": "GA"
+   },
+   "source": "E25 POST https://api.open.fec.gov/v1/download/elections/",
+   "verified": false,
+   "verifyNote": "write: dry-run preview only, not sent"
+  }
+ ],
+ "blockers": [
+  "captcha at https://www.fec.gov/data/",
+  "captcha at https://www.fec.gov/data/search/?search=Ossoff",
+  "captcha at https://www.fec.gov/data/candidate/S8GA00180/",
+  "captcha at https://www.fec.gov/data/candidate/S8GA00180/?tab=raising",
+  "captcha at https://www.fec.gov/data/committee/C00718866/?tab=spending",
+  "captcha at https://www.fec.gov/data/committee/C00718866/?cycle=2026&tab=filings",
+  "captcha at https://www.fec.gov/data/elections/senate/GA/2026/",
+  "captcha at https://www.fec.gov/data/elections/?cycle=2026&state=GA",
+  "captcha at https://www.fec.gov/data/elections/?cycle=2026&zip=90210",
+  "captcha at https://www.fec.gov/data/raising-bythenumbers/",
+  "captcha at https://www.fec.gov/data/raising-bythenumbers/?office=H",
+  "captcha at https://www.fec.gov/data/spending-bythenumbers/",
+  "captcha at https://www.fec.gov/data/candidate/H8NY15148/",
+  "captcha at https://www.fec.gov/data/candidate/H8NY15148/?tab=filings",
+  "captcha at https://www.fec.gov/data/candidate/H8NY15148/?tab=other-spending",
+  "captcha at https://www.fec.gov/search/?type=candidates&type=committees&type=site&query=contribution+limits",
+  "captcha at https://www.fec.gov/data/legal/search/?search_type=all&search=contribution%20limits",
+  "captcha at https://www.fec.gov/data/legal/advisory-opinions/2025-08/",
+  "captcha at https://www.fec.gov/calendar/"
+ ],
+ "notes": [
+  "Almost every command calls the public OpenFEC API (api.open.fec.gov/v1) using the api_key embedded in fec.gov's own web app. If you hit rate limits, swap in your own key from api.data.gov or use DEMO_KEY.",
+  "IDs: candidate IDs look like S8GA00180 / H8NY15148 / P...; committee IDs look like C00718866. Look them up with search-candidate-names or search-committee-names.",
+  "list-receipts and list-disbursements use keyset pagination. To get the next page, pass both cursor values from pagination.last_indexes: last_index plus last_contribution_receipt_date (receipts) or last_disbursement_date (disbursements).",
+  "Office codes differ by endpoint. Totals and aggregates use P/S/H. Race-level endpoints (list-election-candidates, outside spending, export) use president/senate/house.",
+  "cycle is the even year that ends the two-year period. election_full=true covers the full election period (6 years for Senate, 4 for President).",
+  "Two browse pages, /data/receipts/individual-contributions/ and /data/candidates/, are blocked by robots.txt. The same data comes from list-receipts and the totals commands.",
+  "Legal search (/data/legal/search) was recorded only as a server-rendered page without a usable structure, so it is not covered. Get individual advisory opinions with get-advisory-opinion.",
+  "export-election-candidates was not sent during recording. It queues a CSV download task and does not change any FEC data."
+ ],
+ "dropped": [
+  {
+   "name": "list-electioneering-by-candidate",
+   "summary": "List electioneering communications (broadcast ads naming a candidate near an election) aggregated by spender, for a candidate or race",
+   "method": "GET",
+   "urlTemplate": "https://api.open.fec.gov/v1/electioneering/by_candidate/?sort_hide_null=false&sort_nulls_last=false&sort=-total",
+   "params": [
+    {
+     "name": "cycle",
+     "in": "query",
+     "required": true,
+     "type": "number",
+     "description": "Election cycle (even year, e.g. 2012)",
+     "example": "2012"
+    },
+    {
+     "name": "candidate_id",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "FEC candidate ID, e.g. P80003338. Or use office/state for a whole race."
+    },
+    {
+     "name": "office",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Race office",
+     "enum": [
+      "president",
+      "senate",
+      "house"
+     ],
+     "example": "president"
+    },
+    {
+     "name": "state",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Two-letter state code (senate/house races)"
+    },
+    {
+     "name": "district",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Two-digit House district"
+    },
+    {
+     "name": "election_full",
+     "in": "query",
+     "required": false,
+     "type": "boolean",
+     "description": "Full election period",
+     "default": true
+    },
+    {
+     "name": "per_page",
+     "in": "query",
+     "required": false,
+     "type": "number",
+     "description": "Results per page",
+     "default": 10
+    },
+    {
+     "name": "page",
+     "in": "query",
+     "required": false,
+     "type": "number",
+     "description": "Page number",
+     "default": 1
+    },
+    {
+     "name": "api_key",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "api.data.gov API key. DEMO_KEY works but is heavily rate-limited; a free key is available at api.data.gov/signup",
+     "default": "DEMO_KEY"
+    }
+   ],
+   "responseType": "json",
+   "resultPath": "results",
+   "defaultFields": [
+    "candidate_id",
+    "candidate_name",
+    "committee_id",
+    "committee_name",
+    "total",
+    "count",
+    "cycle"
+   ],
+   "pagination": {
+    "type": "page",
+    "param": "page"
+   },
+   "mutates": false,
+   "example": {
+    "cycle": "2012",
+    "office": "president"
+   },
+   "source": "E8",
+   "verified": false,
+   "verifyNote": "HTTP 429: rate limited by the site; wait a minute before retrying (HTTP 429)"
+  },
+  {
+   "name": "list-receipts",
+   "summary": "List itemized receipts (Schedule A, e.g. individual contributions) to a committee, newest first, with contributor name, employer and amount",
+   "method": "GET",
+   "urlTemplate": "https://api.open.fec.gov/v1/schedules/schedule_a/?sort_hide_null=false&sort_nulls_last=false&sort=-contribution_receipt_date",
+   "params": [
+    {
+     "name": "committee_id",
+     "in": "query",
+     "required": true,
+     "type": "string",
+     "description": "Recipient committee ID, e.g. C00718866",
+     "example": "C00718866"
+    },
+    {
+     "name": "two_year_transaction_period",
+     "in": "query",
+     "required": false,
+     "type": "number",
+     "description": "Two-year period ending year, e.g. 2026",
+     "default": 2026
+    },
+    {
+     "name": "is_individual",
+     "in": "query",
+     "required": false,
+     "type": "boolean",
+     "description": "Only contributions from individuals",
+     "default": true
+    },
+    {
+     "name": "per_page",
+     "in": "query",
+     "required": false,
+     "type": "number",
+     "description": "Results per page (max 100)",
+     "default": 30
+    },
+    {
+     "name": "last_index",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Keyset cursor from pagination.last_indexes.last_index of the previous page"
+    },
+    {
+     "name": "last_contribution_receipt_date",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Keyset cursor date from pagination.last_indexes.last_contribution_receipt_date of the previous page. Send it together with last_index."
+    },
+    {
+     "name": "api_key",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "api.data.gov API key. DEMO_KEY works but is heavily rate-limited; a free key is available at api.data.gov/signup",
+     "default": "DEMO_KEY"
+    }
+   ],
+   "responseType": "json",
+   "resultPath": "results",
+   "defaultFields": [
+    "contributor_name",
+    "contribution_receipt_amount",
+    "contribution_receipt_date",
+    "contributor_city",
+    "contributor_state",
+    "contributor_employer",
+    "contributor_occupation",
+    "pdf_url"
+   ],
+   "pagination": {
+    "type": "cursor",
+    "param": "last_index",
+    "nextPath": "pagination.last_indexes.last_index"
+   },
+   "mutates": false,
+   "example": {
+    "committee_id": "C00718866",
+    "two_year_transaction_period": "2026"
+   },
+   "source": "E13",
+   "verified": false,
+   "verifyNote": "failed on Blaxel: HTTP 429: rate limited by the site; wait a minute before retrying (HTTP 429)"
+  },
+  {
+   "name": "list-disbursements",
+   "summary": "List itemized disbursements (Schedule B) made by a committee, newest first, with recipient, purpose and amount",
+   "method": "GET",
+   "urlTemplate": "https://api.open.fec.gov/v1/schedules/schedule_b/?sort_hide_null=false&sort=-disbursement_date",
+   "params": [
+    {
+     "name": "committee_id",
+     "in": "query",
+     "required": true,
+     "type": "string",
+     "description": "Spending committee ID",
+     "example": "C00718866"
+    },
+    {
+     "name": "two_year_transaction_period",
+     "in": "query",
+     "required": false,
+     "type": "number",
+     "description": "Two-year period ending year",
+     "default": 2026
+    },
+    {
+     "name": "per_page",
+     "in": "query",
+     "required": false,
+     "type": "number",
+     "description": "Results per page (max 100)",
+     "default": 10
+    },
+    {
+     "name": "last_index",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Keyset cursor from pagination.last_indexes.last_index of the previous page"
+    },
+    {
+     "name": "last_disbursement_date",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Keyset cursor date from pagination.last_indexes.last_disbursement_date of the previous page. Send it together with last_index."
+    },
+    {
+     "name": "api_key",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "api.data.gov API key. DEMO_KEY works but is heavily rate-limited; a free key is available at api.data.gov/signup",
+     "default": "DEMO_KEY"
+    }
+   ],
+   "responseType": "json",
+   "resultPath": "results",
+   "defaultFields": [
+    "recipient_name",
+    "disbursement_amount",
+    "disbursement_date",
+    "disbursement_description",
+    "recipient_city",
+    "recipient_state",
+    "pdf_url"
+   ],
+   "pagination": {
+    "type": "cursor",
+    "param": "last_index",
+    "nextPath": "pagination.last_indexes.last_index"
+   },
+   "mutates": false,
+   "example": {
+    "committee_id": "C00718866",
+    "two_year_transaction_period": "2026"
+   },
+   "source": "E19",
+   "verified": false,
+   "verifyNote": "failed on Blaxel: HTTP 429: rate limited by the site; wait a minute before retrying (HTTP 429)"
+  },
+  {
+   "name": "list-disbursements-by-recipient",
+   "summary": "Aggregate a committee's spending by payee name (top vendors and recipients with totals and percentage of spending)",
+   "method": "GET",
+   "urlTemplate": "https://api.open.fec.gov/v1/schedules/schedule_b/by_recipient/?sort_hide_null=false&sort=-total",
+   "params": [
+    {
+     "name": "committee_id",
+     "in": "query",
+     "required": true,
+     "type": "string",
+     "description": "Spending committee ID",
+     "example": "C00718866"
+    },
+    {
+     "name": "cycle",
+     "in": "query",
+     "required": true,
+     "type": "number",
+     "description": "Two-year cycle",
+     "example": "2026"
+    },
+    {
+     "name": "election_full",
+     "in": "query",
+     "required": false,
+     "type": "boolean",
+     "description": "Full election period",
+     "default": false
+    },
+    {
+     "name": "per_page",
+     "in": "query",
+     "required": false,
+     "type": "number",
+     "description": "Results per page",
+     "default": 10
+    },
+    {
+     "name": "page",
+     "in": "query",
+     "required": false,
+     "type": "number",
+     "description": "Page number",
+     "default": 1
+    },
+    {
+     "name": "api_key",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "api.data.gov API key. DEMO_KEY works but is heavily rate-limited; a free key is available at api.data.gov/signup",
+     "default": "DEMO_KEY"
+    }
+   ],
+   "responseType": "json",
+   "resultPath": "results",
+   "defaultFields": [
+    "recipient_name",
+    "total",
+    "count",
+    "recipient_disbursement_percent",
+    "committee_total_disbursements"
+   ],
+   "pagination": {
+    "type": "page",
+    "param": "page"
+   },
+   "mutates": false,
+   "example": {
+    "committee_id": "C00718866",
+    "cycle": "2026"
+   },
+   "source": "E18",
+   "verified": false,
+   "verifyNote": "failed on Blaxel: HTTP 429: rate limited by the site; wait a minute before retrying (HTTP 429)"
+  },
+  {
+   "name": "list-disbursements-to-committees",
+   "summary": "Aggregate a committee's transfers and contributions to other registered committees by recipient committee ID",
+   "method": "GET",
+   "urlTemplate": "https://api.open.fec.gov/v1/schedules/schedule_b/by_recipient_id/?sort_hide_null=false&sort=-total",
+   "params": [
+    {
+     "name": "committee_id",
+     "in": "query",
+     "required": true,
+     "type": "string",
+     "description": "Spending committee ID",
+     "example": "C00718866"
+    },
+    {
+     "name": "cycle",
+     "in": "query",
+     "required": true,
+     "type": "number",
+     "description": "Two-year cycle",
+     "example": "2026"
+    },
+    {
+     "name": "election_full",
+     "in": "query",
+     "required": false,
+     "type": "boolean",
+     "description": "Full election period",
+     "default": false
+    },
+    {
+     "name": "per_page",
+     "in": "query",
+     "required": false,
+     "type": "number",
+     "description": "Results per page",
+     "default": 10
+    },
+    {
+     "name": "page",
+     "in": "query",
+     "required": false,
+     "type": "number",
+     "description": "Page number",
+     "default": 1
+    },
+    {
+     "name": "api_key",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "api.data.gov API key. DEMO_KEY works but is heavily rate-limited; a free key is available at api.data.gov/signup",
+     "default": "DEMO_KEY"
+    }
+   ],
+   "responseType": "json",
+   "resultPath": "results",
+   "defaultFields": [
+    "recipient_id",
+    "recipient_name",
+    "total",
+    "count"
+   ],
+   "pagination": {
+    "type": "page",
+    "param": "page"
+   },
+   "mutates": false,
+   "example": {
+    "committee_id": "C00718866",
+    "cycle": "2026"
+   },
+   "source": "E17",
+   "verified": false,
+   "verifyNote": "failed on Blaxel: HTTP 429: rate limited by the site; wait a minute before retrying (HTTP 429)"
+  },
+  {
+   "name": "list-filings",
+   "summary": "List processed FEC filings (reports, statements, notices) for a committee or candidate, with links to PDFs",
+   "method": "GET",
+   "urlTemplate": "https://api.open.fec.gov/v1/filings/?sort_hide_null=false&sort_nulls_last=false",
+   "params": [
+    {
+     "name": "committee_id",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Committee ID",
+     "example": "C00718866"
+    },
+    {
+     "name": "candidate_id",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Candidate ID, e.g. H8NY15148"
+    },
+    {
+     "name": "cycle",
+     "in": "query",
+     "required": false,
+     "type": "number",
+     "description": "Two-year cycle",
+     "default": 2026
+    },
+    {
+     "name": "form_type",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Form type filter, e.g. F3 (quarterly report), F3X, F1 (statement of organization), F24, F99, RFAI"
+    },
+    {
+     "name": "sort",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Sort key",
+     "enum": [
+      "-receipt_date",
+      "-coverage_end_date"
+     ],
+     "default": "-receipt_date"
+    },
+    {
+     "name": "per_page",
+     "in": "query",
+     "required": false,
+     "type": "number",
+     "description": "Results per page",
+     "default": 100
+    },
+    {
+     "name": "page",
+     "in": "query",
+     "required": false,
+     "type": "number",
+     "description": "Page number",
+     "default": 1
+    },
+    {
+     "name": "api_key",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "api.data.gov API key. DEMO_KEY works but is heavily rate-limited; a free key is available at api.data.gov/signup",
+     "default": "DEMO_KEY"
+    }
+   ],
+   "responseType": "json",
+   "resultPath": "results",
+   "defaultFields": [
+    "committee_name",
+    "form_type",
+    "report_type_full",
+    "receipt_date",
+    "coverage_end_date",
+    "total_receipts",
+    "total_disbursements",
+    "pdf_url"
+   ],
+   "pagination": {
+    "type": "page",
+    "param": "page"
+   },
+   "mutates": false,
+   "example": {
+    "committee_id": "C00718866",
+    "cycle": "2026"
+   },
+   "source": "E2",
+   "verified": false,
+   "verifyNote": "failed on Blaxel: HTTP 429: rate limited by the site; wait a minute before retrying (HTTP 429)"
+  },
+  {
+   "name": "list-efile-filings",
+   "summary": "List raw electronic filings for a committee received since a date, including ones not yet processed, with PDF/CSV/.fec links",
+   "method": "GET",
+   "urlTemplate": "https://api.open.fec.gov/v1/efile/filings/?sort_hide_null=false&sort_nulls_last=false&sort=-receipt_date",
+   "params": [
+    {
+     "name": "committee_id",
+     "in": "query",
+     "required": true,
+     "type": "string",
+     "description": "Committee ID",
+     "example": "C00718866"
+    },
+    {
+     "name": "min_receipt_date",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Earliest receipt date, MM/DD/YYYY or YYYY-MM-DD",
+     "example": "10/15/2026"
+    },
+    {
+     "name": "per_page",
+     "in": "query",
+     "required": false,
+     "type": "number",
+     "description": "Results per page",
+     "default": 100
+    },
+    {
+     "name": "page",
+     "in": "query",
+     "required": false,
+     "type": "number",
+     "description": "Page number",
+     "default": 1
+    },
+    {
+     "name": "api_key",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "api.data.gov API key. DEMO_KEY works but is heavily rate-limited; a free key is available at api.data.gov/signup",
+     "default": "DEMO_KEY"
+    }
+   ],
+   "responseType": "json",
+   "resultPath": "results",
+   "defaultFields": [
+    "file_number",
+    "form_type",
+    "document_description",
+    "receipt_date",
+    "coverage_end_date",
+    "pdf_url",
+    "csv_url"
+   ],
+   "pagination": {
+    "type": "page",
+    "param": "page"
+   },
+   "mutates": false,
+   "example": {
+    "committee_id": "C00718866",
+    "min_receipt_date": "10/15/2026"
+   },
+   "source": "E20",
+   "verified": false,
+   "verifyNote": "failed on Blaxel: HTTP 429: rate limited by the site; wait a minute before retrying (HTTP 429)"
+  },
+  {
+   "name": "list-independent-expenditures-by-candida",
+   "summary": "List outside spending (independent expenditures, Schedule E) supporting or opposing candidates, aggregated by spender, for a candidate or a whole race",
+   "method": "GET",
+   "urlTemplate": "https://api.open.fec.gov/v1/schedules/schedule_e/by_candidate/?sort_hide_null=false&sort_nulls_last=false&sort=-total",
+   "params": [
+    {
+     "name": "cycle",
+     "in": "query",
+     "required": true,
+     "type": "number",
+     "description": "Election cycle",
+     "example": "2026"
+    },
+    {
+     "name": "candidate_id",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Candidate ID (or use office/state for a whole race)"
+    },
+    {
+     "name": "office",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Race office",
+     "enum": [
+      "president",
+      "senate",
+      "house"
+     ],
+     "example": "senate"
+    },
+    {
+     "name": "state",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Two-letter state code",
+     "example": "GA"
+    },
+    {
+     "name": "district",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Two-digit House district"
+    },
+    {
+     "name": "election_full",
+     "in": "query",
+     "required": false,
+     "type": "boolean",
+     "description": "Full election period",
+     "default": true
+    },
+    {
+     "name": "per_page",
+     "in": "query",
+     "required": false,
+     "type": "number",
+     "description": "Results per page",
+     "default": 10
+    },
+    {
+     "name": "page",
+     "in": "query",
+     "required": false,
+     "type": "number",
+     "description": "Page number",
+     "default": 1
+    },
+    {
+     "name": "api_key",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "api.data.gov API key. DEMO_KEY works but is heavily rate-limited; a free key is available at api.data.gov/signup",
+     "default": "DEMO_KEY"
+    }
+   ],
+   "responseType": "json",
+   "resultPath": "results",
+   "defaultFields": [
+    "candidate_id",
+    "candidate_name",
+    "committee_id",
+    "committee_name",
+    "support_oppose_indicator",
+    "total",
+    "count"
+   ],
+   "pagination": {
+    "type": "page",
+    "param": "page"
+   },
+   "mutates": false,
+   "example": {
+    "cycle": "2026",
+    "office": "senate",
+    "state": "GA"
+   },
+   "source": "E9",
+   "verified": false,
+   "verifyNote": "failed on Blaxel: HTTP 429: rate limited by the site; wait a minute before retrying (HTTP 429)"
+  },
+  {
+   "name": "list-communication-costs-by-candidate",
+   "summary": "List communication costs (corporate or union internal communications) for or against candidates, aggregated by organization",
+   "method": "GET",
+   "urlTemplate": "https://api.open.fec.gov/v1/communication_costs/by_candidate/?sort_hide_null=false&sort_nulls_last=false&sort=-total",
+   "params": [
+    {
+     "name": "cycle",
+     "in": "query",
+     "required": true,
+     "type": "number",
+     "description": "Election cycle",
+     "example": "2026"
+    },
+    {
+     "name": "candidate_id",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Candidate ID (or use office/state for a whole race)"
+    },
+    {
+     "name": "office",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Race office",
+     "enum": [
+      "president",
+      "senate",
+      "house"
+     ],
+     "example": "senate"
+    },
+    {
+     "name": "state",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Two-letter state code",
+     "example": "GA"
+    },
+    {
+     "name": "district",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Two-digit House district"
+    },
+    {
+     "name": "election_full",
+     "in": "query",
+     "required": false,
+     "type": "boolean",
+     "description": "Full election period",
+     "default": true
+    },
+    {
+     "name": "per_page",
+     "in": "query",
+     "required": false,
+     "type": "number",
+     "description": "Results per page",
+     "default": 10
+    },
+    {
+     "name": "page",
+     "in": "query",
+     "required": false,
+     "type": "number",
+     "description": "Page number",
+     "default": 1
+    },
+    {
+     "name": "api_key",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "api.data.gov API key. DEMO_KEY works but is heavily rate-limited; a free key is available at api.data.gov/signup",
+     "default": "DEMO_KEY"
+    }
+   ],
+   "responseType": "json",
+   "resultPath": "results",
+   "defaultFields": [
+    "candidate_id",
+    "candidate_name",
+    "committee_id",
+    "committee_name",
+    "support_oppose_indicator",
+    "total",
+    "count"
+   ],
+   "pagination": {
+    "type": "page",
+    "param": "page"
+   },
+   "mutates": false,
+   "example": {
+    "cycle": "2026",
+    "office": "senate",
+    "state": "GA"
+   },
+   "source": "E7",
+   "verified": false,
+   "verifyNote": "failed on Blaxel: HTTP 429: rate limited by the site; wait a minute before retrying (HTTP 429)"
+  },
+  {
+   "name": "get-state-election-offices",
+   "summary": "Get a state's election offices (ballot access and campaign finance) with addresses, phones and websites",
+   "method": "GET",
+   "urlTemplate": "https://api.open.fec.gov/v1/state-election-office/",
+   "params": [
+    {
+     "name": "state",
+     "in": "query",
+     "required": true,
+     "type": "string",
+     "description": "Two-letter state code",
+     "example": "GA"
+    },
+    {
+     "name": "api_key",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "api.data.gov API key. DEMO_KEY works but is heavily rate-limited; a free key is available at api.data.gov/signup",
+     "default": "DEMO_KEY"
+    }
+   ],
+   "responseType": "json",
+   "resultPath": "results",
+   "defaultFields": [
+    "office_name",
+    "office_type",
+    "address_line1",
+    "address_line2",
+    "city",
+    "zip_code",
+    "primary_phone_number",
+    "website_url1"
+   ],
+   "mutates": false,
+   "example": {
+    "state": "GA"
+   },
+   "source": "E21",
+   "verified": false,
+   "verifyNote": "failed on Blaxel: HTTP 429: rate limited by the site; wait a minute before retrying (HTTP 429)"
+  }
+ ],
+ "generated": {
+  "by": "clify add",
+  "model": "claude-opus-5-5",
+  "exploredSteps": 29,
+  "recorded": 86,
+  "verifiedAt": "2026-10-18T08:17:00.302Z",
+  "seconds": 432
+ }
+}

@@ -1,0 +1,13 @@
+{
+ "expect": [
+  "1.8.15",
+  "MIT"
+ ],
+ "detail": {
+  "latest_stable_version": "1.8.15",
+  "meta.licenses": [
+   "MIT"
+  ]
+ },
+ "at": "2026-10-17T23:27:26.530Z"
+}

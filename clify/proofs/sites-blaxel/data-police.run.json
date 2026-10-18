@@ -1,0 +1,277 @@
+{
+ "url": "https://data.police.uk/",
+ "category": "gov-eu",
+ "sandbox": "clify-data-police-uk",
+ "startedAt": "2026-10-18T08:49:54.367Z",
+ "region": "us-pdx-1",
+ "chrome": "Chrome/148.0.7778.96",
+ "sandboxStartMs": 2397,
+ "addSeconds": 222,
+ "addExit": 0,
+ "add": {
+  "ok": true,
+  "site": "data-police",
+  "url": "https://data.police.uk/",
+  "commands": [
+   {
+    "name": "list-forces",
+    "summary": "List all police forces (id and name). Use the id in other commands.",
+    "verified": true
+   },
+   {
+    "name": "get-force",
+    "summary": "Get one police force's details: website, phone number and engagement channels such as social media.",
+    "verified": true
+   },
+   {
+    "name": "list-force-officers",
+    "summary": "List the senior officers of a police force, with rank and bio.",
+    "verified": true
+   },
+   {
+    "name": "list-crime-categories",
+    "summary": "List the crime categories (url slug and name) that were valid for a given month.",
+    "verified": true
+   },
+   {
+    "name": "list-dates",
+    "summary": "List the months that have street-level data available, and which forces published stop and search data for each month.",
+    "verified": true
+   },
+   {
+    "name": "get-last-updated",
+    "summary": "Get the date the crime data was last updated (this is the latest month available).",
+    "verified": true
+   },
+   {
+    "name": "street-crimes",
+    "summary": "Street-level crimes for one month, either within a 1-mile radius of a lat/lng point or inside a custom polygon. Can be limited to one category.",
+    "verified": true
+   },
+   {
+    "name": "crimes-at-location",
+    "summary": "Crimes recorded at the anonymised location nearest to a lat/lng point, or at a specific street location id, for one month.",
+    "verified": true
+   },
+   {
+    "name": "crimes-no-location",
+    "summary": "Crimes a force recorded in one month that could not be mapped to a location.",
+    "verified": true
+   },
+   {
+    "name": "outcomes-at-location",
+    "summary": "Case outcomes recorded in one month near a lat/lng point, at a street location id, or inside a polygon. Each outcome includes the crime it relates to.",
+    "verified": true
+   },
+   {
+    "name": "get-crime-outcomes",
+    "summary": "Get the full outcome history of one crime, looked up by its persistent_id.",
+    "verified": true
+   },
+   {
+    "name": "list-neighbourhoods",
+    "summary": "List the neighbourhood policing areas (id and name) of a force.",
+    "verified": true
+   },
+   {
+    "name": "get-neighbourhood",
+    "summary": "Get one neighbourhood's details: name, centre point, description, links and contact details.",
+    "verified": true
+   },
+   {
+    "name": "get-neighbourhood-boundary",
+    "summary": "Get a neighbourhood's boundary as a list of lat/lng points. These can be joined as lat,lng:lat,lng for the poly param of other commands.",
+    "verified": true
+   },
+   {
+    "name": "list-neighbourhood-team",
+    "summary": "List the officers and PCSOs on a neighbourhood's policing team.",
+    "verified": true
+   },
+   {
+    "name": "list-neighbourhood-events",
+    "summary": "List upcoming events for a neighbourhood, such as police drop-ins and community meetings.",
+    "verified": true
+   },
+   {
+    "name": "list-neighbourhood-priorities",
+    "summary": "List a neighbourhood's policing priorities: each issue and the action taken on it.",
+    "verified": true
+   },
+   {
+    "name": "locate-neighbourhood",
+    "summary": "Find which force and neighbourhood cover a lat,lng point.",
+    "verified": true
+   },
+   {
+    "name": "stops-street",
+    "summary": "Stop and searches in one month within a 1-mile radius of a lat/lng point, or inside a polygon.",
+    "verified": true
+   },
+   {
+    "name": "stops-force",
+    "summary": "All stop and searches a force reported for one month.",
+    "verified": true
+   },
+   {
+    "name": "stops-no-location",
+    "summary": "Stop and searches a force reported for one month that could not be mapped to a location.",
+    "verified": true
+   },
+   {
+    "name": "stops-at-location",
+    "summary": "Stop and searches at a specific street location id for one month.",
+    "verified": true
+   },
+   {
+    "name": "generate-csv-download",
+    "summary": "Submit the custom download form to generate a CSV file (street-level crime data) for chosen forces and a month range. Returns the HTML result page. This starts a server-side export job but does not ch",
+    "verified": false,
+    "writes": true
+   }
+  ],
+  "verified": 22,
+  "writes": 1,
+  "dropped": [],
+  "blockers": [],
+  "loggedIn": false,
+  "seconds": 221,
+  "next": [
+   "clify data-police",
+   "clify data-police list-forces"
+  ],
+  "installed": "/home/ubuntu/clify-runs/blaxel-w1/home/bin/data-police",
+  "explored": {
+   "steps": 10,
+   "recorded": 27,
+   "heldWrites": 1
+  }
+ },
+ "check": {
+  "on": "blaxel",
+  "node": "v24.22.0",
+  "seconds": 16,
+  "reads": 22,
+  "verified": 22,
+  "failed": [],
+  "results": [
+   {
+    "name": "list-forces",
+    "ok": true,
+    "ms": 421
+   },
+   {
+    "name": "get-force",
+    "ok": true,
+    "ms": 132
+   },
+   {
+    "name": "list-force-officers",
+    "ok": true,
+    "ms": 127
+   },
+   {
+    "name": "list-crime-categories",
+    "ok": true,
+    "ms": 130
+   },
+   {
+    "name": "list-dates",
+    "ok": true,
+    "ms": 127
+   },
+   {
+    "name": "get-last-updated",
+    "ok": true,
+    "ms": 126
+   },
+   {
+    "name": "street-crimes",
+    "ok": true,
+    "ms": 933
+   },
+   {
+    "name": "crimes-at-location",
+    "ok": true,
+    "ms": 130
+   },
+   {
+    "name": "crimes-no-location",
+    "ok": true,
+    "ms": 250
+   },
+   {
+    "name": "outcomes-at-location",
+    "ok": true,
+    "ms": 383
+   },
+   {
+    "name": "get-crime-outcomes",
+    "ok": true,
+    "ms": 130
+   },
+   {
+    "name": "list-neighbourhoods",
+    "ok": true,
+    "ms": 132
+   },
+   {
+    "name": "get-neighbourhood",
+    "ok": true,
+    "ms": 129
+   },
+   {
+    "name": "get-neighbourhood-boundary",
+    "ok": true,
+    "ms": 126
+   },
+   {
+    "name": "list-neighbourhood-team",
+    "ok": true,
+    "ms": 129
+   },
+   {
+    "name": "list-neighbourhood-events",
+    "ok": true,
+    "ms": 8514
+   },
+   {
+    "name": "list-neighbourhood-priorities",
+    "ok": true,
+    "ms": 135
+   },
+   {
+    "name": "locate-neighbourhood",
+    "ok": true,
+    "ms": 130
+   },
+   {
+    "name": "stops-street",
+    "ok": true,
+    "ms": 388
+   },
+   {
+    "name": "stops-force",
+    "ok": true,
+    "ms": 273
+   },
+   {
+    "name": "stops-no-location",
+    "ok": true,
+    "ms": 135
+   },
+   {
+    "name": "stops-at-location",
+    "ok": true,
+    "ms": 127
+   },
+   {
+    "name": "generate-csv-download",
+    "ok": true,
+    "reason": "write: dry-run preview only, not sent"
+   }
+  ]
+ },
+ "deleted": true,
+ "seconds": 240
+}

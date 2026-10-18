@@ -1,0 +1,36 @@
+{
+ "url": "https://www.eduskunta.fi/",
+ "category": "gov-nordic",
+ "sandbox": "clify-www-eduskunta-fi",
+ "startedAt": "2026-10-18T09:13:39.388Z",
+ "region": "us-pdx-1",
+ "chrome": "Chrome/148.0.7778.96",
+ "sandboxStartMs": 2586,
+ "addSeconds": 14,
+ "addExit": 1,
+ "add": {
+  "ok": false,
+  "site": "eduskunta",
+  "url": "https://www.eduskunta.fi/",
+  "commands": [],
+  "verified": 0,
+  "writes": 0,
+  "dropped": [],
+  "blockers": [
+   "captcha"
+  ],
+  "loggedIn": false,
+  "seconds": 13,
+  "next": [
+   "clify eduskunta",
+   "clify repair eduskunta --goal \"<what you need from the site>\""
+  ],
+  "explored": {
+   "steps": 2,
+   "recorded": 2,
+   "heldWrites": 0
+  }
+ },
+ "deleted": true,
+ "seconds": 17
+}

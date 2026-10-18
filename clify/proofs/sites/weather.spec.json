@@ -1,0 +1,541 @@
+{
+ "name": "weather",
+ "startUrl": "https://www.weather.gov/",
+ "origin": "https://www.weather.gov",
+ "createdAt": "2026-10-18T07:20:05.548Z",
+ "description": "National Weather Service (weather.gov / api.weather.gov): look up US forecasts by lat/lon or NWS grid point, active alerts, weather stations and their latest observations, forecast-office text products (e.g. Area Forecast Discussions), zone boundary KML, DWML forecast export, and weather glossary terms.",
+ "commands": [
+  {
+   "name": "get-point",
+   "summary": "Resolve a lat/lon to its NWS forecast office, grid x/y, forecast URLs, forecast zone, county and nearby city. Run this first to get the wfo/x/y that the forecast commands take.",
+   "method": "GET",
+   "urlTemplate": "https://api.weather.gov/points/{lat},{lon}",
+   "params": [
+    {
+     "name": "lat",
+     "in": "path",
+     "required": true,
+     "type": "number",
+     "description": "Latitude in decimal degrees, at most 4 decimals, e.g. 39.7456",
+     "example": "39.7456"
+    },
+    {
+     "name": "lon",
+     "in": "path",
+     "required": true,
+     "type": "number",
+     "description": "Longitude in decimal degrees, at most 4 decimals. Negative for the western hemisphere, e.g. -97.0892",
+     "example": "-97.0892"
+    }
+   ],
+   "headers": {
+    "Accept": "application/geo+json"
+   },
+   "responseType": "json",
+   "resultPath": "properties",
+   "defaultFields": [
+    "gridId",
+    "gridX",
+    "gridY",
+    "relativeLocation.properties.city",
+    "relativeLocation.properties.state",
+    "forecastZone",
+    "county",
+    "observationStations"
+   ],
+   "mutates": false,
+   "example": {
+    "lat": "39.7456",
+    "lon": "-97.0892"
+   },
+   "source": "E3 GET https://api.weather.gov/openapi.json",
+   "verified": true
+  },
+  {
+   "name": "get-forecast",
+   "summary": "Get the 7-day forecast (day/night periods) for an NWS grid point (office + x,y from get-point).",
+   "method": "GET",
+   "urlTemplate": "https://api.weather.gov/gridpoints/{wfo}/{x},{y}/forecast",
+   "params": [
+    {
+     "name": "wfo",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Forecast office ID (gridId from get-point), e.g. TOP, BOU, MFL",
+     "example": "TOP"
+    },
+    {
+     "name": "x",
+     "in": "path",
+     "required": true,
+     "type": "number",
+     "description": "Grid X (gridX from get-point)",
+     "example": "31"
+    },
+    {
+     "name": "y",
+     "in": "path",
+     "required": true,
+     "type": "number",
+     "description": "Grid Y (gridY from get-point)",
+     "example": "80"
+    },
+    {
+     "name": "units",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Unit system: us (imperial) or si (metric)",
+     "enum": [
+      "us",
+      "si"
+     ]
+    }
+   ],
+   "headers": {
+    "Accept": "application/geo+json"
+   },
+   "responseType": "json",
+   "resultPath": "properties.periods",
+   "defaultFields": [
+    "name",
+    "startTime",
+    "temperature",
+    "temperatureUnit",
+    "probabilityOfPrecipitation.value",
+    "windSpeed",
+    "windDirection",
+    "shortForecast"
+   ],
+   "mutates": false,
+   "example": {
+    "wfo": "TOP",
+    "x": "31",
+    "y": "80"
+   },
+   "source": "E3 GET https://api.weather.gov/openapi.json",
+   "verified": true
+  },
+  {
+   "name": "get-hourly-forecast",
+   "summary": "Get the hour-by-hour forecast (about 7 days) for an NWS grid point.",
+   "method": "GET",
+   "urlTemplate": "https://api.weather.gov/gridpoints/{wfo}/{x},{y}/forecast/hourly",
+   "params": [
+    {
+     "name": "wfo",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Forecast office ID (gridId from get-point), e.g. TOP",
+     "example": "TOP"
+    },
+    {
+     "name": "x",
+     "in": "path",
+     "required": true,
+     "type": "number",
+     "description": "Grid X (gridX from get-point)",
+     "example": "31"
+    },
+    {
+     "name": "y",
+     "in": "path",
+     "required": true,
+     "type": "number",
+     "description": "Grid Y (gridY from get-point)",
+     "example": "80"
+    },
+    {
+     "name": "units",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Unit system: us (imperial) or si (metric)",
+     "enum": [
+      "us",
+      "si"
+     ]
+    }
+   ],
+   "headers": {
+    "Accept": "application/geo+json"
+   },
+   "responseType": "json",
+   "resultPath": "properties.periods",
+   "defaultFields": [
+    "startTime",
+    "temperature",
+    "temperatureUnit",
+    "probabilityOfPrecipitation.value",
+    "relativeHumidity.value",
+    "windSpeed",
+    "windDirection",
+    "shortForecast"
+   ],
+   "mutates": false,
+   "example": {
+    "wfo": "TOP",
+    "x": "31",
+    "y": "80"
+   },
+   "source": "E3 GET https://api.weather.gov/openapi.json",
+   "verified": true
+  },
+  {
+   "name": "list-active-alerts",
+   "summary": "List currently active NWS watches, warnings and advisories. Filter by state/marine area, zone, event type, severity or urgency.",
+   "method": "GET",
+   "urlTemplate": "https://api.weather.gov/alerts/active",
+   "params": [
+    {
+     "name": "area",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "State or marine area code, e.g. CO, FL, TX",
+     "example": "CO"
+    },
+    {
+     "name": "zone",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Forecast or county zone ID, e.g. COZ040 or COC031"
+    },
+    {
+     "name": "event",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Event name, e.g. 'Winter Storm Warning', 'Red Flag Warning'"
+    },
+    {
+     "name": "severity",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Alert severity",
+     "enum": [
+      "Extreme",
+      "Severe",
+      "Moderate",
+      "Minor",
+      "Unknown"
+     ]
+    },
+    {
+     "name": "urgency",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Alert urgency",
+     "enum": [
+      "Immediate",
+      "Expected",
+      "Future",
+      "Past",
+      "Unknown"
+     ]
+    }
+   ],
+   "headers": {
+    "Accept": "application/geo+json"
+   },
+   "responseType": "json",
+   "resultPath": "features",
+   "defaultFields": [
+    "properties.event",
+    "properties.headline",
+    "properties.severity",
+    "properties.urgency",
+    "properties.areaDesc",
+    "properties.effective",
+    "properties.expires",
+    "properties.id"
+   ],
+   "mutates": false,
+   "source": "E3 E12",
+   "verified": true
+  },
+  {
+   "name": "list-stations",
+   "summary": "List NWS observation stations, optionally filtered by state. Returns station IDs for get-latest-observation.",
+   "method": "GET",
+   "urlTemplate": "https://api.weather.gov/stations",
+   "params": [
+    {
+     "name": "state",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Two-letter state code, e.g. CO",
+     "example": "CO"
+    },
+    {
+     "name": "api_limit",
+     "key": "limit",
+     "in": "query",
+     "required": false,
+     "type": "number",
+     "description": "Maximum number of stations to return (max 500) (sent to the site as \"limit\"; clify's own --limit only shapes the output)",
+     "default": 50
+    }
+   ],
+   "headers": {
+    "Accept": "application/geo+json"
+   },
+   "responseType": "json",
+   "resultPath": "features",
+   "defaultFields": [
+    "properties.stationIdentifier",
+    "properties.name",
+    "properties.timeZone",
+    "properties.elevation.value",
+    "geometry.coordinates"
+   ],
+   "mutates": false,
+   "example": {
+    "state": "CO"
+   },
+   "source": "E3 GET https://api.weather.gov/openapi.json",
+   "verified": true
+  },
+  {
+   "name": "get-latest-observation",
+   "summary": "Get the latest current-conditions observation from a station: temperature, dewpoint, wind, pressure, humidity and sky text.",
+   "method": "GET",
+   "urlTemplate": "https://api.weather.gov/stations/{station}/observations/latest",
+   "params": [
+    {
+     "name": "station",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Station ID (ICAO), e.g. KDEN, KMIA",
+     "example": "KDEN"
+    }
+   ],
+   "headers": {
+    "Accept": "application/geo+json"
+   },
+   "responseType": "json",
+   "resultPath": "properties",
+   "defaultFields": [
+    "timestamp",
+    "textDescription",
+    "temperature.value",
+    "dewpoint.value",
+    "relativeHumidity.value",
+    "windSpeed.value",
+    "windDirection.value",
+    "barometricPressure.value"
+   ],
+   "mutates": false,
+   "example": {
+    "station": "KDEN"
+   },
+   "source": "E3 GET https://api.weather.gov/openapi.json",
+   "verified": true
+  },
+  {
+   "name": "list-office-products",
+   "summary": "List issued text products of one type from a forecast office, newest first (e.g. Area Forecast Discussions from BOU).",
+   "method": "GET",
+   "urlTemplate": "https://api.weather.gov/products/types/{type}/locations/{office}",
+   "params": [
+    {
+     "name": "type",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Product type code, e.g. AFD (Area Forecast Discussion), HWO (Hazardous Weather Outlook), ZFP (Zone Forecast Product)",
+     "example": "AFD"
+    },
+    {
+     "name": "office",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Issuing office / location ID, e.g. BOU, MFL, TOP",
+     "example": "BOU"
+    }
+   ],
+   "headers": {
+    "Accept": "application/ld+json"
+   },
+   "responseType": "json",
+   "resultPath": "@graph",
+   "defaultFields": [
+    "id",
+    "issuanceTime",
+    "issuingOffice",
+    "productCode",
+    "productName",
+    "wmoCollectiveId"
+   ],
+   "mutates": false,
+   "example": {
+    "type": "AFD",
+    "office": "BOU"
+   },
+   "source": "E3 GET https://api.weather.gov/openapi.json",
+   "verified": true
+  },
+  {
+   "name": "get-latest-product",
+   "summary": "Get the full text of the most recent product of a type from an office, e.g. the latest Area Forecast Discussion.",
+   "method": "GET",
+   "urlTemplate": "https://api.weather.gov/products/types/{type}/locations/{office}/latest",
+   "params": [
+    {
+     "name": "type",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Product type code, e.g. AFD, HWO, ZFP",
+     "example": "AFD"
+    },
+    {
+     "name": "office",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Issuing office / location ID, e.g. BOU",
+     "example": "BOU"
+    }
+   ],
+   "headers": {
+    "Accept": "application/ld+json"
+   },
+   "responseType": "json",
+   "defaultFields": [
+    "id",
+    "issuanceTime",
+    "issuingOffice",
+    "productCode",
+    "productName",
+    "productText"
+   ],
+   "mutates": false,
+   "example": {
+    "type": "AFD",
+    "office": "BOU"
+   },
+   "source": "E3 GET https://api.weather.gov/openapi.json",
+   "verified": true
+  },
+  {
+   "name": "export-forecast-dwml",
+   "summary": "Export the point forecast as DWML (NWS Digital Weather Markup Language, converted to JSON): time layouts, temperatures, precipitation probabilities, weather and current observations for a lat/lon.",
+   "method": "GET",
+   "urlTemplate": "https://forecast.weather.gov/MapClick.php?FcstType=dwml",
+   "params": [
+    {
+     "name": "lat",
+     "in": "query",
+     "required": true,
+     "type": "number",
+     "description": "Latitude in decimal degrees, e.g. 39.7456",
+     "example": "39.7456"
+    },
+    {
+     "name": "lon",
+     "in": "query",
+     "required": true,
+     "type": "number",
+     "description": "Longitude in decimal degrees, e.g. -97.0892",
+     "example": "-97.0892"
+    }
+   ],
+   "responseType": "json",
+   "resultPath": "dwml.data",
+   "mutates": false,
+   "example": {
+    "lat": "39.7456",
+    "lon": "-97.0892"
+   },
+   "source": "E10 GET https://forecast.weather.gov/kml/COZ040.kml",
+   "verified": true
+  },
+  {
+   "name": "get-zone-boundary",
+   "summary": "Get the KML boundary polygon and description (area name) of an NWS public forecast zone.",
+   "method": "GET",
+   "urlTemplate": "https://forecast.weather.gov/kml/{zone}.kml",
+   "params": [
+    {
+     "name": "zone",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Forecast zone ID: state + Z + 3 digits, e.g. COZ040",
+     "example": "COZ040"
+    }
+   ],
+   "responseType": "json",
+   "resultPath": "kml.Document.Placemark",
+   "defaultFields": [
+    "name",
+    "description",
+    "MultiGeometry"
+   ],
+   "mutates": false,
+   "example": {
+    "zone": "COZ040"
+   },
+   "source": "E10 GET https://forecast.weather.gov/kml/COZ040.kml",
+   "verified": true
+  },
+  {
+   "name": "lookup-glossary-term",
+   "summary": "Look up the definition of a weather term in the NWS glossary.",
+   "method": "GET",
+   "urlTemplate": "/glossary/index.php",
+   "params": [
+    {
+     "name": "word",
+     "in": "query",
+     "required": true,
+     "type": "string",
+     "description": "Term to look up, e.g. trough, dewpoint, derecho",
+     "example": "trough"
+    }
+   ],
+   "responseType": "html",
+   "extract": {
+    "fields": {
+     "title": "title",
+     "content": "body"
+    }
+   },
+   "mutates": false,
+   "example": {
+    "word": "trough"
+   },
+   "source": "E13 GET https://www.weather.gov/glossary/index.php",
+   "verified": true
+  }
+ ],
+ "blockers": [],
+ "notes": [
+  "Typical flow: get-point --lat --lon \u2192 use gridId/gridX/gridY with get-forecast or get-hourly-forecast; observationStations from get-point (or list-stations) \u2192 get-latest-observation.",
+  "api.weather.gov requires an identifying User-Agent header and rejects requests without one. Coordinates should have at most 4 decimal places; more precision can trigger a 301 redirect.",
+  "Only US locations and territories are covered. Points outside NWS coverage return 404.",
+  "Observation values are SI units (degC, km/h, Pa) with a unitCode beside each value. Forecast units default to US; pass --units si for metric.",
+  "Gridpoint forecasts sometimes return a transient 500 'Unexpected Problem'. Retrying usually works.",
+  "The MapClick DWML export and zone KML are XML, converted to JSON.",
+  "The glossary URL redirects (302) to the glossary page. Its definition is in the page body text.",
+  "ArcGIS basemap tiles/styles in the recording are map background only and were left out."
+ ],
+ "dropped": [],
+ "generated": {
+  "by": "clify add",
+  "model": "claude-opus-5-5",
+  "exploredSteps": 11,
+  "recorded": 24,
+  "verifiedAt": "2026-10-18T07:21:29.349Z",
+  "seconds": 177
+ }
+}

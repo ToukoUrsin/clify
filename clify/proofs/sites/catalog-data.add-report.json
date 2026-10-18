@@ -1,0 +1,68 @@
+{
+ "ok": true,
+ "site": "catalog-data",
+ "url": "https://catalog.data.gov/dataset",
+ "commands": [
+  {
+   "name": "search-datasets",
+   "summary": "Search the Data.gov catalog for datasets, with optional keyword tag, organization type, publisher, geospatial and downloadable-file filters, and sorting.",
+   "verified": true
+  },
+  {
+   "name": "search-datasets-next",
+   "summary": "Fetch the next page of dataset search results (the 'Show more results' fragment) using an 'after' cursor from a previous results page.",
+   "verified": true
+  },
+  {
+   "name": "get-dataset",
+   "summary": "Get one dataset's metadata (title, description, publisher, dates, license, keywords) and its download links (distribution) by slug.",
+   "verified": true
+  },
+  {
+   "name": "get-harvest-record",
+   "summary": "Get the raw DCAT JSON metadata record for a dataset by its harvest record UUID (linked from the dataset page).",
+   "verified": true
+  },
+  {
+   "name": "list-organizations",
+   "summary": "List all publishing organizations (124) with slug, type and dataset count, as JSON.",
+   "verified": true
+  },
+  {
+   "name": "list-publishers",
+   "summary": "List the top publishers by dataset count (100 of 1867); names can be used as the publisher filter.",
+   "verified": true
+  },
+  {
+   "name": "suggest-keywords",
+   "summary": "Autocomplete keyword tags matching a partial string, with dataset counts; results can be used as the keyword filter.",
+   "verified": true
+  },
+  {
+   "name": "search-organizations",
+   "summary": "Browse or search organizations by name (HTML listing with type and dataset count, paginated).",
+   "verified": true
+  },
+  {
+   "name": "get-organization-datasets",
+   "summary": "List or search the datasets of one organization (by slug), with optional publisher and geospatial filters and sorting.",
+   "verified": true
+  }
+ ],
+ "verified": 9,
+ "writes": 0,
+ "dropped": [],
+ "blockers": [],
+ "loggedIn": false,
+ "seconds": 210,
+ "next": [
+  "clify catalog-data",
+  "clify catalog-data search-datasets --q \"electric vehicles\" --sort \"relevance\""
+ ],
+ "installed": "/home/ubuntu/clify-runs/batch2/home/bin/catalog-data",
+ "explored": {
+  "steps": 29,
+  "recorded": 82,
+  "heldWrites": 0
+ }
+}

@@ -1,0 +1,9 @@
+{
+ "expect": [
+  "1.22.1-9+deb12u10"
+ ],
+ "detail": {
+  "h": "Package: nginx (1.22.1-9+deb12u10 and others) [security]"
+ },
+ "at": "2026-10-17T23:20:40.879Z"
+}

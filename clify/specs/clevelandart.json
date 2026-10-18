@@ -1,0 +1,278 @@
+{
+ "name": "clevelandart",
+ "startUrl": "https://www.clevelandart.org/art/collection/search",
+ "origin": "https://www.clevelandart.org",
+ "createdAt": "2026-10-18T08:42:04.500Z",
+ "description": "Cleveland Museum of Art online collection: search and filter artworks (keyword, artist, culture, type, medium, department, gallery, on view, recent acquisitions), autocomplete collection terms, get artwork details, related artworks, gallery locations and deep-zoom image info.",
+ "commands": [
+  {
+   "name": "search-artworks",
+   "summary": "Search the CMA collection by keyword, with optional filters (type, department, artist, culture, on view, recently acquired), paged by offset",
+   "method": "GET",
+   "urlTemplate": "https://openaccess-api.clevelandart.org/api/artworks/",
+   "params": [
+    {
+     "name": "q",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Keyword search: artist, title, subject or accession number. Leave empty to browse the whole collection.",
+     "example": "monet"
+    },
+    {
+     "name": "skip",
+     "in": "query",
+     "required": false,
+     "type": "number",
+     "description": "Result offset",
+     "default": 0,
+     "example": "0"
+    },
+    {
+     "name": "api_limit",
+     "key": "limit",
+     "in": "query",
+     "required": false,
+     "type": "number",
+     "description": "Page size (sent to the API as \"limit\"; clify's own --limit only shapes the output)",
+     "default": 100,
+     "example": "100"
+    },
+    {
+     "name": "type",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Artwork type, e.g. Painting, Print, Drawing, Sculpture, Photograph"
+    },
+    {
+     "name": "department",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Curatorial department, e.g. 'American Painting and Sculpture', 'Modern European Painting and Sculpture'"
+    },
+    {
+     "name": "artists",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Artist name, e.g. Georgia O'Keeffe"
+    },
+    {
+     "name": "culture",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Culture, e.g. 'United States', 'France'"
+    },
+    {
+     "name": "currently_on_view",
+     "in": "query",
+     "required": false,
+     "type": "boolean",
+     "description": "Only artworks currently on view in the galleries"
+    },
+    {
+     "name": "recently_acquired",
+     "in": "query",
+     "required": false,
+     "type": "boolean",
+     "description": "Only recently acquired artworks"
+    }
+   ],
+   "responseType": "json",
+   "resultPath": "data",
+   "defaultFields": [
+    "accession_number",
+    "title",
+    "creators.0.description",
+    "culture",
+    "technique",
+    "creditline",
+    "share_license_status",
+    "url"
+   ],
+   "pagination": {
+    "type": "offset",
+    "param": "skip",
+    "step": 100
+   },
+   "mutates": false,
+   "example": {
+    "q": "monet",
+    "skip": "0",
+    "api_limit": "100"
+   },
+   "source": "E7",
+   "verified": true
+  },
+  {
+   "name": "get-artwork",
+   "summary": "Get full details of one artwork by accession number (title, date, artist, culture, medium, measurements, credit line, description, provenance, images)",
+   "method": "GET",
+   "urlTemplate": "/art/{accession_number}",
+   "params": [
+    {
+     "name": "accession_number",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Artwork accession number, e.g. 1987.138",
+     "example": "1987.138"
+    }
+   ],
+   "responseType": "html",
+   "resultPath": "props.pageProps",
+   "extract": {
+    "jsonScript": "script#__NEXT_DATA__"
+   },
+   "mutates": false,
+   "example": {
+    "accession_number": "1987.138"
+   },
+   "source": "E16 E12 GET https://www.clevelandart.org/art/1987.138",
+   "verified": true
+  },
+  {
+   "name": "list-related-artworks",
+   "summary": "List the 'See Also' related artworks shown on an artwork's detail page",
+   "method": "GET",
+   "urlTemplate": "/art/{accession_number}",
+   "params": [
+    {
+     "name": "accession_number",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Artwork accession number, e.g. 2008.37",
+     "example": "1987.138"
+    }
+   ],
+   "responseType": "html",
+   "resultPath": "props.pageProps.artworksForSeeAlso",
+   "extract": {
+    "jsonScript": "script#__NEXT_DATA__"
+   },
+   "defaultFields": [
+    "accession_number",
+    "title",
+    "department",
+    "type",
+    "image_assets.primary_image.medium.url"
+   ],
+   "mutates": false,
+   "example": {
+    "accession_number": "1987.138"
+   },
+   "source": "E16 E10 E11 GET https://www.clevelandart.org/art/1987.138",
+   "verified": true
+  },
+  {
+   "name": "list-gallery-locations",
+   "summary": "List the museum's gallery locations (values accepted by the gallery= filter of search-artworks)",
+   "method": "GET",
+   "urlTemplate": "/art/collection/search",
+   "params": [],
+   "responseType": "html",
+   "resultPath": "props.pageProps.galleryLocations",
+   "extract": {
+    "jsonScript": "script#__NEXT_DATA__"
+   },
+   "defaultFields": [
+    "label",
+    "value"
+   ],
+   "mutates": false,
+   "source": "E15 GET https://www.clevelandart.org/art/collection/search",
+   "verified": true
+  },
+  {
+   "name": "get-image-zoom-info",
+   "summary": "Get deep-zoom (DZI) metadata for an artwork image: full pixel width/height, tile size and format",
+   "method": "GET",
+   "urlTemplate": "https://piction.clevelandart.org/zoomify/{image_id}.dzi",
+   "params": [
+    {
+     "name": "image_id",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Hex image id from the artwork's zoomify/DZI URL in get-artwork data",
+     "example": "82260C028CAA0CD6115CDBC7E911D32B10BA1CEB9D5E32B6A5D846320162482D"
+    }
+   ],
+   "responseType": "json",
+   "resultPath": "Image",
+   "mutates": false,
+   "example": {
+    "image_id": "82260C028CAA0CD6115CDBC7E911D32B10BA1CEB9D5E32B6A5D846320162482D"
+   },
+   "source": "E13 E14 GET https://piction.clevelandart.org/zoomify/82260C028CAA0CD6115CDBC7E911D32B10BA1CEB9D5E32B6A5D846320162482D.dzi",
+   "verified": true
+  }
+ ],
+ "blockers": [],
+ "notes": [
+  "search-artworks wraps the site's nested queryString API. All filters go in --filters as an &-joined 'key=value' string, e.g. 'currently_on_view=1&type=Painting&orderby=date_sortable desc'.",
+  "Filter keys seen: currently_on_view=1, recently_acquired=1, artist_tags (e.g. female), artists, type, culture, medium, credit, gallery, department, collection_mapped, orderby (date_sortable asc|desc). Facet values are the exact display strings shown on artwork pages, e.g. culture=United States, type=Painting.",
+  "Use the exact values from the detail page or from suggest-collection. suggest-collection with --filter artists returns artist names suitable for artists=.",
+  "info.total in the raw search response gives the total hit count. Page with --skip in steps of 100.",
+  "Artwork detail URLs are https://www.clevelandart.org/art/{accession_number}. A printable view is at /print/art/{accession_number}.",
+  "Only public, read-only collection data is covered. The ticketing, cart and tracking-pixel endpoints were skipped."
+ ],
+ "dropped": [
+  {
+   "name": "suggest-collection",
+   "summary": "Autocomplete suggestions (artists, artworks, other terms) for a partial collection search, optionally limited to artist names",
+   "method": "GET",
+   "urlTemplate": "/api/collectionSuggestion",
+   "params": [
+    {
+     "name": "search",
+     "in": "query",
+     "required": true,
+     "type": "string",
+     "description": "Partial search text",
+     "example": "rembr"
+    },
+    {
+     "name": "filter",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Restrict suggestions to artist names (used by the advanced-search artist field)",
+     "enum": [
+      "artists"
+     ]
+    }
+   ],
+   "responseType": "json",
+   "defaultFields": [
+    "title",
+    "subtitle",
+    "type",
+    "search_value",
+    "form_field",
+    "data.accession_number",
+    "data.title",
+    "data.artist"
+   ],
+   "mutates": false,
+   "example": {
+    "search": "monet"
+   },
+   "source": "E9 GET https://www.clevelandart.org/api/collectionSuggestion",
+   "verified": false,
+   "verifyNote": "The internal autocomplete endpoint returns 401 Unauthorized, and there is no public equivalent."
+  }
+ ],
+ "generated": {
+  "by": "clify add",
+  "model": "claude-opus-5-5",
+  "exploredSteps": 29,
+  "recorded": 110,
+  "verifiedAt": "2026-10-18T08:43:21.980Z",
+  "seconds": 284
+ }
+}

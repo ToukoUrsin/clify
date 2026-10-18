@@ -1,0 +1,16 @@
+{
+ "expect": [
+  "2027-06-01"
+ ],
+ "detail": {
+  "codename": "Jammy Jellyfish",
+  "lts": true,
+  "releaseDate": "2022-04-21",
+  "eol": "2027-06-01",
+  "latest": "22.04.5",
+  "latestReleaseDate": "2024-09-12",
+  "support": "2024-09-30",
+  "extendedSupport": "2032-04-21"
+ },
+ "at": "2026-10-17T23:20:33.594Z"
+}

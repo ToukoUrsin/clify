@@ -1,0 +1,1224 @@
+{
+ "name": "setlist",
+ "startUrl": "https://www.setlist.fm/",
+ "origin": "https://www.setlist.fm",
+ "createdAt": "2026-10-18T09:15:45.844Z",
+ "description": "setlist.fm is a crowd-sourced database of concert setlists. This CLI wraps the official setlist.fm REST API 1.0 (api.setlist.fm) to search and look up artists, setlists, venues, cities, countries and users.",
+ "commands": [],
+ "blockers": [
+  "captcha"
+ ],
+ "notes": [
+  "An AWS WAF bot challenge blocks www.setlist.fm, so no website requests could be recorded. All commands use the official REST API at https://api.setlist.fm/rest/1.0/, built from the Swagger spec (E2). None of them were replayed during exploration.",
+  "Every API call needs an API key in the x-api-key header. Pass it with --api_key. Get a key for free at https://www.setlist.fm/settings/api (this needs a setlist.fm account). Without a key, requests return 403. The key is optional in the spec only because no shared key can be hard-coded.",
+  "The Accept: application/json header is sent so responses come back as JSON instead of XML.",
+  "List responses have the shape {type, itemsPerPage (20), page, total, <items>}. Use --p to page and compare page*itemsPerPage with total to know when to stop.",
+  "Setlist dates (eventDate, the date filter) use dd-MM-yyyy. lastUpdated uses yyyyMMddHHmmss.",
+  "Typical flow: search-artists, then take mbid into list-artist-setlists or search-setlists --artistMbid, then take id into get-setlist. The songs are in sets.set[].song[].name. Encores have sets.set[].encore set.",
+  "The API is rate-limited (about 2 requests per second and a daily quota per key) and is free for non-commercial use only.",
+  "The example IDs (setlist 63de4613, version 7be1aaa0, venue 6bd6ca6e, city 5357527, user Adam-Adam) come from the API documentation and setlist.fm conventions, not from recorded responses."
+ ],
+ "dropped": [
+  {
+   "name": "search-artists",
+   "summary": "Search artists by name or MusicBrainz ID; returns mbid needed by list-artist-setlists",
+   "method": "GET",
+   "urlTemplate": "https://api.setlist.fm/rest/1.0/search/artists",
+   "params": [
+    {
+     "name": "artistName",
+     "in": "query",
+     "required": true,
+     "type": "string",
+     "description": "Artist name to search for",
+     "example": "radiohead"
+    },
+    {
+     "name": "artistMbid",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "MusicBrainz artist ID (UUID) to match exactly"
+    },
+    {
+     "name": "sort",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Sort order of results",
+     "enum": [
+      "sortName",
+      "relevance"
+     ],
+     "default": "sortName"
+    },
+    {
+     "name": "p",
+     "in": "query",
+     "required": false,
+     "type": "number",
+     "description": "Result page number, starting at 1. There are 20 results per page.",
+     "default": 1
+    },
+    {
+     "name": "api_key",
+     "key": "x-api-key",
+     "in": "header",
+     "required": false,
+     "type": "string",
+     "description": "Your setlist.fm API key. It is needed for every request. Get one free at https://www.setlist.fm/settings/api"
+    },
+    {
+     "name": "lang",
+     "key": "Accept-Language",
+     "in": "header",
+     "required": false,
+     "type": "string",
+     "description": "Language for localized city and country names",
+     "enum": [
+      "en",
+      "es",
+      "fr",
+      "de",
+      "pt",
+      "tr",
+      "it",
+      "pl"
+     ],
+     "default": "en"
+    }
+   ],
+   "headers": {
+    "Accept": "application/json"
+   },
+   "responseType": "json",
+   "resultPath": "artist",
+   "defaultFields": [
+    "mbid",
+    "name",
+    "sortName",
+    "disambiguation",
+    "tmid",
+    "url"
+   ],
+   "pagination": {
+    "type": "page",
+    "param": "p"
+   },
+   "mutates": false,
+   "example": {
+    "artistName": "radiohead",
+    "sort": "relevance"
+   },
+   "source": "E2 GET https://api.setlist.fm/docs/1.0/ui/swagger.json",
+   "verified": false,
+   "verifyNote": "api.setlist.fm returns 403 Forbidden for every request that lacks a personal x-api-key. No key is available and credentials can't be embedded, so this can't be fixed or verified."
+  },
+  {
+   "name": "get-artist",
+   "summary": "Get one artist by MusicBrainz ID",
+   "method": "GET",
+   "urlTemplate": "https://api.setlist.fm/rest/1.0/artist/{mbid}",
+   "params": [
+    {
+     "name": "mbid",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "MusicBrainz artist ID (UUID)",
+     "example": "a74b1b7f-71a5-4011-9441-d0b5e4122711"
+    },
+    {
+     "name": "api_key",
+     "key": "x-api-key",
+     "in": "header",
+     "required": false,
+     "type": "string",
+     "description": "Your setlist.fm API key (needed for every request)"
+    },
+    {
+     "name": "lang",
+     "key": "Accept-Language",
+     "in": "header",
+     "required": false,
+     "type": "string",
+     "description": "Language for localized names",
+     "enum": [
+      "en",
+      "es",
+      "fr",
+      "de",
+      "pt",
+      "tr",
+      "it",
+      "pl"
+     ],
+     "default": "en"
+    }
+   ],
+   "headers": {
+    "Accept": "application/json"
+   },
+   "responseType": "json",
+   "defaultFields": [
+    "mbid",
+    "name",
+    "sortName",
+    "disambiguation",
+    "tmid",
+    "url"
+   ],
+   "mutates": false,
+   "example": {
+    "mbid": "a74b1b7f-71a5-4011-9441-d0b5e4122711"
+   },
+   "source": "E2 GET https://api.setlist.fm/docs/1.0/ui/swagger.json",
+   "verified": false,
+   "verifyNote": "403 Forbidden: the setlist.fm API needs a personal x-api-key on every request, and none is available."
+  },
+  {
+   "name": "list-artist-setlists",
+   "summary": "List an artist's setlists, newest first, by MusicBrainz ID",
+   "method": "GET",
+   "urlTemplate": "https://api.setlist.fm/rest/1.0/artist/{mbid}/setlists",
+   "params": [
+    {
+     "name": "mbid",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "MusicBrainz artist ID (UUID), from search-artists",
+     "example": "a74b1b7f-71a5-4011-9441-d0b5e4122711"
+    },
+    {
+     "name": "p",
+     "in": "query",
+     "required": false,
+     "type": "number",
+     "description": "Result page number, starting at 1 (20 per page)",
+     "default": 1
+    },
+    {
+     "name": "api_key",
+     "key": "x-api-key",
+     "in": "header",
+     "required": false,
+     "type": "string",
+     "description": "Your setlist.fm API key (needed for every request)"
+    },
+    {
+     "name": "lang",
+     "key": "Accept-Language",
+     "in": "header",
+     "required": false,
+     "type": "string",
+     "description": "Language for localized city and country names",
+     "enum": [
+      "en",
+      "es",
+      "fr",
+      "de",
+      "pt",
+      "tr",
+      "it",
+      "pl"
+     ],
+     "default": "en"
+    }
+   ],
+   "headers": {
+    "Accept": "application/json"
+   },
+   "responseType": "json",
+   "resultPath": "setlist",
+   "defaultFields": [
+    "id",
+    "eventDate",
+    "artist.name",
+    "venue.name",
+    "venue.city.name",
+    "venue.city.country.code",
+    "tour.name",
+    "url"
+   ],
+   "pagination": {
+    "type": "page",
+    "param": "p"
+   },
+   "mutates": false,
+   "example": {
+    "mbid": "a74b1b7f-71a5-4011-9441-d0b5e4122711"
+   },
+   "source": "E2 GET https://api.setlist.fm/docs/1.0/ui/swagger.json",
+   "verified": false,
+   "verifyNote": "403 Forbidden: the setlist.fm API needs a personal x-api-key on every request, and none is available."
+  },
+  {
+   "name": "search-setlists",
+   "summary": "Search setlists by artist, venue, city, country, date, year, tour or last-updated time",
+   "method": "GET",
+   "urlTemplate": "https://api.setlist.fm/rest/1.0/search/setlists",
+   "params": [
+    {
+     "name": "artistName",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Artist name",
+     "example": "radiohead"
+    },
+    {
+     "name": "artistMbid",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "MusicBrainz artist ID (UUID)"
+    },
+    {
+     "name": "artistTmid",
+     "in": "query",
+     "required": false,
+     "type": "number",
+     "description": "Ticketmaster artist ID (deprecated)"
+    },
+    {
+     "name": "cityId",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "GeoNames city ID, from search-cities"
+    },
+    {
+     "name": "cityName",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "City name"
+    },
+    {
+     "name": "countryCode",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "ISO 3166-1 alpha-2 country code, e.g. GB"
+    },
+    {
+     "name": "state",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "State name"
+    },
+    {
+     "name": "stateCode",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "State code"
+    },
+    {
+     "name": "venueId",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Venue ID, from search-venues"
+    },
+    {
+     "name": "venueName",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Venue name"
+    },
+    {
+     "name": "tourName",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Tour name"
+    },
+    {
+     "name": "date",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Event date in dd-MM-yyyy format, e.g. 22-06-2024"
+    },
+    {
+     "name": "year",
+     "in": "query",
+     "required": false,
+     "type": "number",
+     "description": "Event year, e.g. 2017"
+    },
+    {
+     "name": "lastUpdated",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Return only setlists updated after this time, format yyyyMMddHHmmss, e.g. 20240101000000"
+    },
+    {
+     "name": "lastFm",
+     "in": "query",
+     "required": false,
+     "type": "number",
+     "description": "Last.fm event ID (deprecated)"
+    },
+    {
+     "name": "p",
+     "in": "query",
+     "required": false,
+     "type": "number",
+     "description": "Result page number, starting at 1 (20 per page)",
+     "default": 1
+    },
+    {
+     "name": "api_key",
+     "key": "x-api-key",
+     "in": "header",
+     "required": false,
+     "type": "string",
+     "description": "Your setlist.fm API key (needed for every request)"
+    },
+    {
+     "name": "lang",
+     "key": "Accept-Language",
+     "in": "header",
+     "required": false,
+     "type": "string",
+     "description": "Language for localized city and country names",
+     "enum": [
+      "en",
+      "es",
+      "fr",
+      "de",
+      "pt",
+      "tr",
+      "it",
+      "pl"
+     ],
+     "default": "en"
+    }
+   ],
+   "headers": {
+    "Accept": "application/json"
+   },
+   "responseType": "json",
+   "resultPath": "setlist",
+   "defaultFields": [
+    "id",
+    "eventDate",
+    "artist.name",
+    "venue.name",
+    "venue.city.name",
+    "venue.city.country.code",
+    "tour.name",
+    "url"
+   ],
+   "pagination": {
+    "type": "page",
+    "param": "p"
+   },
+   "mutates": false,
+   "example": {
+    "artistName": "radiohead",
+    "year": "2017"
+   },
+   "source": "E2 GET https://api.setlist.fm/docs/1.0/ui/swagger.json",
+   "verified": false,
+   "verifyNote": "403 Forbidden: the setlist.fm API needs a personal x-api-key on every request, and none is available."
+  },
+  {
+   "name": "get-setlist",
+   "summary": "Get the current version of a setlist (songs per set, encores, venue, tour) by setlist ID",
+   "method": "GET",
+   "urlTemplate": "https://api.setlist.fm/rest/1.0/setlist/{setlistId}",
+   "params": [
+    {
+     "name": "setlistId",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Setlist ID (8 hex chars), the id from search-setlists or the last part of a setlist.fm setlist URL",
+     "example": "63de4613"
+    },
+    {
+     "name": "api_key",
+     "key": "x-api-key",
+     "in": "header",
+     "required": false,
+     "type": "string",
+     "description": "Your setlist.fm API key (needed for every request)"
+    },
+    {
+     "name": "lang",
+     "key": "Accept-Language",
+     "in": "header",
+     "required": false,
+     "type": "string",
+     "description": "Language for localized city and country names",
+     "enum": [
+      "en",
+      "es",
+      "fr",
+      "de",
+      "pt",
+      "tr",
+      "it",
+      "pl"
+     ],
+     "default": "en"
+    }
+   ],
+   "headers": {
+    "Accept": "application/json"
+   },
+   "responseType": "json",
+   "defaultFields": [
+    "id",
+    "versionId",
+    "eventDate",
+    "artist.name",
+    "venue.name",
+    "venue.city.name",
+    "tour.name",
+    "sets.set",
+    "info",
+    "url"
+   ],
+   "mutates": false,
+   "example": {
+    "setlistId": "63de4613"
+   },
+   "source": "E2 GET https://api.setlist.fm/docs/1.0/ui/swagger.json",
+   "verified": false,
+   "verifyNote": "403 Forbidden: the setlist.fm API needs a personal x-api-key on every request, and none is available."
+  },
+  {
+   "name": "get-setlist-version",
+   "summary": "Get one specific historical version of a setlist by version ID",
+   "method": "GET",
+   "urlTemplate": "https://api.setlist.fm/rest/1.0/setlist/version/{versionId}",
+   "params": [
+    {
+     "name": "versionId",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Setlist version ID (the versionId field of a setlist)",
+     "example": "7be1aaa0"
+    },
+    {
+     "name": "api_key",
+     "key": "x-api-key",
+     "in": "header",
+     "required": false,
+     "type": "string",
+     "description": "Your setlist.fm API key (needed for every request)"
+    },
+    {
+     "name": "lang",
+     "key": "Accept-Language",
+     "in": "header",
+     "required": false,
+     "type": "string",
+     "description": "Language for localized city and country names",
+     "enum": [
+      "en",
+      "es",
+      "fr",
+      "de",
+      "pt",
+      "tr",
+      "it",
+      "pl"
+     ],
+     "default": "en"
+    }
+   ],
+   "headers": {
+    "Accept": "application/json"
+   },
+   "responseType": "json",
+   "defaultFields": [
+    "id",
+    "versionId",
+    "eventDate",
+    "lastUpdated",
+    "artist.name",
+    "venue.name",
+    "sets.set",
+    "url"
+   ],
+   "mutates": false,
+   "example": {
+    "versionId": "7be1aaa0"
+   },
+   "source": "E2 GET https://api.setlist.fm/docs/1.0/ui/swagger.json",
+   "verified": false,
+   "verifyNote": "403 Forbidden: the setlist.fm API needs a personal x-api-key on every request, and none is available."
+  },
+  {
+   "name": "search-venues",
+   "summary": "Search venues by name, city, state or country",
+   "method": "GET",
+   "urlTemplate": "https://api.setlist.fm/rest/1.0/search/venues",
+   "params": [
+    {
+     "name": "name",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Venue name",
+     "example": "Hollywood Bowl"
+    },
+    {
+     "name": "cityId",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "GeoNames city ID"
+    },
+    {
+     "name": "cityName",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "City name"
+    },
+    {
+     "name": "country",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "ISO 3166-1 alpha-2 country code, e.g. US"
+    },
+    {
+     "name": "state",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "State name"
+    },
+    {
+     "name": "stateCode",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "State code, e.g. CA"
+    },
+    {
+     "name": "p",
+     "in": "query",
+     "required": false,
+     "type": "number",
+     "description": "Result page number, starting at 1 (20 per page)",
+     "default": 1
+    },
+    {
+     "name": "api_key",
+     "key": "x-api-key",
+     "in": "header",
+     "required": false,
+     "type": "string",
+     "description": "Your setlist.fm API key (needed for every request)"
+    },
+    {
+     "name": "lang",
+     "key": "Accept-Language",
+     "in": "header",
+     "required": false,
+     "type": "string",
+     "description": "Language for localized city and country names",
+     "enum": [
+      "en",
+      "es",
+      "fr",
+      "de",
+      "pt",
+      "tr",
+      "it",
+      "pl"
+     ],
+     "default": "en"
+    }
+   ],
+   "headers": {
+    "Accept": "application/json"
+   },
+   "responseType": "json",
+   "resultPath": "venue",
+   "defaultFields": [
+    "id",
+    "name",
+    "city.name",
+    "city.state",
+    "city.country.code",
+    "url"
+   ],
+   "pagination": {
+    "type": "page",
+    "param": "p"
+   },
+   "mutates": false,
+   "example": {
+    "name": "Hollywood Bowl"
+   },
+   "source": "E2 GET https://api.setlist.fm/docs/1.0/ui/swagger.json",
+   "verified": false,
+   "verifyNote": "403 Forbidden: the setlist.fm API needs a personal x-api-key on every request, and none is available."
+  },
+  {
+   "name": "get-venue",
+   "summary": "Get one venue by venue ID",
+   "method": "GET",
+   "urlTemplate": "https://api.setlist.fm/rest/1.0/venue/{venueId}",
+   "params": [
+    {
+     "name": "venueId",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Venue ID (8 hex chars), from search-venues",
+     "example": "6bd6ca6e"
+    },
+    {
+     "name": "api_key",
+     "key": "x-api-key",
+     "in": "header",
+     "required": false,
+     "type": "string",
+     "description": "Your setlist.fm API key (needed for every request)"
+    },
+    {
+     "name": "lang",
+     "key": "Accept-Language",
+     "in": "header",
+     "required": false,
+     "type": "string",
+     "description": "Language for localized city and country names",
+     "enum": [
+      "en",
+      "es",
+      "fr",
+      "de",
+      "pt",
+      "tr",
+      "it",
+      "pl"
+     ],
+     "default": "en"
+    }
+   ],
+   "headers": {
+    "Accept": "application/json"
+   },
+   "responseType": "json",
+   "defaultFields": [
+    "id",
+    "name",
+    "city.name",
+    "city.state",
+    "city.country.name",
+    "city.coords",
+    "url"
+   ],
+   "mutates": false,
+   "example": {
+    "venueId": "6bd6ca6e"
+   },
+   "source": "E2 GET https://api.setlist.fm/docs/1.0/ui/swagger.json",
+   "verified": false,
+   "verifyNote": "403 Forbidden: the setlist.fm API needs a personal x-api-key on every request, and none is available."
+  },
+  {
+   "name": "list-venue-setlists",
+   "summary": "List setlists of concerts held at a venue, newest first",
+   "method": "GET",
+   "urlTemplate": "https://api.setlist.fm/rest/1.0/venue/{venueId}/setlists",
+   "params": [
+    {
+     "name": "venueId",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Venue ID, from search-venues",
+     "example": "6bd6ca6e"
+    },
+    {
+     "name": "p",
+     "in": "query",
+     "required": false,
+     "type": "number",
+     "description": "Result page number, starting at 1 (20 per page)",
+     "default": 1
+    },
+    {
+     "name": "api_key",
+     "key": "x-api-key",
+     "in": "header",
+     "required": false,
+     "type": "string",
+     "description": "Your setlist.fm API key (needed for every request)"
+    },
+    {
+     "name": "lang",
+     "key": "Accept-Language",
+     "in": "header",
+     "required": false,
+     "type": "string",
+     "description": "Language for localized city and country names",
+     "enum": [
+      "en",
+      "es",
+      "fr",
+      "de",
+      "pt",
+      "tr",
+      "it",
+      "pl"
+     ],
+     "default": "en"
+    }
+   ],
+   "headers": {
+    "Accept": "application/json"
+   },
+   "responseType": "json",
+   "resultPath": "setlist",
+   "defaultFields": [
+    "id",
+    "eventDate",
+    "artist.name",
+    "artist.mbid",
+    "venue.name",
+    "tour.name",
+    "url"
+   ],
+   "pagination": {
+    "type": "page",
+    "param": "p"
+   },
+   "mutates": false,
+   "example": {
+    "venueId": "6bd6ca6e"
+   },
+   "source": "E2 GET https://api.setlist.fm/docs/1.0/ui/swagger.json",
+   "verified": false,
+   "verifyNote": "403 Forbidden: the setlist.fm API needs a personal x-api-key on every request, and none is available."
+  },
+  {
+   "name": "search-cities",
+   "summary": "Search cities by name, state or country; returns GeoNames city IDs",
+   "method": "GET",
+   "urlTemplate": "https://api.setlist.fm/rest/1.0/search/cities",
+   "params": [
+    {
+     "name": "name",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "City name",
+     "example": "Hollywood"
+    },
+    {
+     "name": "country",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "ISO 3166-1 alpha-2 country code, e.g. US"
+    },
+    {
+     "name": "state",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "State name"
+    },
+    {
+     "name": "stateCode",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "State code"
+    },
+    {
+     "name": "p",
+     "in": "query",
+     "required": false,
+     "type": "number",
+     "description": "Result page number, starting at 1 (20 per page)",
+     "default": 1
+    },
+    {
+     "name": "api_key",
+     "key": "x-api-key",
+     "in": "header",
+     "required": false,
+     "type": "string",
+     "description": "Your setlist.fm API key (needed for every request)"
+    },
+    {
+     "name": "lang",
+     "key": "Accept-Language",
+     "in": "header",
+     "required": false,
+     "type": "string",
+     "description": "Language for localized city and country names",
+     "enum": [
+      "en",
+      "es",
+      "fr",
+      "de",
+      "pt",
+      "tr",
+      "it",
+      "pl"
+     ],
+     "default": "en"
+    }
+   ],
+   "headers": {
+    "Accept": "application/json"
+   },
+   "responseType": "json",
+   "resultPath": "cities",
+   "defaultFields": [
+    "id",
+    "name",
+    "state",
+    "stateCode",
+    "country.code",
+    "coords.lat",
+    "coords.long"
+   ],
+   "pagination": {
+    "type": "page",
+    "param": "p"
+   },
+   "mutates": false,
+   "example": {
+    "name": "Hollywood"
+   },
+   "source": "E2 GET https://api.setlist.fm/docs/1.0/ui/swagger.json",
+   "verified": false,
+   "verifyNote": "403 Forbidden: the setlist.fm API needs a personal x-api-key on every request, and none is available."
+  },
+  {
+   "name": "get-city",
+   "summary": "Get one city by GeoNames ID",
+   "method": "GET",
+   "urlTemplate": "https://api.setlist.fm/rest/1.0/city/{geoId}",
+   "params": [
+    {
+     "name": "geoId",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "GeoNames city ID, from search-cities",
+     "example": "5357527"
+    },
+    {
+     "name": "api_key",
+     "key": "x-api-key",
+     "in": "header",
+     "required": false,
+     "type": "string",
+     "description": "Your setlist.fm API key (needed for every request)"
+    },
+    {
+     "name": "lang",
+     "key": "Accept-Language",
+     "in": "header",
+     "required": false,
+     "type": "string",
+     "description": "Language for localized city and country names",
+     "enum": [
+      "en",
+      "es",
+      "fr",
+      "de",
+      "pt",
+      "tr",
+      "it",
+      "pl"
+     ],
+     "default": "en"
+    }
+   ],
+   "headers": {
+    "Accept": "application/json"
+   },
+   "responseType": "json",
+   "defaultFields": [
+    "id",
+    "name",
+    "state",
+    "stateCode",
+    "country.code",
+    "country.name",
+    "coords"
+   ],
+   "mutates": false,
+   "example": {
+    "geoId": "5357527"
+   },
+   "source": "E2 GET https://api.setlist.fm/docs/1.0/ui/swagger.json",
+   "verified": false,
+   "verifyNote": "403 Forbidden: the setlist.fm API needs a personal x-api-key on every request, and none is available."
+  },
+  {
+   "name": "list-countries",
+   "summary": "List all countries supported by setlist.fm, with their codes",
+   "method": "GET",
+   "urlTemplate": "https://api.setlist.fm/rest/1.0/search/countries",
+   "params": [
+    {
+     "name": "api_key",
+     "key": "x-api-key",
+     "in": "header",
+     "required": false,
+     "type": "string",
+     "description": "Your setlist.fm API key (needed for every request)"
+    },
+    {
+     "name": "lang",
+     "key": "Accept-Language",
+     "in": "header",
+     "required": false,
+     "type": "string",
+     "description": "Language for localized country names",
+     "enum": [
+      "en",
+      "es",
+      "fr",
+      "de",
+      "pt",
+      "tr",
+      "it",
+      "pl"
+     ],
+     "default": "en"
+    }
+   ],
+   "headers": {
+    "Accept": "application/json"
+   },
+   "responseType": "json",
+   "resultPath": "country",
+   "defaultFields": [
+    "code",
+    "name"
+   ],
+   "mutates": false,
+   "source": "E2 GET https://api.setlist.fm/docs/1.0/ui/swagger.json",
+   "verified": false,
+   "verifyNote": "403 Forbidden: the setlist.fm API needs a personal x-api-key on every request, and none is available."
+  },
+  {
+   "name": "get-user",
+   "summary": "Get a setlist.fm user's public profile by user ID",
+   "method": "GET",
+   "urlTemplate": "https://api.setlist.fm/rest/1.0/user/{userId}",
+   "params": [
+    {
+     "name": "userId",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "setlist.fm username / user ID",
+     "example": "Adam-Adam"
+    },
+    {
+     "name": "api_key",
+     "key": "x-api-key",
+     "in": "header",
+     "required": false,
+     "type": "string",
+     "description": "Your setlist.fm API key (needed for every request)"
+    }
+   ],
+   "headers": {
+    "Accept": "application/json"
+   },
+   "responseType": "json",
+   "defaultFields": [
+    "userId",
+    "fullname",
+    "about",
+    "website",
+    "lastFm",
+    "twitter",
+    "url"
+   ],
+   "mutates": false,
+   "example": {
+    "userId": "Adam-Adam"
+   },
+   "source": "E2 GET https://api.setlist.fm/docs/1.0/ui/swagger.json",
+   "verified": false,
+   "verifyNote": "403 Forbidden: the setlist.fm API needs a personal x-api-key on every request, and none is available."
+  },
+  {
+   "name": "list-user-attended",
+   "summary": "List the concerts (setlists) a user has marked as attended",
+   "method": "GET",
+   "urlTemplate": "https://api.setlist.fm/rest/1.0/user/{userId}/attended",
+   "params": [
+    {
+     "name": "userId",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "setlist.fm username / user ID",
+     "example": "Adam-Adam"
+    },
+    {
+     "name": "p",
+     "in": "query",
+     "required": false,
+     "type": "number",
+     "description": "Result page number, starting at 1 (20 per page)",
+     "default": 1
+    },
+    {
+     "name": "api_key",
+     "key": "x-api-key",
+     "in": "header",
+     "required": false,
+     "type": "string",
+     "description": "Your setlist.fm API key (needed for every request)"
+    },
+    {
+     "name": "lang",
+     "key": "Accept-Language",
+     "in": "header",
+     "required": false,
+     "type": "string",
+     "description": "Language for localized city and country names",
+     "enum": [
+      "en",
+      "es",
+      "fr",
+      "de",
+      "pt",
+      "tr",
+      "it",
+      "pl"
+     ],
+     "default": "en"
+    }
+   ],
+   "headers": {
+    "Accept": "application/json"
+   },
+   "responseType": "json",
+   "resultPath": "setlist",
+   "defaultFields": [
+    "id",
+    "eventDate",
+    "artist.name",
+    "venue.name",
+    "venue.city.name",
+    "tour.name",
+    "url"
+   ],
+   "pagination": {
+    "type": "page",
+    "param": "p"
+   },
+   "mutates": false,
+   "example": {
+    "userId": "Adam-Adam"
+   },
+   "source": "E2 GET https://api.setlist.fm/docs/1.0/ui/swagger.json",
+   "verified": false,
+   "verifyNote": "403 Forbidden: the setlist.fm API needs a personal x-api-key on every request, and none is available."
+  },
+  {
+   "name": "list-user-edited",
+   "summary": "List the setlists a user has created or edited (the current version of each)",
+   "method": "GET",
+   "urlTemplate": "https://api.setlist.fm/rest/1.0/user/{userId}/edited",
+   "params": [
+    {
+     "name": "userId",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "setlist.fm username / user ID",
+     "example": "Adam-Adam"
+    },
+    {
+     "name": "p",
+     "in": "query",
+     "required": false,
+     "type": "number",
+     "description": "Result page number, starting at 1 (20 per page)",
+     "default": 1
+    },
+    {
+     "name": "api_key",
+     "key": "x-api-key",
+     "in": "header",
+     "required": false,
+     "type": "string",
+     "description": "Your setlist.fm API key (needed for every request)"
+    },
+    {
+     "name": "lang",
+     "key": "Accept-Language",
+     "in": "header",
+     "required": false,
+     "type": "string",
+     "description": "Language for localized city and country names",
+     "enum": [
+      "en",
+      "es",
+      "fr",
+      "de",
+      "pt",
+      "tr",
+      "it",
+      "pl"
+     ],
+     "default": "en"
+    }
+   ],
+   "headers": {
+    "Accept": "application/json"
+   },
+   "responseType": "json",
+   "resultPath": "setlist",
+   "defaultFields": [
+    "id",
+    "versionId",
+    "eventDate",
+    "lastUpdated",
+    "artist.name",
+    "venue.name",
+    "url"
+   ],
+   "pagination": {
+    "type": "page",
+    "param": "p"
+   },
+   "mutates": false,
+   "example": {
+    "userId": "Adam-Adam"
+   },
+   "source": "E2 GET https://api.setlist.fm/docs/1.0/ui/swagger.json",
+   "verified": false,
+   "verifyNote": "403 Forbidden: the setlist.fm API needs a personal x-api-key on every request, and none is available."
+  }
+ ],
+ "generated": {
+  "by": "clify add",
+  "model": "claude-opus-5-5",
+  "exploredSteps": 7,
+  "recorded": 10,
+  "verifiedAt": "2026-10-18T09:17:17.926Z",
+  "seconds": 132
+ }
+}

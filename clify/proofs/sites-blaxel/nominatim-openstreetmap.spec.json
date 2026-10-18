@@ -1,0 +1,456 @@
+{
+ "name": "nominatim-openstreetmap",
+ "startUrl": "https://nominatim.openstreetmap.org/ui/search.html",
+ "origin": "https://nominatim.openstreetmap.org",
+ "createdAt": "2026-10-18T08:21:19.981Z",
+ "description": "Nominatim (OpenStreetMap geocoder): search places by free text or structured address, reverse-geocode coordinates, fetch full place details by OSM id, and check server/data status.",
+ "commands": [
+  {
+   "name": "search-places",
+   "summary": "Free-text geocoding search for places, addresses or POIs by name. Returns matching OSM objects with coordinates.",
+   "method": "GET",
+   "urlTemplate": "/search?format=jsonv2",
+   "params": [
+    {
+     "name": "q",
+     "in": "query",
+     "required": true,
+     "type": "string",
+     "description": "Free-text query, e.g. a place name, address or landmark",
+     "example": "Brandenburg Gate Berlin"
+    },
+    {
+     "name": "api_limit",
+     "key": "limit",
+     "in": "query",
+     "required": false,
+     "type": "number",
+     "description": "Maximum number of results (1-40, server default 10) (sent to the site as \"limit\"; clify's own --limit only shapes the output)",
+     "example": "5"
+    },
+    {
+     "name": "countrycodes",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Comma-separated ISO 3166-1 alpha-2 country codes to restrict results to, e.g. us or de,at",
+     "example": "us"
+    },
+    {
+     "name": "accept_language",
+     "key": "accept-language",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Preferred language(s) for result names, e.g. en or de,en",
+     "example": "en"
+    },
+    {
+     "name": "layer",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Restrict results to a thematic layer (comma-separated allowed)",
+     "enum": [
+      "address",
+      "poi",
+      "railway",
+      "natural",
+      "manmade"
+     ],
+     "example": "address"
+    },
+    {
+     "name": "exclude_place_ids",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Comma-separated places already shown, to get the next page of results. Format: OSM type letter plus OSM id (N/W/R + osm_id), e.g. W518071791,R126326",
+     "example": "W518071791"
+    },
+    {
+     "name": "addressdetails",
+     "in": "query",
+     "required": false,
+     "type": "boolean",
+     "description": "Include a broken-down address object (house_number, road, city, postcode, country...) per result"
+    },
+    {
+     "name": "polygon_geojson",
+     "in": "query",
+     "required": false,
+     "type": "boolean",
+     "description": "Include the full GeoJSON outline of each result. This can be very large."
+    }
+   ],
+   "responseType": "json",
+   "defaultFields": [
+    "osm_type",
+    "osm_id",
+    "name",
+    "display_name",
+    "category",
+    "type",
+    "lat",
+    "lon"
+   ],
+   "mutates": false,
+   "example": {
+    "q": "Brandenburg Gate Berlin"
+   },
+   "source": "E2 GET https://nominatim.openstreetmap.org/search",
+   "verified": true
+  },
+  {
+   "name": "search-structured",
+   "summary": "Structured address/POI search using separate fields (amenity, street, city, county, state, country, postalcode). Can be restricted to a bounding box.",
+   "method": "GET",
+   "urlTemplate": "/search?format=jsonv2",
+   "params": [
+    {
+     "name": "amenity",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Name or type of POI, e.g. cafe",
+     "example": "cafe"
+    },
+    {
+     "name": "street",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "House number and street name, e.g. 10 Downing Street",
+     "example": "10 Downing Street"
+    },
+    {
+     "name": "city",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "City / town name",
+     "example": "London"
+    },
+    {
+     "name": "county",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "County name"
+    },
+    {
+     "name": "state",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "State / province name"
+    },
+    {
+     "name": "country",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Country name or code",
+     "example": "United Kingdom"
+    },
+    {
+     "name": "postalcode",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Postal code",
+     "example": "75004"
+    },
+    {
+     "name": "viewbox",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Preferred search area as lon1,lat1,lon2,lat2 (two corners), e.g. 2.33,48.86,2.37,48.84",
+     "example": "2.33,48.86,2.37,48.84"
+    },
+    {
+     "name": "bounded",
+     "in": "query",
+     "required": false,
+     "type": "boolean",
+     "description": "With viewbox: only return results inside the box"
+    },
+    {
+     "name": "dedupe",
+     "in": "query",
+     "required": false,
+     "type": "boolean",
+     "description": "Merge duplicate results such as multiple segments of the same street. Server default is true. Set to false to keep all."
+    },
+    {
+     "name": "polygon_threshold",
+     "in": "query",
+     "required": false,
+     "type": "number",
+     "description": "Simplification tolerance in degrees for returned polygons, e.g. 0.01",
+     "example": "0.01"
+    },
+    {
+     "name": "api_limit",
+     "key": "limit",
+     "in": "query",
+     "required": false,
+     "type": "number",
+     "description": "Maximum number of results (1-40) (sent to the site as \"limit\"; clify's own --limit only shapes the output)"
+    },
+    {
+     "name": "countrycodes",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Comma-separated ISO country codes to restrict results"
+    },
+    {
+     "name": "accept_language",
+     "key": "accept-language",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Preferred language(s) for names, e.g. en"
+    },
+    {
+     "name": "exclude_place_ids",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Comma-separated places already shown (N/W/R + osm_id), for the next page"
+    },
+    {
+     "name": "addressdetails",
+     "in": "query",
+     "required": false,
+     "type": "boolean",
+     "description": "Include a broken-down address object per result"
+    },
+    {
+     "name": "polygon_geojson",
+     "in": "query",
+     "required": false,
+     "type": "boolean",
+     "description": "Include GeoJSON outlines (can be large)"
+    }
+   ],
+   "responseType": "json",
+   "defaultFields": [
+    "osm_type",
+    "osm_id",
+    "name",
+    "display_name",
+    "category",
+    "type",
+    "lat",
+    "lon"
+   ],
+   "mutates": false,
+   "example": {
+    "street": "10 Downing Street",
+    "city": "London",
+    "country": "United Kingdom"
+   },
+   "source": "E2 GET https://nominatim.openstreetmap.org/search",
+   "verified": true
+  },
+  {
+   "name": "get-place-details",
+   "summary": "Get full details of an OSM place by type and id: names, extratags (wikidata, population, website), address hierarchy, linked places, centroid. Optionally includes child places or search keywords.",
+   "method": "GET",
+   "urlTemplate": "/details?format=json&addressdetails=1&entrances=1&group_hierarchy=1",
+   "params": [
+    {
+     "name": "osmtype",
+     "in": "query",
+     "required": true,
+     "type": "string",
+     "description": "OSM object type: N=node, W=way, R=relation",
+     "enum": [
+      "N",
+      "W",
+      "R"
+     ],
+     "example": "R"
+    },
+    {
+     "name": "osmid",
+     "in": "query",
+     "required": true,
+     "type": "number",
+     "description": "OSM object id (osm_id from search results)",
+     "example": "2027202"
+    },
+    {
+     "name": "class",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "OSM class/category to pick when an object has several (category from search results), e.g. boundary",
+     "example": "boundary"
+    },
+    {
+     "name": "hierarchy",
+     "in": "query",
+     "required": false,
+     "type": "boolean",
+     "description": "Include child places that have this place as parent",
+     "default": false
+    },
+    {
+     "name": "keywords",
+     "in": "query",
+     "required": false,
+     "type": "boolean",
+     "description": "Include the name and address search keywords indexed for this place"
+    },
+    {
+     "name": "polygon_geojson",
+     "in": "query",
+     "required": false,
+     "type": "boolean",
+     "description": "Include the full geometry as GeoJSON (can be large)"
+    }
+   ],
+   "responseType": "json",
+   "defaultFields": [
+    "osm_type",
+    "osm_id",
+    "localname",
+    "category",
+    "type",
+    "centroid.coordinates",
+    "extratags",
+    "address"
+   ],
+   "mutates": false,
+   "example": {
+    "osmtype": "R",
+    "osmid": "2027202",
+    "class": "boundary"
+   },
+   "source": "E3 GET https://nominatim.openstreetmap.org/details",
+   "verified": true
+  },
+  {
+   "name": "reverse-geocode",
+   "summary": "Reverse geocode a latitude/longitude to the nearest OSM object and its address, at a chosen detail level (zoom).",
+   "method": "GET",
+   "urlTemplate": "/reverse?format=jsonv2",
+   "params": [
+    {
+     "name": "lat",
+     "in": "query",
+     "required": true,
+     "type": "number",
+     "description": "Latitude in WGS84 decimal degrees",
+     "example": "43.29882129999999"
+    },
+    {
+     "name": "lon",
+     "in": "query",
+     "required": true,
+     "type": "number",
+     "description": "Longitude in WGS84 decimal degrees",
+     "example": "-72.4817747"
+    },
+    {
+     "name": "zoom",
+     "in": "query",
+     "required": false,
+     "type": "number",
+     "description": "Address detail level 0-18: 3=country, 5=state, 8=county, 10=city, 12=town/borough, 14=suburb, 16=major street, 17=street, 18=building",
+     "default": 18,
+     "example": "18"
+    },
+    {
+     "name": "layer",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Restrict to a thematic layer",
+     "enum": [
+      "address",
+      "poi",
+      "railway",
+      "natural",
+      "manmade"
+     ]
+    },
+    {
+     "name": "accept_language",
+     "key": "accept-language",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Preferred language(s) for names, e.g. en"
+    },
+    {
+     "name": "polygon_geojson",
+     "in": "query",
+     "required": false,
+     "type": "boolean",
+     "description": "Include the GeoJSON outline of the result (can be large)"
+    }
+   ],
+   "responseType": "json",
+   "defaultFields": [
+    "osm_type",
+    "osm_id",
+    "name",
+    "display_name",
+    "category",
+    "type",
+    "lat",
+    "lon",
+    "address"
+   ],
+   "mutates": false,
+   "example": {
+    "lat": "43.29882129999999",
+    "lon": "-72.4817747",
+    "zoom": "18"
+   },
+   "source": "E4 GET https://nominatim.openstreetmap.org/reverse",
+   "verified": true
+  },
+  {
+   "name": "get-status",
+   "summary": "Check Nominatim server status, software/database version and when the OSM data was last updated.",
+   "method": "GET",
+   "urlTemplate": "/status?format=json",
+   "params": [],
+   "responseType": "json",
+   "defaultFields": [
+    "status",
+    "message",
+    "data_updated",
+    "software_version",
+    "database_version"
+   ],
+   "mutates": false,
+   "source": "E1",
+   "verified": true
+  }
+ ],
+ "blockers": [],
+ "notes": [
+  "Public OSM Nominatim usage policy: no more than 1 request per second. Do not bulk-geocode. Results are under ODbL (\u00a9 OpenStreetMap contributors).",
+  "Search results give osm_type as a word ('node', 'way', 'relation'). get-place-details and exclude_place_ids need the letter form instead: N, W or R. Pass search 'category' as get-place-details --class.",
+  "Paging search results: there is no page number. Instead, re-run the same search with exclude_place_ids set to a comma-separated list of the places already returned (e.g. W518071791,R126326), and keep adding to the list on each page.",
+  "search-structured cannot be combined with q. Give at least one structured field. viewbox is lon1,lat1,lon2,lat2.",
+  "polygon_geojson can make responses very large. Only enable it when geometry is needed.",
+  "Not covered: /lookup (batch lookup by OSM ids) was not recorded."
+ ],
+ "dropped": [],
+ "generated": {
+  "by": "clify add",
+  "model": "claude-opus-5-5",
+  "exploredSteps": 13,
+  "recorded": 34,
+  "verifiedAt": "2026-10-18T08:22:07.735Z",
+  "seconds": 118
+ }
+}

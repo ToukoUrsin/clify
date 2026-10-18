@@ -1,0 +1,723 @@
+{
+ "name": "collections-vam",
+ "startUrl": "https://collections.vam.ac.uk/",
+ "origin": "https://collections.vam.ac.uk",
+ "createdAt": "2026-10-18T09:11:21.346Z",
+ "description": "V&A Explore the Collections: a JSON CLI over the Victoria and Albert Museum's public collections API. It can search and filter museum objects, fetch object records, IIIF manifests and image info, get facet counts, autocomplete makers, search archives, export results as CSV and browse organisation pages.",
+ "commands": [
+  {
+   "name": "search-objects",
+   "summary": "Search V&A collection objects by keyword. Filters: maker, object name, material, place, accession number, category, place/material/technique/person/organisation/collection IDs, has-image and on-displa",
+   "method": "GET",
+   "urlTemplate": "https://api.vam.ac.uk/v2/objects/search",
+   "params": [
+    {
+     "name": "q",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Free-text keyword searched across all fields",
+     "example": "teapot"
+    },
+    {
+     "name": "q_actor",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Search only the Artist/maker field (person or organisation name)",
+     "example": "Wedgwood"
+    },
+    {
+     "name": "q_object_name",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Search only the title / object type field"
+    },
+    {
+     "name": "q_material_technique",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Search only the materials and techniques field"
+    },
+    {
+     "name": "q_place_name",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Search only the place name field"
+    },
+    {
+     "name": "q_accession_number",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Search by museum accession number, e.g. M.934-1983"
+    },
+    {
+     "name": "images_exist",
+     "in": "query",
+     "required": false,
+     "type": "boolean",
+     "description": "true = only objects that have images"
+    },
+    {
+     "name": "kw_location_type",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Location type filter. 'display' = only objects currently on display",
+     "enum": [
+      "display"
+     ]
+    },
+    {
+     "name": "id_category",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Category facet ID, e.g. THES48982 (Ceramics)",
+     "example": "THES48982"
+    },
+    {
+     "name": "id_place",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Place-of-origin facet ID, e.g. x29523 (Yorkshire), x28980 (London)"
+    },
+    {
+     "name": "id_material",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Material facet ID, e.g. x29356"
+    },
+    {
+     "name": "id_technique",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Technique facet ID"
+    },
+    {
+     "name": "id_person",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Person (maker) ID, e.g. A17686"
+    },
+    {
+     "name": "id_organisation",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Organisation ID, e.g. A22676 (Apple Inc.)"
+    },
+    {
+     "name": "id_collection",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Museum collection/department ID"
+    },
+    {
+     "name": "kw_object_type",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Exact object type keyword, e.g. Teapot"
+    },
+    {
+     "name": "year_made_from",
+     "in": "query",
+     "required": false,
+     "type": "number",
+     "description": "Earliest year of production, e.g. 1700"
+    },
+    {
+     "name": "year_made_to",
+     "in": "query",
+     "required": false,
+     "type": "number",
+     "description": "Latest year of production, e.g. 1800"
+    },
+    {
+     "name": "order_by",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Sort field, e.g. 'date' (default is relevance)"
+    },
+    {
+     "name": "order_sort",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Sort direction",
+     "enum": [
+      "asc",
+      "desc"
+     ]
+    },
+    {
+     "name": "page",
+     "in": "query",
+     "required": false,
+     "type": "number",
+     "description": "Page number (1-based)",
+     "default": 1
+    },
+    {
+     "name": "page_size",
+     "in": "query",
+     "required": false,
+     "type": "number",
+     "description": "Results per page (max 100)",
+     "default": 15
+    }
+   ],
+   "responseType": "json",
+   "resultPath": "records",
+   "defaultFields": [
+    "systemNumber",
+    "accessionNumber",
+    "_primaryTitle",
+    "objectType",
+    "_primaryMaker.name",
+    "_primaryDate",
+    "_primaryPlace",
+    "_currentLocation.displayName"
+   ],
+   "pagination": {
+    "type": "page",
+    "param": "page"
+   },
+   "mutates": false,
+   "example": {
+    "q": "teapot",
+    "id_category": "THES48982"
+   },
+   "source": "E1 E8 GET https://api.vam.ac.uk/v2/objects/search",
+   "verified": true
+  },
+  {
+   "name": "export-objects-csv",
+   "summary": "Export object search results as CSV text. Takes the same main filters as search-objects.",
+   "method": "GET",
+   "urlTemplate": "https://api.vam.ac.uk/v2/objects/search?response_format=csv",
+   "params": [
+    {
+     "name": "q",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Free-text keyword",
+     "example": "teapot"
+    },
+    {
+     "name": "q_actor",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Artist/maker name"
+    },
+    {
+     "name": "images_exist",
+     "in": "query",
+     "required": false,
+     "type": "boolean",
+     "description": "true = only objects with images"
+    },
+    {
+     "name": "kw_location_type",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "'display' = only objects on display",
+     "enum": [
+      "display"
+     ]
+    },
+    {
+     "name": "id_category",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Category facet ID, e.g. THES48982"
+    },
+    {
+     "name": "id_place",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Place facet ID, e.g. x29523"
+    },
+    {
+     "name": "id_material",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Material facet ID"
+    },
+    {
+     "name": "id_person",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Person ID"
+    },
+    {
+     "name": "id_organisation",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Organisation ID"
+    },
+    {
+     "name": "page",
+     "in": "query",
+     "required": false,
+     "type": "number",
+     "description": "Page number",
+     "default": 1
+    },
+    {
+     "name": "page_size",
+     "in": "query",
+     "required": false,
+     "type": "number",
+     "description": "Rows per page (max 100)",
+     "default": 15
+    }
+   ],
+   "responseType": "text",
+   "mutates": false,
+   "example": {
+    "q": "teapot"
+   },
+   "source": "E1 GET https://api.vam.ac.uk/v2/objects/search",
+   "verified": true
+  },
+  {
+   "name": "get-object",
+   "summary": "Get the full catalogue record for one museum object by its system number (the digits after 'O', e.g. O151155 -> 151155).",
+   "method": "GET",
+   "urlTemplate": "https://api.vam.ac.uk/v2/object/O{object_num}",
+   "params": [
+    {
+     "name": "object_num",
+     "in": "path",
+     "required": true,
+     "type": "number",
+     "description": "Numeric part of the object system number (O151155 -> 151155)",
+     "example": "151155"
+    }
+   ],
+   "responseType": "json",
+   "resultPath": "record",
+   "defaultFields": [
+    "systemNumber",
+    "accessionNumber",
+    "objectType",
+    "titles",
+    "briefDescription",
+    "materialsAndTechniques",
+    "placesOfOrigin",
+    "productionDates"
+   ],
+   "mutates": false,
+   "example": {
+    "object_num": "151155"
+   },
+   "source": "E9 E10 GET https://collections.vam.ac.uk/item/O151155/",
+   "verified": true
+  },
+  {
+   "name": "get-object-manifest",
+   "summary": "Get the IIIF presentation manifest (all images with their image service URLs) for an object.",
+   "method": "GET",
+   "urlTemplate": "https://iiif.vam.ac.uk/collections/O{object_num}/manifest.json",
+   "params": [
+    {
+     "name": "object_num",
+     "in": "path",
+     "required": true,
+     "type": "number",
+     "description": "Numeric part of the object system number (O94917 -> 94917)",
+     "example": "94917"
+    }
+   ],
+   "responseType": "json",
+   "mutates": false,
+   "example": {
+    "object_num": "94917"
+   },
+   "source": "E1 GET https://api.vam.ac.uk/v2/objects/search",
+   "verified": true
+  },
+  {
+   "name": "get-image-info",
+   "summary": "Get IIIF image info (dimensions, tile sizes, supported formats) for an image asset ID such as _primaryImageId.",
+   "method": "GET",
+   "urlTemplate": "https://framemark.vam.ac.uk/collections/{asset_ref}/info.json",
+   "params": [
+    {
+     "name": "asset_ref",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Image asset reference, e.g. 2007BP1152 (the _primaryImageId field from search results)",
+     "example": "2007BP1152"
+    }
+   ],
+   "responseType": "json",
+   "defaultFields": [
+    "@id",
+    "width",
+    "height",
+    "sizes"
+   ],
+   "mutates": false,
+   "example": {
+    "asset_ref": "2007BP1152"
+   },
+   "source": "E4 E5 GET https://framemark.vam.ac.uk/collections/2007BP1152/info.json",
+   "verified": true
+  },
+  {
+   "name": "get-facet-counts",
+   "summary": "Get facet counts (categories, people, places, materials, techniques, etc.) for an object search.",
+   "method": "GET",
+   "urlTemplate": "https://api.vam.ac.uk/v2/objects/clusters/search",
+   "params": [
+    {
+     "name": "q",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Free-text keyword",
+     "example": "teapot"
+    },
+    {
+     "name": "q_actor",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Artist/maker name"
+    },
+    {
+     "name": "images_exist",
+     "in": "query",
+     "required": false,
+     "type": "boolean",
+     "description": "true = only objects with images"
+    },
+    {
+     "name": "kw_location_type",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "'display' = only objects on display",
+     "enum": [
+      "display"
+     ]
+    },
+    {
+     "name": "id_category",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Category facet ID"
+    },
+    {
+     "name": "id_place",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Place facet ID"
+    },
+    {
+     "name": "cluster_size",
+     "in": "query",
+     "required": false,
+     "type": "number",
+     "description": "Number of terms returned per facet"
+    }
+   ],
+   "responseType": "json",
+   "mutates": false,
+   "example": {
+    "q": "teapot"
+   },
+   "source": "E6 GET https://api.vam.ac.uk/openapi.json",
+   "verified": true
+  },
+  {
+   "name": "list-facet-values",
+   "summary": "List the values and counts of one facet type (e.g. place, material, category) for an object search. Use this to find facet IDs for search-objects.",
+   "method": "GET",
+   "urlTemplate": "https://api.vam.ac.uk/v2/objects/clusters/{cluster_type}/search",
+   "params": [
+    {
+     "name": "cluster_type",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Facet type",
+     "enum": [
+      "category",
+      "person",
+      "organisation",
+      "collection",
+      "gallery",
+      "style",
+      "place",
+      "object_type",
+      "technique",
+      "material"
+     ],
+     "example": "place"
+    },
+    {
+     "name": "q",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Free-text keyword to scope the counts",
+     "example": "teapot"
+    },
+    {
+     "name": "cluster_size",
+     "in": "query",
+     "required": false,
+     "type": "number",
+     "description": "Number of terms to return"
+    }
+   ],
+   "responseType": "json",
+   "mutates": false,
+   "example": {
+    "cluster_type": "place",
+    "q": "teapot"
+   },
+   "source": "E6 GET https://api.vam.ac.uk/openapi.json",
+   "verified": true
+  },
+  {
+   "name": "autocomplete-names",
+   "summary": "Search-as-you-type suggestions for people and organisations (makers), returning their IDs for use in id_person / id_organisation filters.",
+   "method": "GET",
+   "urlTemplate": "https://api.vam.ac.uk/v2/sayt/search",
+   "params": [
+    {
+     "name": "q",
+     "in": "query",
+     "required": true,
+     "type": "string",
+     "description": "Partial name to complete",
+     "example": "Wedgwood"
+    },
+    {
+     "name": "page_size",
+     "in": "query",
+     "required": false,
+     "type": "number",
+     "description": "Number of suggestions",
+     "default": 10
+    },
+    {
+     "name": "page",
+     "in": "query",
+     "required": false,
+     "type": "number",
+     "description": "Page number (1-based)",
+     "default": 1
+    }
+   ],
+   "responseType": "json",
+   "resultPath": "records",
+   "defaultFields": [
+    "displayName",
+    "systemNumber",
+    "recordType"
+   ],
+   "pagination": {
+    "type": "page",
+    "param": "page"
+   },
+   "mutates": false,
+   "example": {
+    "q": "Wedgwood"
+   },
+   "source": "E3",
+   "verified": true
+  },
+  {
+   "name": "search-archives",
+   "summary": "Search the V&A archives index (archive collections and records) by keyword.",
+   "method": "GET",
+   "urlTemplate": "https://api.vam.ac.uk/v2/archives/search",
+   "params": [
+    {
+     "name": "q",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Keyword (max 128 chars)",
+     "example": "teapot"
+    },
+    {
+     "name": "q_archive_title",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Search archive titles only"
+    },
+    {
+     "name": "q_creator",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Search the creator field only"
+    },
+    {
+     "name": "page",
+     "in": "query",
+     "required": false,
+     "type": "number",
+     "description": "Page number",
+     "default": 1
+    },
+    {
+     "name": "page_size",
+     "in": "query",
+     "required": false,
+     "type": "number",
+     "description": "Results per page",
+     "default": 15
+    }
+   ],
+   "responseType": "json",
+   "resultPath": "records",
+   "pagination": {
+    "type": "page",
+    "param": "page"
+   },
+   "mutates": false,
+   "example": {
+    "q": "teapot"
+   },
+   "source": "E6 GET https://api.vam.ac.uk/openapi.json",
+   "verified": true
+  },
+  {
+   "name": "list-suggested-facets",
+   "summary": "List the site's built-in suggested facets (popular places, etc.) with their system-number IDs.",
+   "method": "GET",
+   "urlTemplate": "/assets/data/suggestions.json",
+   "params": [],
+   "responseType": "json",
+   "mutates": false,
+   "source": "E7 GET https://collections.vam.ac.uk/assets/data/suggestions.json",
+   "verified": true
+  },
+  {
+   "name": "list-organisations",
+   "summary": "List organisations in the collection A\u2013Z for a given starting letter, with their organisation IDs and profile URLs.",
+   "method": "GET",
+   "urlTemplate": "/context/organisation/a-z/{letter}",
+   "params": [
+    {
+     "name": "letter",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Lowercase starting letter a-z",
+     "example": "a"
+    }
+   ],
+   "responseType": "html",
+   "extract": {
+    "list": "div.directory-link-container",
+    "fields": {
+     "name": "",
+     "url": "a.directory-link@href"
+    }
+   },
+   "defaultFields": [
+    "name",
+    "url"
+   ],
+   "mutates": false,
+   "example": {
+    "letter": "a"
+   },
+   "source": "E11",
+   "verified": true
+  },
+  {
+   "name": "get-organisation-objects",
+   "summary": "Open an organisation profile page and list its featured collection objects.",
+   "method": "GET",
+   "urlTemplate": "/context/organisation/{org_id}/{slug}",
+   "params": [
+    {
+     "name": "org_id",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Organisation ID, e.g. A22676 or AUTH407110 (taken from list-organisations URLs)",
+     "example": "A22676"
+    },
+    {
+     "name": "slug",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "URL slug of the organisation name, e.g. apple-inc.",
+     "example": "apple-inc."
+    }
+   ],
+   "responseType": "html",
+   "extract": {
+    "list": "li.g-object-grid__item",
+    "fields": {
+     "title": "",
+     "url": "a@href",
+     "image": "img@src"
+    }
+   },
+   "defaultFields": [
+    "title",
+    "url"
+   ],
+   "mutates": false,
+   "example": {
+    "org_id": "A22676",
+    "slug": "apple-inc."
+   },
+   "source": "E12 GET https://collections.vam.ac.uk/context/organisation/A22676/apple-inc.",
+   "verified": true
+  }
+ ],
+ "blockers": [],
+ "notes": [
+  "The API is public and needs no authentication. All JSON endpoints are on api.vam.ac.uk/v2.",
+  "Object system numbers look like O151155. get-object and get-object-manifest take only the numeric part (151155). Human-readable page: https://collections.vam.ac.uk/item/O{num}/.",
+  "Image URLs follow IIIF: https://framemark.vam.ac.uk/collections/{_primaryImageId}/full/!800,800/0/default.jpg. Images are licensed for non-commercial use only.",
+  "To find facet IDs (id_place, id_material, id_category, ...), use list-facet-values, get-facet-counts or list-suggested-facets. Use autocomplete-names for maker IDs (id_person / id_organisation).",
+  "search-objects returns info.record_count and info.pages in the raw response. page_size is capped at 100.",
+  "Not captured: the 'you may also like' related items (objects/search?search_profile=ymal, the object-identifying parameter was not observed), browse/{cluster_type}/{term}, v1 endpoints and the 'Order this Object' action. The full spec is at https://api.vam.ac.uk/openapi.json."
+ ],
+ "dropped": [],
+ "generated": {
+  "by": "clify add",
+  "model": "claude-opus-5-5",
+  "exploredSteps": 24,
+  "recorded": 25,
+  "verifiedAt": "2026-10-18T09:12:46.565Z",
+  "seconds": 279
+ }
+}

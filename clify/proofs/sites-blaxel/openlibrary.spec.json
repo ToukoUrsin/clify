@@ -1,0 +1,294 @@
+{
+ "name": "openlibrary",
+ "startUrl": "https://openlibrary.org/",
+ "origin": "https://openlibrary.org",
+ "createdAt": "2026-10-18T08:31:11.887Z",
+ "description": "Open Library (openlibrary.org), the Internet Archive's open, editable book catalog. This CLI lists home-page genre shelves and book carousels, the language filter list, home-page stats and blog posts, and edition records as JSON.",
+ "commands": [],
+ "blockers": [
+  "captcha"
+ ],
+ "notes": [
+  "The partials endpoints (get-genre-shelf, list-carousel-books) return JSON whose 'partials' field holds an HTML fragment. Book links inside it look like /works/OL...W or /books/OL...M.",
+  "list-browse-genres, get-library-stats and list-blog-posts all scrape the home page HTML.",
+  "Open Library sends automated traffic to a /verify_human bot check for /subjects/* and /books/* pages. During exploration it later served an 'offline' page for everything. If you get HTML titled 'Hmm...' or a verify_human page, you are being rate-limited or blocked: back off and retry later.",
+  "get-edition uses Open Library's documented public JSON API (/books/{id}.json). In this recording that request was blocked, so its response shape was not verified.",
+  "Keyword search, facets, subject listings, author pages and work details were not captured. robots.txt disallows /search.",
+  "sink.archive.org (Sentry telemetry) and /verify_human were left out on purpose."
+ ],
+ "dropped": [
+  {
+   "name": "get-genre-shelf",
+   "summary": "Get one genre shelf from the home page's 'Browse the stacks' section (heading, subgenre jump links, carousel placeholders) as an HTML fragment",
+   "method": "GET",
+   "urlTemplate": "/partials/HomeGenre.json",
+   "params": [
+    {
+     "name": "genre",
+     "in": "query",
+     "required": true,
+     "type": "string",
+     "description": "Genre slug in lowercase, e.g. 'featured' or 'crime'. Run list-browse-genres to see the genre names.",
+     "example": "featured"
+    }
+   ],
+   "responseType": "json",
+   "resultPath": "partials",
+   "mutates": false,
+   "example": {
+    "genre": "featured"
+   },
+   "source": "E4 GET https://openlibrary.org/partials/HomeGenre.json",
+   "verified": false,
+   "verifyNote": "The endpoint returns JSON, but its only field ('partials') is a raw HTML fragment of placeholder markup. clify cannot run HTML selectors on a string inside JSON, so there is no structured data to return."
+  },
+  {
+   "name": "list-carousel-books",
+   "summary": "List the books in a home-page carousel (e.g. 'What's new' in the Featured genre), returned as an HTML fragment of book cards",
+   "method": "GET",
+   "urlTemplate": "/partials/LazyCarousel.json?search=false&layout=ol-carousel&see_all=true",
+   "params": [
+    {
+     "name": "query",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Optional search query that limits the carousel. Leave empty for genre/subgenre carousels."
+    },
+    {
+     "name": "title",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Carousel heading text, e.g. \"What's new\"",
+     "example": "What's new"
+    },
+    {
+     "name": "sort",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Sort order of the books, e.g. 'new' for the newest books first",
+     "default": "new",
+     "example": "new"
+    },
+    {
+     "name": "key",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Carousel element key, in the form genre-<genre>-<subgenre>",
+     "example": "genre-featured-whats-new"
+    },
+    {
+     "name": "genre",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Genre slug, e.g. 'featured'",
+     "example": "featured"
+    },
+    {
+     "name": "subgenre",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Subgenre slug inside the genre, e.g. 'whats-new', 'books-we-love', 'classics', 'most-wanted'",
+     "example": "whats-new"
+    },
+    {
+     "name": "api_limit",
+     "key": "limit",
+     "in": "query",
+     "required": false,
+     "type": "number",
+     "description": "Maximum number of books in the carousel (sent to the site as \"limit\"; clify's own --limit only shapes the output)",
+     "default": 20,
+     "example": "20"
+    },
+    {
+     "name": "has_fulltext_only",
+     "in": "query",
+     "required": false,
+     "type": "boolean",
+     "description": "Only include books with a readable or borrowable full text",
+     "default": true
+    },
+    {
+     "name": "safe_mode",
+     "in": "query",
+     "required": false,
+     "type": "boolean",
+     "description": "Filter out content not suitable for all audiences",
+     "default": true
+    }
+   ],
+   "responseType": "json",
+   "resultPath": "partials",
+   "mutates": false,
+   "example": {
+    "query": "",
+    "title": "What's new",
+    "sort": "new",
+    "key": "genre-featured-whats-new",
+    "genre": "featured",
+    "subgenre": "whats-new",
+    "api_limit": "20"
+   },
+   "source": "E3 GET https://openlibrary.org/partials/LazyCarousel.json",
+   "verified": false,
+   "verifyNote": "The book cards come back only as an HTML string inside the JSON 'partials' field. HTML extraction cannot run on a JSON string value, and there is no JSON form of the carousel to point at."
+  },
+  {
+   "name": "list-languages",
+   "summary": "List the book languages Open Library uses as search filters, ordered by number of books",
+   "method": "GET",
+   "urlTemplate": "/languages.json",
+   "params": [
+    {
+     "name": "api_limit",
+     "key": "limit",
+     "in": "query",
+     "required": false,
+     "type": "number",
+     "description": "Maximum number of languages to return (sent to the site as \"limit\"; clify's own --limit only shapes the output)",
+     "default": 500,
+     "example": "500"
+    },
+    {
+     "name": "sort",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Sort order. 'count' puts languages with the most books first.",
+     "default": "count",
+     "example": "count"
+    }
+   ],
+   "responseType": "json",
+   "mutates": false,
+   "example": {
+    "api_limit": "500",
+    "sort": "count"
+   },
+   "source": "E2 GET https://openlibrary.org/languages.json",
+   "verified": false,
+   "verifyNote": "failed on Blaxel: request failed: fetch failed"
+  },
+  {
+   "name": "list-browse-genres",
+   "summary": "List the genre tiles in the home page's 'Browse the stacks' section (Featured, Crime, ...). Use these with get-genre-shelf.",
+   "method": "GET",
+   "urlTemplate": "/",
+   "params": [],
+   "responseType": "html",
+   "extract": {
+    "list": "section.browse-stacks button.browse-stacks__tile",
+    "fields": {
+     "name": "span.browse-stacks__name"
+    }
+   },
+   "defaultFields": [
+    "name"
+   ],
+   "mutates": false,
+   "source": "E6 GET https://openlibrary.org/",
+   "verified": false,
+   "verifyNote": "failed on Blaxel: request failed: fetch failed"
+  },
+  {
+   "name": "get-library-stats",
+   "summary": "Get Open Library's activity stats for the last month from the home page (new members, books read, ...) with the monthly change",
+   "method": "GET",
+   "urlTemplate": "/",
+   "params": [],
+   "responseType": "html",
+   "extract": {
+    "list": "ul.library-stats__grid > li",
+    "fields": {
+     "label": "span.library-stat__label",
+     "value": "span.library-stat__value",
+     "change": "span.library-stat__change",
+     "url": "a.library-stat@href"
+    }
+   },
+   "defaultFields": [
+    "label",
+    "value",
+    "change",
+    "url"
+   ],
+   "mutates": false,
+   "source": "E6 GET https://openlibrary.org/",
+   "verified": false,
+   "verifyNote": "failed on Blaxel: request failed: fetch failed"
+  },
+  {
+   "name": "list-blog-posts",
+   "summary": "List the latest Open Library blog posts shown on the home page (title, link, date)",
+   "method": "GET",
+   "urlTemplate": "/",
+   "params": [],
+   "responseType": "html",
+   "extract": {
+    "list": "ul#olBlog > li",
+    "fields": {
+     "title": "a",
+     "url": "a@href",
+     "date": "em"
+    }
+   },
+   "defaultFields": [
+    "title",
+    "date",
+    "url"
+   ],
+   "mutates": false,
+   "source": "E6 GET https://openlibrary.org/",
+   "verified": false,
+   "verifyNote": "failed on Blaxel: request failed: fetch failed"
+  },
+  {
+   "name": "get-edition",
+   "summary": "Get the JSON record of one book edition by its Open Library edition id (OL...M): title, authors, publishers, ISBNs, page count, work link",
+   "method": "GET",
+   "urlTemplate": "/books/{edition_id}.json",
+   "params": [
+    {
+     "name": "edition_id",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Open Library edition id, ending in M, e.g. OL45613546M",
+     "example": "OL45613546M"
+    }
+   ],
+   "responseType": "json",
+   "defaultFields": [
+    "key",
+    "title",
+    "authors",
+    "publish_date",
+    "publishers",
+    "isbn_13",
+    "number_of_pages",
+    "works"
+   ],
+   "mutates": false,
+   "example": {
+    "edition_id": "OL45613546M"
+   },
+   "source": "E8 GET https://openlibrary.org/books/OL45613546M.json",
+   "verified": false,
+   "verifyNote": "failed on Blaxel: request failed: fetch failed"
+  }
+ ],
+ "generated": {
+  "by": "clify add",
+  "model": "claude-opus-5-5",
+  "exploredSteps": 9,
+  "recorded": 35,
+  "verifiedAt": "2026-10-18T08:31:58.857Z",
+  "seconds": 153
+ }
+}

@@ -1,0 +1,983 @@
+{
+ "name": "nhl",
+ "startUrl": "https://www.nhl.com/stats/",
+ "origin": "https://www.nhl.com",
+ "createdAt": "2026-10-18T09:28:17.945Z",
+ "description": "NHL stats (nhl.com/stats) via the NHL public JSON APIs (api.nhle.com/stats/rest and api-web.nhle.com). Covers league leaders, skater, goalie and team stat reports, player search, profiles and game logs, game details, standings, scores and schedules.",
+ "commands": [
+  {
+   "name": "get-skater-leaders",
+   "summary": "Top-10 skater leaders for points, goals or assists in a season (optionally rookies or defensemen only)",
+   "method": "GET",
+   "urlTemplate": "https://api.nhle.com/stats/rest/en/leaders/skaters/{stat}",
+   "params": [
+    {
+     "name": "stat",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Leader category",
+     "enum": [
+      "points",
+      "goals",
+      "assists"
+     ],
+     "example": "points"
+    },
+    {
+     "name": "cayenneExp",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Cayenne filter expression. Season is an 8-digit id like 20262027; gameType 2=regular season, 3=playoffs. You can append \"and isRookie = 'Y'\" or \"and player.positionCode = 'D'\".",
+     "default": "season=20262027 and gameType=2",
+     "example": "season=20262027 and gameType=2 and isRookie = 'Y'"
+    }
+   ],
+   "responseType": "json",
+   "resultPath": "data",
+   "defaultFields": [
+    "player.id",
+    "player.fullName",
+    "player.positionCode",
+    "team.triCode",
+    "points",
+    "goals",
+    "assists"
+   ],
+   "mutates": false,
+   "example": {
+    "stat": "points"
+   },
+   "source": "E2 E3 E4 GET https://api.nhle.com/stats/rest/en/leaders/skaters/points",
+   "verified": true
+  },
+  {
+   "name": "get-goalie-leaders",
+   "summary": "Top-10 goalie leaders by goals-against average, save percentage or shutouts in a season",
+   "method": "GET",
+   "urlTemplate": "https://api.nhle.com/stats/rest/en/leaders/goalies/{stat}",
+   "params": [
+    {
+     "name": "stat",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Leader category",
+     "enum": [
+      "gaa",
+      "savePctg",
+      "shutouts"
+     ],
+     "example": "savePctg"
+    },
+    {
+     "name": "cayenneExp",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Cayenne filter expression, e.g. season=20262027 and gameType=2 and gamesPlayed >= 2",
+     "default": "season=20262027 and gameType=2 and gamesPlayed >= 2"
+    }
+   ],
+   "responseType": "json",
+   "resultPath": "data",
+   "defaultFields": [
+    "player.id",
+    "player.fullName",
+    "team.triCode",
+    "gaa",
+    "savePctg",
+    "shutouts"
+   ],
+   "mutates": false,
+   "example": {
+    "stat": "savePctg"
+   },
+   "source": "E18 E19 E20 GET https://api.nhle.com/stats/rest/en/leaders/goalies/savePctg",
+   "verified": true
+  },
+  {
+   "name": "list-skater-stats",
+   "summary": "Skater summary stats report (GP, G, A, PTS, +/-, PPG, TOI and more), with filters, sorting and paging",
+   "method": "GET",
+   "urlTemplate": "https://api.nhle.com/stats/rest/en/skater/summary",
+   "params": [
+    {
+     "name": "cayenneExp",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Cayenne filter. Season range: gameTypeId=2 and seasonId<=20262027 and seasonId>=20262027. Prefix 'franchiseId=5 and ' to filter by franchise (ids from list-franchises). Add 'and skaterFullName likeIgn",
+     "default": "gameTypeId=2 and seasonId<=20262027 and seasonId>=20262027",
+     "example": "franchiseId=5 and gameTypeId=2 and seasonId<=20252026 and seasonId>=20252026"
+    },
+    {
+     "name": "sort",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "JSON array of sort keys, e.g. [{\"property\":\"goals\",\"direction\":\"DESC\"},{\"property\":\"playerId\",\"direction\":\"ASC\"}]. Common properties: points, goals, assists, gamesPlayed, plusMinus, shots, timeOnIcePe",
+     "default": "[{\"property\":\"points\",\"direction\":\"DESC\"},{\"property\":\"gamesPlayed\",\"direction\":\"ASC\"},{\"property\":\"playerId\",\"direction\":\"ASC\"}]"
+    },
+    {
+     "name": "isAggregate",
+     "in": "query",
+     "required": false,
+     "type": "boolean",
+     "description": "true sums multiple seasons or games into one row per player (all-time or date-range totals)",
+     "default": false
+    },
+    {
+     "name": "isGame",
+     "in": "query",
+     "required": false,
+     "type": "boolean",
+     "description": "true returns game-level rows filtered by gameDate",
+     "default": false
+    },
+    {
+     "name": "start",
+     "in": "query",
+     "required": false,
+     "type": "number",
+     "description": "Row offset (0, 50, 100, ...)",
+     "default": 0
+    },
+    {
+     "name": "api_limit",
+     "key": "limit",
+     "in": "query",
+     "required": false,
+     "type": "number",
+     "description": "Rows per page (sent to the site as \"limit\"; clify's own --limit only shapes the output)",
+     "default": 50
+    }
+   ],
+   "responseType": "json",
+   "resultPath": "data",
+   "defaultFields": [
+    "playerId",
+    "skaterFullName",
+    "teamAbbrevs",
+    "positionCode",
+    "gamesPlayed",
+    "goals",
+    "assists",
+    "points"
+   ],
+   "pagination": {
+    "type": "offset",
+    "param": "start",
+    "step": 50
+   },
+   "mutates": false,
+   "example": {
+    "cayenneExp": "gameTypeId=2 and seasonId<=20262027 and seasonId>=20262027"
+   },
+   "source": "E6 GET https://api.nhle.com/stats/rest/en/skater/summary",
+   "verified": true
+  },
+  {
+   "name": "list-skater-time-on-ice",
+   "summary": "Skater time-on-ice report (total, EV, PP, SH, OT TOI and shifts), with filters, sorting and paging",
+   "method": "GET",
+   "urlTemplate": "https://api.nhle.com/stats/rest/en/skater/timeonice",
+   "params": [
+    {
+     "name": "cayenneExp",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Cayenne filter, e.g. franchiseId=5 and gameTypeId=2 and seasonId<=20252026 and seasonId>=20252026",
+     "default": "gameTypeId=2 and seasonId<=20262027 and seasonId>=20262027",
+     "example": "franchiseId=5 and gameTypeId=2 and seasonId<=20252026 and seasonId>=20252026"
+    },
+    {
+     "name": "sort",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "JSON sort array. Properties include timeOnIce, timeOnIcePerGame, ppTimeOnIce, shTimeOnIce, shifts.",
+     "default": "[{\"property\":\"timeOnIce\",\"direction\":\"DESC\"},{\"property\":\"playerId\",\"direction\":\"ASC\"}]"
+    },
+    {
+     "name": "isAggregate",
+     "in": "query",
+     "required": false,
+     "type": "boolean",
+     "description": "Aggregate across seasons or games",
+     "default": false
+    },
+    {
+     "name": "isGame",
+     "in": "query",
+     "required": false,
+     "type": "boolean",
+     "description": "Game-level rows (filter by gameDate)",
+     "default": false
+    },
+    {
+     "name": "start",
+     "in": "query",
+     "required": false,
+     "type": "number",
+     "description": "Row offset",
+     "default": 0
+    },
+    {
+     "name": "api_limit",
+     "key": "limit",
+     "in": "query",
+     "required": false,
+     "type": "number",
+     "description": "Rows per page (sent to the site as \"limit\"; clify's own --limit only shapes the output)",
+     "default": 50
+    }
+   ],
+   "responseType": "json",
+   "resultPath": "data",
+   "defaultFields": [
+    "playerId",
+    "skaterFullName",
+    "teamAbbrevs",
+    "gamesPlayed",
+    "timeOnIcePerGame",
+    "ppTimeOnIcePerGame",
+    "shTimeOnIcePerGame",
+    "shiftsPerGame"
+   ],
+   "pagination": {
+    "type": "offset",
+    "param": "start",
+    "step": 50
+   },
+   "mutates": false,
+   "example": {
+    "cayenneExp": "franchiseId=5 and gameTypeId=2 and seasonId<=20252026 and seasonId>=20252026"
+   },
+   "source": "E22 GET https://api.nhle.com/stats/rest/en/skater/timeonice",
+   "verified": true
+  },
+  {
+   "name": "list-goalie-stats",
+   "summary": "Goalie summary stats report (W, L, GAA, SV%, SO), with filters, sorting and paging",
+   "method": "GET",
+   "urlTemplate": "https://api.nhle.com/stats/rest/en/goalie/summary",
+   "params": [
+    {
+     "name": "cayenneExp",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Cayenne filter, e.g. gameTypeId=2 and seasonId<=20262027 and seasonId>=20262027 (prefix franchiseId=N and ... to filter by franchise)",
+     "default": "gameTypeId=2 and seasonId<=20262027 and seasonId>=20262027"
+    },
+    {
+     "name": "sort",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "JSON sort array. Properties include wins, savePct, goalsAgainstAverage, shutouts, gamesPlayed.",
+     "default": "[{\"property\":\"wins\",\"direction\":\"DESC\"},{\"property\":\"savePct\",\"direction\":\"DESC\"},{\"property\":\"playerId\",\"direction\":\"ASC\"}]"
+    },
+    {
+     "name": "isAggregate",
+     "in": "query",
+     "required": false,
+     "type": "boolean",
+     "description": "Aggregate across seasons",
+     "default": false
+    },
+    {
+     "name": "isGame",
+     "in": "query",
+     "required": false,
+     "type": "boolean",
+     "description": "Game-level rows",
+     "default": false
+    },
+    {
+     "name": "start",
+     "in": "query",
+     "required": false,
+     "type": "number",
+     "description": "Row offset",
+     "default": 0
+    },
+    {
+     "name": "api_limit",
+     "key": "limit",
+     "in": "query",
+     "required": false,
+     "type": "number",
+     "description": "Rows per page (sent to the site as \"limit\"; clify's own --limit only shapes the output)",
+     "default": 50
+    }
+   ],
+   "responseType": "json",
+   "resultPath": "data",
+   "defaultFields": [
+    "playerId",
+    "goalieFullName",
+    "teamAbbrevs",
+    "gamesPlayed",
+    "wins",
+    "losses",
+    "goalsAgainstAverage",
+    "savePct"
+   ],
+   "pagination": {
+    "type": "offset",
+    "param": "start",
+    "step": 50
+   },
+   "mutates": false,
+   "example": {
+    "cayenneExp": "gameTypeId=2 and seasonId<=20262027 and seasonId>=20262027"
+   },
+   "source": "E31 GET https://api.nhle.com/stats/rest/en/goalie/summary",
+   "verified": true
+  },
+  {
+   "name": "list-team-stats",
+   "summary": "Team summary stats (W, L, OTL, PTS, GF, GA, PP%, PK%) by season, or all-time totals with isAggregate=true",
+   "method": "GET",
+   "urlTemplate": "https://api.nhle.com/stats/rest/en/team/summary",
+   "params": [
+    {
+     "name": "cayenneExp",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Cayenne filter. One season: gameTypeId=2 and seasonId<=20262027 and seasonId>=20262027. All-time: seasonId>=19171918 with isAggregate=true.",
+     "default": "gameTypeId=2 and seasonId<=20262027 and seasonId>=20262027"
+    },
+    {
+     "name": "sort",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "JSON sort array. Use franchiseId instead of teamId as the tiebreaker when isAggregate=true.",
+     "default": "[{\"property\":\"points\",\"direction\":\"DESC\"},{\"property\":\"wins\",\"direction\":\"DESC\"},{\"property\":\"teamId\",\"direction\":\"ASC\"}]"
+    },
+    {
+     "name": "isAggregate",
+     "in": "query",
+     "required": false,
+     "type": "boolean",
+     "description": "true gives one row per franchise summed over the season range",
+     "default": false
+    },
+    {
+     "name": "isGame",
+     "in": "query",
+     "required": false,
+     "type": "boolean",
+     "description": "Game-level rows",
+     "default": false
+    },
+    {
+     "name": "start",
+     "in": "query",
+     "required": false,
+     "type": "number",
+     "description": "Row offset",
+     "default": 0
+    },
+    {
+     "name": "api_limit",
+     "key": "limit",
+     "in": "query",
+     "required": false,
+     "type": "number",
+     "description": "Rows per page (sent to the site as \"limit\"; clify's own --limit only shapes the output)",
+     "default": 50
+    }
+   ],
+   "responseType": "json",
+   "resultPath": "data",
+   "defaultFields": [
+    "teamId",
+    "teamFullName",
+    "gamesPlayed",
+    "wins",
+    "losses",
+    "otLosses",
+    "points",
+    "goalsFor"
+   ],
+   "pagination": {
+    "type": "offset",
+    "param": "start",
+    "step": 50
+   },
+   "mutates": false,
+   "example": {
+    "cayenneExp": "gameTypeId=2 and seasonId<=20262027 and seasonId>=20262027"
+   },
+   "source": "E23 GET https://api.nhle.com/stats/rest/en/team/summary",
+   "verified": true
+  },
+  {
+   "name": "search-players",
+   "summary": "Find players by (partial) name to get their player id",
+   "method": "GET",
+   "urlTemplate": "https://api.nhle.com/stats/rest/en/players?cayenneExp=fullName%20likeIgnoreCase%20%22%25{name}%25%22&include=team.triCode",
+   "params": [
+    {
+     "name": "name",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Name or part of a name (case-insensitive substring match)",
+     "example": "Crosby"
+    }
+   ],
+   "responseType": "json",
+   "resultPath": "data",
+   "defaultFields": [
+    "id",
+    "fullName",
+    "positionCode",
+    "sweaterNumber",
+    "team.triCode",
+    "currentTeamId"
+   ],
+   "mutates": false,
+   "example": {
+    "name": "Crosby"
+   },
+   "source": "E30 GET https://api.nhle.com/stats/rest/en/players",
+   "verified": true
+  },
+  {
+   "name": "get-player",
+   "summary": "Player profile header: name, team, position, number, age, height, weight and headshot",
+   "method": "GET",
+   "urlTemplate": "https://api-web.nhle.com/v2/player/{playerId}/header",
+   "params": [
+    {
+     "name": "playerId",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "NHL player id (from search-players or stats rows)",
+     "example": "8471675"
+    }
+   ],
+   "responseType": "json",
+   "defaultFields": [
+    "playerId",
+    "firstName.default",
+    "lastName.default",
+    "position",
+    "sweaterNumber",
+    "team.abbrev",
+    "age",
+    "nationality"
+   ],
+   "mutates": false,
+   "example": {
+    "playerId": "8471675"
+   },
+   "source": "E24 GET https://api-web.nhle.com/v2/player/{n}/header",
+   "verified": true
+  },
+  {
+   "name": "get-player-stats",
+   "summary": "Player stat lines: current season, career and per-season totals with team ranks",
+   "method": "GET",
+   "urlTemplate": "https://api-web.nhle.com/v2/player/{playerId}/player-stats",
+   "params": [
+    {
+     "name": "playerId",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "NHL player id",
+     "example": "8478402"
+    }
+   ],
+   "responseType": "json",
+   "mutates": false,
+   "example": {
+    "playerId": "8478402"
+   },
+   "source": "E25 GET https://api-web.nhle.com/v2/player/{n}/player-stats",
+   "verified": true
+  },
+  {
+   "name": "get-player-bio",
+   "summary": "Player biography: birth date and place, draft details, shoots/catches",
+   "method": "GET",
+   "urlTemplate": "https://api-web.nhle.com/v2/player/{playerId}/bio",
+   "params": [
+    {
+     "name": "playerId",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "NHL player id",
+     "example": "8471675"
+    }
+   ],
+   "responseType": "json",
+   "mutates": false,
+   "example": {
+    "playerId": "8471675"
+   },
+   "source": "E40 GET https://api-web.nhle.com/v2/player/{n}/bio",
+   "verified": true
+  },
+  {
+   "name": "get-player-game-log",
+   "summary": "Player game-by-game log for a season and game type (regular season or playoffs)",
+   "method": "GET",
+   "urlTemplate": "https://api-web.nhle.com/v2/player/{playerId}/game-log/{season}/{gameType}",
+   "params": [
+    {
+     "name": "playerId",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "NHL player id",
+     "example": "8471675"
+    },
+    {
+     "name": "season",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "8-digit season id, e.g. 20262027 (playerStatsSeasons in the response lists the valid seasons)",
+     "example": "20262027"
+    },
+    {
+     "name": "gameType",
+     "in": "path",
+     "required": false,
+     "type": "string",
+     "description": "2=regular season, 3=playoffs",
+     "enum": [
+      "2",
+      "3"
+     ],
+     "default": "2",
+     "example": "2"
+    }
+   ],
+   "responseType": "json",
+   "resultPath": "gameLog",
+   "defaultFields": [
+    "id",
+    "gameDate",
+    "homeRoadFlag",
+    "homeTeam.abbrev",
+    "awayTeam.abbrev",
+    "goals",
+    "assists",
+    "toi"
+   ],
+   "mutates": false,
+   "example": {
+    "playerId": "8471675",
+    "season": "20262027",
+    "gameType": "2"
+   },
+   "source": "E8 E51 GET https://api-web.nhle.com/v2/player/{n}/game-log/{n}/{n}",
+   "verified": true
+  },
+  {
+   "name": "get-game",
+   "summary": "Game overview: teams, score, venue, scoring summary by period, three stars",
+   "method": "GET",
+   "urlTemplate": "https://api-web.nhle.com/v1/gamecenter/{gameId}/landing",
+   "params": [
+    {
+     "name": "gameId",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "10-digit game id, e.g. 2026020119 (from scores, schedule or a game log)",
+     "example": "2026020119"
+    }
+   ],
+   "responseType": "json",
+   "defaultFields": [
+    "id",
+    "gameDate",
+    "gameState",
+    "venue.default",
+    "awayTeam.abbrev",
+    "awayTeam.score",
+    "homeTeam.abbrev",
+    "homeTeam.score"
+   ],
+   "mutates": false,
+   "example": {
+    "gameId": "2026020119"
+   },
+   "source": "E33 GET https://api-web.nhle.com/v1/gamecenter/{n}/landing",
+   "verified": true
+  },
+  {
+   "name": "get-game-boxscore",
+   "summary": "Game box score: per-player stats (G, A, +/-, TOI, SOG, hits) for forwards, defense and goalies",
+   "method": "GET",
+   "urlTemplate": "https://api-web.nhle.com/v1/gamecenter/{gameId}/boxscore",
+   "params": [
+    {
+     "name": "gameId",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "10-digit game id",
+     "example": "2026020119"
+    }
+   ],
+   "responseType": "json",
+   "mutates": false,
+   "example": {
+    "gameId": "2026020119"
+   },
+   "source": "E38 GET https://api-web.nhle.com/v1/gamecenter/{n}/boxscore",
+   "verified": true
+  },
+  {
+   "name": "get-game-play-by-play",
+   "summary": "Full play-by-play event list for a game (shots, goals, penalties, faceoffs, with coordinates)",
+   "method": "GET",
+   "urlTemplate": "https://api-web.nhle.com/v1/gamecenter/{gameId}/play-by-play",
+   "params": [
+    {
+     "name": "gameId",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "10-digit game id",
+     "example": "2026020119"
+    }
+   ],
+   "responseType": "json",
+   "resultPath": "plays",
+   "mutates": false,
+   "example": {
+    "gameId": "2026020119"
+   },
+   "source": "E39 GET https://api-web.nhle.com/v1/gamecenter/{n}/play-by-play",
+   "verified": true
+  },
+  {
+   "name": "get-game-details",
+   "summary": "Game side info: season series, officials, coaches, scratches, linescore by period, video ids",
+   "method": "GET",
+   "urlTemplate": "https://api-web.nhle.com/v1/gamecenter/{gameId}/right-rail",
+   "params": [
+    {
+     "name": "gameId",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "10-digit game id",
+     "example": "2026020119"
+    }
+   ],
+   "responseType": "json",
+   "mutates": false,
+   "example": {
+    "gameId": "2026020119"
+   },
+   "source": "E16 GET https://api-web.nhle.com/v1/gamecenter/{n}/right-rail",
+   "verified": true
+  },
+  {
+   "name": "get-game-recap-stories",
+   "summary": "NHL.com recap articles for a game (headline, summary, slug)",
+   "method": "GET",
+   "urlTemplate": "https://forge-dapi.d3.nhle.com/v2/content/en-us/stories?tags.slug=gameid-{gameId}&tags.slug=game-recap&context.slug=nhl",
+   "params": [
+    {
+     "name": "gameId",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "10-digit game id",
+     "example": "2026020119"
+    }
+   ],
+   "responseType": "json",
+   "resultPath": "items",
+   "defaultFields": [
+    "slug",
+    "headline",
+    "summary",
+    "contentDate",
+    "selfUrl"
+   ],
+   "mutates": false,
+   "example": {
+    "gameId": "2026020119"
+   },
+   "source": "E35 GET https://forge-dapi.d3.nhle.com/v2/content/en-us/stories",
+   "verified": true
+  },
+  {
+   "name": "get-standings",
+   "summary": "League standings as of a date (division, conference and wild-card ordering, records, points)",
+   "method": "GET",
+   "urlTemplate": "https://api-web.nhle.com/v1/standings/{date}",
+   "params": [
+    {
+     "name": "date",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Date as YYYY-MM-DD, or 'now'",
+     "example": "2026-10-17"
+    }
+   ],
+   "responseType": "json",
+   "resultPath": "standings",
+   "defaultFields": [
+    "teamAbbrev.default",
+    "teamName.default",
+    "divisionName",
+    "gamesPlayed",
+    "wins",
+    "losses",
+    "otLosses",
+    "points"
+   ],
+   "mutates": false,
+   "example": {
+    "date": "2026-10-17"
+   },
+   "source": "E26 E52 GET https://api-web.nhle.com/v1/standings/2026-10-17",
+   "verified": true
+  },
+  {
+   "name": "list-standings-seasons",
+   "summary": "Seasons that have standings, with their date ranges and rules (ties, wild card, etc.)",
+   "method": "GET",
+   "urlTemplate": "https://api-web.nhle.com/v1/standings-season",
+   "params": [],
+   "responseType": "json",
+   "resultPath": "seasons",
+   "mutates": false,
+   "source": "E41 GET https://api-web.nhle.com/v1/standings-season",
+   "verified": true
+  },
+  {
+   "name": "get-scores",
+   "summary": "All games and scores for a date (state, teams, score, goals)",
+   "method": "GET",
+   "urlTemplate": "https://api-web.nhle.com/v1/score/{date}",
+   "params": [
+    {
+     "name": "date",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Date as YYYY-MM-DD, or 'now'",
+     "example": "2026-10-17"
+    }
+   ],
+   "responseType": "json",
+   "resultPath": "games",
+   "defaultFields": [
+    "id",
+    "gameDate",
+    "gameState",
+    "awayTeam.abbrev",
+    "awayTeam.score",
+    "homeTeam.abbrev",
+    "homeTeam.score",
+    "startTimeUTC"
+   ],
+   "mutates": false,
+   "example": {
+    "date": "2026-10-17"
+   },
+   "source": "E42 E45 E53 GET https://api-web.nhle.com/v1/score/2026-10-17",
+   "verified": true
+  },
+  {
+   "name": "get-schedule",
+   "summary": "League schedule for the week starting on a date (games per day, teams, start times, broadcasts)",
+   "method": "GET",
+   "urlTemplate": "https://api-web.nhle.com/v1/schedule/{date}",
+   "params": [
+    {
+     "name": "date",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Start date as YYYY-MM-DD, or 'now'",
+     "example": "2026-10-17"
+    }
+   ],
+   "responseType": "json",
+   "resultPath": "gameWeek",
+   "defaultFields": [
+    "date",
+    "dayAbbrev",
+    "numberOfGames",
+    "games"
+   ],
+   "mutates": false,
+   "example": {
+    "date": "2026-10-17"
+   },
+   "source": "E46 E57 GET https://api-web.nhle.com/v1/schedule/2026-10-17",
+   "verified": true
+  },
+  {
+   "name": "get-schedule-calendar",
+   "summary": "Schedule calendar window for a date: start/end dates, previous/next week, and the list of teams",
+   "method": "GET",
+   "urlTemplate": "https://api-web.nhle.com/v1/schedule-calendar/{date}",
+   "params": [
+    {
+     "name": "date",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Date as YYYY-MM-DD, or 'now'",
+     "example": "2026-10-17"
+    }
+   ],
+   "responseType": "json",
+   "mutates": false,
+   "example": {
+    "date": "2026-10-17"
+   },
+   "source": "E29 E56 GET https://api-web.nhle.com/v1/schedule-calendar/2026-10-17",
+   "verified": true
+  },
+  {
+   "name": "list-seasons",
+   "summary": "All NHL seasons, newest first, with ids, dates, number of games and rules",
+   "method": "GET",
+   "urlTemplate": "https://api.nhle.com/stats/rest/en/season?sort=%5B%7B%22property%22:%22id%22,%22direction%22:%22DESC%22%7D%5D",
+   "params": [],
+   "responseType": "json",
+   "resultPath": "data",
+   "defaultFields": [
+    "id",
+    "formattedSeasonId",
+    "startDate",
+    "regularSeasonEndDate",
+    "endDate",
+    "numberOfGames"
+   ],
+   "mutates": false,
+   "source": "E13 GET https://api.nhle.com/stats/rest/en/season",
+   "verified": true
+  },
+  {
+   "name": "get-current-season",
+   "summary": "The season and game type the stats site currently defaults to",
+   "method": "GET",
+   "urlTemplate": "https://api.nhle.com/stats/rest/en/componentSeason",
+   "params": [],
+   "responseType": "json",
+   "resultPath": "data",
+   "mutates": false,
+   "source": "E9 GET https://api.nhle.com/stats/rest/en/componentSeason",
+   "verified": true
+  },
+  {
+   "name": "list-franchises",
+   "summary": "All NHL franchises with ids (for franchiseId filters) and first/last seasons",
+   "method": "GET",
+   "urlTemplate": "https://api.nhle.com/stats/rest/en/franchise?sort=fullName&include=lastSeason.id&include=firstSeason.id",
+   "params": [],
+   "responseType": "json",
+   "resultPath": "data",
+   "defaultFields": [
+    "id",
+    "fullName",
+    "teamPlaceName",
+    "teamCommonName",
+    "firstSeason.id",
+    "lastSeason.id"
+   ],
+   "mutates": false,
+   "source": "E15 GET https://api.nhle.com/stats/rest/en/franchise",
+   "verified": true
+  },
+  {
+   "name": "list-countries",
+   "summary": "Countries (and their states/provinces) usable as player nationality or birthplace filters",
+   "method": "GET",
+   "urlTemplate": "https://api.nhle.com/stats/rest/en/country?include=stateProvinces&sort=countryName",
+   "params": [],
+   "responseType": "json",
+   "resultPath": "data",
+   "defaultFields": [
+    "id",
+    "countryCode",
+    "countryName",
+    "nationalityName"
+   ],
+   "mutates": false,
+   "source": "E14 GET https://api.nhle.com/stats/rest/en/country",
+   "verified": true
+  },
+  {
+   "name": "list-drafts",
+   "summary": "NHL entry draft years and number of rounds",
+   "method": "GET",
+   "urlTemplate": "https://api.nhle.com/stats/rest/en/draft?sort=draftYear",
+   "params": [],
+   "responseType": "json",
+   "resultPath": "data",
+   "defaultFields": [
+    "id",
+    "draftYear",
+    "rounds"
+   ],
+   "mutates": false,
+   "source": "E10 GET https://api.nhle.com/stats/rest/en/draft",
+   "verified": true
+  },
+  {
+   "name": "get-glossary",
+   "summary": "Stats glossary: abbreviation, full name and definition of every stat",
+   "method": "GET",
+   "urlTemplate": "https://api.nhle.com/stats/rest/en/glossary?sort=fullName",
+   "params": [],
+   "responseType": "json",
+   "resultPath": "data",
+   "defaultFields": [
+    "abbreviation",
+    "fullName",
+    "definition",
+    "firstSeasonForStat"
+   ],
+   "mutates": false,
+   "source": "E32 GET https://api.nhle.com/stats/rest/en/glossary",
+   "verified": true
+  }
+ ],
+ "blockers": [],
+ "notes": [
+  "Seasons are 8-digit ids like 20262027 (the 2026-27 season). gameType/gameTypeId: 2=regular season, 3=playoffs (1=preseason).",
+  "Stats reports (list-*-stats) filter with a Cayenne expression in cayenneExp, e.g. 'franchiseId=5 and gameTypeId=2 and seasonId<=20252026 and seasonId>=20252026'. Franchise ids come from list-franchises.",
+  "Name filter on stats reports: add 'and skaterFullName likeIgnoreCase \"%Crosby%\"' (use goalieFullName for goalies). To find a player id, use search-players.",
+  "sort is a JSON array of {property, direction}. Add a unique tiebreaker such as playerId (or teamId/franchiseId) so paging stays stable. Page with start (offset) and limit.",
+  "All-time or multi-season totals: widen the seasonId range and set isAggregate=true. Game-by-game rows: set isGame=true and filter on gameDate (\"YYYY-MM-DD\").",
+  "Date-based api-web endpoints (standings, score, schedule, schedule-calendar) accept 'now'. It answers with a 307 redirect to today's date.",
+  "Game ids are 10 digits: season start year + game type (02) + game number, e.g. 2026020119.",
+  "Ad and telemetry endpoints were skipped (rubicon, sodar, maze, blaze, satis), along with i18n bundles and the site config."
+ ],
+ "dropped": [],
+ "generated": {
+  "by": "clify add",
+  "model": "claude-opus-5-5",
+  "exploredSteps": 30,
+  "recorded": 355,
+  "verifiedAt": "2026-10-18T09:30:21.031Z",
+  "seconds": 393
+ }
+}

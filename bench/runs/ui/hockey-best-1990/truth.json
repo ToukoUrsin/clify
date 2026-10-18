@@ -1,0 +1,17 @@
+{
+ "expect": [
+  "Chicago Blackhawks"
+ ],
+ "number": 49,
+ "detail": {
+  "name": "Chicago Blackhawks",
+  "year": "1990",
+  "wins": "49",
+  "losses": "23",
+  "winPct": "0.613",
+  "goalsFor": "284",
+  "goalsAgainst": "211",
+  "rows": 582
+ },
+ "at": "2026-10-17T23:27:57.274Z"
+}

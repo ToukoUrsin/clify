@@ -1,0 +1,165 @@
+{
+ "name": "legislation",
+ "startUrl": "https://www.legislation.gov.uk/",
+ "origin": "https://www.legislation.gov.uk",
+ "createdAt": "2026-10-18T07:18:20.903Z",
+ "description": "legislation.gov.uk is the official UK legislation database (Acts, Statutory Instruments, devolved legislation). This CLI searches legislation and fetches items as structured data through the site's documented open-data URLs (Atom feeds and XML).",
+ "commands": [
+  {
+   "name": "search-legislation",
+   "summary": "Search UK legislation by keyword, title, type or year. Returns an Atom feed of matching items.",
+   "method": "GET",
+   "urlTemplate": "/search/data.feed",
+   "params": [
+    {
+     "name": "text",
+     "in": "query",
+     "required": true,
+     "type": "string",
+     "description": "Full-text keyword query",
+     "example": "data protection"
+    },
+    {
+     "name": "title",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Restrict to items whose title contains these words"
+    },
+    {
+     "name": "type",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Legislation type code",
+     "enum": [
+      "ukpga",
+      "uksi",
+      "asp",
+      "ssi",
+      "anaw",
+      "asc",
+      "wsi",
+      "nia",
+      "nisr",
+      "ukla",
+      "eur"
+     ]
+    },
+    {
+     "name": "year",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Year of enactment, e.g. 2018, or a range like 2010-2018"
+    },
+    {
+     "name": "page",
+     "in": "query",
+     "required": false,
+     "type": "number",
+     "description": "Results page number, starting at 1"
+    }
+   ],
+   "responseType": "json",
+   "resultPath": "feed.entry",
+   "defaultFields": [
+    "title",
+    "id",
+    "link",
+    "updated",
+    "summary"
+   ],
+   "pagination": {
+    "type": "page",
+    "param": "page"
+   },
+   "mutates": false,
+   "example": {
+    "text": "data protection"
+   },
+   "source": "E3 GET https://www.legislation.gov.uk/search",
+   "verified": true
+  },
+  {
+   "name": "get-legislation",
+   "summary": "Get one legislation item, such as the Data Protection Act 2018 (ukpga/2018/12), as structured XML-derived JSON with metadata and text.",
+   "method": "GET",
+   "urlTemplate": "/{type}/{year}/{number}/data.xml",
+   "params": [
+    {
+     "name": "type",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Legislation type code",
+     "enum": [
+      "ukpga",
+      "uksi",
+      "asp",
+      "ssi",
+      "anaw",
+      "asc",
+      "wsi",
+      "nia",
+      "nisr",
+      "ukla",
+      "eur"
+     ],
+     "example": "ukpga"
+    },
+    {
+     "name": "year",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Year of enactment, e.g. 2018",
+     "example": "2018"
+    },
+    {
+     "name": "number",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Chapter or SI number within the year, e.g. 12",
+     "example": "12"
+    }
+   ],
+   "responseType": "json",
+   "resultPath": "Legislation",
+   "defaultFields": [
+    "ukm:Metadata",
+    "@DocumentURI",
+    "@NumberOfProvisions",
+    "@RestrictExtent"
+   ],
+   "mutates": false,
+   "example": {
+    "type": "ukpga",
+    "year": "2018",
+    "number": "12"
+   },
+   "source": "E3 GET https://www.legislation.gov.uk/search",
+   "verified": true
+  }
+ ],
+ "blockers": [
+  "captcha"
+ ],
+ "notes": [
+  "UNVERIFIED: during exploration, every request to www.legislation.gov.uk returned an AWS WAF bot-challenge page (HTTP 202, empty #challenge-container). No real site content was observed.",
+  "These commands use legislation.gov.uk's documented open-data URL patterns (/search/data.feed and /{type}/{year}/{number}/data.xml), not recorded responses. resultPath and defaultFields come from the documented Atom and CLML formats and may need adjusting once a real response is seen.",
+  "The AWS WAF token endpoints (E1 /inputs and E2 /mp_verify) are deliberately excluded. They are bot-protection machinery, not site capabilities, and this CLI does not try to solve or get around the challenge.",
+  "If the WAF keeps blocking non-browser clients, these commands will get the challenge page instead of data. The legitimate fix is to ask The National Archives (the site operator) for API access or allow-listing, or to use their bulk data downloads. Do not try to forge challenge tokens.",
+  "Content is published under the Open Government Licence. The same documents are also available as data.json/data.html/data.pdf variants, and sections can be fetched as /{type}/{year}/{number}/section/{n}/data.xml."
+ ],
+ "dropped": [],
+ "generated": {
+  "by": "clify add",
+  "model": "claude-opus-5-5",
+  "exploredSteps": 3,
+  "recorded": 9,
+  "verifiedAt": "2026-10-18T07:18:53.651Z",
+  "seconds": 46
+ }
+}

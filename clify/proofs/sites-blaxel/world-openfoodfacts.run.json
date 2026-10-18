@@ -1,0 +1,121 @@
+{
+ "url": "https://world.openfoodfacts.org/",
+ "category": "jobs-market",
+ "sandbox": "clify-world-openfoodfacts-org",
+ "startedAt": "2026-10-18T09:04:15.848Z",
+ "region": "us-pdx-1",
+ "chrome": "Chrome/148.0.7778.96",
+ "sandboxStartMs": 1925,
+ "addSeconds": 120,
+ "addExit": 0,
+ "add": {
+  "ok": true,
+  "site": "world-openfoodfacts",
+  "url": "https://world.openfoodfacts.org/",
+  "commands": [
+   {
+    "name": "get-product",
+    "summary": "Get a food product's name, common name and Nutri-Score breakdown by barcode (EAN/UPC), parsed from its product page",
+    "verified": true
+   },
+   {
+    "name": "get-product-questions",
+    "summary": "List the Robotoff machine-generated questions (for example a suggested category or label to confirm) that are pending for a product barcode",
+    "verified": true
+   },
+   {
+    "name": "list-countries",
+    "summary": "List the countries Open Food Facts supports, as a map from country code (e.g. us, fr) to English country name",
+    "verified": true
+   },
+   {
+    "name": "list-attribute-groups",
+    "summary": "List the product attribute groups used for personalized ranking (nutritional quality, processing, allergens, environment, \u2026) with their attributes and allowed values",
+    "verified": true
+   },
+   {
+    "name": "list-preference-levels",
+    "summary": "List the importance levels a user can assign to a product attribute (not important, important, very important, mandatory) with their scoring factors",
+    "verified": true
+   },
+   {
+    "name": "list-external-sources",
+    "summary": "List the external knowledge-panel providers (for example the animal-welfare Suffering Footprint) and the product filters each one applies to",
+    "verified": true
+   },
+   {
+    "name": "list-data-exports",
+    "summary": "List the nightly database dump and export downloads (MongoDB dump, CSV, JSONL, \u2026) with their download and checksum links",
+    "verified": true
+   }
+  ],
+  "verified": 7,
+  "writes": 0,
+  "dropped": [
+   {
+    "name": "get-product-folksonomy",
+    "reason": "The endpoint itself works: HTTP 200 with a JSON array. But the example barcode 3017620422003 has no folksonomy tags, so the response is an empty list ([]). I couldn't find a barcode in the recording or live evidence that returns tags. Swapping in an unverified example would just be a guess. Re-add this command once an example barcode with folksonomy tags can be confirmed."
+   }
+  ],
+  "blockers": [],
+  "loggedIn": false,
+  "seconds": 120,
+  "next": [
+   "clify world-openfoodfacts",
+   "clify world-openfoodfacts get-product --barcode \"3046920029759\""
+  ],
+  "installed": "/home/ubuntu/clify-runs/blaxel-w1/home/bin/world-openfoodfacts",
+  "explored": {
+   "steps": 10,
+   "recorded": 34,
+   "heldWrites": 0
+  }
+ },
+ "check": {
+  "on": "blaxel",
+  "node": "v24.22.0",
+  "seconds": 7,
+  "reads": 7,
+  "verified": 7,
+  "failed": [],
+  "results": [
+   {
+    "name": "get-product",
+    "ok": true,
+    "ms": 2391
+   },
+   {
+    "name": "get-product-questions",
+    "ok": true,
+    "ms": 981
+   },
+   {
+    "name": "list-countries",
+    "ok": true,
+    "ms": 169
+   },
+   {
+    "name": "list-attribute-groups",
+    "ok": true,
+    "ms": 170
+   },
+   {
+    "name": "list-preference-levels",
+    "ok": true,
+    "ms": 163
+   },
+   {
+    "name": "list-external-sources",
+    "ok": true,
+    "ms": 164
+   },
+   {
+    "name": "list-data-exports",
+    "ok": true,
+    "ms": 344
+   }
+  ]
+ },
+ "deleted": true,
+ "seconds": 129
+}

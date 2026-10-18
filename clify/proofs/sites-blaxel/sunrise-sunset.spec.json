@@ -1,0 +1,311 @@
+{
+ "name": "sunrise-sunset",
+ "startUrl": "https://sunrise-sunset.org/",
+ "origin": "https://sunrise-sunset.org",
+ "createdAt": "2026-10-18T09:41:51.422Z",
+ "description": "sunrise-sunset.org gives sunrise, sunset and twilight times for any city. This CLI searches cities, fetches today's times, browses countries, regions and cities, reads monthly calendars and queries the public sunrise/sunset JSON API.",
+ "commands": [
+  {
+   "name": "search-cities",
+   "summary": "Search cities by name. Returns numeric city ids and labels; use the id with get-today-times.",
+   "method": "GET",
+   "urlTemplate": "/ajax-dark",
+   "params": [
+    {
+     "name": "q",
+     "in": "query",
+     "required": true,
+     "type": "string",
+     "description": "City name or prefix to search for",
+     "example": "Paris"
+    }
+   ],
+   "responseType": "json",
+   "defaultFields": [
+    "id",
+    "label"
+   ],
+   "mutates": false,
+   "example": {
+    "q": "Paris"
+   },
+   "source": "E23 GET https://sunrise-sunset.org/ajax-dark",
+   "verified": true
+  },
+  {
+   "name": "get-today-times",
+   "summary": "Get today's and tomorrow's sunrise/sunset widget for a city, selected by numeric id. Returns JSON with pre-rendered HTML fragments.",
+   "method": "GET",
+   "urlTemplate": "/ajax-home-today",
+   "params": [
+    {
+     "name": "id",
+     "in": "query",
+     "required": true,
+     "type": "number",
+     "description": "Numeric city id from search-cities, e.g. 119890 = Paris, France",
+     "example": "119890"
+    }
+   ],
+   "responseType": "json",
+   "mutates": false,
+   "example": {
+    "id": "119890"
+   },
+   "source": "E17 GET https://sunrise-sunset.org/ajax-home-today",
+   "verified": true
+  },
+  {
+   "name": "list-popular-today",
+   "summary": "Get today's sunrise/sunset cards for the most-searched cities in the visitor's country (grid), or for the visitor's geolocated city (geo).",
+   "method": "GET",
+   "urlTemplate": "/ajax-home-today",
+   "params": [
+    {
+     "name": "grid",
+     "in": "query",
+     "required": false,
+     "type": "number",
+     "description": "1 = return the most-searched-cities grid",
+     "default": 1,
+     "example": "1"
+    },
+    {
+     "name": "geo",
+     "in": "query",
+     "required": false,
+     "type": "number",
+     "description": "1 = return times for the city geolocated from the caller's IP",
+     "example": "1"
+    }
+   ],
+   "responseType": "json",
+   "defaultFields": [
+    "h3",
+    "grid"
+   ],
+   "mutates": false,
+   "example": {
+    "grid": "1"
+   },
+   "source": "E17 GET https://sunrise-sunset.org/ajax-home-today",
+   "verified": true
+  },
+  {
+   "name": "get-sun-times",
+   "summary": "Public JSON API: sunrise, sunset, solar noon, day length and twilight times for a latitude/longitude on one date or across a date range.",
+   "method": "GET",
+   "urlTemplate": "https://api.sunrise-sunset.org/v2",
+   "params": [
+    {
+     "name": "lat",
+     "in": "query",
+     "required": true,
+     "type": "number",
+     "description": "Latitude in decimal degrees",
+     "example": "48.853409"
+    },
+    {
+     "name": "lng",
+     "in": "query",
+     "required": true,
+     "type": "number",
+     "description": "Longitude in decimal degrees",
+     "example": "2.3488"
+    },
+    {
+     "name": "date",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Single date, YYYY-MM-DD (defaults to today). Do not combine with date_start/date_end.",
+     "example": "2026-10-18"
+    },
+    {
+     "name": "date_start",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Range start date, YYYY-MM-DD (use together with date_end)",
+     "example": "2026-10-18"
+    },
+    {
+     "name": "date_end",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Range end date, YYYY-MM-DD (use together with date_start)",
+     "example": "2026-10-25"
+    }
+   ],
+   "responseType": "json",
+   "mutates": false,
+   "example": {
+    "lat": "48.853409",
+    "lng": "2.3488",
+    "date": "2026-10-18"
+   },
+   "source": "",
+   "verified": true
+  },
+  {
+   "name": "get-location-page",
+   "summary": "Open a city or region page by country code and slug (e.g. fr/paris, jp/tokyo, jp/tokyo-prefecture). Returns the page heading, title and meta description.",
+   "method": "GET",
+   "urlTemplate": "/{country_code}/{slug}",
+   "params": [
+    {
+     "name": "country_code",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Two-letter lowercase country code used in site URLs, e.g. fr, jp",
+     "example": "fr"
+    },
+    {
+     "name": "slug",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "City or region slug, e.g. paris, tokyo, tokyo-prefecture",
+     "example": "paris"
+    }
+   ],
+   "responseType": "html",
+   "extract": {
+    "fields": {
+     "title": "h1",
+     "summary": "meta[name=description]@content",
+     "page_title": "title"
+    }
+   },
+   "defaultFields": [
+    "title",
+    "summary"
+   ],
+   "mutates": false,
+   "example": {
+    "country_code": "fr",
+    "slug": "paris"
+   },
+   "source": "E62 E66 E67",
+   "verified": true
+  },
+  {
+   "name": "list-countries",
+   "summary": "List all countries on the explore page. Each link leads to a country listing of regions and cities.",
+   "method": "GET",
+   "urlTemplate": "/explore",
+   "params": [],
+   "responseType": "html",
+   "extract": {
+    "list": "a",
+    "fields": {
+     "name": "",
+     "url": "@href"
+    }
+   },
+   "defaultFields": [
+    "name",
+    "url"
+   ],
+   "mutates": false,
+   "source": "E64 GET https://sunrise-sunset.org/explore",
+   "verified": true
+  },
+  {
+   "name": "list-country-locations",
+   "summary": "List the regions and cities for a country by its full-name slug (e.g. japan). Links point to /{cc}/{slug} pages usable with get-location-page.",
+   "method": "GET",
+   "urlTemplate": "/{country}",
+   "params": [
+    {
+     "name": "country",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Country name slug as used on the explore page, e.g. japan, france",
+     "example": "japan"
+    }
+   ],
+   "responseType": "html",
+   "extract": {
+    "list": "a",
+    "fields": {
+     "name": "",
+     "url": "@href"
+    }
+   },
+   "defaultFields": [
+    "name",
+    "url"
+   ],
+   "mutates": false,
+   "example": {
+    "country": "japan"
+   },
+   "source": "E65 GET https://sunrise-sunset.org/japan",
+   "verified": true
+  },
+  {
+   "name": "get-monthly-calendar",
+   "summary": "Get the monthly sunrise/sunset calendar for a location by name. Returns one item per day with the date, sunrise and sunset text.",
+   "method": "GET",
+   "urlTemplate": "/calendar",
+   "params": [
+    {
+     "name": "location",
+     "in": "query",
+     "required": true,
+     "type": "string",
+     "description": "Location name as typed in the calendar search box, e.g. Tokyo",
+     "example": "Tokyo"
+    },
+    {
+     "name": "month",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Month in YYYY-MM format (defaults to the current month)",
+     "example": "2026-11"
+    }
+   ],
+   "responseType": "html",
+   "extract": {
+    "list": "table td",
+    "fields": {
+     "day": ""
+    }
+   },
+   "defaultFields": [
+    "day"
+   ],
+   "mutates": false,
+   "example": {
+    "location": "Tokyo",
+    "month": "2026-11"
+   },
+   "source": "E61",
+   "verified": true
+  }
+ ],
+ "blockers": [],
+ "notes": [
+  "City ids from search-cities (e.g. 119890 = Paris, France) work with get-today-times. HTML pages use slugs instead: /{cc}/{slug} for cities and regions (fr/paris, jp/tokyo-prefecture) and /{country-name} for countries (japan).",
+  "get-today-times and list-popular-today return JSON whose values are HTML fragments (e.g. 'grid' holds <li class=\"ht-card\"> cards). Parse the text from them.",
+  "The public API at api.sunrise-sunset.org/v2 is the cleanest source of exact times. Pass either date or date_start+date_end. Its response shape was not captured in detail, so no resultPath is set.",
+  "The monthly calendar's 'show moon phases' option was used, but its query parameter was not captured, so it is not exposed.",
+  "Saving to 'My places' and all settings are stored in browser localStorage only. No server write endpoint exists, so there is no write command.",
+  "The site's main keyword search appeared blocked during exploration. Use search-cities (autocomplete) or slugs instead.",
+  "HTML extract selectors were chosen without a page outline (generic h1/meta/a/table tr). Results may include navigation links, so filter by URL pattern."
+ ],
+ "dropped": [],
+ "generated": {
+  "by": "clify add",
+  "model": "claude-opus-5-5",
+  "exploredSteps": 18,
+  "recorded": 1333,
+  "verifiedAt": "2026-10-18T09:42:53.988Z",
+  "seconds": 228
+ }
+}

@@ -1,0 +1,6 @@
+On crates.io, what is the newest stable version of the tokio crate, and what license is that version published under?
+
+Start from https://crates.io/. Work it out using only the tools you have, then end your reply with one final line exactly in the form:
+ANSWER: <short answer>
+
+You have a shell with curl, jq and python3, plus WebFetch and WebSearch. Use them to find the answer from the website (its pages or any public API). There is no browser.

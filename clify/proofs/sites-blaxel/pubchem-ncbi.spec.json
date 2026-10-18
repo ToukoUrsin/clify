@@ -1,0 +1,745 @@
+{
+ "name": "pubchem-ncbi",
+ "startUrl": "https://pubchem.ncbi.nlm.nih.gov/",
+ "origin": "https://pubchem.ncbi.nlm.nih.gov",
+ "createdAt": "2026-10-18T09:10:44.466Z",
+ "description": "PubChem (NCBI) open chemistry database. This CLI searches compounds, genes, bioassays and literature, runs structure searches, fetches compound, gene, assay and element records, exports 2D/3D structures, and browses the periodic table, classification trees and data sources.",
+ "commands": [
+  {
+   "name": "search-compounds",
+   "summary": "Keyword search of PubChem compounds (name, synonym, formula, etc.) with sorting and paging",
+   "method": "GET",
+   "urlTemplate": "/interactive/sdq/sphinxql.cgi?infmt=json&outfmt=json&query=%7B%22select%22%3A%22*%22%2C%22collection%22%3A%22compound%22%2C%22order%22%3A%5B%22{sort}%22%5D%2C%22start%22%3A{start}%2C%22limit%22%3A{api_limit}%2C%22where%22%3A%7B%22ands%22%3A%5B%7B%22*%22%3A%22{q}%22%7D%5D%7D%7D",
+   "params": [
+    {
+     "name": "q",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Search keyword, e.g. a compound name, synonym or formula. Do not include double quotes.",
+     "example": "caffeine"
+    },
+    {
+     "name": "sort",
+     "in": "path",
+     "required": false,
+     "type": "string",
+     "description": "Sort order as 'field,dir'. Examples: relevancescore,desc; cid,asc; complexity,desc; mw,asc; mw,desc; annothitcnt,desc",
+     "default": "relevancescore,desc"
+    },
+    {
+     "name": "start",
+     "in": "path",
+     "required": false,
+     "type": "number",
+     "description": "1-based index of the first row. Page 2 with limit 10 is start=11.",
+     "default": 1
+    },
+    {
+     "name": "api_limit",
+     "in": "path",
+     "required": false,
+     "type": "number",
+     "description": "Rows per page (sent to the site as \"limit\"; clify's own --limit only shapes the output)",
+     "default": 10
+    }
+   ],
+   "responseType": "json",
+   "resultPath": "SDQOutputSet.0.rows",
+   "defaultFields": [
+    "cid",
+    "cmpdname",
+    "mf",
+    "mw",
+    "iupacname",
+    "inchikey",
+    "annothitcnt"
+   ],
+   "pagination": {
+    "type": "offset",
+    "param": "start",
+    "step": 10
+   },
+   "mutates": false,
+   "example": {
+    "q": "caffeine"
+   },
+   "source": "E2 GET https://pubchem.ncbi.nlm.nih.gov/interactive/sdq/sphinxql.cgi",
+   "verified": true
+  },
+  {
+   "name": "search-genes",
+   "summary": "Keyword search of PubChem gene targets",
+   "method": "GET",
+   "urlTemplate": "/interactive/sdq/sphinxql.cgi?infmt=json&outfmt=json&query=%7B%22select%22%3A%22*%22%2C%22collection%22%3A%22gene%22%2C%22order%22%3A%5B%22{sort}%22%5D%2C%22start%22%3A{start}%2C%22limit%22%3A{api_limit}%2C%22where%22%3A%7B%22ands%22%3A%5B%7B%22*%22%3A%22{q}%22%7D%5D%7D%7D",
+   "params": [
+    {
+     "name": "q",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Search keyword (gene symbol, name, related term)",
+     "example": "caffeine"
+    },
+    {
+     "name": "sort",
+     "in": "path",
+     "required": false,
+     "type": "string",
+     "description": "Sort order 'field,dir', e.g. relevancescore,desc",
+     "default": "relevancescore,desc"
+    },
+    {
+     "name": "start",
+     "in": "path",
+     "required": false,
+     "type": "number",
+     "description": "1-based index of the first row",
+     "default": 1
+    },
+    {
+     "name": "api_limit",
+     "in": "path",
+     "required": false,
+     "type": "number",
+     "description": "Rows per page (sent to the site as \"limit\"; clify's own --limit only shapes the output)",
+     "default": 10
+    }
+   ],
+   "responseType": "json",
+   "resultPath": "SDQOutputSet.0.rows",
+   "defaultFields": [
+    "geneid",
+    "symbol",
+    "name",
+    "genename",
+    "aliases",
+    "taxid",
+    "taxname"
+   ],
+   "pagination": {
+    "type": "offset",
+    "param": "start",
+    "step": 10
+   },
+   "mutates": false,
+   "example": {
+    "q": "caffeine"
+   },
+   "source": "E2",
+   "verified": true
+  },
+  {
+   "name": "search-bioassays",
+   "summary": "Keyword search of PubChem bioassays (AIDs)",
+   "method": "GET",
+   "urlTemplate": "/interactive/sdq/sphinxql.cgi?infmt=json&outfmt=json&query=%7B%22select%22%3A%22*%22%2C%22collection%22%3A%22bioassay%22%2C%22order%22%3A%5B%22{sort}%22%5D%2C%22start%22%3A{start}%2C%22limit%22%3A{api_limit}%2C%22where%22%3A%7B%22ands%22%3A%5B%7B%22*%22%3A%22{q}%22%7D%5D%7D%7D",
+   "params": [
+    {
+     "name": "q",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Search keyword",
+     "example": "caffeine"
+    },
+    {
+     "name": "sort",
+     "in": "path",
+     "required": false,
+     "type": "string",
+     "description": "Sort order 'field,dir', e.g. relevancescore,desc",
+     "default": "relevancescore,desc"
+    },
+    {
+     "name": "start",
+     "in": "path",
+     "required": false,
+     "type": "number",
+     "description": "1-based index of the first row",
+     "default": 1
+    },
+    {
+     "name": "api_limit",
+     "in": "path",
+     "required": false,
+     "type": "number",
+     "description": "Rows per page (sent to the site as \"limit\"; clify's own --limit only shapes the output)",
+     "default": 10
+    }
+   ],
+   "responseType": "json",
+   "resultPath": "SDQOutputSet.0.rows",
+   "defaultFields": [
+    "aid",
+    "aidname",
+    "aidsrcname",
+    "aidtype",
+    "aiddtype"
+   ],
+   "pagination": {
+    "type": "offset",
+    "param": "start",
+    "step": 10
+   },
+   "mutates": false,
+   "example": {
+    "q": "caffeine"
+   },
+   "source": "E2 GET https://pubchem.ncbi.nlm.nih.gov/interactive/sdq/sphinxql.cgi",
+   "verified": true
+  },
+  {
+   "name": "search-literature",
+   "summary": "Keyword search of literature (PubMed articles) linked to PubChem records",
+   "method": "GET",
+   "urlTemplate": "/interactive/sdq/sphinxql.cgi?infmt=json&outfmt=json&query=%7B%22select%22%3A%22*%22%2C%22collection%22%3A%22literature%22%2C%22order%22%3A%5B%22{sort}%22%5D%2C%22start%22%3A{start}%2C%22limit%22%3A{api_limit}%2C%22where%22%3A%7B%22ands%22%3A%5B%7B%22*%22%3A%22{q}%22%7D%5D%7D%7D",
+   "params": [
+    {
+     "name": "q",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Search keyword",
+     "example": "caffeine"
+    },
+    {
+     "name": "sort",
+     "in": "path",
+     "required": false,
+     "type": "string",
+     "description": "Sort order 'field,dir', e.g. relevancescore,desc or articlepubdate,desc",
+     "default": "relevancescore,desc"
+    },
+    {
+     "name": "start",
+     "in": "path",
+     "required": false,
+     "type": "number",
+     "description": "1-based index of the first row",
+     "default": 1
+    },
+    {
+     "name": "api_limit",
+     "in": "path",
+     "required": false,
+     "type": "number",
+     "description": "Rows per page (sent to the site as \"limit\"; clify's own --limit only shapes the output)",
+     "default": 10
+    }
+   ],
+   "responseType": "json",
+   "resultPath": "SDQOutputSet.0.rows",
+   "defaultFields": [
+    "pclid",
+    "pmid",
+    "articletitle",
+    "articlejourname",
+    "articlepubdate",
+    "doi",
+    "articleauthor"
+   ],
+   "pagination": {
+    "type": "offset",
+    "param": "start",
+    "step": 10
+   },
+   "mutates": false,
+   "example": {
+    "q": "caffeine"
+   },
+   "source": "E2",
+   "verified": true
+  },
+  {
+   "name": "count-search-hits",
+   "summary": "Count keyword hits in every PubChem collection (compound, substance, bioassay, gene, protein, taxonomy, pathway, cell, literature, patent)",
+   "method": "GET",
+   "urlTemplate": "/interactive/sdq/sphinxql.cgi?infmt=json&outfmt=json&query=%7B%22hide%22%3A%22*%22%2C%22collection%22%3A%22compound%2Csubstance%2Crefchem%2Cbioassay%2Cgene%2Cprotein%2Ctaxonomy%2Cpathway%2Ccell%2Cliterature%2Cpatent%22%2C%22where%22%3A%7B%22ands%22%3A%5B%7B%22*%22%3A%22{q}%22%7D%5D%7D%7D",
+   "params": [
+    {
+     "name": "q",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Search keyword",
+     "example": "caffeine"
+    }
+   ],
+   "responseType": "json",
+   "resultPath": "SDQOutputSet",
+   "defaultFields": [
+    "collection",
+    "totalCount"
+   ],
+   "mutates": false,
+   "example": {
+    "q": "caffeine"
+   },
+   "source": "E2 GET https://pubchem.ncbi.nlm.nih.gov/interactive/sdq/sphinxql.cgi",
+   "verified": true
+  },
+  {
+   "name": "structure-search",
+   "summary": "Run an identity, similarity, substructure, superstructure or 3D-similarity search seeded by a compound CID. Returns the hit count and a cache key.",
+   "method": "GET",
+   "urlTemplate": "/interactive/unified_search/structure_search.cgi?format=json&queryblob=%7B%22query%22%3A%7B%22type%22%3A%22{type}%22%2C%22parameter%22%3A%5B%7B%22name%22%3A%22cid%22%2C%22string%22%3A%22{cid}%22%7D%2C%7B%22name%22%3A%22UseCache%22%2C%22bool%22%3Atrue%7D%5D%7D%7D",
+   "params": [
+    {
+     "name": "cid",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "PubChem Compound ID used as the query structure",
+     "example": "2519"
+    },
+    {
+     "name": "type",
+     "in": "path",
+     "required": false,
+     "type": "string",
+     "description": "Structure search type",
+     "enum": [
+      "similarity",
+      "substructure",
+      "superstructure",
+      "identity",
+      "similarity_3d"
+     ],
+     "default": "similarity"
+    }
+   ],
+   "responseType": "json",
+   "resultPath": "response",
+   "defaultFields": [
+    "status",
+    "hitcount",
+    "cachekey"
+   ],
+   "mutates": false,
+   "example": {
+    "cid": "2519",
+    "type": "similarity"
+   },
+   "source": "E3 GET https://pubchem.ncbi.nlm.nih.gov/interactive/unified_search/structure_search.cgi",
+   "verified": true
+  },
+  {
+   "name": "resolve-name",
+   "summary": "Resolve a chemical name or identifier to PubChem records (preferred CID, RefChem); also reports whether the input is valid SMILES, SMARTS, InChI, etc.",
+   "method": "GET",
+   "urlTemplate": "/interactive/rest/pug/disambiguate/name/JSON",
+   "params": [
+    {
+     "name": "name",
+     "in": "query",
+     "required": true,
+     "type": "string",
+     "description": "Chemical name or identifier",
+     "example": "caffeine"
+    }
+   ],
+   "responseType": "json",
+   "resultPath": "Disambiguation.Record",
+   "defaultFields": [
+    "RecordType",
+    "IDType",
+    "IntID",
+    "Name",
+    "URL",
+    "Related"
+   ],
+   "mutates": false,
+   "example": {
+    "name": "caffeine"
+   },
+   "source": "E12 GET https://pubchem.ncbi.nlm.nih.gov/interactive/rest/pug/disambiguate/name/JSON",
+   "verified": true
+  },
+  {
+   "name": "autocomplete",
+   "summary": "Autocomplete suggestions for compound, gene or taxonomy names from a prefix",
+   "method": "GET",
+   "urlTemplate": "/rest/autocomplete/{dictionary}/{q}/json",
+   "params": [
+    {
+     "name": "q",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Name prefix",
+     "example": "caffe"
+    },
+    {
+     "name": "dictionary",
+     "in": "path",
+     "required": false,
+     "type": "string",
+     "description": "Dictionary to suggest from. Comma-separated lists such as compound,gene are also accepted.",
+     "enum": [
+      "compound",
+      "gene",
+      "taxonomy",
+      "compound,gene,taxonomy"
+     ],
+     "default": "compound"
+    },
+    {
+     "name": "api_limit",
+     "key": "limit",
+     "in": "query",
+     "required": false,
+     "type": "number",
+     "description": "Maximum suggestions per dictionary (sent to the site as \"limit\"; clify's own --limit only shapes the output)",
+     "default": 10
+    }
+   ],
+   "responseType": "json",
+   "resultPath": "dictionary_terms",
+   "mutates": false,
+   "example": {
+    "q": "caffe"
+   },
+   "source": "E18 E11 GET https://pubchem.ncbi.nlm.nih.gov/rest/autocomplete/compound/caffe/json",
+   "verified": true
+  },
+  {
+   "name": "get-compound",
+   "summary": "Full PubChem compound summary record (names, identifiers, properties, safety, pharmacology, etc.) by CID",
+   "method": "GET",
+   "urlTemplate": "/interactive/rest/pug_view/data/compound/{cid}/JSON/",
+   "params": [
+    {
+     "name": "cid",
+     "in": "path",
+     "required": true,
+     "type": "number",
+     "description": "PubChem Compound ID, e.g. 2519 (caffeine), 2244 (aspirin)",
+     "example": "2519"
+    },
+    {
+     "name": "heading",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Optional TOC heading that limits the record to one section, e.g. 'Melting Point' or 'IUPAC Name'"
+    }
+   ],
+   "responseType": "json",
+   "resultPath": "Record",
+   "defaultFields": [
+    "RecordType",
+    "RecordNumber",
+    "RecordTitle",
+    "Section"
+   ],
+   "mutates": false,
+   "example": {
+    "cid": "2519"
+   },
+   "source": "E7 GET https://pubchem.ncbi.nlm.nih.gov/interactive/rest/pug_view/data/compound/{n}/JSON/",
+   "verified": true
+  },
+  {
+   "name": "get-gene",
+   "summary": "PubChem gene target record by NCBI Gene ID",
+   "method": "GET",
+   "urlTemplate": "/interactive/rest/pug_view/data/gene/{geneid}/JSON/",
+   "params": [
+    {
+     "name": "geneid",
+     "in": "path",
+     "required": true,
+     "type": "number",
+     "description": "NCBI Gene ID",
+     "example": "38455"
+    }
+   ],
+   "responseType": "json",
+   "resultPath": "Record",
+   "defaultFields": [
+    "RecordType",
+    "RecordNumber",
+    "RecordTitle",
+    "RecordExternalURL",
+    "Section"
+   ],
+   "mutates": false,
+   "example": {
+    "geneid": "38455"
+   },
+   "source": "E13 GET https://pubchem.ncbi.nlm.nih.gov/interactive/rest/pug_view/data/gene/{n}/JSON/",
+   "verified": true
+  },
+  {
+   "name": "get-bioassay",
+   "summary": "PubChem bioassay record (description, protocol, targets, results summary) by AID",
+   "method": "GET",
+   "urlTemplate": "/interactive/rest/pug_view/data/bioassay/{aid}/JSON/?version=1.1",
+   "params": [
+    {
+     "name": "aid",
+     "in": "path",
+     "required": true,
+     "type": "number",
+     "description": "PubChem BioAssay ID (AID)",
+     "example": "1775029"
+    }
+   ],
+   "responseType": "json",
+   "resultPath": "Record",
+   "defaultFields": [
+    "RecordType",
+    "RecordNumber",
+    "RecordTitle",
+    "Section"
+   ],
+   "mutates": false,
+   "example": {
+    "aid": "1775029"
+   },
+   "source": "E14 GET https://pubchem.ncbi.nlm.nih.gov/interactive/rest/pug_view/data/bioassay/{n}/JSON/",
+   "verified": true
+  },
+  {
+   "name": "get-element",
+   "summary": "PubChem element record (identifiers, properties, history, uses) by atomic number",
+   "method": "GET",
+   "urlTemplate": "/interactive/rest/pug_view/data/element/{atomic_number}/JSON/",
+   "params": [
+    {
+     "name": "atomic_number",
+     "in": "path",
+     "required": true,
+     "type": "number",
+     "description": "Atomic number, e.g. 6 for Carbon",
+     "example": "6"
+    }
+   ],
+   "responseType": "json",
+   "resultPath": "Record",
+   "defaultFields": [
+    "RecordType",
+    "RecordNumber",
+    "RecordTitle",
+    "Section"
+   ],
+   "mutates": false,
+   "example": {
+    "atomic_number": "6"
+   },
+   "source": "E15 GET https://pubchem.ncbi.nlm.nih.gov/interactive/rest/pug_view/data/element/{n}/JSON/",
+   "verified": true
+  },
+  {
+   "name": "get-compound-structure",
+   "summary": "Compound structure record as JSON (atoms, bonds, 2D or 3D coordinates, computed props) by CID",
+   "method": "GET",
+   "urlTemplate": "/interactive/rest/pug/compound/CID/{cid}/record/JSON?response_type=display",
+   "params": [
+    {
+     "name": "cid",
+     "in": "path",
+     "required": true,
+     "type": "number",
+     "description": "PubChem Compound ID",
+     "example": "2519"
+    },
+    {
+     "name": "record_type",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "2d for a 2D depiction, 3d for the computed 3D conformer",
+     "enum": [
+      "2d",
+      "3d"
+     ],
+     "default": "2d"
+    }
+   ],
+   "responseType": "json",
+   "resultPath": "PC_Compounds.0",
+   "defaultFields": [
+    "id",
+    "atoms",
+    "bonds",
+    "coords",
+    "count"
+   ],
+   "mutates": false,
+   "example": {
+    "cid": "2519",
+    "record_type": "3d"
+   },
+   "source": "E22 GET https://pubchem.ncbi.nlm.nih.gov/interactive/rest/pug/compound/CID/{n}/record/JSON",
+   "verified": true
+  },
+  {
+   "name": "export-compound-sdf",
+   "summary": "Download a compound's 2D or 3D structure as SDF (MOL) text by CID",
+   "method": "GET",
+   "urlTemplate": "/interactive/rest/pug/compound/CID/{cid}/record/SDF?response_type=display",
+   "params": [
+    {
+     "name": "cid",
+     "in": "path",
+     "required": true,
+     "type": "number",
+     "description": "PubChem Compound ID",
+     "example": "2519"
+    },
+    {
+     "name": "record_type",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "2d or 3d coordinates",
+     "enum": [
+      "2d",
+      "3d"
+     ],
+     "default": "2d"
+    }
+   ],
+   "responseType": "text",
+   "mutates": false,
+   "example": {
+    "cid": "2519",
+    "record_type": "3d"
+   },
+   "source": "E22 GET https://pubchem.ncbi.nlm.nih.gov/interactive/rest/pug/compound/CID/{n}/record/JSON",
+   "verified": true
+  },
+  {
+   "name": "list-elements",
+   "summary": "Periodic table: every element with symbol, mass, electron configuration, electronegativity, state, melting/boiling point, etc.",
+   "method": "GET",
+   "urlTemplate": "/interactive/rest/pug/periodictable/JSON",
+   "params": [],
+   "responseType": "json",
+   "resultPath": "Table.Row",
+   "defaultFields": [
+    "Cell"
+   ],
+   "mutates": false,
+   "source": "E8 GET https://pubchem.ncbi.nlm.nih.gov/interactive/rest/pug/periodictable/JSON",
+   "verified": true
+  },
+  {
+   "name": "list-classifications",
+   "summary": "List the classification hierarchies in the PubChem Classification Browser (MeSH, ChEBI, ATC, Compound TOC, ...) with their HIDs",
+   "method": "GET",
+   "urlTemplate": "/interactive/classification_2/classification_2.fcgi?hid=index&format=json",
+   "params": [],
+   "responseType": "json",
+   "resultPath": "Hierarchies.Hierarchy",
+   "defaultFields": [
+    "HID",
+    "SourceName",
+    "SourceID",
+    "RootID",
+    "Information.Name.StringWithMarkup.String",
+    "Information.SourceDate",
+    "Information.HasCountsOfType"
+   ],
+   "mutates": false,
+   "source": "E5 GET https://pubchem.ncbi.nlm.nih.gov/interactive/{id}/classification_2.fcgi",
+   "verified": true
+  },
+  {
+   "name": "get-classification-node",
+   "summary": "Expand a classification hierarchy node to show its children and record counts",
+   "method": "GET",
+   "urlTemplate": "/interactive/classification_2/classification_2.fcgi?format=json",
+   "params": [
+    {
+     "name": "hid",
+     "in": "query",
+     "required": true,
+     "type": "number",
+     "description": "Hierarchy ID from list-classifications",
+     "example": "2"
+    },
+    {
+     "name": "start",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Node to expand: 'root' or a node id such as node_3607744",
+     "default": "root"
+    },
+    {
+     "name": "depth",
+     "in": "query",
+     "required": false,
+     "type": "number",
+     "description": "Number of child levels to return",
+     "default": 1
+    }
+   ],
+   "responseType": "json",
+   "resultPath": "Hierarchies.Hierarchy",
+   "mutates": false,
+   "example": {
+    "hid": "2",
+    "start": "root"
+   },
+   "source": "E5 GET https://pubchem.ncbi.nlm.nih.gov/interactive/{id}/classification_2.fcgi",
+   "verified": true
+  },
+  {
+   "name": "list-sources",
+   "summary": "List all PubChem data sources (depositors) with substance/assay counts, category, organization, URL and license",
+   "method": "GET",
+   "urlTemplate": "/interactive/rest/pug/sourcetable/all/JSON",
+   "params": [],
+   "responseType": "json",
+   "resultPath": "Table.Row",
+   "defaultFields": [
+    "Cell"
+   ],
+   "mutates": false,
+   "source": "E4 GET https://pubchem.ncbi.nlm.nih.gov/interactive/rest/pug/sourcetable/all/JSON",
+   "verified": true
+  },
+  {
+   "name": "list-news",
+   "summary": "Recent PubChem news and announcements",
+   "method": "GET",
+   "urlTemplate": "/interactive/twitter/pcRecent.json",
+   "params": [],
+   "responseType": "json",
+   "resultPath": "data",
+   "defaultFields": [
+    "id",
+    "created_at",
+    "text",
+    "url"
+   ],
+   "mutates": false,
+   "source": "E6 GET https://pubchem.ncbi.nlm.nih.gov/interactive/twitter/pcRecent.json",
+   "verified": true
+  }
+ ],
+ "blockers": [],
+ "notes": [
+  "PubChem's usage policy asks for no more than 5 requests per second. Heavy use is throttled automatically.",
+  "The search-* commands embed the keyword inside a JSON query string, so do not put double quotes or backslashes in q.",
+  "Paging for search-* uses the 1-based 'start' offset: next page = start + limit.",
+  "structure-search returns only hitcount and cachekey. The PubChem web app then lists the hits through sphinxql.cgi using where {\"ands\":[{\"input\":{\"type\":\"netcachekey\",\"idtype\":\"cid\",\"key\":\"<cachekey>\"}}]}. Cache keys expire.",
+  "list-elements and list-sources return Table.Row[].Cell arrays. Column names are in Table.Columns.Column, in the same order (e.g. AtomicNumber, Symbol, Name, AtomicMass, ...).",
+  "get-* records are PUG View documents: nested Section[] with TOCHeading and Information[].Value (StringWithMarkup / Number / Boolean). Use get-compound --heading to fetch one section only.",
+  "robots.txt disallows /rest/pug/... name/property URLs, so this CLI uses the /interactive/rest/pug paths the web app itself calls.",
+  "No login or user-specific features exist. The result-list 'Download data' export was not captured."
+ ],
+ "dropped": [],
+ "generated": {
+  "by": "clify add",
+  "model": "claude-opus-5-5",
+  "exploredSteps": 29,
+  "recorded": 74,
+  "verifiedAt": "2026-10-18T09:12:45.815Z",
+  "seconds": 286
+ }
+}

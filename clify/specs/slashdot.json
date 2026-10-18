@@ -1,0 +1,679 @@
+{
+ "name": "slashdot",
+ "startUrl": "https://slashdot.org/",
+ "origin": "https://slashdot.org",
+ "createdAt": "2026-10-18T09:30:51.667Z",
+ "description": "Slashdot (tech news and discussion). The CLI reads the front page, sections, tag/firehose listings, stories and comments, popular and recent submissions, polls, user profiles and comments, the story archive and the RSS feed, and can vote in polls.",
+ "commands": [
+  {
+   "name": "list-stories",
+   "summary": "List the latest front-page stories on Slashdot, with id, title, link, byline and summary.",
+   "method": "GET",
+   "urlTemplate": "/",
+   "params": [
+    {
+     "name": "page",
+     "in": "query",
+     "required": false,
+     "type": "number",
+     "description": "Page number, 0-based (0 = newest)."
+    }
+   ],
+   "responseType": "html",
+   "extract": {
+    "list": "article.fhitem-story",
+    "fields": {
+     "id": "span.sd-key-firehose-id",
+     "type": "span.type",
+     "title": "span.story-title a || header h2 || header",
+     "url": "span.story-title a@href",
+     "byline": "span.story-byline",
+     "summary": "div.body"
+    }
+   },
+   "defaultFields": [
+    "id",
+    "title",
+    "url",
+    "byline",
+    "summary"
+   ],
+   "pagination": {
+    "type": "page",
+    "param": "page"
+   },
+   "mutates": false,
+   "source": "E9 GET https://slashdot.org/",
+   "verified": true
+  },
+  {
+   "name": "list-section-stories",
+   "summary": "List the stories on a section front page (subdomain such as science, yro, linux, hardware, developers, news).",
+   "method": "GET",
+   "urlTemplate": "https://{section}.slashdot.org/",
+   "params": [
+    {
+     "name": "section",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Section subdomain, e.g. science, yro, linux, hardware, developers, news, tech, devices, build, entertainment, technology",
+     "example": "science"
+    },
+    {
+     "name": "page",
+     "in": "query",
+     "required": false,
+     "type": "number",
+     "description": "Page number, 0-based."
+    }
+   ],
+   "responseType": "html",
+   "extract": {
+    "list": "article.fhitem-story",
+    "fields": {
+     "id": "span.sd-key-firehose-id",
+     "title": "span.story-title a || header h2 || header",
+     "url": "span.story-title a@href",
+     "byline": "span.story-byline",
+     "summary": "div.body"
+    }
+   },
+   "defaultFields": [
+    "id",
+    "title",
+    "url",
+    "byline",
+    "summary"
+   ],
+   "pagination": {
+    "type": "page",
+    "param": "page"
+   },
+   "mutates": false,
+   "example": {
+    "section": "science"
+   },
+   "source": "E3 POST https://science.slashdot.org/ajax.pl",
+   "verified": true
+  },
+  {
+   "name": "list-by-tag",
+   "summary": "List firehose items (stories and submissions) filtered by a tag or topic keyword, e.g. ubuntu, space, crime, medicine.",
+   "method": "GET",
+   "urlTemplate": "/index2.pl",
+   "params": [
+    {
+     "name": "tag",
+     "key": "fhfilter",
+     "in": "query",
+     "required": true,
+     "type": "string",
+     "description": "Tag or topic filter, e.g. news, ubuntu, gnome, os, space, crime, medicine",
+     "example": "ubuntu"
+    },
+    {
+     "name": "page",
+     "in": "query",
+     "required": false,
+     "type": "number",
+     "description": "Page number, 0-based."
+    }
+   ],
+   "responseType": "html",
+   "extract": {
+    "list": "article.fhitem",
+    "fields": {
+     "id": "span.sd-key-firehose-id",
+     "type": "span.type",
+     "title": "span.story-title a || header h2 || header",
+     "url": "span.story-title a@href",
+     "byline": "span.story-byline",
+     "summary": "div.body"
+    }
+   },
+   "defaultFields": [
+    "id",
+    "type",
+    "title",
+    "url",
+    "byline"
+   ],
+   "pagination": {
+    "type": "page",
+    "param": "page"
+   },
+   "mutates": false,
+   "example": {
+    "tag": "ubuntu"
+   },
+   "source": "E8 GET https://slashdot.org/archive.pl",
+   "verified": true
+  },
+  {
+   "name": "list-popular",
+   "summary": "List popular firehose submissions.",
+   "method": "GET",
+   "urlTemplate": "/popular",
+   "params": [],
+   "responseType": "html",
+   "extract": {
+    "list": "article.fhitem",
+    "fields": {
+     "id": "span.sd-key-firehose-id",
+     "type": "span.type",
+     "title": "span.story-title a || header h2 || header",
+     "url": "span.story-title a@href",
+     "submitter": "div.p a",
+     "summary": "div.p"
+    }
+   },
+   "defaultFields": [
+    "id",
+    "type",
+    "title",
+    "url",
+    "submitter"
+   ],
+   "mutates": false,
+   "source": "E10 GET https://slashdot.org/popular",
+   "verified": true
+  },
+  {
+   "name": "list-recent-submissions",
+   "summary": "List the most recent user submissions to the firehose, with pagination. The summary starts with '<submitter> writes:'.",
+   "method": "GET",
+   "urlTemplate": "/?view=recent",
+   "params": [
+    {
+     "name": "page",
+     "in": "query",
+     "required": false,
+     "type": "number",
+     "description": "Page number, 0-based (0 = newest)."
+    }
+   ],
+   "responseType": "html",
+   "extract": {
+    "list": "article.fhitem-submission",
+    "fields": {
+     "id": "span.sd-key-firehose-id",
+     "title": "span.story-title a || header h2 || header",
+     "url": "span.story-title a@href",
+     "summary": "div.p"
+    }
+   },
+   "defaultFields": [
+    "id",
+    "title",
+    "url",
+    "summary"
+   ],
+   "pagination": {
+    "type": "page",
+    "param": "page"
+   },
+   "mutates": false,
+   "example": {
+    "page": "1"
+   },
+   "source": "E14 E9",
+   "verified": true
+  },
+  {
+   "name": "get-story",
+   "summary": "Get a story's title, byline, summary text and firehose id. The story is identified by its sid date path yy/mm/dd/id.",
+   "method": "GET",
+   "urlTemplate": "/story/{yy}/{mm}/{dd}/{id}",
+   "params": [
+    {
+     "name": "yy",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Two-digit year from the story URL",
+     "example": "26"
+    },
+    {
+     "name": "mm",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Two-digit month",
+     "example": "10"
+    },
+    {
+     "name": "dd",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Two-digit day",
+     "example": "18"
+    },
+    {
+     "name": "id",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Numeric story id from the URL, e.g. 050211 (keep leading zeros)",
+     "example": "050211"
+    }
+   ],
+   "responseType": "html",
+   "extract": {
+    "fields": {
+     "firehose_id": "article.fhitem-story span.sd-key-firehose-id",
+     "title": "article.fhitem-story span.story-title a || article.fhitem-story header",
+     "byline": "article.fhitem-story span.story-byline",
+     "body": "article.fhitem-story div.body",
+     "page_title": "title"
+    }
+   },
+   "defaultFields": [
+    "title",
+    "byline",
+    "body",
+    "firehose_id"
+   ],
+   "mutates": false,
+   "example": {
+    "yy": "26",
+    "mm": "10",
+    "dd": "18",
+    "id": "050211"
+   },
+   "source": "",
+   "verified": true
+  },
+  {
+   "name": "list-story-comments",
+   "summary": "List the comments shown on a story page (the default threshold view), with subject, author, score and text.",
+   "method": "GET",
+   "urlTemplate": "/story/{yy}/{mm}/{dd}/{id}",
+   "params": [
+    {
+     "name": "yy",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Two-digit year from the story URL",
+     "example": "26"
+    },
+    {
+     "name": "mm",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Two-digit month",
+     "example": "10"
+    },
+    {
+     "name": "dd",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Two-digit day",
+     "example": "17"
+    },
+    {
+     "name": "id",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Numeric story id from the URL (keep leading zeros)",
+     "example": "1915216"
+    }
+   ],
+   "responseType": "html",
+   "extract": {
+    "list": "li.comment",
+    "fields": {
+     "id": "@id",
+     "subject": "h4 a || h4",
+     "author": "span.by a || span.by",
+     "details": "span.otherdetails",
+     "text": "div.commentBody || div.comment-body",
+     "header": "div.commentTop || div.title"
+    }
+   },
+   "defaultFields": [
+    "id",
+    "subject",
+    "author",
+    "details",
+    "text"
+   ],
+   "mutates": false,
+   "example": {
+    "yy": "26",
+    "mm": "10",
+    "dd": "17",
+    "id": "1915216"
+   },
+   "source": "",
+   "verified": true
+  },
+  {
+   "name": "fetch-all-comments",
+   "summary": "Fetch the full comment tree of a discussion through the site's AJAX endpoint (read-only, despite being a POST).",
+   "method": "POST",
+   "urlTemplate": "https://news.slashdot.org/ajax.pl?op=comments_fetch",
+   "params": [
+    {
+     "name": "discussion_id",
+     "in": "body",
+     "required": true,
+     "type": "string",
+     "description": "Discussion id (sid) of the story, e.g. 24127042. It appears in comment links as sid=...",
+     "example": "24127042"
+    },
+    {
+     "name": "threshold",
+     "in": "body",
+     "required": false,
+     "type": "number",
+     "description": "Minimum comment score to include (-1..5)",
+     "default": 1
+    },
+    {
+     "name": "highlightthresh",
+     "in": "body",
+     "required": false,
+     "type": "number",
+     "description": "Score at or above which comments are shown in full",
+     "default": 4
+    }
+   ],
+   "bodyTemplate": {
+    "op": "comments_fetch",
+    "fetch_all": "1",
+    "threshold": "{threshold}",
+    "highlightthresh": "{highlightthresh}",
+    "discussion_id": "{discussion_id}",
+    "abbreviated": "",
+    "pieces": ""
+   },
+   "bodyEncoding": "form",
+   "headers": {
+    "X-Requested-With": "XMLHttpRequest"
+   },
+   "responseType": "json",
+   "mutates": true,
+   "example": {
+    "discussion_id": "24127042"
+   },
+   "source": "E2 POST https://news.slashdot.org/ajax.pl",
+   "verified": false,
+   "verifyNote": "write: dry-run preview only, not sent"
+  },
+  {
+   "name": "list-polls",
+   "summary": "List Slashdot polls. Each summary has the comment count, question, vote count and posting date; the url holds the poll id for get-poll-results.",
+   "method": "GET",
+   "urlTemplate": "/polls",
+   "params": [],
+   "responseType": "html",
+   "extract": {
+    "list": "div.row.poll-feed > div.half.wide",
+    "fields": {
+     "url": "a@href",
+     "summary": ""
+    }
+   },
+   "defaultFields": [
+    "url",
+    "summary"
+   ],
+   "mutates": false,
+   "source": "E11",
+   "verified": true
+  },
+  {
+   "name": "get-poll-results",
+   "summary": "Get the results of a poll by id: each answer with its vote count and percentage.",
+   "method": "GET",
+   "urlTemplate": "/poll/{id}",
+   "params": [
+    {
+     "name": "id",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Numeric poll id (qid), e.g. 3281",
+     "example": "3281"
+    }
+   ],
+   "responseType": "html",
+   "extract": {
+    "list": "div.poll-bar-group",
+    "fields": {
+     "answer": "div.poll-bar-label",
+     "votes": "div.poll-bar-text"
+    }
+   },
+   "defaultFields": [
+    "answer",
+    "votes"
+   ],
+   "mutates": false,
+   "example": {
+    "id": "3281"
+   },
+   "source": "E12 GET https://slashdot.org/poll/{n}/when-will-agi-be-achieved",
+   "verified": true
+  },
+  {
+   "name": "vote-poll",
+   "summary": "Cast a vote in a poll. This submits answer aid for poll qid, and Slashdot allows one vote per IP.",
+   "method": "POST",
+   "urlTemplate": "/pollBooth.pl",
+   "params": [
+    {
+     "name": "qid",
+     "in": "body",
+     "required": true,
+     "type": "string",
+     "description": "Poll id",
+     "example": "3284"
+    },
+    {
+     "name": "aid",
+     "in": "body",
+     "required": true,
+     "type": "string",
+     "description": "Answer id (1-based position of the option in the poll)",
+     "example": "2"
+    }
+   ],
+   "bodyTemplate": {
+    "qid": "{qid}",
+    "aid": "{aid}",
+    "section": "slashdot"
+   },
+   "bodyEncoding": "form",
+   "responseType": "html",
+   "mutates": true,
+   "example": {
+    "qid": "3284",
+    "aid": "2"
+   },
+   "source": "E11 GET https://slashdot.org/polls",
+   "verified": false,
+   "verifyNote": "write: dry-run preview only, not sent"
+  },
+  {
+   "name": "get-user-activity",
+   "summary": "Get a user's profile page: their recent activity (comments, stories, submissions) with scores and links.",
+   "method": "GET",
+   "urlTemplate": "/~{nick}",
+   "params": [
+    {
+     "name": "nick",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "User nickname (spaces as +)",
+     "example": "gweihir"
+    }
+   ],
+   "responseType": "html",
+   "extract": {
+    "list": "article.fhitem",
+    "fields": {
+     "id": "span.sd-key-firehose-id",
+     "type": "span.type",
+     "title": "header h2 || header",
+     "byline": "span.story-byline",
+     "text": "div.body"
+    }
+   },
+   "defaultFields": [
+    "id",
+    "type",
+    "title",
+    "byline",
+    "text"
+   ],
+   "mutates": false,
+   "example": {
+    "nick": "gweihir"
+   },
+   "source": "E13 GET https://slashdot.org/~gweihir",
+   "verified": true
+  },
+  {
+   "name": "list-user-comments",
+   "summary": "List a user's recent comments with subject, comment link, date and the story each is attached to.",
+   "method": "GET",
+   "urlTemplate": "/~{nick}/comments",
+   "params": [
+    {
+     "name": "nick",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "User nickname",
+     "example": "gweihir"
+    }
+   ],
+   "responseType": "html",
+   "extract": {
+    "list": "table.listComments tr.data_hl1, table.listComments tr.data_hl2",
+    "fields": {
+     "subject": "td a",
+     "url": "td a@href",
+     "date": "td nobr",
+     "row": ""
+    }
+   },
+   "defaultFields": [
+    "subject",
+    "url",
+    "date",
+    "row"
+   ],
+   "mutates": false,
+   "example": {
+    "nick": "gweihir"
+   },
+   "source": "E15 GET https://slashdot.org/~gweihir/comments",
+   "verified": true
+  },
+  {
+   "name": "list-archive-stories",
+   "summary": "Browse the story archive: last week by default, or stories for a topic/section keyword and year, or by time for a year.",
+   "method": "GET",
+   "urlTemplate": "/archive.pl",
+   "params": [
+    {
+     "name": "op",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Archive mode. Omit for the last 7 days. 'topics' or 'sections' together with a keyword. 'bytime' with a year.",
+     "enum": [
+      "topics",
+      "sections",
+      "bytime"
+     ]
+    },
+    {
+     "name": "keyword",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Topic or section keyword, e.g. ai, linux (with op=topics/sections)"
+    },
+    {
+     "name": "year",
+     "in": "query",
+     "required": false,
+     "type": "number",
+     "description": "Four-digit year to restrict to, e.g. 2017"
+    }
+   ],
+   "responseType": "html",
+   "extract": {
+    "list": "div.grid_24 > a",
+    "fields": {
+     "title": "",
+     "url": "@href"
+    }
+   },
+   "defaultFields": [
+    "title",
+    "url"
+   ],
+   "mutates": false,
+   "example": {
+    "op": "topics",
+    "keyword": "ai",
+    "year": "2017"
+   },
+   "source": "E8",
+   "verified": true
+  },
+  {
+   "name": "get-rss-feed",
+   "summary": "Get the main Slashdot RSS (RDF) feed of current stories, with title, link, author, date and description.",
+   "method": "GET",
+   "urlTemplate": "https://rss.slashdot.org/Slashdot/slashdotMain",
+   "params": [],
+   "responseType": "json",
+   "resultPath": "rdf:RDF.item",
+   "defaultFields": [
+    "title",
+    "link",
+    "dc:creator",
+    "dc:date",
+    "slash:section",
+    "slash:comments",
+    "description"
+   ],
+   "mutates": false,
+   "source": "",
+   "verified": true
+  }
+ ],
+ "blockers": [
+  "bot-check at https://news.slashdot.org/comments.pl?sid=24125078&cid=66377906"
+ ],
+ "notes": [
+  "Story URLs look like {section}.slashdot.org/story/YY/MM/DD/ID/slug. get-story and list-story-comments take yy/mm/dd/id, and slashdot.org redirects to the right section subdomain. Keep leading zeros in id.",
+  "fetch-all-comments needs the numeric discussion id (sid), not the story path id. The sid appears in comment links (comments.pl?sid=...).",
+  "Keyword search (search.pl), single comment pages (comments.pl?cid=..., behind a Cloudflare bot check), /submission/<id> pages and ?issue=YYYYMMDD day pages are blocked or disallowed. Use list-by-tag (fhfilter) as the closest thing to search.",
+  "list-user-comments returns alternating rows: comment rows have subject/url/date, and 'attached to' rows name the parent story.",
+  "archive.pl?op=topics or ?op=sections without a keyword returns the list of available topics/sections instead of stories.",
+  "vote-poll is a real write. Slashdot allows only one vote per IP per poll.",
+  "Everything was explored anonymously, and no command needs login."
+ ],
+ "dropped": [],
+ "generated": {
+  "by": "clify add",
+  "model": "claude-opus-5-5",
+  "exploredSteps": 28,
+  "recorded": 62,
+  "verifiedAt": "2026-10-18T09:32:36.587Z",
+  "seconds": 333
+ }
+}

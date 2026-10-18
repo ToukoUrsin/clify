@@ -1,0 +1,650 @@
+{
+ "name": "radio-browser",
+ "startUrl": "https://www.radio-browser.info/",
+ "origin": "https://www.radio-browser.info",
+ "createdAt": "2026-10-18T09:00:58.458Z",
+ "description": "radio-browser.info is a free, community-maintained directory of about 62,000 internet radio stations. This CLI searches stations, shows station details, check results, clicks and edit history, lists countries, tags, languages and codecs, reads global stats, and can get a stream URL (which counts a click) or vote for a station.",
+ "commands": [
+  {
+   "name": "search-stations",
+   "summary": "Search radio stations by name, tag, country code, language or codec, with sorting and offset pagination",
+   "method": "POST",
+   "urlTemplate": "https://de1.api.radio-browser.info/json/stations/search",
+   "params": [
+    {
+     "name": "name",
+     "in": "body",
+     "required": false,
+     "type": "string",
+     "description": "Substring match on the station name",
+     "example": "jazz"
+    },
+    {
+     "name": "tagList",
+     "in": "body",
+     "required": false,
+     "type": "string",
+     "description": "Comma-separated tags. A station must have all of them, e.g. 'jazz' or 'jazz,smooth jazz'",
+     "example": "jazz"
+    },
+    {
+     "name": "countrycode",
+     "in": "body",
+     "required": false,
+     "type": "string",
+     "description": "ISO 3166-1 alpha-2 country code, e.g. FR, US, DE",
+     "example": "FR"
+    },
+    {
+     "name": "language",
+     "in": "body",
+     "required": false,
+     "type": "string",
+     "description": "Language name in lowercase English, e.g. german, english",
+     "example": "german"
+    },
+    {
+     "name": "codec",
+     "in": "body",
+     "required": false,
+     "type": "string",
+     "description": "Stream codec, e.g. MP3, AAC, AAC+, OGG",
+     "example": "AAC"
+    },
+    {
+     "name": "order",
+     "in": "body",
+     "required": false,
+     "type": "string",
+     "description": "Sort field",
+     "enum": [
+      "clickcount",
+      "votes",
+      "clicktimestamp",
+      "clicktrend",
+      "name",
+      "bitrate",
+      "random"
+     ],
+     "default": "clickcount"
+    },
+    {
+     "name": "reverse",
+     "in": "body",
+     "required": false,
+     "type": "string",
+     "description": "'true' sorts descending, 'false' ascending",
+     "enum": [
+      "true",
+      "false"
+     ],
+     "default": "true"
+    },
+    {
+     "name": "hidebroken",
+     "in": "body",
+     "required": false,
+     "type": "string",
+     "description": "'true' leaves out stations whose last check failed",
+     "enum": [
+      "true",
+      "false"
+     ],
+     "default": "true"
+    },
+    {
+     "name": "offset",
+     "in": "body",
+     "required": false,
+     "type": "number",
+     "description": "Number of results to skip, for pagination",
+     "default": 0
+    },
+    {
+     "name": "api_limit",
+     "key": "limit",
+     "in": "body",
+     "required": false,
+     "type": "number",
+     "description": "Results per page (sent to the site as \"limit\"; clify's own --limit only shapes the output)",
+     "default": 10
+    }
+   ],
+   "bodyTemplate": {
+    "offset": "{offset}",
+    "limit": "{api_limit}",
+    "name": "{name}",
+    "tagList": "{tagList}",
+    "countrycode": "{countrycode}",
+    "language": "{language}",
+    "codec": "{codec}",
+    "hidebroken": "{hidebroken}",
+    "order": "{order}",
+    "reverse": "{reverse}"
+   },
+   "bodyEncoding": "json",
+   "responseType": "json",
+   "defaultFields": [
+    "stationuuid",
+    "name",
+    "url_resolved",
+    "countrycode",
+    "tags",
+    "codec",
+    "bitrate",
+    "votes"
+   ],
+   "pagination": {
+    "type": "offset",
+    "param": "offset",
+    "step": 10
+   },
+   "mutates": false,
+   "example": {
+    "name": "jazz"
+   },
+   "source": "E2 POST https://de1.api.radio-browser.info/json/stations/search",
+   "verified": true
+  },
+  {
+   "name": "get-station",
+   "summary": "Get full details of one station by its stationuuid",
+   "method": "GET",
+   "urlTemplate": "https://de1.api.radio-browser.info/json/stations/byuuid/{uuid}",
+   "params": [
+    {
+     "name": "uuid",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Station UUID (stationuuid from search-stations)",
+     "example": "2ce23ee2-95c5-407d-9df8-54c3cdde2825"
+    }
+   ],
+   "responseType": "json",
+   "defaultFields": [
+    "stationuuid",
+    "name",
+    "url_resolved",
+    "homepage",
+    "country",
+    "tags",
+    "codec",
+    "votes"
+   ],
+   "mutates": false,
+   "example": {
+    "uuid": "2ce23ee2-95c5-407d-9df8-54c3cdde2825"
+   },
+   "source": "E5 GET https://de1.api.radio-browser.info/json/stations/byuuid/{id}",
+   "verified": true
+  },
+  {
+   "name": "get-station-checks",
+   "summary": "List recent stream health checks for a station (ok flag, codec, bitrate, timing, metadata)",
+   "method": "GET",
+   "urlTemplate": "https://de1.api.radio-browser.info/json/checks/{uuid}",
+   "params": [
+    {
+     "name": "uuid",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Station UUID",
+     "example": "2ce23ee2-95c5-407d-9df8-54c3cdde2825"
+    }
+   ],
+   "responseType": "json",
+   "defaultFields": [
+    "checkuuid",
+    "timestamp_iso8601",
+    "ok",
+    "codec",
+    "bitrate",
+    "timing_ms",
+    "urlcache",
+    "source"
+   ],
+   "mutates": false,
+   "example": {
+    "uuid": "2ce23ee2-95c5-407d-9df8-54c3cdde2825"
+   },
+   "source": "E4 GET https://de1.api.radio-browser.info/json/checks/{id}",
+   "verified": true
+  },
+  {
+   "name": "get-check-steps",
+   "summary": "Get the individual check steps (URLs tried, URL type, errors) for one or more stations",
+   "method": "GET",
+   "urlTemplate": "https://de1.api.radio-browser.info/json/checksteps",
+   "params": [
+    {
+     "name": "uuids",
+     "in": "query",
+     "required": true,
+     "type": "string",
+     "description": "Comma-separated station UUIDs",
+     "example": "2ce23ee2-95c5-407d-9df8-54c3cdde2825"
+    }
+   ],
+   "responseType": "json",
+   "defaultFields": [
+    "stationuuid",
+    "checkuuid",
+    "url",
+    "urltype",
+    "error",
+    "creation_iso8601"
+   ],
+   "mutates": false,
+   "example": {
+    "uuids": "2ce23ee2-95c5-407d-9df8-54c3cdde2825"
+   },
+   "source": "E6 GET https://de1.api.radio-browser.info/json/checksteps",
+   "verified": true
+  },
+  {
+   "name": "get-station-clicks",
+   "summary": "List click (play) events for a station within a recent time window",
+   "method": "GET",
+   "urlTemplate": "https://de1.api.radio-browser.info/json/clicks/{uuid}",
+   "params": [
+    {
+     "name": "uuid",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Station UUID",
+     "example": "2ce23ee2-95c5-407d-9df8-54c3cdde2825"
+    },
+    {
+     "name": "seconds",
+     "in": "query",
+     "required": false,
+     "type": "number",
+     "description": "Look-back window in seconds (86400 = last 24h)",
+     "default": 86400
+    }
+   ],
+   "responseType": "json",
+   "defaultFields": [
+    "clickuuid",
+    "clicktimestamp_iso8601",
+    "stationuuid"
+   ],
+   "mutates": false,
+   "example": {
+    "uuid": "2ce23ee2-95c5-407d-9df8-54c3cdde2825"
+   },
+   "source": "E3 GET https://de1.api.radio-browser.info/json/clicks/{id}",
+   "verified": true
+  },
+  {
+   "name": "get-station-history",
+   "summary": "Get the edit history (all recorded versions) of a station",
+   "method": "GET",
+   "urlTemplate": "https://de1.api.radio-browser.info/json/stations/changed/{uuid}",
+   "params": [
+    {
+     "name": "uuid",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Station UUID",
+     "example": "2ce23ee2-95c5-407d-9df8-54c3cdde2825"
+    }
+   ],
+   "responseType": "json",
+   "defaultFields": [
+    "changeuuid",
+    "lastchangetime_iso8601",
+    "name",
+    "url",
+    "homepage",
+    "tags",
+    "countrycode",
+    "languagecodes"
+   ],
+   "mutates": false,
+   "example": {
+    "uuid": "2ce23ee2-95c5-407d-9df8-54c3cdde2825"
+   },
+   "source": "E7 GET https://de1.api.radio-browser.info/json/stations/changed/{id}",
+   "verified": true
+  },
+  {
+   "name": "list-countries",
+   "summary": "List country codes with station counts, optionally filtered by a substring",
+   "method": "GET",
+   "urlTemplate": "https://de1.api.radio-browser.info/json/countrycodes/{filter}",
+   "params": [
+    {
+     "name": "filter",
+     "in": "path",
+     "required": false,
+     "type": "string",
+     "description": "Optional substring of the country code, e.g. 'DE'. Empty lists all"
+    },
+    {
+     "name": "order",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Sort field",
+     "enum": [
+      "stationcount",
+      "name"
+     ],
+     "default": "stationcount"
+    },
+    {
+     "name": "reverse",
+     "in": "query",
+     "required": false,
+     "type": "boolean",
+     "description": "true sorts descending",
+     "default": true
+    },
+    {
+     "name": "hidebroken",
+     "in": "query",
+     "required": false,
+     "type": "boolean",
+     "description": "Leave broken stations out of the counts",
+     "default": true
+    },
+    {
+     "name": "api_limit",
+     "key": "limit",
+     "in": "query",
+     "required": false,
+     "type": "number",
+     "description": "Maximum entries returned (sent to the site as \"limit\"; clify's own --limit only shapes the output)",
+     "default": 100
+    }
+   ],
+   "responseType": "json",
+   "defaultFields": [
+    "name",
+    "stationcount"
+   ],
+   "mutates": false,
+   "source": "E9 GET https://de1.api.radio-browser.info/json/countrycodes/",
+   "verified": true
+  },
+  {
+   "name": "list-tags",
+   "summary": "List station tags with station counts. Pass a filter for tag suggestions matching a substring",
+   "method": "GET",
+   "urlTemplate": "https://de1.api.radio-browser.info/json/tags/{filter}",
+   "params": [
+    {
+     "name": "filter",
+     "in": "path",
+     "required": false,
+     "type": "string",
+     "description": "Optional substring to match tag names, e.g. 'rock'. Empty lists all",
+     "example": "rock"
+    },
+    {
+     "name": "order",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Sort field",
+     "enum": [
+      "stationcount",
+      "name"
+     ],
+     "default": "stationcount"
+    },
+    {
+     "name": "reverse",
+     "in": "query",
+     "required": false,
+     "type": "boolean",
+     "description": "true sorts descending",
+     "default": true
+    },
+    {
+     "name": "hidebroken",
+     "in": "query",
+     "required": false,
+     "type": "boolean",
+     "description": "Leave broken stations out of the counts",
+     "default": true
+    },
+    {
+     "name": "api_limit",
+     "key": "limit",
+     "in": "query",
+     "required": false,
+     "type": "number",
+     "description": "Maximum entries returned (the tags page uses 1000, suggestions use 5) (sent to the site as \"limit\"; clify's own --limit only shapes the output)",
+     "default": 100
+    }
+   ],
+   "responseType": "json",
+   "defaultFields": [
+    "name",
+    "stationcount"
+   ],
+   "mutates": false,
+   "example": {
+    "filter": "rock"
+   },
+   "source": "E10 E15 GET https://de1.api.radio-browser.info/json/tags/",
+   "verified": true
+  },
+  {
+   "name": "list-languages",
+   "summary": "List languages (with ISO 639 code) and station counts, optionally filtered by a substring",
+   "method": "GET",
+   "urlTemplate": "https://de1.api.radio-browser.info/json/languages/{filter}",
+   "params": [
+    {
+     "name": "filter",
+     "in": "path",
+     "required": false,
+     "type": "string",
+     "description": "Optional substring of the language name, e.g. 'germ'. Empty lists all"
+    },
+    {
+     "name": "order",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Sort field",
+     "enum": [
+      "stationcount",
+      "name"
+     ],
+     "default": "stationcount"
+    },
+    {
+     "name": "reverse",
+     "in": "query",
+     "required": false,
+     "type": "boolean",
+     "description": "true sorts descending",
+     "default": true
+    },
+    {
+     "name": "hidebroken",
+     "in": "query",
+     "required": false,
+     "type": "boolean",
+     "description": "Leave broken stations out of the counts",
+     "default": true
+    },
+    {
+     "name": "api_limit",
+     "key": "limit",
+     "in": "query",
+     "required": false,
+     "type": "number",
+     "description": "Maximum entries returned (sent to the site as \"limit\"; clify's own --limit only shapes the output)",
+     "default": 100
+    }
+   ],
+   "responseType": "json",
+   "defaultFields": [
+    "name",
+    "iso_639",
+    "stationcount"
+   ],
+   "mutates": false,
+   "source": "E11 E16 GET https://de1.api.radio-browser.info/json/languages/",
+   "verified": true
+  },
+  {
+   "name": "list-codecs",
+   "summary": "List stream codecs (MP3, AAC+, OGG, \u2026) with station counts, optionally filtered by a substring",
+   "method": "GET",
+   "urlTemplate": "https://de1.api.radio-browser.info/json/codecs/{filter}",
+   "params": [
+    {
+     "name": "filter",
+     "in": "path",
+     "required": false,
+     "type": "string",
+     "description": "Optional substring of the codec name, e.g. 'AAC'. Empty lists all"
+    },
+    {
+     "name": "order",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Sort field",
+     "enum": [
+      "stationcount",
+      "name"
+     ],
+     "default": "stationcount"
+    },
+    {
+     "name": "reverse",
+     "in": "query",
+     "required": false,
+     "type": "boolean",
+     "description": "true sorts descending",
+     "default": true
+    },
+    {
+     "name": "hidebroken",
+     "in": "query",
+     "required": false,
+     "type": "boolean",
+     "description": "Leave broken stations out of the counts",
+     "default": true
+    },
+    {
+     "name": "api_limit",
+     "key": "limit",
+     "in": "query",
+     "required": false,
+     "type": "number",
+     "description": "Maximum entries returned (sent to the site as \"limit\"; clify's own --limit only shapes the output)",
+     "default": 100
+    }
+   ],
+   "responseType": "json",
+   "defaultFields": [
+    "name",
+    "stationcount"
+   ],
+   "mutates": false,
+   "source": "E12 E17 GET https://de1.api.radio-browser.info/json/codecs/",
+   "verified": true
+  },
+  {
+   "name": "get-stats",
+   "summary": "Get global directory stats: station, broken-station, tag, language and country counts, plus recent clicks",
+   "method": "GET",
+   "urlTemplate": "https://de1.api.radio-browser.info/json/stats",
+   "params": [],
+   "responseType": "json",
+   "mutates": false,
+   "source": "E8 GET https://de1.api.radio-browser.info/json/stats",
+   "verified": true
+  },
+  {
+   "name": "play-station",
+   "summary": "Get a station's playable stream URL. This registers one click (play) for the station on radio-browser",
+   "method": "GET",
+   "urlTemplate": "https://de1.api.radio-browser.info/json/url/{uuid}",
+   "params": [
+    {
+     "name": "uuid",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Station UUID",
+     "example": "890b3eb9-4018-4c41-95ea-146cc5201745"
+    }
+   ],
+   "responseType": "json",
+   "defaultFields": [
+    "ok",
+    "stationuuid",
+    "name",
+    "url"
+   ],
+   "mutates": false,
+   "example": {
+    "uuid": "890b3eb9-4018-4c41-95ea-146cc5201745"
+   },
+   "source": "E14 GET https://de1.api.radio-browser.info/json/url/{id}",
+   "verified": true
+  }
+ ],
+ "blockers": [],
+ "notes": [
+  "All data comes from the public, no-login JSON API at de1.api.radio-browser.info. Other mirrors work the same way (see api.radio-browser.info).",
+  "play-station and vote-station are plain GET requests, but they have side effects. play-station counts a click and vote-station adds a public vote. Do not call either one just to read data. Use get-station to see url/url_resolved without counting a click.",
+  "During exploration, two unintended votes were sent: one on the jazz search page and one for France Info (1cfb151d-a341-11e9-a787-52543be04c81). The API has no way to undo a vote.",
+  "Station search booleans (hidebroken, reverse) are sent as the strings 'true'/'false', exactly as the web app sends them.",
+  "The stationuuid returned by search-stations is the uuid that get-station, get-station-checks, get-station-clicks, get-station-history, get-check-steps, play-station and vote-station take.",
+  "The list-* commands use the empty path filter by default, which lists everything. Pass --filter for type-ahead suggestions, as the search box does with limit=5.",
+  "The site also offers exports of the same station search at /{csv|xml|json|m3u|pls|xspf|ttl}/stations/search on the API host. These were not recorded as separate requests, so no command was made for them.",
+  "The geo map request returned an empty body and the add-station form was never submitted, so neither has a command. /json/config is app config and was skipped."
+ ],
+ "dropped": [
+  {
+   "name": "vote-station",
+   "summary": "Cast a public vote for a station, which increases its vote count on radio-browser. The same station can only be voted for about once every 10 minutes per IP; returns ok:false with a VoteError message ",
+   "method": "GET",
+   "urlTemplate": "https://de1.api.radio-browser.info/json/vote/{uuid}",
+   "params": [
+    {
+     "name": "uuid",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Station UUID to vote for (stationuuid from search-stations)",
+     "example": "1cfb151d-a341-11e9-a787-52543be04c81"
+    }
+   ],
+   "responseType": "json",
+   "defaultFields": [
+    "ok",
+    "message"
+   ],
+   "mutates": false,
+   "example": {
+    "uuid": "1cfb151d-a341-11e9-a787-52543be04c81"
+   },
+   "source": "E13",
+   "verified": false,
+   "verifyNote": "looks like an error payload: {\"ok\":false,\"message\":\"VoteError 'you are voting for the same station too often'\"}"
+  }
+ ],
+ "generated": {
+  "by": "clify add",
+  "model": "claude-opus-5-5",
+  "exploredSteps": 28,
+  "recorded": 59,
+  "verifiedAt": "2026-10-18T09:02:29.655Z",
+  "seconds": 254
+ }
+}

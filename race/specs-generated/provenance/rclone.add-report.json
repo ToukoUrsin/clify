@@ -1,0 +1,63 @@
+{
+  "ok": true,
+  "site": "rclone",
+  "url": "https://forum.rclone.org/",
+  "commands": [
+    {
+      "name": "list-categories",
+      "summary": "List all forum categories with id, slug, description and topic/post counts. Use slug and id with list-category-topics.",
+      "verified": true
+    },
+    {
+      "name": "list-category-topics",
+      "summary": "List topics in one category, newest activity first by default, with optional sort and paging. posters[] gives user ids; the entry whose description contains 'Original Poster' is the starter.",
+      "verified": true
+    },
+    {
+      "name": "list-category-hot-topics",
+      "summary": "List currently hot (trending) topics in one category.",
+      "verified": true
+    },
+    {
+      "name": "list-latest-topics",
+      "summary": "List the most recently active topics across all categories, with optional sort and paging.",
+      "verified": true
+    },
+    {
+      "name": "list-hot-topics",
+      "summary": "List currently hot (trending) topics across all categories.",
+      "verified": true
+    },
+    {
+      "name": "get-topic",
+      "summary": "Get one topic: title, starter (details.created_by), counts, and its first ~20 posts. Post bodies are HTML in posts[].cooked.",
+      "verified": true
+    },
+    {
+      "name": "search",
+      "summary": "Full-text search of topics and posts. Filters go inside the term, e.g. 'category:support', 'order:latest', '@username', 'status:solved', 'in:first'.",
+      "verified": true
+    },
+    {
+      "name": "get-user-card",
+      "summary": "Get a user's profile summary: name, join date, last post/seen times, trust level, admin/moderator flags and badge count.",
+      "verified": true
+    }
+  ],
+  "verified": 8,
+  "writes": 0,
+  "dropped": [],
+  "blockers": [],
+  "loggedIn": false,
+  "seconds": 156,
+  "next": [
+    "clify rclone",
+    "clify rclone list-categories"
+  ],
+  "installed": "/home/ubuntu/race-gen5/home/bin/rclone",
+  "explored": {
+    "steps": 26,
+    "recorded": 38,
+    "heldWrites": 16
+  }
+}

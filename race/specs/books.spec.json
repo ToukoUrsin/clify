@@ -1,0 +1,142 @@
+{
+  "name": "books",
+  "startUrl": "https://books.toscrape.com/",
+  "origin": "https://books.toscrape.com",
+  "createdAt": "2026-10-18T06:40:00Z",
+  "description": "Books to Scrape (scraping sandbox): categories, paginated category listings (20 books per page), book detail pages. Hand-written for the race from the site's HTML.",
+  "commands": [
+    {
+      "name": "list-categories",
+      "summary": "All categories with their slug URLs",
+      "method": "GET",
+      "urlTemplate": "/index.html",
+      "responseType": "html",
+      "mutates": false,
+      "params": [],
+      "extract": {
+        "list": "div.side_categories ul li ul li a",
+        "fields": {
+          "name": "",
+          "url": "@href"
+        }
+      }
+    },
+    {
+      "name": "category-info",
+      "summary": "Result count and page count for one category",
+      "method": "GET",
+      "urlTemplate": "/catalogue/category/books/{category}/index.html",
+      "responseType": "html",
+      "mutates": false,
+      "params": [
+        {
+          "name": "category",
+          "in": "path",
+          "required": true,
+          "type": "string",
+          "description": "slug from the category URL, e.g. mystery_3, travel_2"
+        }
+      ],
+      "extract": {
+        "fields": {
+          "name": "div.page-header h1",
+          "results": "form.form-horizontal strong",
+          "pages": "li.current"
+        }
+      },
+      "example": {
+        "category": "mystery_3"
+      }
+    },
+    {
+      "name": "list-category",
+      "summary": "Books in one category, first page (20 per page; category-info gives the page count)",
+      "method": "GET",
+      "urlTemplate": "/catalogue/category/books/{category}/index.html",
+      "responseType": "html",
+      "mutates": false,
+      "params": [
+        {
+          "name": "category",
+          "in": "path",
+          "required": true,
+          "type": "string",
+          "description": "slug, e.g. mystery_3"
+        }
+      ],
+      "extract": {
+        "list": "article.product_pod",
+        "fields": {
+          "title": "h3 a@title",
+          "price": ".price_color",
+          "rating": "p.star-rating@class",
+          "url": "h3 a@href"
+        }
+      },
+      "example": {
+        "category": "mystery_3"
+      }
+    },
+    {
+      "name": "list-category-page",
+      "summary": "Books in one category, page 2 and later",
+      "method": "GET",
+      "urlTemplate": "/catalogue/category/books/{category}/page-{page}.html",
+      "responseType": "html",
+      "mutates": false,
+      "params": [
+        {
+          "name": "category",
+          "in": "path",
+          "required": true,
+          "type": "string",
+          "description": "slug, e.g. mystery_3"
+        },
+        {
+          "name": "page",
+          "in": "path",
+          "required": true,
+          "type": "number",
+          "description": "2, 3, ... (page 1 is list-category)"
+        }
+      ],
+      "extract": {
+        "list": "article.product_pod",
+        "fields": {
+          "title": "h3 a@title",
+          "price": ".price_color",
+          "rating": "p.star-rating@class",
+          "url": "h3 a@href"
+        }
+      },
+      "example": {
+        "category": "mystery_3",
+        "page": "2"
+      }
+    },
+    {
+      "name": "get-book",
+      "summary": "One book's detail page",
+      "method": "GET",
+      "urlTemplate": "/catalogue/{slug}/index.html",
+      "responseType": "html",
+      "mutates": false,
+      "params": [
+        {
+          "name": "slug",
+          "in": "path",
+          "required": true,
+          "type": "string",
+          "description": "e.g. sharp-objects_997"
+        }
+      ],
+      "extract": {
+        "fields": {
+          "title": "div.product_main h1",
+          "price": "div.product_main p.price_color",
+          "stock": "div.product_main p.availability"
+        }
+      }
+    }
+  ]
+}

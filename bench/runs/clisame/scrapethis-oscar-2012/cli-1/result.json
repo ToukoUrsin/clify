@@ -1,0 +1,35 @@
+{
+ "task": "scrapethis-oscar-2012",
+ "site": "scrapethis",
+ "mode": "cli",
+ "trial": 1,
+ "tag": "clisame",
+ "ok": true,
+ "why": "all expected values present",
+ "answer": "Argo, 3 awards",
+ "expected": {
+  "expect": [
+   "Argo"
+  ],
+  "number": 3
+ },
+ "wallMs": 7585,
+ "apiMs": 6785,
+ "turns": 3,
+ "toolCalls": 2,
+ "tokens": {
+  "input": 6,
+  "output": 219,
+  "cacheWrite": 3920,
+  "cacheRead": 9640,
+  "total": 13785
+ },
+ "costUsd": 0.025931999999999997,
+ "models": [
+  "claude-opus-5-5"
+ ],
+ "exitCode": 0,
+ "timedOut": false,
+ "subtype": "success",
+ "startedAt": "2026-10-18T12:49:47.665Z"
+}

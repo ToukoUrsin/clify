@@ -1,0 +1,810 @@
+{
+ "name": "crates",
+ "startUrl": "https://crates.io/",
+ "origin": "https://crates.io",
+ "createdAt": "2026-10-18T07:06:18.017Z",
+ "description": "crates.io, the Rust package registry. This CLI searches crates and reads crate, version, dependency, download, owner, readme, source-file, advisory, docs.rs, user, team, category and keyword data through the public /api/v1 API.",
+ "commands": [
+  {
+   "name": "search-crates",
+   "summary": "Search or list crates by text query, with optional keyword/category/letter/user/team filters, sorting and pagination",
+   "method": "GET",
+   "urlTemplate": "/api/v1/crates",
+   "params": [
+    {
+     "name": "q",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Free-text search query",
+     "example": "http client"
+    },
+    {
+     "name": "sort",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Sort order",
+     "enum": [
+      "relevance",
+      "downloads",
+      "recent-downloads",
+      "recent-updates",
+      "new",
+      "alpha"
+     ],
+     "default": "relevance"
+    },
+    {
+     "name": "all_keywords",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Space-separated keywords that every crate must have, e.g. 'serde'",
+     "example": "serde"
+    },
+    {
+     "name": "keyword",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Only crates tagged with this single keyword, e.g. 'cli'"
+    },
+    {
+     "name": "category",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Only crates in this category slug, e.g. 'asynchronous' (see list-categories)"
+    },
+    {
+     "name": "letter",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Only crates whose name starts with this letter, e.g. 'S'"
+    },
+    {
+     "name": "user_id",
+     "in": "query",
+     "required": false,
+     "type": "number",
+     "description": "Only crates owned by this numeric user id (from get-user user.id or list-owners id)"
+    },
+    {
+     "name": "team_id",
+     "in": "query",
+     "required": false,
+     "type": "number",
+     "description": "Only crates owned by this numeric team id (from get-team team.id)"
+    },
+    {
+     "name": "page",
+     "in": "query",
+     "required": false,
+     "type": "number",
+     "description": "Page number, starting at 1",
+     "default": 1
+    },
+    {
+     "name": "per_page",
+     "in": "query",
+     "required": false,
+     "type": "number",
+     "description": "Results per page (max 100)",
+     "default": 10
+    }
+   ],
+   "responseType": "json",
+   "resultPath": "crates",
+   "defaultFields": [
+    "name",
+    "description",
+    "default_version",
+    "downloads",
+    "recent_downloads",
+    "updated_at",
+    "repository"
+   ],
+   "pagination": {
+    "type": "page",
+    "param": "page"
+   },
+   "mutates": false,
+   "example": {
+    "q": "http client",
+    "sort": "downloads"
+   },
+   "source": "E3 GET https://crates.io/api/v1/crates",
+   "verified": true
+  },
+  {
+   "name": "get-crate",
+   "summary": "Get a crate's details: description, links, download totals, keywords, categories and default version",
+   "method": "GET",
+   "urlTemplate": "/api/v1/crates/{name}?include=keywords%2Ccategories%2Cdownloads%2Cdefault_version",
+   "params": [
+    {
+     "name": "name",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Crate name",
+     "example": "reqwest"
+    }
+   ],
+   "responseType": "json",
+   "resultPath": "crate",
+   "defaultFields": [
+    "name",
+    "description",
+    "default_version",
+    "downloads",
+    "recent_downloads",
+    "num_versions",
+    "keywords",
+    "categories",
+    "repository",
+    "documentation",
+    "homepage",
+    "updated_at"
+   ],
+   "mutates": false,
+   "example": {
+    "name": "reqwest"
+   },
+   "source": "E10 E5 GET https://crates.io/api/v1/crates/reqwest",
+   "verified": true
+  },
+  {
+   "name": "list-versions",
+   "summary": "List all published versions of a crate, with downloads, yanked status, license and MSRV",
+   "method": "GET",
+   "urlTemplate": "/api/v1/crates/{name}/versions?include=release_tracks",
+   "params": [
+    {
+     "name": "name",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Crate name",
+     "example": "reqwest"
+    },
+    {
+     "name": "sort",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Order versions by publish date or by semver",
+     "enum": [
+      "date",
+      "semver"
+     ],
+     "default": "date"
+    },
+    {
+     "name": "per_page",
+     "in": "query",
+     "required": false,
+     "type": "number",
+     "description": "Maximum number of versions to return (max 100)",
+     "default": 100
+    }
+   ],
+   "responseType": "json",
+   "resultPath": "versions",
+   "defaultFields": [
+    "num",
+    "created_at",
+    "downloads",
+    "yanked",
+    "license",
+    "rust_version",
+    "crate_size",
+    "published_by.login"
+   ],
+   "mutates": false,
+   "example": {
+    "name": "reqwest"
+   },
+   "source": "E13 GET https://crates.io/api/v1/crates/reqwest/versions",
+   "verified": true
+  },
+  {
+   "name": "get-version",
+   "summary": "Get details of one crate version: features, license, checksum, MSRV, edition, publisher",
+   "method": "GET",
+   "urlTemplate": "/api/v1/crates/{name}/{version}",
+   "params": [
+    {
+     "name": "name",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Crate name",
+     "example": "hyper"
+    },
+    {
+     "name": "version",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Exact version number, e.g. 1.12.0",
+     "example": "1.12.0"
+    }
+   ],
+   "responseType": "json",
+   "resultPath": "version",
+   "defaultFields": [
+    "crate",
+    "num",
+    "created_at",
+    "downloads",
+    "license",
+    "rust_version",
+    "edition",
+    "features",
+    "yanked",
+    "checksum",
+    "published_by.login"
+   ],
+   "mutates": false,
+   "example": {
+    "name": "hyper",
+    "version": "1.12.0"
+   },
+   "source": "E4 E14 GET https://crates.io/api/v1/crates/hyper/1.12.0",
+   "verified": true
+  },
+  {
+   "name": "list-dependencies",
+   "summary": "List the dependencies of a specific crate version, with version requirement, kind (normal/dev/build), optional flag and target",
+   "method": "GET",
+   "urlTemplate": "/api/v1/crates/{name}/{version}/dependencies",
+   "params": [
+    {
+     "name": "name",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Crate name",
+     "example": "reqwest"
+    },
+    {
+     "name": "version",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Exact version number",
+     "example": "0.13.5"
+    }
+   ],
+   "responseType": "json",
+   "resultPath": "dependencies",
+   "defaultFields": [
+    "crate_id",
+    "req",
+    "kind",
+    "optional",
+    "default_features",
+    "features",
+    "target"
+   ],
+   "mutates": false,
+   "example": {
+    "name": "reqwest",
+    "version": "0.13.5"
+   },
+   "source": "E15 GET https://crates.io/api/v1/crates/reqwest/0.13.5/dependencies",
+   "verified": true
+  },
+  {
+   "name": "list-reverse-dependencies",
+   "summary": "List crates that depend on a crate (dependents), sorted by the dependents' downloads",
+   "method": "GET",
+   "urlTemplate": "/api/v1/crates/{name}/reverse_dependencies",
+   "params": [
+    {
+     "name": "name",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Crate name whose dependents to list",
+     "example": "reqwest"
+    },
+    {
+     "name": "page",
+     "in": "query",
+     "required": false,
+     "type": "number",
+     "description": "Page number, starting at 1",
+     "default": 1
+    },
+    {
+     "name": "per_page",
+     "in": "query",
+     "required": false,
+     "type": "number",
+     "description": "Results per page (max 100)",
+     "default": 10
+    }
+   ],
+   "responseType": "json",
+   "resultPath": "versions",
+   "defaultFields": [
+    "crate",
+    "num",
+    "downloads",
+    "description",
+    "license",
+    "created_at"
+   ],
+   "pagination": {
+    "type": "page",
+    "param": "page"
+   },
+   "mutates": false,
+   "example": {
+    "name": "reqwest"
+   },
+   "source": "E16 GET https://crates.io/api/v1/crates/reqwest/reverse_dependencies",
+   "verified": true
+  },
+  {
+   "name": "get-crate-downloads",
+   "summary": "Get daily download counts for a crate over roughly the last 90 days, broken down by version id",
+   "method": "GET",
+   "urlTemplate": "/api/v1/crates/{name}/downloads?include=versions",
+   "params": [
+    {
+     "name": "name",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Crate name",
+     "example": "reqwest"
+    }
+   ],
+   "responseType": "json",
+   "resultPath": "version_downloads",
+   "defaultFields": [
+    "date",
+    "version",
+    "downloads"
+   ],
+   "mutates": false,
+   "example": {
+    "name": "reqwest"
+   },
+   "source": "E11 GET https://crates.io/api/v1/crates/reqwest/downloads",
+   "verified": true
+  },
+  {
+   "name": "get-version-downloads",
+   "summary": "Get daily download counts for one specific crate version",
+   "method": "GET",
+   "urlTemplate": "/api/v1/crates/{name}/{version}/downloads",
+   "params": [
+    {
+     "name": "name",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Crate name",
+     "example": "hyper"
+    },
+    {
+     "name": "version",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Exact version number",
+     "example": "1.12.0"
+    }
+   ],
+   "responseType": "json",
+   "resultPath": "version_downloads",
+   "defaultFields": [
+    "date",
+    "downloads"
+   ],
+   "mutates": false,
+   "example": {
+    "name": "hyper",
+    "version": "1.12.0"
+   },
+   "source": "E18 GET https://crates.io/api/v1/crates/hyper/1.12.0/downloads",
+   "verified": true
+  },
+  {
+   "name": "list-owners",
+   "summary": "List the owners (users and GitHub teams) of a crate",
+   "method": "GET",
+   "urlTemplate": "/api/v1/crates/{name}/owners",
+   "params": [
+    {
+     "name": "name",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Crate name",
+     "example": "hyper"
+    }
+   ],
+   "responseType": "json",
+   "resultPath": "users",
+   "defaultFields": [
+    "kind",
+    "id",
+    "login",
+    "name",
+    "url"
+   ],
+   "mutates": false,
+   "example": {
+    "name": "hyper"
+   },
+   "source": "E6 E9 GET https://crates.io/api/v1/crates/hyper/owners",
+   "verified": true
+  },
+  {
+   "name": "get-readme",
+   "summary": "Get the rendered README (HTML) of a specific crate version",
+   "method": "GET",
+   "urlTemplate": "https://static.crates.io/readmes/{name}/{name}-{version}.html",
+   "params": [
+    {
+     "name": "name",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Crate name",
+     "example": "reqwest"
+    },
+    {
+     "name": "version",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Exact version number",
+     "example": "0.13.5"
+    }
+   ],
+   "responseType": "text",
+   "mutates": false,
+   "example": {
+    "name": "reqwest",
+    "version": "0.13.5"
+   },
+   "source": "E27 E28 GET https://static.crates.io/readmes/reqwest/reqwest-0.13.5.html",
+   "verified": true
+  },
+  {
+   "name": "list-source-files",
+   "summary": "List the files in a published crate version's source package, with sizes and sha256",
+   "method": "GET",
+   "urlTemplate": "https://static.crates.io/crates/{name}/{name}-{version}.zip.json",
+   "params": [
+    {
+     "name": "name",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Crate name",
+     "example": "hyper"
+    },
+    {
+     "name": "version",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Exact version number",
+     "example": "1.12.0"
+    }
+   ],
+   "responseType": "json",
+   "resultPath": "files",
+   "defaultFields": [
+    "path",
+    "uncompressed_size",
+    "compressed_size",
+    "sha256"
+   ],
+   "mutates": false,
+   "example": {
+    "name": "hyper",
+    "version": "1.12.0"
+   },
+   "source": "E8 GET https://static.crates.io/crates/hyper/hyper-1.12.0.zip.json",
+   "verified": true
+  },
+  {
+   "name": "get-advisories",
+   "summary": "List RustSec security advisories (OSV format) affecting a crate",
+   "method": "GET",
+   "urlTemplate": "https://rustsec.org/packages/{name}.json",
+   "params": [
+    {
+     "name": "name",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Crate name",
+     "example": "hyper"
+    }
+   ],
+   "responseType": "json",
+   "defaultFields": [
+    "id",
+    "summary",
+    "aliases",
+    "published",
+    "modified",
+    "affected"
+   ],
+   "mutates": false,
+   "example": {
+    "name": "hyper"
+   },
+   "source": "E19 GET https://rustsec.org/packages/hyper.json",
+   "verified": true
+  },
+  {
+   "name": "get-docs-status",
+   "summary": "Check whether docs.rs built documentation successfully for a crate version",
+   "method": "GET",
+   "urlTemplate": "https://docs.rs/crate/{name}/{version}/status.json",
+   "params": [
+    {
+     "name": "name",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Crate name",
+     "example": "reqwest"
+    },
+    {
+     "name": "version",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Exact version number",
+     "example": "0.13.5"
+    }
+   ],
+   "responseType": "json",
+   "mutates": false,
+   "example": {
+    "name": "reqwest",
+    "version": "0.13.5"
+   },
+   "source": "E12 E17 GET https://docs.rs/crate/reqwest/0.13.5/status.json",
+   "verified": true
+  },
+  {
+   "name": "get-user",
+   "summary": "Get a crates.io user's public profile (numeric id, name, GitHub link) by login",
+   "method": "GET",
+   "urlTemplate": "/api/v1/users/{login}?include=linked_accounts",
+   "params": [
+    {
+     "name": "login",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "User login (GitHub username)",
+     "example": "seanmonstar"
+    }
+   ],
+   "responseType": "json",
+   "mutates": false,
+   "example": {
+    "login": "seanmonstar"
+   },
+   "source": "E20 GET https://crates.io/api/v1/users/seanmonstar",
+   "verified": true
+  },
+  {
+   "name": "get-team",
+   "summary": "Get a crate-owning GitHub team's profile (numeric id, name, org URL) by team login",
+   "method": "GET",
+   "urlTemplate": "/api/v1/teams/{team}",
+   "params": [
+    {
+     "name": "team",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Team login in the form github:ORG:TEAM",
+     "example": "github:hyperium:core"
+    }
+   ],
+   "responseType": "json",
+   "resultPath": "team",
+   "defaultFields": [
+    "id",
+    "login",
+    "name",
+    "url"
+   ],
+   "mutates": false,
+   "example": {
+    "team": "github:hyperium:core"
+   },
+   "source": "E21 GET https://crates.io/api/v1/teams/github%3Ahyperium%3Acore",
+   "verified": true
+  },
+  {
+   "name": "list-categories",
+   "summary": "List all crate categories with their slugs, descriptions and crate counts",
+   "method": "GET",
+   "urlTemplate": "/api/v1/categories",
+   "params": [
+    {
+     "name": "sort",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Sort alphabetically or by number of crates",
+     "enum": [
+      "alpha",
+      "crates"
+     ],
+     "default": "alpha"
+    },
+    {
+     "name": "page",
+     "in": "query",
+     "required": false,
+     "type": "number",
+     "description": "Page number, starting at 1",
+     "default": 1
+    },
+    {
+     "name": "per_page",
+     "in": "query",
+     "required": false,
+     "type": "number",
+     "description": "Results per page (max 100)",
+     "default": 100
+    }
+   ],
+   "responseType": "json",
+   "resultPath": "categories",
+   "defaultFields": [
+    "slug",
+    "category",
+    "description",
+    "crates_cnt"
+   ],
+   "pagination": {
+    "type": "page",
+    "param": "page"
+   },
+   "mutates": false,
+   "example": {
+    "sort": "alpha"
+   },
+   "source": "E22 GET https://crates.io/api/v1/categories",
+   "verified": true
+  },
+  {
+   "name": "get-category",
+   "summary": "Get one category's details, including subcategories, parent categories and crate count",
+   "method": "GET",
+   "urlTemplate": "/api/v1/categories/{slug}",
+   "params": [
+    {
+     "name": "slug",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Category slug, e.g. asynchronous or web-programming::http-client",
+     "example": "asynchronous"
+    }
+   ],
+   "responseType": "json",
+   "resultPath": "category",
+   "defaultFields": [
+    "slug",
+    "category",
+    "description",
+    "crates_cnt",
+    "subcategories",
+    "parent_categories"
+   ],
+   "mutates": false,
+   "example": {
+    "slug": "asynchronous"
+   },
+   "source": "E23 GET https://crates.io/api/v1/categories/asynchronous",
+   "verified": true
+  },
+  {
+   "name": "list-keywords",
+   "summary": "List crate keywords with crate counts, sorted by popularity or alphabetically",
+   "method": "GET",
+   "urlTemplate": "/api/v1/keywords",
+   "params": [
+    {
+     "name": "sort",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Sort by number of crates or alphabetically",
+     "enum": [
+      "crates",
+      "alpha"
+     ],
+     "default": "crates"
+    },
+    {
+     "name": "page",
+     "in": "query",
+     "required": false,
+     "type": "number",
+     "description": "Page number, starting at 1",
+     "default": 1
+    },
+    {
+     "name": "per_page",
+     "in": "query",
+     "required": false,
+     "type": "number",
+     "description": "Results per page (max 100)",
+     "default": 10
+    }
+   ],
+   "responseType": "json",
+   "resultPath": "keywords",
+   "defaultFields": [
+    "keyword",
+    "crates_cnt",
+    "created_at"
+   ],
+   "pagination": {
+    "type": "page",
+    "param": "page"
+   },
+   "mutates": false,
+   "example": {
+    "sort": "crates"
+   },
+   "source": "E24 GET https://crates.io/api/v1/keywords",
+   "verified": true
+  },
+  {
+   "name": "get-summary",
+   "summary": "Get the home-page summary: total crates and downloads, new, most-downloaded and just-updated crates, popular keywords and categories",
+   "method": "GET",
+   "urlTemplate": "/api/v1/summary",
+   "params": [],
+   "responseType": "json",
+   "mutates": false,
+   "source": "E25 GET https://crates.io/api/v1/summary",
+   "verified": true
+  }
+ ],
+ "blockers": [],
+ "notes": [
+  "All commands are public reads and need no login. Write actions (publish, yank, follow, owner changes) need GitHub sign-in or an API token, so they are not covered.",
+  "The crates.io data access policy (https://crates.io/data-access) asks clients to send at most 1 request per second and to use a descriptive User-Agent. For bulk data, use the database dump or the sparse index (index.crates.io) instead.",
+  "Version-specific commands (get-version, list-dependencies, get-readme, list-source-files, get-docs-status, get-version-downloads) need an exact version string. Get it from get-crate's default_version or from list-versions' num.",
+  "To list the crates a user or team owns: call get-user / get-team to get the numeric id, then call search-crates with --user_id / --team_id.",
+  "To list the crates in a category or with a keyword: call search-crates with --category <slug> or --keyword <kw>.",
+  "list-reverse-dependencies returns the dependent crate versions (crate, num). The raw response also has a 'dependencies' array with each dependent's version requirement, linked by version_id.",
+  "get-crate-downloads keys counts by numeric version id. list-versions returns each version's id, which you can use to map ids to version numbers.",
+  "list-versions returns at most 100 versions per call. Pagination for longer histories is seek-based (meta.next_page) and is not exposed here.",
+  "get-readme returns raw rendered HTML. get-advisories returns the RustSec OSV array (it may be empty or 404 for crates with no advisories).",
+  "The full OpenAPI spec is at https://crates.io/api/openapi.json."
+ ],
+ "dropped": [],
+ "generated": {
+  "by": "clify add",
+  "model": "claude-opus-5-5",
+  "exploredSteps": 23,
+  "recorded": 84,
+  "verifiedAt": "2026-10-18T07:07:38.862Z",
+  "seconds": 167
+ }
+}

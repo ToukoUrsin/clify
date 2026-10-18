@@ -1,0 +1,38 @@
+{
+ "task": "crates-serde-vs-tokio",
+ "site": "crates",
+ "mode": "browser",
+ "trial": 1,
+ "tag": "hard",
+ "ok": true,
+ "why": "all expected values present",
+ "answer": "serde",
+ "expected": {
+  "expect": [
+   "serde"
+  ],
+  "detail": {
+   "serde": 1545402289,
+   "tokio": 1075593975
+  }
+ },
+ "wallMs": 8676,
+ "apiMs": 5261,
+ "turns": 4,
+ "toolCalls": 3,
+ "tokens": {
+  "input": 6,
+  "output": 377,
+  "cacheWrite": 5889,
+  "cacheRead": 30758,
+  "total": 37030
+ },
+ "costUsd": 0.04316059999999999,
+ "models": [
+  "claude-opus-5-5"
+ ],
+ "exitCode": 0,
+ "timedOut": false,
+ "subtype": "success",
+ "startedAt": "2026-10-17T23:25:44.950Z"
+}

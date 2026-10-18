@@ -1,0 +1,27 @@
+{
+ "name": "ted-europa",
+ "startUrl": "https://ted.europa.eu/en/",
+ "origin": "https://ted.europa.eu",
+ "createdAt": "2026-10-18T07:20:30.163Z",
+ "description": "TED (Tenders Electronic Daily), the EU public procurement notices portal. No commands could be derived because every recorded page stopped at an AWS WAF bot challenge.",
+ "commands": [],
+ "blockers": [
+  "captcha"
+ ],
+ "notes": [
+  "The recording has no usable site endpoints. Every document request (E3 /en/search/result?FT=software, E4 /en/notice/-/detail/1-2025, E5 /en/) returned HTTP 202 with an empty page whose only content is div#challenge-container. No notice data, search results or site API calls ever loaded.",
+  "E1 (GET .../token.awswaf.com/.../inputs) and E2 (POST .../mp_verify) belong to the AWS WAF challenge, not to TED. They were skipped on purpose. They need a browser-computed solution plus fingerprint signals, so a replayed request cannot pass them.",
+  "HTML commands for /en/search/result or /en/notice/-/detail/{publication-number} were not written. Without a browser that passes the WAF, they would only ever return the challenge page, and the recording shows no outline to extract from.",
+  "To build real commands, re-run the explorer so the WAF challenge completes (headful or stealth browser, or wait for the aws-waf-token cookie to be set and then reload). Then record search, filters, pagination and notice detail.",
+  "Unverified lead (not seen in this recording): TED publishes a documented public Search API on a separate host (api.ted.europa.eu, e.g. POST /v3/notices/search taking an expert-search query, a fields list, page and limit). It may not sit behind the same WAF. Confirm it in a new recording before adding commands for it."
+ ],
+ "dropped": [],
+ "generated": {
+  "by": "clify add",
+  "model": "claude-opus-5-5",
+  "exploredSteps": 4,
+  "recorded": 9,
+  "verifiedAt": "2026-10-18T07:20:42.278Z",
+  "seconds": 27
+ }
+}

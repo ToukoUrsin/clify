@@ -1,0 +1,658 @@
+{
+ "name": "rnz",
+ "startUrl": "https://www.rnz.co.nz/news",
+ "origin": "https://www.rnz.co.nz",
+ "createdAt": "2026-10-18T09:26:25.039Z",
+ "description": "RNZ (Radio New Zealand): search and read NZ news, tag, section and author listings, Life articles, podcasts and episodes, radio schedules, RSS feeds and video metadata.",
+ "commands": [
+  {
+   "name": "search-content",
+   "summary": "Keyword search across RNZ news stories and audio items, with paging.",
+   "method": "GET",
+   "urlTemplate": "/search/results?commit=Search",
+   "params": [
+    {
+     "name": "query",
+     "key": "q",
+     "in": "query",
+     "required": true,
+     "type": "string",
+     "description": "Search keywords",
+     "example": "housing"
+    },
+    {
+     "name": "page",
+     "in": "query",
+     "required": false,
+     "type": "number",
+     "description": "Results page number, starting at 1",
+     "example": "2"
+    }
+   ],
+   "responseType": "html",
+   "extract": {
+    "list": "h3 a[href^='/'], h3 a[href^='https://www.rnz.co.nz/']",
+    "fields": {
+     "title": "",
+     "url": "@href"
+    }
+   },
+   "defaultFields": [
+    "title",
+    "url"
+   ],
+   "pagination": {
+    "type": "page",
+    "param": "page"
+   },
+   "mutates": false,
+   "example": {
+    "query": "housing"
+   },
+   "source": "E6 E23 GET https://www.rnz.co.nz/search/results",
+   "verified": true
+  },
+  {
+   "name": "list-tag-stories",
+   "summary": "List stories tagged with a topic slug, e.g. housing.",
+   "method": "GET",
+   "urlTemplate": "/tags/{tag}",
+   "params": [
+    {
+     "name": "tag",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Tag slug as used in /tags/<slug>",
+     "example": "housing"
+    },
+    {
+     "name": "page",
+     "in": "query",
+     "required": false,
+     "type": "number",
+     "description": "Page number, starting at 1",
+     "example": "2"
+    }
+   ],
+   "responseType": "html",
+   "extract": {
+    "list": "h3 a[href*='/news/'], h3 a[href*='/programmes/']",
+    "fields": {
+     "title": "",
+     "url": "@href"
+    }
+   },
+   "defaultFields": [
+    "title",
+    "url"
+   ],
+   "pagination": {
+    "type": "page",
+    "param": "page"
+   },
+   "mutates": false,
+   "example": {
+    "tag": "housing"
+   },
+   "source": "E7 GET https://www.rnz.co.nz/tags/housing",
+   "verified": true
+  },
+  {
+   "name": "list-section-news",
+   "summary": "List the latest news stories in a news section, e.g. education, political, world, business or sport.",
+   "method": "GET",
+   "urlTemplate": "/news/{section}",
+   "params": [
+    {
+     "name": "section",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "News section slug",
+     "enum": [
+      "national",
+      "political",
+      "world",
+      "business",
+      "sport",
+      "education",
+      "pacific",
+      "te-manu-korihi",
+      "country",
+      "environment",
+      "health",
+      "crime"
+     ],
+     "example": "education"
+    },
+    {
+     "name": "page",
+     "in": "query",
+     "required": false,
+     "type": "number",
+     "description": "Page number, starting at 1"
+    }
+   ],
+   "responseType": "html",
+   "extract": {
+    "list": "h3 a[href*='/news/']",
+    "fields": {
+     "title": "",
+     "url": "@href"
+    }
+   },
+   "defaultFields": [
+    "title",
+    "url"
+   ],
+   "pagination": {
+    "type": "page",
+    "param": "page"
+   },
+   "mutates": false,
+   "example": {
+    "section": "education"
+   },
+   "source": "E24 GET https://www.rnz.co.nz/news/education",
+   "verified": true
+  },
+  {
+   "name": "list-author-articles",
+   "summary": "List articles written by an RNZ reporter, identified by author slug.",
+   "method": "GET",
+   "urlTemplate": "/authors/{author}",
+   "params": [
+    {
+     "name": "author",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Author slug, e.g. john-gerritsen",
+     "example": "john-gerritsen"
+    },
+    {
+     "name": "page",
+     "in": "query",
+     "required": false,
+     "type": "number",
+     "description": "Page number, starting at 1"
+    }
+   ],
+   "responseType": "html",
+   "extract": {
+    "list": "h3 a[href*='/news/']",
+    "fields": {
+     "title": "",
+     "url": "@href"
+    }
+   },
+   "defaultFields": [
+    "title",
+    "url"
+   ],
+   "pagination": {
+    "type": "page",
+    "param": "page"
+   },
+   "mutates": false,
+   "example": {
+    "author": "john-gerritsen"
+   },
+   "source": "E25 GET https://www.rnz.co.nz/authors/john-gerritsen",
+   "verified": true
+  },
+  {
+   "name": "get-news-feed",
+   "summary": "Get the latest stories in a news category from its RSS feed (structured title, link, date, description).",
+   "method": "GET",
+   "urlTemplate": "/rss/{category}.xml",
+   "params": [
+    {
+     "name": "category",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "RSS feed name as listed by list-rss-feeds, e.g. national, political, world, business, sport, pacific",
+     "example": "national"
+    }
+   ],
+   "responseType": "json",
+   "resultPath": "rss.channel.item",
+   "defaultFields": [
+    "title",
+    "link",
+    "pubDate",
+    "description"
+   ],
+   "mutates": false,
+   "example": {
+    "category": "national"
+   },
+   "source": "E30 GET https://www.rnz.co.nz/rss",
+   "verified": true
+  },
+  {
+   "name": "list-rss-feeds",
+   "summary": "List all available RNZ RSS feeds and their URLs.",
+   "method": "GET",
+   "urlTemplate": "/rss",
+   "params": [],
+   "responseType": "html",
+   "extract": {
+    "list": "a[href$='.xml']",
+    "fields": {
+     "name": "",
+     "url": "@href"
+    }
+   },
+   "defaultFields": [
+    "name",
+    "url"
+   ],
+   "mutates": false,
+   "source": "E30 GET https://www.rnz.co.nz/rss",
+   "verified": true
+  },
+  {
+   "name": "get-news-article",
+   "summary": "Get a news article's headline, description, publish time and body text.",
+   "method": "GET",
+   "urlTemplate": "/news/{section}/{id}/{slug}",
+   "params": [
+    {
+     "name": "section",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Section slug from the article URL",
+     "example": "education"
+    },
+    {
+     "name": "id",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Numeric story id from the article URL",
+     "example": "1996231"
+    },
+    {
+     "name": "slug",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Headline slug from the article URL",
+     "example": "a-whirlwind-of-education-change"
+    }
+   ],
+   "responseType": "html",
+   "extract": {
+    "fields": {
+     "title": "h1",
+     "description": "meta[property='og:description']@content || meta[name='description']@content",
+     "image": "meta[property='og:image']@content",
+     "published": "time@datetime",
+     "body": "main#main || main"
+    }
+   },
+   "defaultFields": [
+    "title",
+    "description",
+    "published",
+    "body"
+   ],
+   "mutates": false,
+   "example": {
+    "section": "education",
+    "id": "1996231",
+    "slug": "a-whirlwind-of-education-change"
+   },
+   "source": "E14 E8 GET https://www.rnz.co.nz/news/education/{n}/a-whirlwind-of-education-change",
+   "verified": true
+  },
+  {
+   "name": "get-audio-item",
+   "summary": "Get metadata (headline, description, dates, image) for a radio programme audio item.",
+   "method": "GET",
+   "urlTemplate": "/national/programmes/{programme}/audio/{id}/{slug}",
+   "params": [
+    {
+     "name": "programme",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Programme slug, e.g. afternoons",
+     "example": "afternoons"
+    },
+    {
+     "name": "id",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Numeric audio id from the URL",
+     "example": "2019056175"
+    },
+    {
+     "name": "slug",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Title slug from the URL",
+     "example": "why-older-new-zealanders-are-stressed-about-housing"
+    }
+   ],
+   "responseType": "html",
+   "extract": {
+    "jsonScript": "script[type=\"application/ld+json\"]"
+   },
+   "defaultFields": [
+    "headline",
+    "description",
+    "datePublished",
+    "dateModified",
+    "image",
+    "mainEntityOfPage.@id"
+   ],
+   "mutates": false,
+   "example": {
+    "programme": "afternoons",
+    "id": "2019056175",
+    "slug": "why-older-new-zealanders-are-stressed-about-housing"
+   },
+   "source": "E26 GET https://www.rnz.co.nz/national/programmes/afternoons/audio/{n}/why-older-new-zealanders-are-stressed-about-housing",
+   "verified": true
+  },
+  {
+   "name": "list-life-articles",
+   "summary": "List RNZ Life (arts, culture, music, lifestyle) articles in a category such as music.",
+   "method": "GET",
+   "urlTemplate": "/life/{category}",
+   "params": [
+    {
+     "name": "category",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Life category slug, e.g. music",
+     "example": "music"
+    }
+   ],
+   "responseType": "html",
+   "extract": {
+    "list": "a[href^='/life/']",
+    "fields": {
+     "title": "",
+     "url": "@href"
+    }
+   },
+   "defaultFields": [
+    "title",
+    "url"
+   ],
+   "mutates": false,
+   "example": {
+    "category": "music"
+   },
+   "source": "E19 E18 GET https://www.rnz.co.nz/life/music",
+   "verified": true
+  },
+  {
+   "name": "get-life-article",
+   "summary": "Get an RNZ Life article's headline, description and body text.",
+   "method": "GET",
+   "urlTemplate": "/life/{category}/{slug}",
+   "params": [
+    {
+     "name": "category",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Life category slug",
+     "example": "music"
+    },
+    {
+     "name": "slug",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Article slug",
+     "example": "olivia-dean-shakes-off-western-springs-bowl-hiccup-to-end-on-a-high"
+    }
+   ],
+   "responseType": "html",
+   "extract": {
+    "fields": {
+     "title": "h1",
+     "description": "meta[property='og:description']@content || meta[name='description']@content",
+     "image": "meta[property='og:image']@content",
+     "published": "time@datetime",
+     "body": "main#main || main"
+    }
+   },
+   "defaultFields": [
+    "title",
+    "description",
+    "published",
+    "body"
+   ],
+   "mutates": false,
+   "example": {
+    "category": "music",
+    "slug": "olivia-dean-shakes-off-western-springs-bowl-hiccup-to-end-on-a-high"
+   },
+   "source": "E9 GET https://www.rnz.co.nz/life/music/olivia-dean-shakes-off-western-springs-bowl-hiccup-to-end-on-a-high",
+   "verified": true
+  },
+  {
+   "name": "list-podcasts",
+   "summary": "List all RNZ podcasts (A\u2013Z) with their slugs.",
+   "method": "GET",
+   "urlTemplate": "/podcasts/all-podcasts",
+   "params": [],
+   "responseType": "html",
+   "extract": {
+    "list": "a[href^='/podcast/']",
+    "fields": {
+     "title": "",
+     "url": "@href"
+    }
+   },
+   "defaultFields": [
+    "title",
+    "url"
+   ],
+   "mutates": false,
+   "source": "E3 E15 GET https://www.rnz.co.nz/podcasts/all-podcasts",
+   "verified": true
+  },
+  {
+   "name": "get-podcast-episodes",
+   "summary": "Get a podcast's recent episodes from its RSS feed, including title, date, duration and MP3 URL.",
+   "method": "GET",
+   "urlTemplate": "/podcasts/rss/{podcast}.rss",
+   "params": [
+    {
+     "name": "podcast",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Podcast slug, e.g. the-detail, mediawatch",
+     "example": "the-detail"
+    }
+   ],
+   "responseType": "json",
+   "resultPath": "rss.channel.item",
+   "defaultFields": [
+    "title",
+    "pubDate",
+    "itunes:duration",
+    "itunes:episode",
+    "enclosure.@url",
+    "link",
+    "guid.#text"
+   ],
+   "mutates": false,
+   "example": {
+    "podcast": "the-detail"
+   },
+   "source": "E28 E16 E17 GET https://www.rnz.co.nz/podcasts/rss/the-detail.rss",
+   "verified": true
+  },
+  {
+   "name": "list-podcast-episodes-by-year",
+   "summary": "List a podcast's episodes published in a given year (an archive beyond the RSS feed's latest items).",
+   "method": "GET",
+   "urlTemplate": "/podcast/{podcast}/{year}",
+   "params": [
+    {
+     "name": "podcast",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Podcast slug, e.g. the-detail",
+     "example": "the-detail"
+    },
+    {
+     "name": "year",
+     "in": "path",
+     "required": true,
+     "type": "number",
+     "description": "Four-digit year, e.g. 2025",
+     "example": "2025"
+    }
+   ],
+   "responseType": "html",
+   "extract": {
+    "list": "h3 a[href]",
+    "fields": {
+     "title": "",
+     "url": "@href"
+    }
+   },
+   "defaultFields": [
+    "title",
+    "url"
+   ],
+   "mutates": false,
+   "example": {
+    "podcast": "the-detail",
+    "year": "2025"
+   },
+   "source": "E5",
+   "verified": true
+  },
+  {
+   "name": "get-national-schedule",
+   "summary": "Get the RNZ National radio schedule (programmes) for a date; returns today's schedule when no date is given.",
+   "method": "GET",
+   "urlTemplate": "/national/schedules/{date}",
+   "params": [
+    {
+     "name": "date",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Date as YYYYMMDD, e.g. 20261019",
+     "example": "20261019"
+    }
+   ],
+   "responseType": "html",
+   "extract": {
+    "list": "a[href*='/programmes/'], a[href*='/podcast/']",
+    "fields": {
+     "programme": "",
+     "url": "@href"
+    }
+   },
+   "defaultFields": [
+    "programme",
+    "url"
+   ],
+   "mutates": false,
+   "example": {
+    "date": "20261019"
+   },
+   "source": "E11 E29 GET https://www.rnz.co.nz/national/schedules/{n}",
+   "verified": true
+  },
+  {
+   "name": "list-video-series",
+   "summary": "List RNZ video series and documentaries, with their slugs.",
+   "method": "GET",
+   "urlTemplate": "/video",
+   "params": [],
+   "responseType": "html",
+   "extract": {
+    "list": "a[href^='/video/']",
+    "fields": {
+     "title": "",
+     "url": "@href"
+    }
+   },
+   "defaultFields": [
+    "title",
+    "url"
+   ],
+   "mutates": false,
+   "source": "E20 E21 GET https://www.rnz.co.nz/video",
+   "verified": true
+  }
+ ],
+ "blockers": [],
+ "notes": [
+  "The RSS commands are the most reliable, structured sources: get-news-feed (/rss/<name>.xml) for news and get-podcast-episodes (/podcasts/rss/<slug>.rss) for podcasts. Use list-rss-feeds to find valid feed names.",
+  "The recording did not show the markup of the HTML listing pages (search, tags, sections, authors, schedules, Life, podcasts, video). Their extract selectors are generic link selectors and may also return navigation links. Filter results by URL pattern: /news/<section>/<id>/<slug>, /life/<category>/<slug>, /podcast/<slug>.",
+  "Article URLs have the form /news/<section>/<numeric id>/<slug>. Split a URL from a listing to get the arguments for get-news-article.",
+  "Radio programme pages such as /national/programmes/mediawatch redirect (301) to /podcast/<slug>. Pass that slug to get-podcast-episodes.",
+  "/news redirects (308) and /news/latest redirects (302). Use get-news-feed or list-section-news for the latest stories.",
+  "durations in get-video are in milliseconds. The Brightcove policy key in the accept header may be truncated in the recording; if get-video fails with an auth error, the key needs refreshing from the site's player config.",
+  "Explored without a login. All commands are public reads."
+ ],
+ "dropped": [
+  {
+   "name": "get-video",
+   "summary": "Get metadata and HLS stream URLs for an RNZ video by its Brightcove video id.",
+   "method": "GET",
+   "urlTemplate": "https://edge.api.brightcove.com/playback/v1/accounts/6093072280001/videos/{videoId}",
+   "params": [
+    {
+     "name": "videoId",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Numeric Brightcove video id",
+     "example": "6406712966112"
+    }
+   ],
+   "headers": {
+    "accept": "application/json;pk=BCpkADawqM0nrfn63TzcCpUJcIUgA9xmv1QRuvgrurvAvJm8UBn8Y5-iMFIH"
+   },
+   "responseType": "json",
+   "defaultFields": [
+    "id",
+    "name",
+    "description",
+    "duration",
+    "published_at",
+    "tags",
+    "poster",
+    "custom_fields.classification"
+   ],
+   "mutates": false,
+   "example": {
+    "videoId": "6406712966112"
+   },
+   "source": "E2 GET https://edge.api.brightcove.com/playback/v1/accounts/{n}/videos/{n}",
+   "verified": false,
+   "verifyNote": "Brightcove returned 401 INVALID_POLICY_KEY. The recorded policy key appears truncated or invalid, and no valid key can be recovered from the evidence."
+  }
+ ],
+ "generated": {
+  "by": "clify add",
+  "model": "claude-opus-5-5",
+  "exploredSteps": 16,
+  "recorded": 130,
+  "verifiedAt": "2026-10-18T09:27:48.424Z",
+  "seconds": 219
+ }
+}

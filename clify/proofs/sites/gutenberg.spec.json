@@ -1,0 +1,487 @@
+{
+ "name": "gutenberg",
+ "startUrl": "https://www.gutenberg.org/",
+ "origin": "https://www.gutenberg.org",
+ "createdAt": "2026-10-18T07:29:55.377Z",
+ "description": "Project Gutenberg, a free public-domain eBook library. This CLI reads book details, lists books by author, subject, reading list or category, shows the top-downloaded and newly posted books, finds related books, and downloads plain text and RDF metadata.",
+ "commands": [
+  {
+   "name": "get-book",
+   "summary": "Get one eBook's detail page: title, summary, the bibliographic table (author, subjects, language, release date, downloads) and the author link",
+   "method": "GET",
+   "urlTemplate": "/ebooks/{id}",
+   "params": [
+    {
+     "name": "id",
+     "in": "path",
+     "required": true,
+     "type": "number",
+     "description": "Project Gutenberg eBook number, e.g. 1661",
+     "example": "1661"
+    }
+   ],
+   "responseType": "html",
+   "extract": {
+    "fields": {
+     "title": "h1#book_title",
+     "summary": "div#tabs > div",
+     "about": "table#about_book_table",
+     "author_url": "a[title='Find more eBooks by the same author.']@href",
+     "author_label": "a[title='Find more eBooks by the same author.']",
+     "related_tags": "div.similar-books-tags"
+    }
+   },
+   "defaultFields": [
+    "title",
+    "summary",
+    "about",
+    "author_url"
+   ],
+   "mutates": false,
+   "example": {
+    "id": "1661"
+   },
+   "source": "E3",
+   "verified": true
+  },
+  {
+   "name": "list-author-books",
+   "summary": "List the eBooks by one author (25 per page), sorted by popularity, title or release date",
+   "method": "GET",
+   "urlTemplate": "/ebooks/author/{author_id}",
+   "params": [
+    {
+     "name": "author_id",
+     "in": "path",
+     "required": true,
+     "type": "number",
+     "description": "Gutenberg author id, e.g. 69 for Arthur Conan Doyle. Get it from get-book's author_url.",
+     "example": "69"
+    },
+    {
+     "name": "sort_order",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Sort order. Popularity is the default when omitted.",
+     "enum": [
+      "downloads",
+      "title",
+      "release_date"
+     ]
+    },
+    {
+     "name": "start_index",
+     "in": "query",
+     "required": false,
+     "type": "number",
+     "description": "1-based index of the first result. Pages are 25 items: 1, 26, 51, \u2026",
+     "example": "26"
+    }
+   ],
+   "responseType": "html",
+   "extract": {
+    "list": "ul.results > li.booklink",
+    "fields": {
+     "title": "span.title",
+     "author": "span.subtitle",
+     "downloads": "span.extra",
+     "url": "a.link@href"
+    }
+   },
+   "defaultFields": [
+    "title",
+    "author",
+    "downloads",
+    "url"
+   ],
+   "pagination": {
+    "type": "offset",
+    "param": "start_index",
+    "step": 25
+   },
+   "mutates": false,
+   "example": {
+    "author_id": "69"
+   },
+   "source": "E1 GET https://www.gutenberg.org/ebooks/author/{n}",
+   "verified": true
+  },
+  {
+   "name": "list-subject-books",
+   "summary": "List the eBooks under a Library-of-Congress-style subject (25 per page)",
+   "method": "GET",
+   "urlTemplate": "/ebooks/subject/{subject_id}",
+   "params": [
+    {
+     "name": "subject_id",
+     "in": "path",
+     "required": true,
+     "type": "number",
+     "description": "Gutenberg subject id, e.g. 76 for 'Holmes, Sherlock (Fictitious character) -- Fiction'",
+     "example": "76"
+    },
+    {
+     "name": "sort_order",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Sort order. Popularity is the default when omitted.",
+     "enum": [
+      "downloads",
+      "title",
+      "release_date"
+     ]
+    },
+    {
+     "name": "start_index",
+     "in": "query",
+     "required": false,
+     "type": "number",
+     "description": "1-based index of the first result. Pages are 25 items: 1, 26, 51, \u2026"
+    }
+   ],
+   "responseType": "html",
+   "extract": {
+    "list": "ul.results > li.booklink",
+    "fields": {
+     "title": "span.title",
+     "author": "span.subtitle",
+     "downloads": "span.extra",
+     "url": "a.link@href"
+    }
+   },
+   "defaultFields": [
+    "title",
+    "author",
+    "downloads",
+    "url"
+   ],
+   "pagination": {
+    "type": "offset",
+    "param": "start_index",
+    "step": 25
+   },
+   "mutates": false,
+   "example": {
+    "subject_id": "76"
+   },
+   "source": "E4 GET https://www.gutenberg.org/ebooks/subject/{n}",
+   "verified": true
+  },
+  {
+   "name": "list-bookshelf-books",
+   "summary": "List the eBooks on a reading list (bookshelf) or in a main category (25 per page)",
+   "method": "GET",
+   "urlTemplate": "/ebooks/bookshelf/{bookshelf_id}",
+   "params": [
+    {
+     "name": "bookshelf_id",
+     "in": "path",
+     "required": true,
+     "type": "number",
+     "description": "Bookshelf or category id, e.g. 30 = Detective Fiction, 638 = a main category. Get ids from list-bookshelves, list-categories or search-bookshelves.",
+     "example": "30"
+    },
+    {
+     "name": "sort_order",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Sort order. The UI offers 'title' and 'author' (popularity is the default when omitted); 'release_date' and 'downloads' are likely also accepted.",
+     "example": "title"
+    },
+    {
+     "name": "start_index",
+     "in": "query",
+     "required": false,
+     "type": "number",
+     "description": "1-based index of the first result. Pages are 25 items: 1, 26, 51, \u2026",
+     "example": "26"
+    }
+   ],
+   "responseType": "html",
+   "extract": {
+    "list": "ul.results > li.booklink",
+    "fields": {
+     "title": "span.title",
+     "author": "span.subtitle",
+     "downloads": "span.extra",
+     "url": "a.link@href"
+    }
+   },
+   "defaultFields": [
+    "title",
+    "author",
+    "downloads",
+    "url"
+   ],
+   "pagination": {
+    "type": "offset",
+    "param": "start_index",
+    "step": 25
+   },
+   "mutates": false,
+   "example": {
+    "bookshelf_id": "30"
+   },
+   "source": "E2 GET https://www.gutenberg.org/ebooks/bookshelf/{n}",
+   "verified": true
+  },
+  {
+   "name": "list-bookshelves",
+   "summary": "List all volunteer-curated reading lists (bookshelves) A\u2013Z with their links",
+   "method": "GET",
+   "urlTemplate": "/ebooks/bookshelf/",
+   "params": [],
+   "responseType": "html",
+   "extract": {
+    "list": "div.book-list li",
+    "fields": {
+     "name": "a",
+     "url": "a@href"
+    }
+   },
+   "defaultFields": [
+    "name",
+    "url"
+   ],
+   "mutates": false,
+   "source": "E5 GET https://www.gutenberg.org/ebooks/bookshelf/",
+   "verified": true
+  },
+  {
+   "name": "search-bookshelves",
+   "summary": "Find reading lists and categories whose names match keywords (use | to OR several terms)",
+   "method": "GET",
+   "urlTemplate": "/ebooks/bookshelves/search/",
+   "params": [
+    {
+     "name": "query",
+     "in": "query",
+     "required": true,
+     "type": "string",
+     "description": "Keyword(s); separate alternatives with '|', e.g. crime|detective|mystery",
+     "example": "crime|detective|mystery"
+    },
+    {
+     "name": "sort_order",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Sort order. The UI offers Quantity and Title; popularity is the default when omitted."
+    }
+   ],
+   "responseType": "html",
+   "extract": {
+    "list": "ul.results > li.navlink",
+    "fields": {
+     "title": "span.title",
+     "downloads": "span.extra",
+     "url": "a.link@href"
+    }
+   },
+   "defaultFields": [
+    "title",
+    "downloads",
+    "url"
+   ],
+   "mutates": false,
+   "example": {
+    "query": "crime|detective|mystery"
+   },
+   "source": "E6 GET https://www.gutenberg.org/ebooks/bookshelves/search/",
+   "verified": true
+  },
+  {
+   "name": "list-categories",
+   "summary": "List the main subject categories (Literature, Science & Technology, History, \u2026) with their bookshelf links",
+   "method": "GET",
+   "urlTemplate": "/ebooks/categories",
+   "params": [],
+   "responseType": "html",
+   "extract": {
+    "list": "div.book-list li",
+    "fields": {
+     "name": "a",
+     "url": "a@href"
+    }
+   },
+   "defaultFields": [
+    "name",
+    "url"
+   ],
+   "mutates": false,
+   "source": "E8 GET https://www.gutenberg.org/ebooks/categories",
+   "verified": true
+  },
+  {
+   "name": "get-top-downloads",
+   "summary": "Top 100 most-downloaded eBooks and authors for yesterday, the last 7 days and the last 30 days",
+   "method": "GET",
+   "urlTemplate": "/browse/scores/top",
+   "params": [],
+   "responseType": "html",
+   "extract": {
+    "list": "ol > li",
+    "fields": {
+     "label": "a",
+     "url": "a@href"
+    }
+   },
+   "defaultFields": [
+    "label",
+    "url"
+   ],
+   "mutates": false,
+   "source": "E7 GET https://www.gutenberg.org/browse/scores/top",
+   "verified": true
+  },
+  {
+   "name": "list-also-downloaded",
+   "summary": "Books that readers of a given eBook also downloaded (related books)",
+   "method": "GET",
+   "urlTemplate": "/ebooks/{id}/also/",
+   "params": [
+    {
+     "name": "id",
+     "in": "path",
+     "required": true,
+     "type": "number",
+     "description": "Project Gutenberg eBook number, e.g. 345",
+     "example": "345"
+    }
+   ],
+   "responseType": "html",
+   "extract": {
+    "list": "ul.results > li.booklink",
+    "fields": {
+     "title": "span.title",
+     "author": "span.subtitle",
+     "downloads": "span.extra",
+     "url": "a.link@href"
+    }
+   },
+   "defaultFields": [
+    "title",
+    "author",
+    "downloads",
+    "url"
+   ],
+   "mutates": false,
+   "example": {
+    "id": "345"
+   },
+   "source": "E9 GET https://www.gutenberg.org/ebooks/{n}/also/",
+   "verified": true
+  },
+  {
+   "name": "get-book-text",
+   "summary": "Download the full plain-text (UTF-8) content of an eBook",
+   "method": "GET",
+   "urlTemplate": "/ebooks/{id}.txt.utf-8",
+   "params": [
+    {
+     "name": "id",
+     "in": "path",
+     "required": true,
+     "type": "number",
+     "description": "Project Gutenberg eBook number, e.g. 345",
+     "example": "345"
+    }
+   ],
+   "responseType": "text",
+   "mutates": false,
+   "example": {
+    "id": "345"
+   },
+   "source": "E10 GET https://www.gutenberg.org/ebooks/345.txt.utf-8",
+   "verified": true
+  },
+  {
+   "name": "get-book-rdf",
+   "summary": "Get an eBook's machine-readable RDF/XML catalog metadata (title, creators, subjects, formats), converted to JSON",
+   "method": "GET",
+   "urlTemplate": "/ebooks/{id}.rdf",
+   "params": [
+    {
+     "name": "id",
+     "in": "path",
+     "required": true,
+     "type": "number",
+     "description": "Project Gutenberg eBook number, e.g. 345",
+     "example": "345"
+    }
+   ],
+   "responseType": "json",
+   "mutates": false,
+   "example": {
+    "id": "345"
+   },
+   "source": "E14 GET https://www.gutenberg.org/ebooks/345.rdf",
+   "verified": true
+  },
+  {
+   "name": "list-new-books",
+   "summary": "eBooks posted or updated today (RSS feed of new releases)",
+   "method": "GET",
+   "urlTemplate": "/cache/epub/feeds/today.rss",
+   "params": [],
+   "responseType": "json",
+   "resultPath": "rss.channel.item",
+   "defaultFields": [
+    "title",
+    "link",
+    "description"
+   ],
+   "mutates": false,
+   "source": "E12 GET https://www.gutenberg.org/cache/epub/feeds/today.rss",
+   "verified": true
+  },
+  {
+   "name": "list-featured-books",
+   "summary": "The home page shelves: about 10 newest releases followed by about 10 most popular books",
+   "method": "GET",
+   "urlTemplate": "/",
+   "params": [],
+   "responseType": "html",
+   "extract": {
+    "list": "div.lib.latest > a",
+    "fields": {
+     "title": "@title",
+     "label": "span.h5",
+     "url": "@href"
+    }
+   },
+   "defaultFields": [
+    "title",
+    "label",
+    "url"
+   ],
+   "mutates": false,
+   "source": "E15 GET https://www.gutenberg.org/",
+   "verified": true
+  }
+ ],
+ "blockers": [],
+ "notes": [
+  "Keyword search of books (/ebooks/search/ and /ebooks/search.opds/) is blocked by robots.txt and is not available. To find books, start from list-categories, search-bookshelves, list-bookshelves, get-top-downloads or list-new-books, then follow the ids.",
+  "Book urls look like /ebooks/{id}. The number after /ebooks/ is the id that get-book, list-also-downloaded, get-book-text and get-book-rdf take.",
+  "Author ids come from get-book's author_url (/ebooks/author/{id}). Bookshelf and category ids come from /ebooks/bookshelf/{id} links.",
+  "List pages return 25 results. Paging uses start_index = 1, 26, 51, \u2026 and the last page has fewer than 25 items.",
+  "get-top-downloads returns all ranking lists concatenated, in page order: top books yesterday, top authors yesterday, top books last 7 days, top authors last 7 days, top books last 30 days, top authors last 30 days. Each block holds up to 100 entries. Book entries link to /ebooks/{id}, author entries link to /browse/authors/....",
+  "list-featured-books returns both home-page shelves in one list: New Releases first, then Most Popular.",
+  "The download counts in list results are text such as '99027 downloads'.",
+  "get-book-text can be very large (the whole book). Other formats can be fetched directly at /ebooks/{id}.epub3.images, .epub.images, .epub.noimages, .kf8.images and .kindle.images.",
+  "Bulk catalog data: plain-text indexes at /dirs/GUTINDEX.ALL (or per year, /dirs/GUTINDEX.{year}) and full RDF/CSV metadata under /cache/epub/feeds/, both described at /ebooks/offline_catalogs.html. Project Gutenberg asks automated users not to crawl the site heavily."
+ ],
+ "dropped": [],
+ "generated": {
+  "by": "clify add",
+  "model": "claude-opus-5-5",
+  "exploredSteps": 23,
+  "recorded": 21,
+  "verifiedAt": "2026-10-18T07:31:03.218Z",
+  "seconds": 172
+ }
+}

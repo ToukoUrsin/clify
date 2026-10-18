@@ -1,0 +1,156 @@
+{
+ "url": "https://www.ebi.ac.uk/",
+ "category": "science",
+ "sandbox": "clify-www-ebi-ac-uk",
+ "startedAt": "2026-10-18T08:09:45.356Z",
+ "region": "us-pdx-1",
+ "chrome": "Chrome/148.0.7778.96",
+ "sandboxStartMs": 3537,
+ "addSeconds": 241,
+ "addExit": 0,
+ "add": {
+  "ok": true,
+  "site": "ebi",
+  "url": "https://www.ebi.ac.uk/",
+  "commands": [
+   {
+    "name": "search-domain",
+    "summary": "Keyword search within one EBI Search domain (e.g. uniprot, proteinSequences, pubmed, chebi, pdbe), with field selection, facet filters, sorting and offset paging",
+    "verified": true
+   },
+   {
+    "name": "get-search-facets",
+    "summary": "Get facet value counts for a query in a domain, e.g. source database, organism (TAXONOMY) or review status, to discover filter values for search-domain",
+    "verified": true
+   },
+   {
+    "name": "count-all-domains",
+    "summary": "Search all EMBL-EBI data at once and get hit counts per domain and subdomain (the tree behind the 'All results' page)",
+    "verified": true
+   },
+   {
+    "name": "list-domains",
+    "summary": "List all EBI Search domains and subdomains (ids, names, descriptions, index info) as a tree",
+    "verified": true
+   },
+   {
+    "name": "get-domain-info",
+    "summary": "Get one domain's metadata: searchable/retrievable/sortable fields, facets, and index info. Use it to find valid values for fields, facets and sort.",
+    "verified": true
+   },
+   {
+    "name": "get-entries",
+    "summary": "Fetch one or more entries by id or accession from a domain, with selected fields",
+    "verified": true
+   },
+   {
+    "name": "list-entry-xref-domains",
+    "summary": "List the domains an entry is cross-referenced to, with the number of referenced entries in each (e.g. pdbe, alphafold, europepmc)",
+    "verified": true
+   },
+   {
+    "name": "get-entry-xrefs",
+    "summary": "Get the entries in a target domain that cross-reference a given entry (e.g. AlphaFold or BioModels entries for UniProt INS_HUMAN)",
+    "verified": true
+   },
+   {
+    "name": "identify-term",
+    "summary": "Identify what a search term refers to (gene, protein, etc., grouped by orthology and organism) with links to summary pages",
+    "verified": true
+   },
+   {
+    "name": "get-summary-details",
+    "summary": "Get the gene/protein summary details (expression, structures, literature...) for an identification returned by identify-term",
+    "verified": true
+   },
+   {
+    "name": "fetch-sequence",
+    "summary": "Download raw database entries such as a FASTA sequence via dbfetch (e.g. UniProtKB P01308 in FASTA)",
+    "verified": true
+   }
+  ],
+  "verified": 11,
+  "writes": 0,
+  "dropped": [],
+  "blockers": [],
+  "loggedIn": false,
+  "seconds": 240,
+  "next": [
+   "clify ebi",
+   "clify ebi search-domain --domain \"uniprot\" --query \"insulin\" --api_fields \"descRecName,organism_scientific_name,acc,status\" --facets \"TAXONOMY:9606,status:Reviewed\""
+  ],
+  "installed": "/home/ubuntu/clify-runs/blaxel-w1/home/bin/ebi",
+  "explored": {
+   "steps": 22,
+   "recorded": 290,
+   "heldWrites": 0
+  }
+ },
+ "check": {
+  "on": "blaxel",
+  "node": "v24.22.0",
+  "seconds": 9,
+  "reads": 11,
+  "verified": 11,
+  "failed": [],
+  "results": [
+   {
+    "name": "search-domain",
+    "ok": true,
+    "ms": 658
+   },
+   {
+    "name": "get-search-facets",
+    "ok": true,
+    "ms": 180
+   },
+   {
+    "name": "count-all-domains",
+    "ok": true,
+    "ms": 792
+   },
+   {
+    "name": "list-domains",
+    "ok": true,
+    "ms": 863
+   },
+   {
+    "name": "get-domain-info",
+    "ok": true,
+    "ms": 163
+   },
+   {
+    "name": "get-entries",
+    "ok": true,
+    "ms": 156
+   },
+   {
+    "name": "list-entry-xref-domains",
+    "ok": true,
+    "ms": 161
+   },
+   {
+    "name": "get-entry-xrefs",
+    "ok": true,
+    "ms": 358
+   },
+   {
+    "name": "identify-term",
+    "ok": true,
+    "ms": 2046
+   },
+   {
+    "name": "get-summary-details",
+    "ok": true,
+    "ms": 1347
+   },
+   {
+    "name": "fetch-sequence",
+    "ok": true,
+    "ms": 285
+   }
+  ]
+ },
+ "deleted": true,
+ "seconds": 254
+}

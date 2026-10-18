@@ -1,0 +1,369 @@
+{
+ "name": "ecb-europa",
+ "startUrl": "https://data.ecb.europa.eu/",
+ "origin": "https://data.ecb.europa.eu",
+ "createdAt": "2026-10-18T09:18:09.046Z",
+ "description": "ECB Data Portal (data.ecb.europa.eu): search European Central Bank statistical series (HICP inflation, exchange rates, SPF forecasts and more), fetch a series' observations as JSON, and pull raw data from the public ECB SDMX REST API.",
+ "commands": [
+  {
+   "name": "get-series-observations",
+   "summary": "Get the observations (period, value, unit, trend, status) of one ECB series by its full series key, e.g. HICP.M.U2.N.SERV00.4D0.ANR",
+   "method": "GET",
+   "urlTemplate": "/data-detail-api/{series_key}",
+   "params": [
+    {
+     "name": "series_key",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Full series key: DATASET.dim1.dim2... For example HICP.M.U2.N.SERV00.4D0.ANR (euro area services inflation), EXR.D.USD.EUR.SP00.A (daily USD/EUR rate) or SPF.Q.U2.HICP.POINT.LT.Q.AVG.",
+     "example": "HICP.M.U2.N.SERV00.4D0.ANR"
+    }
+   ],
+   "responseType": "json",
+   "defaultFields": [
+    "PERIOD_NAME",
+    "OBS",
+    "UNIT",
+    "TREND_INDICATOR",
+    "OBS_STATUS",
+    "LEGEND",
+    "PERIOD_DATA_COMP",
+    "VALID_FROM"
+   ],
+   "mutates": false,
+   "example": {
+    "series_key": "HICP.M.U2.N.SERV00.4D0.ANR"
+   },
+   "source": "E1 E414 GET https://data.ecb.europa.eu/data-detail-api/HICP.M.U2.N.SERV00.4D0.ANR",
+   "verified": true
+  },
+  {
+   "name": "search-series",
+   "summary": "Keyword search for ECB data series, optionally filtered by concept tag; returns links to series detail pages that contain the series keys",
+   "method": "GET",
+   "urlTemplate": "/search-results",
+   "params": [
+    {
+     "name": "searchTerm",
+     "in": "query",
+     "required": true,
+     "type": "string",
+     "description": "Free-text search term, e.g. 'inflation', 'services', 'exchange rate'",
+     "example": "inflation"
+    },
+    {
+     "name": "layerType",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Result layer: KL = key series, DL = data layer (all series), AL = all layers",
+     "enum": [
+      "KL",
+      "DL",
+      "AL"
+     ],
+     "default": "KL"
+    },
+    {
+     "name": "tag",
+     "key": "tags_array[0]",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Concept/tag filter as shown in the facet list, e.g. 'Services'",
+     "example": "Services"
+    },
+    {
+     "name": "page",
+     "in": "query",
+     "required": false,
+     "type": "number",
+     "description": "Zero-based page index (0 = first page, 1 = second page)",
+     "default": 0
+    }
+   ],
+   "responseType": "html",
+   "extract": {
+    "list": "a[href*='/data/datasets/']",
+    "fields": {
+     "title": "",
+     "url": "@href"
+    }
+   },
+   "defaultFields": [
+    "title",
+    "url"
+   ],
+   "pagination": {
+    "type": "page",
+    "param": "page"
+   },
+   "mutates": false,
+   "example": {
+    "searchTerm": "inflation",
+    "layerType": "KL"
+   },
+   "source": "E415 GET https://data.ecb.europa.eu/search-results",
+   "verified": true
+  },
+  {
+   "name": "get-sdmx-data",
+   "summary": "Download series data as CSV from the public ECB SDMX REST API (data-api.ecb.europa.eu); supports wildcard keys and period filters",
+   "method": "GET",
+   "urlTemplate": "https://data-api.ecb.europa.eu/service/data/{dataset}/{key}?format=csvdata",
+   "params": [
+    {
+     "name": "dataset",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Dataflow id, e.g. EXR, HICP, SPF",
+     "example": "EXR"
+    },
+    {
+     "name": "key",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Series key without the dataset prefix. Dimensions are dot-separated; leave a dimension empty for wildcard and join several values with '+', e.g. M.USD+GBP.EUR.SP00.A",
+     "example": "M.USD.EUR.SP00.A"
+    },
+    {
+     "name": "startPeriod",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Start period: YYYY, YYYY-MM, YYYY-Qn or YYYY-MM-DD",
+     "example": "2025-01"
+    },
+    {
+     "name": "endPeriod",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "End period, same formats as startPeriod"
+    },
+    {
+     "name": "lastNObservations",
+     "in": "query",
+     "required": false,
+     "type": "number",
+     "description": "Return only the last N observations of each series"
+    },
+    {
+     "name": "detail",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Amount of detail returned",
+     "enum": [
+      "full",
+      "dataonly",
+      "serieskeysonly",
+      "nodata"
+     ]
+    }
+   ],
+   "responseType": "text",
+   "mutates": false,
+   "example": {
+    "dataset": "EXR",
+    "key": "M.USD.EUR.SP00.A",
+    "startPeriod": "2025-01"
+   },
+   "source": "E423 E424 GET https://data.ecb.europa.eu/help/api/overview",
+   "verified": true
+  },
+  {
+   "name": "list-dataflows",
+   "summary": "List all ECB dataflows (dataset ids, names and their data structure ids) from the SDMX REST API",
+   "method": "GET",
+   "urlTemplate": "https://data-api.ecb.europa.eu/service/dataflow/ECB",
+   "params": [],
+   "responseType": "json",
+   "resultPath": "mes:Structure.mes:Structures.str:Dataflows.str:Dataflow",
+   "defaultFields": [
+    "@id",
+    "com:Name",
+    "str:Structure.Ref.@id"
+   ],
+   "mutates": false,
+   "source": "E422 E423",
+   "verified": true
+  },
+  {
+   "name": "get-data-structure",
+   "summary": "Get the SDMX data structure definition (dimensions, concepts and code lists) for a dataset, e.g. ECB_EXR1 for EXR",
+   "method": "GET",
+   "urlTemplate": "https://data-api.ecb.europa.eu/service/datastructure/ECB/{dsd_id}?references=children",
+   "params": [
+    {
+     "name": "dsd_id",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Data structure definition id, as returned by list-dataflows (str:Structure.Ref.@id), e.g. ECB_EXR1 (EXR), ECB_ICP1 (HICP)",
+     "example": "ECB_EXR1"
+    }
+   ],
+   "responseType": "json",
+   "resultPath": "mes:Structure.mes:Structures",
+   "mutates": false,
+   "example": {
+    "dsd_id": "ECB_EXR1"
+   },
+   "source": "E422",
+   "verified": true
+  }
+ ],
+ "blockers": [],
+ "notes": [
+  "All endpoints are public and need no login.",
+  "get-series-observations returns a JSON array of observations, newest first. OBS is the rounded display value and OBS_VALUE_AS_IS is the full-precision value. PERIOD is a UTC timestamp of the period start; PERIOD_NAME is human-readable.",
+  "Series key pattern for HICP: HICP.{freq M/A}.{area: U2=euro area, DE, FR, IT, ...}.N.{item: 000000=all items, SERV00=services, NRGY00=energy, FOOD00=food, XEF000=core, IGXE00=non-energy industrial goods, 040000=housing...}.4D0.{ANR=annual rate | INX=index}.",
+  "Series key pattern for exchange rates: EXR.{D/M/A}.{currency}.EUR.SP00.A, e.g. EXR.D.USD.EUR.SP00.A.",
+  "Search results pages are zero-based: page=1 is the second page. Result links have the form /data/datasets/{DATASET}/{SERIES_KEY}; pass the last path segment to get-series-observations.",
+  "The SDMX commands (get-sdmx-data, list-dataflows, get-data-structure) use the documented public API at data-api.ecb.europa.eu. Their XML responses are converted to JSON and can be large; prefer detail/lastNObservations to limit size.",
+  "Not captured: the geographical-area and dataset filters, the sort order of search results, and the data-cart and currency-converter actions (the converter runs only in the browser)."
+ ],
+ "dropped": [
+  {
+   "name": "search-data-information",
+   "summary": "Search the 'Data information' tab (dataset descriptions, methodology and metadata pages) by keyword",
+   "method": "GET",
+   "urlTemplate": "/search-results/data-information",
+   "params": [
+    {
+     "name": "searchTerm",
+     "in": "query",
+     "required": true,
+     "type": "string",
+     "description": "Free-text search term",
+     "example": "inflation"
+    },
+    {
+     "name": "page",
+     "in": "query",
+     "required": false,
+     "type": "number",
+     "description": "Zero-based page index",
+     "default": 0
+    }
+   ],
+   "responseType": "html",
+   "extract": {
+    "list": "a[href*='/data/']",
+    "fields": {
+     "title": "",
+     "url": "@href"
+    }
+   },
+   "defaultFields": [
+    "title",
+    "url"
+   ],
+   "pagination": {
+    "type": "page",
+    "param": "page"
+   },
+   "mutates": false,
+   "example": {
+    "searchTerm": "inflation"
+   },
+   "source": "E429 GET https://data.ecb.europa.eu/search-results/data-information",
+   "verified": false,
+   "verifyNote": "Output is only site navigation links (Data categories, Concepts, Geographical areas), not search results. The evidence shows no result markup to target with a better selector."
+  },
+  {
+   "name": "search-publications",
+   "summary": "Search ECB statistical publications (press releases, bulletins, reports) on the Data Portal by keyword",
+   "method": "GET",
+   "urlTemplate": "/search-results/publications",
+   "params": [
+    {
+     "name": "searchTerm",
+     "in": "query",
+     "required": true,
+     "type": "string",
+     "description": "Free-text search term",
+     "example": "inflation"
+    },
+    {
+     "name": "page",
+     "in": "query",
+     "required": false,
+     "type": "number",
+     "description": "Zero-based page index",
+     "default": 0
+    }
+   ],
+   "responseType": "html",
+   "extract": {
+    "list": "a[href*='/publications']",
+    "fields": {
+     "title": "",
+     "url": "@href"
+    }
+   },
+   "defaultFields": [
+    "title",
+    "url"
+   ],
+   "pagination": {
+    "type": "page",
+    "param": "page"
+   },
+   "mutates": false,
+   "example": {
+    "searchTerm": "inflation"
+   },
+   "source": "E426 GET https://data.ecb.europa.eu/search-results/publications",
+   "verified": false,
+   "verifyNote": "Output is repeated 'Publications' menu links, not publication search results. The results appear to load client-side."
+  },
+  {
+   "name": "get-dataset",
+   "summary": "Open a dataset overview page (e.g. EXR, HICP, SPF) and list links to its series",
+   "method": "GET",
+   "urlTemplate": "/data/datasets/{dataset}",
+   "params": [
+    {
+     "name": "dataset",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Dataset (dataflow) id, e.g. EXR (exchange rates), HICP (consumer prices), SPF (Survey of Professional Forecasters)",
+     "example": "EXR"
+    }
+   ],
+   "responseType": "html",
+   "extract": {
+    "list": "a[href*='/data/datasets/']",
+    "fields": {
+     "title": "",
+     "url": "@href"
+    }
+   },
+   "defaultFields": [
+    "title",
+    "url"
+   ],
+   "mutates": false,
+   "example": {
+    "dataset": "EXR"
+   },
+   "source": "E417 GET https://data.ecb.europa.eu/data/datasets/EXR",
+   "verified": false,
+   "verifyNote": "Output is only page navigation (dataset title, Data and Data information tabs), not series links. get-sdmx-data with detail=serieskeysonly already lists a dataset's series."
+  }
+ ],
+ "generated": {
+  "by": "clify add",
+  "model": "claude-opus-5-5",
+  "exploredSteps": 29,
+  "recorded": 562,
+  "verifiedAt": "2026-10-18T09:19:19.492Z",
+  "seconds": 337
+ }
+}

@@ -1,0 +1,41 @@
+{
+ "task": "books-mystery-max",
+ "site": "books",
+ "mode": "browser-ui",
+ "trial": 1,
+ "tag": "ui",
+ "ok": true,
+ "why": "all expected values present",
+ "answer": "Boar Island (Anna Pigeon #19) — £59.48",
+ "expected": {
+  "expect": [
+   "Boar Island",
+   "59.48"
+  ],
+  "detail": {
+   "title": "Boar Island (Anna Pigeon #19)",
+   "price": "£59.48",
+   "url": "https://books.toscrape.com/catalogue/boar-island-anna-pigeon-19_613/index.html",
+   "n": 32
+  }
+ },
+ "wallMs": 13331,
+ "apiMs": 10468,
+ "turns": 6,
+ "toolCalls": 5,
+ "tokens": {
+  "input": 10,
+  "output": 580,
+  "cacheWrite": 22901,
+  "cacheRead": 67471,
+  "total": 90962
+ },
+ "costUsd": 0.13963920000000002,
+ "models": [
+  "claude-opus-5-5"
+ ],
+ "exitCode": 0,
+ "timedOut": false,
+ "subtype": "success",
+ "startedAt": "2026-10-17T23:28:11.694Z"
+}

@@ -1,0 +1,29 @@
+{
+ "name": "apnews",
+ "startUrl": "https://apnews.com/",
+ "origin": "https://apnews.com",
+ "createdAt": "2026-10-18T09:17:31.651Z",
+ "description": "AP News (apnews.com), a news wire site. No CLI commands can be built from this recording, because every page was behind a Cloudflare bot check.",
+ "commands": [],
+ "blockers": [
+  "bot-check at https://apnews.com/",
+  "bot-check at https://apnews.com/hub/politics",
+  "captcha"
+ ],
+ "notes": [
+  "The only recorded request was GET https://apnews.com/. It returned a 307 redirect to a Cloudflare bot check, not article data, so no command could replay it and get results.",
+  "/hub/politics was also blocked by the Cloudflare check. No XHR, fetch or JSON endpoints were seen.",
+  "robots.txt disallows /search, so a keyword search command must not be built against apnews.com/search.",
+  "To build commands, re-explore with a browser session that passes the Cloudflare check. Record section/hub listings (e.g. /hub/{section}), article pages (/article/{slug}) and any embedded JSON or JSON-LD on them. Then build HTML or jsonScript extract commands from that recording.",
+  "No commands were invented from guessed URLs, because the verifier needs commands that come from recorded requests with real results."
+ ],
+ "dropped": [],
+ "generated": {
+  "by": "clify add",
+  "model": "claude-opus-5-5",
+  "exploredSteps": 3,
+  "recorded": 4,
+  "verifiedAt": "2026-10-18T09:17:38.358Z",
+  "seconds": 20
+ }
+}

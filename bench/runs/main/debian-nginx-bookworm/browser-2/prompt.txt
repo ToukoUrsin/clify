@@ -1,0 +1,6 @@
+On packages.debian.org, what version of the nginx package is in Debian bookworm?
+
+Start from https://packages.debian.org/. Work it out using only the tools you have, then end your reply with one final line exactly in the form:
+ANSWER: <short answer>
+
+You have a web browser (Playwright tools). Use it to find the answer on the website.

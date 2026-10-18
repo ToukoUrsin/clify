@@ -1,0 +1,158 @@
+{
+ "url": "https://www.semanticscholar.org/",
+ "category": "science",
+ "sandbox": "clify-www-semanticscholar-org",
+ "startedAt": "2026-10-18T08:30:58.505Z",
+ "region": "us-pdx-1",
+ "chrome": "Chrome/148.0.7778.96",
+ "sandboxStartMs": 1762,
+ "addSeconds": 178,
+ "addExit": 0,
+ "add": {
+  "ok": true,
+  "site": "semanticscholar",
+  "url": "https://www.semanticscholar.org/",
+  "commands": [
+   {
+    "name": "match-paper-title",
+    "summary": "Find the single paper that best matches a given title (returns 404 if there is no good match)",
+    "verified": true
+   },
+   {
+    "name": "get-paper-citations",
+    "summary": "List the papers that cite a given paper (citing papers, with context/intents)",
+    "verified": true
+   },
+   {
+    "name": "get-paper-references",
+    "summary": "List the papers a given paper cites (its bibliography)",
+    "verified": true
+   },
+   {
+    "name": "get-paper-recommendations",
+    "summary": "Recommend papers similar to a given paper",
+    "verified": true
+   },
+   {
+    "name": "search-authors",
+    "summary": "Search authors by name",
+    "verified": true
+   },
+   {
+    "name": "get-author",
+    "summary": "Get an author profile: name, affiliations, homepage, paper count, citation count, h-index",
+    "verified": true
+   },
+   {
+    "name": "list-author-papers",
+    "summary": "List the papers written by an author",
+    "verified": true
+   },
+   {
+    "name": "autocomplete-papers",
+    "summary": "Title and query suggestions for partial text, as shown in the semanticscholar.org search box",
+    "verified": true
+   }
+  ],
+  "verified": 8,
+  "writes": 0,
+  "dropped": [
+   {
+    "name": "search-papers",
+    "reason": "HTTP 429: rate limited by the site; wait a minute before retrying (HTTP 429)"
+   },
+   {
+    "name": "get-paper",
+    "reason": "HTTP 429: rate limited by the site; wait a minute before retrying (HTTP 429)"
+   }
+  ],
+  "blockers": [
+   "captcha"
+  ],
+  "loggedIn": false,
+  "seconds": 178,
+  "next": [
+   "clify semanticscholar",
+   "clify semanticscholar match-paper-title --query \"Attention is All you Need\""
+  ],
+  "installed": "/home/ubuntu/clify-runs/blaxel-w1/home/bin/semanticscholar",
+  "explored": {
+   "steps": 15,
+   "recorded": 22,
+   "heldWrites": 5
+  }
+ },
+ "check": {
+  "on": "blaxel",
+  "node": "v24.22.0",
+  "seconds": 43,
+  "reads": 8,
+  "verified": 4,
+  "failed": [
+   {
+    "name": "get-paper-references",
+    "reason": "HTTP 429: rate limited by the site; wait a minute before retrying (HTTP 429)"
+   },
+   {
+    "name": "get-paper-recommendations",
+    "reason": "HTTP 429: rate limited by the site; wait a minute before retrying (HTTP 429)"
+   },
+   {
+    "name": "search-authors",
+    "reason": "HTTP 429: rate limited by the site; wait a minute before retrying (HTTP 429)"
+   },
+   {
+    "name": "list-author-papers",
+    "reason": "HTTP 429: rate limited by the site; wait a minute before retrying (HTTP 429)"
+   }
+  ],
+  "results": [
+   {
+    "name": "match-paper-title",
+    "ok": true,
+    "ms": 8592
+   },
+   {
+    "name": "get-paper-citations",
+    "ok": true,
+    "ms": 112
+   },
+   {
+    "name": "get-paper-references",
+    "ok": false,
+    "reason": "HTTP 429: rate limited by the site; wait a minute before retrying (HTTP 429)",
+    "ms": 8126
+   },
+   {
+    "name": "get-paper-recommendations",
+    "ok": false,
+    "reason": "HTTP 429: rate limited by the site; wait a minute before retrying (HTTP 429)",
+    "ms": 8142
+   },
+   {
+    "name": "search-authors",
+    "ok": false,
+    "reason": "HTTP 429: rate limited by the site; wait a minute before retrying (HTTP 429)",
+    "ms": 8157
+   },
+   {
+    "name": "get-author",
+    "ok": true,
+    "ms": 86
+   },
+   {
+    "name": "list-author-papers",
+    "ok": false,
+    "reason": "HTTP 429: rate limited by the site; wait a minute before retrying (HTTP 429)",
+    "ms": 8118
+   },
+   {
+    "name": "autocomplete-papers",
+    "ok": true,
+    "ms": 46
+   }
+  ]
+ },
+ "deleted": true,
+ "seconds": 224
+}

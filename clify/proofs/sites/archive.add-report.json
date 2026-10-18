@@ -1,0 +1,103 @@
+{
+ "ok": true,
+ "site": "archive",
+ "url": "https://archive.org/",
+ "commands": [
+  {
+   "name": "search-items",
+   "summary": "Keyword search across archive.org items, as the archive.org/search UI does it, with facet filters, sort and paging; set service_backend=fts to search inside book text",
+   "verified": true
+  },
+  {
+   "name": "list-collection-items",
+   "summary": "List the items in a collection (e.g. GratefulDead, texts, audio), with sort, facet filters and paging",
+   "verified": true
+  },
+  {
+   "name": "list-user-uploads",
+   "summary": "List the public uploads of an archive.org user account",
+   "verified": true
+  },
+  {
+   "name": "advanced-search",
+   "summary": "Solr-style advanced search (advancedsearch.php) returning identifier, title, creator, mediatype, date and downloads, with sort and paging",
+   "verified": true
+  },
+  {
+   "name": "scrape-items",
+   "summary": "Bulk-list every item matching a query with the cursor-based scrape API; suited to enumerating large collections",
+   "verified": true
+  },
+  {
+   "name": "get-item-metadata",
+   "summary": "Get an item's descriptive metadata (title, creator, date, collection, description and more) by identifier",
+   "verified": true
+  },
+  {
+   "name": "list-item-files",
+   "summary": "List the files in an item, with name, format, size and checksums; pass a name to download-file",
+   "verified": true
+  },
+  {
+   "name": "get-item-reviews",
+   "summary": "Get the user reviews (title, body, reviewer, stars, date) posted on an item",
+   "verified": true
+  },
+  {
+   "name": "get-item-fulltext",
+   "summary": "Get the full OCR plain text of a text item (book or document)",
+   "verified": true
+  },
+  {
+   "name": "download-file",
+   "summary": "Download one file from an item (text files are returned as text)",
+   "verified": true
+  },
+  {
+   "name": "get-collection-views",
+   "summary": "Get view statistics for a collection over the last N days, broken down by country and region",
+   "verified": true
+  },
+  {
+   "name": "list-user-lists",
+   "summary": "Get a user's public item lists and the items each one contains",
+   "verified": true
+  },
+  {
+   "name": "list-top-collections",
+   "summary": "List the top collections featured on the archive.org home page, with item counts",
+   "verified": true
+  },
+  {
+   "name": "get-media-counts",
+   "summary": "Get total item counts per media type (texts, movies, audio, software, image, etree, tv, web)",
+   "verified": true
+  },
+  {
+   "name": "wayback-available",
+   "summary": "Find the Wayback Machine snapshot of a URL closest to a given timestamp",
+   "verified": true
+  },
+  {
+   "name": "list-wayback-snapshots",
+   "summary": "List Wayback Machine captures of a URL from the CDX index, optionally limited to a date range",
+   "verified": true
+  }
+ ],
+ "verified": 16,
+ "writes": 0,
+ "dropped": [],
+ "blockers": [],
+ "loggedIn": false,
+ "seconds": 271,
+ "next": [
+  "clify archive",
+  "clify archive search-items --query \"grateful dead\" --filter_map \"{\\\"mediatype\\\":{\\\"audio\\\":\\\"inc\\\"}}\" --sort \"downloads:desc\""
+ ],
+ "installed": "/home/ubuntu/clify-runs/batch2/home/bin/archive",
+ "explored": {
+  "steps": 21,
+  "recorded": 87,
+  "heldWrites": 0
+ }
+}

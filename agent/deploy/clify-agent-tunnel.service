@@ -1,0 +1,22 @@
+# The Inkbox tunnel of the agent's identity: https://<handle>.inkboxwire.com → the status
+# page on 127.0.0.1:18320. One outbound connection; the key comes from the peer's vault.
+[Unit]
+Description=clify agent Inkbox tunnel (public address of the status page)
+After=network-online.target clify-agent-status.service
+Wants=network-online.target
+
+[Service]
+User=ubuntu
+WorkingDirectory=/data/workspace/clify-agent/agent/status
+Environment=CLIFY_HOME=/data/home/.clify-peer STATUS_PORT=18320 STATUS_TUNNEL_FILE=/data/home/.clify-tunnel/status.json
+ExecStart=/usr/local/bin/node --no-warnings --import /data/workspace/clify-agent/clify/node_modules/tsx/dist/esm/index.mjs tunnel.ts
+Restart=always
+RestartSec=10
+NoNewPrivileges=true
+ProtectSystem=strict
+ReadWritePaths=/data/home/.clify-tunnel
+PrivateTmp=true
+MemoryMax=256M
+
+[Install]
+WantedBy=multi-user.target

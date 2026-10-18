@@ -1,0 +1,387 @@
+{
+ "name": "remoteok",
+ "startUrl": "https://remoteok.com/",
+ "origin": "https://remoteok.com",
+ "createdAt": "2026-10-18T07:36:58.744Z",
+ "description": "RemoteOK (remoteok.com) is a remote job board. This CLI searches and filters remote job listings, reads the public JSON jobs API, opens job details, lists related jobs, company jobs and country jobs, and lists the job tag catalog. No login is needed.",
+ "commands": [
+  {
+   "name": "search-jobs",
+   "summary": "Search and filter remote job listings by keyword, tags, location, minimum salary, benefit and company, with sorting",
+   "method": "GET",
+   "urlTemplate": "/?action=get_jobs&premium=0&pagination=1",
+   "params": [
+    {
+     "name": "search",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Free-text keyword, e.g. python",
+     "example": "python"
+    },
+    {
+     "name": "tags",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Comma-separated tag keys from list-tags, e.g. dev,python",
+     "example": "dev,python"
+    },
+    {
+     "name": "location",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Two-letter country code the job accepts, e.g. US or CA",
+     "example": "US"
+    },
+    {
+     "name": "min_salary",
+     "in": "query",
+     "required": false,
+     "type": "number",
+     "description": "Minimum yearly salary in USD, e.g. 100000",
+     "example": "100000"
+    },
+    {
+     "name": "benefits",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Benefit key, e.g. 401k or distributed_team",
+     "example": "401k"
+    },
+    {
+     "name": "company",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Company name, e.g. Kodland",
+     "example": "Kodland"
+    },
+    {
+     "name": "order_by",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Sort order",
+     "enum": [
+      "latest",
+      "salary",
+      "views",
+      "applied",
+      "hottest",
+      "benefits"
+     ]
+    },
+    {
+     "name": "offset",
+     "in": "query",
+     "required": false,
+     "type": "number",
+     "description": "Result offset for pagination. Leave empty for the first page; the second page is 50."
+    }
+   ],
+   "responseType": "html",
+   "extract": {
+    "list": "tr.job",
+    "fields": {
+     "id": "@data-id",
+     "slug": "@data-slug",
+     "url": "@data-url",
+     "company": "@data-company || h3",
+     "position": "h2",
+     "location": "div.location",
+     "tags": "td.tags",
+     "date": "time@datetime"
+    }
+   },
+   "defaultFields": [
+    "id",
+    "slug",
+    "position",
+    "company",
+    "location",
+    "tags",
+    "date",
+    "url"
+   ],
+   "pagination": {
+    "type": "offset",
+    "param": "offset",
+    "step": 50
+   },
+   "mutates": false,
+   "example": {
+    "search": "python"
+   },
+   "source": "E4 GET https://remoteok.com/",
+   "verified": true
+  },
+  {
+   "name": "list-jobs-api",
+   "summary": "List the latest remote jobs as clean JSON from RemoteOK's public API, optionally filtered by one tag (includes salary, location, description and apply URL)",
+   "method": "GET",
+   "urlTemplate": "/api",
+   "params": [
+    {
+     "name": "tag",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Single tag key, e.g. python, dev or marketing",
+     "example": "python"
+    }
+   ],
+   "responseType": "json",
+   "defaultFields": [
+    "id",
+    "slug",
+    "position",
+    "company",
+    "location",
+    "salary_min",
+    "salary_max",
+    "tags",
+    "date",
+    "url"
+   ],
+   "mutates": false,
+   "example": {
+    "tag": "python"
+   },
+   "source": "E3 GET https://remoteok.com/api",
+   "verified": true
+  },
+  {
+   "name": "get-job",
+   "summary": "Get the details of one remote job (position, company, location, tags, full description, apply link) by its slug",
+   "method": "GET",
+   "urlTemplate": "/remote-jobs/{slug}",
+   "params": [
+    {
+     "name": "slug",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Job slug ending in the job id, as returned by search-jobs or list-jobs-api, e.g. remote-apac-python-kodland-1137534",
+     "example": "remote-apac-python-kodland-1137534"
+    }
+   ],
+   "responseType": "html",
+   "extract": {
+    "fields": {
+     "title": "title",
+     "id": "tr.job@data-id",
+     "position": "tr.job h2",
+     "company": "tr.job h3",
+     "location": "tr.job div.location",
+     "tags": "tr.job td.tags",
+     "date": "tr.job time@datetime",
+     "description": "div.description || div.markdown",
+     "apply_url": "a.action-apply@href"
+    }
+   },
+   "defaultFields": [
+    "id",
+    "position",
+    "company",
+    "location",
+    "tags",
+    "date",
+    "apply_url",
+    "description"
+   ],
+   "mutates": false,
+   "example": {
+    "slug": "remote-apac-python-kodland-1137534"
+   },
+   "source": "E5 E6 GET https://remoteok.com/remote-jobs/remote-senior-software-engineer-ii-applied-ai-wrapbook-1137527",
+   "verified": true
+  },
+  {
+   "name": "list-related-jobs",
+   "summary": "List jobs related to a given job (same tag), excluding that job",
+   "method": "GET",
+   "urlTemplate": "/?action=get_jobs&related=true&offset=1",
+   "params": [
+    {
+     "name": "except_id",
+     "in": "query",
+     "required": true,
+     "type": "string",
+     "description": "Numeric id of the job to find related jobs for, e.g. 1137534",
+     "example": "1137534"
+    },
+    {
+     "name": "tags",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Tag to match, e.g. python",
+     "example": "python"
+    }
+   ],
+   "responseType": "html",
+   "extract": {
+    "list": "tr.job",
+    "fields": {
+     "id": "@data-id",
+     "slug": "@data-slug",
+     "url": "@data-url",
+     "company": "@data-company || h3",
+     "position": "h2",
+     "location": "div.location",
+     "tags": "td.tags",
+     "date": "time@datetime"
+    }
+   },
+   "defaultFields": [
+    "id",
+    "slug",
+    "position",
+    "company",
+    "location",
+    "tags",
+    "url"
+   ],
+   "mutates": false,
+   "example": {
+    "except_id": "1137534",
+    "tags": "python"
+   },
+   "source": "E4 E6 GET https://remoteok.com/",
+   "verified": true
+  },
+  {
+   "name": "list-tags",
+   "summary": "List every job tag key with its display label (use the keys for the tags/tag params)",
+   "method": "GET",
+   "urlTemplate": "/assets/all-tags.json",
+   "params": [],
+   "headers": {
+    "x-requested-with": "XMLHttpRequest"
+   },
+   "responseType": "json",
+   "mutates": false,
+   "source": "E1 GET https://remoteok.com/assets/all-tags.json",
+   "verified": true
+  }
+ ],
+ "blockers": [
+  "bot-check at https://www.toptal.com/"
+ ],
+ "notes": [
+  "The first element of the list-jobs-api array is a metadata/legal object (last_updated, legal), not a job. Skip it. The API terms require linking back to the job URL on Remote OK and crediting Remote OK as the source.",
+  "Job slugs end with the numeric job id, e.g. remote-apac-python-kodland-1137534 has id 1137534. Use the slug for get-job and the id for list-related-jobs (except_id).",
+  "Tag pages also exist at /remote-{tag1}+{tag2}-jobs, e.g. /remote-dev+python-jobs. search-jobs --tags dev,python gives the same results.",
+  "search-jobs --location takes a two-letter country code (US, CA). list-country-jobs takes a lowercase country name slug (canada).",
+  "Apply links have the form /l/{id} and redirect to the employer's application page.",
+  "The RSS feed /remote-jobs.rss is gone (HTTP 410). Use list-jobs-api instead.",
+  "The HTML job-row selectors (tr.job with data-id, data-slug, data-url and data-company) come from RemoteOK's jobsboard table markup. The recorded outline only showed the table up to table#jobsboard, so these selectors were not visible in the recording."
+ ],
+ "dropped": [
+  {
+   "name": "list-company-jobs",
+   "summary": "List all remote jobs posted by one company, by company slug",
+   "method": "GET",
+   "urlTemplate": "/company/{company}",
+   "params": [
+    {
+     "name": "company",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Lowercase company slug, e.g. kodland",
+     "example": "kodland"
+    }
+   ],
+   "responseType": "html",
+   "extract": {
+    "list": "tr.job",
+    "fields": {
+     "id": "@data-id",
+     "slug": "@data-slug",
+     "url": "@data-url",
+     "company": "@data-company || h3",
+     "position": "h2",
+     "location": "div.location",
+     "tags": "td.tags",
+     "date": "time@datetime"
+    }
+   },
+   "defaultFields": [
+    "id",
+    "slug",
+    "position",
+    "company",
+    "location",
+    "tags",
+    "date",
+    "url"
+   ],
+   "mutates": false,
+   "example": {
+    "company": "kodland"
+   },
+   "source": "E7 GET https://remoteok.com/company/kodland",
+   "verified": false,
+   "verifyNote": "The /company/{slug} page is a JS shell. It ships only tr.placeholder.job rows and loads real jobs through the action=get_jobs infinity-scroll call, so the static HTML never has job data. search-jobs already covers this with its company param."
+  },
+  {
+   "name": "list-country-jobs",
+   "summary": "List remote jobs open to residents of one country, by country name slug",
+   "method": "GET",
+   "urlTemplate": "/remote-jobs-in-{country}",
+   "params": [
+    {
+     "name": "country",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Lowercase country name with hyphens for spaces, e.g. canada, united-states, germany",
+     "example": "canada"
+    }
+   ],
+   "responseType": "html",
+   "extract": {
+    "list": "tr.job",
+    "fields": {
+     "id": "@data-id",
+     "slug": "@data-slug",
+     "url": "@data-url",
+     "company": "@data-company || h3",
+     "position": "h2",
+     "location": "div.location",
+     "tags": "td.tags",
+     "date": "time@datetime"
+    }
+   },
+   "defaultFields": [
+    "id",
+    "slug",
+    "position",
+    "company",
+    "location",
+    "tags",
+    "date",
+    "url"
+   ],
+   "mutates": false,
+   "example": {
+    "country": "canada"
+   },
+   "source": "E9 GET https://remoteok.com/remote-jobs-in-canada",
+   "verified": false,
+   "verifyNote": "The /remote-jobs-in-{country} page is the same JS shell, with placeholder rows only and jobs loaded later by JS. search-jobs already covers this with its location param (country code)."
+  }
+ ],
+ "generated": {
+  "by": "clify add",
+  "model": "claude-opus-5-5",
+  "exploredSteps": 19,
+  "recorded": 49,
+  "verifiedAt": "2026-10-18T07:37:59.882Z",
+  "seconds": 187
+ }
+}

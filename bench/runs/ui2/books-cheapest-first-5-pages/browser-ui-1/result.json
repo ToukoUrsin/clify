@@ -1,0 +1,43 @@
+{
+ "task": "books-cheapest-first-5-pages",
+ "site": "books",
+ "mode": "browser-ui",
+ "trial": 1,
+ "tag": "ui2",
+ "ok": true,
+ "why": "all expected values present",
+ "answer": "Patience — £10.16",
+ "expected": {
+  "expect": [
+   "Patience",
+   "10.16"
+  ],
+  "detail": {
+   "title": "Patience",
+   "price": "£10.16",
+   "stock": "In stock",
+   "rating": "star-rating Three",
+   "url": "https://books.toscrape.com/catalogue/patience_916/index.html",
+   "n": 100
+  }
+ },
+ "wallMs": 22942,
+ "apiMs": 19742,
+ "turns": 13,
+ "toolCalls": 12,
+ "tokens": {
+  "input": 14,
+  "output": 1489,
+  "cacheWrite": 22443,
+  "cacheRead": 134516,
+  "total": 158462
+ },
+ "costUsd": 0.1689542,
+ "models": [
+  "claude-opus-5-5"
+ ],
+ "exitCode": 0,
+ "timedOut": false,
+ "subtype": "success",
+ "startedAt": "2026-10-17T23:33:25.335Z"
+}

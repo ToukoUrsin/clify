@@ -1,0 +1,293 @@
+{
+ "name": "remotive",
+ "startUrl": "https://remotive.com/",
+ "origin": "https://remotive.com",
+ "createdAt": "2026-10-18T08:49:08.375Z",
+ "description": "Remotive is a remote-job board. This CLI searches and filters remote job listings, lists facet values such as categories, job types, seniority levels and locations, opens job detail pages, and lists the site's browse-index pages.",
+ "commands": [
+  {
+   "name": "get-job",
+   "summary": "Get one remote job posting's detail page by its category slug and job slug (the slug ends in the numeric job id).",
+   "method": "GET",
+   "urlTemplate": "/remote/jobs/{category}/{slug}",
+   "params": [
+    {
+     "name": "category",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Category slug from the job URL, e.g. 'software-development'",
+     "example": "software-development"
+    },
+    {
+     "name": "slug",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Job slug including the trailing id, e.g. 'python-developer-6288354'",
+     "example": "python-developer-6288354"
+    }
+   ],
+   "responseType": "html",
+   "extract": {
+    "fields": {
+     "title": "h1",
+     "description": "meta[name=description]@content",
+     "url": "link[rel=canonical]@href"
+    }
+   },
+   "mutates": false,
+   "example": {
+    "category": "software-development",
+    "slug": "python-developer-6288354"
+   },
+   "source": "E4 E5 GET https://remotive.com/remote/jobs/software-development/{id}",
+   "verified": true
+  },
+  {
+   "name": "list-job-index-pages",
+   "summary": "List Remotive's browse pages for jobs by category, location, employment type, career level and posting date, e.g. /remote-jobs/l-germany, /remote-jobs/cl-senior, /remote-jobs/posted-last-24h.",
+   "method": "GET",
+   "urlTemplate": "/remote-jobs-index",
+   "params": [],
+   "responseType": "html",
+   "extract": {
+    "list": "a[href^=\"/remote-jobs/\"]",
+    "fields": {
+     "name": "",
+     "url": "@href"
+    }
+   },
+   "defaultFields": [
+    "name",
+    "url"
+   ],
+   "mutates": false,
+   "source": "E6 GET https://remotive.com/remote-jobs-index",
+   "verified": true
+  }
+ ],
+ "blockers": [],
+ "notes": [
+  "search-jobs puts each filter into facetFilters as 'field:value'. Leave a filter out to skip it. Filter values must match the facet values from list-job-facets exactly, e.g. category 'Software Development', job_type 'full-time'. The seniority and location values were inferred from UI labels.",
+  "search-jobs pages are zero-based and return 35 hits each. The explorer never loaded page 2, so pagination is untested.",
+  "Anonymous requests go through a paywall profile ('paywallProfile: custom'). Without logging in, some listings or details may be hidden or limited.",
+  "Job detail URLs look like /remote/jobs/{category-slug}/{title-slug}-{id}. Take the url or slug from search-jobs hits and pass it to get-job.",
+  "robots.txt disallows the /remote-jobs/* pages and the public JSON API at /api/remote-jobs, so this CLI doesn't use them.",
+  "Skipped: /api/my/auth-status (session check) and sa.remotive.com/append (analytics). Saving jobs and filtering by posted date, salary, skills, language or company were not recorded."
+ ],
+ "dropped": [
+  {
+   "name": "search-jobs",
+   "summary": "Search remote jobs by keyword, with optional filters for category, employment type, career level and location. Results are paginated, 35 per page.",
+   "method": "POST",
+   "urlTemplate": "/api/v2/jobs/search/",
+   "params": [
+    {
+     "name": "query",
+     "in": "body",
+     "required": false,
+     "type": "string",
+     "description": "Free-text keyword search, e.g. 'python developer'. Leave empty to match all jobs.",
+     "example": "python developer"
+    },
+    {
+     "name": "category",
+     "in": "body",
+     "required": false,
+     "type": "string",
+     "description": "Job category facet value, exactly as returned by list-job-facets (facets.category), e.g. 'Software Development'",
+     "example": "Software Development"
+    },
+    {
+     "name": "job_type",
+     "in": "body",
+     "required": false,
+     "type": "string",
+     "description": "Employment type facet value (facets.job_type), e.g. 'full-time'",
+     "example": "full-time"
+    },
+    {
+     "name": "seniority",
+     "in": "body",
+     "required": false,
+     "type": "string",
+     "description": "Career level facet value (facets.seniority), e.g. 'senior'",
+     "example": "senior"
+    },
+    {
+     "name": "location",
+     "in": "body",
+     "required": false,
+     "type": "string",
+     "description": "Location facet value (facets.location_filters), e.g. 'USA'",
+     "example": "USA"
+    },
+    {
+     "name": "location_mode",
+     "in": "body",
+     "required": false,
+     "type": "string",
+     "description": "How the location filter matches. 'open' = jobs available from the location, including region-wide or Worldwide jobs. 'listed' = only jobs that explicitly name the location.",
+     "enum": [
+      "open",
+      "listed"
+     ],
+     "default": "open"
+    },
+    {
+     "name": "page",
+     "in": "body",
+     "required": false,
+     "type": "number",
+     "description": "Zero-based results page",
+     "default": 0
+    }
+   ],
+   "bodyTemplate": {
+    "requests": [
+     {
+      "indexName": "remotive_unlimited",
+      "params": {
+       "facetFilters": [
+        [
+         "category:{category}"
+        ],
+        [
+         "job_type:{job_type}"
+        ],
+        [
+         "seniority:{seniority}"
+        ],
+        [
+         "location_filters:{location}"
+        ]
+       ],
+       "facets": [
+        "category",
+        "job_type",
+        "seniority",
+        "location_filters",
+        "lang",
+        "max_salary",
+        "skills"
+       ],
+       "hitsPerPage": 35,
+       "maxValuesPerFacet": 100,
+       "page": "{page}",
+       "query": "{query}",
+       "tagFilters": "",
+       "skillsOperator": "or",
+       "locationMode": "{location_mode}"
+      }
+     }
+    ],
+    "paywallProfile": "custom"
+   },
+   "bodyEncoding": "json",
+   "headers": {
+    "content-type": "application/json"
+   },
+   "responseType": "json",
+   "resultPath": "results.0.hits",
+   "defaultFields": [
+    "id",
+    "title",
+    "company_name",
+    "category",
+    "job_type",
+    "seniority",
+    "location",
+    "url"
+   ],
+   "pagination": {
+    "type": "page",
+    "param": "page"
+   },
+   "mutates": false,
+   "example": {
+    "query": "python developer",
+    "category": "Software Development"
+   },
+   "source": "E1",
+   "verified": false,
+   "verifyNote": "The live call returned no 'results' array, so resultPath results.0.hits resolved to undefined and the runtime crashed on .slice. The request targets the paid 'remotive_unlimited' index with paywallProfile 'custom', which most likely needs a logged-in paying session. No live response schema was provided to build a correct shape. Separately, the fixed facetFilters template sends empty 'category:' etc. filters when those params are omitted, which would break unfiltered searches."
+  },
+  {
+   "name": "list-job-facets",
+   "summary": "List the available filter values, with job counts, for a keyword search: categories, employment types, seniority levels, locations, languages, salary buckets and skills. Use these values for the searc",
+   "method": "POST",
+   "urlTemplate": "/api/v2/jobs/search/",
+   "params": [
+    {
+     "name": "query",
+     "in": "body",
+     "required": false,
+     "type": "string",
+     "description": "Optional keyword that limits the facet counts to matching jobs. Leave empty for all jobs.",
+     "example": "python developer"
+    },
+    {
+     "name": "location_mode",
+     "in": "body",
+     "required": false,
+     "type": "string",
+     "description": "Location matching mode: 'open' includes region-wide/Worldwide jobs, 'listed' only explicit locations",
+     "enum": [
+      "open",
+      "listed"
+     ],
+     "default": "open"
+    }
+   ],
+   "bodyTemplate": {
+    "requests": [
+     {
+      "indexName": "remotive_unlimited",
+      "params": {
+       "analytics": false,
+       "clickAnalytics": false,
+       "facets": [
+        "category",
+        "job_type",
+        "seniority",
+        "location_filters",
+        "lang",
+        "max_salary",
+        "skills"
+       ],
+       "hitsPerPage": 0,
+       "maxValuesPerFacet": 100,
+       "page": 0,
+       "query": "{query}",
+       "skillsOperator": "or",
+       "locationMode": "{location_mode}"
+      }
+     }
+    ],
+    "paywallProfile": "custom"
+   },
+   "bodyEncoding": "json",
+   "headers": {
+    "content-type": "application/json"
+   },
+   "responseType": "json",
+   "resultPath": "results.0.facets",
+   "mutates": false,
+   "example": {
+    "query": "python developer"
+   },
+   "source": "E1",
+   "verified": false,
+   "verifyNote": "This hits the same endpoint and fails the same way: the response had no 'results' array, so results.0.facets was undefined. It also uses the paywalled 'remotive_unlimited' index and paywallProfile, which likely needs a session. There is no live evidence to repair the result path."
+  }
+ ],
+ "generated": {
+  "by": "clify add",
+  "model": "claude-opus-5-5",
+  "exploredSteps": 28,
+  "recorded": 157,
+  "verifiedAt": "2026-10-18T08:51:09.585Z",
+  "seconds": 307
+ }
+}

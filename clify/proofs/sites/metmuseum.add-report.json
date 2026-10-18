@@ -1,0 +1,25 @@
+{
+ "ok": false,
+ "site": "metmuseum",
+ "url": "https://www.metmuseum.org/art/collection/search",
+ "commands": [],
+ "verified": 0,
+ "writes": 0,
+ "dropped": [],
+ "blockers": [
+  "bot-check at https://www.metmuseum.org/art/collection/search",
+  "bot-check at https://www.metmuseum.org/art/collection/search?q=sunflowers",
+  "captcha"
+ ],
+ "loggedIn": false,
+ "seconds": 22,
+ "next": [
+  "clify metmuseum",
+  "clify repair metmuseum --goal \"<what you need from the site>\""
+ ],
+ "explored": {
+  "steps": 2,
+  "recorded": 93,
+  "heldWrites": 30
+ }
+}

@@ -1,0 +1,93 @@
+{
+ "name": "weworkremotely",
+ "startUrl": "https://weworkremotely.com/",
+ "origin": "https://weworkremotely.com",
+ "createdAt": "2026-10-18T08:22:41.820Z",
+ "description": "We Work Remotely (weworkremotely.com) is a remote job board. This CLI reads the public RSS feeds to list the latest remote jobs, either across all categories or within one category.",
+ "commands": [
+  {
+   "name": "list-jobs",
+   "summary": "List the latest remote job postings across all categories (public RSS feed)",
+   "method": "GET",
+   "urlTemplate": "/remote-jobs.rss",
+   "params": [],
+   "headers": {
+    "accept": "application/rss+xml,application/xml;q=0.9,*/*;q=0.8"
+   },
+   "responseType": "json",
+   "resultPath": "rss.channel.item",
+   "defaultFields": [
+    "title",
+    "category",
+    "region",
+    "country",
+    "type",
+    "skills",
+    "pubDate",
+    "link"
+   ],
+   "mutates": false,
+   "source": "E1",
+   "verified": true
+  },
+  {
+   "name": "list-category-jobs",
+   "summary": "List the latest remote job postings in one job category, such as full-stack programming, design or devops (public RSS feed)",
+   "method": "GET",
+   "urlTemplate": "/categories/{category}.rss",
+   "params": [
+    {
+     "name": "category",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Category slug as used in the site's /categories/ URLs (without .rss). Verified slugs: remote-full-stack-programming-jobs, remote-design-jobs, remote-devops-sysadmin-jobs. Other categories follow the s",
+     "example": "remote-full-stack-programming-jobs"
+    }
+   ],
+   "headers": {
+    "accept": "application/rss+xml,application/xml;q=0.9,*/*;q=0.8"
+   },
+   "responseType": "json",
+   "resultPath": "rss.channel.item",
+   "defaultFields": [
+    "title",
+    "category",
+    "region",
+    "country",
+    "type",
+    "skills",
+    "pubDate",
+    "link"
+   ],
+   "mutates": false,
+   "example": {
+    "category": "remote-full-stack-programming-jobs"
+   },
+   "source": "E2 E3 E4",
+   "verified": true
+  }
+ ],
+ "blockers": [
+  "bot-check at https://weworkremotely.com/",
+  "bot-check at https://weworkremotely.com/remote-jobs/search?term=python",
+  "bot-check at https://weworkremotely.com/remote-jobs/search.rss?term=python",
+  "captcha"
+ ],
+ "notes": [
+  "A Cloudflare bot check blocks every HTML page, including the homepage, keyword search (/remote-jobs/search?term=), search RSS (/remote-jobs/search.rss) and job detail pages. Only the public RSS feeds work, so the CLI has no keyword search, filter, paging or job-detail command.",
+  "Each feed returns only the most recent postings and has no pagination. To filter by region, type or skills, filter the returned items on the client side.",
+  "Item titles use the format 'Company: Job Title'. 'link' and 'guid' hold the job's page URL on weworkremotely.com, which is behind Cloudflare and may not load without a browser.",
+  "'description' contains the full job posting as HTML and can be large, so request it explicitly only when needed. The country, state and skills fields are often empty strings.",
+  "The feeds declare ttl 60 minutes, so polling more often than about once an hour returns no new data."
+ ],
+ "dropped": [],
+ "generated": {
+  "by": "clify add",
+  "model": "claude-opus-5-5",
+  "exploredSteps": 7,
+  "recorded": 9,
+  "verifiedAt": "2026-10-18T08:23:07.507Z",
+  "seconds": 66
+ }
+}

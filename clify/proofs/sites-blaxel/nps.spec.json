@@ -1,0 +1,823 @@
+{
+ "name": "nps",
+ "startUrl": "https://www.nps.gov/",
+ "origin": "https://www.nps.gov",
+ "createdAt": "2026-10-18T09:05:58.887Z",
+ "description": "National Park Service (nps.gov): find parks by state, activity, topic or location; read park details, alerts, parking and conditions; search articles and multimedia; get photo metadata, video captions and NWS weather for parks.",
+ "commands": [
+  {
+   "name": "search-parks",
+   "summary": "Find National Park Service units, filtered by state, activity or topic, or sorted by distance from a lat/lng point",
+   "method": "GET",
+   "urlTemplate": "https://central.nps.gov/units/api/v1/parks/findapark?pagesize=1000&apikey=CfJDEBe7xKJ8v6xZOMkh7AaUGF70dBe3",
+   "params": [
+    {
+     "name": "states",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Two-letter state code(s), comma-separated, e.g. CA or CA,NV (see list-park-filters)",
+     "example": "CA"
+    },
+    {
+     "name": "activities",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Activity id(s), comma-separated, e.g. 3 = Arts and Culture (ids from list-park-filters)",
+     "example": "3"
+    },
+    {
+     "name": "topics",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Topic id(s), comma-separated (ids from list-park-filters)",
+     "example": "125"
+    },
+    {
+     "name": "lat",
+     "in": "query",
+     "required": false,
+     "type": "number",
+     "description": "Latitude of a search point (use with lng and sort='distance asc')",
+     "example": "37.84835"
+    },
+    {
+     "name": "lng",
+     "in": "query",
+     "required": false,
+     "type": "number",
+     "description": "Longitude of a search point",
+     "example": "-119.55696"
+    },
+    {
+     "name": "sort",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Sort order. Use 'distance asc' only when lat/lng are given",
+     "enum": [
+      "name asc",
+      "distance asc"
+     ],
+     "default": "name asc"
+    }
+   ],
+   "responseType": "json",
+   "defaultFields": [
+    "parkCode",
+    "name",
+    "primaryDesignation",
+    "stateCode",
+    "geometry.coordinates"
+   ],
+   "mutates": false,
+   "example": {
+    "states": "CA",
+    "topics": "125",
+    "activities": "3"
+   },
+   "source": "E4 GET https://central.nps.gov/units/api/v1/parks/findapark",
+   "verified": true
+  },
+  {
+   "name": "search-parks-by-name",
+   "summary": "Search parks by name or keyword (e.g. 'Yosemite') and get park codes, descriptions and coordinates",
+   "method": "GET",
+   "urlTemplate": "https://central.nps.gov/units/api/v1/parks?select=code%2Cgeometry&apikey=KXuXrDdge2Csv0xbC01JhhNNaDGcmICX",
+   "params": [
+    {
+     "name": "q",
+     "in": "query",
+     "required": true,
+     "type": "string",
+     "description": "Park name or keyword",
+     "example": "Yosemite"
+    },
+    {
+     "name": "pageSize",
+     "in": "query",
+     "required": false,
+     "type": "number",
+     "description": "Maximum number of results",
+     "default": 4
+    }
+   ],
+   "responseType": "json",
+   "defaultFields": [
+    "parkCode",
+    "fullName",
+    "designation",
+    "description",
+    "geometry.coordinates",
+    "rank"
+   ],
+   "mutates": false,
+   "example": {
+    "q": "Yosemite"
+   },
+   "source": "E12 GET https://central.nps.gov/units/api/v1/parks",
+   "verified": true
+  },
+  {
+   "name": "list-park-filters",
+   "summary": "List all filter values for search-parks: topic ids, activity ids, state codes, and every park code with its name",
+   "method": "GET",
+   "urlTemplate": "/customcf/findapark/supportingDataJSON.cfm",
+   "params": [],
+   "responseType": "json",
+   "mutates": false,
+   "source": "E41 GET https://www.nps.gov/customcf/findapark/supportingDataJSON.cfm",
+   "verified": true
+  },
+  {
+   "name": "list-related-subjects",
+   "summary": "Get NPS subject/topic pages related to a set of activity and topic ids, with the park codes linked to each",
+   "method": "GET",
+   "urlTemplate": "https://central.nps.gov/web/findapark/api/v1/search/findsubjects?apikey=CfJDEBe7xKJ8v6xZOMkh7AaUGF70dBe3",
+   "params": [
+    {
+     "name": "activities",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Activity id(s), comma-separated",
+     "example": "3"
+    },
+    {
+     "name": "topics",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Topic id(s), comma-separated"
+    },
+    {
+     "name": "randomcount",
+     "in": "query",
+     "required": false,
+     "type": "number",
+     "description": "Number of subjects to return",
+     "default": 4
+    }
+   ],
+   "responseType": "json",
+   "defaultFields": [
+    "id",
+    "name",
+    "url",
+    "parkCode"
+   ],
+   "mutates": false,
+   "example": {
+    "activities": "3"
+   },
+   "source": "E6 GET https://central.nps.gov/web/findapark/api/v1/search/findsubjects",
+   "verified": true
+  },
+  {
+   "name": "get-park",
+   "summary": "Get a park's overview (schema.org linked data): description, phone, address, visitor centers and opening hours",
+   "method": "GET",
+   "urlTemplate": "/{code}/{code}_linked_data.json",
+   "params": [
+    {
+     "name": "code",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Lowercase 4-letter park code, e.g. jotr, yose",
+     "example": "jotr"
+    }
+   ],
+   "responseType": "json",
+   "defaultFields": [
+    "name",
+    "description",
+    "telephone",
+    "address",
+    "url",
+    "containsPlace"
+   ],
+   "mutates": false,
+   "example": {
+    "code": "jotr"
+   },
+   "source": "E14 GET https://www.nps.gov/jotr/jotr_linked_data.json",
+   "verified": true
+  },
+  {
+   "name": "get-park-facilities",
+   "summary": "Get a park's structured operational data: addresses plus parking lots with capacity, live status, schedules and predicted occupancy",
+   "method": "GET",
+   "urlTemplate": "/{code}/structured_data_{code}.json",
+   "params": [
+    {
+     "name": "code",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Lowercase 4-letter park code",
+     "example": "yose"
+    }
+   ],
+   "responseType": "json",
+   "defaultFields": [
+    "physicalAddressCity",
+    "mailingAddressLine1",
+    "parkingLots"
+   ],
+   "mutates": false,
+   "example": {
+    "code": "yose"
+   },
+   "source": "E7 E25 GET https://www.nps.gov/jotr/structured_data_jotr.json",
+   "verified": true
+  },
+  {
+   "name": "get-park-alerts",
+   "summary": "Get current alerts for one park: closures, road closures, cautions and information",
+   "method": "GET",
+   "urlTemplate": "/{code}/park-alerts-{code}.json",
+   "params": [
+    {
+     "name": "code",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Lowercase 4-letter park code",
+     "example": "jotr"
+    }
+   ],
+   "responseType": "json",
+   "defaultFields": [
+    "id",
+    "title",
+    "category",
+    "description",
+    "start_date",
+    "end_date",
+    "url",
+    "is_active"
+   ],
+   "mutates": false,
+   "example": {
+    "code": "jotr"
+   },
+   "source": "E9 E27 GET https://www.nps.gov/jotr/park-alerts-jotr.json",
+   "verified": true
+  },
+  {
+   "name": "list-nps-alerts",
+   "summary": "List the nationwide sitewide alerts for all parks (closures, dangers, information) with park and state",
+   "method": "GET",
+   "urlTemplate": "/nps-alerts.json",
+   "params": [],
+   "responseType": "json",
+   "defaultFields": [
+    "site_code",
+    "park_name",
+    "state_code",
+    "category",
+    "title",
+    "description",
+    "start_date",
+    "end_date"
+   ],
+   "mutates": false,
+   "source": "E3 GET https://www.nps.gov/nps-alerts.json",
+   "verified": true
+  },
+  {
+   "name": "get-park-banner-image",
+   "summary": "Get a park's banner photo: image path, credit, alt text and crops",
+   "method": "GET",
+   "urlTemplate": "/customcf/banner_image/get-banner-image-json.cfm",
+   "params": [
+    {
+     "name": "sitecode",
+     "in": "query",
+     "required": true,
+     "type": "string",
+     "description": "Lowercase park code",
+     "example": "jotr"
+    }
+   ],
+   "responseType": "json",
+   "resultPath": "DATA",
+   "defaultFields": [
+    "src",
+    "alt_text",
+    "credit",
+    "title"
+   ],
+   "mutates": false,
+   "example": {
+    "sitecode": "jotr"
+   },
+   "source": "E40 GET https://www.nps.gov/customcf/banner_image/get-banner-image-json.cfm",
+   "verified": true
+  },
+  {
+   "name": "search-multimedia",
+   "summary": "Search NPS photos, videos, audio and webcams by keyword, with optional Solr filter (type, park) and sort",
+   "method": "GET",
+   "urlTemplate": "/solr/?fl=Type,Title,Credit,Duration,Date_Taken,Image_URL,Image_Alt_Text,Sites,Parks,Organizations,Sites_Item,Abstract,PageURL&defType=edismax&fq=-Type:%22Podcast%20Episode%22&fq=-Is_Sensitive_Video:%22true%22&fq=Category:%22Multimedia%22&rows=20&wt=json",
+   "params": [
+    {
+     "name": "q",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Keywords; '*' matches everything",
+     "default": "*",
+     "example": "grizzly bear"
+    },
+    {
+     "name": "fq",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Extra Solr filter, e.g. Type:\"Video\", Type:\"Photo\", Parks_Item:\"Yellowstone National Park\" (full park name). Combine with AND",
+     "example": "Parks_Item:\"Yellowstone National Park\""
+    },
+    {
+     "name": "sort",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Sort order",
+     "enum": [
+      "Date_Last_Modified desc",
+      "score desc",
+      "Date_Taken desc"
+     ],
+     "default": "Date_Last_Modified desc"
+    },
+    {
+     "name": "start",
+     "in": "query",
+     "required": false,
+     "type": "number",
+     "description": "Result offset (20 per page)",
+     "default": 0
+    }
+   ],
+   "responseType": "json",
+   "resultPath": "response.docs",
+   "defaultFields": [
+    "Title",
+    "Type",
+    "PageURL",
+    "Date_Taken",
+    "Parks",
+    "Credit",
+    "Duration",
+    "Image_URL"
+   ],
+   "pagination": {
+    "type": "offset",
+    "param": "start",
+    "step": 20
+   },
+   "mutates": false,
+   "example": {
+    "q": "grizzly bear",
+    "fq": "Parks_Item:\"Yellowstone National Park\"",
+    "sort": "score desc"
+   },
+   "source": "E39 GET https://www.nps.gov/solr/",
+   "verified": true
+  },
+  {
+   "name": "search-articles",
+   "summary": "Search NPS articles, people and places pages by keyword (returns /articles/... URLs)",
+   "method": "POST",
+   "urlTemplate": "/solr/",
+   "params": [
+    {
+     "name": "q",
+     "in": "body",
+     "required": true,
+     "type": "string",
+     "description": "Keywords or Solr query, e.g. campfire or \"National Park Week\"",
+     "example": "campfire"
+    },
+    {
+     "name": "rows",
+     "in": "body",
+     "required": false,
+     "type": "number",
+     "description": "Results per page",
+     "default": 10
+    },
+    {
+     "name": "start",
+     "in": "body",
+     "required": false,
+     "type": "number",
+     "description": "Result offset",
+     "default": 0
+    }
+   ],
+   "bodyTemplate": {
+    "defType": "edismax",
+    "fq": "Category:\"Articles\" AND (Type:\"Article\" OR Type:\"Person\" OR Type:\"Place\") AND -Allow_Listing_Display:false",
+    "q": "{q}",
+    "rows": "{rows}",
+    "start": "{start}",
+    "fl": "PageURL,Title,Type,Image_URL,Image_Alt_Text",
+    "sort": "score desc",
+    "wt": "json"
+   },
+   "bodyEncoding": "form",
+   "responseType": "json",
+   "resultPath": "response.docs",
+   "defaultFields": [
+    "Title",
+    "Type",
+    "PageURL",
+    "Image_URL"
+   ],
+   "pagination": {
+    "type": "offset",
+    "param": "start",
+    "step": 10
+   },
+   "mutates": false,
+   "example": {
+    "q": "campfire"
+   },
+   "source": "E42 POST https://www.nps.gov/solr/",
+   "verified": true
+  },
+  {
+   "name": "get-article",
+   "summary": "Read an NPS article page by slug (/articles/{slug}.htm)",
+   "method": "GET",
+   "urlTemplate": "/articles/{slug}.htm",
+   "params": [
+    {
+     "name": "slug",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Article slug from the PageURL, e.g. campfires",
+     "example": "campfires"
+    }
+   ],
+   "responseType": "html",
+   "extract": {
+    "fields": {
+     "title": "h1 || title",
+     "description": "meta[name=description]@content",
+     "text": "div#main"
+    }
+   },
+   "mutates": false,
+   "example": {
+    "slug": "campfires"
+   },
+   "source": "E52 GET https://www.nps.gov/articles/campfires.htm",
+   "verified": true
+  },
+  {
+   "name": "get-photo",
+   "summary": "Get NPGallery photo/asset metadata: title, description, credit/copyright, license, dimensions and EXIF",
+   "method": "GET",
+   "urlTemplate": "/npgallery/Asset/{id}",
+   "params": [
+    {
+     "name": "id",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Asset GUID (the id= value from /media/photo/view.htm?id=...)",
+     "example": "02FF546C-1DD8-B71B-0BAB-26F1AE8E2D57"
+    }
+   ],
+   "headers": {
+    "x-requested-with": "XMLHttpRequest"
+   },
+   "responseType": "json",
+   "defaultFields": [
+    "AssetID",
+    "Title",
+    "AltText",
+    "Description",
+    "Copyright",
+    "ConstraintsInformation.Constraint",
+    "AssetProperties.Width",
+    "AssetProperties.Height"
+   ],
+   "mutates": false,
+   "example": {
+    "id": "02FF546C-1DD8-B71B-0BAB-26F1AE8E2D57"
+   },
+   "source": "E28 GET https://www.nps.gov/npgallery/Asset/{id}",
+   "verified": true
+  },
+  {
+   "name": "get-video-captions",
+   "summary": "Download the WebVTT closed-caption transcript of an NPS video",
+   "method": "GET",
+   "urlTemplate": "/nps-audiovideo/closed-caption/{id}.vtt",
+   "params": [
+    {
+     "name": "id",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Video media GUID",
+     "example": "8E8EE545-035D-3BF9-1D8E7C7B978B392C"
+    }
+   ],
+   "responseType": "text",
+   "mutates": false,
+   "example": {
+    "id": "8E8EE545-035D-3BF9-1D8E7C7B978B392C"
+   },
+   "source": "E43 GET https://www.nps.gov/nps-audiovideo/closed-caption/{id}",
+   "verified": true
+  },
+  {
+   "name": "geocode-suggest",
+   "summary": "Get place suggestions for a location string, with magicKeys to resolve into coordinates (US only)",
+   "method": "GET",
+   "urlTemplate": "https://geocode.arcgis.com/arcgis/rest/services/World/GeocodeServer/suggest?countryCode=USA&f=json",
+   "params": [
+    {
+     "name": "text",
+     "in": "query",
+     "required": true,
+     "type": "string",
+     "description": "Place, city or address text",
+     "example": "Yosemite"
+    },
+    {
+     "name": "maxSuggestions",
+     "in": "query",
+     "required": false,
+     "type": "number",
+     "description": "Max suggestions",
+     "default": 4
+    }
+   ],
+   "responseType": "json",
+   "resultPath": "suggestions",
+   "defaultFields": [
+    "text",
+    "magicKey"
+   ],
+   "mutates": false,
+   "example": {
+    "text": "Yosemite"
+   },
+   "source": "E11 GET https://geocode.arcgis.com/arcgis/rest/services/World/GeocodeServer/suggest",
+   "verified": true
+  },
+  {
+   "name": "geocode-location",
+   "summary": "Resolve a geocode-suggest magicKey into lat/lng (location.y / location.x) for search-parks",
+   "method": "GET",
+   "urlTemplate": "https://geocode.arcgis.com/arcgis/rest/services/World/GeocodeServer/findAddressCandidates?f=json",
+   "params": [
+    {
+     "name": "magicKey",
+     "in": "query",
+     "required": true,
+     "type": "string",
+     "description": "magicKey from geocode-suggest",
+     "example": "dHA9MCN0dj02NWI4NWUyYyNsb2M9MjUzNjQ2NyNsbmc9NDEjcGw9MzIyNTc1NiNsYnM9MTQ6ODU1NjUxODIjbG49V29ybGQ="
+    }
+   ],
+   "responseType": "json",
+   "resultPath": "candidates",
+   "defaultFields": [
+    "address",
+    "location.x",
+    "location.y",
+    "score"
+   ],
+   "mutates": false,
+   "example": {
+    "magicKey": "dHA9MCN0dj02NWI4NWUyYyNsb2M9MjUzNjQ2NyNsbmc9NDEjcGw9MzIyNTc1NiNsYnM9MTQ6ODU1NjUxODIjbG49V29ybGQ="
+   },
+   "source": "E13 GET https://geocode.arcgis.com/arcgis/rest/services/World/GeocodeServer/findAddressCandidates",
+   "verified": true
+  },
+  {
+   "name": "get-weather-point",
+   "summary": "Look up the NWS forecast grid (office, gridX, gridY), nearest city, time zone and sunrise/sunset for a lat/lng",
+   "method": "GET",
+   "urlTemplate": "https://api.weather.gov/points/{lat},{lng}",
+   "params": [
+    {
+     "name": "lat",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Latitude, max 4 decimals (more decimals cause a 301 redirect)",
+     "example": "34.0114"
+    },
+    {
+     "name": "lng",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Longitude, max 4 decimals",
+     "example": "-116.0975"
+    }
+   ],
+   "responseType": "json",
+   "resultPath": "properties",
+   "defaultFields": [
+    "gridId",
+    "gridX",
+    "gridY",
+    "forecast",
+    "relativeLocation.properties.city",
+    "relativeLocation.properties.state",
+    "timeZone",
+    "astronomicalData"
+   ],
+   "mutates": false,
+   "example": {
+    "lat": "34.0114",
+    "lng": "-116.0975"
+   },
+   "source": "E20 GET https://api.weather.gov/points/34.0114,-116.0975",
+   "verified": true
+  },
+  {
+   "name": "get-weather-forecast",
+   "summary": "Get the 7-day NWS forecast periods for a grid point (from get-weather-point)",
+   "method": "GET",
+   "urlTemplate": "https://api.weather.gov/gridpoints/{office}/{gridX},{gridY}/forecast",
+   "params": [
+    {
+     "name": "office",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "NWS gridId / office, e.g. PSR",
+     "example": "PSR"
+    },
+    {
+     "name": "gridX",
+     "in": "path",
+     "required": true,
+     "type": "number",
+     "description": "Grid X",
+     "example": "16"
+    },
+    {
+     "name": "gridY",
+     "in": "path",
+     "required": true,
+     "type": "number",
+     "description": "Grid Y",
+     "example": "103"
+    }
+   ],
+   "responseType": "json",
+   "resultPath": "properties.periods",
+   "defaultFields": [
+    "name",
+    "startTime",
+    "temperature",
+    "temperatureUnit",
+    "probabilityOfPrecipitation.value",
+    "windSpeed",
+    "shortForecast",
+    "detailedForecast"
+   ],
+   "mutates": false,
+   "example": {
+    "office": "PSR",
+    "gridX": "16",
+    "gridY": "103"
+   },
+   "source": "E23 GET https://api.weather.gov/gridpoints/PSR/16,103/forecast",
+   "verified": true
+  },
+  {
+   "name": "get-weather-alerts",
+   "summary": "Get active NWS watches, warnings and advisories, optionally limited to a lat,lng point (e.g. a park location) or a state/area code",
+   "method": "GET",
+   "urlTemplate": "https://api.weather.gov/alerts?active=1",
+   "params": [
+    {
+     "name": "point",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "lat,lng with at most 4 decimals, e.g. 34.0114,-116.0975. Do not combine with area",
+     "example": "34.0114,-116.0975"
+    },
+    {
+     "name": "area",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Two-letter state or marine area code, e.g. CA or NC. Do not combine with point",
+     "example": "NC"
+    },
+    {
+     "name": "severity",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Filter by severity",
+     "enum": [
+      "Extreme",
+      "Severe",
+      "Moderate",
+      "Minor",
+      "Unknown"
+     ]
+    },
+    {
+     "name": "api_limit",
+     "key": "limit",
+     "in": "query",
+     "required": false,
+     "type": "number",
+     "description": "Maximum number of alerts to return (sent to the site as \"limit\"; clify's own --limit only shapes the output)"
+    }
+   ],
+   "responseType": "json",
+   "resultPath": "features",
+   "defaultFields": [
+    "properties.event",
+    "properties.headline",
+    "properties.severity",
+    "properties.areaDesc",
+    "properties.effective",
+    "properties.expires",
+    "properties.description"
+   ],
+   "mutates": false,
+   "example": {
+    "api_limit": "20"
+   },
+   "source": "E17",
+   "verified": true
+  },
+  {
+   "name": "get-weather-observation",
+   "summary": "Get the latest observed conditions (temperature, wind, etc.) from an NWS weather station",
+   "method": "GET",
+   "urlTemplate": "https://api.weather.gov/stations/{station}/observations/latest",
+   "params": [
+    {
+     "name": "station",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "NWS station id, e.g. LTHC1 (Lost Horse, Joshua Tree)",
+     "example": "LTHC1"
+    }
+   ],
+   "responseType": "json",
+   "resultPath": "properties",
+   "defaultFields": [
+    "stationName",
+    "timestamp",
+    "textDescription",
+    "temperature.value",
+    "dewpoint.value",
+    "windSpeed.value",
+    "windDirection.value",
+    "windGust.value"
+   ],
+   "mutates": false,
+   "example": {
+    "station": "LTHC1"
+   },
+   "source": "E24 GET https://api.weather.gov/stations/LTHC1/observations/latest",
+   "verified": true
+  }
+ ],
+ "blockers": [],
+ "notes": [
+  "Park codes are lowercase 4-letter codes such as jotr and yose. search-parks-by-name returns them in uppercase, so lowercase them before passing them to get-park, get-park-alerts or get-park-facilities.",
+  "Filter ids for search-parks (activities, topics, states) come from list-park-filters. Comma-separate multiple values.",
+  "For a location search, the flow is geocode-suggest, then geocode-location. Pass candidates[0].location.y as lat and location.x as lng to search-parks with sort='distance asc'. Alternatively, search-parks-by-name returns geometry.coordinates as [lng, lat].",
+  "Park coordinates for weather lookups are in get-park (containsPlace[].geo) and in search-parks geometry. Round them to 4 decimals for get-weather-point, then use gridId/gridX/gridY with get-weather-forecast.",
+  "The /solr/ endpoints return Solr JSON (the web app used JSONP, which is dropped here). In search-multimedia, filter by park using the full park name in Parks_Item.",
+  "Multimedia pagination via start was not confirmed during exploration and may be ignored by the server.",
+  "Site-wide keyword search is blocked by robots.txt. Event calendars did not load data while exploring, so no event commands are provided.",
+  "The apikeys in the central.nps.gov URLs are the public keys embedded in the nps.gov web app.",
+  "The api.weather.gov endpoints are third-party (the National Weather Service) and are used by the park conditions pages."
+ ],
+ "dropped": [],
+ "generated": {
+  "by": "clify add",
+  "model": "claude-opus-5-5",
+  "exploredSteps": 30,
+  "recorded": 178,
+  "verifiedAt": "2026-10-18T09:07:54.388Z",
+  "seconds": 354
+ }
+}

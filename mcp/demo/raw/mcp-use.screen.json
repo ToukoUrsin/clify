@@ -1,0 +1,29 @@
+{
+  "title": "mcp-use agent",
+  "model": "claude-opus-5-5",
+  "command": "node mcp-use-agent.mjs \"$TASK\"   # MCPAgent({ llm: \"anthropic/claude-opus-5-5\", mcpServers: { clify: { url } } })",
+  "calls": [
+    {
+      "tool": "crates__get-crate",
+      "args": "{\"name\":\"serde\",\"fields\":\"name,default_version,updated_at\"}",
+      "result": "{\"ok\":true,\"status\":200,\"data\":{\"name\":\"serde\",\"default_version\":\"1.0.229\",\"updated_at\":\"2026-07-18T23:05:13.266456Z\"}}"
+    },
+    {
+      "tool": "clify_sites",
+      "args": "{\"query\":\"weather forecast national weather service\"}",
+      "result": "{\"sites\":[{\"site\":\"weather\",\"host\":\"weather.gov\",\"category\":\"government\",\"about\":\"National Weather Service (weather.gov / api.weather.gov)\",\"commands\":11,\"matches\":[{\"command\":\"export-forecast-dwml\",\"params\":\"lat*:number lon*:number\",\"summary\":\"Export the poin …"
+    },
+    {
+      "tool": "clify_run",
+      "args": "{\"site\":\"weather\",\"command\":\"get-point\",\"args\":{\"lat\":37.7749,\"lon\":-122.4194}}",
+      "result": "{\"ok\":true,\"status\":200,\"data\":{\"gridId\":\"MTR\",\"gridX\":85,\"gridY\":105,\"relativeLocation.properties.city\":\"San Francisco\",\"relativeLocation.properties.state\":\"CA\",\"forecastZone\":\"https://api.weather.gov/zones/forecast/CAZ006\",\"county\":\"https://api.weather.gov/z …"
+    },
+    {
+      "tool": "clify_run",
+      "args": "{\"site\":\"weather\",\"command\":\"get-forecast\",\"args\":{\"wfo\":\"MTR\",\"x\":85,\"y\":105},\"limit\":2,\"fields\":\"name,temperature,temperatureUnit,shortForecast\"}",
+      "result": "{\"ok\":true,\"status\":200,\"count\":14,\"data\":[{\"name\":\"Overnight\",\"temperature\":58,\"temperatureUnit\":\"F\",\"shortForecast\":\"Mostly Clear\"},{\"name\":\"Sunday\",\"temperature\":68,\"temperatureUnit\":\"F\",\"shortForecast\":\"Sunny\"}],\"returned\":2}"
+    }
+  ],
+  "answer": "1. **serde (crates.io):** the latest version is **1.0.229**. The tool returned this as the crate's default version, last updated 2026-07-18.\n2. **NWS forecast for San Francisco** (grid point MTR 85,105):\n   - **Overnight:** 58°F, Mostly Clear\n   - **Sunday:** 68°F, Sunny",
+  "stats": "10.5 s"
+}

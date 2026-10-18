@@ -1,0 +1,35 @@
+{
+ "task": "quotes-top-author",
+ "site": "quotes",
+ "mode": "cli",
+ "trial": 1,
+ "tag": "clisame",
+ "ok": true,
+ "why": "all expected values present",
+ "answer": "Albert Einstein, 10 quotes",
+ "expected": {
+  "expect": [
+   "Albert Einstein"
+  ],
+  "number": 10
+ },
+ "wallMs": 29573,
+ "apiMs": 22176,
+ "turns": 4,
+ "toolCalls": 3,
+ "tokens": {
+  "input": 8,
+  "output": 585,
+  "cacheWrite": 4623,
+  "cacheRead": 14941,
+  "total": 20157
+ },
+ "costUsd": 0.0378352,
+ "models": [
+  "claude-opus-5-5"
+ ],
+ "exitCode": 0,
+ "timedOut": false,
+ "subtype": "success",
+ "startedAt": "2026-10-18T12:52:25.187Z"
+}

@@ -1,0 +1,241 @@
+{
+ "url": "https://www.geonames.org/",
+ "category": "maps-weather",
+ "sandbox": "clify-www-geonames-org",
+ "startedAt": "2026-10-18T08:57:46.070Z",
+ "region": "us-pdx-1",
+ "chrome": "Chrome/148.0.7778.96",
+ "sandboxStartMs": 2532,
+ "addSeconds": 238,
+ "addExit": 0,
+ "add": {
+  "ok": true,
+  "site": "geonames",
+  "url": "https://www.geonames.org/",
+  "commands": [
+   {
+    "name": "search-places",
+    "summary": "Search places worldwide by keyword (name, alternate name, ...). Returns matching features with ids, country, feature type, population and coordinates.",
+    "verified": true
+   },
+   {
+    "name": "get-place",
+    "summary": "Get the detail page facts for a place by geonameId: coordinates, population, elevation, timezone, feature code, Wikipedia link and the ancestor hierarchy.",
+    "verified": true
+   },
+   {
+    "name": "get-place-history",
+    "summary": "List the edit history (revisions, user, comment, time) of a place by geonameId.",
+    "verified": true
+   },
+   {
+    "name": "get-metropolitan-area",
+    "summary": "Get the metropolitan area(s) a city belongs to or is the center of: the center city, the role and the number of areas.",
+    "verified": true
+   },
+   {
+    "name": "list-place-subdivision-regions",
+    "summary": "List the sub-division map regions (e.g. city districts) inside a place, with ids and names. Only exists for places that have subdivisions.",
+    "verified": true
+   },
+   {
+    "name": "get-geotree-path",
+    "summary": "Get the ancestor path from Earth down to a feature in the administrative geotree.",
+    "verified": true
+   },
+   {
+    "name": "list-geotree-children",
+    "summary": "List the children of a feature in the geotree, e.g. the countries of a continent or the admin divisions of a country. Paginated.",
+    "verified": true
+   },
+   {
+    "name": "search-postal-codes",
+    "summary": "Search postal codes by code or place name, optionally limited to one country.",
+    "verified": true
+   },
+   {
+    "name": "get-postal-code",
+    "summary": "Get the full record of a postal code by postalCodeId: admin hierarchy with geoname ids, timezone, coordinates and accuracy.",
+    "verified": true
+   },
+   {
+    "name": "get-postal-code-shape",
+    "summary": "Get the boundary polygon of a postal code area as GeoJSON geometry.",
+    "verified": true
+   },
+   {
+    "name": "list-countries",
+    "summary": "List all countries with ISO codes, capital, area, population, continent, currency, languages, neighbours, postal code format and geonameId.",
+    "verified": true
+   },
+   {
+    "name": "list-largest-cities",
+    "summary": "List the largest cities of a country by population.",
+    "verified": true
+   },
+   {
+    "name": "list-highest-mountains",
+    "summary": "List the highest mountains of a country; value is the elevation in meters.",
+    "verified": true
+   },
+   {
+    "name": "list-admin-divisions",
+    "summary": "List the first-level administrative divisions (ISO-3166-2 subdivisions) of a country with codes, type, capital and population (in the row text).",
+    "verified": true
+   },
+   {
+    "name": "get-country-feature-statistics",
+    "summary": "Count a country's features by feature class and code (ADM3, LK, PPL, ...). The row text holds count, code, name and description.",
+    "verified": true
+   },
+   {
+    "name": "list-recent-changes",
+    "summary": "List the latest edits to the gazetteer: revision, time, place, country, user, feature code and change comment.",
+    "verified": true
+   },
+   {
+    "name": "get-gazetteer-stats",
+    "summary": "Get site-wide totals: feature count, features and postal codes per country, the last 7 days of edit activity and the most recent edits.",
+    "verified": true
+   },
+   {
+    "name": "list-timezones",
+    "summary": "List the timezones known to GeoNames with their country code.",
+    "verified": true
+   },
+   {
+    "name": "list-oceans-and-seas",
+    "summary": "List the world's oceans and seas (132) with their geonameIds.",
+    "verified": true
+   }
+  ],
+  "verified": 19,
+  "writes": 0,
+  "dropped": [
+   {
+    "name": "get-postal-code-history",
+    "reason": "The endpoint returned an empty array for the only known postal code id. No recorded id has history to use as a working example."
+   }
+  ],
+  "blockers": [],
+  "loggedIn": false,
+  "seconds": 237,
+  "next": [
+   "clify geonames",
+   "clify geonames search-places --q \"Zurich\""
+  ],
+  "installed": "/home/ubuntu/clify-runs/blaxel-w1/home/bin/geonames",
+  "explored": {
+   "steps": 12,
+   "recorded": 50,
+   "heldWrites": 0
+  }
+ },
+ "check": {
+  "on": "blaxel",
+  "node": "v24.22.0",
+  "seconds": 11,
+  "reads": 19,
+  "verified": 19,
+  "failed": [],
+  "results": [
+   {
+    "name": "search-places",
+    "ok": true,
+    "ms": 940
+   },
+   {
+    "name": "get-place",
+    "ok": true,
+    "ms": 1368
+   },
+   {
+    "name": "get-place-history",
+    "ok": true,
+    "ms": 368
+   },
+   {
+    "name": "get-metropolitan-area",
+    "ok": true,
+    "ms": 184
+   },
+   {
+    "name": "list-place-subdivision-regions",
+    "ok": true,
+    "ms": 362
+   },
+   {
+    "name": "get-geotree-path",
+    "ok": true,
+    "ms": 186
+   },
+   {
+    "name": "list-geotree-children",
+    "ok": true,
+    "ms": 268
+   },
+   {
+    "name": "search-postal-codes",
+    "ok": true,
+    "ms": 189
+   },
+   {
+    "name": "get-postal-code",
+    "ok": true,
+    "ms": 188
+   },
+   {
+    "name": "get-postal-code-shape",
+    "ok": true,
+    "ms": 183
+   },
+   {
+    "name": "list-countries",
+    "ok": true,
+    "ms": 549
+   },
+   {
+    "name": "list-largest-cities",
+    "ok": true,
+    "ms": 192
+   },
+   {
+    "name": "list-highest-mountains",
+    "ok": true,
+    "ms": 197
+   },
+   {
+    "name": "list-admin-divisions",
+    "ok": true,
+    "ms": 723
+   },
+   {
+    "name": "get-country-feature-statistics",
+    "ok": true,
+    "ms": 921
+   },
+   {
+    "name": "list-recent-changes",
+    "ok": true,
+    "ms": 757
+   },
+   {
+    "name": "get-gazetteer-stats",
+    "ok": true,
+    "ms": 183
+   },
+   {
+    "name": "list-timezones",
+    "ok": true,
+    "ms": 370
+   },
+   {
+    "name": "list-oceans-and-seas",
+    "ok": true,
+    "ms": 363
+   }
+  ]
+ },
+ "deleted": true,
+ "seconds": 252
+}

@@ -1,0 +1,373 @@
+{
+ "name": "doaj",
+ "startUrl": "https://doaj.org/",
+ "origin": "https://doaj.org",
+ "createdAt": "2026-10-18T09:04:48.928Z",
+ "description": "DOAJ (Directory of Open Access Journals): search and look up open-access journals and articles through DOAJ's public v4 API, OAI-PMH endpoint and Atom feed.",
+ "commands": [
+  {
+   "name": "search-journals",
+   "summary": "Search DOAJ journals by keyword or Elasticsearch/Lucene query, e.g. bibjson.publisher.country:IR AND bibjson.apc.has_apc:false",
+   "method": "GET",
+   "urlTemplate": "/api/search/journals/{query}",
+   "params": [
+    {
+     "name": "query",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Keyword(s) or Lucene query string. Field filters use JSON dot notation, e.g. bibjson.publisher.country:IR, bibjson.apc.has_apc:false, bibjson.title:\"Journal of Science\". Combine them with AND/OR. Shor",
+     "example": "medicine"
+    },
+    {
+     "name": "page",
+     "in": "query",
+     "required": false,
+     "type": "number",
+     "description": "Page number, starting at 1",
+     "default": 1
+    },
+    {
+     "name": "pageSize",
+     "in": "query",
+     "required": false,
+     "type": "number",
+     "description": "Results per page (max 100)",
+     "default": 10
+    },
+    {
+     "name": "sort",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Sort as field or field:asc|desc, using dot notation, e.g. created_date:desc, last_updated:desc, bibjson.title:asc",
+     "example": "created_date:desc"
+    }
+   ],
+   "responseType": "json",
+   "resultPath": "results",
+   "defaultFields": [
+    "id",
+    "bibjson.title",
+    "bibjson.eissn",
+    "bibjson.pissn",
+    "bibjson.publisher.name",
+    "bibjson.publisher.country",
+    "bibjson.apc.has_apc",
+    "created_date"
+   ],
+   "pagination": {
+    "type": "page",
+    "param": "page"
+   },
+   "mutates": false,
+   "example": {
+    "query": "medicine"
+   },
+   "source": "E2 E6 GET https://doaj.org/api/search/journals/medicine",
+   "verified": true
+  },
+  {
+   "name": "get-journal-by-issn",
+   "summary": "Look up a DOAJ journal by its print or electronic ISSN",
+   "method": "GET",
+   "urlTemplate": "/api/search/journals/issn:{issn}",
+   "params": [
+    {
+     "name": "issn",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "ISSN in NNNN-NNNN format",
+     "example": "2538-4449"
+    }
+   ],
+   "responseType": "json",
+   "resultPath": "results",
+   "defaultFields": [
+    "id",
+    "bibjson.title",
+    "bibjson.eissn",
+    "bibjson.pissn",
+    "bibjson.publisher.name",
+    "bibjson.publisher.country",
+    "bibjson.apc.has_apc",
+    "bibjson.license"
+   ],
+   "mutates": false,
+   "example": {
+    "issn": "2538-4449"
+   },
+   "source": "E9 GET https://doaj.org/api/search/journals/issn%3A2538-4449",
+   "verified": true
+  },
+  {
+   "name": "get-journal",
+   "summary": "Get the full metadata of a DOAJ journal (APC, license, editorial policy, subjects, links) by its DOAJ id",
+   "method": "GET",
+   "urlTemplate": "/api/journals/{id}",
+   "params": [
+    {
+     "name": "id",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "DOAJ journal id (32-char hex), taken from search results",
+     "example": "00023bea7c1444e9aa224df27beff895"
+    }
+   ],
+   "responseType": "json",
+   "defaultFields": [
+    "id",
+    "bibjson.title",
+    "bibjson.eissn",
+    "bibjson.pissn",
+    "bibjson.publisher",
+    "bibjson.apc",
+    "bibjson.license",
+    "bibjson.subject"
+   ],
+   "mutates": false,
+   "example": {
+    "id": "00023bea7c1444e9aa224df27beff895"
+   },
+   "source": "E3 GET https://doaj.org/api/journals/{id}",
+   "verified": true
+  },
+  {
+   "name": "search-articles",
+   "summary": "Search DOAJ articles by keyword or Lucene query, e.g. bibjson.year:2021 AND herring",
+   "method": "GET",
+   "urlTemplate": "/api/search/articles/{query}",
+   "params": [
+    {
+     "name": "query",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Keyword(s) or Lucene query string. Field filters use dot notation, e.g. bibjson.year:2021, bibjson.journal.title:\"Ecology and Evolution\". Short fields: title, doi, issn, publisher, abstract. Combine t",
+     "example": "climate change"
+    },
+    {
+     "name": "page",
+     "in": "query",
+     "required": false,
+     "type": "number",
+     "description": "Page number, starting at 1",
+     "default": 1
+    },
+    {
+     "name": "pageSize",
+     "in": "query",
+     "required": false,
+     "type": "number",
+     "description": "Results per page (max 100)",
+     "default": 10
+    },
+    {
+     "name": "sort",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Sort as field or field:asc|desc, e.g. created_date:desc or last_updated:desc. Sorting by bibjson.year returns bad_request.",
+     "example": "created_date:desc"
+    }
+   ],
+   "responseType": "json",
+   "resultPath": "results",
+   "defaultFields": [
+    "id",
+    "bibjson.title",
+    "bibjson.year",
+    "bibjson.journal.title",
+    "bibjson.identifier",
+    "bibjson.author",
+    "bibjson.link",
+    "created_date"
+   ],
+   "pagination": {
+    "type": "page",
+    "param": "page"
+   },
+   "mutates": false,
+   "example": {
+    "query": "climate change"
+   },
+   "source": "E4 E7 GET https://doaj.org/api/search/articles/climate%20change",
+   "verified": true
+  },
+  {
+   "name": "get-article-by-doi",
+   "summary": "Look up a DOAJ article by its DOI",
+   "method": "GET",
+   "urlTemplate": "/api/search/articles/doi:{doi}",
+   "params": [
+    {
+     "name": "doi",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "DOI without the https://doi.org/ prefix, e.g. 10.1002/ece3.8411",
+     "example": "10.1002/ece3.8411"
+    }
+   ],
+   "responseType": "json",
+   "resultPath": "results",
+   "defaultFields": [
+    "id",
+    "bibjson.title",
+    "bibjson.year",
+    "bibjson.journal.title",
+    "bibjson.author",
+    "bibjson.identifier",
+    "bibjson.link",
+    "bibjson.abstract"
+   ],
+   "mutates": false,
+   "example": {
+    "doi": "10.1002/ece3.8411"
+   },
+   "source": "E8 GET https://doaj.org/api/search/articles/doi%3A10.1002%2Fece3.8411",
+   "verified": true
+  },
+  {
+   "name": "get-article",
+   "summary": "Get the full metadata of a DOAJ article (authors, abstract, journal, links) by its DOAJ id",
+   "method": "GET",
+   "urlTemplate": "/api/articles/{id}",
+   "params": [
+    {
+     "name": "id",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "DOAJ article id (32-char hex), taken from search results",
+     "example": "000004687a3a411cb466625281f2ceb0"
+    }
+   ],
+   "responseType": "json",
+   "defaultFields": [
+    "id",
+    "bibjson.title",
+    "bibjson.year",
+    "bibjson.journal",
+    "bibjson.author",
+    "bibjson.identifier",
+    "bibjson.link",
+    "bibjson.abstract"
+   ],
+   "mutates": false,
+   "example": {
+    "id": "000004687a3a411cb466625281f2ceb0"
+   },
+   "source": "E5 GET https://doaj.org/api/articles/{id}",
+   "verified": true
+  },
+  {
+   "name": "list-recent-journals",
+   "summary": "List journals recently added to DOAJ (Atom feed)",
+   "method": "GET",
+   "urlTemplate": "/feed",
+   "params": [],
+   "responseType": "json",
+   "resultPath": "feed.entry",
+   "defaultFields": [
+    "title",
+    "author.name",
+    "category.@term",
+    "updated",
+    "content.@src",
+    "summary.#text"
+   ],
+   "mutates": false,
+   "source": "E13 GET https://doaj.org/feed",
+   "verified": true
+  },
+  {
+   "name": "list-subject-sets",
+   "summary": "List the LCC subject sets available in DOAJ's OAI-PMH endpoint (setSpec feeds list-journals-in-subject)",
+   "method": "GET",
+   "urlTemplate": "/oai?verb=ListSets",
+   "params": [],
+   "responseType": "json",
+   "resultPath": "OAI-PMH.ListSets.set",
+   "defaultFields": [
+    "setSpec",
+    "setName"
+   ],
+   "mutates": false,
+   "source": "E10 GET https://doaj.org/oai",
+   "verified": true
+  },
+  {
+   "name": "list-journals-in-subject",
+   "summary": "List journal records (Dublin Core) in one LCC subject set via OAI-PMH",
+   "method": "GET",
+   "urlTemplate": "/oai?verb=ListRecords&metadataPrefix=oai_dc",
+   "params": [
+    {
+     "name": "set",
+     "in": "query",
+     "required": true,
+     "type": "string",
+     "description": "OAI setSpec from list-subject-sets (base64 of 'LCC:<subject>'), e.g. TENDOkFncmljdWx0dXJl = LCC:Agriculture",
+     "example": "TENDOkFncmljdWx0dXJl"
+    }
+   ],
+   "responseType": "json",
+   "resultPath": "OAI-PMH.ListRecords.record",
+   "defaultFields": [
+    "header.identifier",
+    "header.datestamp",
+    "metadata.oai_dc:dc.dc:title",
+    "metadata.oai_dc:dc.dc:publisher",
+    "metadata.oai_dc:dc.dc:identifier",
+    "metadata.oai_dc:dc.dc:subject"
+   ],
+   "mutates": false,
+   "example": {
+    "set": "TENDOkFncmljdWx0dXJl"
+   },
+   "source": "E10 GET https://doaj.org/oai",
+   "verified": true
+  },
+  {
+   "name": "get-api-spec",
+   "summary": "Get the DOAJ v4 API Swagger spec (all routes and parameters)",
+   "method": "GET",
+   "urlTemplate": "/api/v4/swagger.json",
+   "params": [],
+   "responseType": "json",
+   "resultPath": "paths",
+   "mutates": false,
+   "source": "E1 GET https://doaj.org/api/v4/swagger.json",
+   "verified": true
+  }
+ ],
+ "blockers": [
+  "bot-check at https://doaj.org/",
+  "bot-check at https://doaj.org/toc/2538-4449",
+  "bot-check at https://doaj.org/article/000004687a3a411cb466625281f2ceb0",
+  "bot-check at https://doaj.org/toc/2965-0569?rss",
+  "captcha"
+ ],
+ "notes": [
+  "The HTML pages (home, /toc, /article) are behind Cloudflare, and /search/* is disallowed by robots.txt. Use only the public API, OAI-PMH and the feed.",
+  "Search queries are Elasticsearch query_string (Lucene) syntax placed in the URL path. Use JSON dot-notation fields (bibjson.publisher.country:IR, bibjson.apc.has_apc:false, bibjson.year:2021) and combine them with AND/OR. Append .exact for exact match on full field names. Wildcards (*) are rejected.",
+  "Forward slashes in queries (e.g. DOIs) are escaped automatically by the API.",
+  "Search responses include total, page, pageSize and next/last URLs. The maximum pageSize is 100, and deep paging is limited, so narrow the query instead.",
+  "Sorting by bibjson.year on articles returns bad_request. created_date and last_updated work.",
+  "OAI-PMH ListRecords returns one batch plus a resumptionToken under OAI-PMH.ListRecords.resumptionToken. Fetching later batches needs /oai?verb=ListRecords&resumptionToken=..., which this CLI does not wrap.",
+  "Write endpoints (applications/articles CRUD) need a publisher api_key and are not included.",
+  "Full data dumps are available on request (see /docs/public-data-dump/), and a journal CSV export is documented at /docs/journal-csv."
+ ],
+ "dropped": [],
+ "generated": {
+  "by": "clify add",
+  "model": "claude-opus-5-5",
+  "exploredSteps": 8,
+  "recorded": 24,
+  "verifiedAt": "2026-10-18T09:05:48.519Z",
+  "seconds": 190
+ }
+}

@@ -1,0 +1,61 @@
+{
+ "url": "https://dblp.org/",
+ "category": "science",
+ "sandbox": "clify-dblp-org",
+ "startedAt": "2026-10-18T09:06:26.853Z",
+ "region": "us-pdx-1",
+ "chrome": "Chrome/148.0.7778.96",
+ "sandboxStartMs": 1823,
+ "addSeconds": 67,
+ "addExit": 1,
+ "add": {
+  "ok": false,
+  "site": "dblp",
+  "url": "https://dblp.org/",
+  "commands": [],
+  "verified": 0,
+  "writes": 0,
+  "dropped": [
+   {
+    "name": "search-publications",
+    "reason": "dblp returned an Anubis bot challenge (HTTP 202 'Making sure you're not a bot!') instead of the API's JSON. The command itself looks correct. The site is blocking this automated client, and I won't solve the challenge, spoof a browser User-Agent or switch to mirror hosts to get around it. Re-add once dblp grants access, for example by allowlisting the clify User-Agent on request."
+   },
+   {
+    "name": "search-authors",
+    "reason": "Same Anubis bot challenge (HTTP 202 HTML) instead of JSON. The spec looks correct, but access is deliberately gated for this client. Restore if dblp allowlists it."
+   },
+   {
+    "name": "search-venues",
+    "reason": "Same Anubis bot challenge (HTTP 202 HTML) instead of JSON. The spec looks correct, but access is deliberately gated for this client. Restore if dblp allowlists it."
+   },
+   {
+    "name": "get-author-publications",
+    "reason": "Same Anubis bot challenge (HTTP 202 HTML). If it is restored later, the spec also needs a fix: /pid/{pid}.xml returns XML, not JSON, so responseType 'json' and resultPath 'dblpperson' would fail even with access."
+   },
+   {
+    "name": "get-record",
+    "reason": "Same Anubis bot challenge (HTTP 202 HTML). If it is restored later, the spec also needs a fix: /rec/{key}.xml returns XML, not JSON, so responseType 'json' and resultPath 'dblp' would fail even with access."
+   },
+   {
+    "name": "export-bibtex",
+    "reason": "It 'passed' only because responseType is text. The output is the Anubis challenge page ('Making sure you're not a bot!'), not a BibTeX entry. The spec is otherwise correct, but the endpoint is gated for this client."
+   }
+  ],
+  "blockers": [
+   "captcha"
+  ],
+  "loggedIn": false,
+  "seconds": 67,
+  "next": [
+   "clify dblp",
+   "clify repair dblp --goal \"<what you need from the site>\""
+  ],
+  "explored": {
+   "steps": 3,
+   "recorded": 2,
+   "heldWrites": 0
+  }
+ },
+ "deleted": true,
+ "seconds": 69
+}

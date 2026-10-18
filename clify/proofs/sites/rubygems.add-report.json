@@ -1,0 +1,108 @@
+{
+ "ok": true,
+ "site": "rubygems",
+ "url": "https://rubygems.org/",
+ "commands": [
+  {
+   "name": "search-gems",
+   "summary": "Search gems by keyword (name/description); 30 results per page",
+   "verified": true
+  },
+  {
+   "name": "autocomplete-gem-names",
+   "summary": "Suggest gem names that start with or match a partial query (returns up to 30 names)",
+   "verified": true
+  },
+  {
+   "name": "get-gem",
+   "summary": "Get metadata for a gem's latest version: downloads, description, licenses, links, runtime/development dependencies",
+   "verified": true
+  },
+  {
+   "name": "list-gem-versions",
+   "summary": "List every published version of a gem, newest first, with dates, download counts and Ruby requirements",
+   "verified": true
+  },
+  {
+   "name": "get-latest-version",
+   "summary": "Get only the latest version number of a gem",
+   "verified": true
+  },
+  {
+   "name": "get-gem-version",
+   "summary": "Get full details of one specific gem version: dependencies, checksums, required Ruby, downloads",
+   "verified": true
+  },
+  {
+   "name": "get-version-downloads",
+   "summary": "Get total gem downloads and downloads of one specific version",
+   "verified": true
+  },
+  {
+   "name": "list-reverse-dependencies",
+   "summary": "List the names of all gems whose versions depend on the given gem (full list, names only)",
+   "verified": true
+  },
+  {
+   "name": "search-reverse-dependencies",
+   "summary": "Browse or filter gems whose latest version requires the given gem, with their version, date and downloads",
+   "verified": true
+  },
+  {
+   "name": "list-gem-owners",
+   "summary": "List the owners (user handles and roles) of a gem",
+   "verified": true
+  },
+  {
+   "name": "list-owner-gems",
+   "summary": "List all gems owned by a RubyGems user handle",
+   "verified": true
+  },
+  {
+   "name": "get-profile",
+   "summary": "Get a RubyGems user's public profile (id and handle)",
+   "verified": true
+  },
+  {
+   "name": "list-latest-gems",
+   "summary": "List the most recently added gems (brand-new gem names)",
+   "verified": true
+  },
+  {
+   "name": "list-just-updated-gems",
+   "summary": "List gems that just had a new version pushed",
+   "verified": true
+  },
+  {
+   "name": "list-new-releases",
+   "summary": "List recent releases across all gems (10 per page)",
+   "verified": true
+  },
+  {
+   "name": "list-popular-releases",
+   "summary": "List recent releases of popular gems, ranked by total downloads (10 per page)",
+   "verified": true
+  },
+  {
+   "name": "list-most-downloaded",
+   "summary": "List the all-time most downloaded gems with download counts (10 per page)",
+   "verified": true
+  }
+ ],
+ "verified": 17,
+ "writes": 0,
+ "dropped": [],
+ "blockers": [],
+ "loggedIn": false,
+ "seconds": 173,
+ "next": [
+  "clify rubygems",
+  "clify rubygems search-gems --query \"json parser\""
+ ],
+ "installed": "/home/ubuntu/clify-runs/batch2/home/bin/rubygems",
+ "explored": {
+  "steps": 15,
+  "recorded": 33,
+  "heldWrites": 0
+ }
+}

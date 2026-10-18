@@ -1,0 +1,9 @@
+#!/usr/bin/env bash
+# clify on the agent's computer: account words (identity, signup, whoami, ask, ...)
+# go to accounts-cli.ts, everything else to cli.ts, so the agent has one `clify`.
+here="$(cd "$(dirname "$(readlink -f "${BASH_SOURCE[0]}")")/../.." && pwd)/clify"
+case "$1" in
+  identity|inbox|signup|verify|login|logout|whoami|session|vault|ask|forward|approve) src=accounts-cli.ts ;;
+  *) src=cli.ts ;;
+esac
+exec node --no-warnings --import "$here/node_modules/tsx/dist/esm/index.mjs" "$here/src/$src" "$@"

@@ -1,0 +1,643 @@
+{
+ "name": "lichess",
+ "startUrl": "https://lichess.org/",
+ "origin": "https://lichess.org",
+ "createdAt": "2026-10-18T07:40:53.800Z",
+ "description": "Lichess.org (free open-source chess server): read-only CLI over its server-rendered pages for FIDE player and federation data, broadcast search and calendar, rating leaderboards, online players, and tournament winners and details.",
+ "commands": [
+  {
+   "name": "search-fide-players",
+   "summary": "Search or list FIDE-rated players, sortable by name or classical/rapid/blitz rating, paginated 30 per page",
+   "method": "GET",
+   "urlTemplate": "/fide",
+   "params": [
+    {
+     "name": "q",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Player name to search for, e.g. 'Kasparov'. Omit to list top players.",
+     "example": "Kasparov"
+    },
+    {
+     "name": "order",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Sort column: name, standard (classical rating), rapid, blitz, or year (age)",
+     "enum": [
+      "name",
+      "standard",
+      "rapid",
+      "blitz",
+      "year"
+     ],
+     "example": "blitz"
+    },
+    {
+     "name": "page",
+     "in": "query",
+     "required": false,
+     "type": "number",
+     "description": "Result page number, starting at 1",
+     "example": "2"
+    }
+   ],
+   "responseType": "html",
+   "extract": {
+    "list": "tbody.infinite-scroll > tr.paginated",
+    "fields": {
+     "name": "a.player-intro__name",
+     "title": "span.utitle@title",
+     "url": "a.player-intro__name@href",
+     "federation": "span.player-intro__fed",
+     "classical": "td.player-intro-td + td",
+     "rapid": "td.player-intro-td + td + td",
+     "blitz": "td.player-intro-td + td + td + td",
+     "age": "td.player-intro-td + td + td + td + td"
+    }
+   },
+   "defaultFields": [
+    "name",
+    "title",
+    "url",
+    "federation",
+    "classical",
+    "rapid",
+    "blitz",
+    "age"
+   ],
+   "pagination": {
+    "type": "page",
+    "param": "page"
+   },
+   "mutates": false,
+   "example": {
+    "q": "Kasparov"
+   },
+   "source": "E2 GET https://lichess.org/fide",
+   "verified": true
+  },
+  {
+   "name": "list-fide-player-broadcasts",
+   "summary": "List recent broadcast tournaments a FIDE player took part in, newest first, paginated",
+   "method": "GET",
+   "urlTemplate": "/fide/{id}/{slug}",
+   "params": [
+    {
+     "name": "id",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "FIDE player id",
+     "example": "4100018"
+    },
+    {
+     "name": "slug",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Name slug from the player url, e.g. Kasparov_Garry",
+     "example": "Kasparov_Garry"
+    },
+    {
+     "name": "page",
+     "in": "query",
+     "required": false,
+     "type": "number",
+     "description": "Page number, starting at 1",
+     "example": "2"
+    }
+   ],
+   "responseType": "html",
+   "extract": {
+    "list": "section.relay-cards > a.relay-card.paginated",
+    "fields": {
+     "title": "h3.relay-card__title",
+     "url": "@href",
+     "date": "time.timeago@datetime",
+     "players": "span.relay-card__players"
+    }
+   },
+   "defaultFields": [
+    "title",
+    "url",
+    "date",
+    "players"
+   ],
+   "pagination": {
+    "type": "page",
+    "param": "page"
+   },
+   "mutates": false,
+   "example": {
+    "id": "4100018",
+    "slug": "Kasparov_Garry"
+   },
+   "source": "E11 E13 GET https://lichess.org/fide/{n}/Kasparov_Garry",
+   "verified": true
+  },
+  {
+   "name": "list-fide-federations",
+   "summary": "List FIDE federations with player counts and average top ratings, paginated 30 per page",
+   "method": "GET",
+   "urlTemplate": "/fide/federation",
+   "params": [
+    {
+     "name": "page",
+     "in": "query",
+     "required": false,
+     "type": "number",
+     "description": "Page number, starting at 1",
+     "example": "2"
+    }
+   ],
+   "responseType": "html",
+   "extract": {
+    "list": "tbody.infinite-scroll > tr.paginated",
+    "fields": {
+     "name": "td > a",
+     "url": "td > a@href",
+     "players": "td + td",
+     "classicalTop10": "td + td + td",
+     "rapidTop10": "td + td + td + td",
+     "blitzTop10": "td + td + td + td + td"
+    }
+   },
+   "defaultFields": [
+    "name",
+    "url",
+    "players",
+    "classicalTop10",
+    "rapidTop10",
+    "blitzTop10"
+   ],
+   "pagination": {
+    "type": "page",
+    "param": "page"
+   },
+   "mutates": false,
+   "source": "E4 GET https://lichess.org/fide/federation",
+   "verified": true
+  },
+  {
+   "name": "get-fide-federation-stats",
+   "summary": "Get a FIDE federation's world rank, top-10 average rating and player count for classical, rapid and blitz (one item per category)",
+   "method": "GET",
+   "urlTemplate": "/fide/federation/{federation}",
+   "params": [
+    {
+     "name": "federation",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Federation slug as in /fide/federation/{federation}, e.g. Norway, United_States_of_America, India",
+     "example": "Norway"
+    }
+   ],
+   "responseType": "html",
+   "extract": {
+    "list": "div.fide-federation__card",
+    "fields": {
+     "category": "em.text",
+     "rank": "p strong",
+     "top10Rating": "p + p strong",
+     "players": "p + p + p strong"
+    }
+   },
+   "defaultFields": [
+    "category",
+    "rank",
+    "top10Rating",
+    "players"
+   ],
+   "mutates": false,
+   "example": {
+    "federation": "Norway"
+   },
+   "source": "E12 GET https://lichess.org/fide/federation/Norway",
+   "verified": true
+  },
+  {
+   "name": "list-fide-federation-players",
+   "summary": "List the FIDE players of one federation, sortable by name or rating, paginated 30 per page",
+   "method": "GET",
+   "urlTemplate": "/fide/federation/{federation}",
+   "params": [
+    {
+     "name": "federation",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Federation slug, e.g. Norway",
+     "example": "Norway"
+    },
+    {
+     "name": "order",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Sort column",
+     "enum": [
+      "name",
+      "standard",
+      "rapid",
+      "blitz",
+      "year"
+     ],
+     "example": "standard"
+    },
+    {
+     "name": "page",
+     "in": "query",
+     "required": false,
+     "type": "number",
+     "description": "Page number, starting at 1",
+     "example": "2"
+    }
+   ],
+   "responseType": "html",
+   "extract": {
+    "list": "tbody.infinite-scroll > tr.paginated",
+    "fields": {
+     "name": "a.player-intro__name",
+     "title": "span.utitle@title",
+     "url": "a.player-intro__name@href",
+     "classical": "td.player-intro-td + td",
+     "rapid": "td.player-intro-td + td + td",
+     "blitz": "td.player-intro-td + td + td + td",
+     "age": "td.player-intro-td + td + td + td + td"
+    }
+   },
+   "defaultFields": [
+    "name",
+    "title",
+    "url",
+    "classical",
+    "rapid",
+    "blitz",
+    "age"
+   ],
+   "pagination": {
+    "type": "page",
+    "param": "page"
+   },
+   "mutates": false,
+   "example": {
+    "federation": "Norway"
+   },
+   "source": "E12 GET https://lichess.org/fide/federation/Norway",
+   "verified": true
+  },
+  {
+   "name": "search-broadcasts",
+   "summary": "Search official live tournament broadcasts by keyword, or list live/upcoming ones when q is omitted, 24 per page",
+   "method": "GET",
+   "urlTemplate": "/broadcast",
+   "params": [
+    {
+     "name": "q",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Search keywords, e.g. 'Norway Chess'. Omit to list live and upcoming broadcasts.",
+     "example": "Norway Chess"
+    },
+    {
+     "name": "page",
+     "in": "query",
+     "required": false,
+     "type": "number",
+     "description": "Page number, starting at 1",
+     "example": "2"
+    }
+   ],
+   "responseType": "html",
+   "extract": {
+    "list": "a.relay-card",
+    "fields": {
+     "title": "h3.relay-card__title",
+     "url": "@href",
+     "date": "time.timeago@datetime || span.relay-card__info",
+     "players": "span.relay-card__players"
+    }
+   },
+   "defaultFields": [
+    "title",
+    "url",
+    "date",
+    "players"
+   ],
+   "pagination": {
+    "type": "page",
+    "param": "page"
+   },
+   "mutates": false,
+   "example": {
+    "q": "Norway Chess"
+   },
+   "source": "E3 GET https://lichess.org/broadcast",
+   "verified": true
+  },
+  {
+   "name": "list-broadcast-calendar",
+   "summary": "List all broadcast tournaments scheduled in the current month's broadcast calendar",
+   "method": "GET",
+   "urlTemplate": "/broadcast/calendar",
+   "params": [],
+   "responseType": "html",
+   "extract": {
+    "list": "a.relay-card",
+    "fields": {
+     "title": "h3.relay-card__title",
+     "url": "@href",
+     "date": "span.relay-card__info > span",
+     "players": "span.relay-card__players",
+     "tier": "@class"
+    }
+   },
+   "defaultFields": [
+    "title",
+    "url",
+    "date",
+    "players",
+    "tier"
+   ],
+   "mutates": false,
+   "source": "E14 GET https://lichess.org/broadcast/calendar",
+   "verified": true
+  },
+  {
+   "name": "list-leaderboards",
+   "summary": "List lichess's top-10 leaderboard for every rating category (bullet, blitz, rapid, classical, variants)",
+   "method": "GET",
+   "urlTemplate": "/player",
+   "params": [],
+   "responseType": "html",
+   "extract": {
+    "list": "section.user-top",
+    "fields": {
+     "category": "h2.text > a",
+     "categoryUrl": "h2.text > a@href",
+     "leaderUrl": "ol > li a.user-link@href",
+     "top10": "ol"
+    }
+   },
+   "defaultFields": [
+    "category",
+    "categoryUrl",
+    "leaderUrl",
+    "top10"
+   ],
+   "mutates": false,
+   "source": "E6",
+   "verified": true
+  },
+  {
+   "name": "list-online-players",
+   "summary": "List the strongest lichess players who are online right now, with their rating (username is the last path segment of url)",
+   "method": "GET",
+   "urlTemplate": "/player",
+   "params": [],
+   "responseType": "html",
+   "extract": {
+    "list": "section.community__online ol.user-top > li",
+    "fields": {
+     "url": "a.user-link@href",
+     "title": "span.utitle@title",
+     "rating": "span.text",
+     "ratingInfo": "span.text@title"
+    }
+   },
+   "defaultFields": [
+    "url",
+    "title",
+    "rating",
+    "ratingInfo"
+   ],
+   "mutates": false,
+   "source": "E6",
+   "verified": true
+  },
+  {
+   "name": "list-tournament-winners",
+   "summary": "List recent winners of lichess's recurring arena tournaments (Elite, HyperBullet, Yearly, Monthly, Marathon...) by category",
+   "method": "GET",
+   "urlTemplate": "/tournament/leaderboard",
+   "params": [],
+   "responseType": "html",
+   "extract": {
+    "list": "section.tournament-leaderboards__item",
+    "fields": {
+     "category": "h2.text",
+     "latestWinnerUrl": "ul > li a.user-link@href",
+     "latestTournamentUrl": "ul > li a[href^='/tournament/']@href",
+     "winners": "ul"
+    }
+   },
+   "defaultFields": [
+    "category",
+    "latestWinnerUrl",
+    "latestTournamentUrl",
+    "winners"
+   ],
+   "mutates": false,
+   "source": "E8",
+   "verified": true
+  },
+  {
+   "name": "get-tournament",
+   "summary": "Get a lichess arena tournament's name, format/time control, start time, description and winner profile url",
+   "method": "GET",
+   "urlTemplate": "/tournament/{id}",
+   "params": [
+    {
+     "name": "id",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Tournament id from /tournament/{id}, e.g. yvqavUey or summer26",
+     "example": "yvqavUey"
+    }
+   ],
+   "responseType": "html",
+   "extract": {
+    "fields": {
+     "name": "div.tour__main__header > h1",
+     "format": "section.tour__meta__head",
+     "speed": "section.tour__meta__head span@title",
+     "startsAt": "time.timeago@datetime",
+     "description": "section.description",
+     "winnerUrl": "p.box__pad a.user-link@href"
+    }
+   },
+   "defaultFields": [
+    "name",
+    "format",
+    "startsAt",
+    "description",
+    "winnerUrl"
+   ],
+   "mutates": false,
+   "example": {
+    "id": "yvqavUey"
+   },
+   "source": "E9 E10",
+   "verified": true
+  }
+ ],
+ "blockers": [
+  "bot-check at https://lichess.org/",
+  "bot-check at https://lichess.org/@/DrNykterstein",
+  "bot-check at https://lichess.org/@/cutemouse83",
+  "bot-check at https://lichess.org/broadcast/norway-chess-2026-open/round-10-armageddon/JRUqqpsa",
+  "bot-check at https://lichess.org/broadcast/calendar/2026/11",
+  "bot-check at https://lichess.org/team/search?text=chess",
+  "captcha"
+ ],
+ "notes": [
+  "All commands scrape server-rendered HTML. robots.txt disallows the official JSON API (/api/*), so the CLI does not use it. Its schema is documented at https://lichess.org/openapi.yaml.",
+  "Cloudflare bot checks block the homepage, user profiles (/@/{user}), broadcast round pages, team search and some calendar months, so the CLI has no commands for them. Profile and broadcast urls in results are for reference only.",
+  "Other months of the broadcast calendar live at /broadcast/calendar/{year}/{month} (e.g. /broadcast/calendar/2026/9), but some of those pages are behind Cloudflare.",
+  "FIDE player urls look like /fide/{id}/{slug}. Split the url returned by search-fide-players to get both parts for get-fide-player and list-fide-player-broadcasts.",
+  "The rating columns are read by position (classical, rapid, blitz, age). A player with no rating in one category may have an empty cell.",
+  "get-tournament returns only the static header (format, start time, winner). Live standings are rendered client-side and are not included.",
+  "In get-top-players, limit is the {n} segment of /player/top/{n}/{perf}. It was seen only in the explorer's summary; the recorded URL was /player/top/blitz.",
+  "The explorer was not logged in, so every command is a public read."
+ ],
+ "dropped": [
+  {
+   "name": "get-fide-player",
+   "summary": "Get a FIDE player's profile: name, title, federation, FIDE id link and classical/rapid/blitz ratings",
+   "method": "GET",
+   "urlTemplate": "/fide/{id}/{slug}",
+   "params": [
+    {
+     "name": "id",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "FIDE player id (the number in the player url /fide/{id}/{slug})",
+     "example": "1503014"
+    },
+    {
+     "name": "slug",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Name slug from the player url, e.g. Carlsen_Magnus",
+     "example": "Carlsen_Magnus"
+    }
+   ],
+   "responseType": "html",
+   "extract": {
+    "fields": {
+     "name": "h1.fide-player__header__name > span",
+     "title": "h1.fide-player__header__name span.utitle@title",
+     "federation": "a.fide-player__federation",
+     "federationUrl": "a.fide-player__federation@href",
+     "fideProfile": "table.fide-player__header__table a[href^='https://ratings.fide.com']@href",
+     "rating1Type": "div.fide-player__rating__text em.text",
+     "rating1": "div.fide-player__rating__text strong",
+     "rating2Type": "div.fide-player__rating + div.fide-player__rating em.text",
+     "rating2": "div.fide-player__rating + div.fide-player__rating strong",
+     "rating3Type": "div.fide-player__rating + div.fide-player__rating + div.fide-player__rating em.text",
+     "rating3": "div.fide-player__rating + div.fide-player__rating + div.fide-player__rating strong"
+    }
+   },
+   "defaultFields": [
+    "name",
+    "title",
+    "federation",
+    "fideProfile",
+    "rating1Type",
+    "rating1",
+    "rating2",
+    "rating3"
+   ],
+   "mutates": false,
+   "example": {
+    "id": "1503014",
+    "slug": "Carlsen_Magnus"
+   },
+   "source": "E11 E13 GET https://lichess.org/fide/{n}/Kasparov_Garry",
+   "verified": false,
+   "verifyNote": "HTTP 429: rate limited by the site; wait a minute before retrying (HTTP 429)"
+  },
+  {
+   "name": "get-top-players",
+   "summary": "Get the lichess rating leaderboard for one category (e.g. blitz) with rank, username, rating and recent progress",
+   "method": "GET",
+   "urlTemplate": "/player/top/{api_limit}/{perf}",
+   "params": [
+    {
+     "name": "perf",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Rating category",
+     "enum": [
+      "ultraBullet",
+      "bullet",
+      "blitz",
+      "rapid",
+      "classical",
+      "chess960",
+      "crazyhouse",
+      "antichess",
+      "atomic",
+      "horde",
+      "kingOfTheHill",
+      "racingKings",
+      "threeCheck"
+     ],
+     "example": "blitz"
+    },
+    {
+     "name": "api_limit",
+     "in": "path",
+     "required": false,
+     "type": "number",
+     "description": "Number of players to return (max 200) (sent to the site as \"limit\"; clify's own --limit only shapes the output)",
+     "default": 100,
+     "example": "100"
+    }
+   ],
+   "responseType": "html",
+   "extract": {
+    "list": "tr",
+    "fields": {
+     "rank": "span.lb__rank-num",
+     "username": "a.user-link",
+     "url": "a.user-link@href",
+     "title": "span.utitle@title",
+     "rating": "td + td + td",
+     "progress": "td + td + td + td"
+    }
+   },
+   "defaultFields": [
+    "rank",
+    "username",
+    "url",
+    "title",
+    "rating",
+    "progress"
+   ],
+   "mutates": false,
+   "example": {
+    "perf": "blitz"
+   },
+   "source": "E7 GET https://lichess.org/player/top/blitz",
+   "verified": false,
+   "verifyNote": "the site answered with a bot check (HTTP 403); clify does not bypass these"
+  }
+ ],
+ "generated": {
+  "by": "clify add",
+  "model": "claude-opus-5-5",
+  "exploredSteps": 26,
+  "recorded": 30,
+  "verifiedAt": "2026-10-18T07:42:54.124Z",
+  "seconds": 294
+ }
+}

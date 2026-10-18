@@ -1,0 +1,476 @@
+{
+ "name": "ycombinator",
+ "startUrl": "https://www.ycombinator.com/companies",
+ "origin": "https://www.ycombinator.com",
+ "createdAt": "2026-10-18T07:37:01.059Z",
+ "description": "Y Combinator public site (ycombinator.com): search the YC startup directory (via YC's Algolia index), look up companies, their jobs and job postings, Launch YC posts, the jobs board, and YC people.",
+ "commands": [
+  {
+   "name": "list-directory-categories",
+   "summary": "List the directory's industry and location categories with their URL slugs, plus links to hiring-by-location pages",
+   "method": "GET",
+   "urlTemplate": "/companies/_metadata",
+   "params": [
+    {
+     "name": "industry",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Industry name to get context for, e.g. 'Developer Tools'",
+     "example": "Developer Tools"
+    },
+    {
+     "name": "location",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Location slug to get context for, e.g. 'san-francisco-bay-area'",
+     "example": "san-francisco-bay-area"
+    }
+   ],
+   "headers": {
+    "x-requested-with": "XMLHttpRequest",
+    "accept": "application/json"
+   },
+   "responseType": "json",
+   "mutates": false,
+   "example": {
+    "industry": "Developer Tools"
+   },
+   "source": "E4 E12 E13 GET https://www.ycombinator.com/companies/_metadata",
+   "verified": true
+  },
+  {
+   "name": "get-company",
+   "summary": "Get a YC company's profile page by slug (title/tagline and summary description with founders, team size, location, hiring)",
+   "method": "GET",
+   "urlTemplate": "/companies/{slug}",
+   "params": [
+    {
+     "name": "slug",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Company slug as it appears in YC company URLs, e.g. airbnb",
+     "example": "luminal"
+    }
+   ],
+   "responseType": "html",
+   "extract": {
+    "fields": {
+     "title": "title",
+     "description": "meta[name=description]@content",
+     "url": "meta[property='og:url']@content"
+    }
+   },
+   "mutates": false,
+   "example": {
+    "slug": "luminal"
+   },
+   "source": "E8 E11 E21",
+   "verified": true
+  },
+  {
+   "name": "list-company-jobs",
+   "summary": "List the open job postings of a YC company",
+   "method": "GET",
+   "urlTemplate": "/companies/{slug}/jobs",
+   "params": [
+    {
+     "name": "slug",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Company slug, e.g. moss",
+     "example": "moss"
+    }
+   ],
+   "responseType": "html",
+   "extract": {
+    "list": "a[href*=\"/jobs/\"]",
+    "fields": {
+     "title": "",
+     "url": "@href"
+    }
+   },
+   "defaultFields": [
+    "title",
+    "url"
+   ],
+   "mutates": false,
+   "example": {
+    "slug": "moss"
+   },
+   "source": "E9 GET https://www.ycombinator.com/companies/moss/jobs",
+   "verified": true
+  },
+  {
+   "name": "get-job",
+   "summary": "Get a job posting (title, description, salary range, location, remote type, date posted) from its structured JobPosting data",
+   "method": "GET",
+   "urlTemplate": "/companies/{slug}/jobs/{jobId}",
+   "params": [
+    {
+     "name": "slug",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Company slug, e.g. moss",
+     "example": "moss"
+    },
+    {
+     "name": "jobId",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Job id plus slug as it appears in the job URL, e.g. HmK9Iqk-machine-learning-engineer",
+     "example": "HmK9Iqk-machine-learning-engineer"
+    }
+   ],
+   "responseType": "html",
+   "extract": {
+    "jsonScript": "script[type=\"application/ld+json\"]"
+   },
+   "defaultFields": [
+    "title",
+    "url",
+    "datePosted",
+    "employmentType",
+    "hiringOrganization.name",
+    "baseSalary.value",
+    "jobLocation",
+    "jobLocationType"
+   ],
+   "mutates": false,
+   "example": {
+    "slug": "moss",
+    "jobId": "HmK9Iqk-machine-learning-engineer"
+   },
+   "source": "E10 GET https://www.ycombinator.com/companies/moss/jobs/HmK9Iqk-machine-learning-engineer",
+   "verified": true
+  },
+  {
+   "name": "get-launch",
+   "summary": "Get a Launch YC post: title, tagline, upvote count, author, company link and posting date",
+   "method": "GET",
+   "urlTemplate": "/launches/{id}",
+   "params": [
+    {
+     "name": "id",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Launch id plus slug from the launch URL, e.g. ObJ-koyal-the-agentic-ai-filmmaking-platform",
+     "example": "ObJ-koyal-the-agentic-ai-filmmaking-platform"
+    }
+   ],
+   "responseType": "html",
+   "extract": {
+    "fields": {
+     "title": "div.title-container h1",
+     "tagline": "p.tagline",
+     "votes": "div.vote-count-container",
+     "author": "div.flex-flow-wrap b",
+     "companyUrl": "a.post-company-link@href",
+     "postedAt": "time.timeago@datetime"
+    }
+   },
+   "mutates": false,
+   "example": {
+    "id": "ObJ-koyal-the-agentic-ai-filmmaking-platform"
+   },
+   "source": "E15",
+   "verified": true
+  },
+  {
+   "name": "list-jobs",
+   "summary": "List featured jobs at YC startups from the Work at a Startup jobs board",
+   "method": "GET",
+   "urlTemplate": "/jobs",
+   "params": [],
+   "responseType": "html",
+   "extract": {
+    "list": "a[href*=\"/companies/\"][href*=\"/jobs/\"]",
+    "fields": {
+     "title": "",
+     "url": "@href"
+    }
+   },
+   "defaultFields": [
+    "title",
+    "url"
+   ],
+   "mutates": false,
+   "source": "E16 GET https://www.ycombinator.com/jobs",
+   "verified": true
+  },
+  {
+   "name": "list-jobs-by-role",
+   "summary": "List jobs at YC startups for one role (e.g. product-manager, software-engineer)",
+   "method": "GET",
+   "urlTemplate": "/jobs/role/{role}",
+   "params": [
+    {
+     "name": "role",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Role slug, e.g. product-manager, software-engineer, designer, sales, marketing",
+     "example": "product-manager"
+    }
+   ],
+   "responseType": "html",
+   "extract": {
+    "list": "a[href*=\"/companies/\"][href*=\"/jobs/\"]",
+    "fields": {
+     "title": "",
+     "url": "@href"
+    }
+   },
+   "defaultFields": [
+    "title",
+    "url"
+   ],
+   "mutates": false,
+   "example": {
+    "role": "product-manager"
+   },
+   "source": "E17 GET https://www.ycombinator.com/jobs/role/product-manager",
+   "verified": true
+  },
+  {
+   "name": "list-jobs-by-role-location",
+   "summary": "List jobs at YC startups for one role in a given location or remote",
+   "method": "GET",
+   "urlTemplate": "/jobs/role/{role}/{location}",
+   "params": [
+    {
+     "name": "role",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Role slug, e.g. product-manager",
+     "example": "product-manager"
+    },
+    {
+     "name": "location",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "'remote' or a location slug such as san-francisco",
+     "example": "remote"
+    }
+   ],
+   "responseType": "html",
+   "extract": {
+    "list": "a[href*=\"/companies/\"][href*=\"/jobs/\"]",
+    "fields": {
+     "title": "",
+     "url": "@href"
+    }
+   },
+   "defaultFields": [
+    "title",
+    "url"
+   ],
+   "mutates": false,
+   "example": {
+    "role": "product-manager",
+    "location": "remote"
+   },
+   "source": "E18 GET https://www.ycombinator.com/jobs/role/product-manager/remote",
+   "verified": true
+  },
+  {
+   "name": "list-people",
+   "summary": "List YC people (president, partners, staff) with short bios and profile links",
+   "method": "GET",
+   "urlTemplate": "/people",
+   "params": [],
+   "responseType": "html",
+   "extract": {
+    "list": "ul a[href^=\"/people/\"]",
+    "fields": {
+     "name": "div.font-medium",
+     "bio": "div.prose",
+     "url": "@href"
+    }
+   },
+   "defaultFields": [
+    "name",
+    "bio",
+    "url"
+   ],
+   "mutates": false,
+   "source": "E20 GET https://www.ycombinator.com/people",
+   "verified": true
+  },
+  {
+   "name": "get-person",
+   "summary": "Get a YC person's profile (name, role, bio) by slug",
+   "method": "GET",
+   "urlTemplate": "/people/{slug}",
+   "params": [
+    {
+     "name": "slug",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Person slug from list-people URLs, e.g. jared-friedman",
+     "example": "jared-friedman"
+    }
+   ],
+   "responseType": "html",
+   "extract": {
+    "fields": {
+     "title": "title",
+     "name": "h1 || title",
+     "bio": "div.prose || meta[name=description]@content"
+    }
+   },
+   "mutates": false,
+   "example": {
+    "slug": "jared-friedman"
+   },
+   "source": "E19 GET https://www.ycombinator.com/people/jared-friedman",
+   "verified": true
+  }
+ ],
+ "blockers": [],
+ "notes": [
+  "search-companies and list-company-facets use YC's public, search-only Algolia key. The recording may have cut the key short (it decodes to an HMAC followed by 'analytic\u2026'). If Algolia returns 403 'Invalid API key', copy the current key from window.AlgoliaOpts in the /companies page source.",
+  "search-companies sends search params as a JSON object in each Algolia multi-query request. The web app sent the same parameters as a URL-encoded 'params' string.",
+  "Industry and location listing pages (/companies/industry/{name}, /companies/location/{slug}) are rendered from the same Algolia index. Use search-companies with filters like industries:\"Developer Tools\" or regions:\"America / Canada\". Get valid values from list-company-facets.",
+  "Sort by launch date: set index=YCCompany_By_Launch_Date_production. This index name is the replica the YC site uses, but the recorded bodies did not show it.",
+  "Filtering only on 'Developer Tools' etc. requires exact facet values, case-sensitive and quoted when they contain spaces, e.g. batch:\"Fall 2025\" AND isHiring:true.",
+  "Launch YC search and listing (/launches?q=&sort=votes&batch=) are rendered client-side from Algolia, and their index was not recorded. Only get-launch (the server-rendered detail page) is available. Get launch ids from /launches URLs.",
+  "Company, person and job-board pages are mostly client-rendered, so the HTML extraction is limited to title/meta and link lists. get-job returns full structured data (schema.org JobPosting).",
+  "list-company-jobs and job-board lists match links containing '/jobs/'. Ignore any navigation links (e.g. /jobs/role/...) that are not /companies/{slug}/jobs/{id} URLs."
+ ],
+ "dropped": [
+  {
+   "name": "search-companies",
+   "summary": "Search the YC Startup Directory by keyword, with optional filters (batch, industry, region, hiring, top company, nonprofit) and sort by relevance or launch date",
+   "method": "POST",
+   "urlTemplate": "https://45bwzj1sgc-dsn.algolia.net/1/indexes/*/queries?x-algolia-agent=Algolia%20for%20JavaScript%20(3.35.1)%3B%20Browser%3B%20JS%20Helper%20(3.16.1)&x-algolia-application-id=45BWZJ1SGC&x-algolia-api-key=YjFiNjdmYzU0ODU4NGFjMzc0MzEzMjk0NDIwNGE2NzQ0NDY0NzE4NTMxNWQwMGE1ZmY0NjE0Yjg0MzY5MTgyZmFuYWx5dGlj",
+   "params": [
+    {
+     "name": "query",
+     "in": "body",
+     "required": false,
+     "type": "string",
+     "description": "Free-text keyword search over company names, one-liners and descriptions. Empty string matches all companies.",
+     "example": "developer tools"
+    },
+    {
+     "name": "filters",
+     "in": "body",
+     "required": false,
+     "type": "string",
+     "description": "Algolia filter expression on facets. Combine with AND/OR and quote values that contain spaces. Facets: batch (e.g. batch:\"Fall 2025\"), industries (e.g. industries:\"Developer Tools\"), subindustry, regi",
+     "example": "isHiring:true AND batch:\"Fall 2025\""
+    },
+    {
+     "name": "index",
+     "in": "body",
+     "required": false,
+     "type": "string",
+     "description": "Sort order. YCCompany_production sorts by relevance. YCCompany_By_Launch_Date_production sorts newest launched first.",
+     "enum": [
+      "YCCompany_production",
+      "YCCompany_By_Launch_Date_production"
+     ],
+     "default": "YCCompany_production"
+    },
+    {
+     "name": "hitsPerPage",
+     "in": "body",
+     "required": false,
+     "type": "number",
+     "description": "Results per page (max 1000)",
+     "default": 20
+    },
+    {
+     "name": "page",
+     "in": "body",
+     "required": false,
+     "type": "number",
+     "description": "Zero-based page number",
+     "default": 0
+    }
+   ],
+   "bodyTemplate": {
+    "requests": [
+     {
+      "indexName": "{index}",
+      "query": "{query}",
+      "filters": "{filters}",
+      "hitsPerPage": "{hitsPerPage}",
+      "page": "{page}",
+      "tagFilters": ""
+     }
+    ]
+   },
+   "bodyEncoding": "json",
+   "headers": {
+    "content-type": "application/x-www-form-urlencoded"
+   },
+   "responseType": "json",
+   "resultPath": "results.0.hits",
+   "defaultFields": [
+    "name",
+    "slug",
+    "one_liner",
+    "batch",
+    "industries",
+    "all_locations",
+    "team_size",
+    "isHiring"
+   ],
+   "pagination": {
+    "type": "page",
+    "param": "page"
+   },
+   "mutates": false,
+   "example": {
+    "query": "developer tools"
+   },
+   "source": "E3 POST https://45bwzj1sgc-dsn.algolia.net/{n}/indexes/*/queries",
+   "verified": false,
+   "verifyNote": "Algolia rejects the request with 'Invalid Application-ID or API key'. The embedded API key is truncated or rotated. The full secured key lives in a JS variable on /companies, which selector-based CSRF extraction can't read reliably. No working replay without it."
+  },
+  {
+   "name": "list-company-facets",
+   "summary": "List the directory's filter values with company counts: batches, industries, subindustries, regions, hiring, top company, nonprofit",
+   "method": "POST",
+   "urlTemplate": "https://45bwzj1sgc-dsn.algolia.net/1/indexes/*/queries?x-algolia-agent=Algolia%20for%20JavaScript%20(3.35.1)%3B%20Browser%3B%20JS%20Helper%20(3.16.1)&x-algolia-application-id=45BWZJ1SGC&x-algolia-api-key=YjFiNjdmYzU0ODU4NGFjMzc0MzEzMjk0NDIwNGE2NzQ0NDY0NzE4NTMxNWQwMGE1ZmY0NjE0Yjg0MzY5MTgyZmFuYWx5dGlj",
+   "params": [],
+   "bodyTemplate": {
+    "requests": [
+     {
+      "indexName": "YCCompany_production",
+      "params": "query=&hitsPerPage=1&attributesToRetrieve=%5B%5D&attributesToHighlight=%5B%5D&analytics=false&facets=%5B%22top_company%22%2C%22isHiring%22%2C%22nonprofit%22%2C%22batch%22%2C%22industries%22%2C%22subindustry%22%2C%22regions%22%2C%22app_video_public%22%2C%22demo_day_video_public%22%2C%22app_answers%22%2C%22question_answers%22%5D&sortFacetValuesBy=count&maxValuesPerFacet=1000"
+     }
+    ]
+   },
+   "bodyEncoding": "json",
+   "headers": {
+    "content-type": "application/x-www-form-urlencoded"
+   },
+   "responseType": "json",
+   "resultPath": "results.0.facets",
+   "mutates": false,
+   "source": "E3 POST https://45bwzj1sgc-dsn.algolia.net/{n}/indexes/*/queries",
+   "verified": false,
+   "verifyNote": "Uses the same invalid Algolia API key as search-companies (403 'Invalid Application-ID or API key'). Can't be replayed without a valid key."
+  }
+ ],
+ "generated": {
+  "by": "clify add",
+  "model": "claude-opus-5-5",
+  "exploredSteps": 29,
+  "recorded": 86,
+  "verifiedAt": "2026-10-18T07:39:21.185Z",
+  "seconds": 304
+ }
+}

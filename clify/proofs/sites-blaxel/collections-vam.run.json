@@ -1,0 +1,166 @@
+{
+ "url": "https://collections.vam.ac.uk/",
+ "category": "culture",
+ "sandbox": "clify-collections-vam-ac-uk",
+ "startedAt": "2026-10-18T09:08:05.237Z",
+ "region": "us-pdx-1",
+ "chrome": "Chrome/148.0.7778.96",
+ "sandboxStartMs": 1667,
+ "addSeconds": 280,
+ "addExit": 0,
+ "add": {
+  "ok": true,
+  "site": "collections-vam",
+  "url": "https://collections.vam.ac.uk/",
+  "commands": [
+   {
+    "name": "search-objects",
+    "summary": "Search V&A collection objects by keyword. Filters: maker, object name, material, place, accession number, category, place/material/technique/person/organisation/collection IDs, has-image and on-displa",
+    "verified": true
+   },
+   {
+    "name": "export-objects-csv",
+    "summary": "Export object search results as CSV text. Takes the same main filters as search-objects.",
+    "verified": true
+   },
+   {
+    "name": "get-object",
+    "summary": "Get the full catalogue record for one museum object by its system number (the digits after 'O', e.g. O151155 -> 151155).",
+    "verified": true
+   },
+   {
+    "name": "get-object-manifest",
+    "summary": "Get the IIIF presentation manifest (all images with their image service URLs) for an object.",
+    "verified": true
+   },
+   {
+    "name": "get-image-info",
+    "summary": "Get IIIF image info (dimensions, tile sizes, supported formats) for an image asset ID such as _primaryImageId.",
+    "verified": true
+   },
+   {
+    "name": "get-facet-counts",
+    "summary": "Get facet counts (categories, people, places, materials, techniques, etc.) for an object search.",
+    "verified": true
+   },
+   {
+    "name": "list-facet-values",
+    "summary": "List the values and counts of one facet type (e.g. place, material, category) for an object search. Use this to find facet IDs for search-objects.",
+    "verified": true
+   },
+   {
+    "name": "autocomplete-names",
+    "summary": "Search-as-you-type suggestions for people and organisations (makers), returning their IDs for use in id_person / id_organisation filters.",
+    "verified": true
+   },
+   {
+    "name": "search-archives",
+    "summary": "Search the V&A archives index (archive collections and records) by keyword.",
+    "verified": true
+   },
+   {
+    "name": "list-suggested-facets",
+    "summary": "List the site's built-in suggested facets (popular places, etc.) with their system-number IDs.",
+    "verified": true
+   },
+   {
+    "name": "list-organisations",
+    "summary": "List organisations in the collection A\u2013Z for a given starting letter, with their organisation IDs and profile URLs.",
+    "verified": true
+   },
+   {
+    "name": "get-organisation-objects",
+    "summary": "Open an organisation profile page and list its featured collection objects.",
+    "verified": true
+   }
+  ],
+  "verified": 12,
+  "writes": 0,
+  "dropped": [],
+  "blockers": [],
+  "loggedIn": false,
+  "seconds": 279,
+  "next": [
+   "clify collections-vam",
+   "clify collections-vam search-objects --q \"teapot\" --id_category \"THES48982\""
+  ],
+  "installed": "/home/ubuntu/clify-runs/blaxel-w1/home/bin/collections-vam",
+  "explored": {
+   "steps": 24,
+   "recorded": 25,
+   "heldWrites": 0
+  }
+ },
+ "check": {
+  "on": "blaxel",
+  "node": "v24.22.0",
+  "seconds": 6,
+  "reads": 12,
+  "verified": 12,
+  "failed": [],
+  "results": [
+   {
+    "name": "search-objects",
+    "ok": true,
+    "ms": 578
+   },
+   {
+    "name": "export-objects-csv",
+    "ok": true,
+    "ms": 267
+   },
+   {
+    "name": "get-object",
+    "ok": true,
+    "ms": 474
+   },
+   {
+    "name": "get-object-manifest",
+    "ok": true,
+    "ms": 47
+   },
+   {
+    "name": "get-image-info",
+    "ok": true,
+    "ms": 468
+   },
+   {
+    "name": "get-facet-counts",
+    "ok": true,
+    "ms": 258
+   },
+   {
+    "name": "list-facet-values",
+    "ok": true,
+    "ms": 184
+   },
+   {
+    "name": "autocomplete-names",
+    "ok": true,
+    "ms": 164
+   },
+   {
+    "name": "search-archives",
+    "ok": true,
+    "ms": 162
+   },
+   {
+    "name": "list-suggested-facets",
+    "ok": true,
+    "ms": 774
+   },
+   {
+    "name": "list-organisations",
+    "ok": true,
+    "ms": 686
+   },
+   {
+    "name": "get-organisation-objects",
+    "ok": true,
+    "ms": 162
+   }
+  ]
+ },
+ "deleted": true,
+ "seconds": 288
+}

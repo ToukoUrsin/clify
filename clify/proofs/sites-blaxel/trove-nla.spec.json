@@ -1,0 +1,27 @@
+{
+ "name": "trove-nla",
+ "startUrl": "https://trove.nla.gov.au/",
+ "origin": "https://trove.nla.gov.au",
+ "createdAt": "2026-10-18T09:03:56.104Z",
+ "description": "Trove (National Library of Australia) is a discovery service for digitised Australian newspapers, books, images, maps, archives and people. No working commands could be generated because every recorded request returned an Anubis bot-check page instead of site content.",
+ "commands": [],
+ "blockers": [
+  "captcha"
+ ],
+ "notes": [
+  "Both recorded requests, GET / (E2) and GET /search?keyword=gold%20rush (E1), returned HTTP 200 with an Anubis 'Oh noes!' page: 'Access Denied: error code 4d1dbaddfcc0f385'. Neither response contained any Trove data, so neither can be used as a command.",
+  "Anubis (TecharoHQ) is a proof-of-work and bot-detection gate placed in front of trove.nla.gov.au. A plain HTTP replay will hit the same block page, so an HTML-scraping command for /search would return nothing useful. No commands were written for it.",
+  "The exploration never reached the Trove web app, so none of its XHR/JSON endpoints, facets, sort options, pagination or detail pages were seen. No command can be specified from this recording without guessing.",
+  "NLA publishes an official Trove API (api.trove.nla.gov.au, version 3). It needs a free API key that the user registers for. It was not seen in this recording, so no commands target it here. If a key is available, a new recording or spec built against that API is the right way to support search and record lookups.",
+  "Re-running the explorer will not help unless the browser can pass the Anubis challenge legitimately, for example from an allowed network or with a normal interactive browser session. This spec deliberately does not try to get around the bot protection."
+ ],
+ "dropped": [],
+ "generated": {
+  "by": "clify add",
+  "model": "claude-opus-5-5",
+  "exploredSteps": 2,
+  "recorded": 2,
+  "verifiedAt": "2026-10-18T09:04:04.875Z",
+  "seconds": 20
+ }
+}

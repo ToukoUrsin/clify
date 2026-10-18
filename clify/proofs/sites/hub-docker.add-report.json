@@ -1,0 +1,92 @@
+{
+ "ok": true,
+ "site": "hub-docker",
+ "url": "https://hub.docker.com/",
+ "commands": [
+  {
+   "name": "list-categories",
+   "summary": "List Docker Hub image categories. Their slugs are the --category values for search-category-images.",
+   "verified": true
+  },
+  {
+   "name": "search-category-images",
+   "summary": "Search repositories within one category by keyword, with filters for product type and trust badge, a sort order and page number.",
+   "verified": true
+  },
+  {
+   "name": "get-official-image",
+   "summary": "Get details of a Docker Official Image (library/*), such as nginx: description, categories, pull count, stars, last updated date and full overview (full_description).",
+   "verified": true
+  },
+  {
+   "name": "list-official-image-tags",
+   "summary": "List the tags of a Docker Official Image, with a name filter, sort order and page number. Includes the tag digest, size, last update and per-architecture images (architecture, os, digest, size).",
+   "verified": true
+  },
+  {
+   "name": "get-repository",
+   "summary": "Get details of a community or verified-publisher repository such as grafana/grafana: description, pull count, stars, categories, last updated date and full overview (full_description).",
+   "verified": true
+  },
+  {
+   "name": "list-repository-tags",
+   "summary": "List the tags of a non-official repository (namespace/repo), with a name filter, sort order and page number. Includes digest, size, last update and per-architecture images.",
+   "verified": true
+  },
+  {
+   "name": "get-image-layers",
+   "summary": "Get details of one tag's image: per-architecture digests, sizes, last pulled date and the Dockerfile layer commands.",
+   "verified": true
+  },
+  {
+   "name": "get-image-vulnerabilities",
+   "summary": "Get the Docker Scout vulnerability counts (critical/high/medium/low/unspecified/total) and SBOM state for an image digest.",
+   "verified": true
+  },
+  {
+   "name": "get-organization",
+   "summary": "Get public info for a Docker Hub organization or namespace: full name, company, location, website, join date and verified-publisher badge.",
+   "verified": true
+  },
+  {
+   "name": "list-publisher-repositories",
+   "summary": "List the public repositories a publisher or user owns, with a name search, sort order and page number.",
+   "verified": true
+  },
+  {
+   "name": "search-mcp-servers",
+   "summary": "Search the Docker MCP Catalog of containerized MCP servers by keyword, optionally filtered by category.",
+   "verified": true
+  },
+  {
+   "name": "get-mcp-server",
+   "summary": "Get details of an MCP catalog server: description, image, source repo, readme/tools URLs and config.",
+   "verified": true
+  },
+  {
+   "name": "list-mcp-server-tools",
+   "summary": "List the tools an MCP catalog server exposes, with their names and descriptions.",
+   "verified": true
+  }
+ ],
+ "verified": 13,
+ "writes": 0,
+ "dropped": [],
+ "blockers": [
+  "bot-check at https://hub.docker.com/search?q=redis",
+  "bot-check at https://hub.docker.com/search?q=redis&type=image",
+  "captcha"
+ ],
+ "loggedIn": false,
+ "seconds": 271,
+ "next": [
+  "clify hub-docker",
+  "clify hub-docker list-categories"
+ ],
+ "installed": "/home/ubuntu/clify-runs/batch2/home/bin/hub-docker",
+ "explored": {
+  "steps": 30,
+  "recorded": 175,
+  "heldWrites": 34
+ }
+}

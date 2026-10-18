@@ -1,0 +1,158 @@
+{
+ "name": "loc",
+ "startUrl": "https://www.loc.gov/",
+ "origin": "https://www.loc.gov",
+ "createdAt": "2026-10-18T08:19:32.300Z",
+ "description": "Library of Congress (loc.gov): read the homepage's featured stories, trending content, top searches and gallery highlights, and fetch WebVTT captions for LOC webcast videos.",
+ "commands": [
+  {
+   "name": "list-featured-stories",
+   "summary": "List the featured stories in the rotating banner on the Library of Congress homepage (title, description, link).",
+   "method": "GET",
+   "urlTemplate": "/",
+   "params": [],
+   "responseType": "html",
+   "extract": {
+    "list": "div.splide__list.rotating-featured-banner-list > div.splide__slide",
+    "fields": {
+     "title": "h2.title",
+     "description": "p.description",
+     "url": "a.rotating-featured-banner-link@href"
+    }
+   },
+   "defaultFields": [
+    "title",
+    "description",
+    "url"
+   ],
+   "mutates": false,
+   "source": "E3 GET https://www.loc.gov/",
+   "verified": true
+  },
+  {
+   "name": "list-trending",
+   "summary": "List trending items on the homepage (blog posts, magazine articles, videos), with their format (Blog, Magazine, Watch) and link.",
+   "method": "GET",
+   "urlTemplate": "/",
+   "params": [],
+   "responseType": "html",
+   "extract": {
+    "list": "ul.trending-items > li.trending-item",
+    "fields": {
+     "title": "strong.trending-item-title || span.trending-item-text",
+     "format": "span.trending-item-format",
+     "url": "a.trending-item-link@href || a@href",
+     "video_title": "h3.title-embed"
+    }
+   },
+   "defaultFields": [
+    "title",
+    "format",
+    "url"
+   ],
+   "mutates": false,
+   "source": "E3 GET https://www.loc.gov/",
+   "verified": true
+  },
+  {
+   "name": "list-top-searches",
+   "summary": "List the 'Top Searches' terms shown on the homepage, with their loc.gov search URLs.",
+   "method": "GET",
+   "urlTemplate": "/",
+   "params": [],
+   "responseType": "html",
+   "extract": {
+    "list": "div.trending-top-searches li",
+    "fields": {
+     "query": "a",
+     "url": "a@href"
+    }
+   },
+   "defaultFields": [
+    "query",
+    "url"
+   ],
+   "mutates": false,
+   "source": "E3 GET https://www.loc.gov/",
+   "verified": true
+  },
+  {
+   "name": "list-gallery-highlights",
+   "summary": "List the captioned collection photos in the homepage masonry gallery.",
+   "method": "GET",
+   "urlTemplate": "/",
+   "params": [],
+   "responseType": "html",
+   "extract": {
+    "list": "li.masonry-gallery-item",
+    "fields": {
+     "caption": "",
+     "url": "a@href"
+    }
+   },
+   "defaultFields": [
+    "caption",
+    "url"
+   ],
+   "mutates": false,
+   "source": "E3 GET https://www.loc.gov/",
+   "verified": true
+  },
+  {
+   "name": "get-webcast-captions",
+   "summary": "Fetch the WebVTT caption/transcript track for a Library of Congress webcast video served from tile.loc.gov.",
+   "method": "GET",
+   "urlTemplate": "https://tile.loc.gov/streaming-services/iiif/{media_id}/full/full/{track}/full/default.vtt",
+   "params": [
+    {
+     "name": "media_id",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "IIIF media identifier of the webcast rendition. Colon-separated, e.g. media:webcasts:<year>:<id>:<id>-<WxH>_<bitrate>. It appears in the video URLs on loc.gov pages.",
+     "example": "media:webcasts:2026:26-030dig0000:26-030dig0000-1920x1080_6000"
+    },
+    {
+     "name": "track",
+     "in": "path",
+     "required": false,
+     "type": "number",
+     "description": "Caption track index (0 = first or default track).",
+     "default": 0,
+     "example": "0"
+    }
+   ],
+   "headers": {
+    "accept": "text/plain, */*; q=0.01"
+   },
+   "responseType": "text",
+   "mutates": false,
+   "example": {
+    "media_id": "media:webcasts:2026:26-030dig0000:26-030dig0000-1920x1080_6000",
+    "track": "0"
+   },
+   "source": "E1 GET https://tile.loc.gov/streaming-services/iiif/media:webcasts:2026:26-030dig0000:26-030dig0000-1920x1080_6000/full/full/{n}/full/default.vtt",
+   "verified": true
+  }
+ ],
+ "blockers": [
+  "bot-check at https://www.loc.gov/photos/?q=abraham+lincoln",
+  "bot-check at https://www.loc.gov/collections/",
+  "captcha"
+ ],
+ "notes": [
+  "The explorer could not use keyword search. /search/ was blocked by robots/client rules, and /photos/?q= and /collections/ returned a 307 to a Cloudflare bot-verification page. That is why there are no search commands. If loc.gov stops challenging automated clients, its public JSON API (append fo=json to /search/, /photos/ or /collections/ URLs) would be the right basis for search commands.",
+  "The URLs returned by list-top-searches point to /search/?q=..., which may hit the same block.",
+  "Homepage content (featured stories, trending items, gallery) rotates over time, so results change.",
+  "get-webcast-captions returns raw WebVTT text: timestamps, speaker labels such as '>> Name:' and caption lines. The media_id contains colons and must be passed verbatim."
+ ],
+ "dropped": [],
+ "generated": {
+  "by": "clify add",
+  "model": "claude-opus-5-5",
+  "exploredSteps": 4,
+  "recorded": 7,
+  "verifiedAt": "2026-10-18T08:20:03.239Z",
+  "seconds": 55
+ }
+}

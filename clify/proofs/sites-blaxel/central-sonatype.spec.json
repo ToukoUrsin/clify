@@ -1,0 +1,586 @@
+{
+ "name": "central-sonatype",
+ "startUrl": "https://central.sonatype.com/",
+ "origin": "https://central.sonatype.com",
+ "createdAt": "2026-10-18T09:10:23.334Z",
+ "description": "Maven Central (central.sonatype.com): search Maven components, browse namespaces and categories, and look up artifact details, versions, dependencies and dependents via the site's internal JSON API.",
+ "commands": [
+  {
+   "name": "search-components",
+   "summary": "Keyword search over Maven Central components (groupId/artifactId); returns latest version, description, popularity",
+   "method": "POST",
+   "urlTemplate": "/api/internal/browse/components",
+   "params": [
+    {
+     "name": "query",
+     "key": "searchTerm",
+     "in": "body",
+     "required": true,
+     "type": "string",
+     "description": "Search keywords, e.g. an artifact or library name",
+     "example": "jackson"
+    },
+    {
+     "name": "page",
+     "in": "body",
+     "required": false,
+     "type": "number",
+     "description": "0-based page number",
+     "default": 0
+    },
+    {
+     "name": "size",
+     "in": "body",
+     "required": false,
+     "type": "number",
+     "description": "Results per page",
+     "default": 10
+    }
+   ],
+   "bodyTemplate": {
+    "page": "{page}",
+    "size": "{size}",
+    "searchTerm": "{query}",
+    "filter": []
+   },
+   "bodyEncoding": "json",
+   "responseType": "json",
+   "resultPath": "components",
+   "defaultFields": [
+    "id",
+    "namespace",
+    "name",
+    "latestVersionInfo.version",
+    "latestVersionInfo.timestampUnixWithMS",
+    "description",
+    "nsPopularityAppCount",
+    "dependencyOfCount"
+   ],
+   "pagination": {
+    "type": "page",
+    "param": "page"
+   },
+   "mutates": false,
+   "example": {
+    "query": "jackson"
+   },
+   "source": "E2 POST https://central.sonatype.com/api/internal/browse/components",
+   "verified": true
+  },
+  {
+   "name": "list-namespace-components",
+   "summary": "List all components (artifacts) published under a Maven namespace/groupId, optionally narrowed by keyword",
+   "method": "POST",
+   "urlTemplate": "/api/internal/browse/components",
+   "params": [
+    {
+     "name": "namespace",
+     "in": "body",
+     "required": true,
+     "type": "string",
+     "description": "Maven groupId, e.g. com.google.guava",
+     "example": "com.google.guava"
+    },
+    {
+     "name": "query",
+     "key": "searchTerm",
+     "in": "body",
+     "required": false,
+     "type": "string",
+     "description": "Optional keyword to narrow results within the namespace"
+    },
+    {
+     "name": "page",
+     "in": "body",
+     "required": false,
+     "type": "number",
+     "description": "0-based page number",
+     "default": 0
+    },
+    {
+     "name": "size",
+     "in": "body",
+     "required": false,
+     "type": "number",
+     "description": "Results per page",
+     "default": 10
+    }
+   ],
+   "bodyTemplate": {
+    "page": "{page}",
+    "size": "{size}",
+    "searchTerm": "{query}",
+    "filter": [
+     "namespace:{namespace}"
+    ]
+   },
+   "bodyEncoding": "json",
+   "responseType": "json",
+   "resultPath": "components",
+   "defaultFields": [
+    "id",
+    "namespace",
+    "name",
+    "latestVersionInfo.version",
+    "latestVersionInfo.timestampUnixWithMS",
+    "description",
+    "dependencyOfCount"
+   ],
+   "pagination": {
+    "type": "page",
+    "param": "page"
+   },
+   "mutates": false,
+   "example": {
+    "namespace": "com.google.guava"
+   },
+   "source": "E2 POST https://central.sonatype.com/api/internal/browse/components",
+   "verified": true
+  },
+  {
+   "name": "search-components-by-category",
+   "summary": "Search or browse components within a category (e.g. JSON, Web Frameworks, Testing)",
+   "method": "POST",
+   "urlTemplate": "/api/internal/browse/components",
+   "params": [
+    {
+     "name": "category",
+     "in": "body",
+     "required": true,
+     "type": "string",
+     "description": "Category name as shown on the site, e.g. JSON, Web Frameworks, Data Processors",
+     "example": "JSON"
+    },
+    {
+     "name": "query",
+     "key": "searchTerm",
+     "in": "body",
+     "required": false,
+     "type": "string",
+     "description": "Optional keyword; empty string browses the whole category"
+    },
+    {
+     "name": "page",
+     "in": "body",
+     "required": false,
+     "type": "number",
+     "description": "0-based page number",
+     "default": 0
+    },
+    {
+     "name": "size",
+     "in": "body",
+     "required": false,
+     "type": "number",
+     "description": "Results per page",
+     "default": 10
+    }
+   ],
+   "bodyTemplate": {
+    "page": "{page}",
+    "size": "{size}",
+    "searchTerm": "{query}",
+    "filter": [
+     "categories:{category}"
+    ]
+   },
+   "bodyEncoding": "json",
+   "responseType": "json",
+   "resultPath": "components",
+   "defaultFields": [
+    "id",
+    "namespace",
+    "name",
+    "latestVersionInfo.version",
+    "description",
+    "categories",
+    "nsPopularityAppCount"
+   ],
+   "pagination": {
+    "type": "page",
+    "param": "page"
+   },
+   "mutates": false,
+   "example": {
+    "category": "JSON",
+    "query": "json"
+   },
+   "source": "E2",
+   "verified": true
+  },
+  {
+   "name": "get-component",
+   "summary": "Get full details of one artifact version: description, licenses, URLs (scm/issues), files, classifiers, categories, popularity",
+   "method": "GET",
+   "urlTemplate": "/api/internal/component/details?id=pkg:maven/{namespace}/{name}@{version}",
+   "params": [
+    {
+     "name": "namespace",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Maven groupId",
+     "example": "com.fasterxml.jackson.core"
+    },
+    {
+     "name": "name",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Maven artifactId",
+     "example": "jackson-databind"
+    },
+    {
+     "name": "version",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Exact version (get it from search-components latestVersionInfo.version or list-versions)",
+     "example": "2.22.4"
+    }
+   ],
+   "responseType": "json",
+   "defaultFields": [
+    "id",
+    "version",
+    "description",
+    "licenses",
+    "publishedEpochMillis",
+    "url",
+    "scmUrl",
+    "categories"
+   ],
+   "mutates": false,
+   "example": {
+    "namespace": "com.fasterxml.jackson.core",
+    "name": "jackson-databind",
+    "version": "2.22.4"
+   },
+   "source": "E3 GET https://central.sonatype.com/api/internal/component/details",
+   "verified": true
+  },
+  {
+   "name": "list-versions",
+   "summary": "List all published versions of an artifact (newest first by default) with publish dates and dependent counts",
+   "method": "GET",
+   "urlTemplate": "/api/internal/browse/component/versions?sortField=normalizedVersion&filter=namespace:{namespace},name:{name}",
+   "params": [
+    {
+     "name": "namespace",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Maven groupId",
+     "example": "com.fasterxml.jackson.core"
+    },
+    {
+     "name": "name",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Maven artifactId",
+     "example": "jackson-databind"
+    },
+    {
+     "name": "sortDirection",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Version sort order",
+     "enum": [
+      "desc",
+      "asc"
+     ],
+     "default": "desc"
+    },
+    {
+     "name": "page",
+     "in": "query",
+     "required": false,
+     "type": "number",
+     "description": "0-based page number",
+     "default": 0
+    },
+    {
+     "name": "size",
+     "in": "query",
+     "required": false,
+     "type": "number",
+     "description": "Results per page",
+     "default": 12
+    }
+   ],
+   "responseType": "json",
+   "resultPath": "components",
+   "defaultFields": [
+    "id",
+    "version",
+    "publishedEpochMillis",
+    "licenses",
+    "dependencyOfCount",
+    "dependentOnCount",
+    "qualityScore"
+   ],
+   "pagination": {
+    "type": "page",
+    "param": "page"
+   },
+   "mutates": false,
+   "example": {
+    "namespace": "com.fasterxml.jackson.core",
+    "name": "jackson-databind"
+   },
+   "source": "E5 GET https://central.sonatype.com/api/internal/browse/component/versions",
+   "verified": true
+  },
+  {
+   "name": "list-dependencies",
+   "summary": "List the dependencies of a specific artifact version (direct or transitive), with scope and versions",
+   "method": "POST",
+   "urlTemplate": "/api/internal/browse/dependencies",
+   "params": [
+    {
+     "name": "namespace",
+     "in": "body",
+     "required": true,
+     "type": "string",
+     "description": "Maven groupId",
+     "example": "com.fasterxml.jackson.core"
+    },
+    {
+     "name": "name",
+     "in": "body",
+     "required": true,
+     "type": "string",
+     "description": "Maven artifactId",
+     "example": "jackson-databind"
+    },
+    {
+     "name": "version",
+     "in": "body",
+     "required": true,
+     "type": "string",
+     "description": "Exact version",
+     "example": "2.22.4"
+    },
+    {
+     "name": "type",
+     "in": "body",
+     "required": false,
+     "type": "string",
+     "description": "Dependency relationship: DIRECT or INDIRECT (transitive)",
+     "enum": [
+      "DIRECT",
+      "INDIRECT"
+     ],
+     "default": "DIRECT"
+    },
+    {
+     "name": "query",
+     "key": "searchTerm",
+     "in": "body",
+     "required": false,
+     "type": "string",
+     "description": "Optional keyword to filter dependencies"
+    },
+    {
+     "name": "page",
+     "in": "body",
+     "required": false,
+     "type": "number",
+     "description": "0-based page number",
+     "default": 0
+    },
+    {
+     "name": "size",
+     "in": "body",
+     "required": false,
+     "type": "number",
+     "description": "Results per page",
+     "default": 10
+    }
+   ],
+   "bodyTemplate": {
+    "purl": "pkg:maven/{namespace}/{name}@{version}",
+    "page": "{page}",
+    "size": "{size}",
+    "searchTerm": "{query}",
+    "filter": [
+     "dependencyRef:{type}"
+    ]
+   },
+   "bodyEncoding": "json",
+   "responseType": "json",
+   "resultPath": "components",
+   "defaultFields": [
+    "dependencyPurl",
+    "dependencyNamespace",
+    "dependencyName",
+    "dependencyVersion",
+    "scope",
+    "dependencyRef",
+    "licenses"
+   ],
+   "pagination": {
+    "type": "page",
+    "param": "page"
+   },
+   "mutates": false,
+   "example": {
+    "namespace": "com.fasterxml.jackson.core",
+    "name": "jackson-databind",
+    "version": "2.22.4"
+   },
+   "source": "E4 POST https://central.sonatype.com/api/internal/browse/dependencies",
+   "verified": true
+  },
+  {
+   "name": "list-dependents",
+   "summary": "List artifacts that depend on a specific artifact version (reverse dependencies)",
+   "method": "POST",
+   "urlTemplate": "/api/internal/browse/dependents",
+   "params": [
+    {
+     "name": "namespace",
+     "in": "body",
+     "required": true,
+     "type": "string",
+     "description": "Maven groupId",
+     "example": "com.fasterxml.jackson.core"
+    },
+    {
+     "name": "name",
+     "in": "body",
+     "required": true,
+     "type": "string",
+     "description": "Maven artifactId",
+     "example": "jackson-databind"
+    },
+    {
+     "name": "version",
+     "in": "body",
+     "required": true,
+     "type": "string",
+     "description": "Exact version",
+     "example": "2.22.4"
+    },
+    {
+     "name": "type",
+     "in": "body",
+     "required": false,
+     "type": "string",
+     "description": "Dependency relationship: DIRECT or INDIRECT (transitive)",
+     "enum": [
+      "DIRECT",
+      "INDIRECT"
+     ],
+     "default": "DIRECT"
+    },
+    {
+     "name": "query",
+     "key": "searchTerm",
+     "in": "body",
+     "required": false,
+     "type": "string",
+     "description": "Optional keyword to filter dependents"
+    },
+    {
+     "name": "page",
+     "in": "body",
+     "required": false,
+     "type": "number",
+     "description": "0-based page number",
+     "default": 0
+    },
+    {
+     "name": "size",
+     "in": "body",
+     "required": false,
+     "type": "number",
+     "description": "Results per page",
+     "default": 10
+    }
+   ],
+   "bodyTemplate": {
+    "purl": "pkg:maven/{namespace}/{name}@{version}",
+    "page": "{page}",
+    "size": "{size}",
+    "searchTerm": "{query}",
+    "filter": [
+     "dependencyRef:{type}"
+    ]
+   },
+   "bodyEncoding": "json",
+   "responseType": "json",
+   "resultPath": "components",
+   "defaultFields": [
+    "sourcePurl",
+    "sourceNamespace",
+    "sourceName",
+    "sourceVersion",
+    "scope",
+    "dependencyRef",
+    "description"
+   ],
+   "pagination": {
+    "type": "page",
+    "param": "page"
+   },
+   "mutates": false,
+   "example": {
+    "namespace": "com.fasterxml.jackson.core",
+    "name": "jackson-databind",
+    "version": "2.22.4"
+   },
+   "source": "E6 POST https://central.sonatype.com/api/internal/browse/dependents",
+   "verified": true
+  },
+  {
+   "name": "get-homepage-url",
+   "summary": "Get the project homepage URL for an artifact version given its package URL (purl)",
+   "method": "POST",
+   "urlTemplate": "/api/internal/component/details/homepageurl",
+   "params": [
+    {
+     "name": "purl",
+     "in": "body",
+     "required": true,
+     "type": "string",
+     "description": "Package URL: pkg:maven/{groupId}/{artifactId}@{version}",
+     "example": "pkg:maven/com.google.guava/guava@33.7.2-jre"
+    }
+   ],
+   "bodyTemplate": [
+    "{purl}"
+   ],
+   "bodyEncoding": "json",
+   "responseType": "json",
+   "mutates": false,
+   "example": {
+    "purl": "pkg:maven/com.google.guava/guava@33.7.2-jre"
+   },
+   "source": "E7 POST https://central.sonatype.com/api/internal/component/details/homepageurl",
+   "verified": true
+  }
+ ],
+ "blockers": [],
+ "notes": [
+  "All commands are public reads and need no login. They use the site's internal /api/internal/* endpoints, which may change without notice.",
+  "Components are identified by namespace (Maven groupId), name (artifactId) and version. Search results give the latest version in latestVersionInfo.version; use list-versions for the others.",
+  "Pages are 0-based. The response includes pageCount and totalResultCount.",
+  "Timestamps (publishedEpochMillis, timestampUnixWithMS) are Unix epoch milliseconds.",
+  "The UI's 'All' dependency type sends no dependencyRef filter. These commands support only DIRECT or INDIRECT.",
+  "Not exposed because the request bodies were not captured: the category filter key (inferred as 'category:<name>'), sort-by-published-date, and the dependent-on purl / contributor-email search filters.",
+  "Binary artifacts (jars, poms) can be downloaded directly from https://repo1.maven.org/maven2/{groupId as path}/{artifactId}/{version}/.",
+  "The Central Publisher API (/api/v1/publisher/*, documented at /api-doc) needs a bearer token and is not covered."
+ ],
+ "dropped": [],
+ "generated": {
+  "by": "clify add",
+  "model": "claude-opus-5-5",
+  "exploredSteps": 22,
+  "recorded": 325,
+  "verifiedAt": "2026-10-18T09:11:34.747Z",
+  "seconds": 177
+ }
+}

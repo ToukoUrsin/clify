@@ -1,0 +1,28 @@
+{
+ "name": "digitaltmuseum",
+ "startUrl": "https://digitaltmuseum.no/",
+ "origin": "https://digitaltmuseum.no",
+ "createdAt": "2026-10-18T09:19:42.284Z",
+ "description": "DigitaltMuseum (digitaltmuseum.no), the Norwegian/Swedish museum collections portal. No commands could be generated because every page sits behind a Cloudflare bot check.",
+ "commands": [],
+ "blockers": [
+  "bot-check at https://digitaltmuseum.no/",
+  "bot-check at https://digitaltmuseum.no/owners",
+  "captcha"
+ ],
+ "notes": [
+  "No usable endpoints were recorded. The only request, GET https://digitaltmuseum.no/, returned a 307 redirect to a Cloudflare bot check. The /owners page was also behind the check, and no content, XHR or JSON responses were seen.",
+  "robots.txt disallows the /search/ path, so the site's own search pages should not be scraped.",
+  "The explorer did not interact with the bot check, so no capability (search, object detail, owner/museum listings) could be exercised or verified. Commands built from guesses would fail verification.",
+  "To build commands, re-explore from a context the bot check accepts. Alternatively, use DigitaltMuseum's separately documented public API (the DiMu API at api.dimu.org, which needs an API key) if the operator approves. It was not observed in this recording, so it is not included here."
+ ],
+ "dropped": [],
+ "generated": {
+  "by": "clify add",
+  "model": "claude-opus-5-5",
+  "exploredSteps": 3,
+  "recorded": 4,
+  "verifiedAt": "2026-10-18T09:19:50.123Z",
+  "seconds": 21
+ }
+}

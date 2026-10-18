@@ -1,0 +1,1291 @@
+[
+ {
+  "site": "clevelandart",
+  "origin": "https://www.clevelandart.org",
+  "category": "culture",
+  "commands": 5,
+  "verified": 5,
+  "verifiedOn": "blaxel",
+  "sandbox": "clify-www-clevelandart-org-art-collection-sea",
+  "example": "clify clevelandart search-artworks --q monet --skip 0 --api_limit 100"
+ },
+ {
+  "site": "collection-sciencemuseumgroup",
+  "origin": "https://collection.sciencemuseumgroup.org.uk",
+  "category": "culture",
+  "commands": 3,
+  "verified": 3,
+  "verifiedOn": "blaxel",
+  "sandbox": "clify-collection-sciencemuseumgroup-org-uk",
+  "example": "clify collection-sciencemuseumgroup list-featured-collections"
+ },
+ {
+  "site": "collections-vam",
+  "origin": "https://collections.vam.ac.uk",
+  "category": "culture",
+  "commands": 12,
+  "verified": 12,
+  "verifiedOn": "blaxel",
+  "sandbox": "clify-collections-vam-ac-uk",
+  "example": "clify collections-vam search-objects --q teapot --id_category THES48982"
+ },
+ {
+  "site": "loc",
+  "origin": "https://www.loc.gov",
+  "category": "culture",
+  "commands": 5,
+  "verified": 5,
+  "verifiedOn": "blaxel",
+  "sandbox": "clify-www-loc-gov",
+  "example": "clify loc list-featured-stories"
+ },
+ {
+  "site": "open-smk",
+  "origin": "https://open.smk.dk",
+  "category": "culture",
+  "commands": 9,
+  "verified": 9,
+  "verifiedOn": "blaxel",
+  "sandbox": "clify-open-smk-dk",
+  "example": "clify open-smk search-artworks --query \"hammersh\\u00f8i\" --filters \"[artist:Vilhelm Hammersh\\u00f8i]\""
+ },
+ {
+  "site": "rijksmuseum",
+  "origin": "https://www.rijksmuseum.nl",
+  "category": "culture",
+  "commands": 10,
+  "verified": 10,
+  "verifiedOn": "blaxel",
+  "sandbox": "clify-www-rijksmuseum-nl-en-collection",
+  "example": "clify rijksmuseum search-collection --query rembrandt --sort Popularity"
+ },
+ {
+  "site": "artifacthub",
+  "origin": "https://artifacthub.io",
+  "category": "dev",
+  "commands": 14,
+  "verified": 14,
+  "verifiedOn": "blaxel",
+  "sandbox": "clify-artifacthub-io",
+  "example": "clify artifacthub search-packages --query nginx"
+ },
+ {
+  "site": "bundlephobia",
+  "origin": "https://bundlephobia.com",
+  "category": "dev",
+  "commands": 7,
+  "verified": 7,
+  "verifiedOn": "blaxel",
+  "sandbox": "clify-bundlephobia-com",
+  "example": "clify bundlephobia search-packages --q react"
+ },
+ {
+  "site": "caniuse",
+  "origin": "https://caniuse.com",
+  "category": "dev",
+  "commands": 8,
+  "verified": 8,
+  "verifiedOn": "blaxel",
+  "sandbox": "clify-caniuse-com",
+  "example": "clify caniuse search-features --query flexbox"
+ },
+ {
+  "site": "central-sonatype",
+  "origin": "https://central.sonatype.com",
+  "category": "dev",
+  "commands": 8,
+  "verified": 8,
+  "verifiedOn": "blaxel",
+  "sandbox": "clify-central-sonatype-com",
+  "example": "clify central-sonatype search-components --query jackson"
+ },
+ {
+  "site": "cocoapods",
+  "origin": "https://cocoapods.org",
+  "category": "dev",
+  "commands": 4,
+  "verified": 4,
+  "verifiedOn": "blaxel",
+  "sandbox": "clify-cocoapods-org",
+  "example": "clify cocoapods search-pods --query networking"
+ },
+ {
+  "site": "ctan",
+  "origin": "https://ctan.org",
+  "category": "dev",
+  "commands": 20,
+  "verified": 20,
+  "verifiedOn": "blaxel",
+  "sandbox": "clify-ctan-org",
+  "example": "clify ctan list-packages --letter T"
+ },
+ {
+  "site": "devdocs",
+  "origin": "https://devdocs.io",
+  "category": "dev",
+  "commands": 6,
+  "verified": 6,
+  "verifiedOn": "blaxel",
+  "sandbox": "clify-devdocs-io",
+  "example": "clify devdocs list-docs"
+ },
+ {
+  "site": "endoflife",
+  "origin": "https://endoflife.date",
+  "category": "dev",
+  "commands": 14,
+  "verified": 14,
+  "verifiedOn": "blaxel",
+  "sandbox": "clify-endoflife-date",
+  "example": "clify endoflife list-products"
+ },
+ {
+  "site": "hackage-haskell",
+  "origin": "https://hackage.haskell.org",
+  "category": "dev",
+  "commands": 14,
+  "verified": 14,
+  "verifiedOn": "blaxel",
+  "sandbox": "clify-hackage-haskell-org",
+  "example": "clify hackage-haskell search-packages --query \"json parser\""
+ },
+ {
+  "site": "hex",
+  "origin": "https://hex.pm",
+  "category": "dev",
+  "commands": 9,
+  "verified": 9,
+  "verifiedOn": "blaxel",
+  "sandbox": "clify-hex-pm",
+  "example": "clify hex search-packages --search json"
+ },
+ {
+  "site": "jsr",
+  "origin": "https://jsr.io",
+  "category": "dev",
+  "commands": 15,
+  "verified": 15,
+  "verifiedOn": "blaxel",
+  "sandbox": "clify-jsr-io",
+  "example": "clify jsr search-packages --query \"http server\""
+ },
+ {
+  "site": "opam-ocaml",
+  "origin": "https://opam.ocaml.org",
+  "category": "dev",
+  "commands": 7,
+  "verified": 7,
+  "verifiedOn": "blaxel",
+  "sandbox": "clify-opam-ocaml-org-packages",
+  "example": "clify opam-ocaml list-packages"
+ },
+ {
+  "site": "open-vsx",
+  "origin": "https://open-vsx.org",
+  "category": "dev",
+  "commands": 11,
+  "verified": 11,
+  "verifiedOn": "blaxel",
+  "sandbox": "clify-open-vsx-org",
+  "example": "clify open-vsx search-extensions --query python"
+ },
+ {
+  "site": "pub",
+  "origin": "https://pub.dev",
+  "category": "dev",
+  "commands": 17,
+  "verified": 17,
+  "verifiedOn": "blaxel",
+  "sandbox": "clify-pub-dev",
+  "example": "clify pub search-packages --q http"
+ },
+ {
+  "site": "registry-terraform",
+  "origin": "https://registry.terraform.io",
+  "category": "dev",
+  "commands": 21,
+  "verified": 21,
+  "verifiedOn": "blaxel",
+  "sandbox": "clify-registry-terraform-io",
+  "example": "clify registry-terraform search-registry --query kubernetes --index providers"
+ },
+ {
+  "site": "swiftpackageindex",
+  "origin": "https://swiftpackageindex.com",
+  "category": "dev",
+  "commands": 15,
+  "verified": 15,
+  "verifiedOn": "blaxel",
+  "sandbox": "clify-swiftpackageindex-com",
+  "example": "clify swiftpackageindex search-packages --query networking"
+ },
+ {
+  "site": "company-information-service",
+  "origin": "https://find-and-update.company-information.service.gov.uk",
+  "category": "gov-eu",
+  "commands": 18,
+  "verified": 18,
+  "verifiedOn": "blaxel",
+  "sandbox": "clify-find-and-update-company-information-ser",
+  "example": "clify company-information-service search-all --q tesco"
+ },
+ {
+  "site": "cordis-europa",
+  "origin": "https://cordis.europa.eu",
+  "category": "gov-eu",
+  "commands": 10,
+  "verified": 10,
+  "verifiedOn": "blaxel",
+  "sandbox": "clify-cordis-europa-eu",
+  "example": "clify cordis-europa get-project --id 101070320"
+ },
+ {
+  "site": "data-police",
+  "origin": "https://data.police.uk",
+  "category": "gov-eu",
+  "commands": 23,
+  "verified": 22,
+  "verifiedOn": "blaxel",
+  "sandbox": "clify-data-police-uk",
+  "example": "clify data-police list-forces"
+ },
+ {
+  "site": "ec-europa",
+  "origin": "https://ec.europa.eu",
+  "category": "gov-eu",
+  "commands": 13,
+  "verified": 13,
+  "verifiedOn": "blaxel",
+  "sandbox": "clify-ec-europa-eu-eurostat-databrowser",
+  "example": "clify ec-europa search-datasets --text unemployment"
+ },
+ {
+  "site": "ecb-europa",
+  "origin": "https://data.ecb.europa.eu",
+  "category": "gov-eu",
+  "commands": 5,
+  "verified": 5,
+  "verifiedOn": "blaxel",
+  "sandbox": "clify-data-ecb-europa-eu",
+  "example": "clify ecb-europa get-series-observations --series_key HICP.M.U2.N.SERV00.4D0.ANR"
+ },
+ {
+  "site": "ons",
+  "origin": "https://www.ons.gov.uk",
+  "category": "gov-eu",
+  "commands": 15,
+  "verified": 15,
+  "verifiedOn": "blaxel",
+  "sandbox": "clify-www-ons-gov-uk",
+  "example": "clify ons search --q inflation"
+ },
+ {
+  "site": "avoindata-prh",
+  "origin": "https://avoindata.prh.fi",
+  "category": "gov-nordic",
+  "commands": 11,
+  "verified": 11,
+  "verifiedOn": "blaxel",
+  "sandbox": "clify-avoindata-prh-fi",
+  "example": "clify avoindata-prh search-companies --name Nokia"
+ },
+ {
+  "site": "data-norge",
+  "origin": "https://data.norge.no",
+  "category": "gov-nordic",
+  "commands": 10,
+  "verified": 10,
+  "verifiedOn": "blaxel",
+  "sandbox": "clify-data-norge-no",
+  "example": "clify data-norge suggest-resources --q befolkning"
+ },
+ {
+  "site": "dataportal",
+  "origin": "https://www.dataportal.se",
+  "category": "gov-nordic",
+  "commands": 16,
+  "verified": 16,
+  "verifiedOn": "blaxel",
+  "sandbox": "clify-www-dataportal-se",
+  "example": "clify dataportal search-datasets --q trafik"
+ },
+ {
+  "site": "digi-kansalliskirjasto",
+  "origin": "https://digi.kansalliskirjasto.fi",
+  "category": "gov-nordic",
+  "commands": 19,
+  "verified": 19,
+  "verifiedOn": "blaxel",
+  "sandbox": "clify-digi-kansalliskirjasto-fi",
+  "example": "clify digi-kansalliskirjasto search-materials --query sibelius --format NEWSPAPER"
+ },
+ {
+  "site": "digitraffic",
+  "origin": "https://www.digitraffic.fi",
+  "category": "gov-nordic",
+  "commands": 23,
+  "verified": 23,
+  "verifiedOn": "blaxel",
+  "sandbox": "clify-www-digitraffic-fi",
+  "example": "clify digitraffic list-announcements"
+ },
+ {
+  "site": "finlex",
+  "origin": "https://www.finlex.fi",
+  "category": "gov-nordic",
+  "commands": 7,
+  "verified": 7,
+  "verifiedOn": "blaxel",
+  "sandbox": "clify-www-finlex-fi",
+  "example": "clify finlex search --search \"employment contract\" --page 1 --api_limit 20"
+ },
+ {
+  "site": "pxdata-stat",
+  "origin": "https://pxdata.stat.fi",
+  "category": "gov-nordic",
+  "commands": 7,
+  "verified": 7,
+  "verifiedOn": "blaxel",
+  "sandbox": "clify-pxdata-stat-fi",
+  "example": "clify pxdata-stat list-databases --lang en"
+ },
+ {
+  "site": "riksdagen",
+  "origin": "https://www.riksdagen.se",
+  "category": "gov-nordic",
+  "commands": 12,
+  "verified": 12,
+  "verifiedOn": "blaxel",
+  "sandbox": "clify-www-riksdagen-se",
+  "example": "clify riksdagen search --sok klimat --avd dokument --doktyp mot"
+ },
+ {
+  "site": "ssb",
+  "origin": "https://www.ssb.no",
+  "category": "gov-nordic",
+  "commands": 11,
+  "verified": 11,
+  "verifiedOn": "blaxel",
+  "sandbox": "clify-www-ssb-no",
+  "example": "clify ssb search-content --query befolkning"
+ },
+ {
+  "site": "data-cdc",
+  "origin": "https://data.cdc.gov",
+  "category": "gov-us",
+  "commands": 10,
+  "verified": 10,
+  "verifiedOn": "blaxel",
+  "sandbox": "clify-data-cdc-gov",
+  "example": "clify data-cdc search-datasets --q influenza --only dataset --order updatedAt"
+ },
+ {
+  "site": "data-cityofnewyork",
+  "origin": "https://data.cityofnewyork.us",
+  "category": "gov-us",
+  "commands": 8,
+  "verified": 8,
+  "verifiedOn": "blaxel",
+  "sandbox": "clify-data-cityofnewyork-us",
+  "example": "clify data-cityofnewyork search-datasets --q restaurant"
+ },
+ {
+  "site": "eia",
+  "origin": "https://www.eia.gov",
+  "category": "gov-us",
+  "commands": 15,
+  "verified": 14,
+  "verifiedOn": "blaxel",
+  "sandbox": "clify-www-eia-gov",
+  "example": "clify eia list-api-datasets"
+ },
+ {
+  "site": "fec",
+  "origin": "https://www.fec.gov",
+  "category": "gov-us",
+  "commands": 15,
+  "verified": 14,
+  "verifiedOn": "blaxel",
+  "sandbox": "clify-www-fec-gov-data",
+  "example": "clify fec search-candidate-names --q Ossoff"
+ },
+ {
+  "site": "fred-stlouisfed",
+  "origin": "https://fred.stlouisfed.org",
+  "category": "gov-us",
+  "commands": 13,
+  "verified": 13,
+  "verifiedOn": "blaxel",
+  "sandbox": "clify-fred-stlouisfed-org",
+  "example": "clify fred-stlouisfed search-series --q gdp"
+ },
+ {
+  "site": "govinfo",
+  "origin": "https://www.govinfo.gov",
+  "category": "gov-us",
+  "commands": 20,
+  "verified": 20,
+  "verifiedOn": "blaxel",
+  "sandbox": "clify-www-govinfo-gov",
+  "example": "clify govinfo list-categories"
+ },
+ {
+  "site": "grants",
+  "origin": "https://www.grants.gov",
+  "category": "gov-us",
+  "commands": 8,
+  "verified": 6,
+  "verifiedOn": "blaxel",
+  "sandbox": "clify-www-grants-gov",
+  "example": "clify grants search-opportunities --query \"climate resilience\""
+ },
+ {
+  "site": "nhtsa-dot",
+  "origin": "https://vpic.nhtsa.dot.gov",
+  "category": "gov-us",
+  "commands": 13,
+  "verified": 13,
+  "verifiedOn": "blaxel",
+  "sandbox": "clify-vpic-nhtsa-dot-gov",
+  "example": "clify nhtsa-dot decode-vin --vin 1HGCM82633A004352"
+ },
+ {
+  "site": "nps",
+  "origin": "https://www.nps.gov",
+  "category": "gov-us",
+  "commands": 20,
+  "verified": 20,
+  "verifiedOn": "blaxel",
+  "sandbox": "clify-www-nps-gov",
+  "example": "clify nps search-parks --states CA --topics 125 --activities 3"
+ },
+ {
+  "site": "tidesandcurrents-noaa",
+  "origin": "https://tidesandcurrents.noaa.gov",
+  "category": "gov-us",
+  "commands": 20,
+  "verified": 20,
+  "verifiedOn": "blaxel",
+  "sandbox": "clify-tidesandcurrents-noaa-gov",
+  "example": "clify tidesandcurrents-noaa search-tide-stations --q Boston"
+ },
+ {
+  "site": "waterdata-usgs",
+  "origin": "https://waterdata.usgs.gov",
+  "category": "gov-us",
+  "commands": 18,
+  "verified": 17,
+  "verifiedOn": "blaxel",
+  "sandbox": "clify-waterdata-usgs-gov",
+  "example": "clify waterdata-usgs search-monitoring-locations --q \"Potomac River\""
+ },
+ {
+  "site": "arbeidsplassen-nav",
+  "origin": "https://arbeidsplassen.nav.no",
+  "category": "jobs-market",
+  "commands": 5,
+  "verified": 5,
+  "verifiedOn": "blaxel",
+  "sandbox": "clify-arbeidsplassen-nav-no",
+  "example": "clify arbeidsplassen-nav search-jobs --q utvikler --county OSLO --sort published"
+ },
+ {
+  "site": "arbeitnow",
+  "origin": "https://www.arbeitnow.com",
+  "category": "jobs-market",
+  "commands": 5,
+  "verified": 5,
+  "verifiedOn": "blaxel",
+  "sandbox": "clify-www-arbeitnow-com",
+  "example": "clify arbeitnow search-jobs --search \"python developer\""
+ },
+ {
+  "site": "arbetsformedlingen",
+  "origin": "https://arbetsformedlingen.se",
+  "category": "jobs-market",
+  "commands": 6,
+  "verified": 6,
+  "verifiedOn": "blaxel",
+  "sandbox": "clify-arbetsformedlingen-se-platsbanken",
+  "example": "clify arbetsformedlingen search-jobs --q \"systemutvecklare stockholm\""
+ },
+ {
+  "site": "tyomarkkinatori",
+  "origin": "https://tyomarkkinatori.fi",
+  "category": "jobs-market",
+  "commands": 12,
+  "verified": 12,
+  "verifiedOn": "blaxel",
+  "sandbox": "clify-tyomarkkinatori-fi",
+  "example": "clify tyomarkkinatori search-jobs --query sairaanhoitaja --municipality 837"
+ },
+ {
+  "site": "usajobs",
+  "origin": "https://www.usajobs.gov",
+  "category": "jobs-market",
+  "commands": 6,
+  "verified": 6,
+  "verifiedOn": "blaxel",
+  "sandbox": "clify-www-usajobs-gov",
+  "example": "clify usajobs get-job --id 885810700"
+ },
+ {
+  "site": "world-openfoodfacts",
+  "origin": "https://world.openfoodfacts.org",
+  "category": "jobs-market",
+  "commands": 7,
+  "verified": 7,
+  "verifiedOn": "blaxel",
+  "sandbox": "clify-world-openfoodfacts-org",
+  "example": "clify world-openfoodfacts get-product --barcode 3046920029759"
+ },
+ {
+  "site": "airnow",
+  "origin": "https://www.airnow.gov",
+  "category": "maps-weather",
+  "commands": 16,
+  "verified": 16,
+  "verifiedOn": "blaxel",
+  "sandbox": "clify-www-airnow-gov",
+  "example": "clify airnow suggest-reporting-areas --term Denver"
+ },
+ {
+  "site": "aviationweather",
+  "origin": "https://aviationweather.gov",
+  "category": "maps-weather",
+  "commands": 9,
+  "verified": 9,
+  "verifiedOn": "blaxel",
+  "sandbox": "clify-aviationweather-gov",
+  "example": "clify aviationweather get-metars --ids \"KORD,KJFK\" --hours 6"
+ },
+ {
+  "site": "citybik",
+  "origin": "https://citybik.es",
+  "category": "maps-weather",
+  "commands": 4,
+  "verified": 4,
+  "verifiedOn": "blaxel",
+  "sandbox": "clify-citybik-es",
+  "example": "clify citybik list-networks"
+ },
+ {
+  "site": "geonames",
+  "origin": "https://www.geonames.org",
+  "category": "maps-weather",
+  "commands": 19,
+  "verified": 19,
+  "verifiedOn": "blaxel",
+  "sandbox": "clify-www-geonames-org",
+  "example": "clify geonames search-places --q Zurich"
+ },
+ {
+  "site": "ndbc-noaa",
+  "origin": "https://www.ndbc.noaa.gov",
+  "category": "maps-weather",
+  "commands": 6,
+  "verified": 6,
+  "verifiedOn": "blaxel",
+  "sandbox": "clify-www-ndbc-noaa-gov",
+  "example": "clify ndbc-noaa get-latest-observation --station 44013"
+ },
+ {
+  "site": "nominatim-openstreetmap",
+  "origin": "https://nominatim.openstreetmap.org",
+  "category": "maps-weather",
+  "commands": 5,
+  "verified": 5,
+  "verifiedOn": "blaxel",
+  "sandbox": "clify-nominatim-openstreetmap-org-ui-search-h",
+  "example": "clify nominatim-openstreetmap search-places --q \"Brandenburg Gate Berlin\""
+ },
+ {
+  "site": "open-meteo",
+  "origin": "https://open-meteo.com",
+  "category": "maps-weather",
+  "commands": 16,
+  "verified": 16,
+  "verifiedOn": "blaxel",
+  "sandbox": "clify-open-meteo-com",
+  "example": "clify open-meteo search-locations --name London --count 10 --language en"
+ },
+ {
+  "site": "smhi",
+  "origin": "https://www.smhi.se",
+  "category": "maps-weather",
+  "commands": 16,
+  "verified": 16,
+  "verifiedOn": "blaxel",
+  "sandbox": "clify-www-smhi-se",
+  "example": "clify smhi search-places --query Uppsala"
+ },
+ {
+  "site": "sunrise-sunset",
+  "origin": "https://sunrise-sunset.org",
+  "category": "maps-weather",
+  "commands": 8,
+  "verified": 8,
+  "verifiedOn": "blaxel",
+  "sandbox": "clify-sunrise-sunset-org",
+  "example": "clify sunrise-sunset search-cities --q Paris"
+ },
+ {
+  "site": "swpc-noaa",
+  "origin": "https://www.swpc.noaa.gov",
+  "category": "maps-weather",
+  "commands": 10,
+  "verified": 10,
+  "verifiedOn": "blaxel",
+  "sandbox": "clify-www-swpc-noaa-gov",
+  "example": "clify swpc-noaa get-noaa-scales"
+ },
+ {
+  "site": "yr",
+  "origin": "https://www.yr.no",
+  "category": "maps-weather",
+  "commands": 24,
+  "verified": 24,
+  "verifiedOn": "blaxel",
+  "sandbox": "clify-www-yr-no",
+  "example": "clify yr search-locations --q Bergen"
+ },
+ {
+  "site": "abc",
+  "origin": "https://www.abc.net.au",
+  "category": "news",
+  "commands": 9,
+  "verified": 9,
+  "verifiedOn": "blaxel",
+  "sandbox": "clify-www-abc-net-au-news",
+  "example": "clify abc search-news --query \"climate change\""
+ },
+ {
+  "site": "arstechnica",
+  "origin": "https://arstechnica.com",
+  "category": "news",
+  "commands": 8,
+  "verified": 8,
+  "verifiedOn": "blaxel",
+  "sandbox": "clify-arstechnica-com",
+  "example": "clify arstechnica list-latest-articles"
+ },
+ {
+  "site": "bbc",
+  "origin": "https://www.bbc.com",
+  "category": "news",
+  "commands": 15,
+  "verified": 15,
+  "verifiedOn": "blaxel",
+  "sandbox": "clify-www-bbc-com-news",
+  "example": "clify bbc list-section-news --section technology"
+ },
+ {
+  "site": "nrk",
+  "origin": "https://www.nrk.no",
+  "category": "news",
+  "commands": 14,
+  "verified": 14,
+  "verifiedOn": "blaxel",
+  "sandbox": "clify-www-nrk-no",
+  "example": "clify nrk get-content --id 1.11480927"
+ },
+ {
+  "site": "rnz",
+  "origin": "https://www.rnz.co.nz",
+  "category": "news",
+  "commands": 15,
+  "verified": 15,
+  "verifiedOn": "blaxel",
+  "sandbox": "clify-www-rnz-co-nz-news",
+  "example": "clify rnz search-content --query housing"
+ },
+ {
+  "site": "slashdot",
+  "origin": "https://slashdot.org",
+  "category": "news",
+  "commands": 15,
+  "verified": 13,
+  "verifiedOn": "blaxel",
+  "sandbox": "clify-slashdot-org",
+  "example": "clify slashdot list-stories"
+ },
+ {
+  "site": "svt",
+  "origin": "https://www.svt.se",
+  "category": "news",
+  "commands": 6,
+  "verified": 6,
+  "verifiedOn": "blaxel",
+  "sandbox": "clify-www-svt-se",
+  "example": "clify svt list-section-articles --section utrikes"
+ },
+ {
+  "site": "tagesschau",
+  "origin": "https://www.tagesschau.de",
+  "category": "news",
+  "commands": 8,
+  "verified": 8,
+  "verifiedOn": "blaxel",
+  "sandbox": "clify-www-tagesschau-de",
+  "example": "clify tagesschau search-news --searchText Klimawandel --pageSize 10 --resultPage 1"
+ },
+ {
+  "site": "yle",
+  "origin": "https://yle.fi",
+  "category": "news",
+  "commands": 7,
+  "verified": 7,
+  "verifiedOn": "blaxel",
+  "sandbox": "clify-yle-fi-news",
+  "example": "clify yle search --query helsinki"
+ },
+ {
+  "site": "doaj",
+  "origin": "https://doaj.org",
+  "category": "science",
+  "commands": 10,
+  "verified": 10,
+  "verifiedOn": "blaxel",
+  "sandbox": "clify-doaj-org",
+  "example": "clify doaj search-journals --query medicine"
+ },
+ {
+  "site": "ebi",
+  "origin": "https://www.ebi.ac.uk",
+  "category": "science",
+  "commands": 11,
+  "verified": 11,
+  "verifiedOn": "blaxel",
+  "sandbox": "clify-www-ebi-ac-uk",
+  "example": "clify ebi search-domain --domain uniprot --query insulin --api_fields \"descRecName,organism_scientific_name,acc,status\" --facets \"TAXONOMY:9606,status:Reviewed\""
+ },
+ {
+  "site": "ensembl",
+  "origin": "https://www.ensembl.org",
+  "category": "science",
+  "commands": 24,
+  "verified": 24,
+  "verifiedOn": "blaxel",
+  "sandbox": "clify-www-ensembl-org",
+  "example": "clify ensembl search-genomes --query mouse --page 1 --per_page 20"
+ },
+ {
+  "site": "inspirehep",
+  "origin": "https://inspirehep.net",
+  "category": "science",
+  "commands": 20,
+  "verified": 20,
+  "verifiedOn": "blaxel",
+  "sandbox": "clify-inspirehep-net",
+  "example": "clify inspirehep search-literature --q \"dark matter\" --sort mostcited --doc_type review"
+ },
+ {
+  "site": "ipac-caltech",
+  "origin": "https://exoplanetarchive.ipac.caltech.edu",
+  "category": "science",
+  "commands": 11,
+  "verified": 11,
+  "verifiedOn": "blaxel",
+  "sandbox": "clify-exoplanetarchive-ipac-caltech-edu",
+  "example": "clify ipac-caltech run-tap-query --query \"select top 10 pl_name,hostname,pl_orbper,pl_rade,disc_year from pscomppars where disc_year=2024 order by pl_rade desc\""
+ },
+ {
+  "site": "pubchem-ncbi",
+  "origin": "https://pubchem.ncbi.nlm.nih.gov",
+  "category": "science",
+  "commands": 19,
+  "verified": 19,
+  "verifiedOn": "blaxel",
+  "sandbox": "clify-pubchem-ncbi-nlm-nih-gov",
+  "example": "clify pubchem-ncbi search-compounds --q caffeine"
+ },
+ {
+  "site": "ror",
+  "origin": "https://ror.org",
+  "category": "science",
+  "commands": 4,
+  "verified": 4,
+  "verifiedOn": "blaxel",
+  "sandbox": "clify-ror-org",
+  "example": "clify ror search-organizations --query oxford"
+ },
+ {
+  "site": "semanticscholar",
+  "origin": "https://www.semanticscholar.org",
+  "category": "science",
+  "commands": 4,
+  "verified": 4,
+  "verifiedOn": "blaxel",
+  "sandbox": "clify-www-semanticscholar-org",
+  "example": "clify semanticscholar match-paper-title --query \"Attention is All you Need\""
+ },
+ {
+  "site": "uniprot",
+  "origin": "https://www.uniprot.org",
+  "category": "science",
+  "commands": 18,
+  "verified": 18,
+  "verifiedOn": "blaxel",
+  "sandbox": "clify-www-uniprot-org",
+  "example": "clify uniprot search-proteins --query \"(hemoglobin) AND (reviewed:true)\""
+ },
+ {
+  "site": "wikidata",
+  "origin": "https://www.wikidata.org",
+  "category": "science",
+  "commands": 8,
+  "verified": 7,
+  "verifiedOn": "blaxel",
+  "sandbox": "clify-www-wikidata-org",
+  "example": "clify wikidata search-entities --search \"Douglas Adams\" --type item"
+ },
+ {
+  "site": "zenodo",
+  "origin": "https://zenodo.org",
+  "category": "science",
+  "commands": 12,
+  "verified": 12,
+  "verifiedOn": "blaxel",
+  "sandbox": "clify-zenodo-org",
+  "example": "clify zenodo search-community-records --community_id f0a8b890-f97a-4eb2-9eac-8b8a712d3a6c --q \"climate change\" --sort bestmatch"
+ },
+ {
+  "site": "anilist",
+  "origin": "https://anilist.co",
+  "category": "sports-ent",
+  "commands": 15,
+  "verified": 15,
+  "verifiedOn": "blaxel",
+  "sandbox": "clify-anilist-co",
+  "example": "clify anilist search-media --search naruto --type ANIME"
+ },
+ {
+  "site": "nhl",
+  "origin": "https://www.nhl.com",
+  "category": "sports-ent",
+  "commands": 27,
+  "verified": 27,
+  "verifiedOn": "blaxel",
+  "sandbox": "clify-www-nhl-com-stats",
+  "example": "clify nhl get-skater-leaders --stat points"
+ },
+ {
+  "site": "openligadb",
+  "origin": "https://www.openligadb.de",
+  "category": "sports-ent",
+  "commands": 16,
+  "verified": 16,
+  "verifiedOn": "blaxel",
+  "sandbox": "clify-www-openligadb-de",
+  "example": "clify openligadb list-leagues"
+ },
+ {
+  "site": "radio-browser",
+  "origin": "https://www.radio-browser.info",
+  "category": "sports-ent",
+  "commands": 12,
+  "verified": 12,
+  "verifiedOn": "blaxel",
+  "sandbox": "clify-www-radio-browser-info",
+  "example": "clify radio-browser search-stations --name jazz"
+ },
+ {
+  "site": "themoviedb",
+  "origin": "https://www.themoviedb.org",
+  "category": "sports-ent",
+  "commands": 17,
+  "verified": 17,
+  "verifiedOn": "blaxel",
+  "sandbox": "clify-www-themoviedb-org",
+  "example": "clify themoviedb get-trending --group today"
+ },
+ {
+  "site": "thesportsdb",
+  "origin": "https://www.thesportsdb.com",
+  "category": "sports-ent",
+  "commands": 18,
+  "verified": 18,
+  "verifiedOn": "blaxel",
+  "sandbox": "clify-www-thesportsdb-com",
+  "example": "clify thesportsdb search-teams --team Arsenal"
+ },
+ {
+  "site": "worldcubeassociation",
+  "origin": "https://www.worldcubeassociation.org",
+  "category": "sports-ent",
+  "commands": 14,
+  "verified": 14,
+  "verifiedOn": "blaxel",
+  "sandbox": "clify-www-worldcubeassociation-org",
+  "example": "clify worldcubeassociation search-competitions --q Open --ongoing_and_future 2026-10-18"
+ },
+ {
+  "site": "archive",
+  "origin": "https://archive.org",
+  "category": "culture",
+  "commands": 16,
+  "verified": 16,
+  "verifiedOn": "box",
+  "example": "clify archive search-items --query \"grateful dead\" --filter_map \"{\\\"mediatype\\\":{\\\"audio\\\":\\\"inc\\\"}}\" --sort downloads:desc"
+ },
+ {
+  "site": "artic",
+  "origin": "https://www.artic.edu",
+  "category": "culture",
+  "commands": 12,
+  "verified": 12,
+  "verifiedOn": "box",
+  "example": "clify artic search-artworks --q monet"
+ },
+ {
+  "site": "finna",
+  "origin": "https://www.finna.fi",
+  "category": "culture",
+  "commands": 9,
+  "verified": 8,
+  "verifiedOn": "box",
+  "example": "clify finna search-records --lookfor sibelius"
+ },
+ {
+  "site": "gutenberg",
+  "origin": "https://www.gutenberg.org",
+  "category": "culture",
+  "commands": 13,
+  "verified": 13,
+  "verifiedOn": "box",
+  "example": "clify gutenberg get-book --id 1661"
+ },
+ {
+  "site": "images-nasa",
+  "origin": "https://images.nasa.gov",
+  "category": "culture",
+  "commands": 8,
+  "verified": 8,
+  "verifiedOn": "box",
+  "example": "clify images-nasa search-media --q \"Apollo 11\" --media_type \"image,video\" --year_start 1969 --year_end 1970"
+ },
+ {
+  "site": "musicbrainz",
+  "origin": "https://musicbrainz.org",
+  "category": "culture",
+  "commands": 18,
+  "verified": 18,
+  "verifiedOn": "box",
+  "example": "clify musicbrainz list-genres"
+ },
+ {
+  "site": "openverse",
+  "origin": "https://openverse.org",
+  "category": "culture",
+  "commands": 6,
+  "verified": 6,
+  "verifiedOn": "box",
+  "example": "clify openverse search-images --q cat"
+ },
+ {
+  "site": "crates",
+  "origin": "https://crates.io",
+  "category": "dev",
+  "commands": 19,
+  "verified": 19,
+  "verifiedOn": "box",
+  "example": "clify crates search-crates --q \"http client\" --sort downloads"
+ },
+ {
+  "site": "dev-to",
+  "origin": "https://dev.to",
+  "category": "dev",
+  "commands": 15,
+  "verified": 15,
+  "verifiedOn": "box",
+  "example": "clify dev-to list-articles --tag react --per_page 10"
+ },
+ {
+  "site": "developer-mozilla",
+  "origin": "https://developer.mozilla.org",
+  "category": "dev",
+  "commands": 4,
+  "verified": 4,
+  "verifiedOn": "box",
+  "example": "clify developer-mozilla search-docs --q fetch --page 1 --locale en-US"
+ },
+ {
+  "site": "docs-python",
+  "origin": "https://docs.python.org",
+  "category": "dev",
+  "commands": 8,
+  "verified": 8,
+  "verifiedOn": "box",
+  "example": "clify docs-python get-glossary --version 3"
+ },
+ {
+  "site": "docs-rs",
+  "origin": "https://docs.rs",
+  "category": "dev",
+  "commands": 16,
+  "verified": 16,
+  "verifiedOn": "box",
+  "example": "clify docs-rs search-crates --query serde"
+ },
+ {
+  "site": "formulae-brew",
+  "origin": "https://formulae.brew.sh",
+  "category": "dev",
+  "commands": 7,
+  "verified": 7,
+  "verifiedOn": "box",
+  "example": "clify formulae-brew search-packages --query python"
+ },
+ {
+  "site": "hub-docker",
+  "origin": "https://hub.docker.com",
+  "category": "dev",
+  "commands": 13,
+  "verified": 13,
+  "verifiedOn": "box",
+  "example": "clify hub-docker list-categories"
+ },
+ {
+  "site": "huggingface",
+  "origin": "https://huggingface.co",
+  "category": "dev",
+  "commands": 15,
+  "verified": 15,
+  "verifiedOn": "box",
+  "example": "clify huggingface search-models --search llama --pipeline_tag text-generation --sort downloads"
+ },
+ {
+  "site": "jsdelivr",
+  "origin": "https://www.jsdelivr.com",
+  "category": "dev",
+  "commands": 17,
+  "verified": 17,
+  "verifiedOn": "box",
+  "example": "clify jsdelivr search-packages --query react"
+ },
+ {
+  "site": "nuget",
+  "origin": "https://www.nuget.org",
+  "category": "dev",
+  "commands": 15,
+  "verified": 15,
+  "verifiedOn": "box",
+  "example": "clify nuget search-packages --q json"
+ },
+ {
+  "site": "packagist",
+  "origin": "https://packagist.org",
+  "category": "dev",
+  "commands": 17,
+  "verified": 17,
+  "verifiedOn": "box",
+  "example": "clify packagist search-packages --q logger --type library --per_page 5"
+ },
+ {
+  "site": "pkg-go",
+  "origin": "https://pkg.go.dev",
+  "category": "dev",
+  "commands": 11,
+  "verified": 11,
+  "verifiedOn": "box",
+  "example": "clify pkg-go search-packages --q \"http router\" --limit_value 10"
+ },
+ {
+  "site": "pypi",
+  "origin": "https://pypi.org",
+  "category": "dev",
+  "commands": 9,
+  "verified": 9,
+  "verifiedOn": "box",
+  "example": "clify pypi get-package --name requests"
+ },
+ {
+  "site": "rubygems",
+  "origin": "https://rubygems.org",
+  "category": "dev",
+  "commands": 17,
+  "verified": 17,
+  "verifiedOn": "box",
+  "example": "clify rubygems search-gems --query \"json parser\""
+ },
+ {
+  "site": "data-europa",
+  "origin": "https://data.europa.eu",
+  "category": "gov-eu",
+  "commands": 10,
+  "verified": 10,
+  "verifiedOn": "box",
+  "example": "clify data-europa search-datasets --q \"air quality\""
+ },
+ {
+  "site": "data-gov",
+  "origin": "https://www.data.gov.uk",
+  "category": "gov-eu",
+  "commands": 9,
+  "verified": 9,
+  "verifiedOn": "box",
+  "example": "clify data-gov search-datasets --q \"air quality\""
+ },
+ {
+  "site": "hankintailmoitukset",
+  "origin": "https://www.hankintailmoitukset.fi",
+  "category": "gov-nordic",
+  "commands": 13,
+  "verified": 13,
+  "verifiedOn": "box",
+  "example": "clify hankintailmoitukset search-notices --query \"((siivous OR siivous*))\""
+ },
+ {
+  "site": "catalog-data",
+  "origin": "https://catalog.data.gov",
+  "category": "gov-us",
+  "commands": 9,
+  "verified": 9,
+  "verifiedOn": "box",
+  "example": "clify catalog-data search-datasets --q \"electric vehicles\" --sort relevance"
+ },
+ {
+  "site": "clinicaltrials",
+  "origin": "https://clinicaltrials.gov",
+  "category": "gov-us",
+  "commands": 8,
+  "verified": 8,
+  "verifiedOn": "box",
+  "example": "clify clinicaltrials search-studies --ids NCT00001372"
+ },
+ {
+  "site": "federalregister",
+  "origin": "https://www.federalregister.gov",
+  "category": "gov-us",
+  "commands": 13,
+  "verified": 13,
+  "verifiedOn": "box",
+  "example": "clify federalregister search-documents --term climate"
+ },
+ {
+  "site": "usaspending",
+  "origin": "https://www.usaspending.gov",
+  "category": "gov-us",
+  "commands": 37,
+  "verified": 34,
+  "verifiedOn": "box",
+  "example": "clify usaspending search-transactions --keyword cybersecurity --sort \"Action Date\" --order desc"
+ },
+ {
+  "site": "remoteok",
+  "origin": "https://remoteok.com",
+  "category": "jobs-market",
+  "commands": 5,
+  "verified": 5,
+  "verifiedOn": "box",
+  "example": "clify remoteok search-jobs --search python"
+ },
+ {
+  "site": "ycombinator",
+  "origin": "https://www.ycombinator.com",
+  "category": "jobs-market",
+  "commands": 10,
+  "verified": 10,
+  "verifiedOn": "box",
+  "example": "clify ycombinator list-directory-categories --industry \"Developer Tools\""
+ },
+ {
+  "site": "earthquake-usgs",
+  "origin": "https://earthquake.usgs.gov",
+  "category": "maps-weather",
+  "commands": 11,
+  "verified": 11,
+  "verifiedOn": "box",
+  "example": "clify earthquake-usgs get-feed --magnitude 2.5 --period day"
+ },
+ {
+  "site": "openstreetmap",
+  "origin": "https://www.openstreetmap.org",
+  "category": "maps-weather",
+  "commands": 15,
+  "verified": 15,
+  "verifiedOn": "box",
+  "example": "clify openstreetmap search-places --q \"Central Park, New York\" --api_limit 5"
+ },
+ {
+  "site": "weather",
+  "origin": "https://www.weather.gov",
+  "category": "maps-weather",
+  "commands": 11,
+  "verified": 11,
+  "verifiedOn": "box",
+  "example": "clify weather get-point --lat 39.7456 --lon -97.0892"
+ },
+ {
+  "site": "news-ycombinator",
+  "origin": "https://news.ycombinator.com",
+  "category": "news",
+  "commands": 14,
+  "verified": 13,
+  "verifiedOn": "box",
+  "example": "clify news-ycombinator list-stories --feed news --p 2"
+ },
+ {
+  "site": "theguardian",
+  "origin": "https://www.theguardian.com",
+  "category": "news",
+  "commands": 10,
+  "verified": 10,
+  "verifiedOn": "box",
+  "example": "clify theguardian get-article --section world --year 2026 --month oct --day 18 --slug bolotana-sardinian-village-women-centenarians-longevity-long-life"
+ },
+ {
+  "site": "arxiv",
+  "origin": "https://arxiv.org",
+  "category": "science",
+  "commands": 10,
+  "verified": 10,
+  "verifiedOn": "box",
+  "example": "clify arxiv list-recent --category cs.LG"
+ },
+ {
+  "site": "inaturalist",
+  "origin": "https://www.inaturalist.org",
+  "category": "science",
+  "commands": 10,
+  "verified": 10,
+  "verifiedOn": "box",
+  "example": "clify inaturalist search-observations --taxon_id 47851"
+ },
+ {
+  "site": "pubmed-ncbi",
+  "origin": "https://pubmed.ncbi.nlm.nih.gov",
+  "category": "science",
+  "commands": 4,
+  "verified": 4,
+  "verifiedOn": "box",
+  "example": "clify pubmed-ncbi search-articles --term crispr"
+ },
+ {
+  "site": "rcsb",
+  "origin": "https://www.rcsb.org",
+  "category": "science",
+  "commands": 17,
+  "verified": 17,
+  "verifiedOn": "box",
+  "example": "clify rcsb search-structures --query hemoglobin"
+ },
+ {
+  "site": "lichess",
+  "origin": "https://lichess.org",
+  "category": "sports-ent",
+  "commands": 11,
+  "verified": 11,
+  "verifiedOn": "box",
+  "example": "clify lichess search-fide-players --q Kasparov"
+ },
+ {
+  "site": "tvmaze",
+  "origin": "https://www.tvmaze.com",
+  "category": "sports-ent",
+  "commands": 25,
+  "verified": 25,
+  "verifiedOn": "box",
+  "example": "clify tvmaze search-shows --q \"breaking bad\""
+ }
+]

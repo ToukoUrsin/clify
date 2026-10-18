@@ -1,0 +1,149 @@
+{
+ "name": "ndbc-noaa",
+ "startUrl": "https://www.ndbc.noaa.gov/",
+ "origin": "https://www.ndbc.noaa.gov",
+ "createdAt": "2026-10-18T08:45:22.461Z",
+ "description": "NOAA National Data Buoy Center (NDBC): marine buoy and C-MAN weather observations. This CLI fetches latest observations, realtime and 5-day station data, and station metadata from NDBC's static data files.",
+ "commands": [
+  {
+   "name": "get-latest-observation",
+   "summary": "Get the most recent marine weather observation for one station (wind, waves, pressure, temperatures) as an RSS item with an HTML-formatted description",
+   "method": "GET",
+   "urlTemplate": "/data/latest_obs/{station}.rss",
+   "params": [
+    {
+     "name": "station",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "NDBC station ID. Five-character buoy IDs are lowercase or numeric, e.g. 44013 or 42001. C-MAN IDs look like bzbm3.",
+     "example": "44013"
+    }
+   ],
+   "responseType": "json",
+   "resultPath": "rss.channel.item",
+   "defaultFields": [
+    "title",
+    "pubDate",
+    "description",
+    "georss:point",
+    "guid.#text",
+    "link"
+   ],
+   "mutates": false,
+   "example": {
+    "station": "44013"
+   },
+   "source": "E1 GET https://www.ndbc.noaa.gov/data/latest_obs/44013.rss",
+   "verified": true
+  },
+  {
+   "name": "get-realtime-data",
+   "summary": "Get realtime standard meteorological data for a station (about the last 45 days, newest first) as a whitespace-delimited text table: WDIR, WSPD/GST in m/s, WVHT in m, PRES in hPa, ATMP/WTMP/DEWP in de",
+   "method": "GET",
+   "urlTemplate": "/data/realtime2/{station}.txt",
+   "params": [
+    {
+     "name": "station",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "NDBC station ID, e.g. 44013 or 42001. C-MAN IDs are uppercase here, e.g. BZBM3. Some stations, such as 41001, return 404.",
+     "example": "44013"
+    }
+   ],
+   "responseType": "text",
+   "mutates": false,
+   "example": {
+    "station": "44013"
+   },
+   "source": "",
+   "verified": true
+  },
+  {
+   "name": "get-5day-data",
+   "summary": "Get the last 5 days of standard meteorological data for a station (newest first) as a whitespace-delimited text table: WDIR, WSPD/GST in m/s, WVHT in m, PRES in hPa, temps in degC; 'MM' means missing",
+   "method": "GET",
+   "urlTemplate": "/data/5day2/{station}_5day.txt",
+   "params": [
+    {
+     "name": "station",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "NDBC station ID, e.g. 44013 or 42001. C-MAN IDs are uppercase, e.g. BZBM3.",
+     "example": "44013"
+    }
+   ],
+   "responseType": "text",
+   "mutates": false,
+   "example": {
+    "station": "44013"
+   },
+   "source": "",
+   "verified": true
+  },
+  {
+   "name": "list-latest-observations",
+   "summary": "Get the latest observation for every reporting station in one whitespace-delimited text table (columns include STN, LAT, LON, WDIR, WSPD, GST, WVHT, PRES, ATMP, WTMP; m/s, m, hPa, degC; 'MM' means mis",
+   "method": "GET",
+   "urlTemplate": "/data/latest_obs/latest_obs.txt",
+   "params": [],
+   "responseType": "text",
+   "mutates": false,
+   "source": "",
+   "verified": true
+  },
+  {
+   "name": "list-active-stations",
+   "summary": "List all active NDBC stations with ID, name, coordinates, owner, program, type and whether each reports met data",
+   "method": "GET",
+   "urlTemplate": "/activestations.xml",
+   "params": [],
+   "responseType": "json",
+   "resultPath": "stations.station",
+   "defaultFields": [
+    "@id",
+    "@name",
+    "@lat",
+    "@lon",
+    "@type",
+    "@owner",
+    "@pgm",
+    "@met"
+   ],
+   "mutates": false,
+   "source": "",
+   "verified": true
+  },
+  {
+   "name": "get-station-table",
+   "summary": "Get the full station metadata table (ID, owner, type, hull, name, payload, location, timezone, forecast, note) as pipe-delimited text",
+   "method": "GET",
+   "urlTemplate": "/data/stations/station_table.txt",
+   "params": [],
+   "responseType": "text",
+   "mutates": false,
+   "source": "",
+   "verified": true
+  }
+ ],
+ "blockers": [],
+ "notes": [
+  "CloudFront blocks the HTML/PHP pages on www.ndbc.noaa.gov with 403. This includes station_page.php, the search pages and directory listings. Only the static data files used here are reachable.",
+  "The .spec and .ocean realtime files, historical stdmet files and the radial station search also return 403, so they are not included.",
+  "Text tables use two header lines starting with '#' (column names, then units). Missing values are written as 'MM'. Times are UTC.",
+  "Common columns: WDIR (deg), WSPD/GST (m/s), WVHT (m), DPD/APD (s), PRES (hPa), ATMP/WTMP/DEWP (degC), VIS (nmi), TIDE (ft).",
+  "Use list-active-stations or get-station-table to find station IDs. Not every active station has a realtime2 file; for example, 41001 returns 404.",
+  "The description field in get-latest-observation is an HTML fragment containing the observation time, location and measured values."
+ ],
+ "dropped": [],
+ "generated": {
+  "by": "clify add",
+  "model": "claude-opus-5-5",
+  "exploredSteps": 8,
+  "recorded": 16,
+  "verifiedAt": "2026-10-18T08:45:57.578Z",
+  "seconds": 104
+ }
+}

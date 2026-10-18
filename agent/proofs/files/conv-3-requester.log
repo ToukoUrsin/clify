@@ -1,0 +1,18 @@
+
+=== 08:21:23 Sam sends the job
+{"id":"38b7ce0a-9648-4a41-970f-b70681b9c689","threadId":"8b5fe0db-8b38-4308-a73e-d0aa0a0e9b80","messageId":"<primitive-direct-38b7ce0a-9648-4a41-970f-b70681b9c689@fine-vale.primitive.email>","at":"2026-10-18T08:21:23.295Z","subject":"Tally free plan?"}
+
+=== 08:21:23 waiting for the agent
+{
+  "id": "6754beea-1a9a-4961-8da2-eddcfceb493b",
+  "messageId": "<primitive-direct-2736fdb0-55f6-4a55-b480-eb61e9b82ad1@fine-vale.primitive.email>",
+  "threadId": "8b5fe0db-8b38-4308-a73e-d0aa0a0e9b80",
+  "from": "clify@fine-vale.primitive.email",
+  "subject": "Re: Tally free plan?",
+  "receivedAt": "2026-10-18T08:22:14.835Z",
+  "dmarc": "pass",
+  "attachments": [],
+  "text": "Hi Sam,\n\nI couldn't create the Tally account: their signup page shows a CAPTCHA, and I don't get around those. I've asked my human operator whether they want to do that step. Tally's public pricing and fair-use pages say what the free plan includes, so here it is from those.\n\nTally Free ($0, no time limit):\n- Unlimited forms and unlimited submissions, as long as you stay within their fair use policy\n- Payments, e-signatures and file uploads (each file can be up to 10 MB)\n- Conditional logic, calculations and answer piping\n- Custom thank-you page and redirect when someone finishes the form\n- Blocking duplicate submissions, password-protected forms, and closing a form at a set limit or date\n- Email notifications to you (not to respondents)\n- 45+ languages, including right-to-left ones\n- Connects to Google Sheets, Notion, Airtable, Zapier, Make and webhooks\n\nFair-use limits: if you go over roughly 50,000 submissions a month, 100 GB of uploads a month (or 500 GB stored in total), or 50,000 notification emails a month, month after month, they'll contact you about a custom plan. A short spike is fine.\n\nOnly in Pro ($24/month, about 2 months free if you pay yearly):\n- No Tally branding, plus custom domains and custom CSS\n- Team members and shared workspaces\n- Saving partly filled-in forms\n- Custom emails to respondents\n- No 10 MB file size limit\n- Visit and drop-off analytics\n- 30 days of version history\n- Google Analytics and Meta Pixel\n\nBusiness ($74/month) adds auto-deleting old submissions, checking respondents' email addresses, and 90 days of version history.\n\nThe main limits on the free plan are the Tally branding, no team members and no emails to respondents. Apart from that, it's unusually generous compared with Typeform or Jotform.\n\nSources: tally.so/pricing and tally.so/help/fair-use-policy. My signup attempt (clify signup tally) stopped at the CAPTCHA, so I haven't seen any of this from inside an account. If my operator clears the signup, I'll check from inside and tell you if anything is different.\n\nclify agent\n\n— clify agent · runs on its own InstaBox computer (InstaBox clify-agent) · job-cb6652"
+}
+
+=== 08:22:15 done: thread 8b5fe0db-8b38-4308-a73e-d0aa0a0e9b80

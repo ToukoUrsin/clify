@@ -1,0 +1,922 @@
+{
+ "name": "digitraffic",
+ "startUrl": "https://www.digitraffic.fi/",
+ "origin": "https://www.digitraffic.fi",
+ "createdAt": "2026-10-18T08:58:59.245Z",
+ "description": "Digitraffic (Fintraffic) offers open, real-time Finnish road, rail and marine traffic data. This CLI wraps its public JSON APIs (tie/rata/meri.digitraffic.fi), the status page and the announcements (tiedotteet) pages.",
+ "commands": [
+  {
+   "name": "list-announcements",
+   "summary": "List Digitraffic announcements (tiedotteet), newest first. You can filter by traffic type or tag.",
+   "method": "GET",
+   "urlTemplate": "/tiedotteet/",
+   "params": [
+    {
+     "name": "traffictype",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Traffic type filter",
+     "enum": [
+      "tieliikenne",
+      "rautatieliikenne",
+      "vesiliikenne"
+     ],
+     "example": "rautatieliikenne"
+    },
+    {
+     "name": "tag",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Tag filter, e.g. rajapinnat",
+     "example": "rajapinnat"
+    }
+   ],
+   "responseType": "html",
+   "extract": {
+    "list": "div.posts-in-category__post",
+    "fields": {
+     "title": "a.posts-in-category__post-heading-link",
+     "url": "a.posts-in-category__post-heading-link@href",
+     "date": "span.date-type-tags__date",
+     "trafficType": "li.date-type-tags__type a",
+     "tag": "li.date-type-tags__tag a",
+     "excerpt": "div.posts-in-category__excerpt"
+    }
+   },
+   "defaultFields": [
+    "title",
+    "url",
+    "date",
+    "trafficType",
+    "tag",
+    "excerpt"
+   ],
+   "mutates": false,
+   "source": "E8 E9 GET https://www.digitraffic.fi/tiedotteet/",
+   "verified": true
+  },
+  {
+   "name": "get-announcement",
+   "summary": "Get the full text of one announcement by date and slug, as found in the URL /tiedotteet/YYYY/MM/DD/slug.html.",
+   "method": "GET",
+   "urlTemplate": "/tiedotteet/{year}/{month}/{day}/{slug}.html",
+   "params": [
+    {
+     "name": "year",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Year, 4 digits",
+     "example": "2026"
+    },
+    {
+     "name": "month",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Month, 2 digits",
+     "example": "08"
+    },
+    {
+     "name": "day",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Day, 2 digits",
+     "example": "18"
+    },
+    {
+     "name": "slug",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Announcement slug without .html",
+     "example": "road-datex2-3-7"
+    }
+   ],
+   "responseType": "html",
+   "extract": {
+    "fields": {
+     "title": "h1.h1--page-top",
+     "date": "div.date-type-tags span.date-type-tags__date",
+     "trafficType": "div.date-type-tags li.date-type-tags__type a",
+     "tag": "div.date-type-tags li.date-type-tags__tag a",
+     "body": "div.jekyll-content"
+    }
+   },
+   "defaultFields": [
+    "title",
+    "date",
+    "trafficType",
+    "tag",
+    "body"
+   ],
+   "mutates": false,
+   "example": {
+    "year": "2026",
+    "month": "08",
+    "day": "18",
+    "slug": "road-datex2-3-7"
+   },
+   "source": "E10 E11 GET https://www.digitraffic.fi/tiedotteet/{n}/{n}/{n}/road-datex2-3-7.html",
+   "verified": true
+  },
+  {
+   "name": "get-service-status",
+   "summary": "Get the current status (ok/disrupted/down) of every Digitraffic API system.",
+   "method": "GET",
+   "urlTemplate": "https://status.digitraffic.fi/index.json",
+   "params": [],
+   "responseType": "json",
+   "resultPath": "systems",
+   "defaultFields": [
+    "name",
+    "description",
+    "category",
+    "status",
+    "unresolvedIssues"
+   ],
+   "mutates": false,
+   "source": "E2 GET https://status.digitraffic.fi/index.json",
+   "verified": true
+  },
+  {
+   "name": "list-status-issues",
+   "summary": "List incidents on the status page (outages, disruptions), newest first, with their resolution state.",
+   "method": "GET",
+   "urlTemplate": "https://status.digitraffic.fi/issues/index.json",
+   "params": [],
+   "responseType": "json",
+   "resultPath": "pages",
+   "defaultFields": [
+    "title",
+    "severity",
+    "resolved",
+    "createdAt",
+    "resolvedAt",
+    "affected",
+    "permalink"
+   ],
+   "mutates": false,
+   "source": "E3 GET https://status.digitraffic.fi/issues/index.json",
+   "verified": true
+  },
+  {
+   "name": "list-traffic-messages",
+   "summary": "List current road traffic messages (announcements, road works, weight restrictions, exempted transports) as GeoJSON features.",
+   "method": "GET",
+   "urlTemplate": "https://tie.digitraffic.fi/api/traffic-message/v1/messages?includeAreaGeometry=false",
+   "params": [
+    {
+     "name": "situationType",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Message type",
+     "enum": [
+      "TRAFFIC_ANNOUNCEMENT",
+      "EXEMPTED_TRANSPORT",
+      "WEIGHT_RESTRICTION",
+      "ROAD_WORK"
+     ],
+     "default": "TRAFFIC_ANNOUNCEMENT"
+    },
+    {
+     "name": "inactiveHours",
+     "in": "query",
+     "required": false,
+     "type": "number",
+     "description": "Also include messages that ended within this many hours",
+     "default": 0
+    }
+   ],
+   "headers": {
+    "Digitraffic-User": "clify"
+   },
+   "responseType": "json",
+   "resultPath": "features",
+   "defaultFields": [
+    "properties.situationId",
+    "properties.situationType",
+    "properties.releaseTime",
+    "properties.announcements.0.title",
+    "properties.announcements.0.location.description"
+   ],
+   "mutates": false,
+   "example": {
+    "situationType": "TRAFFIC_ANNOUNCEMENT"
+   },
+   "source": "",
+   "verified": true
+  },
+  {
+   "name": "get-traffic-message",
+   "summary": "Get one road traffic message by its situationId, e.g. GUID50xxxxxx (take the id from list-traffic-messages).",
+   "method": "GET",
+   "urlTemplate": "https://tie.digitraffic.fi/api/traffic-message/v1/messages/{situationId}?includeAreaGeometry=false&latest=true",
+   "params": [
+    {
+     "name": "situationId",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Situation id from list-traffic-messages (properties.situationId)",
+     "example": "GUID50444128"
+    }
+   ],
+   "headers": {
+    "Digitraffic-User": "clify"
+   },
+   "responseType": "json",
+   "resultPath": "features",
+   "defaultFields": [
+    "properties.situationId",
+    "properties.situationType",
+    "properties.releaseTime",
+    "properties.announcements.0.title",
+    "properties.announcements.0.comment"
+   ],
+   "mutates": false,
+   "example": {
+    "situationId": "GUID50444128"
+   },
+   "source": "",
+   "verified": true
+  },
+  {
+   "name": "list-weather-station-data",
+   "summary": "Get the latest sensor readings from all road weather stations.",
+   "method": "GET",
+   "urlTemplate": "https://tie.digitraffic.fi/api/weather/v1/stations/data",
+   "params": [],
+   "headers": {
+    "Digitraffic-User": "clify"
+   },
+   "responseType": "json",
+   "resultPath": "stations",
+   "defaultFields": [
+    "id",
+    "dataUpdatedTime",
+    "sensorValues"
+   ],
+   "mutates": false,
+   "source": "",
+   "verified": true
+  },
+  {
+   "name": "get-weather-station-data",
+   "summary": "Get the latest sensor readings (air/road temperature, wind, etc.) for one road weather station.",
+   "method": "GET",
+   "urlTemplate": "https://tie.digitraffic.fi/api/weather/v1/stations/{id}/data",
+   "params": [
+    {
+     "name": "id",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Weather station id",
+     "example": "1001"
+    }
+   ],
+   "headers": {
+    "Digitraffic-User": "clify"
+   },
+   "responseType": "json",
+   "resultPath": "sensorValues",
+   "defaultFields": [
+    "name",
+    "shortName",
+    "value",
+    "unit",
+    "measuredTime"
+   ],
+   "mutates": false,
+   "example": {
+    "id": "1001"
+   },
+   "source": "",
+   "verified": true
+  },
+  {
+   "name": "get-tms-station-data",
+   "summary": "Get live traffic measurement data (vehicle counts, average speeds) for one TMS station.",
+   "method": "GET",
+   "urlTemplate": "https://tie.digitraffic.fi/api/tms/v1/stations/{id}/data",
+   "params": [
+    {
+     "name": "id",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "TMS station id",
+     "example": "23001"
+    }
+   ],
+   "headers": {
+    "Digitraffic-User": "clify"
+   },
+   "responseType": "json",
+   "resultPath": "sensorValues",
+   "defaultFields": [
+    "name",
+    "shortName",
+    "value",
+    "unit",
+    "measuredTime"
+   ],
+   "mutates": false,
+   "example": {
+    "id": "23001"
+   },
+   "source": "",
+   "verified": true
+  },
+  {
+   "name": "list-weathercam-stations",
+   "summary": "List all road weather camera stations, with location and state.",
+   "method": "GET",
+   "urlTemplate": "https://tie.digitraffic.fi/api/weathercam/v1/stations",
+   "params": [],
+   "headers": {
+    "Digitraffic-User": "clify"
+   },
+   "responseType": "json",
+   "resultPath": "features",
+   "defaultFields": [
+    "id",
+    "properties.name",
+    "properties.collectionStatus",
+    "properties.state",
+    "properties.presets",
+    "geometry.coordinates"
+   ],
+   "mutates": false,
+   "source": "E12 GET https://www.digitraffic.fi/tieliikenne/",
+   "verified": true
+  },
+  {
+   "name": "get-weathercam-station",
+   "summary": "Get one weather camera station by id, including camera presets and image URLs.",
+   "method": "GET",
+   "urlTemplate": "https://tie.digitraffic.fi/api/weathercam/v1/stations/{id}",
+   "params": [
+    {
+     "name": "id",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Weathercam station id, e.g. C04507",
+     "example": "C04507"
+    }
+   ],
+   "headers": {
+    "Digitraffic-User": "clify"
+   },
+   "responseType": "json",
+   "defaultFields": [
+    "id",
+    "properties.name",
+    "properties.state",
+    "properties.dataUpdatedTime",
+    "properties.presets",
+    "geometry.coordinates"
+   ],
+   "mutates": false,
+   "example": {
+    "id": "C04507"
+   },
+   "source": "E12 GET https://www.digitraffic.fi/tieliikenne/",
+   "verified": true
+  },
+  {
+   "name": "list-maintenance-routes",
+   "summary": "Get the latest road maintenance tracking points (snow ploughing, salting, etc.) as GeoJSON.",
+   "method": "GET",
+   "urlTemplate": "https://tie.digitraffic.fi/api/maintenance/v1/tracking/routes/latest",
+   "params": [
+    {
+     "name": "taskId",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Filter by maintenance task, e.g. PLOUGHING_AND_SLUSH_REMOVAL, SALTING"
+    },
+    {
+     "name": "domain",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Data domain, e.g. state-roads, all"
+    }
+   ],
+   "headers": {
+    "Digitraffic-User": "clify"
+   },
+   "responseType": "json",
+   "resultPath": "features",
+   "defaultFields": [
+    "properties.id",
+    "properties.time",
+    "properties.tasks",
+    "properties.domain",
+    "geometry.coordinates"
+   ],
+   "mutates": false,
+   "source": "",
+   "verified": true
+  },
+  {
+   "name": "list-station-live-trains",
+   "summary": "List live trains arriving at and departing from a railway station, by station short code (e.g. HKI, TPE).",
+   "method": "GET",
+   "urlTemplate": "https://rata.digitraffic.fi/api/v1/live-trains/station/{station}",
+   "params": [
+    {
+     "name": "station",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Station short code, e.g. HKI (Helsinki), TPE (Tampere)",
+     "example": "HKI"
+    },
+    {
+     "name": "arriving_trains",
+     "in": "query",
+     "required": false,
+     "type": "number",
+     "description": "Number of arriving trains",
+     "default": 10
+    },
+    {
+     "name": "departing_trains",
+     "in": "query",
+     "required": false,
+     "type": "number",
+     "description": "Number of departing trains",
+     "default": 10
+    },
+    {
+     "name": "arrived_trains",
+     "in": "query",
+     "required": false,
+     "type": "number",
+     "description": "Number of already arrived trains",
+     "default": 0
+    },
+    {
+     "name": "departed_trains",
+     "in": "query",
+     "required": false,
+     "type": "number",
+     "description": "Number of already departed trains",
+     "default": 0
+    },
+    {
+     "name": "include_nonstopping",
+     "in": "query",
+     "required": false,
+     "type": "boolean",
+     "description": "Include trains that pass without stopping",
+     "default": false
+    }
+   ],
+   "headers": {
+    "Digitraffic-User": "clify"
+   },
+   "responseType": "json",
+   "defaultFields": [
+    "trainNumber",
+    "departureDate",
+    "trainType",
+    "trainCategory",
+    "commuterLineID",
+    "runningCurrently",
+    "cancelled",
+    "timeTableRows"
+   ],
+   "mutates": false,
+   "example": {
+    "station": "HKI"
+   },
+   "source": "",
+   "verified": true
+  },
+  {
+   "name": "list-trains-between-stations",
+   "summary": "List the next trains running from one station to another, by station short codes.",
+   "method": "GET",
+   "urlTemplate": "https://rata.digitraffic.fi/api/v1/live-trains/station/{from}/{to}",
+   "params": [
+    {
+     "name": "from",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Departure station short code",
+     "example": "HKI"
+    },
+    {
+     "name": "to",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Arrival station short code",
+     "example": "TPE"
+    },
+    {
+     "name": "api_limit",
+     "key": "limit",
+     "in": "query",
+     "required": false,
+     "type": "number",
+     "description": "Maximum number of trains (sent to the site as \"limit\"; clify's own --limit only shapes the output)"
+    }
+   ],
+   "headers": {
+    "Digitraffic-User": "clify"
+   },
+   "responseType": "json",
+   "defaultFields": [
+    "trainNumber",
+    "departureDate",
+    "trainType",
+    "trainCategory",
+    "cancelled",
+    "timeTableRows"
+   ],
+   "mutates": false,
+   "example": {
+    "from": "HKI",
+    "to": "TPE"
+   },
+   "source": "",
+   "verified": true
+  },
+  {
+   "name": "get-train",
+   "summary": "Get one train's timetable and live status by departure date (or 'latest') and train number.",
+   "method": "GET",
+   "urlTemplate": "https://rata.digitraffic.fi/api/v1/trains/{date}/{train_number}",
+   "params": [
+    {
+     "name": "date",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Departure date YYYY-MM-DD, or 'latest'",
+     "example": "latest"
+    },
+    {
+     "name": "train_number",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Train number",
+     "example": "1"
+    }
+   ],
+   "headers": {
+    "Digitraffic-User": "clify"
+   },
+   "responseType": "json",
+   "defaultFields": [
+    "trainNumber",
+    "departureDate",
+    "trainType",
+    "operatorShortCode",
+    "runningCurrently",
+    "cancelled",
+    "timeTableRows"
+   ],
+   "mutates": false,
+   "example": {
+    "date": "latest",
+    "train_number": "1"
+   },
+   "source": "",
+   "verified": true
+  },
+  {
+   "name": "get-train-composition",
+   "summary": "Get a train's composition (locomotives, wagons, length, max speed) by departure date and train number.",
+   "method": "GET",
+   "urlTemplate": "https://rata.digitraffic.fi/api/v1/compositions/{date}/{train_number}",
+   "params": [
+    {
+     "name": "date",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Departure date YYYY-MM-DD",
+     "example": "2026-10-18"
+    },
+    {
+     "name": "train_number",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Train number",
+     "example": "1"
+    }
+   ],
+   "headers": {
+    "Digitraffic-User": "clify"
+   },
+   "responseType": "json",
+   "defaultFields": [
+    "trainNumber",
+    "departureDate",
+    "trainCategory",
+    "trainType",
+    "journeySections"
+   ],
+   "mutates": false,
+   "example": {
+    "date": "2026-10-18",
+    "train_number": "1"
+   },
+   "source": "",
+   "verified": true
+  },
+  {
+   "name": "list-rail-stations",
+   "summary": "List all railway stations with short codes, names, UIC codes and coordinates.",
+   "method": "GET",
+   "urlTemplate": "https://rata.digitraffic.fi/api/v1/metadata/stations",
+   "params": [],
+   "headers": {
+    "Digitraffic-User": "clify"
+   },
+   "responseType": "json",
+   "defaultFields": [
+    "stationShortCode",
+    "stationName",
+    "stationUICCode",
+    "passengerTraffic",
+    "type",
+    "latitude",
+    "longitude"
+   ],
+   "mutates": false,
+   "source": "",
+   "verified": true
+  },
+  {
+   "name": "list-train-locations",
+   "summary": "Get the latest GPS location and speed of every running train.",
+   "method": "GET",
+   "urlTemplate": "https://rata.digitraffic.fi/api/v1/train-locations/latest/",
+   "params": [],
+   "headers": {
+    "Digitraffic-User": "clify"
+   },
+   "responseType": "json",
+   "defaultFields": [
+    "trainNumber",
+    "departureDate",
+    "timestamp",
+    "location.coordinates",
+    "speed"
+   ],
+   "mutates": false,
+   "source": "",
+   "verified": true
+  },
+  {
+   "name": "list-vessel-locations",
+   "summary": "Get the latest AIS vessel positions (GeoJSON). You can filter by MMSI or by a radius around a point.",
+   "method": "GET",
+   "urlTemplate": "https://meri.digitraffic.fi/api/ais/v1/locations",
+   "params": [
+    {
+     "name": "mmsi",
+     "in": "query",
+     "required": false,
+     "type": "number",
+     "description": "Vessel MMSI"
+    },
+    {
+     "name": "latitude",
+     "in": "query",
+     "required": false,
+     "type": "number",
+     "description": "Center latitude for a radius search"
+    },
+    {
+     "name": "longitude",
+     "in": "query",
+     "required": false,
+     "type": "number",
+     "description": "Center longitude for a radius search"
+    },
+    {
+     "name": "radius",
+     "in": "query",
+     "required": false,
+     "type": "number",
+     "description": "Radius in km (use with latitude/longitude)"
+    },
+    {
+     "name": "from",
+     "in": "query",
+     "required": false,
+     "type": "number",
+     "description": "Only positions updated after this epoch milliseconds"
+    }
+   ],
+   "headers": {
+    "Digitraffic-User": "clify"
+   },
+   "responseType": "json",
+   "resultPath": "features",
+   "defaultFields": [
+    "mmsi",
+    "properties.sog",
+    "properties.cog",
+    "properties.heading",
+    "properties.navStat",
+    "properties.timestampExternal",
+    "geometry.coordinates"
+   ],
+   "mutates": false,
+   "source": "",
+   "verified": true
+  },
+  {
+   "name": "get-vessel",
+   "summary": "Get AIS vessel metadata (name, call sign, IMO, ship type, destination) by MMSI.",
+   "method": "GET",
+   "urlTemplate": "https://meri.digitraffic.fi/api/ais/v1/vessels/{mmsi}",
+   "params": [
+    {
+     "name": "mmsi",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Vessel MMSI (9 digits)",
+     "example": "230629000"
+    }
+   ],
+   "headers": {
+    "Digitraffic-User": "clify"
+   },
+   "responseType": "json",
+   "defaultFields": [
+    "mmsi",
+    "name",
+    "callSign",
+    "imo",
+    "shipType",
+    "destination",
+    "eta",
+    "timestamp"
+   ],
+   "mutates": false,
+   "example": {
+    "mmsi": "230629000"
+   },
+   "source": "",
+   "verified": true
+  },
+  {
+   "name": "list-port-calls",
+   "summary": "List port calls (vessel arrivals and departures) for a port, by UN/LOCODE (e.g. FIHEL).",
+   "method": "GET",
+   "urlTemplate": "https://meri.digitraffic.fi/api/port-call/v1/port-calls",
+   "params": [
+    {
+     "name": "locode",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Port UN/LOCODE, e.g. FIHEL, FITKU",
+     "example": "FIHEL"
+    },
+    {
+     "name": "vesselName",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Filter by vessel name"
+    },
+    {
+     "name": "mmsi",
+     "in": "query",
+     "required": false,
+     "type": "number",
+     "description": "Filter by vessel MMSI"
+    }
+   ],
+   "headers": {
+    "Digitraffic-User": "clify"
+   },
+   "responseType": "json",
+   "resultPath": "portCalls",
+   "defaultFields": [
+    "portCallId",
+    "vesselName",
+    "mmsi",
+    "portToVisit",
+    "prevPort",
+    "nextPort",
+    "portCallTimestamp",
+    "portAreaDetails"
+   ],
+   "mutates": false,
+   "example": {
+    "locode": "FIHEL"
+   },
+   "source": "",
+   "verified": true
+  },
+  {
+   "name": "list-sea-state",
+   "summary": "Get the latest sea state estimation (SSE) measurements from coastal sites: wind, wave, sea state.",
+   "method": "GET",
+   "urlTemplate": "https://meri.digitraffic.fi/api/sse/v1/measurements",
+   "params": [],
+   "headers": {
+    "Digitraffic-User": "clify"
+   },
+   "responseType": "json",
+   "resultPath": "features",
+   "defaultFields": [
+    "siteNumber",
+    "properties.siteName",
+    "properties.lastUpdate",
+    "properties.seaState",
+    "properties.windWaveDir",
+    "properties.trend",
+    "geometry.coordinates"
+   ],
+   "mutates": false,
+   "source": "",
+   "verified": true
+  },
+  {
+   "name": "list-aton-faults",
+   "summary": "List current faults in aids to navigation (buoys, lights, beacons) in Finnish waters.",
+   "method": "GET",
+   "urlTemplate": "https://meri.digitraffic.fi/api/aton/v1/faults",
+   "params": [
+    {
+     "name": "language",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Language of the texts",
+     "enum": [
+      "fi",
+      "sv",
+      "en"
+     ],
+     "default": "en"
+    },
+    {
+     "name": "fixed",
+     "in": "query",
+     "required": false,
+     "type": "boolean",
+     "description": "Return only fixed (true) or only unfixed (false) faults"
+    }
+   ],
+   "headers": {
+    "Digitraffic-User": "clify"
+   },
+   "responseType": "json",
+   "resultPath": "features",
+   "defaultFields": [
+    "properties.id",
+    "properties.entryTimestamp",
+    "properties.fixedTimestamp",
+    "properties.type",
+    "properties.aton_name_fi",
+    "properties.area_description",
+    "geometry.coordinates"
+   ],
+   "mutates": false,
+   "source": "",
+   "verified": true
+  }
+ ],
+ "blockers": [],
+ "notes": [
+  "All data is public and nothing needs a login. Digitraffic asks clients to send a Digitraffic-User header and to accept gzip compression (Accept-Encoding: gzip).",
+  "The road, rail and marine API endpoints come from the explorer summary and the public Swagger docs (tie/rata/meri.digitraffic.fi/swagger). Only the www.digitraffic.fi pages and the status JSON appear in the request digest.",
+  "Data is live, so ids in examples can expire. Situation ids for get-traffic-message should be taken from list-traffic-messages. Train composition data only exists for long-distance trains on dates that have been published.",
+  "Rail station codes are short codes such as HKI, TPE and TKU; get them from list-rail-stations.",
+  "Announcement filtering (traffictype/tag) may run client-side on the static site. If the server ignores the filter, check the trafficType and tag fields in the output.",
+  "Announcement texts are in Finnish."
+ ],
+ "dropped": [],
+ "generated": {
+  "by": "clify add",
+  "model": "claude-opus-5-5",
+  "exploredSteps": 30,
+  "recorded": 23,
+  "verifiedAt": "2026-10-18T09:00:46.513Z",
+  "seconds": 277
+ }
+}

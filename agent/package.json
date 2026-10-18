@@ -1,0 +1,10 @@
+{
+  "name": "clify-agent",
+  "private": true,
+  "type": "module",
+  "description": "An always-on clify agent that lives on its own InstaBox computer and works by email. Uses ../clify (its node_modules).",
+  "scripts": {
+    "serve": "node --no-warnings --import ../clify/node_modules/tsx/dist/esm/index.mjs src/main.ts serve",
+    "test": "node --no-warnings --import ../clify/node_modules/tsx/dist/esm/index.mjs --test test/policy.test.ts"
+  }
+}

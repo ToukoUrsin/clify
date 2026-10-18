@@ -1,0 +1,158 @@
+{
+ "url": "https://exoplanetarchive.ipac.caltech.edu/",
+ "category": "science",
+ "sandbox": "clify-exoplanetarchive-ipac-caltech-edu",
+ "startedAt": "2026-10-18T09:22:33.029Z",
+ "region": "us-pdx-1",
+ "chrome": "Chrome/148.0.7778.96",
+ "sandboxStartMs": 2368,
+ "addSeconds": 204,
+ "addExit": 0,
+ "add": {
+  "ok": true,
+  "site": "ipac-caltech",
+  "url": "https://exoplanetarchive.ipac.caltech.edu/",
+  "commands": [
+   {
+    "name": "run-tap-query",
+    "summary": "Run an arbitrary ADQL query against the archive's TAP service (tables: ps, pscomppars, toi, cumulative, stellarhosts, k2pandc, ...) and return JSON rows",
+    "verified": true
+   },
+   {
+    "name": "export-tap-csv",
+    "summary": "Run an ADQL query against the TAP service and return the result as CSV text (for bulk export)",
+    "verified": true
+   },
+   {
+    "name": "list-planets-by-year",
+    "summary": "List confirmed planets discovered in a given year (Planetary Systems Composite table), sorted by a chosen column, top N",
+    "verified": true
+   },
+   {
+    "name": "list-host-planets",
+    "summary": "List all confirmed planets orbiting a given host star, with period, radius, mass and discovery method",
+    "verified": true
+   },
+   {
+    "name": "list-toi-candidates",
+    "summary": "List TESS Objects of Interest (TOI) filtered by TFOPWG disposition, ordered by TOI number",
+    "verified": true
+   },
+   {
+    "name": "list-tap-tables",
+    "summary": "List all tables available through the TAP service, with descriptions",
+    "verified": true
+   },
+   {
+    "name": "get-table-columns",
+    "summary": "Get the column schema (name, datatype, description) of a TAP table such as pscomppars, ps or toi",
+    "verified": true
+   },
+   {
+    "name": "check-object-name",
+    "summary": "Check whether an object/system name resolves in the archive inventory; stat OK means /overview/<name> exists",
+    "verified": true
+   },
+   {
+    "name": "get-system-overview",
+    "summary": "Get the planets shown on a system's overview page (planet name, radius in Jupiter radii, confirmed/candidate status)",
+    "verified": true
+   },
+   {
+    "name": "get-archive-statistics",
+    "summary": "Get the archive's statistics page rows (confirmed planet counts by discovery method, mass/radius coverage, radius bins, Kepler/TESS candidate counts)",
+    "verified": true
+   },
+   {
+    "name": "get-toi-counts",
+    "summary": "Get current TESS TOI totals from ExoFOP: total count, latest new/updated dates and counts, and counts per TFOPWG disposition",
+    "verified": true
+   }
+  ],
+  "verified": 11,
+  "writes": 0,
+  "dropped": [],
+  "blockers": [
+   "bot-check at https://exoplanetarchive.ipac.caltech.edu/TAP/sync?query=select+pl_name,ra,dec,sy_dist+from+ps+where+default_flag=1+and+contains(point(%27icrs%27,ra,dec),circle(%27icrs%27,291.4,48.1,2))=1&format=json"
+  ],
+  "loggedIn": false,
+  "seconds": 204,
+  "next": [
+   "clify ipac-caltech",
+   "clify ipac-caltech run-tap-query --query \"select top 10 pl_name,hostname,pl_orbper,pl_rade,disc_year from pscomppars where disc_year=2024 order by pl_rade desc\""
+  ],
+  "installed": "/home/ubuntu/clify-runs/blaxel-w2/home/bin/ipac-caltech",
+  "explored": {
+   "steps": 17,
+   "recorded": 21,
+   "heldWrites": 0
+  }
+ },
+ "check": {
+  "on": "blaxel",
+  "node": "v24.22.0",
+  "seconds": 18,
+  "reads": 11,
+  "verified": 11,
+  "failed": [],
+  "results": [
+   {
+    "name": "run-tap-query",
+    "ok": true,
+    "ms": 1294
+   },
+   {
+    "name": "export-tap-csv",
+    "ok": true,
+    "ms": 1308
+   },
+   {
+    "name": "list-planets-by-year",
+    "ok": true,
+    "ms": 919
+   },
+   {
+    "name": "list-host-planets",
+    "ok": true,
+    "ms": 1036
+   },
+   {
+    "name": "list-toi-candidates",
+    "ok": true,
+    "ms": 1062
+   },
+   {
+    "name": "list-tap-tables",
+    "ok": true,
+    "ms": 1228
+   },
+   {
+    "name": "get-table-columns",
+    "ok": true,
+    "ms": 1140
+   },
+   {
+    "name": "check-object-name",
+    "ok": true,
+    "ms": 51
+   },
+   {
+    "name": "get-system-overview",
+    "ok": true,
+    "ms": 7591
+   },
+   {
+    "name": "get-archive-statistics",
+    "ok": true,
+    "ms": 48
+   },
+   {
+    "name": "get-toi-counts",
+    "ok": true,
+    "ms": 490
+   }
+  ]
+ },
+ "deleted": true,
+ "seconds": 225
+}

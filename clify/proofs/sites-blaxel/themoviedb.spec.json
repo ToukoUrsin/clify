@@ -1,0 +1,965 @@
+{
+ "name": "themoviedb",
+ "startUrl": "https://www.themoviedb.org/",
+ "origin": "https://www.themoviedb.org",
+ "createdAt": "2026-10-18T09:29:36.847Z",
+ "description": "The Movie Database (TMDB), a community database of movies, TV shows and people. This CLI scrapes the public, logged-out website for trending and popular titles, search, discover and preset listings, movie, TV, season, person and collection details, cast, reviews and keyword/genre listings.",
+ "commands": [
+  {
+   "name": "get-trending",
+   "summary": "Trending movies and TV shows today or this week (home page scroller, 20 items)",
+   "method": "GET",
+   "urlTemplate": "/remote/panel?panel=trending_scroller&group={group}",
+   "params": [
+    {
+     "name": "group",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Time window",
+     "enum": [
+      "today",
+      "this-week"
+     ],
+     "default": "today",
+     "example": "this-week"
+    }
+   ],
+   "headers": {
+    "X-Requested-With": "XMLHttpRequest"
+   },
+   "responseType": "html",
+   "extract": {
+    "list": "div.comp\\:poster-item",
+    "fields": {
+     "title": "h2 span || h2",
+     "url": "a.font-normal@href || a@href",
+     "release_date": "span.release_date"
+    }
+   },
+   "defaultFields": [
+    "title",
+    "url",
+    "release_date"
+   ],
+   "mutates": false,
+   "example": {
+    "group": "today"
+   },
+   "source": "E11 GET https://www.themoviedb.org/remote/panel",
+   "verified": true
+  },
+  {
+   "name": "list-popular-home",
+   "summary": "Home page 'What's Popular' titles by channel (streaming, on TV, in theatres)",
+   "method": "GET",
+   "urlTemplate": "/remote/panel?panel=popular_scroller&group={group}",
+   "params": [
+    {
+     "name": "group",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Popular channel tab",
+     "enum": [
+      "streaming",
+      "on-tv",
+      "in-theatres"
+     ],
+     "default": "streaming",
+     "example": "on-tv"
+    }
+   ],
+   "headers": {
+    "X-Requested-With": "XMLHttpRequest"
+   },
+   "responseType": "html",
+   "extract": {
+    "list": "div.comp\\:poster-item",
+    "fields": {
+     "title": "h2 span || h2",
+     "url": "a.font-normal@href || a@href",
+     "release_date": "span.release_date"
+    }
+   },
+   "defaultFields": [
+    "title",
+    "url",
+    "release_date"
+   ],
+   "mutates": false,
+   "example": {
+    "group": "streaming"
+   },
+   "source": "E11 GET https://www.themoviedb.org/remote/panel",
+   "verified": true
+  },
+  {
+   "name": "search",
+   "summary": "Keyword search on TMDB, filtered to one result type (movie, tv, person, collection, keyword, company, network)",
+   "method": "GET",
+   "urlTemplate": "/search/{type}",
+   "params": [
+    {
+     "name": "query",
+     "in": "query",
+     "required": true,
+     "type": "string",
+     "description": "Search text",
+     "example": "star wars"
+    },
+    {
+     "name": "type",
+     "in": "path",
+     "required": false,
+     "type": "string",
+     "description": "Result type to search",
+     "enum": [
+      "movie",
+      "tv",
+      "person",
+      "collection",
+      "keyword",
+      "company",
+      "network"
+     ],
+     "default": "movie",
+     "example": "movie"
+    },
+    {
+     "name": "page",
+     "in": "query",
+     "required": false,
+     "type": "number",
+     "description": "Result page, 1-based",
+     "default": 1,
+     "example": "2"
+    }
+   ],
+   "responseType": "html",
+   "extract": {
+    "list": "div.comp\\:media-card",
+    "fields": {
+     "title": "h2",
+     "url": "a@href",
+     "release_date": "span.release_date",
+     "overview": "div.overview p || p"
+    }
+   },
+   "defaultFields": [
+    "title",
+    "url",
+    "release_date",
+    "overview"
+   ],
+   "pagination": {
+    "type": "page",
+    "param": "page"
+   },
+   "mutates": false,
+   "example": {
+    "query": "star wars",
+    "type": "movie",
+    "page": "2"
+   },
+   "source": "E14 E15 GET https://www.themoviedb.org/search",
+   "verified": true
+  },
+  {
+   "name": "discover-movies",
+   "summary": "Discover movies with filters (genres, keywords, rating, vote count, dates, language, runtime) and sort order, paginated",
+   "method": "POST",
+   "urlTemplate": "/discover/movie/items",
+   "params": [
+    {
+     "name": "page",
+     "in": "body",
+     "required": false,
+     "type": "number",
+     "description": "Result page, 1-based (20 per page)",
+     "default": 1,
+     "example": "2"
+    },
+    {
+     "name": "sort_by",
+     "in": "body",
+     "required": false,
+     "type": "string",
+     "description": "Sort order",
+     "enum": [
+      "popularity.desc",
+      "popularity.asc",
+      "vote_average.desc",
+      "vote_average.asc",
+      "primary_release_date.desc",
+      "primary_release_date.asc",
+      "title.asc",
+      "title.desc"
+     ],
+     "default": "popularity.desc",
+     "example": "vote_average.desc"
+    },
+    {
+     "name": "with_genres",
+     "in": "body",
+     "required": false,
+     "type": "string",
+     "description": "Comma-separated TMDB genre ids, e.g. 878 (Science Fiction), 28 (Action)",
+     "example": "878"
+    },
+    {
+     "name": "with_keywords",
+     "in": "body",
+     "required": false,
+     "type": "string",
+     "description": "Comma-separated keyword ids, e.g. 161176 (space opera)"
+    },
+    {
+     "name": "vote_count_gte",
+     "key": "vote_count.gte",
+     "in": "body",
+     "required": false,
+     "type": "number",
+     "description": "Minimum number of user votes",
+     "default": 0,
+     "example": "300"
+    },
+    {
+     "name": "vote_average_gte",
+     "key": "vote_average.gte",
+     "in": "body",
+     "required": false,
+     "type": "number",
+     "description": "Minimum user score, 0-10",
+     "default": 0
+    },
+    {
+     "name": "vote_average_lte",
+     "key": "vote_average.lte",
+     "in": "body",
+     "required": false,
+     "type": "number",
+     "description": "Maximum user score, 0-10",
+     "default": 10
+    },
+    {
+     "name": "release_date_gte",
+     "key": "release_date.gte",
+     "in": "body",
+     "required": false,
+     "type": "string",
+     "description": "Earliest release date, ISO date e.g. 2000-01-01"
+    },
+    {
+     "name": "release_date_lte",
+     "key": "release_date.lte",
+     "in": "body",
+     "required": false,
+     "type": "string",
+     "description": "Latest release date, ISO date e.g. 2027-04-18",
+     "example": "2027-04-18"
+    },
+    {
+     "name": "with_original_language",
+     "in": "body",
+     "required": false,
+     "type": "string",
+     "description": "ISO 639-1 original language, e.g. en, ja, hi"
+    },
+    {
+     "name": "runtime_gte",
+     "key": "with_runtime.gte",
+     "in": "body",
+     "required": false,
+     "type": "number",
+     "description": "Minimum runtime in minutes",
+     "default": 0
+    },
+    {
+     "name": "runtime_lte",
+     "key": "with_runtime.lte",
+     "in": "body",
+     "required": false,
+     "type": "number",
+     "description": "Maximum runtime in minutes",
+     "default": 400
+    },
+    {
+     "name": "discover_preset",
+     "in": "body",
+     "required": false,
+     "type": "string",
+     "description": "Optional listing preset the site uses (e.g. top-rated); leave empty for plain discover",
+     "example": "top-rated"
+    }
+   ],
+   "bodyTemplate": {
+    "air_date.gte": "",
+    "air_date.lte": "",
+    "certification": "",
+    "certification_country": "US",
+    "debug": "",
+    "first_air_date.gte": "",
+    "first_air_date.lte": "",
+    "include_adult": "false",
+    "include_softcore": "false",
+    "latest_ceremony.gte": "",
+    "latest_ceremony.lte": "",
+    "page": "{page}",
+    "primary_release_date.gte": "",
+    "primary_release_date.lte": "",
+    "region": "",
+    "release_date.gte": "{release_date_gte}",
+    "release_date.lte": "{release_date_lte}",
+    "show_me": "everything",
+    "sort_by": "{sort_by}",
+    "vote_average.gte": "{vote_average_gte}",
+    "vote_average.lte": "{vote_average_lte}",
+    "vote_count.gte": "{vote_count_gte}",
+    "vote_count.lte": "",
+    "watch_region": "US",
+    "with_genres": "{with_genres}",
+    "with_keywords": "{with_keywords}",
+    "with_networks": "",
+    "with_origin_country": "",
+    "with_original_language": "{with_original_language}",
+    "with_watch_monetization_types": "",
+    "with_watch_providers": "",
+    "with_release_type": "",
+    "with_runtime.gte": "{runtime_gte}",
+    "with_runtime.lte": "{runtime_lte}",
+    "view": "",
+    "discover_preset": "{discover_preset}"
+   },
+   "bodyEncoding": "form",
+   "headers": {
+    "X-Requested-With": "XMLHttpRequest"
+   },
+   "responseType": "html",
+   "extract": {
+    "list": "div.media-list-results > div.w-full",
+    "fields": {
+     "title": "h2",
+     "url": "a.font-normal@href || a@href",
+     "release_date": "span.release_date"
+    }
+   },
+   "defaultFields": [
+    "title",
+    "url",
+    "release_date"
+   ],
+   "pagination": {
+    "type": "page",
+    "param": "page"
+   },
+   "mutates": false,
+   "example": {
+    "page": "2",
+    "sort_by": "vote_average.desc",
+    "vote_count_gte": "300",
+    "release_date_lte": "2027-04-18",
+    "discover_preset": "top-rated"
+   },
+   "source": "E12 POST https://www.themoviedb.org/discover/movie/items",
+   "verified": true
+  },
+  {
+   "name": "list-movies",
+   "summary": "Preset movie listings: top rated, now playing, upcoming (use discover-movies with sort_by=popularity.desc for popular)",
+   "method": "GET",
+   "urlTemplate": "/movie/{list}",
+   "params": [
+    {
+     "name": "list",
+     "in": "path",
+     "required": false,
+     "type": "string",
+     "description": "Which preset listing",
+     "enum": [
+      "top-rated",
+      "now-playing",
+      "upcoming"
+     ],
+     "default": "top-rated",
+     "example": "top-rated"
+    },
+    {
+     "name": "page",
+     "in": "query",
+     "required": false,
+     "type": "number",
+     "description": "Result page, 1-based",
+     "default": 1
+    }
+   ],
+   "responseType": "html",
+   "extract": {
+    "list": "div.media-list-results > div.w-full",
+    "fields": {
+     "title": "h2",
+     "url": "a.font-normal@href || a@href",
+     "release_date": "span.release_date"
+    }
+   },
+   "defaultFields": [
+    "title",
+    "url",
+    "release_date"
+   ],
+   "pagination": {
+    "type": "page",
+    "param": "page"
+   },
+   "mutates": false,
+   "example": {
+    "list": "top-rated"
+   },
+   "source": "E22 E13 GET https://www.themoviedb.org/movie/top-rated",
+   "verified": true
+  },
+  {
+   "name": "list-tv",
+   "summary": "Preset TV listings: shows airing today or currently on the air",
+   "method": "GET",
+   "urlTemplate": "/tv/{list}",
+   "params": [
+    {
+     "name": "list",
+     "in": "path",
+     "required": false,
+     "type": "string",
+     "description": "Which preset listing",
+     "enum": [
+      "airing-today",
+      "on-the-air"
+     ],
+     "default": "airing-today",
+     "example": "on-the-air"
+    },
+    {
+     "name": "page",
+     "in": "query",
+     "required": false,
+     "type": "number",
+     "description": "Result page, 1-based",
+     "default": 1
+    }
+   ],
+   "responseType": "html",
+   "extract": {
+    "list": "div.media-list-results > div.w-full",
+    "fields": {
+     "title": "h2",
+     "url": "a.font-normal@href || a@href",
+     "first_air_date": "span.release_date"
+    }
+   },
+   "defaultFields": [
+    "title",
+    "url",
+    "first_air_date"
+   ],
+   "pagination": {
+    "type": "page",
+    "param": "page"
+   },
+   "mutates": false,
+   "example": {
+    "list": "airing-today"
+   },
+   "source": "E13 GET https://www.themoviedb.org/movie",
+   "verified": true
+  },
+  {
+   "name": "get-movie",
+   "summary": "Movie details: title, year, certification, US release date, genres, runtime, tagline, overview, director, user score",
+   "method": "GET",
+   "urlTemplate": "/movie/{id}",
+   "params": [
+    {
+     "name": "id",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "TMDB movie id, optionally with slug (e.g. 11 or 11-star-wars), as found in result urls",
+     "example": "11-star-wars"
+    }
+   ],
+   "responseType": "html",
+   "extract": {
+    "fields": {
+     "title": "div.title h2 a",
+     "url": "div.title h2 a@href",
+     "year": "div.title span.release_date",
+     "certification": "div.facts span.certification",
+     "release": "div.facts span.release",
+     "genres": "div.facts span.genres",
+     "runtime": "div.facts span.runtime",
+     "tagline": "h3.tagline",
+     "overview": "div.overview p",
+     "director": "ol.people.no_image li.profile p a",
+     "user_score": "div.user_score_chart@data-percent",
+     "streaming": "div.ott_offer h3 a@title"
+    }
+   },
+   "defaultFields": [
+    "title",
+    "url",
+    "year",
+    "release",
+    "genres",
+    "runtime",
+    "overview",
+    "director"
+   ],
+   "mutates": false,
+   "example": {
+    "id": "11-star-wars"
+   },
+   "source": "E16",
+   "verified": true
+  },
+  {
+   "name": "get-movie-cast",
+   "summary": "Full cast and crew of a movie (name, character or job, person url)",
+   "method": "GET",
+   "urlTemplate": "/movie/{id}/cast",
+   "params": [
+    {
+     "name": "id",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "TMDB movie id, optionally with slug, e.g. 11-star-wars",
+     "example": "11-star-wars"
+    }
+   ],
+   "responseType": "html",
+   "extract": {
+    "list": "ol.people > li",
+    "fields": {
+     "name": "p a || a",
+     "role": "p.character",
+     "url": "a@href"
+    }
+   },
+   "defaultFields": [
+    "name",
+    "role",
+    "url"
+   ],
+   "mutates": false,
+   "example": {
+    "id": "11-star-wars"
+   },
+   "source": "E17 GET https://www.themoviedb.org/movie/11-star-wars/cast",
+   "verified": true
+  },
+  {
+   "name": "get-movie-reviews",
+   "summary": "User reviews of a movie (author/heading, teaser text, link)",
+   "method": "GET",
+   "urlTemplate": "/movie/{id}/reviews",
+   "params": [
+    {
+     "name": "id",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "TMDB movie id, optionally with slug, e.g. 11-star-wars",
+     "example": "11-star-wars"
+    }
+   ],
+   "responseType": "html",
+   "extract": {
+    "list": "div.comp\\:review-card-for-media",
+    "fields": {
+     "heading": "h3 || h2",
+     "teaser": "div.teaser",
+     "url": "a@href"
+    }
+   },
+   "defaultFields": [
+    "heading",
+    "teaser",
+    "url"
+   ],
+   "mutates": false,
+   "example": {
+    "id": "11-star-wars"
+   },
+   "source": "E25 GET https://www.themoviedb.org/movie/11-star-wars/reviews",
+   "verified": true
+  },
+  {
+   "name": "get-tv-show",
+   "summary": "TV series details: name, first-air year, certification, genres, overview, creator, user score, latest season",
+   "method": "GET",
+   "urlTemplate": "/tv/{id}",
+   "params": [
+    {
+     "name": "id",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "TMDB TV id, optionally with slug, e.g. 4194-star-wars-the-clone-wars",
+     "example": "4194-star-wars-the-clone-wars"
+    }
+   ],
+   "responseType": "html",
+   "extract": {
+    "fields": {
+     "name": "div.title h2 a",
+     "url": "div.title h2 a@href",
+     "year": "div.title span.release_date",
+     "certification": "div.facts span.certification",
+     "genres": "div.facts span.genres",
+     "overview": "div.overview p",
+     "creator": "ol.people.no_image li.profile p a",
+     "user_score": "div.user_score_chart@data-percent",
+     "last_season": "section.panel.season h2 a",
+     "last_season_url": "section.panel.season h2 a@href",
+     "streaming": "div.ott_offer h3 a@title"
+    }
+   },
+   "defaultFields": [
+    "name",
+    "url",
+    "year",
+    "genres",
+    "overview",
+    "creator",
+    "last_season",
+    "last_season_url"
+   ],
+   "mutates": false,
+   "example": {
+    "id": "4194-star-wars-the-clone-wars"
+   },
+   "source": "E19",
+   "verified": true
+  },
+  {
+   "name": "get-tv-season",
+   "summary": "Episodes of one TV season (number, title, air date, runtime, overview)",
+   "method": "GET",
+   "urlTemplate": "/tv/{id}/season/{season}",
+   "params": [
+    {
+     "name": "id",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "TMDB TV id, optionally with slug",
+     "example": "4194-star-wars-the-clone-wars"
+    },
+    {
+     "name": "season",
+     "in": "path",
+     "required": true,
+     "type": "number",
+     "description": "Season number (0 = specials)",
+     "example": "7"
+    }
+   ],
+   "responseType": "html",
+   "extract": {
+    "list": "div.card",
+    "fields": {
+     "episode_number": "span.episode_number",
+     "title": "div.episode_title h3 || h3",
+     "air_date": "span.date",
+     "runtime": "span.runtime",
+     "overview": "div.overview p || div.overview",
+     "url": "a@href"
+    }
+   },
+   "defaultFields": [
+    "episode_number",
+    "title",
+    "air_date",
+    "runtime",
+    "overview"
+   ],
+   "mutates": false,
+   "example": {
+    "id": "4194-star-wars-the-clone-wars",
+    "season": "7"
+   },
+   "source": "E20 GET https://www.themoviedb.org/tv/4194-star-wars-the-clone-wars/season/{n}",
+   "verified": true
+  },
+  {
+   "name": "get-tv-popularity",
+   "summary": "Daily popularity-rank change chart for a TV show (last 7 days)",
+   "method": "GET",
+   "urlTemplate": "/tv/{id}/remote/popularity?translate=false",
+   "params": [
+    {
+     "name": "id",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "TMDB TV id with slug, e.g. 4194-star-wars-the-clone-wars",
+     "example": "4194-star-wars-the-clone-wars"
+    }
+   ],
+   "headers": {
+    "X-Requested-With": "XMLHttpRequest"
+   },
+   "responseType": "json",
+   "defaultFields": [
+    "date",
+    "value"
+   ],
+   "mutates": false,
+   "example": {
+    "id": "4194-star-wars-the-clone-wars"
+   },
+   "source": "E8 GET https://www.themoviedb.org/tv/4194-star-wars-the-clone-wars/remote/popularity",
+   "verified": true
+  },
+  {
+   "name": "get-person",
+   "summary": "Person details: name, biography, personal info (known for, birthday, birthplace), aliases, top known-for title",
+   "method": "GET",
+   "urlTemplate": "/person/{id}",
+   "params": [
+    {
+     "name": "id",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "TMDB person id, optionally with slug, e.g. 2-mark-hamill",
+     "example": "2-mark-hamill"
+    }
+   ],
+   "responseType": "html",
+   "extract": {
+    "fields": {
+     "name": "h2.title a",
+     "url": "h2.title a@href",
+     "known_for_department": "section.facts p",
+     "birthday": "section.facts p.full",
+     "personal_info": "section.facts",
+     "also_known_as": "li[itemprop=\"additionalName\"]",
+     "biography": "div.biography div.text",
+     "known_for_title": "div#known_for a.title bdi",
+     "known_for_url": "div#known_for a.title@href"
+    }
+   },
+   "defaultFields": [
+    "name",
+    "url",
+    "known_for_department",
+    "birthday",
+    "personal_info",
+    "biography",
+    "known_for_title"
+   ],
+   "mutates": false,
+   "example": {
+    "id": "2-mark-hamill"
+   },
+   "source": "E18",
+   "verified": true
+  },
+  {
+   "name": "list-popular-people",
+   "summary": "Popular people on TMDB with their best-known titles, paginated",
+   "method": "GET",
+   "urlTemplate": "/person",
+   "params": [
+    {
+     "name": "page",
+     "in": "query",
+     "required": false,
+     "type": "number",
+     "description": "Result page, 1-based (20 per page)",
+     "default": 1,
+     "example": "1"
+    }
+   ],
+   "responseType": "html",
+   "extract": {
+    "list": "div.fifty_square",
+    "fields": {
+     "name": "p.name a",
+     "known_for": "p.sub",
+     "url": "p.name a@href"
+    }
+   },
+   "defaultFields": [
+    "name",
+    "known_for",
+    "url"
+   ],
+   "pagination": {
+    "type": "page",
+    "param": "page"
+   },
+   "mutates": false,
+   "example": {
+    "page": "1"
+   },
+   "source": "E26 GET https://www.themoviedb.org/person",
+   "verified": true
+  },
+  {
+   "name": "get-collection",
+   "summary": "Cast and crew credits across a movie collection/franchise (name, roles, person url)",
+   "method": "GET",
+   "urlTemplate": "/collection/{id}",
+   "params": [
+    {
+     "name": "id",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "TMDB collection id, optionally with slug, e.g. 10-star-wars-collection",
+     "example": "10-star-wars-collection"
+    }
+   ],
+   "responseType": "html",
+   "extract": {
+    "list": "li.card",
+    "fields": {
+     "name": "p a || a",
+     "role": "p.character || p",
+     "url": "a@href"
+    }
+   },
+   "defaultFields": [
+    "name",
+    "role",
+    "url"
+   ],
+   "mutates": false,
+   "example": {
+    "id": "10-star-wars-collection"
+   },
+   "source": "E24 GET https://www.themoviedb.org/collection/10-star-wars-collection",
+   "verified": true
+  },
+  {
+   "name": "list-movies-by-keyword",
+   "summary": "Movies tagged with a keyword (e.g. space opera), paginated",
+   "method": "GET",
+   "urlTemplate": "/keyword/{id}/movie",
+   "params": [
+    {
+     "name": "id",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Keyword id with slug, e.g. 161176-space-opera (find via search --type keyword)",
+     "example": "161176-space-opera"
+    },
+    {
+     "name": "page",
+     "in": "query",
+     "required": false,
+     "type": "number",
+     "description": "Result page, 1-based",
+     "default": 1
+    }
+   ],
+   "responseType": "html",
+   "extract": {
+    "list": "div.comp\\:media-card",
+    "fields": {
+     "title": "h2",
+     "url": "a@href",
+     "release_date": "span.release_date",
+     "overview": "div.overview p || p"
+    }
+   },
+   "defaultFields": [
+    "title",
+    "url",
+    "release_date",
+    "overview"
+   ],
+   "pagination": {
+    "type": "page",
+    "param": "page"
+   },
+   "mutates": false,
+   "example": {
+    "id": "161176-space-opera"
+   },
+   "source": "E23 GET https://www.themoviedb.org/keyword/{id}/movie",
+   "verified": true
+  },
+  {
+   "name": "list-movies-by-genre",
+   "summary": "Movies in a genre (e.g. 878-science-fiction), paginated",
+   "method": "GET",
+   "urlTemplate": "/genre/{id}/movie",
+   "params": [
+    {
+     "name": "id",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Genre id with slug, e.g. 878-science-fiction, 28-action, 35-comedy, 18-drama, 27-horror",
+     "example": "878-science-fiction"
+    },
+    {
+     "name": "page",
+     "in": "query",
+     "required": false,
+     "type": "number",
+     "description": "Result page, 1-based",
+     "default": 1
+    }
+   ],
+   "responseType": "html",
+   "extract": {
+    "list": "div.comp\\:media-card",
+    "fields": {
+     "title": "h2",
+     "url": "a@href",
+     "release_date": "span.release_date",
+     "overview": "div.overview p || p"
+    }
+   },
+   "defaultFields": [
+    "title",
+    "url",
+    "release_date",
+    "overview"
+   ],
+   "pagination": {
+    "type": "page",
+    "param": "page"
+   },
+   "mutates": false,
+   "example": {
+    "id": "878-science-fiction"
+   },
+   "source": "E23 GET https://www.themoviedb.org/keyword/{id}/movie",
+   "verified": true
+  }
+ ],
+ "blockers": [],
+ "notes": [
+  "Result 'url' fields look like /movie/11-star-wars, /tv/4194-..., /person/2-mark-hamill. Pass the part after the type segment (id or id-slug) as --id to the detail commands.",
+  "The site is behind AWS WAF bot protection. Requests may get 403 or an empty challenge response, especially POST /discover/movie (filters), which is not exposed. discover-movies uses POST /discover/movie/items, which worked during exploration.",
+  "GET /discover/movie?with_genres=\u2026&sort_by=\u2026 redirects to /movie and ignores the filters. Use discover-movies for filtering and sorting instead.",
+  "get-movie, get-tv-show and get-person read the page's schema.org JSON-LD. Cast lists, reviews and seasons come from separate commands.",
+  "search, person, company and network result cards may use slightly different markup than movie/tv cards, so some fields can come back empty for those types.",
+  "The autocomplete endpoint /search/trending returns HTML snippets of trending titles regardless of the query, so it is not exposed. Use search instead.",
+  "Favorites, ratings and watchlists require a logged-in account and are not supported. For heavy use, TMDB's official API (https://developer.themoviedb.org/docs) needs an API key."
+ ],
+ "dropped": [],
+ "generated": {
+  "by": "clify add",
+  "model": "claude-opus-5-5",
+  "exploredSteps": 30,
+  "recorded": 133,
+  "verifiedAt": "2026-10-18T09:32:09.784Z",
+  "seconds": 350
+ }
+}

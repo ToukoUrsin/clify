@@ -1,0 +1,171 @@
+{
+ "url": "https://www.radio-browser.info/",
+ "category": "sports-ent",
+ "sandbox": "clify-www-radio-browser-info",
+ "startedAt": "2026-10-18T08:58:12.942Z",
+ "region": "us-pdx-1",
+ "chrome": "Chrome/148.0.7778.96",
+ "sandboxStartMs": 2426,
+ "addSeconds": 254,
+ "addExit": 0,
+ "add": {
+  "ok": true,
+  "site": "radio-browser",
+  "url": "https://www.radio-browser.info/",
+  "commands": [
+   {
+    "name": "search-stations",
+    "summary": "Search radio stations by name, tag, country code, language or codec, with sorting and offset pagination",
+    "verified": true
+   },
+   {
+    "name": "get-station",
+    "summary": "Get full details of one station by its stationuuid",
+    "verified": true
+   },
+   {
+    "name": "get-station-checks",
+    "summary": "List recent stream health checks for a station (ok flag, codec, bitrate, timing, metadata)",
+    "verified": true
+   },
+   {
+    "name": "get-check-steps",
+    "summary": "Get the individual check steps (URLs tried, URL type, errors) for one or more stations",
+    "verified": true
+   },
+   {
+    "name": "get-station-clicks",
+    "summary": "List click (play) events for a station within a recent time window",
+    "verified": true
+   },
+   {
+    "name": "get-station-history",
+    "summary": "Get the edit history (all recorded versions) of a station",
+    "verified": true
+   },
+   {
+    "name": "list-countries",
+    "summary": "List country codes with station counts, optionally filtered by a substring",
+    "verified": true
+   },
+   {
+    "name": "list-tags",
+    "summary": "List station tags with station counts. Pass a filter for tag suggestions matching a substring",
+    "verified": true
+   },
+   {
+    "name": "list-languages",
+    "summary": "List languages (with ISO 639 code) and station counts, optionally filtered by a substring",
+    "verified": true
+   },
+   {
+    "name": "list-codecs",
+    "summary": "List stream codecs (MP3, AAC+, OGG, \u2026) with station counts, optionally filtered by a substring",
+    "verified": true
+   },
+   {
+    "name": "get-stats",
+    "summary": "Get global directory stats: station, broken-station, tag, language and country counts, plus recent clicks",
+    "verified": true
+   },
+   {
+    "name": "play-station",
+    "summary": "Get a station's playable stream URL. This registers one click (play) for the station on radio-browser",
+    "verified": true
+   }
+  ],
+  "verified": 12,
+  "writes": 0,
+  "dropped": [
+   {
+    "name": "vote-station",
+    "reason": "looks like an error payload: {\"ok\":false,\"message\":\"VoteError 'you are voting for the same station too often'\"}"
+   }
+  ],
+  "blockers": [],
+  "loggedIn": false,
+  "seconds": 254,
+  "next": [
+   "clify radio-browser",
+   "clify radio-browser search-stations --name \"jazz\""
+  ],
+  "installed": "/home/ubuntu/clify-runs/blaxel-w1/home/bin/radio-browser",
+  "explored": {
+   "steps": 28,
+   "recorded": 59,
+   "heldWrites": 0
+  }
+ },
+ "check": {
+  "on": "blaxel",
+  "node": "v24.22.0",
+  "seconds": 5,
+  "reads": 12,
+  "verified": 12,
+  "failed": [],
+  "results": [
+   {
+    "name": "search-stations",
+    "ok": true,
+    "ms": 768
+   },
+   {
+    "name": "get-station",
+    "ok": true,
+    "ms": 540
+   },
+   {
+    "name": "get-station-checks",
+    "ok": true,
+    "ms": 197
+   },
+   {
+    "name": "get-check-steps",
+    "ok": true,
+    "ms": 180
+   },
+   {
+    "name": "get-station-clicks",
+    "ok": true,
+    "ms": 380
+   },
+   {
+    "name": "get-station-history",
+    "ok": true,
+    "ms": 178
+   },
+   {
+    "name": "list-countries",
+    "ok": true,
+    "ms": 175
+   },
+   {
+    "name": "list-tags",
+    "ok": true,
+    "ms": 204
+   },
+   {
+    "name": "list-languages",
+    "ok": true,
+    "ms": 213
+   },
+   {
+    "name": "list-codecs",
+    "ok": true,
+    "ms": 204
+   },
+   {
+    "name": "get-stats",
+    "ok": true,
+    "ms": 171
+   },
+   {
+    "name": "play-station",
+    "ok": true,
+    "ms": 214
+   }
+  ]
+ },
+ "deleted": true,
+ "seconds": 262
+}

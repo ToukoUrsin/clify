@@ -1,0 +1,216 @@
+{
+ "url": "https://pub.dev/",
+ "category": "dev",
+ "sandbox": "clify-pub-dev",
+ "startedAt": "2026-10-18T08:05:59.614Z",
+ "region": "us-pdx-1",
+ "chrome": "Chrome/148.0.7778.96",
+ "sandboxStartMs": 10200,
+ "addSeconds": 223,
+ "addExit": 0,
+ "add": {
+  "ok": true,
+  "site": "pub",
+  "url": "https://pub.dev/",
+  "commands": [
+   {
+    "name": "search-packages",
+    "summary": "Search pub.dev packages by keyword and/or qualifiers (topic:, platform:, sdk:, dependency:, publisher:, is:, license:, has:, updated:), with sort and pagination.",
+    "verified": true
+   },
+   {
+    "name": "get-package",
+    "summary": "Get a package's latest version: version number, pubspec (description, dependencies, SDK constraint, repository), archive URL and publish date.",
+    "verified": true
+   },
+   {
+    "name": "list-package-versions",
+    "summary": "List all published versions of a package, oldest first, with publish date and archive URL.",
+    "verified": true
+   },
+   {
+    "name": "get-package-version",
+    "summary": "Get the pubspec, archive URL/sha256 and publish date of one specific package version.",
+    "verified": true
+   },
+   {
+    "name": "get-package-score",
+    "summary": "Get a package's pub points (granted/max), like count, 30-day downloads and tags (sdk, platform, publisher, license, etc.).",
+    "verified": true
+   },
+   {
+    "name": "get-package-metrics",
+    "summary": "Get the full analysis scorecard for a package: score, pana report sections, licenses, repository verification, all dependencies and weekly download history.",
+    "verified": true
+   },
+   {
+    "name": "get-package-likes",
+    "summary": "Get the number of likes for a package.",
+    "verified": true
+   },
+   {
+    "name": "get-package-publisher",
+    "summary": "Get the verified publisher ID that owns a package (null if it has no publisher).",
+    "verified": true
+   },
+   {
+    "name": "get-package-options",
+    "summary": "Check whether a package is discontinued or unlisted, and which package replaces it.",
+    "verified": true
+   },
+   {
+    "name": "get-package-docs-status",
+    "summary": "List a package's versions with their API documentation (dartdoc) build status and availability.",
+    "verified": true
+   },
+   {
+    "name": "get-package-feed",
+    "summary": "Get the Atom feed of a package's recently published versions, including changelog excerpts.",
+    "verified": true
+   },
+   {
+    "name": "get-publisher",
+    "summary": "Get a verified publisher's description, website URL and contact email.",
+    "verified": true
+   },
+   {
+    "name": "list-publisher-packages",
+    "summary": "List packages owned by a publisher, with likes, pub points, downloads, latest version and description (scraped from the publisher's packages page).",
+    "verified": true
+   },
+   {
+    "name": "list-recent-packages",
+    "summary": "Get the site-wide Atom feed of the most recently published package versions on pub.dev.",
+    "verified": true
+   },
+   {
+    "name": "list-package-names",
+    "summary": "List the names of every package on pub.dev. The output is very large.",
+    "verified": true
+   },
+   {
+    "name": "list-topics",
+    "summary": "List all package topics with the number of packages tagged with each, as a map of topic to count.",
+    "verified": true
+   },
+   {
+    "name": "list-search-qualifiers",
+    "summary": "List the search qualifiers (is:, has:, license:, platform:, sdk:, topic:, etc.) and the allowed values for each, for building search-packages queries.",
+    "verified": true
+   }
+  ],
+  "verified": 17,
+  "writes": 0,
+  "dropped": [],
+  "blockers": [],
+  "loggedIn": false,
+  "seconds": 222,
+  "next": [
+   "clify pub",
+   "clify pub search-packages --q \"http\""
+  ],
+  "installed": "/home/ubuntu/clify-runs/blaxel-test1/home/bin/pub",
+  "explored": {
+   "steps": 25,
+   "recorded": 26,
+   "heldWrites": 2
+  }
+ },
+ "check": {
+  "on": "blaxel",
+  "node": "v24.22.0",
+  "seconds": 3,
+  "reads": 17,
+  "verified": 17,
+  "failed": [],
+  "results": [
+   {
+    "name": "search-packages",
+    "ok": true,
+    "ms": 199
+   },
+   {
+    "name": "get-package",
+    "ok": true,
+    "ms": 43
+   },
+   {
+    "name": "list-package-versions",
+    "ok": true,
+    "ms": 43
+   },
+   {
+    "name": "get-package-version",
+    "ok": true,
+    "ms": 73
+   },
+   {
+    "name": "get-package-score",
+    "ok": true,
+    "ms": 53
+   },
+   {
+    "name": "get-package-metrics",
+    "ok": true,
+    "ms": 73
+   },
+   {
+    "name": "get-package-likes",
+    "ok": true,
+    "ms": 99
+   },
+   {
+    "name": "get-package-publisher",
+    "ok": true,
+    "ms": 40
+   },
+   {
+    "name": "get-package-options",
+    "ok": true,
+    "ms": 48
+   },
+   {
+    "name": "get-package-docs-status",
+    "ok": true,
+    "ms": 62
+   },
+   {
+    "name": "get-package-feed",
+    "ok": true,
+    "ms": 95
+   },
+   {
+    "name": "get-publisher",
+    "ok": true,
+    "ms": 72
+   },
+   {
+    "name": "list-publisher-packages",
+    "ok": true,
+    "ms": 92
+   },
+   {
+    "name": "list-recent-packages",
+    "ok": true,
+    "ms": 107
+   },
+   {
+    "name": "list-package-names",
+    "ok": true,
+    "ms": 244
+   },
+   {
+    "name": "list-topics",
+    "ok": true,
+    "ms": 38
+   },
+   {
+    "name": "list-search-qualifiers",
+    "ok": true,
+    "ms": 22
+   }
+  ]
+ },
+ "deleted": true,
+ "seconds": 237
+}

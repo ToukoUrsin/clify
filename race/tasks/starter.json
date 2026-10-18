@@ -1,0 +1,56 @@
+[
+  {
+    "id": "books-mystery",
+    "site": "books",
+    "url": "https://books.toscrape.com/",
+    "prompt": "On Books to Scrape, find the first three book titles in the Mystery category. Return their exact titles, one per line.",
+    "check": { "type": "contains", "values": ["Sharp Objects"] },
+    "truth": { "url": "https://books.toscrape.com/catalogue/category/books/mystery_3/index.html", "contains": ["Sharp Objects"] },
+    "kind": "read"
+  },
+  {
+    "id": "quotes-love",
+    "site": "quotes",
+    "url": "https://quotes.toscrape.com/",
+    "prompt": "On Quotes to Scrape, open the love tag and report the first quote and its author. Preserve the quote text.",
+    "check": { "type": "contains", "values": ["love"] },
+    "truth": { "url": "https://quotes.toscrape.com/tag/love/", "contains": ["love"] },
+    "kind": "read"
+  },
+  {
+    "id": "hn-playwright",
+    "site": "hnsearch",
+    "url": "https://hn.algolia.com/",
+    "prompt": "Search Hacker News for stories matching 'playwright'. Give the title of the first result and its points.",
+    "check": { "type": "regex", "pattern": "playwright|Playwright" },
+    "truth": { "url": "https://hn.algolia.com/api/v1/search?query=playwright&tags=story&hitsPerPage=5", "jsonPath": "hits" },
+    "kind": "read"
+  },
+  {
+    "id": "wikipedia-yc",
+    "site": "wikipedia",
+    "url": "https://en.wikipedia.org/wiki/Main_Page",
+    "prompt": "Look up the Y Combinator article on Wikipedia. State its founding year and at least one founder's name.",
+    "check": { "type": "contains", "values": ["2005", "Paul Graham"] },
+    "truth": { "url": "https://en.wikipedia.org/api/rest_v1/page/summary/Y_Combinator", "contains": ["2005"] },
+    "kind": "read"
+  },
+  {
+    "id": "scrapethis-oscar",
+    "site": "scrapethis",
+    "url": "https://www.scrapethissite.com/pages/",
+    "prompt": "On Scrape This Site, find the 2015 Oscar-winning films and report the Best Picture winner.",
+    "check": { "type": "contains", "values": ["Spotlight"] },
+    "truth": { "url": "https://www.scrapethissite.com/pages/ajax-javascript/?ajax=true&year=2015", "contains": ["Spotlight"] },
+    "kind": "read"
+  },
+  {
+    "id": "httpbin-form",
+    "site": "httpbinform",
+    "url": "https://httpbin.org/forms/post",
+    "prompt": "Inspect the pizza order form on httpbin. Report every available pizza size and explain that submitting it is a write that requires confirmation. Do not send the order.",
+    "check": { "type": "contains", "values": ["small", "medium", "large", "confirmation"] },
+    "truth": { "url": "https://httpbin.org/forms/post", "contains": ["small", "medium", "large"] },
+    "kind": "write"
+  }
+]

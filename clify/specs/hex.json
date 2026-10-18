@@ -1,0 +1,385 @@
+{
+ "name": "hex",
+ "startUrl": "https://hex.pm/",
+ "origin": "https://hex.pm",
+ "createdAt": "2026-10-18T08:16:53.729Z",
+ "description": "Hex (hex.pm), the package registry for the Erlang/Elixir/Gleam ecosystem. The CLI searches packages, reads package, release, owner and user metadata from the public JSON API, lists dependents, reads raw release files and shows per-user download stats.",
+ "commands": [
+  {
+   "name": "search-packages",
+   "summary": "Search Hex packages by keyword, with optional qualifiers (depends:hexpm:<pkg>, build_tool:<tool>), sorting and pagination.",
+   "method": "GET",
+   "urlTemplate": "/api/packages",
+   "params": [
+    {
+     "name": "search",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Search query. Plain keywords match name and description. Qualifiers can be combined with keywords, e.g. 'json build_tool:rebar3' or 'depends:hexpm:jason'.",
+     "example": "json"
+    },
+    {
+     "name": "sort",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Sort order of results",
+     "enum": [
+      "recent_downloads",
+      "total_downloads",
+      "updated_at",
+      "inserted_at",
+      "name"
+     ]
+    },
+    {
+     "name": "page",
+     "in": "query",
+     "required": false,
+     "type": "number",
+     "description": "Page number, starting at 1",
+     "default": 1
+    }
+   ],
+   "responseType": "json",
+   "defaultFields": [
+    "name",
+    "latest_stable_version",
+    "meta.description",
+    "downloads.recent",
+    "downloads.all",
+    "updated_at",
+    "html_url"
+   ],
+   "pagination": {
+    "type": "page",
+    "param": "page"
+   },
+   "mutates": false,
+   "example": {
+    "search": "json"
+   },
+   "source": "E3 GET https://hex.pm/api/packages",
+   "verified": true
+  },
+  {
+   "name": "list-package-dependents",
+   "summary": "List packages on the hexpm repository that depend on a given package.",
+   "method": "GET",
+   "urlTemplate": "/api/packages?search=depends%3Ahexpm%3A{name}",
+   "params": [
+    {
+     "name": "name",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Package name whose dependents to list",
+     "example": "jason"
+    },
+    {
+     "name": "sort",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Sort order of results",
+     "enum": [
+      "recent_downloads",
+      "total_downloads",
+      "updated_at",
+      "inserted_at",
+      "name"
+     ],
+     "default": "recent_downloads"
+    },
+    {
+     "name": "page",
+     "in": "query",
+     "required": false,
+     "type": "number",
+     "description": "Page number, starting at 1",
+     "default": 1
+    }
+   ],
+   "responseType": "json",
+   "defaultFields": [
+    "name",
+    "latest_stable_version",
+    "meta.description",
+    "downloads.recent",
+    "downloads.all",
+    "html_url"
+   ],
+   "pagination": {
+    "type": "page",
+    "param": "page"
+   },
+   "mutates": false,
+   "example": {
+    "name": "jason"
+   },
+   "source": "E3 E7 E12 GET https://hex.pm/api/packages",
+   "verified": true
+  },
+  {
+   "name": "get-package",
+   "summary": "Get package details: description, licenses, links, owners, latest versions, download counts, retirements, security advisories and dependency config snippets.",
+   "method": "GET",
+   "urlTemplate": "/api/packages/{name}",
+   "params": [
+    {
+     "name": "name",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Package name",
+     "example": "jason"
+    }
+   ],
+   "responseType": "json",
+   "defaultFields": [
+    "name",
+    "latest_stable_version",
+    "latest_version",
+    "meta.description",
+    "meta.licenses",
+    "meta.links",
+    "downloads",
+    "configs"
+   ],
+   "mutates": false,
+   "example": {
+    "name": "jason"
+   },
+   "source": "E2 E9 E13 E19 GET https://hex.pm/api/packages/jason",
+   "verified": true
+  },
+  {
+   "name": "list-package-versions",
+   "summary": "List all released versions of a package, newest first, with docs availability and publish date.",
+   "method": "GET",
+   "urlTemplate": "/api/packages/{name}",
+   "params": [
+    {
+     "name": "name",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Package name",
+     "example": "phoenix"
+    }
+   ],
+   "responseType": "json",
+   "resultPath": "releases",
+   "defaultFields": [
+    "version",
+    "has_docs",
+    "inserted_at",
+    "url"
+   ],
+   "mutates": false,
+   "example": {
+    "name": "phoenix"
+   },
+   "source": "E2 E10 GET https://hex.pm/api/packages/jason",
+   "verified": true
+  },
+  {
+   "name": "get-release",
+   "summary": "Get one release of a package: checksum, dependency requirements, build tools, Elixir requirement, publisher, retirement status, downloads and advisories.",
+   "method": "GET",
+   "urlTemplate": "/api/packages/{name}/releases/{version}",
+   "params": [
+    {
+     "name": "name",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Package name",
+     "example": "jason"
+    },
+    {
+     "name": "version",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Exact release version, e.g. 1.4.5",
+     "example": "1.4.5"
+    }
+   ],
+   "responseType": "json",
+   "defaultFields": [
+    "version",
+    "checksum",
+    "requirements",
+    "meta",
+    "retirement",
+    "publisher.username",
+    "downloads",
+    "inserted_at"
+   ],
+   "mutates": false,
+   "example": {
+    "name": "jason",
+    "version": "1.4.5"
+   },
+   "source": "E4 E11 E16 GET https://hex.pm/api/packages/jason/releases/1.4.5",
+   "verified": true
+  },
+  {
+   "name": "list-package-owners",
+   "summary": "List the owners of a package, with ownership level, email and social handles.",
+   "method": "GET",
+   "urlTemplate": "/api/packages/{name}/owners",
+   "params": [
+    {
+     "name": "name",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Package name",
+     "example": "jason"
+    }
+   ],
+   "responseType": "json",
+   "defaultFields": [
+    "username",
+    "level",
+    "email",
+    "full_name",
+    "handles",
+    "url"
+   ],
+   "mutates": false,
+   "example": {
+    "name": "jason"
+   },
+   "source": "E6 GET https://hex.pm/api/packages/jason/owners",
+   "verified": true
+  },
+  {
+   "name": "get-user",
+   "summary": "Get a Hex user's public profile and the full list of packages they own.",
+   "method": "GET",
+   "urlTemplate": "/api/users/{username}",
+   "params": [
+    {
+     "name": "username",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Hex username",
+     "example": "chrismccord"
+    }
+   ],
+   "responseType": "json",
+   "defaultFields": [
+    "username",
+    "full_name",
+    "email",
+    "handles",
+    "inserted_at",
+    "packages"
+   ],
+   "mutates": false,
+   "example": {
+    "username": "chrismccord"
+   },
+   "source": "E5 E8 GET https://hex.pm/api/users/chrismccord",
+   "verified": true
+  },
+  {
+   "name": "get-user-stats",
+   "summary": "Show per-package download stats for a user's packages: total, yesterday and last 7 days.",
+   "method": "GET",
+   "urlTemplate": "/users/{username}/stats",
+   "params": [
+    {
+     "name": "username",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Hex username",
+     "example": "chrismccord"
+    }
+   ],
+   "responseType": "html",
+   "extract": {
+    "list": "div.grid.grid-cols-1 > div.bg-white",
+    "fields": {
+     "summary": ""
+    }
+   },
+   "defaultFields": [
+    "summary"
+   ],
+   "mutates": false,
+   "example": {
+    "username": "chrismccord"
+   },
+   "source": "E18 GET https://hex.pm/users/chrismccord/stats",
+   "verified": true
+  },
+  {
+   "name": "get-release-file",
+   "summary": "Fetch the raw contents of a file inside a package release (e.g. README.md, CHANGELOG.md, mix.exs, lib/...).",
+   "method": "GET",
+   "urlTemplate": "https://repo.hex.pm/preview/{name}/{version}/{path}",
+   "params": [
+    {
+     "name": "name",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Package name",
+     "example": "phoenix"
+    },
+    {
+     "name": "version",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Exact release version",
+     "example": "1.8.15"
+    },
+    {
+     "name": "path",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "File path inside the release, e.g. README.md, CHANGELOG.md, mix.exs",
+     "example": "README.md"
+    }
+   ],
+   "responseType": "text",
+   "mutates": false,
+   "example": {
+    "name": "phoenix",
+    "version": "1.8.15",
+    "path": "README.md"
+   },
+   "source": "E14 E17 E20 GET https://hex.pm/packages/phoenix/1.8.15/files",
+   "verified": true
+  }
+ ],
+ "blockers": [],
+ "notes": [
+  "All data is public. No login is needed.",
+  "Search qualifiers go inside --search: 'depends:hexpm:<pkg>' filters to packages that depend on <pkg>, and 'build_tool:<mix|rebar3|make|gleam>' filters by build tool. Both can be combined with keywords.",
+  "Release dependencies are in the 'requirements' object of get-release. It is keyed by dependency name, and each entry has 'requirement' and 'optional'.",
+  "Security advisories and retirements appear in get-package (security_advisories, retirements) and in get-release (security_advisories, retirement).",
+  "get-release-file returns raw text. Use CHANGELOG.md or LICENSE as --path for changelogs and licenses. Not every package ships these files. Nested paths contain '/', e.g. lib/phoenix.ex.",
+  "Docs tarballs are binary at https://repo.hex.pm/docs/{name}-{version}.tar.gz. Hosted docs are at the docs_html_url returned by get-package and get-release.",
+  "The version diff page (/diff/{name}/{a}..{b}) is disallowed by robots.txt and is not covered. The package audit-log page (/packages/{name}/audit-logs) is not covered either, because its item structure was not visible.",
+  "The API search returns up to 100 packages per page. Increment --page until an empty array comes back."
+ ],
+ "dropped": [],
+ "generated": {
+  "by": "clify add",
+  "model": "claude-opus-5-5",
+  "exploredSteps": 28,
+  "recorded": 51,
+  "verifiedAt": "2026-10-18T08:17:49.781Z",
+  "seconds": 211
+ }
+}

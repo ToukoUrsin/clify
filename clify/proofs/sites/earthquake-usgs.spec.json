@@ -1,0 +1,695 @@
+{
+ "name": "earthquake-usgs",
+ "startUrl": "https://earthquake.usgs.gov/earthquakes/map/",
+ "origin": "https://earthquake.usgs.gov",
+ "createdAt": "2026-10-18T07:46:42.779Z",
+ "description": "USGS Earthquake Hazards Program (Latest Earthquakes map). This CLI queries real-time earthquake feeds, the ComCat FDSN event search and count APIs, event details with products such as PAGER, ShakeMap and aftershock forecasts, geoserve nearby-place and region lookups, and catalog/contributor metadata.",
+ "commands": [
+  {
+   "name": "get-feed",
+   "summary": "Get a real-time earthquake summary feed (GeoJSON) for a magnitude threshold and time window, e.g. M2.5+ past day or significant past month",
+   "method": "GET",
+   "urlTemplate": "/earthquakes/feed/v1.0/summary/{magnitude}_{period}.geojson",
+   "params": [
+    {
+     "name": "magnitude",
+     "in": "path",
+     "required": false,
+     "type": "string",
+     "description": "Magnitude threshold of the feed, or 'significant' for significant events only",
+     "enum": [
+      "significant",
+      "4.5",
+      "2.5",
+      "1.0",
+      "all"
+     ],
+     "default": "2.5",
+     "example": "2.5"
+    },
+    {
+     "name": "period",
+     "in": "path",
+     "required": false,
+     "type": "string",
+     "description": "Time window of the feed",
+     "enum": [
+      "hour",
+      "day",
+      "week",
+      "month"
+     ],
+     "default": "day",
+     "example": "day"
+    }
+   ],
+   "responseType": "json",
+   "resultPath": "features",
+   "defaultFields": [
+    "id",
+    "properties.mag",
+    "properties.place",
+    "properties.time",
+    "properties.alert",
+    "properties.tsunami",
+    "geometry.coordinates",
+    "properties.url"
+   ],
+   "mutates": false,
+   "example": {
+    "magnitude": "2.5",
+    "period": "day"
+   },
+   "source": "E9 E33 GET https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/2.5_day.geojson",
+   "verified": true
+  },
+  {
+   "name": "search-earthquakes",
+   "summary": "Search the ComCat earthquake catalog (FDSN) by time range, magnitude, bounding box or radius, depth, PAGER alert level and event type, with sorting and paging",
+   "method": "GET",
+   "urlTemplate": "/fdsnws/event/1/query?format=geojson",
+   "params": [
+    {
+     "name": "starttime",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Start time, ISO 8601 date or datetime in UTC, e.g. 2026-10-01 or 2026-10-01T00:00:00. Defaults server-side to 30 days ago.",
+     "example": "2026-10-01"
+    },
+    {
+     "name": "endtime",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "End time, ISO 8601 date or datetime in UTC. Defaults to now.",
+     "example": "2026-10-18"
+    },
+    {
+     "name": "minmagnitude",
+     "in": "query",
+     "required": false,
+     "type": "number",
+     "description": "Minimum magnitude",
+     "example": "5"
+    },
+    {
+     "name": "maxmagnitude",
+     "in": "query",
+     "required": false,
+     "type": "number",
+     "description": "Maximum magnitude"
+    },
+    {
+     "name": "minlatitude",
+     "in": "query",
+     "required": false,
+     "type": "number",
+     "description": "Bounding box south edge, decimal degrees (-90 to 90)"
+    },
+    {
+     "name": "maxlatitude",
+     "in": "query",
+     "required": false,
+     "type": "number",
+     "description": "Bounding box north edge, decimal degrees"
+    },
+    {
+     "name": "minlongitude",
+     "in": "query",
+     "required": false,
+     "type": "number",
+     "description": "Bounding box west edge, decimal degrees (-360 to 360)"
+    },
+    {
+     "name": "maxlongitude",
+     "in": "query",
+     "required": false,
+     "type": "number",
+     "description": "Bounding box east edge, decimal degrees"
+    },
+    {
+     "name": "latitude",
+     "in": "query",
+     "required": false,
+     "type": "number",
+     "description": "Center latitude for a radius search (use together with longitude and maxradiuskm)"
+    },
+    {
+     "name": "longitude",
+     "in": "query",
+     "required": false,
+     "type": "number",
+     "description": "Center longitude for a radius search"
+    },
+    {
+     "name": "maxradiuskm",
+     "in": "query",
+     "required": false,
+     "type": "number",
+     "description": "Search radius in km around latitude/longitude (max 20001.6)"
+    },
+    {
+     "name": "mindepth",
+     "in": "query",
+     "required": false,
+     "type": "number",
+     "description": "Minimum depth in km"
+    },
+    {
+     "name": "maxdepth",
+     "in": "query",
+     "required": false,
+     "type": "number",
+     "description": "Maximum depth in km"
+    },
+    {
+     "name": "alertlevel",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Limit to events with this PAGER alert level",
+     "enum": [
+      "green",
+      "yellow",
+      "orange",
+      "red"
+     ]
+    },
+    {
+     "name": "eventtype",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Event type, e.g. earthquake, quarry blast, explosion (see get-catalog-metadata eventtypes)"
+    },
+    {
+     "name": "catalog",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Limit to a catalog, e.g. us, ak, ci (see get-catalog-metadata catalogs)"
+    },
+    {
+     "name": "producttype",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Only events that have this product type, e.g. shakemap, losspager, dyfi, moment-tensor"
+    },
+    {
+     "name": "orderby",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Sort order",
+     "enum": [
+      "time",
+      "time-asc",
+      "magnitude",
+      "magnitude-asc"
+     ],
+     "default": "time"
+    },
+    {
+     "name": "api_limit",
+     "key": "limit",
+     "in": "query",
+     "required": false,
+     "type": "number",
+     "description": "Maximum number of events to return (1-20000) (sent to the site as \"limit\"; clify's own --limit only shapes the output)",
+     "default": 20
+    },
+    {
+     "name": "offset",
+     "in": "query",
+     "required": false,
+     "type": "number",
+     "description": "1-based index of the first result to return, used for paging",
+     "default": 1
+    }
+   ],
+   "responseType": "json",
+   "resultPath": "features",
+   "defaultFields": [
+    "id",
+    "properties.mag",
+    "properties.magType",
+    "properties.place",
+    "properties.time",
+    "properties.alert",
+    "geometry.coordinates",
+    "properties.url"
+   ],
+   "pagination": {
+    "type": "offset",
+    "param": "offset",
+    "step": 20
+   },
+   "mutates": false,
+   "example": {
+    "starttime": "2026-10-01",
+    "endtime": "2026-10-18",
+    "minmagnitude": "5",
+    "orderby": "magnitude",
+    "api_limit": "20"
+   },
+   "source": "E29 GET https://earthquake.usgs.gov/fdsnws/event/{n}/query",
+   "verified": true
+  },
+  {
+   "name": "count-earthquakes",
+   "summary": "Count catalog events that match search filters (time, magnitude, location radius or bbox, depth, event type) without downloading them",
+   "method": "GET",
+   "urlTemplate": "/fdsnws/event/1/count?format=geojson",
+   "params": [
+    {
+     "name": "starttime",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Start time, ISO 8601 UTC, e.g. 2026-10-01",
+     "example": "2026-10-01"
+    },
+    {
+     "name": "endtime",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "End time, ISO 8601 UTC"
+    },
+    {
+     "name": "minmagnitude",
+     "in": "query",
+     "required": false,
+     "type": "number",
+     "description": "Minimum magnitude",
+     "example": "4"
+    },
+    {
+     "name": "maxmagnitude",
+     "in": "query",
+     "required": false,
+     "type": "number",
+     "description": "Maximum magnitude"
+    },
+    {
+     "name": "latitude",
+     "in": "query",
+     "required": false,
+     "type": "number",
+     "description": "Center latitude for a radius filter (use with longitude and maxradiuskm)",
+     "example": "7.5868"
+    },
+    {
+     "name": "longitude",
+     "in": "query",
+     "required": false,
+     "type": "number",
+     "description": "Center longitude for a radius filter",
+     "example": "-80.769"
+    },
+    {
+     "name": "maxradiuskm",
+     "in": "query",
+     "required": false,
+     "type": "number",
+     "description": "Radius in km around latitude/longitude",
+     "example": "400"
+    },
+    {
+     "name": "minlatitude",
+     "in": "query",
+     "required": false,
+     "type": "number",
+     "description": "Bounding box south edge"
+    },
+    {
+     "name": "maxlatitude",
+     "in": "query",
+     "required": false,
+     "type": "number",
+     "description": "Bounding box north edge"
+    },
+    {
+     "name": "minlongitude",
+     "in": "query",
+     "required": false,
+     "type": "number",
+     "description": "Bounding box west edge"
+    },
+    {
+     "name": "maxlongitude",
+     "in": "query",
+     "required": false,
+     "type": "number",
+     "description": "Bounding box east edge"
+    },
+    {
+     "name": "mindepth",
+     "in": "query",
+     "required": false,
+     "type": "number",
+     "description": "Minimum depth in km"
+    },
+    {
+     "name": "maxdepth",
+     "in": "query",
+     "required": false,
+     "type": "number",
+     "description": "Maximum depth in km"
+    },
+    {
+     "name": "alertlevel",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "PAGER alert level",
+     "enum": [
+      "green",
+      "yellow",
+      "orange",
+      "red"
+     ]
+    },
+    {
+     "name": "eventtype",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Event type, e.g. earthquake"
+    }
+   ],
+   "responseType": "json",
+   "defaultFields": [
+    "count",
+    "maxAllowed"
+   ],
+   "mutates": false,
+   "example": {
+    "starttime": "2026-10-01",
+    "minmagnitude": "4",
+    "latitude": "7.5868",
+    "longitude": "-80.769",
+    "maxradiuskm": "400"
+   },
+   "source": "E30",
+   "verified": true
+  },
+  {
+   "name": "get-event",
+   "summary": "Get full detail for one earthquake event by id, including all products (origin, shakemap, losspager, dyfi, moment-tensor, oaf) and their content file URLs",
+   "method": "GET",
+   "urlTemplate": "/earthquakes/feed/v1.0/detail/{eventid}.geojson",
+   "params": [
+    {
+     "name": "eventid",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Event id as returned in feed or search results (feature id), e.g. us6000u18k",
+     "example": "us6000u18k"
+    }
+   ],
+   "responseType": "json",
+   "defaultFields": [
+    "id",
+    "properties.title",
+    "properties.mag",
+    "properties.time",
+    "properties.alert",
+    "properties.felt",
+    "properties.types",
+    "geometry.coordinates"
+   ],
+   "mutates": false,
+   "example": {
+    "eventid": "us6000u18k"
+   },
+   "source": "E12 E17 E31 E29 GET https://earthquake.usgs.gov/earthquakes/feed/v1.0/detail/us6000u18k.geojson",
+   "verified": true
+  },
+  {
+   "name": "get-aftershock-forecast",
+   "summary": "Get the aftershock forecast (oaf product forecast.json: observed counts, model parameters, probabilities) for an event's oaf product",
+   "method": "GET",
+   "urlTemplate": "/pdl/products/{productId}/contents/forecast.json",
+   "params": [
+    {
+     "name": "productId",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Full oaf product id from get-event properties.products.oaf[0].id, e.g. urn:usgs-product:us:oaf:us6000u18k:1792252672761",
+     "example": "urn:usgs-product:us:oaf:us6000u18k:1792252672761"
+    }
+   ],
+   "responseType": "json",
+   "defaultFields": [
+    "advisoryTimeFrame",
+    "template",
+    "observations",
+    "model",
+    "creationTime",
+    "expireTime"
+   ],
+   "mutates": false,
+   "example": {
+    "productId": "urn:usgs-product:us:oaf:us6000u18k:1792252672761"
+   },
+   "source": "E14 GET https://earthquake.usgs.gov/pdl/products/urn:usgs-product:us:oaf:us6000u18k:1792252672761/contents/forecast.json",
+   "verified": true
+  },
+  {
+   "name": "get-shakemap-contours",
+   "summary": "Get ShakeMap intensity (MMI) contour lines as GeoJSON for an event's shakemap product",
+   "method": "GET",
+   "urlTemplate": "/pdl/products/{productId}/contents/download/cont_mi.json",
+   "params": [
+    {
+     "name": "productId",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Full shakemap product id from get-event properties.products.shakemap[0].id, e.g. urn:usgs-product:us:shakemap:us6000u2mq:1792208324795",
+     "example": "urn:usgs-product:us:shakemap:us6000u2mq:1792208324795"
+    }
+   ],
+   "responseType": "json",
+   "resultPath": "features",
+   "defaultFields": [
+    "properties.value",
+    "properties.units",
+    "properties.color"
+   ],
+   "mutates": false,
+   "example": {
+    "productId": "urn:usgs-product:us:shakemap:us6000u2mq:1792208324795"
+   },
+   "source": "E15 E18 GET https://earthquake.usgs.gov/pdl/products/urn:usgs-product:us:shakemap:us6000u18k:1792203153463/contents/download/cont_mi.json",
+   "verified": true
+  },
+  {
+   "name": "find-nearby-places",
+   "summary": "Find populated places (GeoNames) near a latitude/longitude within a radius, optionally filtered by minimum population",
+   "method": "GET",
+   "urlTemplate": "/ws/geoserve/places.json?type=geonames",
+   "params": [
+    {
+     "name": "latitude",
+     "in": "query",
+     "required": true,
+     "type": "number",
+     "description": "Latitude in decimal degrees",
+     "example": "34.05"
+    },
+    {
+     "name": "longitude",
+     "in": "query",
+     "required": true,
+     "type": "number",
+     "description": "Longitude in decimal degrees",
+     "example": "-118.25"
+    },
+    {
+     "name": "maxradiuskm",
+     "in": "query",
+     "required": false,
+     "type": "number",
+     "description": "Search radius in km",
+     "example": "50"
+    },
+    {
+     "name": "minpopulation",
+     "in": "query",
+     "required": false,
+     "type": "number",
+     "description": "Minimum population of returned places",
+     "example": "10000"
+    },
+    {
+     "name": "api_limit",
+     "key": "limit",
+     "in": "query",
+     "required": false,
+     "type": "number",
+     "description": "Maximum number of places to return (sent to the site as \"limit\"; clify's own --limit only shapes the output)"
+    }
+   ],
+   "responseType": "json",
+   "resultPath": "geonames.features",
+   "defaultFields": [
+    "id",
+    "properties.name",
+    "properties.admin1_name",
+    "properties.country_name",
+    "properties.population",
+    "properties.distance",
+    "properties.azimuth",
+    "geometry.coordinates"
+   ],
+   "mutates": false,
+   "example": {
+    "latitude": "34.05",
+    "longitude": "-118.25",
+    "maxradiuskm": "50",
+    "minpopulation": "10000"
+   },
+   "source": "E13 GET https://earthquake.usgs.gov/ws/geoserve/places.json",
+   "verified": true
+  },
+  {
+   "name": "get-event-places",
+   "summary": "Get the 5 reference places the event page lists near an epicenter (distance and azimuth), as used in event titles",
+   "method": "GET",
+   "urlTemplate": "/ws/geoserve/places.json?type=event",
+   "params": [
+    {
+     "name": "latitude",
+     "in": "query",
+     "required": true,
+     "type": "number",
+     "description": "Epicenter latitude",
+     "example": "7.5868"
+    },
+    {
+     "name": "longitude",
+     "in": "query",
+     "required": true,
+     "type": "number",
+     "description": "Epicenter longitude",
+     "example": "-80.769"
+    }
+   ],
+   "responseType": "json",
+   "resultPath": "event.features",
+   "defaultFields": [
+    "properties.name",
+    "properties.admin1_name",
+    "properties.country_name",
+    "properties.population",
+    "properties.distance",
+    "properties.azimuth"
+   ],
+   "mutates": false,
+   "example": {
+    "latitude": "7.5868",
+    "longitude": "-80.769"
+   },
+   "source": "E13 GET https://earthquake.usgs.gov/ws/geoserve/places.json",
+   "verified": true
+  },
+  {
+   "name": "get-regions",
+   "summary": "Get regional info for a lat/lon: admin region/country, Flinn-Engdahl region, authoritative network, NEIC catalog/response regions, offshore and tectonic summary",
+   "method": "GET",
+   "urlTemplate": "/ws/geoserve/regions.json",
+   "params": [
+    {
+     "name": "latitude",
+     "in": "query",
+     "required": true,
+     "type": "number",
+     "description": "Latitude in decimal degrees",
+     "example": "7.5868"
+    },
+    {
+     "name": "longitude",
+     "in": "query",
+     "required": true,
+     "type": "number",
+     "description": "Longitude in decimal degrees",
+     "example": "-80.769"
+    }
+   ],
+   "responseType": "json",
+   "defaultFields": [
+    "admin.features",
+    "fe.features",
+    "authoritative.features",
+    "tectonic.features"
+   ],
+   "mutates": false,
+   "example": {
+    "latitude": "7.5868",
+    "longitude": "-80.769"
+   },
+   "source": "E16 GET https://earthquake.usgs.gov/ws/geoserve/regions.json",
+   "verified": true
+  },
+  {
+   "name": "get-catalog-metadata",
+   "summary": "List the allowed values for FDSN search filters: catalogs, contributors, product types, event types and magnitude types",
+   "method": "GET",
+   "urlTemplate": "/fdsnws/event/1/application.json",
+   "params": [],
+   "responseType": "json",
+   "defaultFields": [
+    "catalogs",
+    "contributors",
+    "producttypes",
+    "eventtypes",
+    "magnitudetypes"
+   ],
+   "mutates": false,
+   "source": "E32 E74 E75 GET https://earthquake.usgs.gov/fdsnws/event/{n}/application.json",
+   "verified": true
+  },
+  {
+   "name": "list-contributors",
+   "summary": "List ComCat contributing seismic networks with id, full name, aliases and info URL",
+   "method": "GET",
+   "urlTemplate": "/data/comcat/contributor/index.json.php",
+   "params": [],
+   "responseType": "json",
+   "defaultFields": [
+    "id",
+    "title",
+    "aliases",
+    "url"
+   ],
+   "mutates": false,
+   "source": "E7 GET https://earthquake.usgs.gov/data/comcat/contributor/index.json.php",
+   "verified": true
+  }
+ ],
+ "blockers": [],
+ "notes": [
+  "Times in GeoJSON responses (properties.time, properties.updated) are Unix epoch milliseconds in UTC. Coordinates are [longitude, latitude, depth_km].",
+  "search-earthquakes paging: offset is 1-based and limit maxes out at 20000. Without starttime, the server defaults to the last 30 days. Use count-earthquakes first for large queries; it returns maxAllowed=20000.",
+  "Use either a bounding box (min/max latitude/longitude) or a radius (latitude + longitude + maxradiuskm), not both.",
+  "Event ids come from the feature 'id' field in get-feed or search-earthquakes results. Pass them to get-event.",
+  "To get product contents, read the product id from get-event: properties.products.<type>[0].id, e.g. oaf for get-aftershock-forecast and shakemap for get-shakemap-contours. Each product's 'contents' map also gives direct URLs for every file (PAGER XML, DYFI GeoJSON, and others).",
+  "Summary feeds update about every minute. 'significant' is chosen by the USGS significance score and PAGER alert, not by magnitude.",
+  "No authentication is needed. All endpoints are public USGS APIs."
+ ],
+ "dropped": [],
+ "generated": {
+  "by": "clify add",
+  "model": "claude-opus-5-5",
+  "exploredSteps": 6,
+  "recorded": 217,
+  "verifiedAt": "2026-10-18T07:47:56.589Z",
+  "seconds": 144
+ }
+}

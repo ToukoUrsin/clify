@@ -1,0 +1,519 @@
+{
+ "name": "hankintailmoitukset",
+ "startUrl": "https://www.hankintailmoitukset.fi/fi/",
+ "origin": "https://www.hankintailmoitukset.fi",
+ "createdAt": "2026-10-18T07:22:56.192Z",
+ "description": "Hilma (hankintailmoitukset.fi) is Finland's public procurement notice service. This CLI searches tender notices and procurement plans, fetches notice, procedure and plan details, browses CPV and NUTS codes, and reads statistics and Hilma announcements.",
+ "commands": [
+  {
+   "name": "search-notices",
+   "summary": "Full-text search of Hilma procurement notices and plans (Azure Search, Lucene syntax), with filter, sort and paging",
+   "method": "GET",
+   "urlTemplate": "/search/eformnotices?queryType=full&searchMode=all&%24count=true",
+   "params": [
+    {
+     "name": "query",
+     "key": "search",
+     "in": "query",
+     "required": true,
+     "type": "string",
+     "description": "Lucene query. The UI wraps each keyword as ((word OR word*)). Add CPV filters with AND cpvCodes:(9091*). Use * to match everything.",
+     "example": "((siivous OR siivous*))"
+    },
+    {
+     "name": "filter",
+     "key": "$filter",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "OData filter. Contract notices: search.in(mainType, 'ContractNotices|NationalNotices', '|'). Only open ones: append ' and expirationDate ge 2026-10-18T00:00:00Z' (ISO datetime). Exclude procurement pl",
+     "default": "search.in(mainType, 'ContractNotices|NationalNotices', '|')"
+    },
+    {
+     "name": "orderby",
+     "key": "$orderby",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Sort order, e.g. 'datePublished desc', 'deadline desc', 'dateModified desc' (asc also allowed)",
+     "default": "datePublished desc"
+    },
+    {
+     "name": "top",
+     "key": "$top",
+     "in": "query",
+     "required": false,
+     "type": "number",
+     "description": "Results per page. The UI uses 75; the CSV export uses 1000.",
+     "default": 75
+    },
+    {
+     "name": "skip",
+     "key": "$skip",
+     "in": "query",
+     "required": false,
+     "type": "number",
+     "description": "Offset for paging",
+     "default": 0
+    }
+   ],
+   "responseType": "json",
+   "resultPath": "value",
+   "defaultFields": [
+    "id",
+    "noticeId",
+    "procedureId",
+    "titleFi",
+    "organisationNameFi",
+    "datePublished",
+    "deadline",
+    "cpvCodes"
+   ],
+   "pagination": {
+    "type": "offset",
+    "param": "skip",
+    "step": 75
+   },
+   "mutates": false,
+   "example": {
+    "query": "((siivous OR siivous*))"
+   },
+   "source": "E3",
+   "verified": true
+  },
+  {
+   "name": "get-enotice",
+   "summary": "Get the full eForms notice detail (lots, buyer, criteria, deadlines) by procedureId and noticeId",
+   "method": "GET",
+   "urlTemplate": "/web/api/public/procedure/{procedureId}/enotice/{noticeId}",
+   "params": [
+    {
+     "name": "procedureId",
+     "in": "path",
+     "required": true,
+     "type": "number",
+     "description": "procedureId from search-notices",
+     "example": "38766"
+    },
+    {
+     "name": "noticeId",
+     "in": "path",
+     "required": true,
+     "type": "number",
+     "description": "noticeId from search-notices",
+     "example": "59601"
+    }
+   ],
+   "responseType": "json",
+   "mutates": false,
+   "example": {
+    "procedureId": "38766",
+    "noticeId": "59601"
+   },
+   "source": "E94 GET https://www.hankintailmoitukset.fi/web/api/public/procedure/{n}/enotice/{n}",
+   "verified": true
+  },
+  {
+   "name": "get-procedure",
+   "summary": "Get an eForms procurement procedure (overview and its notices) by procedureId",
+   "method": "GET",
+   "urlTemplate": "/web/api/public/procedure/{procedureId}",
+   "params": [
+    {
+     "name": "procedureId",
+     "in": "path",
+     "required": true,
+     "type": "number",
+     "description": "procedureId from search-notices",
+     "example": "38766"
+    }
+   ],
+   "responseType": "json",
+   "mutates": false,
+   "example": {
+    "procedureId": "38766"
+   },
+   "source": "E100 GET https://www.hankintailmoitukset.fi/web/api/public/procedure/{n}",
+   "verified": true
+  },
+  {
+   "name": "get-procurement-plan",
+   "summary": "Get a procurement plan (upcoming procurement) by planId",
+   "method": "GET",
+   "urlTemplate": "/web/api/public/procurementplan/{planId}",
+   "params": [
+    {
+     "name": "planId",
+     "in": "path",
+     "required": true,
+     "type": "number",
+     "description": "planId from search-notices results (plans have isPlan true)",
+     "example": "1000"
+    }
+   ],
+   "responseType": "json",
+   "mutates": false,
+   "example": {
+    "planId": "1000"
+   },
+   "source": "E102 GET https://www.hankintailmoitukset.fi/web/api/public/procurementplan/{n}",
+   "verified": true
+  },
+  {
+   "name": "search-organisations",
+   "summary": "Search buyer organisations by name (used by the buyer filter)",
+   "method": "GET",
+   "urlTemplate": "/search/organisations",
+   "params": [
+    {
+     "name": "query",
+     "key": "search",
+     "in": "query",
+     "required": true,
+     "type": "string",
+     "description": "Organisation name text (wildcards allowed, e.g. turku*)",
+     "example": "turku*"
+    },
+    {
+     "name": "top",
+     "key": "$top",
+     "in": "query",
+     "required": false,
+     "type": "number",
+     "description": "Max results",
+     "default": 20
+    }
+   ],
+   "responseType": "json",
+   "resultPath": "value",
+   "mutates": false,
+   "example": {
+    "query": "turku*"
+   },
+   "source": "E95 GET https://www.hankintailmoitukset.fi/search/organisations",
+   "verified": true
+  },
+  {
+   "name": "search-cpv",
+   "summary": "Autocomplete search of CPV procurement classification codes by name or code",
+   "method": "GET",
+   "urlTemplate": "/search/cpv",
+   "params": [
+    {
+     "name": "query",
+     "key": "search",
+     "in": "query",
+     "required": true,
+     "type": "string",
+     "description": "CPV name or code fragment, e.g. siivous* or 9091*",
+     "example": "siivous*"
+    },
+    {
+     "name": "top",
+     "key": "$top",
+     "in": "query",
+     "required": false,
+     "type": "number",
+     "description": "Max results",
+     "default": 20
+    }
+   ],
+   "responseType": "json",
+   "resultPath": "value",
+   "mutates": false,
+   "example": {
+    "query": "siivous*"
+   },
+   "source": "E99 GET https://www.hankintailmoitukset.fi/search/cpv",
+   "verified": true
+  },
+  {
+   "name": "get-cpv-tree",
+   "summary": "Get the full hierarchical CPV code tree with labels (large response)",
+   "method": "GET",
+   "urlTemplate": "/web/api/cpv/tree",
+   "params": [
+    {
+     "name": "contractType",
+     "in": "query",
+     "required": false,
+     "type": "number",
+     "description": "Contract type code; the UI sends 0",
+     "default": 0
+    },
+    {
+     "name": "lang",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Label language",
+     "enum": [
+      "fi",
+      "sv",
+      "en"
+     ],
+     "default": "fi"
+    }
+   ],
+   "responseType": "json",
+   "defaultFields": [
+    "id",
+    "label"
+   ],
+   "mutates": false,
+   "example": {
+    "lang": "fi"
+   },
+   "source": "E4 GET https://www.hankintailmoitukset.fi/web/api/cpv/tree",
+   "verified": true
+  },
+  {
+   "name": "get-nuts-tree",
+   "summary": "Get the NUTS region code tree used for location filters",
+   "method": "GET",
+   "urlTemplate": "/web/api/cpv/nuts",
+   "params": [],
+   "responseType": "json",
+   "mutates": false,
+   "source": "E101 GET https://www.hankintailmoitukset.fi/web/api/cpv/nuts",
+   "verified": true
+  },
+  {
+   "name": "get-value-statistics",
+   "summary": "Get homepage procurement value statistics",
+   "method": "GET",
+   "urlTemplate": "/statistics/ValueStatistics",
+   "params": [],
+   "responseType": "json",
+   "mutates": false,
+   "source": "E104 GET https://www.hankintailmoitukset.fi/statistics/ValueStatistics",
+   "verified": true
+  },
+  {
+   "name": "get-notice-statistics",
+   "summary": "Get homepage notice count statistics",
+   "method": "GET",
+   "urlTemplate": "/statistics/NoticeStatistics",
+   "params": [],
+   "responseType": "json",
+   "mutates": false,
+   "source": "E105 GET https://www.hankintailmoitukset.fi/statistics/NoticeStatistics",
+   "verified": true
+  },
+  {
+   "name": "get-cms-ref",
+   "summary": "Get the current Prismic content ref, which the announcement commands need",
+   "method": "GET",
+   "urlTemplate": "https://hankintailmoitukset.cdn.prismic.io/api/v2",
+   "params": [],
+   "responseType": "json",
+   "resultPath": "refs",
+   "defaultFields": [
+    "id",
+    "ref",
+    "isMasterRef"
+   ],
+   "mutates": false,
+   "source": "E6 GET https://hankintailmoitukset.cdn.prismic.io/api/v2",
+   "verified": true
+  },
+  {
+   "name": "list-announcements",
+   "summary": "List public Hilma announcements and news, newest first",
+   "method": "GET",
+   "urlTemplate": "https://hankintailmoitukset.cdn.prismic.io/api/v2/documents/search?q=%5B%5Bany%28my.announcement.publicity%2C+%5B%22public%22%5D%29%5D%5D&orderings=%5Bdocument.first_publication_date+desc%5D",
+   "params": [
+    {
+     "name": "ref",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Prismic content ref (from get-cms-ref, master ref)",
+     "default": "asTICREAACwADU6V"
+    },
+    {
+     "name": "lang",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Content language: fi, en-gb or the Swedish locale",
+     "default": "fi"
+    },
+    {
+     "name": "pageSize",
+     "in": "query",
+     "required": false,
+     "type": "number",
+     "description": "Results per page",
+     "default": 50
+    },
+    {
+     "name": "page",
+     "in": "query",
+     "required": false,
+     "type": "number",
+     "description": "Page number (1-based)",
+     "default": 1
+    }
+   ],
+   "responseType": "json",
+   "resultPath": "results",
+   "defaultFields": [
+    "uid",
+    "first_publication_date",
+    "data.title.0.text",
+    "data.shortcontent.0.text"
+   ],
+   "pagination": {
+    "type": "page",
+    "param": "page"
+   },
+   "mutates": false,
+   "example": {
+    "pageSize": "10"
+   },
+   "source": "E2 GET https://hankintailmoitukset.cdn.prismic.io/api/v2/documents/search",
+   "verified": true
+  },
+  {
+   "name": "get-announcement",
+   "summary": "Get one Hilma announcement by its uid",
+   "method": "GET",
+   "urlTemplate": "https://hankintailmoitukset.cdn.prismic.io/api/v2/documents/search?q=%5B%5Bat%28my.announcement.uid%2C+%22{uid}%22%29%5D%5D&pageSize=1",
+   "params": [
+    {
+     "name": "uid",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Announcement uid from list-announcements",
+     "example": "ilmoittaudu-tietoiskuun-7-10-klo-9"
+    },
+    {
+     "name": "ref",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Prismic content ref (from get-cms-ref)",
+     "default": "asTICREAACwADU6V"
+    },
+    {
+     "name": "lang",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Content language",
+     "default": "fi"
+    }
+   ],
+   "responseType": "json",
+   "resultPath": "results.0",
+   "defaultFields": [
+    "uid",
+    "first_publication_date",
+    "data.title",
+    "data.content"
+   ],
+   "mutates": false,
+   "example": {
+    "uid": "ilmoittaudu-tietoiskuun-7-10-klo-9"
+   },
+   "source": "E2 GET https://hankintailmoitukset.cdn.prismic.io/api/v2/documents/search",
+   "verified": true
+  }
+ ],
+ "blockers": [],
+ "notes": [
+  "search-notices is an Azure Cognitive Search index proxy that uses Lucene syntax.",
+  "Filter and sort in search-notices: keywords are written as ((word OR word*)); combine with AND cpvCodes:(9091*) for CPV filtering. Use the OData $filter param for type tabs and for 'open only' (expirationDate ge <current ISO time>). Sort with orderby.",
+  "Paging and export in search-notices: page with skip in steps of top. The UI's CSV export is the same query with top=1000.",
+  "Detail lookups from search-notices results: get-enotice takes procedureId and noticeId. get-legacy-procurement and list-legacy-procurement-notices take oldProcurementProjectId (when it is non-zero). get-procurement-plan takes planId.",
+  "Unverified examples: the examples for get-legacy-notice, get-legacy-procurement, list-legacy-procurement-notices and get-procurement-plan are placeholders because no concrete ids were captured. Take real ids from search-notices results.",
+  "Unverified params: the query param names for search-organisations and search-cpv (search, $top) are inferred from the sibling /search/eformnotices endpoint and were not recorded.",
+  "Prismic ref: the announcement commands need a current Prismic ref. If the default stops working, call get-cms-ref and pass the master ref.",
+  "Not covered: POST /web/api/enotices/linkingto (linked notices) is a read endpoint, but its body was not captured, so it is omitted.",
+  "No login is needed for any command."
+ ],
+ "dropped": [
+  {
+   "name": "get-legacy-notice",
+   "summary": "Get a legacy (pre-eForms) Hilma notice by notice id",
+   "method": "GET",
+   "urlTemplate": "/web/api/notices/{noticeId}",
+   "params": [
+    {
+     "name": "noticeId",
+     "in": "path",
+     "required": true,
+     "type": "number",
+     "description": "Legacy notice id (from /fi/public/procurement/{procurementId}/notice/{noticeId} URLs)",
+     "example": "500000"
+    }
+   ],
+   "responseType": "json",
+   "mutates": false,
+   "example": {
+    "noticeId": "500000"
+   },
+   "source": "E96 GET https://www.hankintailmoitukset.fi/web/api/notices/{n}",
+   "verified": false,
+   "verifyNote": "The example id 500000 returned 404. No real legacy notice id appears in the recording or any live output, so the endpoint cannot be verified."
+  },
+  {
+   "name": "get-legacy-procurement",
+   "summary": "Get a legacy procurement project by id (oldProcurementProjectId in search results)",
+   "method": "GET",
+   "urlTemplate": "/web/api/procurements/{procurementId}",
+   "params": [
+    {
+     "name": "procurementId",
+     "in": "path",
+     "required": true,
+     "type": "number",
+     "description": "Legacy procurement project id (oldProcurementProjectId)",
+     "example": "80000"
+    }
+   ],
+   "responseType": "json",
+   "mutates": false,
+   "example": {
+    "procurementId": "80000"
+   },
+   "source": "E97 GET https://www.hankintailmoitukset.fi/web/api/procurements/{n}",
+   "verified": false,
+   "verifyNote": "The example id 80000 returned 404. No real oldProcurementProjectId value appears in the observed search output, so a working example cannot be picked."
+  },
+  {
+   "name": "list-legacy-procurement-notices",
+   "summary": "List all notices published under a legacy procurement project",
+   "method": "GET",
+   "urlTemplate": "/web/api/procurements/{procurementId}/notices",
+   "params": [
+    {
+     "name": "procurementId",
+     "in": "path",
+     "required": true,
+     "type": "number",
+     "description": "Legacy procurement project id (oldProcurementProjectId)",
+     "example": "80000"
+    }
+   ],
+   "responseType": "json",
+   "mutates": false,
+   "example": {
+    "procurementId": "80000"
+   },
+   "source": "E98 GET https://www.hankintailmoitukset.fi/web/api/procurements/{n}/notices",
+   "verified": false,
+   "verifyNote": "Returned an empty list for the guessed id 80000. No real legacy procurement id is available to build a non-empty example."
+  }
+ ],
+ "generated": {
+  "by": "clify add",
+  "model": "claude-opus-5-5",
+  "exploredSteps": 29,
+  "recorded": 322,
+  "verifiedAt": "2026-10-18T07:24:25.457Z",
+  "seconds": 223
+ }
+}

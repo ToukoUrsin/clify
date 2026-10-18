@@ -1,0 +1,36 @@
+{
+ "url": "https://digitalnz.org/",
+ "category": "culture",
+ "sandbox": "clify-digitalnz-org",
+ "startedAt": "2026-10-18T09:07:33.879Z",
+ "region": "us-pdx-1",
+ "chrome": "Chrome/148.0.7778.96",
+ "sandboxStartMs": 2387,
+ "addSeconds": 29,
+ "addExit": 1,
+ "add": {
+  "ok": false,
+  "site": "digitalnz",
+  "url": "https://digitalnz.org/",
+  "commands": [],
+  "verified": 0,
+  "writes": 0,
+  "dropped": [],
+  "blockers": [
+   "captcha"
+  ],
+  "loggedIn": false,
+  "seconds": 28,
+  "next": [
+   "clify digitalnz",
+   "clify repair digitalnz --goal \"<what you need from the site>\""
+  ],
+  "explored": {
+   "steps": 3,
+   "recorded": 9,
+   "heldWrites": 3
+  }
+ },
+ "deleted": true,
+ "seconds": 31
+}

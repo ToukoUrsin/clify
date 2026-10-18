@@ -1,0 +1,100 @@
+{
+ "ok": true,
+ "site": "news-ycombinator",
+ "url": "https://news.ycombinator.com/",
+ "commands": [
+  {
+   "name": "list-stories",
+   "summary": "List ranked stories from a Hacker News feed: front page (news), Ask HN, Show HN, best, or most active. Page-numbered.",
+   "verified": true
+  },
+  {
+   "name": "list-new-stories",
+   "summary": "List the newest submissions, newest Ask HN, newest Show HN, or job postings, in chronological order.",
+   "verified": true
+  },
+  {
+   "name": "list-front-page-by-day",
+   "summary": "List the stories that were on the Hacker News front page on a given past day.",
+   "verified": true
+  },
+  {
+   "name": "list-site-stories",
+   "summary": "List Hacker News submissions from a given domain or site path (e.g. github.com/antirez).",
+   "verified": true
+  },
+  {
+   "name": "get-item",
+   "summary": "Get one story, Ask/Show post or comment by id: title, link, points, author, age, comment count and body text.",
+   "verified": true
+  },
+  {
+   "name": "list-item-comments",
+   "summary": "List the comment tree of a story or comment (flattened in thread order, with indent depth).",
+   "verified": true
+  },
+  {
+   "name": "list-new-comments",
+   "summary": "List the newest comments across Hacker News, with the story each one is on.",
+   "verified": true
+  },
+  {
+   "name": "list-best-comments",
+   "summary": "List the most-upvoted comments of the last N hours (48 by default).",
+   "verified": true
+  },
+  {
+   "name": "get-user",
+   "summary": "Get a Hacker News user's profile: username, account creation date, karma and about text, as label/value rows.",
+   "verified": true
+  },
+  {
+   "name": "list-user-submissions",
+   "summary": "List the stories a user has submitted, newest first.",
+   "verified": true
+  },
+  {
+   "name": "list-user-comments",
+   "summary": "List a user's recent comments, with the story each one is on.",
+   "verified": true
+  },
+  {
+   "name": "list-leaders",
+   "summary": "List the top 100 Hacker News users by karma, in rank order.",
+   "verified": true
+  },
+  {
+   "name": "list-lists",
+   "summary": "List Hacker News's special listing pages (front, best, active, leaders, etc.) with descriptions.",
+   "verified": true
+  },
+  {
+   "name": "add-comment",
+   "summary": "Post a new comment as the logged-in user, replying to a story or comment (parent id). Publishes the text publicly.",
+   "verified": false,
+   "writes": true,
+   "needsLogin": true
+  }
+ ],
+ "verified": 13,
+ "writes": 1,
+ "dropped": [
+  {
+   "name": "list-user-favorites",
+   "reason": "empty list: the example args returned nothing or the selector/resultPath is wrong"
+  }
+ ],
+ "blockers": [],
+ "loggedIn": false,
+ "seconds": 236,
+ "next": [
+  "clify news-ycombinator",
+  "clify news-ycombinator list-stories --feed \"news\" --p \"2\""
+ ],
+ "installed": "/home/ubuntu/clify-runs/batch2/home/bin/news-ycombinator",
+ "explored": {
+  "steps": 8,
+  "recorded": 24,
+  "heldWrites": 1
+ }
+}

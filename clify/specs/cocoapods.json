@@ -1,0 +1,214 @@
+{
+ "name": "cocoapods",
+ "startUrl": "https://cocoapods.org/",
+ "origin": "https://cocoapods.org",
+ "createdAt": "2026-10-18T09:23:29.644Z",
+ "description": "CocoaPods.org is the public registry of Swift/Objective-C libraries (pods). This CLI searches pods by keyword through the site's Algolia index and reads pod detail pages, pod changelogs and owner profiles.",
+ "commands": [
+  {
+   "name": "search-pods",
+   "summary": "Search CocoaPods libraries by keyword. Returns name, version, summary, license, platforms, download counts and repo owner. Paginated, 20 per page.",
+   "method": "POST",
+   "urlTemplate": "https://wbhhamhynm-dsn.algolia.net/1/indexes/cocoapods/query?x-algolia-agent=Algolia%20for%20JavaScript%20(3.33.0)%3B%20Browser&x-algolia-application-id=WBHHAMHYNM&x-algolia-api-key=4f7544ca8701f9bf2a4e55daff1b09e9",
+   "params": [
+    {
+     "name": "query",
+     "in": "body",
+     "required": true,
+     "type": "string",
+     "description": "Search keywords matched against pod name, summary, authors and repo owner. Prefix matching works, e.g. 'alamo' finds Alamofire.",
+     "example": "networking"
+    },
+    {
+     "name": "page",
+     "in": "body",
+     "required": false,
+     "type": "number",
+     "description": "Zero-based result page. The response field nbPages gives the total number of pages.",
+     "default": 0
+    },
+    {
+     "name": "hits_per_page",
+     "in": "body",
+     "required": false,
+     "type": "number",
+     "description": "Number of results per page.",
+     "default": 20
+    }
+   ],
+   "bodyTemplate": {
+    "params": "query={query}&page={page}&hitsPerPage={hits_per_page}"
+   },
+   "bodyEncoding": "json",
+   "headers": {
+    "content-type": "application/x-www-form-urlencoded"
+   },
+   "responseType": "json",
+   "resultPath": "hits",
+   "defaultFields": [
+    "name",
+    "version",
+    "summary",
+    "license",
+    "platforms",
+    "downloads.total",
+    "repoOwner",
+    "homepage"
+   ],
+   "pagination": {
+    "type": "page",
+    "param": "page"
+   },
+   "mutates": false,
+   "example": {
+    "query": "networking"
+   },
+   "source": "E1 POST https://wbhhamhynm-dsn.algolia.net/{n}/indexes/cocoapods/query",
+   "verified": true
+  },
+  {
+   "name": "get-pod",
+   "summary": "Get one pod's detail page: version, metadata table (tests, language, license, release, SPM), first maintainer, Podfile line, podspec/GitHub links and README text.",
+   "method": "GET",
+   "urlTemplate": "/pods/{name}",
+   "params": [
+    {
+     "name": "name",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Exact pod name, case-sensitive as published, e.g. Alamofire (use the 'name' field from search-pods).",
+     "example": "Alamofire"
+    }
+   ],
+   "responseType": "html",
+   "extract": {
+    "fields": {
+     "name": "div.inline-headline > h1 > a",
+     "version": "div.inline-headline > h1 > span",
+     "metadata": "table.header",
+     "maintainer": "div.sideline > p > a",
+     "maintainer_url": "div.sideline > p > a@href",
+     "maintained_by": "div.sideline > p",
+     "podfile_line": "div#installation_guide p > code",
+     "authors": "ul.attribution",
+     "podspec_url": "ul.links > li > a@href",
+     "github_url": "li.github-link > a@href",
+     "changelog_url": "a#changelog_tab@href",
+     "readme": "div#readme"
+    }
+   },
+   "defaultFields": [
+    "name",
+    "version",
+    "metadata",
+    "maintainer",
+    "maintainer_url",
+    "podfile_line",
+    "github_url",
+    "podspec_url"
+   ],
+   "mutates": false,
+   "example": {
+    "name": "Alamofire"
+   },
+   "source": "E6 E7 E8 GET https://cocoapods.org/pods/Networking",
+   "verified": true
+  },
+  {
+   "name": "get-pod-changelog",
+   "summary": "Get a pod's CHANGELOG as rendered text. Some pods only contain a link to their GitHub releases (see first_link).",
+   "method": "GET",
+   "urlTemplate": "/pods/{name}/changelog",
+   "params": [
+    {
+     "name": "name",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Exact pod name, case-sensitive as published, e.g. Alamofire (use the 'name' field from search-pods).",
+     "example": "Alamofire"
+    }
+   ],
+   "headers": {
+    "x-requested-with": "XMLHttpRequest"
+   },
+   "responseType": "html",
+   "extract": {
+    "fields": {
+     "changelog": "div#file",
+     "first_link": "div#file a[href^='http']@href"
+    }
+   },
+   "defaultFields": [
+    "changelog",
+    "first_link"
+   ],
+   "mutates": false,
+   "example": {
+    "name": "Alamofire"
+   },
+   "source": "E2 E3",
+   "verified": true
+  },
+  {
+   "name": "list-owner-pods",
+   "summary": "List all pods maintained by an owner (numeric owner id from get-pod's maintainer_url), with summary, license and language.",
+   "method": "GET",
+   "urlTemplate": "/owners/{id}",
+   "params": [
+    {
+     "name": "id",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Numeric owner id, e.g. 2662 taken from /owners/2662.",
+     "example": "2662"
+    }
+   ],
+   "responseType": "html",
+   "extract": {
+    "list": "div.col-sm-12.pods",
+    "fields": {
+     "name": "a > h2",
+     "url": "a@href",
+     "summary": "div.col-sm-8",
+     "license": "div.col-sm-4 a",
+     "language": "ul.metrics > li"
+    }
+   },
+   "defaultFields": [
+    "name",
+    "url",
+    "summary",
+    "license",
+    "language"
+   ],
+   "mutates": false,
+   "example": {
+    "id": "2662"
+   },
+   "source": "E5 GET https://cocoapods.org/owners/{n}",
+   "verified": true
+  }
+ ],
+ "blockers": [],
+ "notes": [
+  "search-pods calls the site's public Algolia index using the read-only search key the web app embeds. Pages are zero-based; nbHits and nbPages in the raw response give the totals.",
+  "In search-pods, query is placed inside an Algolia 'params' string. Avoid '&' and '=' in queries; plain words and spaces work.",
+  "Pod names are case-sensitive in /pods/{name}. Use the exact 'name' value from search-pods.",
+  "get-pod's 'metadata' field is the sidebar table flattened to text (Tests, Language, License, Released, SPM support). 'maintainer' and 'maintainer_url' cover only the first maintainer; 'maintained_by' lists them all as text.",
+  "Owner ids appear only in maintainer links (/owners/{id}) on pod pages. Pass the number to list-owner-pods.",
+  "podspec_url links to the sharded podspec in the CocoaPods/Specs GitHub repo. Fetch it from GitHub if you need the raw spec.",
+  "The site shows a notice that CocoaPods trunk is moving to read-only, so new releases may be rare."
+ ],
+ "dropped": [],
+ "generated": {
+  "by": "clify add",
+  "model": "claude-opus-5-5",
+  "exploredSteps": 13,
+  "recorded": 11,
+  "verifiedAt": "2026-10-18T09:24:11.538Z",
+  "seconds": 104
+ }
+}

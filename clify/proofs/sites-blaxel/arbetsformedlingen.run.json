@@ -1,0 +1,106 @@
+{
+ "url": "https://arbetsformedlingen.se/platsbanken/",
+ "category": "jobs-market",
+ "sandbox": "clify-arbetsformedlingen-se-platsbanken",
+ "startedAt": "2026-10-18T08:52:36.062Z",
+ "region": "us-pdx-1",
+ "chrome": "Chrome/148.0.7778.96",
+ "sandboxStartMs": 1945,
+ "addSeconds": 271,
+ "addExit": 0,
+ "add": {
+  "ok": true,
+  "site": "arbetsformedlingen",
+  "url": "https://arbetsformedlingen.se/platsbanken/",
+  "commands": [
+   {
+    "name": "search-jobs",
+    "summary": "Free-text search of Platsbanken job ads (title, employer, occupation, workplace, dates), sorted by relevance or date",
+    "verified": true
+   },
+   {
+    "name": "search-jobs-in-municipality",
+    "summary": "Free-text job search limited to one Swedish municipality (municipality ID from get-taxonomy-tree --type LOCATION)",
+    "verified": true
+   },
+   {
+    "name": "get-job",
+    "summary": "Full details of one job ad: HTML description, employer, workplace address, employment type, working hours, salary type, how to apply",
+    "verified": true
+   },
+   {
+    "name": "suggest-search-terms",
+    "summary": "Typeahead suggestions (completions) for a partial job-search query",
+    "verified": true
+   },
+   {
+    "name": "list-popular-occupations",
+    "summary": "Occupations with the most open job ads right now, with ad counts",
+    "verified": true
+   },
+   {
+    "name": "get-taxonomy-tree",
+    "summary": "Taxonomy tree with IDs used for search filters: LOCATION = regions (l\u00e4n) and their municipalities, OCCUPATION = occupation fields and groups",
+    "verified": true
+   }
+  ],
+  "verified": 6,
+  "writes": 0,
+  "dropped": [],
+  "blockers": [],
+  "loggedIn": false,
+  "seconds": 270,
+  "next": [
+   "clify arbetsformedlingen",
+   "clify arbetsformedlingen search-jobs --q \"systemutvecklare stockholm\""
+  ],
+  "installed": "/home/ubuntu/clify-runs/blaxel-w1/home/bin/arbetsformedlingen",
+  "explored": {
+   "steps": 29,
+   "recorded": 102,
+   "heldWrites": 2
+  }
+ },
+ "check": {
+  "on": "blaxel",
+  "node": "v24.22.0",
+  "seconds": 6,
+  "reads": 6,
+  "verified": 6,
+  "failed": [],
+  "results": [
+   {
+    "name": "search-jobs",
+    "ok": true,
+    "ms": 1769
+   },
+   {
+    "name": "search-jobs-in-municipality",
+    "ok": true,
+    "ms": 540
+   },
+   {
+    "name": "get-job",
+    "ok": true,
+    "ms": 399
+   },
+   {
+    "name": "suggest-search-terms",
+    "ok": true,
+    "ms": 292
+   },
+   {
+    "name": "list-popular-occupations",
+    "ok": true,
+    "ms": 176
+   },
+   {
+    "name": "get-taxonomy-tree",
+    "ok": true,
+    "ms": 497
+   }
+  ]
+ },
+ "deleted": true,
+ "seconds": 279
+}

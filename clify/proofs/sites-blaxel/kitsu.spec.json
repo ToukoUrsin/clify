@@ -1,0 +1,28 @@
+{
+ "name": "kitsu",
+ "startUrl": "https://kitsu.app/",
+ "origin": "https://kitsu.app",
+ "createdAt": "2026-10-18T08:39:38.973Z",
+ "description": "Kitsu (kitsu.app) is an anime and manga tracking and discovery site. No CLI commands could be built from this exploration.",
+ "commands": [],
+ "blockers": [
+  "bot-check at https://kitsu.app/",
+  "bot-check at https://kitsu.app/anime?text=naruto",
+  "captcha"
+ ],
+ "notes": [
+  "The exploration produced no usable endpoints. Cloudflare's bot check blocked every page the explorer tried (the home page and /anime?text=naruto). The only recorded request was a 307 redirect for the home page document, which contains no data.",
+  "Kitsu has a JSON:API at /api/edge/... (for example /api/edge/anime?filter[text]=...), but it never appeared in the recording. The site's robots.txt also disallows it for automated clients, so no commands were written against it.",
+  "To get commands, the site needs to be re-explored in a way that legitimately passes the Cloudflare check, so the recording captures real page and xhr traffic. Any API use would need to follow Kitsu's published API terms and its robots.txt rules.",
+  "The explorer was not logged in, so no commands for the signed-in user's library or for writes could be derived."
+ ],
+ "dropped": [],
+ "generated": {
+  "by": "clify add",
+  "model": "claude-opus-5-5",
+  "exploredSteps": 3,
+  "recorded": 4,
+  "verifiedAt": "2026-10-18T08:39:46.260Z",
+  "seconds": 20
+ }
+}

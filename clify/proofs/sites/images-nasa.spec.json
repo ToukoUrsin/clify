@@ -1,0 +1,358 @@
+{
+ "name": "images-nasa",
+ "startUrl": "https://images.nasa.gov/",
+ "origin": "https://images.nasa.gov",
+ "createdAt": "2026-10-18T07:29:26.708Z",
+ "description": "NASA Image and Video Library (images.nasa.gov): search NASA's public image, video and audio archive, browse albums and the popular/recent feeds, and get asset files, technical metadata and video captions for any item.",
+ "commands": [
+  {
+   "name": "search-media",
+   "summary": "Search NASA images, videos and audio by free text, keyword tags, NASA center, media type and year range (paged, 100 per page by default)",
+   "method": "GET",
+   "urlTemplate": "https://images-api.nasa.gov/search",
+   "params": [
+    {
+     "name": "q",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Free-text search terms",
+     "example": "Apollo 11"
+    },
+    {
+     "name": "media_type",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Comma-separated media types to include: image, video, audio (e.g. 'image,video')",
+     "example": "image,video"
+    },
+    {
+     "name": "year_start",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Earliest year created, YYYY",
+     "example": "1969"
+    },
+    {
+     "name": "year_end",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Latest year created, YYYY",
+     "example": "1970"
+    },
+    {
+     "name": "keywords",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Keyword tag(s) to match, comma-separated (e.g. 'LUNAR SURFACE')",
+     "example": "LUNAR SURFACE"
+    },
+    {
+     "name": "center",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "NASA center code that published the media, e.g. HQ, KSC, JSC, GSFC, JPL, LRC, MSFC, ARC",
+     "example": "HQ"
+    },
+    {
+     "name": "title",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Match terms in the title only"
+    },
+    {
+     "name": "description",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Match terms in the description only"
+    },
+    {
+     "name": "photographer",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Primary photographer's name"
+    },
+    {
+     "name": "location",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Location terms"
+    },
+    {
+     "name": "nasa_id",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Exact NASA media ID"
+    },
+    {
+     "name": "page_size",
+     "in": "query",
+     "required": false,
+     "type": "number",
+     "description": "Results per page (API default 100)"
+    },
+    {
+     "name": "page",
+     "in": "query",
+     "required": false,
+     "type": "number",
+     "description": "Page number, starting at 1",
+     "default": 1
+    }
+   ],
+   "responseType": "json",
+   "resultPath": "collection.items",
+   "defaultFields": [
+    "data.0.nasa_id",
+    "data.0.title",
+    "data.0.media_type",
+    "data.0.date_created",
+    "data.0.center",
+    "data.0.keywords",
+    "links.0.href"
+   ],
+   "pagination": {
+    "type": "page",
+    "param": "page"
+   },
+   "mutates": false,
+   "example": {
+    "q": "Apollo 11",
+    "media_type": "image,video",
+    "year_start": "1969",
+    "year_end": "1970"
+   },
+   "source": "E1 GET https://images-api.nasa.gov/search",
+   "verified": true
+  },
+  {
+   "name": "get-asset",
+   "summary": "List the downloadable file URLs (original, large, medium, small, thumb; video encodings, captions, metadata) for a NASA media item",
+   "method": "GET",
+   "urlTemplate": "https://images-api.nasa.gov/asset/{nasa_id}",
+   "params": [
+    {
+     "name": "nasa_id",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "NASA media ID (data.0.nasa_id from search-media)",
+     "example": "as11-37-5545"
+    }
+   ],
+   "responseType": "json",
+   "resultPath": "collection.items",
+   "defaultFields": [
+    "href"
+   ],
+   "mutates": false,
+   "example": {
+    "nasa_id": "as11-37-5545"
+   },
+   "source": "E6 E194 GET https://images-api.nasa.gov/asset/{id}",
+   "verified": true
+  },
+  {
+   "name": "get-metadata",
+   "summary": "Get the full technical and descriptive metadata (EXIF/QuickTime/AVAIL fields: dates, dimensions, duration, keywords, credits) of a NASA media item",
+   "method": "GET",
+   "urlTemplate": "https://images-assets.nasa.gov/{media_type}/{nasa_id}/metadata.json",
+   "params": [
+    {
+     "name": "media_type",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Media type of the item",
+     "enum": [
+      "image",
+      "video",
+      "audio"
+     ],
+     "example": "image"
+    },
+    {
+     "name": "nasa_id",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "NASA media ID",
+     "example": "as11-37-5545"
+    }
+   ],
+   "responseType": "json",
+   "mutates": false,
+   "example": {
+    "media_type": "image",
+    "nasa_id": "as11-37-5545"
+   },
+   "source": "E53 E193 E348 GET https://images-assets.nasa.gov/video/{id}/metadata.json",
+   "verified": true
+  },
+  {
+   "name": "get-metadata-location",
+   "summary": "Resolve the URL of a media item's metadata.json via the official API (use when you don't know the item's media type)",
+   "method": "GET",
+   "urlTemplate": "https://images-api.nasa.gov/metadata/{nasa_id}",
+   "params": [
+    {
+     "name": "nasa_id",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "NASA media ID",
+     "example": "Apollo_11_moonwalk_montage_720p"
+    }
+   ],
+   "responseType": "json",
+   "defaultFields": [
+    "location"
+   ],
+   "mutates": false,
+   "example": {
+    "nasa_id": "Apollo_11_moonwalk_montage_720p"
+   },
+   "source": "E5 E192 GET https://images-api.nasa.gov/metadata/{id}",
+   "verified": true
+  },
+  {
+   "name": "get-video-captions",
+   "summary": "Get the SRT caption/subtitle transcript of a NASA video",
+   "method": "GET",
+   "urlTemplate": "https://images-assets.nasa.gov/video/{nasa_id}/{nasa_id}.srt",
+   "params": [
+    {
+     "name": "nasa_id",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "NASA video ID (the caption file is named after it)",
+     "example": "Apollo_11_moonwalk_montage_720p"
+    }
+   ],
+   "responseType": "text",
+   "mutates": false,
+   "example": {
+    "nasa_id": "Apollo_11_moonwalk_montage_720p"
+   },
+   "source": "E367 E368 GET https://images-assets.nasa.gov/video/{id}/Apollo_11_moonwalk_montage_720p.srt",
+   "verified": true
+  },
+  {
+   "name": "get-album",
+   "summary": "List the media items in a named NASA album (e.g. Apollo), paged",
+   "method": "GET",
+   "urlTemplate": "https://images-api.nasa.gov/album/{album_name}",
+   "params": [
+    {
+     "name": "album_name",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Album name as it appears in /album/{name} URLs; case-sensitive",
+     "example": "Apollo"
+    },
+    {
+     "name": "page",
+     "in": "query",
+     "required": false,
+     "type": "number",
+     "description": "Page number, starting at 1",
+     "default": 1
+    }
+   ],
+   "responseType": "json",
+   "resultPath": "collection.items",
+   "defaultFields": [
+    "data.0.nasa_id",
+    "data.0.title",
+    "data.0.media_type",
+    "data.0.date_created",
+    "data.0.center",
+    "links.0.href"
+   ],
+   "pagination": {
+    "type": "page",
+    "param": "page"
+   },
+   "mutates": false,
+   "example": {
+    "album_name": "Apollo"
+   },
+   "source": "E349 GET https://images-api.nasa.gov/album/Apollo",
+   "verified": true
+  },
+  {
+   "name": "list-popular",
+   "summary": "List currently trending/popular media items shown on the home page",
+   "method": "GET",
+   "urlTemplate": "https://images-assets.nasa.gov/popular.json",
+   "params": [],
+   "responseType": "json",
+   "resultPath": "collection.items",
+   "defaultFields": [
+    "data.0.nasa_id",
+    "data.0.title",
+    "data.0.media_type",
+    "data.0.date_created",
+    "data.0.center",
+    "links.0.href"
+   ],
+   "mutates": false,
+   "source": "E365 GET https://images-assets.nasa.gov/popular.json",
+   "verified": true
+  },
+  {
+   "name": "list-recent",
+   "summary": "List the newest uploads to the NASA Image and Video Library",
+   "method": "GET",
+   "urlTemplate": "https://images-assets.nasa.gov/recent.json",
+   "params": [],
+   "responseType": "json",
+   "resultPath": "collection.items",
+   "defaultFields": [
+    "data.0.nasa_id",
+    "data.0.title",
+    "data.0.media_type",
+    "data.0.date_created",
+    "data.0.center",
+    "links.0.href"
+   ],
+   "mutates": false,
+   "source": "E366 GET https://images-assets.nasa.gov/recent.json",
+   "verified": true
+  }
+ ],
+ "blockers": [],
+ "notes": [
+  "No login or API key is needed. Everything is public and read-only.",
+  "Item IDs are nasa_id values, found in search results at items[].data[0].nasa_id. They can contain spaces and punctuation, which must be URL-encoded in paths.",
+  "The human-readable page for an item is https://images.nasa.gov/details/{nasa_id}.",
+  "search-media needs at least one search parameter (q, keywords, center, nasa_id, title, etc.).",
+  "In search-media, media_type takes a comma-separated list, for example 'image,video,audio'.",
+  "Search pages hold 100 items by default. The total hit count is in collection.metadata.total_hits of the raw response, and a 'next' link appears in collection.links.",
+  "get-asset returns file URLs such as ~orig.jpg/.tif, ~large.jpg, ~medium.jpg, ~small.jpg and ~thumb.jpg. Videos also have .mp4 encodings plus .srt and metadata.json files.",
+  "The same file list is available at https://images-assets.nasa.gov/{media_type}/{nasa_id}/collection.json.",
+  "get-metadata needs the item's media_type, which is data[0].media_type in search results. If you don't know it, call get-metadata-location, which returns the exact metadata.json URL.",
+  "Captions exist only for some videos. get-video-captions returns an error for videos without an .srt file."
+ ],
+ "dropped": [],
+ "generated": {
+  "by": "clify add",
+  "model": "claude-opus-5-5",
+  "exploredSteps": 19,
+  "recorded": 588,
+  "verifiedAt": "2026-10-18T07:30:17.196Z",
+  "seconds": 143
+ }
+}

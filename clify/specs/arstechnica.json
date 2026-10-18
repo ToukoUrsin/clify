@@ -1,0 +1,413 @@
+{
+ "name": "arstechnica",
+ "startUrl": "https://arstechnica.com/",
+ "origin": "https://arstechnica.com",
+ "createdAt": "2026-10-18T09:37:07.955Z",
+ "description": "Ars Technica (WordPress news site plus XenForo 'Civis' forum). The CLI reads article feeds by site, section, tag and author, fetches full articles, and reads forum threads and article comment threads.",
+ "commands": [
+  {
+   "name": "list-latest-articles",
+   "summary": "List the newest articles across the whole site from the sitewide RSS feed (title, link, date, author, excerpt).",
+   "method": "GET",
+   "urlTemplate": "/feed/",
+   "params": [
+    {
+     "name": "page",
+     "key": "paged",
+     "in": "query",
+     "required": false,
+     "type": "number",
+     "description": "Feed page number (WordPress 'paged'). 1 = newest.",
+     "example": "2"
+    }
+   ],
+   "responseType": "json",
+   "resultPath": "rss.channel.item",
+   "defaultFields": [
+    "title",
+    "link",
+    "pubDate",
+    "dc:creator",
+    "category",
+    "description"
+   ],
+   "pagination": {
+    "type": "page",
+    "param": "page"
+   },
+   "mutates": false,
+   "source": "E52 GET https://arstechnica.com/feed/",
+   "verified": true
+  },
+  {
+   "name": "list-section-articles",
+   "summary": "List the newest articles in a site section (e.g. gadgets, security, science) from the section RSS feed.",
+   "method": "GET",
+   "urlTemplate": "/{section}/feed/",
+   "params": [
+    {
+     "name": "section",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Section slug as it appears in article URLs, e.g. gadgets, security, science, ai, tech-policy, space, cars, gaming, culture, health, reviews",
+     "example": "gadgets"
+    },
+    {
+     "name": "page",
+     "key": "paged",
+     "in": "query",
+     "required": false,
+     "type": "number",
+     "description": "Feed page number. 1 = newest.",
+     "example": "2"
+    }
+   ],
+   "responseType": "json",
+   "resultPath": "rss.channel.item",
+   "defaultFields": [
+    "title",
+    "link",
+    "pubDate",
+    "dc:creator",
+    "category",
+    "description"
+   ],
+   "pagination": {
+    "type": "page",
+    "param": "page"
+   },
+   "mutates": false,
+   "example": {
+    "section": "gadgets"
+   },
+   "source": "E50 E51 GET https://arstechnica.com/gadgets/",
+   "verified": true
+  },
+  {
+   "name": "list-tag-articles",
+   "summary": "List articles with a given tag from the tag RSS feed. Items include the full article content.",
+   "method": "GET",
+   "urlTemplate": "/tag/{tag}/feed/",
+   "params": [
+    {
+     "name": "tag",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Tag slug, lowercase and hyphenated, e.g. quantum-computing, cryptography, laptops",
+     "example": "quantum-computing"
+    },
+    {
+     "name": "page",
+     "key": "paged",
+     "in": "query",
+     "required": false,
+     "type": "number",
+     "description": "Feed page number. 1 = newest.",
+     "example": "2"
+    }
+   ],
+   "responseType": "json",
+   "resultPath": "rss.channel.item",
+   "defaultFields": [
+    "title",
+    "link",
+    "pubDate",
+    "dc:creator",
+    "category",
+    "description"
+   ],
+   "pagination": {
+    "type": "page",
+    "param": "page"
+   },
+   "mutates": false,
+   "example": {
+    "tag": "quantum-computing"
+   },
+   "source": "E54 E48 GET https://arstechnica.com/tag/quantum-computing/feed/",
+   "verified": true
+  },
+  {
+   "name": "list-author-articles",
+   "summary": "List the newest articles by one Ars Technica author from the author RSS feed.",
+   "method": "GET",
+   "urlTemplate": "/author/{author}/feed/",
+   "params": [
+    {
+     "name": "author",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Author slug from /author/{slug}/ URLs, e.g. dan-goodin",
+     "example": "dan-goodin"
+    },
+    {
+     "name": "page",
+     "key": "paged",
+     "in": "query",
+     "required": false,
+     "type": "number",
+     "description": "Feed page number. 1 = newest.",
+     "example": "2"
+    }
+   ],
+   "responseType": "json",
+   "resultPath": "rss.channel.item",
+   "defaultFields": [
+    "title",
+    "link",
+    "pubDate",
+    "dc:creator",
+    "category",
+    "description"
+   ],
+   "pagination": {
+    "type": "page",
+    "param": "page"
+   },
+   "mutates": false,
+   "example": {
+    "author": "dan-goodin"
+   },
+   "source": "E49 GET https://arstechnica.com/author/dan-goodin/",
+   "verified": true
+  },
+  {
+   "name": "get-article",
+   "summary": "Fetch one article: title, description, author, publish date, body text and the link to its forum comment thread.",
+   "method": "GET",
+   "urlTemplate": "/{section}/{year}/{month}/{slug}/",
+   "params": [
+    {
+     "name": "section",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Section slug from the article URL, e.g. security, reviews, gadgets",
+     "example": "security"
+    },
+    {
+     "name": "year",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "4-digit year from the article URL",
+     "example": "2026"
+    },
+    {
+     "name": "month",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "2-digit month from the article URL, e.g. 09",
+     "example": "09"
+    },
+    {
+     "name": "slug",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Article slug from the URL",
+     "example": "cloudflare-plans-to-issue-quantum-safe-tls-certificates"
+    }
+   ],
+   "responseType": "html",
+   "extract": {
+    "fields": {
+     "title": "h1 || meta[property='og:title']@content",
+     "description": "meta[name='description']@content || meta[property='og:description']@content",
+     "author": "a[href*='/author/'] || meta[name='twitter:data1']@content",
+     "published": "meta[property='article:published_time']@content || time@datetime",
+     "image": "meta[property='og:image']@content",
+     "url": "link[rel='canonical']@href",
+     "body": "div.post-content || article",
+     "commentsUrl": "a[href*='/civis/threads/']@href"
+    }
+   },
+   "defaultFields": [
+    "title",
+    "description",
+    "author",
+    "published",
+    "url",
+    "commentsUrl",
+    "body"
+   ],
+   "mutates": false,
+   "example": {
+    "section": "security",
+    "year": "2026",
+    "month": "09",
+    "slug": "cloudflare-plans-to-issue-quantum-safe-tls-certificates"
+   },
+   "source": "E55",
+   "verified": true
+  },
+  {
+   "name": "get-thread-posts",
+   "summary": "Read the posts in a forum thread, including an article's comment thread, one page at a time. Can sort by vote score.",
+   "method": "GET",
+   "urlTemplate": "/civis/threads/{thread}/page-{page}",
+   "params": [
+    {
+     "name": "thread",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Thread slug plus numeric id, in the form slug.id. Taken from /civis/threads/{slug}.{id}/ URLs, e.g. the article's commentsUrl.",
+     "example": "cloudflare-plans-to-issue-quantum-safe-tls-certificates.1515011"
+    },
+    {
+     "name": "page",
+     "in": "path",
+     "required": false,
+     "type": "number",
+     "description": "Thread page number, starting at 1",
+     "default": 1,
+     "example": "1"
+    },
+    {
+     "name": "order",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Post order. Omit for chronological; vote_score sorts by votes.",
+     "enum": [
+      "vote_score"
+     ]
+    }
+   ],
+   "responseType": "html",
+   "extract": {
+    "list": "article.message",
+    "fields": {
+     "postId": "@data-content",
+     "author": "@data-author",
+     "date": ".message-attribution-main time.u-dt@datetime || .message-attribution time@datetime",
+     "body": ".message-body .bbWrapper || .bbWrapper",
+     "permalink": ".message-attribution-main a[href*='/post-']@href || .message-attribution a[href*='post']@href"
+    }
+   },
+   "defaultFields": [
+    "postId",
+    "author",
+    "date",
+    "body"
+   ],
+   "pagination": {
+    "type": "page",
+    "param": "page"
+   },
+   "mutates": false,
+   "example": {
+    "thread": "cloudflare-plans-to-issue-quantum-safe-tls-certificates.1515011"
+   },
+   "source": "E46",
+   "verified": true
+  },
+  {
+   "name": "list-forum-threads",
+   "summary": "List threads in a forum, e.g. News Discussion (article comment threads): title, url, author, latest activity.",
+   "method": "GET",
+   "urlTemplate": "/civis/forums/{forum}/page-{page}",
+   "params": [
+    {
+     "name": "forum",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Forum slug plus numeric id, in the form slug.id, e.g. news-discussion.2",
+     "example": "news-discussion.2"
+    },
+    {
+     "name": "page",
+     "in": "path",
+     "required": false,
+     "type": "number",
+     "description": "Forum page number, starting at 1",
+     "default": 1,
+     "example": "2"
+    }
+   ],
+   "responseType": "html",
+   "extract": {
+    "list": ".structItem--thread",
+    "fields": {
+     "title": ".structItem-title a",
+     "url": ".structItem-title a@href",
+     "author": "@data-author || .structItem-minor a.username",
+     "started": ".structItem-startDate time@datetime",
+     "replies": ".structItem-cell--meta dd",
+     "latest": "time.structItem-latestDate@datetime"
+    }
+   },
+   "defaultFields": [
+    "title",
+    "url",
+    "author",
+    "replies",
+    "latest"
+   ],
+   "pagination": {
+    "type": "page",
+    "param": "page"
+   },
+   "mutates": false,
+   "example": {
+    "forum": "news-discussion.2"
+   },
+   "source": "E41 E42 GET https://arstechnica.com/civis/forums/news-discussion.2/",
+   "verified": true
+  },
+  {
+   "name": "list-new-forum-posts",
+   "summary": "List forum threads with the most recent new posts, from Civis 'What's new > New posts'.",
+   "method": "GET",
+   "urlTemplate": "/civis/whats-new/posts/",
+   "params": [],
+   "responseType": "html",
+   "extract": {
+    "list": ".structItem--thread",
+    "fields": {
+     "title": ".structItem-title a",
+     "url": ".structItem-title a@href",
+     "author": "@data-author || .structItem-minor a.username",
+     "forum": ".structItem-parts a[href*='/forums/']",
+     "replies": ".structItem-cell--meta dd",
+     "latest": "time.structItem-latestDate@datetime"
+    }
+   },
+   "defaultFields": [
+    "title",
+    "url",
+    "author",
+    "forum",
+    "replies",
+    "latest"
+   ],
+   "mutates": false,
+   "source": "E43",
+   "verified": true
+  }
+ ],
+ "blockers": [],
+ "notes": [
+  "Keyword search is not available as a replayable request. /search/ and /?s= are rendered client-side by an embedded Google Custom Search, and no first-party search endpoint exists. To find articles, use the tag, section and author feeds.",
+  "Feed commands return RSS converted to JSON. Article URLs are in 'link'. Tag feeds include full article HTML in 'content:encoded'.",
+  "To read an article's comments, take commentsUrl from get-article. The /civis/threads/{slug}.{id}/ part is the 'thread' argument of get-thread-posts.",
+  "The WordPress JSON API (/wp-json/wp/v2/posts) returns 403. robots.txt disallows forum search and member profiles.",
+  "All commands are anonymous, read-only page or feed fetches. The site is behind AWS WAF, so heavy request rates may trigger challenges.",
+  "The section, author and new-posts commands were inferred from the page list rather than recorded directly. If they fail, fall back to the recorded HTML listings: /gadgets/, /gadgets/page/2/, /author/dan-goodin/ and /civis/whats-new/posts/."
+ ],
+ "dropped": [],
+ "generated": {
+  "by": "clify add",
+  "model": "claude-opus-5-5",
+  "exploredSteps": 24,
+  "recorded": 701,
+  "verifiedAt": "2026-10-18T09:38:25.343Z",
+  "seconds": 326
+ }
+}

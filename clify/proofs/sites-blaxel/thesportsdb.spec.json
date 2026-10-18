@@ -1,0 +1,745 @@
+{
+ "name": "thesportsdb",
+ "startUrl": "https://www.thesportsdb.com/",
+ "origin": "https://www.thesportsdb.com",
+ "createdAt": "2026-10-18T08:16:42.598Z",
+ "description": "TheSportsDB: an open, crowd-sourced sports database. This CLI searches teams and players, looks up events, league tables, fixtures, squads and TV schedules through the free public JSON API (key 123) and the server-rendered HTML pages.",
+ "commands": [
+  {
+   "name": "search-teams",
+   "summary": "Search teams by name via the JSON API (full team record: ids, leagues, stadium, socials, descriptions)",
+   "method": "GET",
+   "urlTemplate": "/api/v1/json/123/searchteams.php",
+   "params": [
+    {
+     "name": "team",
+     "key": "t",
+     "in": "query",
+     "required": true,
+     "type": "string",
+     "description": "Team name to search for",
+     "example": "Arsenal"
+    }
+   ],
+   "responseType": "json",
+   "resultPath": "teams",
+   "defaultFields": [
+    "idTeam",
+    "strTeam",
+    "strSport",
+    "strLeague",
+    "idLeague",
+    "strStadium",
+    "strLocation",
+    "intFormedYear"
+   ],
+   "mutates": false,
+   "example": {
+    "team": "Arsenal"
+   },
+   "source": "E1 GET https://www.thesportsdb.com/api/v1/json/{n}/searchteams.php",
+   "verified": true
+  },
+  {
+   "name": "search-players",
+   "summary": "Search players by name via the JSON API (team, nationality, position, birth date)",
+   "method": "GET",
+   "urlTemplate": "/api/v1/json/123/searchplayers.php",
+   "params": [
+    {
+     "name": "player",
+     "key": "p",
+     "in": "query",
+     "required": true,
+     "type": "string",
+     "description": "Player name to search for",
+     "example": "Messi"
+    }
+   ],
+   "responseType": "json",
+   "resultPath": "player",
+   "defaultFields": [
+    "idPlayer",
+    "strPlayer",
+    "strTeam",
+    "idTeam",
+    "strSport",
+    "strPosition",
+    "strNationality",
+    "dateBorn"
+   ],
+   "mutates": false,
+   "example": {
+    "player": "Messi"
+   },
+   "source": "E2 GET https://www.thesportsdb.com/api/v1/json/{n}/searchplayers.php",
+   "verified": true
+  },
+  {
+   "name": "get-event",
+   "summary": "Get one event/match by its event id (teams, scores, date/time, venue, round, season)",
+   "method": "GET",
+   "urlTemplate": "/api/v1/json/123/lookupevent.php",
+   "params": [
+    {
+     "name": "id",
+     "in": "query",
+     "required": true,
+     "type": "string",
+     "description": "Event id (idEvent), e.g. 2494069",
+     "example": "2494069"
+    }
+   ],
+   "responseType": "json",
+   "resultPath": "events",
+   "defaultFields": [
+    "idEvent",
+    "strEvent",
+    "strLeague",
+    "strSeason",
+    "strTimestamp",
+    "intHomeScore",
+    "intAwayScore",
+    "strVenue"
+   ],
+   "mutates": false,
+   "example": {
+    "id": "2494069"
+   },
+   "source": "E5 GET https://www.thesportsdb.com/api/v1/json/{n}/lookupevent.php",
+   "verified": true
+  },
+  {
+   "name": "get-league-table",
+   "summary": "Get the league standings table for a league id and season (rank, points, W/D/L, goals, form)",
+   "method": "GET",
+   "urlTemplate": "/api/v1/json/123/lookuptable.php",
+   "params": [
+    {
+     "name": "league",
+     "key": "l",
+     "in": "query",
+     "required": true,
+     "type": "string",
+     "description": "League id (idLeague), e.g. 4328 = English Premier League",
+     "example": "4328"
+    },
+    {
+     "name": "season",
+     "key": "s",
+     "in": "query",
+     "required": true,
+     "type": "string",
+     "description": "Season string, e.g. 2025-2026 (or 2026 for calendar-year leagues)",
+     "example": "2025-2026"
+    }
+   ],
+   "responseType": "json",
+   "resultPath": "table",
+   "defaultFields": [
+    "intRank",
+    "strTeam",
+    "idTeam",
+    "intPlayed",
+    "intWin",
+    "intDraw",
+    "intLoss",
+    "intPoints"
+   ],
+   "mutates": false,
+   "example": {
+    "league": "4328",
+    "season": "2025-2026"
+   },
+   "source": "E4 GET https://www.thesportsdb.com/api/v1/json/{n}/lookuptable.php",
+   "verified": true
+  },
+  {
+   "name": "list-next-league-events",
+   "summary": "List the next upcoming events (fixtures) of a league by league id",
+   "method": "GET",
+   "urlTemplate": "/api/v1/json/123/eventsnextleague.php",
+   "params": [
+    {
+     "name": "id",
+     "in": "query",
+     "required": true,
+     "type": "string",
+     "description": "League id (idLeague), e.g. 4328",
+     "example": "4328"
+    }
+   ],
+   "responseType": "json",
+   "resultPath": "events",
+   "defaultFields": [
+    "idEvent",
+    "strEvent",
+    "strTimestamp",
+    "intRound",
+    "strSeason",
+    "strVenue",
+    "idHomeTeam",
+    "idAwayTeam"
+   ],
+   "mutates": false,
+   "example": {
+    "id": "4328"
+   },
+   "source": "E3 GET https://www.thesportsdb.com/api/v1/json/{n}/eventsnextleague.php",
+   "verified": true
+  },
+  {
+   "name": "list-team-last-events",
+   "summary": "List a team's most recent results by team id",
+   "method": "GET",
+   "urlTemplate": "/api/v1/json/123/eventslast.php",
+   "params": [
+    {
+     "name": "id",
+     "in": "query",
+     "required": true,
+     "type": "string",
+     "description": "Team id (idTeam), e.g. 133604 = Arsenal",
+     "example": "133604"
+    }
+   ],
+   "responseType": "json",
+   "resultPath": "results",
+   "defaultFields": [
+    "idEvent",
+    "strEvent",
+    "strLeague",
+    "dateEvent",
+    "intHomeScore",
+    "intAwayScore",
+    "strVenue",
+    "strSeason"
+   ],
+   "mutates": false,
+   "example": {
+    "id": "133604"
+   },
+   "source": "E9 GET https://www.thesportsdb.com/api/v1/json/{n}/eventslast.php",
+   "verified": true
+  },
+  {
+   "name": "list-events-by-day",
+   "summary": "List all events on a given date, optionally filtered by sport",
+   "method": "GET",
+   "urlTemplate": "/api/v1/json/123/eventsday.php",
+   "params": [
+    {
+     "name": "date",
+     "key": "d",
+     "in": "query",
+     "required": true,
+     "type": "string",
+     "description": "Date in YYYY-MM-DD format",
+     "example": "2026-10-18"
+    },
+    {
+     "name": "sport",
+     "key": "s",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Sport name, e.g. Soccer, Basketball, Ice Hockey, American Football",
+     "example": "Soccer"
+    }
+   ],
+   "responseType": "json",
+   "resultPath": "events",
+   "defaultFields": [
+    "idEvent",
+    "strEvent",
+    "strLeague",
+    "idLeague",
+    "strTimestamp",
+    "intHomeScore",
+    "intAwayScore",
+    "strVenue"
+   ],
+   "mutates": false,
+   "example": {
+    "date": "2026-10-18",
+    "sport": "Soccer"
+   },
+   "source": "E7 GET https://www.thesportsdb.com/api/v1/json/{n}/eventsday.php",
+   "verified": true
+  },
+  {
+   "name": "list-team-players",
+   "summary": "List the players and staff of a team by team id",
+   "method": "GET",
+   "urlTemplate": "/api/v1/json/123/lookup_all_players.php",
+   "params": [
+    {
+     "name": "id",
+     "in": "query",
+     "required": true,
+     "type": "string",
+     "description": "Team id (idTeam), e.g. 133604",
+     "example": "133604"
+    }
+   ],
+   "responseType": "json",
+   "resultPath": "player",
+   "defaultFields": [
+    "idPlayer",
+    "strPlayer",
+    "strNumber",
+    "strPosition",
+    "strNationality",
+    "dateBorn",
+    "strStatus"
+   ],
+   "mutates": false,
+   "example": {
+    "id": "133604"
+   },
+   "source": "E8 GET https://www.thesportsdb.com/api/v1/json/{n}/lookup_all_players.php",
+   "verified": true
+  },
+  {
+   "name": "list-leagues",
+   "summary": "List leagues with their ids and sport",
+   "method": "GET",
+   "urlTemplate": "/api/v1/json/123/all_leagues.php",
+   "params": [],
+   "responseType": "json",
+   "resultPath": "leagues",
+   "defaultFields": [
+    "idLeague",
+    "strLeague",
+    "strSport"
+   ],
+   "mutates": false,
+   "source": "E6 GET https://www.thesportsdb.com/api/v1/json/{n}/all_leagues.php",
+   "verified": true
+  },
+  {
+   "name": "search-site",
+   "summary": "Keyword search across teams, players, leagues, venues and events on the website, optionally filtered by sport; returns names and links",
+   "method": "GET",
+   "urlTemplate": "/browse",
+   "params": [
+    {
+     "name": "query",
+     "key": "s",
+     "in": "query",
+     "required": true,
+     "type": "string",
+     "description": "Search keyword (team, player, venue, league or event name)",
+     "example": "Arsenal"
+    },
+    {
+     "name": "sport",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Filter by sport, capitalised as on the site, e.g. Soccer, Motorsport, Basketball",
+     "example": "Soccer"
+    }
+   ],
+   "responseType": "html",
+   "extract": {
+    "list": "a[href^='/team/'], a[href^='/player/'], a[href^='/league/'], a[href^='/venue/'], a[href^='/event/']",
+    "fields": {
+     "name": "",
+     "url": "@href"
+    }
+   },
+   "defaultFields": [
+    "name",
+    "url"
+   ],
+   "mutates": false,
+   "example": {
+    "query": "Arsenal"
+   },
+   "source": "E10 GET https://www.thesportsdb.com/browse",
+   "verified": true
+  },
+  {
+   "name": "get-team",
+   "summary": "Get a team profile page: name, profile info, next event, manager, stadium, leagues, upcoming fixtures and recent results",
+   "method": "GET",
+   "urlTemplate": "/team/{team}",
+   "params": [
+    {
+     "name": "team",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Team id or id-slug, e.g. 133604-arsenal",
+     "example": "133604-arsenal"
+    }
+   ],
+   "responseType": "html",
+   "extract": {
+    "fields": {
+     "name": "h1 > a",
+     "profile": "div.row > div.col-sm-3",
+     "next_event_url": "div.col-sm-3 a[href^='/event/']@href",
+     "manager_url": "div.col-sm-3 a[href^='/player/']@href",
+     "stadium_url": "a[href^='/venue/']@href",
+     "fixtures": "table.team-events-table"
+    }
+   },
+   "defaultFields": [
+    "name",
+    "profile",
+    "next_event_url",
+    "manager_url",
+    "stadium_url",
+    "fixtures"
+   ],
+   "mutates": false,
+   "example": {
+    "team": "133604-arsenal"
+   },
+   "source": "E13",
+   "verified": true
+  },
+  {
+   "name": "get-player",
+   "summary": "Get a player profile page: name, bio facts (born, position, team), description, team and league links",
+   "method": "GET",
+   "urlTemplate": "/player/{player}",
+   "params": [
+    {
+     "name": "player",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Player id or id-slug, e.g. 34172278-eberechi-eze",
+     "example": "34172278-eberechi-eze"
+    }
+   ],
+   "responseType": "html",
+   "extract": {
+    "fields": {
+     "name": "h1 > a",
+     "profile": "div.row > div.col-sm-3",
+     "team_url": "div.col-sm-3 a[href^='/team/']@href",
+     "league_url": "div.col-sm-3 a[href^='/league/']@href",
+     "description": "div.col-sm-9 p"
+    }
+   },
+   "defaultFields": [
+    "name",
+    "profile",
+    "team_url",
+    "league_url",
+    "description"
+   ],
+   "mutates": false,
+   "example": {
+    "player": "34172278-eberechi-eze"
+   },
+   "source": "E14",
+   "verified": true
+  },
+  {
+   "name": "get-league",
+   "summary": "Get a league profile page: name, facts, current season and round, upcoming fixtures and recent results",
+   "method": "GET",
+   "urlTemplate": "/league/{league}",
+   "params": [
+    {
+     "name": "league",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "League id or id-slug, e.g. 4328-english-premier-league",
+     "example": "4328-english-premier-league"
+    }
+   ],
+   "responseType": "html",
+   "extract": {
+    "fields": {
+     "name": "h1 > a",
+     "profile": "div.col-sm-3",
+     "current_season_url": "div.col-sm-3 a[href^='/season/']@href",
+     "events": "table.league-events-table"
+    }
+   },
+   "defaultFields": [
+    "name",
+    "profile",
+    "current_season_url",
+    "events"
+   ],
+   "mutates": false,
+   "example": {
+    "league": "4328-english-premier-league"
+   },
+   "source": "E15",
+   "verified": true
+  },
+  {
+   "name": "list-season-events",
+   "summary": "List all fixtures/results of a league season (optionally for one team or one round)",
+   "method": "GET",
+   "urlTemplate": "/season/{league}/{season}",
+   "params": [
+    {
+     "name": "league",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "League id-slug, e.g. 4328-english-premier-league",
+     "example": "4328-english-premier-league"
+    },
+    {
+     "name": "season",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Season, e.g. 2025-2026",
+     "example": "2025-2026"
+    },
+    {
+     "name": "team",
+     "key": "t",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Restrict to one team, as id-slug, e.g. 133604-arsenal"
+    },
+    {
+     "name": "round",
+     "key": "r",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Restrict to one round, two digits, e.g. 07"
+    }
+   ],
+   "responseType": "html",
+   "extract": {
+    "list": "tr.season-event-row",
+    "fields": {
+     "summary": "",
+     "date": "td",
+     "round": "td.d-none.d-lg-block > a",
+     "event_url": "a.d-none.d-lg-block[href^='/event/']@href"
+    }
+   },
+   "defaultFields": [
+    "summary",
+    "date",
+    "round",
+    "event_url"
+   ],
+   "mutates": false,
+   "example": {
+    "league": "4328-english-premier-league",
+    "season": "2025-2026"
+   },
+   "source": "E16",
+   "verified": true
+  },
+  {
+   "name": "list-tv-channels",
+   "summary": "List TV channels for a country, optionally searching channels by name",
+   "method": "GET",
+   "urlTemplate": "/browse_tv",
+   "params": [
+    {
+     "name": "country",
+     "key": "c",
+     "in": "query",
+     "required": true,
+     "type": "string",
+     "description": "Country slug, lowercase with underscores, e.g. united_kingdom, brazil, canada",
+     "example": "united_kingdom"
+    },
+    {
+     "name": "query",
+     "key": "q",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Channel name search, e.g. ESPN"
+    }
+   ],
+   "responseType": "html",
+   "extract": {
+    "list": "div.tv-sidebar a[href^='/channel/']",
+    "fields": {
+     "name": "",
+     "url": "@href"
+    }
+   },
+   "defaultFields": [
+    "name",
+    "url"
+   ],
+   "mutates": false,
+   "example": {
+    "country": "united_kingdom"
+   },
+   "source": "E12 GET https://www.thesportsdb.com/browse_tv",
+   "verified": true
+  },
+  {
+   "name": "list-tv-events-today",
+   "summary": "List today's televised sports events for a country, with time (UTC) and channels",
+   "method": "GET",
+   "urlTemplate": "/browse_tv",
+   "params": [
+    {
+     "name": "country",
+     "key": "c",
+     "in": "query",
+     "required": true,
+     "type": "string",
+     "description": "Country slug, e.g. united_kingdom",
+     "example": "united_kingdom"
+    }
+   ],
+   "responseType": "html",
+   "extract": {
+    "list": "td.tv-event-card",
+    "fields": {
+     "event_url": "a[href^='/event/']@href",
+     "time_and_channels": "",
+     "channel_url": "a[href^='/channel/']@href"
+    }
+   },
+   "defaultFields": [
+    "time_and_channels",
+    "event_url",
+    "channel_url"
+   ],
+   "mutates": false,
+   "example": {
+    "country": "united_kingdom"
+   },
+   "source": "E12",
+   "verified": true
+  },
+  {
+   "name": "get-channel-schedule",
+   "summary": "Get a TV channel's sports schedule for the next 7 days (events with UTC times)",
+   "method": "GET",
+   "urlTemplate": "/channel/{channel}",
+   "params": [
+    {
+     "name": "channel",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Channel id-slug, e.g. 8647-sky-sports-premier-league-tv-schedule",
+     "example": "8647-sky-sports-premier-league-tv-schedule"
+    }
+   ],
+   "responseType": "html",
+   "extract": {
+    "list": "div.col-sm-8 table > tr",
+    "fields": {
+     "text": "td",
+     "event_url": "a[href^='/event/']@href"
+    }
+   },
+   "defaultFields": [
+    "text",
+    "event_url"
+   ],
+   "mutates": false,
+   "example": {
+    "channel": "8647-sky-sports-premier-league-tv-schedule"
+   },
+   "source": "E18",
+   "verified": true
+  },
+  {
+   "name": "list-sport-leagues",
+   "summary": "List the featured leagues of a sport from its overview page",
+   "method": "GET",
+   "urlTemplate": "/sport/{sport}",
+   "params": [
+    {
+     "name": "sport",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Sport slug, lowercase with hyphens",
+     "enum": [
+      "soccer",
+      "motorsport",
+      "fighting",
+      "baseball",
+      "basketball",
+      "american-football",
+      "ice-hockey",
+      "golf",
+      "rugby",
+      "tennis",
+      "cricket",
+      "cycling",
+      "australian-football",
+      "esports",
+      "volleyball",
+      "netball",
+      "handball",
+      "snooker",
+      "field-hockey",
+      "darts",
+      "athletics",
+      "badminton",
+      "climbing",
+      "equestrian",
+      "gymnastics",
+      "shooting",
+      "extreme-sports",
+      "table-tennis",
+      "multi-sports",
+      "watersports",
+      "weightlifting",
+      "skiing",
+      "skating"
+     ],
+     "example": "basketball"
+    }
+   ],
+   "responseType": "html",
+   "extract": {
+    "list": "table a[href*='/league/']",
+    "fields": {
+     "name": "",
+     "url": "@href"
+    }
+   },
+   "defaultFields": [
+    "name",
+    "url"
+   ],
+   "mutates": false,
+   "example": {
+    "sport": "basketball"
+   },
+   "source": "E19",
+   "verified": true
+  }
+ ],
+ "blockers": [],
+ "notes": [
+  "The JSON API commands use the free public key 123 (/api/v1/json/123/...). On the free tier some endpoints are limited. The docs say searchteams.php only works for 'Arsenal', and list results may be truncated (e.g. all_leagues and lookup_all_players returned 10 items). For other teams, use search-site to find the team id/slug, then get-team, list-team-last-events or list-team-players.",
+  "Ids chain across commands: idTeam comes from search-teams, search-site URLs (/team/{id}-{slug}) or league tables. idLeague comes from list-leagues (4328 = English Premier League). idEvent comes from fixtures lists.",
+  "HTML detail commands take id-slug path values exactly as they appear in site URLs (e.g. 133604-arsenal). The plain numeric id usually works too.",
+  "list-season-events: the site's own links append filters to the path as '&t=133604-arsenal' or '&r=07'. Passing them as query params (?t=, ?r=) is expected to work but was not verified.",
+  "The league table HTML (/table.php?l=&s=&sort=<col>&dir=asc|desc) only adds server-side sorting. Use get-league-table and sort client-side instead.",
+  "All times are UTC unless a field says local (strTimeLocal, dateEventLocal). Numeric values in the API come back as strings."
+ ],
+ "dropped": [],
+ "generated": {
+  "by": "clify add",
+  "model": "claude-opus-5-5",
+  "exploredSteps": 19,
+  "recorded": 25,
+  "verifiedAt": "2026-10-18T08:18:39.178Z",
+  "seconds": 289
+ }
+}

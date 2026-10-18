@@ -1,0 +1,2947 @@
+{
+ "generatedAt": "2026-10-18T13:07:22.443Z",
+ "bench": {
+  "source": "bench/results/summary-main+hard+ui+ui2.json",
+  "readme": "bench/README.md",
+  "nTasks": 20,
+  "nSites": 11,
+  "model": [
+   "claude-opus-5-5"
+  ],
+  "browserUi": {
+   "n": 40,
+   "ok": 40,
+   "medianSec": 16.08,
+   "medianTokens": 79363.5,
+   "totalCostUsd": 4.1213078
+  },
+  "browser": {
+   "n": 40,
+   "ok": 40,
+   "medianSec": 12.748999999999999,
+   "medianTokens": 50446,
+   "totalCostUsd": 2.2945217999999996
+  },
+  "cli": {
+   "n": 40,
+   "ok": 40,
+   "medianSec": 9.0475,
+   "medianTokens": 16464,
+   "totalCostUsd": 1.2771044
+  },
+  "vsUi": {
+   "faster": 1.8,
+   "tokens": 4.8,
+   "cheaper": 3.2
+  },
+  "vsJs": {
+   "faster": 1.4,
+   "tokens": 3.1,
+   "cheaper": 1.8
+  },
+  "practice": "10 of the 20 tasks on 4 scraping-practice sites"
+ },
+ "hero": {
+  "browser": {
+   "source": "bench/runs/ui/quotes-top-author/browser-ui-1/result.json",
+   "wallMs": 48626,
+   "toolCalls": 25,
+   "tokens": 421743,
+   "answer": "Albert Einstein, 10 quotes",
+   "ok": true,
+   "costUsd": 0.2993738
+  },
+  "cli": {
+   "source": "bench/runs/hard/quotes-top-author/cli-1/result.json",
+   "wallMs": 20522,
+   "toolCalls": 4,
+   "tokens": 26765,
+   "answer": "Albert Einstein, 10 quotes",
+   "ok": true,
+   "costUsd": 0.0379146
+  }
+ },
+ "add": {
+  "source": "clify/proofs/sites/ycombinator.add-report.json",
+  "log": "film/evidence/sweep/ycombinator-add.log",
+  "url": "https://www.ycombinator.com/companies",
+  "site": "ycombinator",
+  "seconds": 304,
+  "explored": {
+   "steps": 29,
+   "recorded": 86,
+   "heldWrites": 21
+  },
+  "verified": 10,
+  "commands": [
+   "list-directory-categories",
+   "get-company",
+   "list-company-jobs",
+   "get-job",
+   "get-launch",
+   "list-jobs",
+   "list-jobs-by-role",
+   "list-jobs-by-role-location",
+   "list-people",
+   "get-person"
+  ],
+  "dropped": [
+   {
+    "name": "search-companies",
+    "reason": "Algolia rejects the request with 'Invalid Application-ID or API key'. The embedded API key is truncated or rotated. The full secured key lives in a JS variable on /companies, which selector-based CSRF extraction can't read reliably. No working replay without it."
+   },
+   {
+    "name": "list-company-facets",
+    "reason": "Uses the same invalid Algolia API key as search-companies (403 'Invalid Application-ID or API key'). Can't be replayed without a valid key."
+   }
+  ],
+  "lines": [
+   {
+    "t": 0,
+    "text": "🔭 exploring https://www.ycombinator.com/companies"
+   },
+   {
+    "t": 0,
+    "text": "🌐 https://www.ycombinator.com/companies"
+   },
+   {
+    "t": 1,
+    "text": "  ⛔ held write POST https://us.i.posthog.com/flags/?v=2"
+   },
+   {
+    "t": 6,
+    "text": "→ type {\"i\":63,\"text\":\"developer tools\",\"submit\":true,\"intent\":\"search companies by keyword\"}"
+   },
+   {
+    "t": 9,
+    "text": "→ click {\"i\":12,\"intent\":\"filter companies that are hiring\"}"
+   },
+   {
+    "t": 13,
+    "text": "→ click {\"i\":21,\"intent\":\"filter companies by batch\"}"
+   },
+   {
+    "t": 18,
+    "text": "→ goto {\"url\":\"https://www.ycombinator.com/companies?industry=Fintech&query=payments\",\"intent\":\"filter companies by industry\"}"
+   },
+   {
+    "t": 18,
+    "text": "→ select {\"i\":10,\"option\":\"Launch Date\",\"intent\":\"sort companies by launch date\"}"
+   },
+   {
+    "t": 22,
+    "text": "→ click {\"i\":24,\"intent\":\"filter companies by industry\"}"
+   },
+   {
+    "t": 27,
+    "text": "→ click {\"i\":54,\"intent\":\"filter companies by region\"}"
+   },
+   {
+    "t": 32,
+    "text": "→ click {\"i\":68,\"intent\":\"open company detail page\"}"
+   },
+   {
+    "t": 33,
+    "text": "  ⛔ held write POST https://jnn-pa.googleapis.com/$rpc/google.internal.waa.v1.Waa/GenerateIT"
+   },
+   {
+    "t": 33,
+    "text": "  ⛔ held write POST https://us.i.posthog.com/flags/?v=2"
+   },
+   {
+    "t": 37,
+    "text": "→ click {\"i\":17,\"intent\":\"list company jobs\"}"
+   },
+   {
+    "t": 38,
+    "text": "  ⛔ held write POST https://us.i.posthog.com/flags/?v=2"
+   },
+   {
+    "t": 43,
+    "text": "→ click {\"i\":14,\"intent\":\"open job detail\"}"
+   },
+   {
+    "t": 44,
+    "text": "  ⛔ held write POST https://us.i.posthog.com/flags/?v=2"
+   },
+   {
+    "t": 47,
+    "text": "→ click {\"i\":21,\"intent\":\"open company detail page\"}"
+   },
+   {
+    "t": 48,
+    "text": "  ⛔ held write POST https://jnn-pa.googleapis.com/$rpc/google.internal.waa.v1.Waa/GenerateIT"
+   },
+   {
+    "t": 48,
+    "text": "  ⛔ held write POST https://us.i.posthog.com/flags/?v=2"
+   },
+   {
+    "t": 56,
+    "text": "→ click {\"i\":14,\"intent\":\"list companies by industry tag\"}"
+   },
+   {
+    "t": 57,
+    "text": "  ⛔ held write POST https://us.i.posthog.com/flags/?v=2"
+   },
+   {
+    "t": 62,
+    "text": "→ goto {\"url\":\"https://www.ycombinator.com/companies/location/san-francisco-bay-area\",\"intent\":\"list companies by location\"}"
+   },
+   {
+    "t": 63,
+    "text": "  ⛔ held write POST https://us.i.posthog.com/flags/?v=2"
+   },
+   {
+    "t": 69,
+    "text": "→ click {\"i\":9,\"intent\":\"open startup directory\"}"
+   },
+   {
+    "t": 70,
+    "text": "  ⛔ held write POST https://us.i.posthog.com/flags/?v=2"
+   },
+   {
+    "t": 73,
+    "text": "→ type {\"i\":63,\"text\":\"ai\",\"submit\":true,\"intent\":\"search companies by keyword\"}"
+   },
+   {
+    "t": 77,
+    "text": "→ scroll {\"direction\":\"down\"}"
+   },
+   {
+    "t": 81,
+    "text": "→ scroll {\"direction\":\"down\"}"
+   },
+   {
+    "t": 85,
+    "text": "→ scroll {\"direction\":\"down\"}"
+   },
+   {
+    "t": 89,
+    "text": "→ scroll {\"direction\":\"down\"}"
+   },
+   {
+    "t": 95,
+    "text": "→ goto {\"url\":\"https://www.ycombinator.com/launches\",\"intent\":\"list latest company launches\"}"
+   },
+   {
+    "t": 95,
+    "text": "  ⛔ held write POST https://us.i.posthog.com/flags/?v=2"
+   },
+   {
+    "t": 101,
+    "text": "→ type {\"i\":9,\"text\":\"voice agent\",\"submit\":true,\"intent\":\"search launches by keyword\"}"
+   },
+   {
+    "t": 105,
+    "text": "→ select {\"i\":12,\"option\":\"Votes\",\"intent\":\"sort launches by votes\"}"
+   },
+   {
+    "t": 110,
+    "text": "→ select {\"i\":10,\"option\":\"Fall 2025\",\"intent\":\"filter launches by batch\"}"
+   },
+   {
+    "t": 111,
+    "text": "→ click {\"i\":15,\"intent\":\"open launch detail\"}"
+   },
+   {
+    "t": 112,
+    "text": "  ⛔ held write POST https://jnn-pa.googleapis.com/$rpc/google.internal.waa.v1.Waa/GenerateIT"
+   },
+   {
+    "t": 112,
+    "text": "  ⛔ held write POST https://jnn-pa.googleapis.com/$rpc/google.internal.waa.v1.Waa/GenerateIT"
+   },
+   {
+    "t": 112,
+    "text": "  ⛔ held write POST https://jnn-pa.googleapis.com/$rpc/google.internal.waa.v1.Waa/GenerateIT"
+   },
+   {
+    "t": 113,
+    "text": "  ⛔ held write POST https://us.i.posthog.com/flags/?v=2"
+   },
+   {
+    "t": 121,
+    "text": "→ goto {\"url\":\"https://www.ycombinator.com/jobs\",\"intent\":\"list startup jobs\"}"
+   },
+   {
+    "t": 122,
+    "text": "  ⛔ held write POST https://us.i.posthog.com/flags/?v=2"
+   },
+   {
+    "t": 127,
+    "text": "→ click {\"i\":13,\"intent\":\"list jobs by role\"}"
+   },
+   {
+    "t": 128,
+    "text": "  ⛔ held write POST https://us.i.posthog.com/flags/?v=2"
+   },
+   {
+    "t": 133,
+    "text": "→ click {\"i\":17,\"intent\":\"list jobs by role and location\"}"
+   },
+   {
+    "t": 135,
+    "text": "  ⛔ held write POST https://us.i.posthog.com/flags/?v=2"
+   },
+   {
+    "t": 138,
+    "text": "→ goto {\"url\":\"https://www.ycombinator.com/people/jared-friedman\",\"intent\":\"open partner profile\"}"
+   },
+   {
+    "t": 139,
+    "text": "  ⛔ held write POST https://us.i.posthog.com/flags/?v=2"
+   },
+   {
+    "t": 144,
+    "text": "→ click {\"i\":10,\"intent\":\"list YC people\"}"
+   },
+   {
+    "t": 145,
+    "text": "  ⛔ held write POST https://us.i.posthog.com/flags/?v=2"
+   },
+   {
+    "t": 150,
+    "text": "→ goto {\"url\":\"https://www.ycombinator.com/companies/airbnb\",\"intent\":\"open company detail page\"}"
+   },
+   {
+    "t": 151,
+    "text": "  ⛔ held write POST https://us.i.posthog.com/flags/?v=2"
+   },
+   {
+    "t": 163,
+    "text": "→ done {\"summary\":\"Explored the YC public site without logging in.\\n- Startup Directory: keyword search (\\\"developer tools\\\", \\\"ai\\\"). The results "
+   },
+   {
+    "t": 164,
+    "text": "📼 recorded 65 calls, 21 held writes"
+   },
+   {
+    "t": 164,
+    "text": "🧠 synthesizing from 21 endpoints (29k chars)"
+   },
+   {
+    "t": 283,
+    "text": "🔎 verify round 0: search-companies, list-company-facets, list-directory-categories, get-company, list-company-jobs, get-job, get-launch, list-jobs, list-jobs-by-role, list-jobs-by-role-location, list-people, get-person"
+   },
+   {
+    "t": 284,
+    "text": "  ✗ search-companies: HTTP 403: this endpoint needs a login or the site refused the request. (HTTP 403) (623 ms)"
+   },
+   {
+    "t": 284,
+    "text": "  ✗ list-company-facets: HTTP 403: this endpoint needs a login or the site refused the request. (HTTP 403) (619 ms)"
+   },
+   {
+    "t": 284,
+    "text": "  ✓ list-directory-categories (286 ms)"
+   },
+   {
+    "t": 284,
+    "text": "  ✓ get-company (205 ms)"
+   },
+   {
+    "t": 284,
+    "text": "  ✓ list-company-jobs (125 ms)"
+   },
+   {
+    "t": 284,
+    "text": "  ✓ get-job (208 ms)"
+   },
+   {
+    "t": 284,
+    "text": "  ✓ get-launch (130 ms)"
+   },
+   {
+    "t": 284,
+    "text": "  ✓ list-jobs (155 ms)"
+   },
+   {
+    "t": 284,
+    "text": "  ✓ list-jobs-by-role (178 ms)"
+   },
+   {
+    "t": 284,
+    "text": "  ✓ list-jobs-by-role-location (109 ms)"
+   },
+   {
+    "t": 284,
+    "text": "  ✓ list-people (100 ms)"
+   },
+   {
+    "t": 284,
+    "text": "  ✓ get-person (141 ms)"
+   },
+   {
+    "t": 304,
+    "text": "  🗑 search-companies: Algolia rejects the request with 'Invalid Application-ID or API key'. The embedded API key is truncated or rotated. The full secured key lives in a JS variable on /companies, which selector-based CSRF extraction can't read reliably. No working replay without it."
+   },
+   {
+    "t": 304,
+    "text": "  🗑 list-company-facets: Uses the same invalid Algolia API key as search-companies (403 'Invalid Application-ID or API key'). Can't be replayed without a valid key."
+   },
+   {
+    "t": 304,
+    "text": "  🔧 get-company: The page has no h1, so 'name' just repeated the title; removed it. Renamed 'website' to 'url' because og:url is the YC profile URL, not the company's own website."
+   },
+   {
+    "t": 304,
+    "text": "  🔧 get-launch: The 'company' field returned a launches URL instead of the company name. Removed it; companyUrl already gives the company slug."
+   },
+   {
+    "t": 304,
+    "text": "🔎 verify round 1: get-company, get-launch"
+   },
+   {
+    "t": 304,
+    "text": "  ✓ get-company (157 ms)"
+   },
+   {
+    "t": 304,
+    "text": "  ✓ get-launch (149 ms)"
+   }
+  ],
+  "run": {
+   "source": "film/evidence/sweep/ycombinator-run.json",
+   "cmd": "ycombinator list-jobs-by-role --role product-manager --limit 3",
+   "ms": 429,
+   "exit": 0,
+   "stdout": "{\n  \"ok\": true,\n  \"status\": 200,\n  \"count\": 35,\n  \"data\": [\n    {\n      \"title\": \"Ex Technical Founder (Product Engineer)\",\n      \"url\": \"https://www.ycombinator.com/companies/cogram/jobs/LDTrViN-ex-technical-founder-product-engineer\"\n    },\n    {\n      \"title\": \"Senior Product Manager - Cards & Payments\",\n      \"url\": \"https://www.ycombinator.com/companies/gosats/jobs/0TZL6W7-senior-product-manager-cards-payments\"\n    },\n    {\n      \"title\": \"Member of Technical Staff\",\n      \"url\": \"https://www.ycombinator.com/companies/concourse/jobs/hghMmKM-member-of-technical-staff\"\n    }\n  ]\n}\n"
+  }
+ },
+ "sweep": {
+  "source": "clify/proofs/sites.md",
+  "attempted": 44,
+  "ok3": 41,
+  "pct": 93,
+  "verifiedCommands": 514,
+  "sites": [
+   {
+    "site": "usaspending",
+    "host": "usaspending.gov",
+    "verified": 34,
+    "file": "clify/proofs/sites/usaspending.add-report.json"
+   },
+   {
+    "site": "tvmaze",
+    "host": "tvmaze.com",
+    "verified": 25,
+    "file": "clify/proofs/sites/tvmaze.add-report.json"
+   },
+   {
+    "site": "crates",
+    "host": "crates.io",
+    "verified": 19,
+    "file": "clify/proofs/sites/crates.add-report.json"
+   },
+   {
+    "site": "musicbrainz",
+    "host": "musicbrainz.org",
+    "verified": 18,
+    "file": "clify/proofs/sites/musicbrainz.add-report.json"
+   },
+   {
+    "site": "jsdelivr",
+    "host": "jsdelivr.com",
+    "verified": 17,
+    "file": "clify/proofs/sites/jsdelivr.add-report.json"
+   },
+   {
+    "site": "packagist",
+    "host": "packagist.org",
+    "verified": 17,
+    "file": "clify/proofs/sites/packagist.add-report.json"
+   },
+   {
+    "site": "rcsb",
+    "host": "rcsb.org",
+    "verified": 17,
+    "file": "clify/proofs/sites/rcsb.add-report.json"
+   },
+   {
+    "site": "rubygems",
+    "host": "rubygems.org",
+    "verified": 17,
+    "file": "clify/proofs/sites/rubygems.add-report.json"
+   },
+   {
+    "site": "archive",
+    "host": "archive.org",
+    "verified": 16,
+    "file": "clify/proofs/sites/archive.add-report.json"
+   },
+   {
+    "site": "docs-rs",
+    "host": "docs.rs",
+    "verified": 16,
+    "file": "clify/proofs/sites/docs-rs.add-report.json"
+   },
+   {
+    "site": "dev-to",
+    "host": "dev.to",
+    "verified": 15,
+    "file": "clify/proofs/sites/dev-to.add-report.json"
+   },
+   {
+    "site": "huggingface",
+    "host": "huggingface.co",
+    "verified": 15,
+    "file": "clify/proofs/sites/huggingface.add-report.json"
+   },
+   {
+    "site": "nuget",
+    "host": "nuget.org",
+    "verified": 15,
+    "file": "clify/proofs/sites/nuget.add-report.json"
+   },
+   {
+    "site": "openstreetmap",
+    "host": "openstreetmap.org",
+    "verified": 15,
+    "file": "clify/proofs/sites/openstreetmap.add-report.json"
+   },
+   {
+    "site": "federalregister",
+    "host": "federalregister.gov",
+    "verified": 13,
+    "file": "clify/proofs/sites/federalregister.add-report.json"
+   },
+   {
+    "site": "gutenberg",
+    "host": "gutenberg.org",
+    "verified": 13,
+    "file": "clify/proofs/sites/gutenberg.add-report.json"
+   },
+   {
+    "site": "hankintailmoitukset",
+    "host": "hankintailmoitukset.fi",
+    "verified": 13,
+    "file": "clify/proofs/sites/hankintailmoitukset.add-report.json"
+   },
+   {
+    "site": "hub-docker",
+    "host": "hub.docker.com",
+    "verified": 13,
+    "file": "clify/proofs/sites/hub-docker.add-report.json"
+   },
+   {
+    "site": "news-ycombinator",
+    "host": "news.ycombinator.com",
+    "verified": 13,
+    "file": "clify/proofs/sites/news-ycombinator.add-report.json"
+   },
+   {
+    "site": "artic",
+    "host": "artic.edu",
+    "verified": 12,
+    "file": "clify/proofs/sites/artic.add-report.json"
+   },
+   {
+    "site": "earthquake-usgs",
+    "host": "earthquake.usgs.gov",
+    "verified": 11,
+    "file": "clify/proofs/sites/earthquake-usgs.add-report.json"
+   },
+   {
+    "site": "lichess",
+    "host": "lichess.org",
+    "verified": 11,
+    "file": "clify/proofs/sites/lichess.add-report.json"
+   },
+   {
+    "site": "pkg-go",
+    "host": "pkg.go.dev",
+    "verified": 11,
+    "file": "clify/proofs/sites/pkg-go.add-report.json"
+   },
+   {
+    "site": "weather",
+    "host": "weather.gov",
+    "verified": 11,
+    "file": "clify/proofs/sites/weather.add-report.json"
+   },
+   {
+    "site": "arxiv",
+    "host": "arxiv.org",
+    "verified": 10,
+    "file": "clify/proofs/sites/arxiv.add-report.json"
+   },
+   {
+    "site": "data-europa",
+    "host": "data.europa.eu",
+    "verified": 10,
+    "file": "clify/proofs/sites/data-europa.add-report.json"
+   },
+   {
+    "site": "inaturalist",
+    "host": "inaturalist.org",
+    "verified": 10,
+    "file": "clify/proofs/sites/inaturalist.add-report.json"
+   },
+   {
+    "site": "theguardian",
+    "host": "theguardian.com",
+    "verified": 10,
+    "file": "clify/proofs/sites/theguardian.add-report.json"
+   },
+   {
+    "site": "ycombinator",
+    "host": "ycombinator.com",
+    "verified": 10,
+    "file": "clify/proofs/sites/ycombinator.add-report.json"
+   },
+   {
+    "site": "catalog-data",
+    "host": "catalog.data.gov",
+    "verified": 9,
+    "file": "clify/proofs/sites/catalog-data.add-report.json"
+   },
+   {
+    "site": "data-gov",
+    "host": "data.gov.uk",
+    "verified": 9,
+    "file": "clify/proofs/sites/data-gov.add-report.json"
+   },
+   {
+    "site": "pypi",
+    "host": "pypi.org",
+    "verified": 9,
+    "file": "clify/proofs/sites/pypi.add-report.json"
+   },
+   {
+    "site": "clinicaltrials",
+    "host": "clinicaltrials.gov",
+    "verified": 8,
+    "file": "clify/proofs/sites/clinicaltrials.add-report.json"
+   },
+   {
+    "site": "docs-python",
+    "host": "docs.python.org",
+    "verified": 8,
+    "file": "clify/proofs/sites/docs-python.add-report.json"
+   },
+   {
+    "site": "finna",
+    "host": "finna.fi",
+    "verified": 8,
+    "file": "clify/proofs/sites/finna.add-report.json"
+   },
+   {
+    "site": "images-nasa",
+    "host": "images.nasa.gov",
+    "verified": 8,
+    "file": "clify/proofs/sites/images-nasa.add-report.json"
+   },
+   {
+    "site": "formulae-brew",
+    "host": "formulae.brew.sh",
+    "verified": 7,
+    "file": "clify/proofs/sites/formulae-brew.add-report.json"
+   },
+   {
+    "site": "openverse",
+    "host": "openverse.org",
+    "verified": 6,
+    "file": "clify/proofs/sites/openverse.add-report.json"
+   },
+   {
+    "site": "remoteok",
+    "host": "remoteok.com",
+    "verified": 5,
+    "file": "clify/proofs/sites/remoteok.add-report.json"
+   },
+   {
+    "site": "developer-mozilla",
+    "host": "developer.mozilla.org",
+    "verified": 4,
+    "file": "clify/proofs/sites/developer-mozilla.add-report.json"
+   },
+   {
+    "site": "pubmed-ncbi",
+    "host": "pubmed.ncbi.nlm.nih.gov",
+    "verified": 4,
+    "file": "clify/proofs/sites/pubmed-ncbi.add-report.json"
+   },
+   {
+    "site": "legislation",
+    "host": "legislation.gov.uk",
+    "verified": 2,
+    "file": "clify/proofs/sites/legislation.add-report.json"
+   },
+   {
+    "site": "metmuseum",
+    "host": "metmuseum.org",
+    "verified": 0,
+    "file": "clify/proofs/sites/metmuseum.add-report.json"
+   },
+   {
+    "site": "ted-europa",
+    "host": "ted.europa.eu",
+    "verified": 0,
+    "file": "clify/proofs/sites/ted-europa.add-report.json"
+   }
+  ]
+ },
+ "coldStart": {
+  "source": "clify/proofs/cold-start.md",
+  "url": "https://flathub.org/",
+  "addSec": 141,
+  "generated": 8,
+  "verified": 8,
+  "totalSec": 177,
+  "answer": "`/api/v2/appstream/org.gimp.GIMP`, checked right after: release 3.2.6 with timestamp 1788998400 = 2026-09-10, developer \"The GIMP team\"",
+  "cloned": "the public export"
+ },
+ "wall": {
+  "source": "clify/proofs/wall.json",
+  "distinctSites": 133,
+  "verifiedOnWall": 1628,
+  "attempted": 160,
+  "verifiedAll": 1634,
+  "snippet": "**133 of 160 sites** with 3+ verified commands and **1,634 verified commands**",
+  "tiles": [
+   {
+    "name": "endoflife",
+    "host": "endoflife.date",
+    "img": "wall/endoflife.jpg",
+    "n": 14,
+    "on": "blaxel"
+   },
+   {
+    "name": "hex",
+    "host": "hex.pm",
+    "img": "wall/hex.jpg",
+    "n": 9,
+    "on": "blaxel"
+   },
+   {
+    "name": "pub",
+    "host": "pub.dev",
+    "img": null,
+    "n": 17,
+    "on": "blaxel"
+   },
+   {
+    "name": "caniuse",
+    "host": "caniuse.com",
+    "img": null,
+    "n": 8,
+    "on": "blaxel"
+   },
+   {
+    "name": "nhl",
+    "host": "nhl.com",
+    "img": "wall/nhl.jpg",
+    "n": 27,
+    "on": "blaxel"
+   },
+   {
+    "name": "registry-terraform",
+    "host": "registry.terraform.io",
+    "img": null,
+    "n": 21,
+    "on": "blaxel"
+   },
+   {
+    "name": "themoviedb",
+    "host": "themoviedb.org",
+    "img": null,
+    "n": 17,
+    "on": "blaxel"
+   },
+   {
+    "name": "rijksmuseum",
+    "host": "rijksmuseum.nl",
+    "img": null,
+    "n": 10,
+    "on": "blaxel"
+   },
+   {
+    "name": "loc",
+    "host": "loc.gov",
+    "img": "wall/loc.jpg",
+    "n": 5,
+    "on": "blaxel"
+   },
+   {
+    "name": "pubchem-ncbi",
+    "host": "pubchem.ncbi.nlm.nih.gov",
+    "img": null,
+    "n": 19,
+    "on": "blaxel"
+   },
+   {
+    "name": "artifacthub",
+    "host": "artifacthub.io",
+    "img": null,
+    "n": 14,
+    "on": "blaxel"
+   },
+   {
+    "name": "swiftpackageindex",
+    "host": "swiftpackageindex.com",
+    "img": null,
+    "n": 15,
+    "on": "blaxel"
+   },
+   {
+    "name": "ons",
+    "host": "ons.gov.uk",
+    "img": null,
+    "n": 15,
+    "on": "blaxel"
+   },
+   {
+    "name": "anilist",
+    "host": "anilist.co",
+    "img": "wall/anilist.jpg",
+    "n": 15,
+    "on": "blaxel"
+   },
+   {
+    "name": "openligadb",
+    "host": "openligadb.de",
+    "img": "wall/openligadb.jpg",
+    "n": 16,
+    "on": "blaxel"
+   },
+   {
+    "name": "gutenberg",
+    "host": "gutenberg.org",
+    "img": "wall/gutenberg.jpg",
+    "n": 13,
+    "on": "box"
+   },
+   {
+    "name": "nuget",
+    "host": "nuget.org",
+    "img": "wall/nuget.jpg",
+    "n": 15,
+    "on": "box"
+   },
+   {
+    "name": "federalregister",
+    "host": "federalregister.gov",
+    "img": "wall/federalregister.jpg",
+    "n": 13,
+    "on": "box"
+   },
+   {
+    "name": "tvmaze",
+    "host": "tvmaze.com",
+    "img": "wall/tvmaze.jpg",
+    "n": 25,
+    "on": "box"
+   },
+   {
+    "name": "clevelandart",
+    "host": "clevelandart.org",
+    "img": null,
+    "n": 5,
+    "on": "blaxel"
+   },
+   {
+    "name": "collection-sciencemuseumgroup",
+    "host": "collection.sciencemuseumgroup.org.uk",
+    "img": null,
+    "n": 3,
+    "on": "blaxel"
+   },
+   {
+    "name": "collections-vam",
+    "host": "collections.vam.ac.uk",
+    "img": null,
+    "n": 12,
+    "on": "blaxel"
+   },
+   {
+    "name": "open-smk",
+    "host": "open.smk.dk",
+    "img": null,
+    "n": 9,
+    "on": "blaxel"
+   },
+   {
+    "name": "bundlephobia",
+    "host": "bundlephobia.com",
+    "img": null,
+    "n": 7,
+    "on": "blaxel"
+   },
+   {
+    "name": "central-sonatype",
+    "host": "central.sonatype.com",
+    "img": null,
+    "n": 8,
+    "on": "blaxel"
+   },
+   {
+    "name": "cocoapods",
+    "host": "cocoapods.org",
+    "img": null,
+    "n": 4,
+    "on": "blaxel"
+   },
+   {
+    "name": "ctan",
+    "host": "ctan.org",
+    "img": null,
+    "n": 20,
+    "on": "blaxel"
+   },
+   {
+    "name": "devdocs",
+    "host": "devdocs.io",
+    "img": null,
+    "n": 6,
+    "on": "blaxel"
+   },
+   {
+    "name": "hackage-haskell",
+    "host": "hackage.haskell.org",
+    "img": null,
+    "n": 14,
+    "on": "blaxel"
+   },
+   {
+    "name": "jsr",
+    "host": "jsr.io",
+    "img": null,
+    "n": 15,
+    "on": "blaxel"
+   },
+   {
+    "name": "opam-ocaml",
+    "host": "opam.ocaml.org",
+    "img": null,
+    "n": 7,
+    "on": "blaxel"
+   },
+   {
+    "name": "open-vsx",
+    "host": "open-vsx.org",
+    "img": null,
+    "n": 11,
+    "on": "blaxel"
+   },
+   {
+    "name": "company-information-service",
+    "host": "find-and-update.company-information.service.gov.uk",
+    "img": null,
+    "n": 18,
+    "on": "blaxel"
+   },
+   {
+    "name": "cordis-europa",
+    "host": "cordis.europa.eu",
+    "img": null,
+    "n": 10,
+    "on": "blaxel"
+   },
+   {
+    "name": "data-police",
+    "host": "data.police.uk",
+    "img": null,
+    "n": 22,
+    "on": "blaxel"
+   },
+   {
+    "name": "ec-europa",
+    "host": "ec.europa.eu",
+    "img": null,
+    "n": 13,
+    "on": "blaxel"
+   },
+   {
+    "name": "ecb-europa",
+    "host": "data.ecb.europa.eu",
+    "img": null,
+    "n": 5,
+    "on": "blaxel"
+   },
+   {
+    "name": "avoindata-prh",
+    "host": "avoindata.prh.fi",
+    "img": null,
+    "n": 11,
+    "on": "blaxel"
+   },
+   {
+    "name": "data-norge",
+    "host": "data.norge.no",
+    "img": null,
+    "n": 10,
+    "on": "blaxel"
+   },
+   {
+    "name": "dataportal",
+    "host": "dataportal.se",
+    "img": null,
+    "n": 16,
+    "on": "blaxel"
+   },
+   {
+    "name": "digi-kansalliskirjasto",
+    "host": "digi.kansalliskirjasto.fi",
+    "img": null,
+    "n": 19,
+    "on": "blaxel"
+   },
+   {
+    "name": "digitraffic",
+    "host": "digitraffic.fi",
+    "img": null,
+    "n": 23,
+    "on": "blaxel"
+   },
+   {
+    "name": "finlex",
+    "host": "finlex.fi",
+    "img": null,
+    "n": 7,
+    "on": "blaxel"
+   },
+   {
+    "name": "pxdata-stat",
+    "host": "pxdata.stat.fi",
+    "img": null,
+    "n": 7,
+    "on": "blaxel"
+   },
+   {
+    "name": "riksdagen",
+    "host": "riksdagen.se",
+    "img": null,
+    "n": 12,
+    "on": "blaxel"
+   },
+   {
+    "name": "ssb",
+    "host": "ssb.no",
+    "img": null,
+    "n": 11,
+    "on": "blaxel"
+   },
+   {
+    "name": "data-cdc",
+    "host": "data.cdc.gov",
+    "img": null,
+    "n": 10,
+    "on": "blaxel"
+   },
+   {
+    "name": "data-cityofnewyork",
+    "host": "data.cityofnewyork.us",
+    "img": null,
+    "n": 8,
+    "on": "blaxel"
+   },
+   {
+    "name": "eia",
+    "host": "eia.gov",
+    "img": null,
+    "n": 14,
+    "on": "blaxel"
+   },
+   {
+    "name": "fec",
+    "host": "fec.gov",
+    "img": null,
+    "n": 14,
+    "on": "blaxel"
+   },
+   {
+    "name": "fred-stlouisfed",
+    "host": "fred.stlouisfed.org",
+    "img": null,
+    "n": 13,
+    "on": "blaxel"
+   },
+   {
+    "name": "govinfo",
+    "host": "govinfo.gov",
+    "img": null,
+    "n": 20,
+    "on": "blaxel"
+   },
+   {
+    "name": "grants",
+    "host": "grants.gov",
+    "img": null,
+    "n": 6,
+    "on": "blaxel"
+   },
+   {
+    "name": "nhtsa-dot",
+    "host": "vpic.nhtsa.dot.gov",
+    "img": null,
+    "n": 13,
+    "on": "blaxel"
+   },
+   {
+    "name": "nps",
+    "host": "nps.gov",
+    "img": null,
+    "n": 20,
+    "on": "blaxel"
+   },
+   {
+    "name": "tidesandcurrents-noaa",
+    "host": "tidesandcurrents.noaa.gov",
+    "img": null,
+    "n": 20,
+    "on": "blaxel"
+   },
+   {
+    "name": "waterdata-usgs",
+    "host": "waterdata.usgs.gov",
+    "img": null,
+    "n": 17,
+    "on": "blaxel"
+   },
+   {
+    "name": "arbeidsplassen-nav",
+    "host": "arbeidsplassen.nav.no",
+    "img": null,
+    "n": 5,
+    "on": "blaxel"
+   },
+   {
+    "name": "arbeitnow",
+    "host": "arbeitnow.com",
+    "img": null,
+    "n": 5,
+    "on": "blaxel"
+   },
+   {
+    "name": "arbetsformedlingen",
+    "host": "arbetsformedlingen.se",
+    "img": null,
+    "n": 6,
+    "on": "blaxel"
+   },
+   {
+    "name": "tyomarkkinatori",
+    "host": "tyomarkkinatori.fi",
+    "img": null,
+    "n": 12,
+    "on": "blaxel"
+   },
+   {
+    "name": "usajobs",
+    "host": "usajobs.gov",
+    "img": null,
+    "n": 6,
+    "on": "blaxel"
+   },
+   {
+    "name": "world-openfoodfacts",
+    "host": "world.openfoodfacts.org",
+    "img": null,
+    "n": 7,
+    "on": "blaxel"
+   },
+   {
+    "name": "airnow",
+    "host": "airnow.gov",
+    "img": null,
+    "n": 16,
+    "on": "blaxel"
+   },
+   {
+    "name": "aviationweather",
+    "host": "aviationweather.gov",
+    "img": null,
+    "n": 9,
+    "on": "blaxel"
+   },
+   {
+    "name": "citybik",
+    "host": "citybik.es",
+    "img": null,
+    "n": 4,
+    "on": "blaxel"
+   },
+   {
+    "name": "geonames",
+    "host": "geonames.org",
+    "img": null,
+    "n": 19,
+    "on": "blaxel"
+   },
+   {
+    "name": "ndbc-noaa",
+    "host": "ndbc.noaa.gov",
+    "img": null,
+    "n": 6,
+    "on": "blaxel"
+   },
+   {
+    "name": "nominatim-openstreetmap",
+    "host": "nominatim.openstreetmap.org",
+    "img": null,
+    "n": 5,
+    "on": "blaxel"
+   },
+   {
+    "name": "open-meteo",
+    "host": "open-meteo.com",
+    "img": null,
+    "n": 16,
+    "on": "blaxel"
+   },
+   {
+    "name": "smhi",
+    "host": "smhi.se",
+    "img": null,
+    "n": 16,
+    "on": "blaxel"
+   },
+   {
+    "name": "sunrise-sunset",
+    "host": "sunrise-sunset.org",
+    "img": null,
+    "n": 8,
+    "on": "blaxel"
+   },
+   {
+    "name": "swpc-noaa",
+    "host": "swpc.noaa.gov",
+    "img": null,
+    "n": 10,
+    "on": "blaxel"
+   },
+   {
+    "name": "yr",
+    "host": "yr.no",
+    "img": null,
+    "n": 24,
+    "on": "blaxel"
+   },
+   {
+    "name": "abc",
+    "host": "abc.net.au",
+    "img": null,
+    "n": 9,
+    "on": "blaxel"
+   },
+   {
+    "name": "arstechnica",
+    "host": "arstechnica.com",
+    "img": null,
+    "n": 8,
+    "on": "blaxel"
+   },
+   {
+    "name": "bbc",
+    "host": "bbc.com",
+    "img": null,
+    "n": 15,
+    "on": "blaxel"
+   },
+   {
+    "name": "nrk",
+    "host": "nrk.no",
+    "img": null,
+    "n": 14,
+    "on": "blaxel"
+   },
+   {
+    "name": "rnz",
+    "host": "rnz.co.nz",
+    "img": null,
+    "n": 15,
+    "on": "blaxel"
+   },
+   {
+    "name": "slashdot",
+    "host": "slashdot.org",
+    "img": null,
+    "n": 13,
+    "on": "blaxel"
+   },
+   {
+    "name": "svt",
+    "host": "svt.se",
+    "img": null,
+    "n": 6,
+    "on": "blaxel"
+   },
+   {
+    "name": "tagesschau",
+    "host": "tagesschau.de",
+    "img": null,
+    "n": 8,
+    "on": "blaxel"
+   },
+   {
+    "name": "yle",
+    "host": "yle.fi",
+    "img": null,
+    "n": 7,
+    "on": "blaxel"
+   },
+   {
+    "name": "doaj",
+    "host": "doaj.org",
+    "img": null,
+    "n": 10,
+    "on": "blaxel"
+   },
+   {
+    "name": "ebi",
+    "host": "ebi.ac.uk",
+    "img": null,
+    "n": 11,
+    "on": "blaxel"
+   },
+   {
+    "name": "ensembl",
+    "host": "ensembl.org",
+    "img": null,
+    "n": 24,
+    "on": "blaxel"
+   },
+   {
+    "name": "inspirehep",
+    "host": "inspirehep.net",
+    "img": null,
+    "n": 20,
+    "on": "blaxel"
+   },
+   {
+    "name": "ipac-caltech",
+    "host": "exoplanetarchive.ipac.caltech.edu",
+    "img": null,
+    "n": 11,
+    "on": "blaxel"
+   },
+   {
+    "name": "ror",
+    "host": "ror.org",
+    "img": null,
+    "n": 4,
+    "on": "blaxel"
+   },
+   {
+    "name": "semanticscholar",
+    "host": "semanticscholar.org",
+    "img": null,
+    "n": 4,
+    "on": "blaxel"
+   },
+   {
+    "name": "uniprot",
+    "host": "uniprot.org",
+    "img": null,
+    "n": 18,
+    "on": "blaxel"
+   },
+   {
+    "name": "wikidata",
+    "host": "wikidata.org",
+    "img": null,
+    "n": 7,
+    "on": "blaxel"
+   },
+   {
+    "name": "zenodo",
+    "host": "zenodo.org",
+    "img": null,
+    "n": 12,
+    "on": "blaxel"
+   },
+   {
+    "name": "radio-browser",
+    "host": "radio-browser.info",
+    "img": null,
+    "n": 12,
+    "on": "blaxel"
+   },
+   {
+    "name": "thesportsdb",
+    "host": "thesportsdb.com",
+    "img": null,
+    "n": 18,
+    "on": "blaxel"
+   },
+   {
+    "name": "worldcubeassociation",
+    "host": "worldcubeassociation.org",
+    "img": null,
+    "n": 14,
+    "on": "blaxel"
+   },
+   {
+    "name": "archive",
+    "host": "archive.org",
+    "img": null,
+    "n": 16,
+    "on": "box"
+   },
+   {
+    "name": "artic",
+    "host": "artic.edu",
+    "img": null,
+    "n": 12,
+    "on": "box"
+   },
+   {
+    "name": "finna",
+    "host": "finna.fi",
+    "img": null,
+    "n": 8,
+    "on": "box"
+   },
+   {
+    "name": "images-nasa",
+    "host": "images.nasa.gov",
+    "img": null,
+    "n": 8,
+    "on": "box"
+   },
+   {
+    "name": "musicbrainz",
+    "host": "musicbrainz.org",
+    "img": null,
+    "n": 18,
+    "on": "box"
+   },
+   {
+    "name": "openverse",
+    "host": "openverse.org",
+    "img": null,
+    "n": 6,
+    "on": "box"
+   },
+   {
+    "name": "crates",
+    "host": "crates.io",
+    "img": null,
+    "n": 19,
+    "on": "box"
+   },
+   {
+    "name": "dev-to",
+    "host": "dev.to",
+    "img": null,
+    "n": 15,
+    "on": "box"
+   },
+   {
+    "name": "developer-mozilla",
+    "host": "developer.mozilla.org",
+    "img": null,
+    "n": 4,
+    "on": "box"
+   },
+   {
+    "name": "docs-python",
+    "host": "docs.python.org",
+    "img": null,
+    "n": 8,
+    "on": "box"
+   },
+   {
+    "name": "docs-rs",
+    "host": "docs.rs",
+    "img": null,
+    "n": 16,
+    "on": "box"
+   },
+   {
+    "name": "formulae-brew",
+    "host": "formulae.brew.sh",
+    "img": null,
+    "n": 7,
+    "on": "box"
+   },
+   {
+    "name": "hub-docker",
+    "host": "hub.docker.com",
+    "img": null,
+    "n": 13,
+    "on": "box"
+   },
+   {
+    "name": "huggingface",
+    "host": "huggingface.co",
+    "img": null,
+    "n": 15,
+    "on": "box"
+   },
+   {
+    "name": "jsdelivr",
+    "host": "jsdelivr.com",
+    "img": null,
+    "n": 17,
+    "on": "box"
+   },
+   {
+    "name": "packagist",
+    "host": "packagist.org",
+    "img": null,
+    "n": 17,
+    "on": "box"
+   },
+   {
+    "name": "pkg-go",
+    "host": "pkg.go.dev",
+    "img": null,
+    "n": 11,
+    "on": "box"
+   },
+   {
+    "name": "pypi",
+    "host": "pypi.org",
+    "img": null,
+    "n": 9,
+    "on": "box"
+   },
+   {
+    "name": "rubygems",
+    "host": "rubygems.org",
+    "img": null,
+    "n": 17,
+    "on": "box"
+   },
+   {
+    "name": "data-europa",
+    "host": "data.europa.eu",
+    "img": null,
+    "n": 10,
+    "on": "box"
+   },
+   {
+    "name": "data-gov",
+    "host": "data.gov.uk",
+    "img": null,
+    "n": 9,
+    "on": "box"
+   },
+   {
+    "name": "hankintailmoitukset",
+    "host": "hankintailmoitukset.fi",
+    "img": null,
+    "n": 13,
+    "on": "box"
+   },
+   {
+    "name": "catalog-data",
+    "host": "catalog.data.gov",
+    "img": null,
+    "n": 9,
+    "on": "box"
+   },
+   {
+    "name": "clinicaltrials",
+    "host": "clinicaltrials.gov",
+    "img": null,
+    "n": 8,
+    "on": "box"
+   },
+   {
+    "name": "usaspending",
+    "host": "usaspending.gov",
+    "img": null,
+    "n": 34,
+    "on": "box"
+   },
+   {
+    "name": "remoteok",
+    "host": "remoteok.com",
+    "img": null,
+    "n": 5,
+    "on": "box"
+   },
+   {
+    "name": "ycombinator",
+    "host": "ycombinator.com",
+    "img": null,
+    "n": 10,
+    "on": "box"
+   },
+   {
+    "name": "earthquake-usgs",
+    "host": "earthquake.usgs.gov",
+    "img": null,
+    "n": 11,
+    "on": "box"
+   },
+   {
+    "name": "openstreetmap",
+    "host": "openstreetmap.org",
+    "img": null,
+    "n": 15,
+    "on": "box"
+   },
+   {
+    "name": "weather",
+    "host": "weather.gov",
+    "img": null,
+    "n": 11,
+    "on": "box"
+   },
+   {
+    "name": "news-ycombinator",
+    "host": "news.ycombinator.com",
+    "img": null,
+    "n": 13,
+    "on": "box"
+   },
+   {
+    "name": "theguardian",
+    "host": "theguardian.com",
+    "img": null,
+    "n": 10,
+    "on": "box"
+   },
+   {
+    "name": "arxiv",
+    "host": "arxiv.org",
+    "img": null,
+    "n": 10,
+    "on": "box"
+   },
+   {
+    "name": "inaturalist",
+    "host": "inaturalist.org",
+    "img": null,
+    "n": 10,
+    "on": "box"
+   },
+   {
+    "name": "pubmed-ncbi",
+    "host": "pubmed.ncbi.nlm.nih.gov",
+    "img": null,
+    "n": 4,
+    "on": "box"
+   },
+   {
+    "name": "rcsb",
+    "host": "rcsb.org",
+    "img": null,
+    "n": 17,
+    "on": "box"
+   },
+   {
+    "name": "lichess",
+    "host": "lichess.org",
+    "img": null,
+    "n": 11,
+    "on": "box"
+   }
+  ]
+ },
+ "blaxel": {
+  "source": "clify/proofs/sites-blaxel.md",
+  "sites": 116,
+  "ok": 92,
+  "verified": 1120,
+  "rows": [
+   {
+    "site": "collection-sciencemuseumgroup",
+    "sandbox": "clify-collection-sciencemuseumgroup-org-uk",
+    "checked": 3,
+    "of": 3,
+    "ok": true,
+    "blocked": true
+   },
+   {
+    "site": "collections-vam",
+    "sandbox": "clify-collections-vam-ac-uk",
+    "checked": 12,
+    "of": 12,
+    "ok": true,
+    "blocked": false
+   },
+   {
+    "site": "digitalnz",
+    "sandbox": "clify-digitalnz-org",
+    "checked": 0,
+    "of": 0,
+    "ok": false,
+    "blocked": true
+   },
+   {
+    "site": "digitaltmuseum",
+    "sandbox": "clify-digitaltmuseum-no",
+    "checked": 0,
+    "of": 0,
+    "ok": false,
+    "blocked": true
+   },
+   {
+    "site": "dp",
+    "sandbox": "clify-dp-la",
+    "checked": 0,
+    "of": 0,
+    "ok": false,
+    "blocked": true
+   },
+   {
+    "site": "open-smk",
+    "sandbox": "clify-open-smk-dk",
+    "checked": 9,
+    "of": 9,
+    "ok": true,
+    "blocked": false
+   },
+   {
+    "site": "openlibrary",
+    "sandbox": "clify-openlibrary-org",
+    "checked": 0,
+    "of": 5,
+    "ok": false,
+    "blocked": true
+   },
+   {
+    "site": "trove-nla",
+    "sandbox": "clify-trove-nla-gov-au",
+    "checked": 0,
+    "of": 0,
+    "ok": false,
+    "blocked": true
+   },
+   {
+    "site": "biodiversitylibrary",
+    "sandbox": "clify-www-biodiversitylibrary-org",
+    "checked": 0,
+    "of": 0,
+    "ok": false,
+    "blocked": true
+   },
+   {
+    "site": "clevelandart",
+    "sandbox": "clify-www-clevelandart-org-art-collection-sea",
+    "checked": 5,
+    "of": 5,
+    "ok": true,
+    "blocked": false
+   },
+   {
+    "site": "loc",
+    "sandbox": "clify-www-loc-gov",
+    "checked": 5,
+    "of": 5,
+    "ok": true,
+    "blocked": true
+   },
+   {
+    "site": "rijksmuseum",
+    "sandbox": "clify-www-rijksmuseum-nl-en-collection",
+    "checked": 10,
+    "of": 10,
+    "ok": true,
+    "blocked": false
+   },
+   {
+    "site": "si",
+    "sandbox": "clify-www-si-edu-search",
+    "checked": 0,
+    "of": 0,
+    "ok": false,
+    "blocked": true
+   },
+   {
+    "site": "artifacthub",
+    "sandbox": "clify-artifacthub-io",
+    "checked": 14,
+    "of": 14,
+    "ok": true,
+    "blocked": false
+   },
+   {
+    "site": "bundlephobia",
+    "sandbox": "clify-bundlephobia-com",
+    "checked": 7,
+    "of": 7,
+    "ok": true,
+    "blocked": false
+   },
+   {
+    "site": "caniuse",
+    "sandbox": "clify-caniuse-com",
+    "checked": 8,
+    "of": 8,
+    "ok": true,
+    "blocked": false
+   },
+   {
+    "site": "central-sonatype",
+    "sandbox": "clify-central-sonatype-com",
+    "checked": 8,
+    "of": 8,
+    "ok": true,
+    "blocked": false
+   },
+   {
+    "site": "cocoapods",
+    "sandbox": "clify-cocoapods-org",
+    "checked": 4,
+    "of": 4,
+    "ok": true,
+    "blocked": false
+   },
+   {
+    "site": "ctan",
+    "sandbox": "clify-ctan-org",
+    "checked": 20,
+    "of": 20,
+    "ok": true,
+    "blocked": false
+   },
+   {
+    "site": "devdocs",
+    "sandbox": "clify-devdocs-io",
+    "checked": 6,
+    "of": 6,
+    "ok": true,
+    "blocked": false
+   },
+   {
+    "site": "endoflife",
+    "sandbox": "clify-endoflife-date",
+    "checked": 14,
+    "of": 14,
+    "ok": true,
+    "blocked": false
+   },
+   {
+    "site": "hackage-haskell",
+    "sandbox": "clify-hackage-haskell-org",
+    "checked": 14,
+    "of": 14,
+    "ok": true,
+    "blocked": false
+   },
+   {
+    "site": "hex",
+    "sandbox": "clify-hex-pm",
+    "checked": 9,
+    "of": 9,
+    "ok": true,
+    "blocked": false
+   },
+   {
+    "site": "jsr",
+    "sandbox": "clify-jsr-io",
+    "checked": 15,
+    "of": 15,
+    "ok": true,
+    "blocked": false
+   },
+   {
+    "site": "opam-ocaml",
+    "sandbox": "clify-opam-ocaml-org-packages",
+    "checked": 7,
+    "of": 7,
+    "ok": true,
+    "blocked": false
+   },
+   {
+    "site": "open-vsx",
+    "sandbox": "clify-open-vsx-org",
+    "checked": 11,
+    "of": 11,
+    "ok": true,
+    "blocked": false
+   },
+   {
+    "site": "pub",
+    "sandbox": "clify-pub-dev",
+    "checked": 17,
+    "of": 17,
+    "ok": true,
+    "blocked": false
+   },
+   {
+    "site": "registry-terraform",
+    "sandbox": "clify-registry-terraform-io",
+    "checked": 21,
+    "of": 21,
+    "ok": true,
+    "blocked": false
+   },
+   {
+    "site": "swiftpackageindex",
+    "sandbox": "clify-swiftpackageindex-com",
+    "checked": 15,
+    "of": 15,
+    "ok": true,
+    "blocked": false
+   },
+   {
+    "site": "cordis-europa",
+    "sandbox": "clify-cordis-europa-eu",
+    "checked": 10,
+    "of": 10,
+    "ok": true,
+    "blocked": false
+   },
+   {
+    "site": "ecb-europa",
+    "sandbox": "clify-data-ecb-europa-eu",
+    "checked": 5,
+    "of": 5,
+    "ok": true,
+    "blocked": false
+   },
+   {
+    "site": "data-police",
+    "sandbox": "clify-data-police-uk",
+    "checked": 22,
+    "of": 22,
+    "ok": true,
+    "blocked": false
+   },
+   {
+    "site": "ec-europa",
+    "sandbox": "clify-ec-europa-eu-eurostat-databrowser",
+    "checked": 13,
+    "of": 13,
+    "ok": true,
+    "blocked": false
+   },
+   {
+    "site": "eur-lex-europa",
+    "sandbox": "clify-eur-lex-europa-eu",
+    "checked": 0,
+    "of": 3,
+    "ok": false,
+    "blocked": true
+   },
+   {
+    "site": "company-information-service",
+    "sandbox": "clify-find-and-update-company-information-ser",
+    "checked": 18,
+    "of": 18,
+    "ok": true,
+    "blocked": false
+   },
+   {
+    "site": "ons",
+    "sandbox": "clify-www-ons-gov-uk",
+    "checked": 15,
+    "of": 15,
+    "ok": true,
+    "blocked": false
+   },
+   {
+    "site": "avoindata-prh",
+    "sandbox": "clify-avoindata-prh-fi",
+    "checked": 11,
+    "of": 11,
+    "ok": true,
+    "blocked": false
+   },
+   {
+    "site": "data-norge",
+    "sandbox": "clify-data-norge-no",
+    "checked": 10,
+    "of": 10,
+    "ok": true,
+    "blocked": false
+   },
+   {
+    "site": "digi-kansalliskirjasto",
+    "sandbox": "clify-digi-kansalliskirjasto-fi",
+    "checked": 19,
+    "of": 19,
+    "ok": true,
+    "blocked": false
+   },
+   {
+    "site": "pxdata-stat",
+    "sandbox": "clify-pxdata-stat-fi",
+    "checked": 7,
+    "of": 7,
+    "ok": true,
+    "blocked": false
+   },
+   {
+    "site": "dataportal",
+    "sandbox": "clify-www-dataportal-se",
+    "checked": 16,
+    "of": 16,
+    "ok": true,
+    "blocked": false
+   },
+   {
+    "site": "digitraffic",
+    "sandbox": "clify-www-digitraffic-fi",
+    "checked": 23,
+    "of": 23,
+    "ok": true,
+    "blocked": false
+   },
+   {
+    "site": "eduskunta",
+    "sandbox": "clify-www-eduskunta-fi",
+    "checked": 0,
+    "of": 0,
+    "ok": false,
+    "blocked": true
+   },
+   {
+    "site": "finlex",
+    "sandbox": "clify-www-finlex-fi",
+    "checked": 7,
+    "of": 7,
+    "ok": true,
+    "blocked": false
+   },
+   {
+    "site": "riksdagen",
+    "sandbox": "clify-www-riksdagen-se",
+    "checked": 12,
+    "of": 12,
+    "ok": true,
+    "blocked": false
+   },
+   {
+    "site": "ssb",
+    "sandbox": "clify-www-ssb-no",
+    "checked": 11,
+    "of": 11,
+    "ok": true,
+    "blocked": false
+   },
+   {
+    "site": "?",
+    "sandbox": "clify-www-statistikdatabasen-scb-se",
+    "checked": 0,
+    "of": 0,
+    "ok": false,
+    "blocked": false
+   },
+   {
+    "site": "data-cdc",
+    "sandbox": "clify-data-cdc-gov",
+    "checked": 10,
+    "of": 10,
+    "ok": true,
+    "blocked": false
+   },
+   {
+    "site": "data-cityofnewyork",
+    "sandbox": "clify-data-cityofnewyork-us",
+    "checked": 8,
+    "of": 8,
+    "ok": true,
+    "blocked": false
+   },
+   {
+    "site": "fred-stlouisfed",
+    "sandbox": "clify-fred-stlouisfed-org",
+    "checked": 13,
+    "of": 13,
+    "ok": true,
+    "blocked": false
+   },
+   {
+    "site": "tidesandcurrents-noaa",
+    "sandbox": "clify-tidesandcurrents-noaa-gov",
+    "checked": 20,
+    "of": 20,
+    "ok": true,
+    "blocked": false
+   },
+   {
+    "site": "nhtsa-dot",
+    "sandbox": "clify-vpic-nhtsa-dot-gov",
+    "checked": 13,
+    "of": 13,
+    "ok": true,
+    "blocked": false
+   },
+   {
+    "site": "waterdata-usgs",
+    "sandbox": "clify-waterdata-usgs-gov",
+    "checked": 17,
+    "of": 17,
+    "ok": true,
+    "blocked": false
+   },
+   {
+    "site": "eia",
+    "sandbox": "clify-www-eia-gov",
+    "checked": 14,
+    "of": 14,
+    "ok": true,
+    "blocked": false
+   },
+   {
+    "site": "fec",
+    "sandbox": "clify-www-fec-gov-data",
+    "checked": 14,
+    "of": 23,
+    "ok": true,
+    "blocked": true
+   },
+   {
+    "site": "govinfo",
+    "sandbox": "clify-www-govinfo-gov",
+    "checked": 20,
+    "of": 20,
+    "ok": true,
+    "blocked": false
+   },
+   {
+    "site": "grants",
+    "sandbox": "clify-www-grants-gov",
+    "checked": 6,
+    "of": 6,
+    "ok": true,
+    "blocked": false
+   },
+   {
+    "site": "nps",
+    "sandbox": "clify-www-nps-gov",
+    "checked": 20,
+    "of": 20,
+    "ok": true,
+    "blocked": false
+   },
+   {
+    "site": "arbeidsplassen-nav",
+    "sandbox": "clify-arbeidsplassen-nav-no",
+    "checked": 5,
+    "of": 5,
+    "ok": true,
+    "blocked": false
+   },
+   {
+    "site": "arbetsformedlingen",
+    "sandbox": "clify-arbetsformedlingen-se-platsbanken",
+    "checked": 6,
+    "of": 6,
+    "ok": true,
+    "blocked": false
+   },
+   {
+    "site": "himalayas",
+    "sandbox": "clify-himalayas-app-jobs",
+    "checked": 0,
+    "of": 0,
+    "ok": false,
+    "blocked": true
+   },
+   {
+    "site": "remotive",
+    "sandbox": "clify-remotive-com",
+    "checked": 2,
+    "of": 2,
+    "ok": false,
+    "blocked": false
+   },
+   {
+    "site": "tyomarkkinatori",
+    "sandbox": "clify-tyomarkkinatori-fi",
+    "checked": 12,
+    "of": 12,
+    "ok": true,
+    "blocked": false
+   },
+   {
+    "site": "weworkremotely",
+    "sandbox": "clify-weworkremotely-com",
+    "checked": 2,
+    "of": 2,
+    "ok": false,
+    "blocked": true
+   },
+   {
+    "site": "world-openfoodfacts",
+    "sandbox": "clify-world-openfoodfacts-org",
+    "checked": 7,
+    "of": 7,
+    "ok": true,
+    "blocked": false
+   },
+   {
+    "site": "arbeitnow",
+    "sandbox": "clify-www-arbeitnow-com",
+    "checked": 5,
+    "of": 5,
+    "ok": true,
+    "blocked": false
+   },
+   {
+    "site": "printables",
+    "sandbox": "clify-www-printables-com",
+    "checked": 0,
+    "of": 0,
+    "ok": false,
+    "blocked": true
+   },
+   {
+    "site": "usajobs",
+    "sandbox": "clify-www-usajobs-gov",
+    "checked": 6,
+    "of": 6,
+    "ok": true,
+    "blocked": true
+   },
+   {
+    "site": "aviationweather",
+    "sandbox": "clify-aviationweather-gov",
+    "checked": 9,
+    "of": 9,
+    "ok": true,
+    "blocked": false
+   },
+   {
+    "site": "citybik",
+    "sandbox": "clify-citybik-es",
+    "checked": 4,
+    "of": 4,
+    "ok": true,
+    "blocked": false
+   },
+   {
+    "site": "nominatim-openstreetmap",
+    "sandbox": "clify-nominatim-openstreetmap-org-ui-search-h",
+    "checked": 5,
+    "of": 5,
+    "ok": true,
+    "blocked": false
+   },
+   {
+    "site": "open-meteo",
+    "sandbox": "clify-open-meteo-com",
+    "checked": 16,
+    "of": 16,
+    "ok": true,
+    "blocked": false
+   },
+   {
+    "site": "sunrise-sunset",
+    "sandbox": "clify-sunrise-sunset-org",
+    "checked": 8,
+    "of": 8,
+    "ok": true,
+    "blocked": false
+   },
+   {
+    "site": "airnow",
+    "sandbox": "clify-www-airnow-gov",
+    "checked": 16,
+    "of": 16,
+    "ok": true,
+    "blocked": false
+   },
+   {
+    "site": "geonames",
+    "sandbox": "clify-www-geonames-org",
+    "checked": 19,
+    "of": 19,
+    "ok": true,
+    "blocked": false
+   },
+   {
+    "site": "ndbc-noaa",
+    "sandbox": "clify-www-ndbc-noaa-gov",
+    "checked": 6,
+    "of": 6,
+    "ok": true,
+    "blocked": false
+   },
+   {
+    "site": "smhi",
+    "sandbox": "clify-www-smhi-se",
+    "checked": 16,
+    "of": 16,
+    "ok": true,
+    "blocked": false
+   },
+   {
+    "site": "swpc-noaa",
+    "sandbox": "clify-www-swpc-noaa-gov",
+    "checked": 10,
+    "of": 10,
+    "ok": true,
+    "blocked": false
+   },
+   {
+    "site": "yr",
+    "sandbox": "clify-www-yr-no",
+    "checked": 24,
+    "of": 24,
+    "ok": true,
+    "blocked": false
+   },
+   {
+    "site": "apnews",
+    "sandbox": "clify-apnews-com",
+    "checked": 0,
+    "of": 0,
+    "ok": false,
+    "blocked": true
+   },
+   {
+    "site": "arstechnica",
+    "sandbox": "clify-arstechnica-com",
+    "checked": 8,
+    "of": 8,
+    "ok": true,
+    "blocked": false
+   },
+   {
+    "site": "slashdot",
+    "sandbox": "clify-slashdot-org",
+    "checked": 13,
+    "of": 13,
+    "ok": true,
+    "blocked": true
+   },
+   {
+    "site": "abc",
+    "sandbox": "clify-www-abc-net-au-news",
+    "checked": 9,
+    "of": 9,
+    "ok": true,
+    "blocked": false
+   },
+   {
+    "site": "bbc",
+    "sandbox": "clify-www-bbc-com-news",
+    "checked": 15,
+    "of": 15,
+    "ok": true,
+    "blocked": false
+   },
+   {
+    "site": "cbc",
+    "sandbox": "clify-www-cbc-ca-news",
+    "checked": 0,
+    "of": 0,
+    "ok": false,
+    "blocked": false
+   },
+   {
+    "site": "?",
+    "sandbox": "clify-www-npr-org",
+    "checked": 0,
+    "of": 0,
+    "ok": false,
+    "blocked": false
+   },
+   {
+    "site": "nrk",
+    "sandbox": "clify-www-nrk-no",
+    "checked": 14,
+    "of": 14,
+    "ok": true,
+    "blocked": false
+   },
+   {
+    "site": "rnz",
+    "sandbox": "clify-www-rnz-co-nz-news",
+    "checked": 15,
+    "of": 15,
+    "ok": true,
+    "blocked": false
+   },
+   {
+    "site": "svt",
+    "sandbox": "clify-www-svt-se",
+    "checked": 6,
+    "of": 7,
+    "ok": true,
+    "blocked": false
+   },
+   {
+    "site": "tagesschau",
+    "sandbox": "clify-www-tagesschau-de",
+    "checked": 8,
+    "of": 8,
+    "ok": true,
+    "blocked": false
+   },
+   {
+    "site": "yle",
+    "sandbox": "clify-yle-fi-news",
+    "checked": 7,
+    "of": 7,
+    "ok": true,
+    "blocked": false
+   },
+   {
+    "site": "dblp",
+    "sandbox": "clify-dblp-org",
+    "checked": 0,
+    "of": 0,
+    "ok": false,
+    "blocked": true
+   },
+   {
+    "site": "doaj",
+    "sandbox": "clify-doaj-org",
+    "checked": 10,
+    "of": 10,
+    "ok": true,
+    "blocked": true
+   },
+   {
+    "site": "ipac-caltech",
+    "sandbox": "clify-exoplanetarchive-ipac-caltech-edu",
+    "checked": 11,
+    "of": 11,
+    "ok": true,
+    "blocked": true
+   },
+   {
+    "site": "inspirehep",
+    "sandbox": "clify-inspirehep-net",
+    "checked": 20,
+    "of": 21,
+    "ok": true,
+    "blocked": false
+   },
+   {
+    "site": "openalex",
+    "sandbox": "clify-openalex-org",
+    "checked": 0,
+    "of": 0,
+    "ok": false,
+    "blocked": true
+   },
+   {
+    "site": "pubchem-ncbi",
+    "sandbox": "clify-pubchem-ncbi-nlm-nih-gov",
+    "checked": 19,
+    "of": 19,
+    "ok": true,
+    "blocked": false
+   },
+   {
+    "site": "ror",
+    "sandbox": "clify-ror-org",
+    "checked": 4,
+    "of": 4,
+    "ok": true,
+    "blocked": true
+   },
+   {
+    "site": "search-crossref",
+    "sandbox": "clify-search-crossref-org",
+    "checked": 0,
+    "of": 0,
+    "ok": false,
+    "blocked": false
+   },
+   {
+    "site": "ebi",
+    "sandbox": "clify-www-ebi-ac-uk",
+    "checked": 11,
+    "of": 11,
+    "ok": true,
+    "blocked": false
+   },
+   {
+    "site": "ensembl",
+    "sandbox": "clify-www-ensembl-org",
+    "checked": 24,
+    "of": 24,
+    "ok": true,
+    "blocked": false
+   },
+   {
+    "site": "semanticscholar",
+    "sandbox": "clify-www-semanticscholar-org",
+    "checked": 4,
+    "of": 8,
+    "ok": true,
+    "blocked": true
+   },
+   {
+    "site": "uniprot",
+    "sandbox": "clify-www-uniprot-org",
+    "checked": 18,
+    "of": 18,
+    "ok": true,
+    "blocked": false
+   },
+   {
+    "site": "wikidata",
+    "sandbox": "clify-www-wikidata-org",
+    "checked": 7,
+    "of": 7,
+    "ok": true,
+    "blocked": false
+   },
+   {
+    "site": "zenodo",
+    "sandbox": "clify-zenodo-org",
+    "checked": 12,
+    "of": 12,
+    "ok": true,
+    "blocked": false
+   },
+   {
+    "site": "anilist",
+    "sandbox": "clify-anilist-co",
+    "checked": 15,
+    "of": 15,
+    "ok": true,
+    "blocked": false
+   },
+   {
+    "site": "kitsu",
+    "sandbox": "clify-kitsu-app",
+    "checked": 0,
+    "of": 0,
+    "ok": false,
+    "blocked": true
+   },
+   {
+    "site": "?",
+    "sandbox": "clify-ratings-fide-com",
+    "checked": 0,
+    "of": 0,
+    "ok": false,
+    "blocked": false
+   },
+   {
+    "site": "nhl",
+    "sandbox": "clify-www-nhl-com-stats",
+    "checked": 27,
+    "of": 27,
+    "ok": true,
+    "blocked": false
+   },
+   {
+    "site": "openligadb",
+    "sandbox": "clify-www-openligadb-de",
+    "checked": 16,
+    "of": 16,
+    "ok": true,
+    "blocked": false
+   },
+   {
+    "site": "radio-browser",
+    "sandbox": "clify-www-radio-browser-info",
+    "checked": 12,
+    "of": 12,
+    "ok": true,
+    "blocked": false
+   },
+   {
+    "site": "setlist",
+    "sandbox": "clify-www-setlist-fm",
+    "checked": 0,
+    "of": 0,
+    "ok": false,
+    "blocked": true
+   },
+   {
+    "site": "speedrun",
+    "sandbox": "clify-www-speedrun-com",
+    "checked": 0,
+    "of": 0,
+    "ok": false,
+    "blocked": true
+   },
+   {
+    "site": "themoviedb",
+    "sandbox": "clify-www-themoviedb-org",
+    "checked": 17,
+    "of": 17,
+    "ok": true,
+    "blocked": false
+   },
+   {
+    "site": "thesportsdb",
+    "sandbox": "clify-www-thesportsdb-com",
+    "checked": 18,
+    "of": 18,
+    "ok": true,
+    "blocked": false
+   },
+   {
+    "site": "worldcubeassociation",
+    "sandbox": "clify-www-worldcubeassociation-org",
+    "checked": 14,
+    "of": 14,
+    "ok": true,
+    "blocked": false
+   }
+  ]
+ },
+ "agent": {
+  "source": "agent/README.md",
+  "video": "agent/proofs/video/clify-agent.mp4",
+  "proof": "agent/proofs/public-tier.md",
+  "address": "clify@fine-vale.primitive.email",
+  "jobsPerDay": 5
+ },
+ "accounts": {
+  "source": "clify/test/accounts/results.md",
+  "signedIn": 19,
+  "stopped": 46,
+  "sites": [
+   "appwrite",
+   "browserless",
+   "browseruse",
+   "duplicati",
+   "fly",
+   "healthchecks",
+   "homeassistant",
+   "hookdeck",
+   "julialang",
+   "meilisearch",
+   "mem0",
+   "obsidian",
+   "pipedream",
+   "rclone",
+   "rubygems",
+   "steel",
+   "sublimetext",
+   "svix",
+   "updown"
+  ],
+  "verified": 18,
+  "noVerification": [
+   "hookdeck"
+  ],
+  "loggedIn": 19,
+  "captchaStops": 33,
+  "identity": {
+   "email": "clify-agent-b3d326@inkboxmail.com",
+   "phone": "+1 209 ••• 1736",
+   "source": "clify/ACCOUNTS.md"
+  },
+  "sms": {
+   "text": "Your SMS verification code is: 531172",
+   "code": "531172",
+   "from": "+1 833 ••• 6082"
+  },
+  "signupLog": {
+   "source": "film/evidence/accounts/appwrite.log",
+   "lines": [
+    {
+     "t": 0,
+     "text": "📜 reading appwrite.io terms…"
+    },
+    {
+     "t": 14,
+     "text": "📜 terms: allowed — The provided Appwrite Terms text has no clause banning automated account creation, requiring a human account holder, or prohibiting bot or automated access (robots.txt Disallow lines don't count), though the 'Accounts' and 'Prohibited activities' sections listed in the table of contents are largely missing from the excerpt and should be checked in full."
+    },
+    {
+     "t": 14,
+     "text": "🌐 signup https://appwrite.io/ as clify-agent-b3d326@inkboxmail.com"
+    },
+    {
+     "t": 21,
+     "text": "→ goto {\"url\":\"https://cloud.appwrite.io/console/register\"}"
+    },
+    {
+     "t": 26,
+     "text": "→ click {\"i\":10}"
+    },
+    {
+     "t": 33,
+     "text": "→ type {\"i\":5,\"text\":\"{{name}}\"}"
+    },
+    {
+     "t": 34,
+     "text": "→ type {\"i\":7,\"text\":\"{{email}}\"}"
+    },
+    {
+     "t": 35,
+     "text": "→ type {\"i\":9,\"text\":\"{{password}}\"}"
+    },
+    {
+     "t": 38,
+     "text": "→ click {\"i\":11,\"intent\":\"submit signup\"}"
+    },
+    {
+     "t": 41,
+     "text": "→ wait {\"seconds\":4}"
+    },
+    {
+     "t": 48,
+     "text": "→ check_email {}"
+    },
+    {
+     "t": 48,
+     "text": "  📭 waiting for verification mail…"
+    },
+    {
+     "t": 49,
+     "text": "  📨 inkbox: \"Account Verification for Appwrite\" from noreply@appwrite.io · link found"
+    },
+    {
+     "t": 50,
+     "text": "→ open_email_link {\"n\":0}"
+    },
+    {
+     "t": 59,
+     "text": "→ goto {\"url\":\"https://appwrite.io/account\"}"
+    },
+    {
+     "t": 64,
+     "text": "→ done {\"result\":\"logged_in\",\"account_url\":\"https://appwrite.io/account\",\"note\":\"Signed up with email and password, then verified the email through"
+    },
+    {
+     "t": 68,
+     "text": "🔑 signed in, session saved to the vault"
+    }
+   ]
+  }
+ },
+ "ask": {
+  "source": "film/evidence/ask/ask-35cb4902.json",
+  "proof": "clify/test/ask/1-signup-skip.md",
+  "from": "clify@fine-vale.primitive.email",
+  "subject": "[clify] tally: CAPTCHA / bot check while signing up. Skip, use your login, or retry?",
+  "question": "clify was signing up with its own agent identity on tally and hit a CAPTCHA / bot check. What should it do?",
+  "options": [
+   {
+    "key": "skip",
+    "label": "Skip this site; clify moves on"
+   },
+   {
+    "key": "use-my-account",
+    "label": "Use your own login instead (you run: clify login <site> --user)"
+   },
+   {
+    "key": "retry",
+    "label": "You've cleared it yourself (e.g. in your own browser); clify tries once more"
+   }
+  ],
+  "blocker": "captcha at https://tally.so/signup",
+  "sentAt": "2026-10-18T07:27:15.777Z",
+  "answer": {
+   "decision": "skip",
+   "answer": "skip",
+   "from": "clify-agent-b3d326@inkboxmail.com",
+   "verified": true,
+   "receivedAt": "2026-10-18T07:27:20.792Z",
+   "emailId": "707df397-77d5-4b8c-97c7-23950e73e84c",
+   "threadId": "3e196065-aa96-4444-bd31-e9940ac13a05"
+  },
+  "shot": "ask/tally-captcha.jpg"
+ },
+ "mcp": {
+  "source": "mcp/demo/out/*.mp4",
+  "url": "https://bold-cloud-h4u6s.run.mcp-use.com/mcp",
+  "task": "Use only the clify MCP tools (no shell, no browser, no web search). Do both:\n1. The latest version of the serde crate on crates.io.\n2. The current National Weather Service forecast for San Francisco: the next two periods (name, temperature, short forecast).\nAnswer in a short list with the exact values the tools returned.",
+  "hosted": {
+   "sites": 135,
+   "commands": 1619,
+   "other": 0
+  },
+  "tools": {
+   "deployed": {
+    "tools": 7,
+    "tokens": 2538
+   },
+   "core": {
+    "tools": 3,
+    "tokens": 1360
+   },
+   "perCommand": {
+    "tools": 1622,
+    "tokens": 568912
+   }
+  },
+  "tokensSnippet": "about 2.5k tokens instead of 569k",
+  "claudeCode": {
+   "source": "mcp/demo/transcript-claude-code.md",
+   "task": [
+    "1. The latest version of the serde crate on crates.io.",
+    "2. The current National Weather Service forecast for San Francisco: the next two periods (name, temperature, short forecast)."
+   ],
+   "calls": [
+    {
+     "tool": "crates__get-crate",
+     "args": "{\"name\":\"serde\",\"fields\":\"name,default_version,updated_at\"}",
+     "result": "{\"ok\":true,\"status\":200,\"data\":{\"name\":\"serde\",\"default_version\":\"1.0.229\",\"updated_at\":\"2026-07-18T23:05:13.266456Z\"}}"
+    },
+    {
+     "tool": "clify_sites",
+     "args": "{\"query\":\"weather forecast\"}",
+     "result": "{\"sites\":[{\"site\":\"weather\",\"host\":\"weather.gov\",\"commands\":11,…}]}"
+    },
+    {
+     "tool": "clify_run",
+     "args": "{\"site\":\"weather\",\"command\":\"get-point\",\"args\":{\"lat\":37.7749,\"lon\":-122.4194}}",
+     "result": "{\"ok\":true,\"status\":200,\"data\":{\"gridId\":\"MTR\",\"gridX\":85,\"gridY\":105,…},…}"
+    },
+    {
+     "tool": "clify_run",
+     "args": "{\"site\":\"weather\",\"command\":\"get-forecast\",\"args\":{\"wfo\":\"MTR\",\"x\":85,\"y\":105},\"limit\":2,\"fields\":\"name,temperature,temperatureUnit,shortForecast\"}",
+     "result": "{\"ok\":true,\"status\":200,\"data\":[{\"name\":\"Overnight\",\"temperature\":58,\"temperatureUnit\":\"F\",\"shortForecast\":\"Mostly Clear\"},{\"name\":\"Sunday\",\"temperature\":68,\"temperatureUnit\":\"F\",\"shortForecast\":\"Sunny\"}],…}"
+    }
+   ],
+   "sec": 9.4,
+   "turns": 5,
+   "costUsd": 0.128,
+   "answer": [
+    "- serde: latest version is 1.0.229.",
+    "- San Francisco, Overnight: 58°F, Mostly Clear.",
+    "- San Francisco, Sunday: 68°F, Sunny."
+   ]
+  },
+  "clients": [
+   {
+    "id": "claude",
+    "title": "Claude Code",
+    "clip": "mcp/demo/out/claude.mp4",
+    "transcript": "mcp/demo/transcript-claude-code.md",
+    "model": "claude-opus-5-5"
+   },
+   {
+    "id": "codex",
+    "title": "Codex CLI",
+    "clip": "mcp/demo/out/codex.mp4",
+    "transcript": "mcp/demo/transcript-codex.md",
+    "model": "gpt-6.1-sol"
+   },
+   {
+    "id": "mcp-use",
+    "title": "mcp-use agent",
+    "clip": "mcp/demo/out/mcp-use.mp4",
+    "transcript": "mcp/demo/transcript-mcp-use.md",
+    "model": "claude-opus-5-5"
+   },
+   {
+    "id": "inspector",
+    "title": "mcp-use Inspector",
+    "clip": "mcp/demo/out/inspector.mp4",
+    "transcript": "mcp/demo/transcript-inspector.md",
+    "model": "openai/gpt-5.6-luna"
+   }
+  ]
+ },
+ "race": {
+  "label": "Six real jobs in signed-in SaaS dashboards · same accounts both sides",
+  "video": "race/artifacts/accounts-4x.mp4",
+  "realtime": "race/artifacts/accounts-realtime.mp4",
+  "summary": "race/results/generated-2026-10-18T09-57-57-642Z.summary.json",
+  "tasks": "race/tasks/accounts.json",
+  "readme": "race/README.md",
+  "speedNote": "replay of a live run, sped up",
+  "hookFromSec": 48,
+  "playFromSec": 12,
+  "playbackRate": 2.2,
+  "clifyDoneSec": 32,
+  "browserLabel": "browser agent, clicks + screenshots",
+  "browserSub": "Playwright MCP, no page JavaScript",
+  "clifyLabel": "clify agent",
+  "clifySub": "Bash + CLIs generated by clify add",
+  "config": "film/race.json",
+  "model": "claude-opus-5-5",
+  "taskFile": "accounts.json",
+  "browserMode": "ui",
+  "browser": {
+   "elapsedMs": 374904,
+   "freshTokens": 120577,
+   "totalTokens": 5203964,
+   "costUsd": 2.0840213999999997,
+   "peakRamMB": 3984.9,
+   "avgCpu": 27.34450402144769,
+   "success": 6,
+   "toolCalls": 90,
+   "tasks": 6
+  },
+  "clify": {
+   "elapsedMs": 93282,
+   "freshTokens": 23093,
+   "totalTokens": 360669,
+   "costUsd": 0.28373519999999997,
+   "peakRamMB": 399.3,
+   "avgCpu": 4.8199999999999985,
+   "success": 6,
+   "toolCalls": 17,
+   "tasks": 6
+  },
+  "runId": "2026-10-18T09-57-57-642Z",
+  "gen": {
+   "runs": 6,
+   "nA": 5,
+   "nC": 6,
+   "allVerified": true,
+   "timeA": 287.86,
+   "timeC": 86.975,
+   "costA": 2.059,
+   "costC": 0.283,
+   "means": {
+    "time": 3.31,
+    "cost": 7.283,
+    "total": 14.433,
+    "ram": 9.542
+   },
+   "paired": {
+    "time": 3.524,
+    "cost": 7.356,
+    "total": 14.802,
+    "ram": 9.437
+   },
+   "specs": "5/6",
+   "headline": "3.3× faster by mean time (288 s vs 87 s); paired per-run mean 3.5×",
+   "detail": "7.3× cheaper by mean cost ($2.06 vs $0.28; paired 7.4×), 14.4× fewer tokens incl. cache (paired 14.8×), 9.5× less RAM (paired 9.4×)"
+  },
+  "jobs": [
+   {
+    "id": "updown",
+    "label": "UPDOWN",
+    "kind": "monitor · create"
+   },
+   {
+    "id": "healthchecks",
+    "label": "HEALTHCHECKS",
+    "kind": "cron check · create"
+   },
+   {
+    "id": "svix",
+    "label": "SVIX",
+    "kind": "app + endpoint"
+   },
+   {
+    "id": "appwrite",
+    "label": "APPWRITE",
+    "kind": "table + column"
+   },
+   {
+    "id": "hookdeck",
+    "label": "HOOKDECK",
+    "kind": "connection · create"
+   },
+   {
+    "id": "forum",
+    "label": "FORUM",
+    "kind": "public · 3 topics"
+   }
+  ]
+ },
+ "curl": {
+  "source": "race/results/curl-modes.json",
+  "readme": "race/README.md",
+  "runs": 2,
+  "tasks": 6,
+  "A": {
+   "time": 287.86,
+   "cost": 2.059,
+   "n": 5,
+   "ok": 6
+  },
+  "D": {
+   "time": 96.523,
+   "cost": 0.516,
+   "ok": 6
+  },
+  "C": {
+   "time": 65.508,
+   "cost": 0.289,
+   "ok": 6
+  },
+  "paired": {
+   "time": 1.489,
+   "cost": 1.786
+  },
+  "snippet": "D 97 s / $0.52 vs clify 66 s / $0.29 in the same 2 runs (D 6/6 and clify 6/6 every run; paired: D 1.5× slower, 1.8× the cost)"
+ }
+}

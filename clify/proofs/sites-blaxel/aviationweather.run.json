@@ -1,0 +1,136 @@
+{
+ "url": "https://aviationweather.gov/",
+ "category": "maps-weather",
+ "sandbox": "clify-aviationweather-gov",
+ "startedAt": "2026-10-18T08:32:56.364Z",
+ "region": "us-pdx-1",
+ "chrome": "Chrome/148.0.7778.96",
+ "sandboxStartMs": 1707,
+ "addSeconds": 237,
+ "addExit": 0,
+ "add": {
+  "ok": true,
+  "site": "aviationweather",
+  "url": "https://aviationweather.gov/",
+  "commands": [
+   {
+    "name": "get-metars",
+    "summary": "Get decoded METAR observations by station ICAO ids or inside a lat/lon bounding box, optionally with hours of history",
+    "verified": true
+   },
+   {
+    "name": "get-tafs",
+    "summary": "Get TAF terminal forecasts for ICAO station ids, optionally with the latest METAR",
+    "verified": true
+   },
+   {
+    "name": "get-airport",
+    "summary": "Get airport details: name, location, elevation, runways and frequencies",
+    "verified": true
+   },
+   {
+    "name": "get-station-info",
+    "summary": "Get weather station metadata: ICAO/IATA/WMO ids, site name, location, and product types (METAR/TAF)",
+    "verified": true
+   },
+   {
+    "name": "search-pireps",
+    "summary": "Search pilot reports (PIREPs/AIREPs) near a station by distance and age, or inside a bounding box, optionally filtered by intensity",
+    "verified": true
+   },
+   {
+    "name": "list-sigmets",
+    "summary": "List active domestic (US) SIGMETs and convective SIGMETs, optionally filtered by hazard",
+    "verified": true
+   },
+   {
+    "name": "list-gairmets",
+    "summary": "List current G-AIRMETs: sierra (IFR/mountain obscuration), tango (turbulence/wind/LLWS), zulu (icing/freezing level)",
+    "verified": true
+   },
+   {
+    "name": "list-international-sigmets",
+    "summary": "List active international SIGMETs by FIR (tropical cyclones, volcanic ash, turbulence, icing, thunderstorms)",
+    "verified": true
+   },
+   {
+    "name": "get-winds-aloft",
+    "summary": "Get the FD winds/temperatures aloft forecast text for a region, altitude band and forecast period",
+    "verified": true
+   }
+  ],
+  "verified": 9,
+  "writes": 0,
+  "dropped": [],
+  "blockers": [],
+  "loggedIn": false,
+  "seconds": 237,
+  "next": [
+   "clify aviationweather",
+   "clify aviationweather get-metars --ids \"KORD,KJFK\" --hours \"6\""
+  ],
+  "installed": "/home/ubuntu/clify-runs/blaxel-w1/home/bin/aviationweather",
+  "explored": {
+   "steps": 20,
+   "recorded": 50,
+   "heldWrites": 0
+  }
+ },
+ "check": {
+  "on": "blaxel",
+  "node": "v24.22.0",
+  "seconds": 3,
+  "reads": 9,
+  "verified": 9,
+  "failed": [],
+  "results": [
+   {
+    "name": "get-metars",
+    "ok": true,
+    "ms": 160
+   },
+   {
+    "name": "get-tafs",
+    "ok": true,
+    "ms": 17
+   },
+   {
+    "name": "get-airport",
+    "ok": true,
+    "ms": 150
+   },
+   {
+    "name": "get-station-info",
+    "ok": true,
+    "ms": 53
+   },
+   {
+    "name": "search-pireps",
+    "ok": true,
+    "ms": 360
+   },
+   {
+    "name": "list-sigmets",
+    "ok": true,
+    "ms": 13
+   },
+   {
+    "name": "list-gairmets",
+    "ok": true,
+    "ms": 17
+   },
+   {
+    "name": "list-international-sigmets",
+    "ok": true,
+    "ms": 20
+   },
+   {
+    "name": "get-winds-aloft",
+    "ok": true,
+    "ms": 98
+   }
+  ]
+ },
+ "deleted": true,
+ "seconds": 243
+}

@@ -1,0 +1,78 @@
+{
+ "ok": true,
+ "site": "earthquake-usgs",
+ "url": "https://earthquake.usgs.gov/earthquakes/map/",
+ "commands": [
+  {
+   "name": "get-feed",
+   "summary": "Get a real-time earthquake summary feed (GeoJSON) for a magnitude threshold and time window, e.g. M2.5+ past day or significant past month",
+   "verified": true
+  },
+  {
+   "name": "search-earthquakes",
+   "summary": "Search the ComCat earthquake catalog (FDSN) by time range, magnitude, bounding box or radius, depth, PAGER alert level and event type, with sorting and paging",
+   "verified": true
+  },
+  {
+   "name": "count-earthquakes",
+   "summary": "Count catalog events that match search filters (time, magnitude, location radius or bbox, depth, event type) without downloading them",
+   "verified": true
+  },
+  {
+   "name": "get-event",
+   "summary": "Get full detail for one earthquake event by id, including all products (origin, shakemap, losspager, dyfi, moment-tensor, oaf) and their content file URLs",
+   "verified": true
+  },
+  {
+   "name": "get-aftershock-forecast",
+   "summary": "Get the aftershock forecast (oaf product forecast.json: observed counts, model parameters, probabilities) for an event's oaf product",
+   "verified": true
+  },
+  {
+   "name": "get-shakemap-contours",
+   "summary": "Get ShakeMap intensity (MMI) contour lines as GeoJSON for an event's shakemap product",
+   "verified": true
+  },
+  {
+   "name": "find-nearby-places",
+   "summary": "Find populated places (GeoNames) near a latitude/longitude within a radius, optionally filtered by minimum population",
+   "verified": true
+  },
+  {
+   "name": "get-event-places",
+   "summary": "Get the 5 reference places the event page lists near an epicenter (distance and azimuth), as used in event titles",
+   "verified": true
+  },
+  {
+   "name": "get-regions",
+   "summary": "Get regional info for a lat/lon: admin region/country, Flinn-Engdahl region, authoritative network, NEIC catalog/response regions, offshore and tectonic summary",
+   "verified": true
+  },
+  {
+   "name": "get-catalog-metadata",
+   "summary": "List the allowed values for FDSN search filters: catalogs, contributors, product types, event types and magnitude types",
+   "verified": true
+  },
+  {
+   "name": "list-contributors",
+   "summary": "List ComCat contributing seismic networks with id, full name, aliases and info URL",
+   "verified": true
+  }
+ ],
+ "verified": 11,
+ "writes": 0,
+ "dropped": [],
+ "blockers": [],
+ "loggedIn": false,
+ "seconds": 144,
+ "next": [
+  "clify earthquake-usgs",
+  "clify earthquake-usgs get-feed --magnitude \"2.5\" --period \"day\""
+ ],
+ "installed": "/home/ubuntu/clify-runs/batch2/home/bin/earthquake-usgs",
+ "explored": {
+  "steps": 6,
+  "recorded": 217,
+  "heldWrites": 0
+ }
+}

@@ -1,0 +1,106 @@
+{
+ "url": "https://www.ndbc.noaa.gov/",
+ "category": "maps-weather",
+ "sandbox": "clify-www-ndbc-noaa-gov",
+ "startedAt": "2026-10-18T08:44:11.389Z",
+ "region": "us-pdx-1",
+ "chrome": "Chrome/148.0.7778.96",
+ "sandboxStartMs": 1851,
+ "addSeconds": 104,
+ "addExit": 0,
+ "add": {
+  "ok": true,
+  "site": "ndbc-noaa",
+  "url": "https://www.ndbc.noaa.gov/",
+  "commands": [
+   {
+    "name": "get-latest-observation",
+    "summary": "Get the most recent marine weather observation for one station (wind, waves, pressure, temperatures) as an RSS item with an HTML-formatted description",
+    "verified": true
+   },
+   {
+    "name": "get-realtime-data",
+    "summary": "Get realtime standard meteorological data for a station (about the last 45 days, newest first) as a whitespace-delimited text table: WDIR, WSPD/GST in m/s, WVHT in m, PRES in hPa, ATMP/WTMP/DEWP in de",
+    "verified": true
+   },
+   {
+    "name": "get-5day-data",
+    "summary": "Get the last 5 days of standard meteorological data for a station (newest first) as a whitespace-delimited text table: WDIR, WSPD/GST in m/s, WVHT in m, PRES in hPa, temps in degC; 'MM' means missing",
+    "verified": true
+   },
+   {
+    "name": "list-latest-observations",
+    "summary": "Get the latest observation for every reporting station in one whitespace-delimited text table (columns include STN, LAT, LON, WDIR, WSPD, GST, WVHT, PRES, ATMP, WTMP; m/s, m, hPa, degC; 'MM' means mis",
+    "verified": true
+   },
+   {
+    "name": "list-active-stations",
+    "summary": "List all active NDBC stations with ID, name, coordinates, owner, program, type and whether each reports met data",
+    "verified": true
+   },
+   {
+    "name": "get-station-table",
+    "summary": "Get the full station metadata table (ID, owner, type, hull, name, payload, location, timezone, forecast, note) as pipe-delimited text",
+    "verified": true
+   }
+  ],
+  "verified": 6,
+  "writes": 0,
+  "dropped": [],
+  "blockers": [],
+  "loggedIn": false,
+  "seconds": 104,
+  "next": [
+   "clify ndbc-noaa",
+   "clify ndbc-noaa get-latest-observation --station \"44013\""
+  ],
+  "installed": "/home/ubuntu/clify-runs/blaxel-w1/home/bin/ndbc-noaa",
+  "explored": {
+   "steps": 8,
+   "recorded": 16,
+   "heldWrites": 0
+  }
+ },
+ "check": {
+  "on": "blaxel",
+  "node": "v24.22.0",
+  "seconds": 2,
+  "reads": 6,
+  "verified": 6,
+  "failed": [],
+  "results": [
+   {
+    "name": "get-latest-observation",
+    "ok": true,
+    "ms": 104
+   },
+   {
+    "name": "get-realtime-data",
+    "ok": true,
+    "ms": 36
+   },
+   {
+    "name": "get-5day-data",
+    "ok": true,
+    "ms": 8
+   },
+   {
+    "name": "list-latest-observations",
+    "ok": true,
+    "ms": 7
+   },
+   {
+    "name": "list-active-stations",
+    "ok": true,
+    "ms": 21
+   },
+   {
+    "name": "get-station-table",
+    "ok": true,
+    "ms": 10
+   }
+  ]
+ },
+ "deleted": true,
+ "seconds": 108
+}

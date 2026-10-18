@@ -1,0 +1,114 @@
+{
+ "task": "github-playwright-releases-2026",
+ "site": "github",
+ "mode": "browser-ui",
+ "trial": 1,
+ "tag": "ui2",
+ "ok": true,
+ "why": "all expected values present",
+ "answer": "13",
+ "expected": {
+  "number": 13,
+  "detail": [
+   {
+    "tag_name": "v1.64.1",
+    "published_at": "2026-10-14T11:51:33Z"
+   },
+   {
+    "tag_name": "v1.64.0",
+    "published_at": "2026-10-07T20:40:43Z"
+   },
+   {
+    "tag_name": "v1.63.0",
+    "published_at": "2026-09-04T22:40:31Z"
+   },
+   {
+    "tag_name": "v1.62.1",
+    "published_at": "2026-07-30T16:35:55Z"
+   },
+   {
+    "tag_name": "v1.62.0",
+    "published_at": "2026-07-24T21:55:03Z"
+   },
+   {
+    "tag_name": "v1.61.1",
+    "published_at": "2026-06-23T19:47:55Z"
+   },
+   {
+    "tag_name": "v1.61.0",
+    "published_at": "2026-06-15T10:05:19Z"
+   },
+   {
+    "tag_name": "v1.60.0",
+    "published_at": "2026-05-11T19:08:18Z"
+   },
+   {
+    "tag_name": "v1.59.1",
+    "published_at": "2026-04-01T17:55:35Z"
+   },
+   {
+    "tag_name": "v1.59.0",
+    "published_at": "2026-04-01T00:27:06Z"
+   },
+   {
+    "tag_name": "v1.58.2",
+    "published_at": "2026-02-06T16:41:43Z"
+   },
+   {
+    "tag_name": "v1.58.1",
+    "published_at": "2026-01-30T18:23:42Z"
+   },
+   {
+    "tag_name": "v1.58.0",
+    "published_at": "2026-01-23T11:53:47Z"
+   },
+   {
+    "tag_name": "v1.57.0",
+    "published_at": "2025-11-25T11:16:13Z"
+   },
+   {
+    "tag_name": "v1.56.1",
+    "published_at": "2025-10-17T00:50:36Z"
+   },
+   {
+    "tag_name": "v1.56.0",
+    "published_at": "2025-10-06T14:53:30Z"
+   },
+   {
+    "tag_name": "v1.55.1",
+    "published_at": "2025-09-23T09:56:01Z"
+   },
+   {
+    "tag_name": "v1.55.0",
+    "published_at": "2025-08-20T10:26:40Z"
+   },
+   {
+    "tag_name": "v1.54.2",
+    "published_at": "2025-08-01T07:01:13Z"
+   },
+   {
+    "tag_name": "v1.54.1",
+    "published_at": "2025-07-11T14:06:28Z"
+   }
+  ]
+ },
+ "wallMs": 23134,
+ "apiMs": 17940,
+ "turns": 10,
+ "toolCalls": 9,
+ "tokens": {
+  "input": 14,
+  "output": 1222,
+  "cacheWrite": 23860,
+  "cacheRead": 109419,
+  "total": 134515
+ },
+ "costUsd": 0.1656798,
+ "models": [
+  "claude-opus-5-5"
+ ],
+ "exitCode": 0,
+ "timedOut": false,
+ "subtype": "success",
+ "startedAt": "2026-10-17T23:33:42.645Z"
+}

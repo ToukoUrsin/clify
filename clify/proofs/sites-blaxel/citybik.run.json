@@ -1,0 +1,86 @@
+{
+ "url": "https://citybik.es/",
+ "category": "maps-weather",
+ "sandbox": "clify-citybik-es",
+ "startedAt": "2026-10-18T08:51:12.360Z",
+ "region": "us-pdx-1",
+ "chrome": "Chrome/148.0.7778.96",
+ "sandboxStartMs": 2538,
+ "addSeconds": 77,
+ "addExit": 0,
+ "add": {
+  "ok": true,
+  "site": "citybik",
+  "url": "https://citybik.es/",
+  "commands": [
+   {
+    "name": "list-networks",
+    "summary": "List all bike-sharing networks worldwide, with id, name, city, country, operating company and API href",
+    "verified": true
+   },
+   {
+    "name": "get-network",
+    "summary": "Get details of one bike-sharing network by id (name, location, company, GBFS feed, system), without the station list",
+    "verified": true
+   },
+   {
+    "name": "list-network-stations",
+    "summary": "List the live stations of a bike-sharing network, with available bikes, empty docks, coordinates and last update time",
+    "verified": true
+   },
+   {
+    "name": "list-projects",
+    "summary": "List the apps and projects that the CityBikes showcase page lists as built on CityBikes data",
+    "verified": true
+   }
+  ],
+  "verified": 4,
+  "writes": 0,
+  "dropped": [],
+  "blockers": [],
+  "loggedIn": false,
+  "seconds": 76,
+  "next": [
+   "clify citybik",
+   "clify citybik list-networks"
+  ],
+  "installed": "/home/ubuntu/clify-runs/blaxel-w1/home/bin/citybik",
+  "explored": {
+   "steps": 6,
+   "recorded": 6,
+   "heldWrites": 3
+  }
+ },
+ "check": {
+  "on": "blaxel",
+  "node": "v24.22.0",
+  "seconds": 4,
+  "reads": 4,
+  "verified": 4,
+  "failed": [],
+  "results": [
+   {
+    "name": "list-networks",
+    "ok": true,
+    "ms": 794
+   },
+   {
+    "name": "get-network",
+    "ok": true,
+    "ms": 247
+   },
+   {
+    "name": "list-network-stations",
+    "ok": true,
+    "ms": 181
+   },
+   {
+    "name": "list-projects",
+    "ok": true,
+    "ms": 591
+   }
+  ]
+ },
+ "deleted": true,
+ "seconds": 84
+}

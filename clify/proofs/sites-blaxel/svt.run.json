@@ -1,0 +1,124 @@
+{
+ "url": "https://www.svt.se/",
+ "category": "news",
+ "sandbox": "clify-www-svt-se",
+ "startedAt": "2026-10-18T08:40:12.705Z",
+ "region": "us-pdx-1",
+ "chrome": "Chrome/148.0.7778.96",
+ "sandboxStartMs": 1888,
+ "addSeconds": 234,
+ "addExit": 0,
+ "add": {
+  "ok": true,
+  "site": "svt",
+  "url": "https://www.svt.se/",
+  "commands": [
+   {
+    "name": "list-section-articles",
+    "summary": "List the latest article teasers (headline, lead, URL) in a news section such as utrikes or inrikes.",
+    "verified": true
+   },
+   {
+    "name": "list-local-news",
+    "summary": "List the top local news teasers for an SVT region, e.g. stockholm.",
+    "verified": true
+   },
+   {
+    "name": "get-article",
+    "summary": "Get one article's metadata (headline, description, publish date, authors, image) from its schema.org NewsArticle data.",
+    "verified": true
+   },
+   {
+    "name": "get-related-trailers",
+    "summary": "Get the related teaser groups (more from the same section or sport) shown under an article or page.",
+    "verified": true
+   },
+   {
+    "name": "list-tag-articles",
+    "summary": "List articles on a topic/tag page (e.g. /sport/om/truls-moregardh), 10 per call, paged by a numeric offset cursor.",
+    "verified": true
+   },
+   {
+    "name": "get-video",
+    "summary": "Get metadata and stream URLs (HLS/DASH, subtitles, rights, geo-block flag) for an SVT video clip by its svtId.",
+    "verified": true
+   },
+   {
+    "name": "get-text-tv-page",
+    "summary": "Read an SVT Text-TV page by number (e.g. 100 news index, 101, 377 sport results); includes plain-text content and prev/next page numbers.",
+    "verified": true
+   }
+  ],
+  "verified": 7,
+  "writes": 0,
+  "dropped": [],
+  "blockers": [],
+  "loggedIn": false,
+  "seconds": 233,
+  "next": [
+   "clify svt",
+   "clify svt list-section-articles --section \"utrikes\""
+  ],
+  "installed": "/home/ubuntu/clify-runs/blaxel-w1/home/bin/svt",
+  "explored": {
+   "steps": 26,
+   "recorded": 55,
+   "heldWrites": 0
+  }
+ },
+ "check": {
+  "on": "blaxel",
+  "sandbox": "clify-www-svt-se-rc",
+  "node": "v24.22.0",
+  "seconds": 4,
+  "reads": 7,
+  "verified": 6,
+  "failed": [
+   {
+    "name": "list-tag-articles",
+    "reason": "resultPath \"data.page.feed.items\" matched nothing"
+   }
+  ],
+  "results": [
+   {
+    "name": "list-section-articles",
+    "ok": true,
+    "ms": 441
+   },
+   {
+    "name": "list-local-news",
+    "ok": true,
+    "ms": 45
+   },
+   {
+    "name": "get-article",
+    "ok": true,
+    "ms": 25
+   },
+   {
+    "name": "get-related-trailers",
+    "ok": true,
+    "ms": 237
+   },
+   {
+    "name": "list-tag-articles",
+    "ok": false,
+    "reason": "resultPath \"data.page.feed.items\" matched nothing",
+    "ms": 14
+   },
+   {
+    "name": "get-video",
+    "ok": true,
+    "ms": 258
+   },
+   {
+    "name": "get-text-tv-page",
+    "ok": true,
+    "ms": 172
+   }
+  ]
+ },
+ "deleted": true,
+ "seconds": 239,
+ "rechecked": "2026-10-18T09:16:00.962Z"
+}

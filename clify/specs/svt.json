@@ -1,0 +1,323 @@
+{
+ "name": "svt",
+ "startUrl": "https://www.svt.se/",
+ "origin": "https://www.svt.se",
+ "createdAt": "2026-10-18T08:42:53.395Z",
+ "description": "SVT (Sveriges Television) news and sport site, svt.se. This CLI lists section, local and tag feeds, reads articles and their related teasers, looks up video clip metadata and streams, and reads Text-TV pages.",
+ "commands": [
+  {
+   "name": "list-section-articles",
+   "summary": "List the latest article teasers (headline, lead, URL) in a news section such as utrikes or inrikes.",
+   "method": "GET",
+   "urlTemplate": "/nyheter/{section}/",
+   "params": [
+    {
+     "name": "section",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "News section slug under /nyheter/, e.g. utrikes, inrikes, vetenskap, kultur, ekonomi",
+     "example": "utrikes"
+    }
+   ],
+   "responseType": "html",
+   "extract": {
+    "list": "li.TeaserFeed__item___fLKlp",
+    "fields": {
+     "url": "a.FeedTeaser__link___1XbpN@href",
+     "title": "a.FeedTeaser__link___1XbpN@title",
+     "headline": "h1.TeaserHeadline__root___7qwNA",
+     "text": "div.FeedTeaser__textContent___tVFA3"
+    }
+   },
+   "defaultFields": [
+    "url",
+    "headline",
+    "text"
+   ],
+   "mutates": false,
+   "example": {
+    "section": "utrikes"
+   },
+   "source": "E23 GET https://www.svt.se/nyheter/utrikes/",
+   "verified": true
+  },
+  {
+   "name": "list-local-news",
+   "summary": "List the top local news teasers for an SVT region, e.g. stockholm.",
+   "method": "GET",
+   "urlTemplate": "/nyheter/lokalt/{region}/",
+   "params": [
+    {
+     "name": "region",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Local region slug, e.g. stockholm, skane, vast, ost, uppsala, gavleborg, vasterbotten, norrbotten",
+     "example": "stockholm"
+    }
+   ],
+   "responseType": "html",
+   "extract": {
+    "list": "ul.Stack__root___uHlxH.Stack__gap-0___ZAYPy > li",
+    "fields": {
+     "url": "a@href",
+     "title": "a@title",
+     "headline": "h1.TeaserHeadline__root___7qwNA",
+     "text": "span.Text__text-M___E0ehF"
+    }
+   },
+   "defaultFields": [
+    "url",
+    "headline",
+    "text"
+   ],
+   "mutates": false,
+   "example": {
+    "region": "stockholm"
+   },
+   "source": "E29 GET https://www.svt.se/nyheter/lokalt/stockholm/",
+   "verified": true
+  },
+  {
+   "name": "get-article",
+   "summary": "Get one article's metadata (headline, description, publish date, authors, image) from its schema.org NewsArticle data.",
+   "method": "GET",
+   "urlTemplate": "/{category}/{section}/{slug}",
+   "params": [
+    {
+     "name": "category",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Top-level site area, the first URL segment",
+     "enum": [
+      "nyheter",
+      "sport"
+     ],
+     "example": "nyheter"
+    },
+    {
+     "name": "section",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Second URL segment: news section (utrikes, inrikes, ...) or sport (bordtennis, fotboll, ...)",
+     "example": "utrikes"
+    },
+    {
+     "name": "slug",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Article slug, the last URL segment",
+     "example": "stromavbrott-pa-hela-sri-lanka"
+    }
+   ],
+   "responseType": "html",
+   "extract": {
+    "jsonScript": "script[type=\"application/ld+json\"]"
+   },
+   "defaultFields": [
+    "headline",
+    "description",
+    "datePublished",
+    "author",
+    "image",
+    "mainEntityOfPage"
+   ],
+   "mutates": false,
+   "example": {
+    "category": "nyheter",
+    "section": "utrikes",
+    "slug": "stromavbrott-pa-hela-sri-lanka"
+   },
+   "source": "E24 GET https://www.svt.se/nyheter/utrikes/stromavbrott-pa-hela-sri-lanka",
+   "verified": true
+  },
+  {
+   "name": "get-related-trailers",
+   "summary": "Get the related teaser groups (more from the same section or sport) shown under an article or page.",
+   "method": "POST",
+   "urlTemplate": "https://api.svt.se/newsqlear/graphql",
+   "params": [
+    {
+     "name": "path",
+     "in": "body",
+     "required": true,
+     "type": "string",
+     "description": "Site path of the article or page, starting with /",
+     "example": "/nyheter/utrikes/stromavbrott-pa-hela-sri-lanka"
+    }
+   ],
+   "bodyTemplate": {
+    "operationName": "TrailersQuery",
+    "variables": {
+     "path": "{path}"
+    },
+    "extensions": {
+     "persistedQuery": {
+      "sha256Hash": "91e27b9d7a7cfe9481d04834676f83dd26933498dd82f03141316b60c975f631",
+      "version": 1
+     }
+    }
+   },
+   "bodyEncoding": "json",
+   "responseType": "json",
+   "resultPath": "data.page.trailers",
+   "defaultFields": [
+    "name",
+    "url",
+    "teasers"
+   ],
+   "mutates": false,
+   "example": {
+    "path": "/nyheter/utrikes/stromavbrott-pa-hela-sri-lanka"
+   },
+   "source": "E2 GET https://api.svt.se/newsqlear/graphql (GraphQL operation TrailersQuery)",
+   "verified": true
+  },
+  {
+   "name": "get-video",
+   "summary": "Get metadata and stream URLs (HLS/DASH, subtitles, rights, geo-block flag) for an SVT video clip by its svtId.",
+   "method": "GET",
+   "urlTemplate": "https://video.svt.se/video/{id}",
+   "params": [
+    {
+     "name": "id",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "SVT video id (svtId), e.g. 8Dva4VJ, found in article and video pages",
+     "example": "8Dva4VJ"
+    }
+   ],
+   "responseType": "json",
+   "defaultFields": [
+    "svtId",
+    "programTitle",
+    "episodeTitle",
+    "contentDuration",
+    "live",
+    "rights.geoBlockedSweden",
+    "videoReferences",
+    "subtitleReferences"
+   ],
+   "mutates": false,
+   "example": {
+    "id": "8Dva4VJ"
+   },
+   "source": "E4 E7 E9 E10 E11 E12 E13 E19 E20 GET https://video.svt.se/video/8Dva4VJ",
+   "verified": true
+  },
+  {
+   "name": "get-text-tv-page",
+   "summary": "Read an SVT Text-TV page by number (e.g. 100 news index, 101, 377 sport results); includes plain-text content and prev/next page numbers.",
+   "method": "GET",
+   "urlTemplate": "/text-tv/api/{page}",
+   "params": [
+    {
+     "name": "page",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Text-TV page number, 100-899",
+     "example": "101"
+    }
+   ],
+   "responseType": "json",
+   "resultPath": "data",
+   "defaultFields": [
+    "pageNumber",
+    "prevPage",
+    "nextPage",
+    "subPages.subPageNumber",
+    "subPages.altText",
+    "meta.updated"
+   ],
+   "mutates": false,
+   "example": {
+    "page": "101"
+   },
+   "source": "E3 E22 E28 GET https://www.svt.se/text-tv/api/{n}",
+   "verified": true
+  }
+ ],
+ "blockers": [],
+ "notes": [
+  "svt.se has no keyword search for articles. To find content, use section feeds (list-section-articles), local feeds (list-local-news) or tag feeds (list-tag-articles).",
+  "Teaser 'url' values are site-relative paths such as /nyheter/utrikes/<slug>. Split the path into category/section/slug for get-article, or pass it unchanged as 'path' to get-related-trailers.",
+  "Local articles have four path segments (/nyheter/lokalt/<region>/<slug>), so they do not fit get-article's template. Use get-related-trailers with the full path for those.",
+  "list-tag-articles: the first 10 items of a tag page come from the server-rendered page. If cursor \"0\" fails, start at \"10\" and follow the returned cursor.",
+  "Videos with rights.geoBlockedSweden=true have metadata available everywhere, but the streams only play from Swedish IPs.",
+  "In Text-TV responses, subPages[].altText is the readable text. gifAsBase64 is a large image and is left out of the default fields.",
+  "Several capabilities seen in the recording are not exposed as commands. The RootQuery and AutoFeedPaginationQuery operations behind section 'load more', weather forecasts (/vader/prognos/<place>) and the sport TV schedule (/sport/tabla, scheduleCategory/date params) were recorded with truncated persisted-query hashes, so they cannot be replayed reliably.",
+  "Also not exposed: M\u00e5lservice live scores come from enetscores with encrypted payloads, and the live blog streams through Firestore listen channels."
+ ],
+ "dropped": [
+  {
+   "name": "list-tag-articles",
+   "summary": "List articles on a topic/tag page (e.g. /sport/om/truls-moregardh), 10 per call, paged by a numeric offset cursor.",
+   "method": "POST",
+   "urlTemplate": "https://api.svt.se/newsqlear/graphql",
+   "params": [
+    {
+     "name": "path",
+     "in": "body",
+     "required": true,
+     "type": "string",
+     "description": "Tag page path, e.g. /sport/om/<tag> or /nyheter/om/<tag>",
+     "example": "/sport/om/truls-moregardh"
+    },
+    {
+     "name": "cursor",
+     "in": "body",
+     "required": false,
+     "type": "string",
+     "description": "Feed offset as a string. Use \"0\" for the first page, then \"10\", \"20\" and so on for later pages.",
+     "default": "0",
+     "example": "10"
+    }
+   ],
+   "bodyTemplate": {
+    "operationName": "TagFeedPaginationQuery",
+    "variables": {
+     "cursor": "{cursor}",
+     "path": "{path}"
+    },
+    "extensions": {
+     "persistedQuery": {
+      "sha256Hash": "b2fd5e39afbbbc820b824c7f44a820ce2b499f5e1c0731fc93f5fcaac2373469",
+      "version": 1
+     }
+    }
+   },
+   "bodyEncoding": "json",
+   "responseType": "json",
+   "resultPath": "data.page.feed.items",
+   "defaultFields": [
+    "url",
+    "headline",
+    "prefix",
+    "date",
+    "styles"
+   ],
+   "mutates": false,
+   "example": {
+    "path": "/sport/om/truls-moregardh",
+    "cursor": "10"
+   },
+   "source": "E8",
+   "verified": false,
+   "verifyNote": "failed on Blaxel: resultPath \"data.page.feed.items\" matched nothing"
+  }
+ ],
+ "generated": {
+  "by": "clify add",
+  "model": "claude-opus-5-5",
+  "exploredSteps": 26,
+  "recorded": 55,
+  "verifiedAt": "2026-10-18T08:44:08.721Z",
+  "seconds": 233
+ }
+}

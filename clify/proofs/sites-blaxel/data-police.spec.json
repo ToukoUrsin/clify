@@ -1,0 +1,950 @@
+{
+ "name": "data-police",
+ "startUrl": "https://data.police.uk/",
+ "origin": "https://data.police.uk",
+ "createdAt": "2026-10-18T08:52:04.507Z",
+ "description": "data.police.uk is the UK's open police data API. This CLI covers forces and senior officers, street-level crimes and outcomes, neighbourhood teams, events and priorities, stop and search records, data availability dates, and the custom CSV download form.",
+ "commands": [
+  {
+   "name": "list-forces",
+   "summary": "List all police forces (id and name). Use the id in other commands.",
+   "method": "GET",
+   "urlTemplate": "/api/forces",
+   "params": [],
+   "responseType": "json",
+   "defaultFields": [
+    "id",
+    "name"
+   ],
+   "mutates": false,
+   "source": "E2 GET https://data.police.uk/api/forces",
+   "verified": true
+  },
+  {
+   "name": "get-force",
+   "summary": "Get one police force's details: website, phone number and engagement channels such as social media.",
+   "method": "GET",
+   "urlTemplate": "/api/forces/{force}",
+   "params": [
+    {
+     "name": "force",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Force id from list-forces",
+     "example": "leicestershire"
+    }
+   ],
+   "responseType": "json",
+   "defaultFields": [
+    "id",
+    "name",
+    "url",
+    "telephone",
+    "engagement_methods",
+    "description"
+   ],
+   "mutates": false,
+   "example": {
+    "force": "leicestershire"
+   },
+   "source": "E3 GET https://data.police.uk/api/forces/leicestershire",
+   "verified": true
+  },
+  {
+   "name": "list-force-officers",
+   "summary": "List the senior officers of a police force, with rank and bio.",
+   "method": "GET",
+   "urlTemplate": "/api/forces/{force}/people",
+   "params": [
+    {
+     "name": "force",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Force id from list-forces",
+     "example": "leicestershire"
+    }
+   ],
+   "responseType": "json",
+   "defaultFields": [
+    "name",
+    "rank",
+    "bio",
+    "contact_details"
+   ],
+   "mutates": false,
+   "example": {
+    "force": "leicestershire"
+   },
+   "source": "E4 GET https://data.police.uk/api/forces/leicestershire/people",
+   "verified": true
+  },
+  {
+   "name": "list-crime-categories",
+   "summary": "List the crime categories (url slug and name) that were valid for a given month.",
+   "method": "GET",
+   "urlTemplate": "/api/crime-categories",
+   "params": [
+    {
+     "name": "date",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Month in YYYY-MM format. Omit for the latest month.",
+     "example": "2024-01"
+    }
+   ],
+   "responseType": "json",
+   "defaultFields": [
+    "url",
+    "name"
+   ],
+   "mutates": false,
+   "example": {
+    "date": "2024-01"
+   },
+   "source": "E5 GET https://data.police.uk/api/crime-categories",
+   "verified": true
+  },
+  {
+   "name": "list-dates",
+   "summary": "List the months that have street-level data available, and which forces published stop and search data for each month.",
+   "method": "GET",
+   "urlTemplate": "/api/crimes-street-dates",
+   "params": [],
+   "responseType": "json",
+   "defaultFields": [
+    "date",
+    "stop-and-search"
+   ],
+   "mutates": false,
+   "source": "E6 GET https://data.police.uk/api/crimes-street-dates",
+   "verified": true
+  },
+  {
+   "name": "get-last-updated",
+   "summary": "Get the date the crime data was last updated (this is the latest month available).",
+   "method": "GET",
+   "urlTemplate": "/api/crime-last-updated",
+   "params": [],
+   "responseType": "json",
+   "mutates": false,
+   "source": "E23 GET https://data.police.uk/api/crime-last-updated",
+   "verified": true
+  },
+  {
+   "name": "street-crimes",
+   "summary": "Street-level crimes for one month, either within a 1-mile radius of a lat/lng point or inside a custom polygon. Can be limited to one category.",
+   "method": "GET",
+   "urlTemplate": "/api/crimes-street/{category}",
+   "params": [
+    {
+     "name": "category",
+     "in": "path",
+     "required": false,
+     "type": "string",
+     "description": "Crime category slug (see list-crime-categories)",
+     "enum": [
+      "all-crime",
+      "anti-social-behaviour",
+      "bicycle-theft",
+      "burglary",
+      "criminal-damage-arson",
+      "drugs",
+      "other-theft",
+      "possession-of-weapons",
+      "public-order",
+      "robbery",
+      "shoplifting",
+      "theft-from-the-person",
+      "vehicle-crime",
+      "violent-crime",
+      "other-crime"
+     ],
+     "default": "all-crime",
+     "example": "all-crime"
+    },
+    {
+     "name": "lat",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Latitude of the centre point. Use with lng; do not combine with poly.",
+     "example": "52.629729"
+    },
+    {
+     "name": "lng",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Longitude of the centre point. Use with lat.",
+     "example": "-1.131592"
+    },
+    {
+     "name": "poly",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Polygon as lat,lng pairs separated by colons, e.g. 52.268,0.543:52.794,0.238:52.130,0.478. Use instead of lat/lng.",
+     "example": "52.268,0.543:52.794,0.238:52.130,0.478"
+    },
+    {
+     "name": "date",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Month in YYYY-MM format. Omit for the latest month.",
+     "example": "2024-01"
+    }
+   ],
+   "responseType": "json",
+   "defaultFields": [
+    "persistent_id",
+    "category",
+    "month",
+    "location.street.name",
+    "location.street.id",
+    "location.latitude",
+    "location.longitude",
+    "outcome_status.category"
+   ],
+   "mutates": false,
+   "example": {
+    "category": "all-crime",
+    "lat": "52.629729",
+    "lng": "-1.131592",
+    "date": "2024-01"
+   },
+   "source": "E1 E7 GET https://data.police.uk/api/crimes-street/all-crime",
+   "verified": true
+  },
+  {
+   "name": "crimes-at-location",
+   "summary": "Crimes recorded at the anonymised location nearest to a lat/lng point, or at a specific street location id, for one month.",
+   "method": "GET",
+   "urlTemplate": "/api/crimes-at-location",
+   "params": [
+    {
+     "name": "date",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Month in YYYY-MM format",
+     "example": "2024-01"
+    },
+    {
+     "name": "lat",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Latitude. Use with lng.",
+     "example": "52.629729"
+    },
+    {
+     "name": "lng",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Longitude. Use with lat.",
+     "example": "-1.131592"
+    },
+    {
+     "name": "location_id",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Street location id (location.street.id from crime results). Use instead of lat/lng.",
+     "example": "1738423"
+    }
+   ],
+   "responseType": "json",
+   "defaultFields": [
+    "persistent_id",
+    "category",
+    "month",
+    "location.street.name",
+    "location.street.id",
+    "location.latitude",
+    "location.longitude",
+    "outcome_status.category"
+   ],
+   "mutates": false,
+   "example": {
+    "date": "2024-01",
+    "lat": "52.629729",
+    "lng": "-1.131592"
+   },
+   "source": "E9 GET https://data.police.uk/api/crimes-at-location",
+   "verified": true
+  },
+  {
+   "name": "crimes-no-location",
+   "summary": "Crimes a force recorded in one month that could not be mapped to a location.",
+   "method": "GET",
+   "urlTemplate": "/api/crimes-no-location",
+   "params": [
+    {
+     "name": "force",
+     "in": "query",
+     "required": true,
+     "type": "string",
+     "description": "Force id from list-forces",
+     "example": "leicestershire"
+    },
+    {
+     "name": "category",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Crime category slug",
+     "enum": [
+      "all-crime",
+      "anti-social-behaviour",
+      "bicycle-theft",
+      "burglary",
+      "criminal-damage-arson",
+      "drugs",
+      "other-theft",
+      "possession-of-weapons",
+      "public-order",
+      "robbery",
+      "shoplifting",
+      "theft-from-the-person",
+      "vehicle-crime",
+      "violent-crime",
+      "other-crime"
+     ],
+     "default": "all-crime",
+     "example": "all-crime"
+    },
+    {
+     "name": "date",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Month in YYYY-MM format. Omit for the latest month.",
+     "example": "2024-01"
+    }
+   ],
+   "responseType": "json",
+   "defaultFields": [
+    "id",
+    "persistent_id",
+    "category",
+    "month",
+    "outcome_status.category",
+    "outcome_status.date"
+   ],
+   "mutates": false,
+   "example": {
+    "force": "leicestershire",
+    "category": "all-crime",
+    "date": "2024-01"
+   },
+   "source": "E11 GET https://data.police.uk/api/crimes-no-location",
+   "verified": true
+  },
+  {
+   "name": "outcomes-at-location",
+   "summary": "Case outcomes recorded in one month near a lat/lng point, at a street location id, or inside a polygon. Each outcome includes the crime it relates to.",
+   "method": "GET",
+   "urlTemplate": "/api/outcomes-at-location",
+   "params": [
+    {
+     "name": "date",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Month in YYYY-MM format",
+     "example": "2024-01"
+    },
+    {
+     "name": "lat",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Latitude. Use with lng.",
+     "example": "52.629729"
+    },
+    {
+     "name": "lng",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Longitude. Use with lat.",
+     "example": "-1.131592"
+    },
+    {
+     "name": "location_id",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Street location id. Use instead of lat/lng.",
+     "example": "1738423"
+    },
+    {
+     "name": "poly",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Polygon as lat,lng:lat,lng:... Use instead of lat/lng.",
+     "example": "52.268,0.543:52.794,0.238:52.130,0.478"
+    }
+   ],
+   "responseType": "json",
+   "defaultFields": [
+    "category.name",
+    "date",
+    "crime.category",
+    "crime.persistent_id",
+    "crime.month",
+    "crime.location.street.name",
+    "crime.location.street.id"
+   ],
+   "mutates": false,
+   "example": {
+    "date": "2024-01",
+    "lat": "52.629729",
+    "lng": "-1.131592"
+   },
+   "source": "E8 GET https://data.police.uk/api/outcomes-at-location",
+   "verified": true
+  },
+  {
+   "name": "get-crime-outcomes",
+   "summary": "Get the full outcome history of one crime, looked up by its persistent_id.",
+   "method": "GET",
+   "urlTemplate": "/api/outcomes-for-crime/{persistent_id}",
+   "params": [
+    {
+     "name": "persistent_id",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "64-character persistent_id from crime results. Anti-social behaviour crimes have no persistent_id.",
+     "example": "bb06e351c7056b9d74fcf5d519cc45e0318f72e1a39bdf45f9551a2743396d58"
+    }
+   ],
+   "responseType": "json",
+   "mutates": false,
+   "example": {
+    "persistent_id": "bb06e351c7056b9d74fcf5d519cc45e0318f72e1a39bdf45f9551a2743396d58"
+   },
+   "source": "E10 GET https://data.police.uk/api/outcomes-for-crime/{id}",
+   "verified": true
+  },
+  {
+   "name": "list-neighbourhoods",
+   "summary": "List the neighbourhood policing areas (id and name) of a force.",
+   "method": "GET",
+   "urlTemplate": "/api/{force}/neighbourhoods",
+   "params": [
+    {
+     "name": "force",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Force id from list-forces",
+     "example": "leicestershire"
+    }
+   ],
+   "responseType": "json",
+   "defaultFields": [
+    "id",
+    "name"
+   ],
+   "mutates": false,
+   "example": {
+    "force": "leicestershire"
+   },
+   "source": "E12 GET https://data.police.uk/api/leicestershire/neighbourhoods",
+   "verified": true
+  },
+  {
+   "name": "get-neighbourhood",
+   "summary": "Get one neighbourhood's details: name, centre point, description, links and contact details.",
+   "method": "GET",
+   "urlTemplate": "/api/{force}/{neighbourhood}",
+   "params": [
+    {
+     "name": "force",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Force id",
+     "example": "leicestershire"
+    },
+    {
+     "name": "neighbourhood",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Neighbourhood id from list-neighbourhoods or locate-neighbourhood",
+     "example": "NC04"
+    }
+   ],
+   "responseType": "json",
+   "defaultFields": [
+    "id",
+    "name",
+    "url_force",
+    "centre",
+    "population",
+    "contact_details",
+    "links",
+    "description"
+   ],
+   "mutates": false,
+   "example": {
+    "force": "leicestershire",
+    "neighbourhood": "NC04"
+   },
+   "source": "E13 GET https://data.police.uk/api/leicestershire/NC04",
+   "verified": true
+  },
+  {
+   "name": "get-neighbourhood-boundary",
+   "summary": "Get a neighbourhood's boundary as a list of lat/lng points. These can be joined as lat,lng:lat,lng for the poly param of other commands.",
+   "method": "GET",
+   "urlTemplate": "/api/{force}/{neighbourhood}/boundary",
+   "params": [
+    {
+     "name": "force",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Force id",
+     "example": "leicestershire"
+    },
+    {
+     "name": "neighbourhood",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Neighbourhood id",
+     "example": "NC04"
+    }
+   ],
+   "responseType": "json",
+   "defaultFields": [
+    "latitude",
+    "longitude"
+   ],
+   "mutates": false,
+   "example": {
+    "force": "leicestershire",
+    "neighbourhood": "NC04"
+   },
+   "source": "E14 GET https://data.police.uk/api/leicestershire/NC04/boundary",
+   "verified": true
+  },
+  {
+   "name": "list-neighbourhood-team",
+   "summary": "List the officers and PCSOs on a neighbourhood's policing team.",
+   "method": "GET",
+   "urlTemplate": "/api/{force}/{neighbourhood}/people",
+   "params": [
+    {
+     "name": "force",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Force id",
+     "example": "leicestershire"
+    },
+    {
+     "name": "neighbourhood",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Neighbourhood id",
+     "example": "NC04"
+    }
+   ],
+   "responseType": "json",
+   "defaultFields": [
+    "name",
+    "rank",
+    "bio",
+    "contact_details"
+   ],
+   "mutates": false,
+   "example": {
+    "force": "leicestershire",
+    "neighbourhood": "NC04"
+   },
+   "source": "E15 GET https://data.police.uk/api/leicestershire/NC04/people",
+   "verified": true
+  },
+  {
+   "name": "list-neighbourhood-events",
+   "summary": "List upcoming events for a neighbourhood, such as police drop-ins and community meetings.",
+   "method": "GET",
+   "urlTemplate": "/api/{force}/{neighbourhood}/events",
+   "params": [
+    {
+     "name": "force",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Force id",
+     "example": "leicestershire"
+    },
+    {
+     "name": "neighbourhood",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Neighbourhood id",
+     "example": "NC04"
+    }
+   ],
+   "responseType": "json",
+   "defaultFields": [
+    "title",
+    "type",
+    "start_date",
+    "end_date",
+    "address",
+    "description"
+   ],
+   "mutates": false,
+   "example": {
+    "force": "leicestershire",
+    "neighbourhood": "NC04"
+   },
+   "source": "E16 GET https://data.police.uk/api/leicestershire/NC04/events",
+   "verified": true
+  },
+  {
+   "name": "list-neighbourhood-priorities",
+   "summary": "List a neighbourhood's policing priorities: each issue and the action taken on it.",
+   "method": "GET",
+   "urlTemplate": "/api/{force}/{neighbourhood}/priorities",
+   "params": [
+    {
+     "name": "force",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Force id",
+     "example": "leicestershire"
+    },
+    {
+     "name": "neighbourhood",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Neighbourhood id",
+     "example": "NC04"
+    }
+   ],
+   "responseType": "json",
+   "defaultFields": [
+    "issue",
+    "action",
+    "issue-date",
+    "action-date"
+   ],
+   "mutates": false,
+   "example": {
+    "force": "leicestershire",
+    "neighbourhood": "NC04"
+   },
+   "source": "E17 GET https://data.police.uk/api/leicestershire/NC04/priorities",
+   "verified": true
+  },
+  {
+   "name": "locate-neighbourhood",
+   "summary": "Find which force and neighbourhood cover a lat,lng point.",
+   "method": "GET",
+   "urlTemplate": "/api/locate-neighbourhood",
+   "params": [
+    {
+     "name": "q",
+     "in": "query",
+     "required": true,
+     "type": "string",
+     "description": "Coordinates as 'lat,lng', e.g. 52.629729,-1.131592",
+     "example": "52.629729,-1.131592"
+    }
+   ],
+   "responseType": "json",
+   "defaultFields": [
+    "force",
+    "neighbourhood"
+   ],
+   "mutates": false,
+   "example": {
+    "q": "52.629729,-1.131592"
+   },
+   "source": "E18 GET https://data.police.uk/api/locate-neighbourhood",
+   "verified": true
+  },
+  {
+   "name": "stops-street",
+   "summary": "Stop and searches in one month within a 1-mile radius of a lat/lng point, or inside a polygon.",
+   "method": "GET",
+   "urlTemplate": "/api/stops-street",
+   "params": [
+    {
+     "name": "lat",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Latitude. Use with lng.",
+     "example": "52.629729"
+    },
+    {
+     "name": "lng",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Longitude. Use with lat.",
+     "example": "-1.131592"
+    },
+    {
+     "name": "poly",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Polygon as lat,lng:lat,lng:... Use instead of lat/lng.",
+     "example": "52.268,0.543:52.794,0.238:52.130,0.478"
+    },
+    {
+     "name": "date",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Month in YYYY-MM format. Omit for the latest month.",
+     "example": "2024-01"
+    }
+   ],
+   "responseType": "json",
+   "defaultFields": [
+    "datetime",
+    "type",
+    "object_of_search",
+    "outcome",
+    "age_range",
+    "gender",
+    "officer_defined_ethnicity",
+    "location.street.id"
+   ],
+   "mutates": false,
+   "example": {
+    "lat": "52.629729",
+    "lng": "-1.131592",
+    "date": "2024-01"
+   },
+   "source": "E19 GET https://data.police.uk/api/stops-street",
+   "verified": true
+  },
+  {
+   "name": "stops-force",
+   "summary": "All stop and searches a force reported for one month.",
+   "method": "GET",
+   "urlTemplate": "/api/stops-force",
+   "params": [
+    {
+     "name": "force",
+     "in": "query",
+     "required": true,
+     "type": "string",
+     "description": "Force id. See list-dates for which forces published stop and search data in which months.",
+     "example": "avon-and-somerset"
+    },
+    {
+     "name": "date",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Month in YYYY-MM format. Omit for the latest month.",
+     "example": "2024-01"
+    }
+   ],
+   "responseType": "json",
+   "defaultFields": [
+    "datetime",
+    "type",
+    "object_of_search",
+    "legislation",
+    "outcome",
+    "age_range",
+    "gender",
+    "officer_defined_ethnicity"
+   ],
+   "mutates": false,
+   "example": {
+    "force": "avon-and-somerset",
+    "date": "2024-01"
+   },
+   "source": "E20 GET https://data.police.uk/api/stops-force",
+   "verified": true
+  },
+  {
+   "name": "stops-no-location",
+   "summary": "Stop and searches a force reported for one month that could not be mapped to a location.",
+   "method": "GET",
+   "urlTemplate": "/api/stops-no-location",
+   "params": [
+    {
+     "name": "force",
+     "in": "query",
+     "required": true,
+     "type": "string",
+     "description": "Force id",
+     "example": "cleveland"
+    },
+    {
+     "name": "date",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Month in YYYY-MM format. Omit for the latest month.",
+     "example": "2024-01"
+    }
+   ],
+   "responseType": "json",
+   "defaultFields": [
+    "datetime",
+    "type",
+    "object_of_search",
+    "legislation",
+    "outcome",
+    "age_range",
+    "gender",
+    "officer_defined_ethnicity"
+   ],
+   "mutates": false,
+   "example": {
+    "force": "cleveland",
+    "date": "2024-01"
+   },
+   "source": "E21 GET https://data.police.uk/api/stops-no-location",
+   "verified": true
+  },
+  {
+   "name": "stops-at-location",
+   "summary": "Stop and searches at a specific street location id for one month.",
+   "method": "GET",
+   "urlTemplate": "/api/stops-at-location",
+   "params": [
+    {
+     "name": "location_id",
+     "in": "query",
+     "required": true,
+     "type": "string",
+     "description": "Street location id (location.street.id from stops-street or crime results)",
+     "example": "2346580"
+    },
+    {
+     "name": "date",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Month in YYYY-MM format. Omit for the latest month.",
+     "example": "2024-01"
+    }
+   ],
+   "responseType": "json",
+   "defaultFields": [
+    "datetime",
+    "type",
+    "object_of_search",
+    "outcome",
+    "age_range",
+    "gender",
+    "officer_defined_ethnicity",
+    "location.street.name"
+   ],
+   "mutates": false,
+   "example": {
+    "location_id": "2346580",
+    "date": "2024-01"
+   },
+   "source": "E22 GET https://data.police.uk/api/stops-at-location",
+   "verified": true
+  },
+  {
+   "name": "generate-csv-download",
+   "summary": "Submit the custom download form to generate a CSV file (street-level crime data) for chosen forces and a month range. Returns the HTML result page. This starts a server-side export job but does not ch",
+   "method": "POST",
+   "urlTemplate": "/data/",
+   "params": [
+    {
+     "name": "date_from",
+     "in": "body",
+     "required": true,
+     "type": "string",
+     "description": "Start month, YYYY-MM. Covers roughly the last 36 months (2023-09 onwards at recording time).",
+     "example": "2026-08"
+    },
+    {
+     "name": "date_to",
+     "in": "body",
+     "required": true,
+     "type": "string",
+     "description": "End month, YYYY-MM",
+     "example": "2026-08"
+    },
+    {
+     "name": "forces",
+     "in": "body",
+     "required": true,
+     "type": "string",
+     "description": "Force id to include (from list-forces)",
+     "example": "leicestershire"
+    },
+    {
+     "name": "include_crime",
+     "in": "body",
+     "required": false,
+     "type": "string",
+     "description": "Send 'on' to include street-level crime data",
+     "default": "on",
+     "example": "on"
+    }
+   ],
+   "bodyEncoding": "form",
+   "responseType": "html",
+   "csrf": {
+    "from": "/data/",
+    "selector": "input[name=csrfmiddlewaretoken]@value",
+    "field": "csrfmiddlewaretoken"
+   },
+   "mutates": true,
+   "example": {
+    "date_from": "2026-08",
+    "date_to": "2026-08",
+    "forces": "leicestershire",
+    "include_crime": "on"
+   },
+   "source": "E24 E25 POST https://data.police.uk/data/",
+   "verified": false,
+   "verifyNote": "write: dry-run preview only, not sent"
+  }
+ ],
+ "blockers": [],
+ "notes": [
+  "No login is needed. All /api/ endpoints are public JSON.",
+  "Dates are months in YYYY-MM format. Data lags about two months behind today; use get-last-updated or list-dates to find the latest available month (2026-08 at recording time).",
+  "Location queries take either lat+lng (1-mile radius) or poly ('lat,lng:lat,lng:...'), not both. A get-neighbourhood-boundary result can be joined into a poly string.",
+  "Very large areas or polygons can fail with HTTP 503 when the result would exceed 10,000 crimes. Use a smaller area if that happens.",
+  "Locations are anonymised to nearby points. location.street.id is the location_id accepted by crimes-at-location, outcomes-at-location and stops-at-location.",
+  "Anti-social behaviour crimes have an empty persistent_id and no outcomes, so get-crime-outcomes cannot look them up.",
+  "Text fields such as bio, description, issue and action contain HTML markup.",
+  "The API is rate-limited (about 15 requests/second). Not every force publishes stop and search data every month; check list-dates.",
+  "generate-csv-download submits a Django form protected by a CSRF token taken from /data/. The recording only shows the include_crime dataset field, and the request was held, not sent, so the response format was not seen."
+ ],
+ "dropped": [],
+ "generated": {
+  "by": "clify add",
+  "model": "claude-opus-5-5",
+  "exploredSteps": 10,
+  "recorded": 27,
+  "verifiedAt": "2026-10-18T08:53:38.493Z",
+  "seconds": 221
+ }
+}

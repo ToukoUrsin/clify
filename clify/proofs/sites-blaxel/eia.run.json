@@ -1,0 +1,206 @@
+{
+ "url": "https://www.eia.gov/",
+ "category": "gov-us",
+ "sandbox": "clify-www-eia-gov",
+ "startedAt": "2026-10-18T08:47:47.535Z",
+ "region": "us-pdx-1",
+ "chrome": "Chrome/148.0.7778.96",
+ "sandboxStartMs": 2493,
+ "addSeconds": 551,
+ "addExit": 0,
+ "add": {
+  "ok": true,
+  "site": "eia",
+  "url": "https://www.eia.gov/",
+  "commands": [
+   {
+    "name": "list-api-datasets",
+    "summary": "List the top-level EIA Open Data API v2 dataset categories (coal, electricity, natural-gas, petroleum, ...).",
+    "verified": true
+   },
+   {
+    "name": "get-api-route",
+    "summary": "Get metadata for a top-level API v2 category (e.g. natural-gas, electricity): its child routes.",
+    "verified": true
+   },
+   {
+    "name": "list-api-facet-values",
+    "summary": "List the allowed values (id and name) of one facet of a two-level API v2 dataset, e.g. all stateid codes for electricity/retail-sales.",
+    "verified": true
+   },
+   {
+    "name": "get-data-table",
+    "summary": "Read a dnav summary data table (e.g. U.S. or state natural gas prices): one row per series with the latest values and a link to its history.",
+    "verified": true
+   },
+   {
+    "name": "get-series-history-table",
+    "summary": "Read the full-history table of a dnav series, one row per decade (e.g. Texas natural gas wellhead price, annual).",
+    "verified": true
+   },
+   {
+    "name": "list-recent-articles",
+    "summary": "List the latest Today in Energy articles with type, date, title, link and tags.",
+    "verified": true
+   },
+   {
+    "name": "get-article",
+    "summary": "Get the full text of a Today in Energy article by id.",
+    "verified": true
+   },
+   {
+    "name": "list-articles-by-tag",
+    "summary": "List all Today in Energy articles that carry a tag (e.g. electricity, natural gas, solar).",
+    "verified": true
+   },
+   {
+    "name": "list-article-tags",
+    "summary": "List every Today in Energy article tag.",
+    "verified": true
+   },
+   {
+    "name": "list-article-archive",
+    "summary": "List Today in Energy articles for one year from the archive, grouped by month in the page.",
+    "verified": true
+   },
+   {
+    "name": "get-daily-prices",
+    "summary": "Get Today in Energy daily prices: wholesale spot petroleum, natural gas and electricity, retail fuel, prompt-month futures and financial indicators.",
+    "verified": true
+   },
+   {
+    "name": "get-gasoline-diesel-prices",
+    "summary": "Get the weekly U.S., regional and state retail prices for regular gasoline and on-highway diesel (Gasoline and Diesel Fuel Update).",
+    "verified": true
+   },
+   {
+    "name": "list-glossary-terms",
+    "summary": "List EIA glossary terms and definitions for a fuel topic or a starting letter.",
+    "verified": true
+   },
+   {
+    "name": "search-glossary",
+    "summary": "Search EIA glossary terms by keyword (form POST; read-only).",
+    "verified": false,
+    "writes": true
+   },
+   {
+    "name": "get-faq",
+    "summary": "Get an EIA FAQ answer and the related FAQs on the same topic.",
+    "verified": true
+   }
+  ],
+  "verified": 14,
+  "writes": 1,
+  "dropped": [
+   {
+    "name": "query-api-data",
+    "reason": "request failed: The operation was aborted due to timeout"
+   },
+   {
+    "name": "get-series",
+    "reason": "request failed: The operation was aborted due to timeout"
+   }
+  ],
+  "blockers": [],
+  "loggedIn": false,
+  "seconds": 550,
+  "next": [
+   "clify eia",
+   "clify eia list-api-datasets"
+  ],
+  "installed": "/home/ubuntu/clify-runs/blaxel-w1/home/bin/eia",
+  "explored": {
+   "steps": 23,
+   "recorded": 98,
+   "heldWrites": 1
+  }
+ },
+ "check": {
+  "on": "blaxel",
+  "node": "v24.22.0",
+  "seconds": 8,
+  "reads": 14,
+  "verified": 14,
+  "failed": [],
+  "results": [
+   {
+    "name": "list-api-datasets",
+    "ok": true,
+    "ms": 87
+   },
+   {
+    "name": "get-api-route",
+    "ok": true,
+    "ms": 35
+   },
+   {
+    "name": "list-api-facet-values",
+    "ok": true,
+    "ms": 33
+   },
+   {
+    "name": "get-data-table",
+    "ok": true,
+    "ms": 303
+   },
+   {
+    "name": "get-series-history-table",
+    "ok": true,
+    "ms": 92
+   },
+   {
+    "name": "list-recent-articles",
+    "ok": true,
+    "ms": 919
+   },
+   {
+    "name": "get-article",
+    "ok": true,
+    "ms": 41
+   },
+   {
+    "name": "list-articles-by-tag",
+    "ok": true,
+    "ms": 2374
+   },
+   {
+    "name": "list-article-tags",
+    "ok": true,
+    "ms": 116
+   },
+   {
+    "name": "list-article-archive",
+    "ok": true,
+    "ms": 366
+   },
+   {
+    "name": "get-daily-prices",
+    "ok": true,
+    "ms": 207
+   },
+   {
+    "name": "get-gasoline-diesel-prices",
+    "ok": true,
+    "ms": 118
+   },
+   {
+    "name": "list-glossary-terms",
+    "ok": true,
+    "ms": 838
+   },
+   {
+    "name": "search-glossary",
+    "ok": true,
+    "reason": "write: dry-run preview only, not sent"
+   },
+   {
+    "name": "get-faq",
+    "ok": true,
+    "ms": 119
+   }
+  ]
+ },
+ "deleted": true,
+ "seconds": 561
+}

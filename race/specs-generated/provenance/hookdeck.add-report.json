@@ -1,0 +1,123 @@
+{
+  "ok": true,
+  "site": "hookdeck",
+  "url": "https://dashboard.hookdeck.com/",
+  "commands": [
+    {
+      "name": "list-connections",
+      "summary": "List connections (source -> destination pipelines) in the project, with optional name search and source/destination filters",
+      "verified": true,
+      "needsLogin": true
+    },
+    {
+      "name": "create-connection",
+      "summary": "Create a new connection along with a new WEBHOOK source and a new HTTP destination. Returns the source's ingest URL.",
+      "verified": false,
+      "writes": true,
+      "needsLogin": true
+    },
+    {
+      "name": "list-sources",
+      "summary": "List sources (inbound webhook endpoints) in the project, with their ingest URLs",
+      "verified": true,
+      "needsLogin": true
+    },
+    {
+      "name": "list-destinations",
+      "summary": "List destinations (where events are delivered) in the project",
+      "verified": true,
+      "needsLogin": true
+    },
+    {
+      "name": "get-connection",
+      "summary": "Get one connection by id (web_...), including its source, destination and rules",
+      "verified": true,
+      "needsLogin": true
+    },
+    {
+      "name": "get-source",
+      "summary": "Get one source by id (src_...), including its ingest URL and auth config",
+      "verified": true,
+      "needsLogin": true
+    },
+    {
+      "name": "get-destination",
+      "summary": "Get one destination by id (des_...), including its URL, auth type and delivery policy",
+      "verified": true,
+      "needsLogin": true
+    },
+    {
+      "name": "count-connections",
+      "summary": "Count connections, optionally only those using a given source or destination",
+      "verified": true,
+      "needsLogin": true
+    },
+    {
+      "name": "get-event-metrics",
+      "summary": "Get event count metrics over a time range, optionally grouped by status or connection",
+      "verified": true,
+      "needsLogin": true
+    },
+    {
+      "name": "list-source-types",
+      "summary": "List supported source types (e.g. WEBHOOK, STRIPE, GITHUB) with their verification fields",
+      "verified": true,
+      "needsLogin": true
+    },
+    {
+      "name": "list-destination-types",
+      "summary": "List supported destination types (HTTP, CLI, MOCK_API, ...) and their auth options",
+      "verified": true,
+      "needsLogin": true
+    },
+    {
+      "name": "list-projects",
+      "summary": "List the projects (teams) the signed-in user can access; the id is the teamId used by other commands",
+      "verified": true,
+      "needsLogin": true
+    },
+    {
+      "name": "get-me",
+      "summary": "Get the signed-in user's profile, including the last-used project id",
+      "verified": true,
+      "needsLogin": true
+    }
+  ],
+  "verified": 12,
+  "writes": 1,
+  "dropped": [
+    {
+      "name": "list-requests",
+      "reason": "empty list: the example args returned nothing or the selector/resultPath is wrong"
+    },
+    {
+      "name": "list-events",
+      "reason": "empty list: the example args returned nothing or the selector/resultPath is wrong"
+    },
+    {
+      "name": "list-issues",
+      "reason": "empty list: the example args returned nothing or the selector/resultPath is wrong"
+    },
+    {
+      "name": "list-transformations",
+      "reason": "empty list: the example args returned nothing or the selector/resultPath is wrong"
+    },
+    {
+      "name": "list-cli-sessions",
+      "reason": "empty list: the example args returned nothing or the selector/resultPath is wrong"
+    }
+  ],
+  "blockers": [],
+  "loggedIn": true,
+  "seconds": 108,
+  "next": [
+    "clify hookdeck",
+    "clify hookdeck list-connections"
+  ],
+  "installed": "/home/ubuntu/race-gen5/home/bin/hookdeck",
+  "explored": {
+    "steps": 0,
+    "recorded": 408,
+    "heldWrites": 0
+  }
+}

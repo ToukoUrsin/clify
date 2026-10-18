@@ -1,0 +1,166 @@
+{
+ "url": "https://zenodo.org/",
+ "category": "science",
+ "sandbox": "clify-zenodo-org",
+ "startedAt": "2026-10-18T08:50:28.875Z",
+ "region": "us-pdx-1",
+ "chrome": "Chrome/148.0.7778.96",
+ "sandboxStartMs": 1869,
+ "addSeconds": 302,
+ "addExit": 0,
+ "add": {
+  "ok": true,
+  "site": "zenodo",
+  "url": "https://zenodo.org/",
+  "commands": [
+   {
+    "name": "search-community-records",
+    "summary": "Search or list records (datasets, software, publications\u2026) inside a community by keyword, with resource-type and access filters, sorting and pagination",
+    "verified": true
+   },
+   {
+    "name": "search-communities",
+    "summary": "Search or browse Zenodo communities by keyword, with a community-type filter, sorting and pagination",
+    "verified": true
+   },
+   {
+    "name": "list-featured-communities",
+    "summary": "List the communities currently featured on Zenodo's home and communities pages",
+    "verified": true
+   },
+   {
+    "name": "get-record",
+    "summary": "Get a record's full metadata (title, creators, description, DOI, license, files, stats) as JSON, using the record's JSON export",
+    "verified": true
+   },
+   {
+    "name": "get-record-communities",
+    "summary": "List the communities a record belongs to",
+    "verified": true
+   },
+   {
+    "name": "list-record-versions",
+    "summary": "List all versions of a record, ordered by version",
+    "verified": true
+   },
+   {
+    "name": "get-record-citation",
+    "summary": "Get a formatted bibliography citation for a record in a chosen citation style (APA, Harvard, MLA, Vancouver, Chicago, IEEE)",
+    "verified": true
+   },
+   {
+    "name": "list-citing-works",
+    "summary": "List works that cite a Zenodo record, looked up by the record's concept (parent) DOI through the Zenodo citation broker",
+    "verified": true
+   },
+   {
+    "name": "list-community-members",
+    "summary": "List the public members of a community",
+    "verified": true
+   },
+   {
+    "name": "list-subcommunities",
+    "summary": "List the subcommunities of a parent community, e.g. the EU Open Research Repository or the Biodiversity Literature Repository",
+    "verified": true
+   },
+   {
+    "name": "list-collection-records",
+    "summary": "List or search the records in a community collection (e.g. Biodiversity Literature Repository taxon collections) by numeric collection id",
+    "verified": true
+   },
+   {
+    "name": "search-records",
+    "summary": "Search across all Zenodo records with an Elasticsearch/Lucene query, e.g. by title, creator, community id or related identifiers",
+    "verified": true
+   }
+  ],
+  "verified": 12,
+  "writes": 0,
+  "dropped": [],
+  "blockers": [],
+  "loggedIn": false,
+  "seconds": 301,
+  "next": [
+   "clify zenodo",
+   "clify zenodo search-community-records --community_id \"f0a8b890-f97a-4eb2-9eac-8b8a712d3a6c\" --q \"climate change\" --sort \"bestmatch\""
+  ],
+  "installed": "/home/ubuntu/clify-runs/blaxel-w1/home/bin/zenodo",
+  "explored": {
+   "steps": 24,
+   "recorded": 50,
+   "heldWrites": 0
+  }
+ },
+ "check": {
+  "on": "blaxel",
+  "node": "v24.22.0",
+  "seconds": 9,
+  "reads": 12,
+  "verified": 12,
+  "failed": [],
+  "results": [
+   {
+    "name": "search-community-records",
+    "ok": true,
+    "ms": 1462
+   },
+   {
+    "name": "search-communities",
+    "ok": true,
+    "ms": 375
+   },
+   {
+    "name": "list-featured-communities",
+    "ok": true,
+    "ms": 314
+   },
+   {
+    "name": "get-record",
+    "ok": true,
+    "ms": 261
+   },
+   {
+    "name": "get-record-communities",
+    "ok": true,
+    "ms": 204
+   },
+   {
+    "name": "list-record-versions",
+    "ok": true,
+    "ms": 242
+   },
+   {
+    "name": "get-record-citation",
+    "ok": true,
+    "ms": 234
+   },
+   {
+    "name": "list-citing-works",
+    "ok": true,
+    "ms": 1057
+   },
+   {
+    "name": "list-community-members",
+    "ok": true,
+    "ms": 212
+   },
+   {
+    "name": "list-subcommunities",
+    "ok": true,
+    "ms": 273
+   },
+   {
+    "name": "list-collection-records",
+    "ok": true,
+    "ms": 1404
+   },
+   {
+    "name": "search-records",
+    "ok": true,
+    "ms": 612
+   }
+  ]
+ },
+ "deleted": true,
+ "seconds": 313
+}

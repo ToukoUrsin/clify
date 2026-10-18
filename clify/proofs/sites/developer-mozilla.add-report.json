@@ -1,0 +1,48 @@
+{
+ "ok": true,
+ "site": "developer-mozilla",
+ "url": "https://developer.mozilla.org/en-US/",
+ "commands": [
+  {
+   "name": "search-docs",
+   "summary": "Full-text search of MDN documentation, 10 results per page, optionally limited to one locale",
+   "verified": true
+  },
+  {
+   "name": "get-doc",
+   "summary": "Get one MDN doc page as structured JSON: title, summary, body sections (HTML), TOC, parents, translations, and BCD keys",
+   "verified": true
+  },
+  {
+   "name": "list-docs",
+   "summary": "List every doc in a locale as {title, url}, ordered by popularity (MDN's quick-search index)",
+   "verified": true
+  },
+  {
+   "name": "get-browser-compat",
+   "summary": "Get browser compatibility data (support per browser/version, status, spec URL) for a BCD feature key such as api.fetch or html.elements.details",
+   "verified": true
+  }
+ ],
+ "verified": 4,
+ "writes": 0,
+ "dropped": [
+  {
+   "name": "get-current-user",
+   "reason": "No session exists, so every user field is null and only geo country comes back. That is not useful site data for an agent, and the user info needs a login to mean anything."
+  }
+ ],
+ "blockers": [],
+ "loggedIn": false,
+ "seconds": 127,
+ "next": [
+  "clify developer-mozilla",
+  "clify developer-mozilla search-docs --q \"fetch\" --page \"1\" --locale \"en-US\""
+ ],
+ "installed": "/home/ubuntu/clify-runs/batch2/home/bin/developer-mozilla",
+ "explored": {
+  "steps": 15,
+  "recorded": 42,
+  "heldWrites": 10
+ }
+}

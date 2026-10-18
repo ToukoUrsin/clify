@@ -1,0 +1,136 @@
+{
+ "url": "https://hex.pm/",
+ "category": "dev",
+ "sandbox": "clify-hex-pm",
+ "startedAt": "2026-10-18T08:14:03.491Z",
+ "region": "us-pdx-1",
+ "chrome": "Chrome/148.0.7778.96",
+ "sandboxStartMs": 14262,
+ "addSeconds": 212,
+ "addExit": 0,
+ "add": {
+  "ok": true,
+  "site": "hex",
+  "url": "https://hex.pm/",
+  "commands": [
+   {
+    "name": "search-packages",
+    "summary": "Search Hex packages by keyword, with optional qualifiers (depends:hexpm:<pkg>, build_tool:<tool>), sorting and pagination.",
+    "verified": true
+   },
+   {
+    "name": "list-package-dependents",
+    "summary": "List packages on the hexpm repository that depend on a given package.",
+    "verified": true
+   },
+   {
+    "name": "get-package",
+    "summary": "Get package details: description, licenses, links, owners, latest versions, download counts, retirements, security advisories and dependency config snippets.",
+    "verified": true
+   },
+   {
+    "name": "list-package-versions",
+    "summary": "List all released versions of a package, newest first, with docs availability and publish date.",
+    "verified": true
+   },
+   {
+    "name": "get-release",
+    "summary": "Get one release of a package: checksum, dependency requirements, build tools, Elixir requirement, publisher, retirement status, downloads and advisories.",
+    "verified": true
+   },
+   {
+    "name": "list-package-owners",
+    "summary": "List the owners of a package, with ownership level, email and social handles.",
+    "verified": true
+   },
+   {
+    "name": "get-user",
+    "summary": "Get a Hex user's public profile and the full list of packages they own.",
+    "verified": true
+   },
+   {
+    "name": "get-user-stats",
+    "summary": "Show per-package download stats for a user's packages: total, yesterday and last 7 days.",
+    "verified": true
+   },
+   {
+    "name": "get-release-file",
+    "summary": "Fetch the raw contents of a file inside a package release (e.g. README.md, CHANGELOG.md, mix.exs, lib/...).",
+    "verified": true
+   }
+  ],
+  "verified": 9,
+  "writes": 0,
+  "dropped": [],
+  "blockers": [],
+  "loggedIn": false,
+  "seconds": 211,
+  "next": [
+   "clify hex",
+   "clify hex search-packages --search \"json\""
+  ],
+  "installed": "/home/ubuntu/clify-runs/blaxel-w1/home/bin/hex",
+  "explored": {
+   "steps": 28,
+   "recorded": 51,
+   "heldWrites": 19
+  }
+ },
+ "check": {
+  "on": "blaxel",
+  "node": "v24.22.0",
+  "seconds": 4,
+  "reads": 9,
+  "verified": 9,
+  "failed": [],
+  "results": [
+   {
+    "name": "search-packages",
+    "ok": true,
+    "ms": 767
+   },
+   {
+    "name": "list-package-dependents",
+    "ok": true,
+    "ms": 641
+   },
+   {
+    "name": "get-package",
+    "ok": true,
+    "ms": 111
+   },
+   {
+    "name": "list-package-versions",
+    "ok": true,
+    "ms": 145
+   },
+   {
+    "name": "get-release",
+    "ok": true,
+    "ms": 108
+   },
+   {
+    "name": "list-package-owners",
+    "ok": true,
+    "ms": 111
+   },
+   {
+    "name": "get-user",
+    "ok": true,
+    "ms": 106
+   },
+   {
+    "name": "get-user-stats",
+    "ok": true,
+    "ms": 189
+   },
+   {
+    "name": "get-release-file",
+    "ok": true,
+    "ms": 68
+   }
+  ]
+ },
+ "deleted": true,
+ "seconds": 231
+}

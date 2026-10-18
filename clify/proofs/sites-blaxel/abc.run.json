@@ -1,0 +1,136 @@
+{
+ "url": "https://www.abc.net.au/news",
+ "category": "news",
+ "sandbox": "clify-www-abc-net-au-news",
+ "startedAt": "2026-10-18T09:21:46.940Z",
+ "region": "us-pdx-1",
+ "chrome": "Chrome/148.0.7778.96",
+ "sandboxStartMs": 1702,
+ "addSeconds": 308,
+ "addExit": 0,
+ "add": {
+  "ok": true,
+  "site": "abc",
+  "url": "https://www.abc.net.au/news",
+  "commands": [
+   {
+    "name": "search-news",
+    "summary": "Keyword search across ABC News content (articles, video, audio) via the site's Algolia index",
+    "verified": true
+   },
+   {
+    "name": "get-top-stories",
+    "summary": "Homepage top stories for the national edition or a state edition",
+    "verified": true
+   },
+   {
+    "name": "list-topic-stories",
+    "summary": "Paginated JSON list of stories for a topic, by the topic's internal documentId (e.g. 1450 = Climate Change)",
+    "verified": true
+   },
+   {
+    "name": "list-topic-page",
+    "summary": "Latest stories on a topic page by topic slug (first page, server-rendered)",
+    "verified": true
+   },
+   {
+    "name": "list-section-stories",
+    "summary": "Story headlines from a news section page, e.g. justin (latest news), politics, world, business",
+    "verified": true
+   },
+   {
+    "name": "get-article",
+    "summary": "Article metadata (headline, description, dates, authors, keywords) from an article URL's date, slug and id",
+    "verified": true
+   },
+   {
+    "name": "list-author-stories",
+    "summary": "Latest stories by an ABC reporter, from their profile page",
+    "verified": true
+   },
+   {
+    "name": "list-topics",
+    "summary": "A-Z topics library: topics starting with a letter (links to /news/topic/{slug})",
+    "verified": true
+   },
+   {
+    "name": "list-location-topics",
+    "summary": "A-Z location topics (places) starting with a letter",
+    "verified": true
+   }
+  ],
+  "verified": 9,
+  "writes": 0,
+  "dropped": [],
+  "blockers": [],
+  "loggedIn": false,
+  "seconds": 308,
+  "next": [
+   "clify abc",
+   "clify abc search-news --query \"climate change\""
+  ],
+  "installed": "/home/ubuntu/clify-runs/blaxel-w2/home/bin/abc",
+  "explored": {
+   "steps": 26,
+   "recorded": 142,
+   "heldWrites": 31
+  }
+ },
+ "check": {
+  "on": "blaxel",
+  "node": "v24.22.0",
+  "seconds": 4,
+  "reads": 9,
+  "verified": 9,
+  "failed": [],
+  "results": [
+   {
+    "name": "search-news",
+    "ok": true,
+    "ms": 984
+   },
+   {
+    "name": "get-top-stories",
+    "ok": true,
+    "ms": 152
+   },
+   {
+    "name": "list-topic-stories",
+    "ok": true,
+    "ms": 90
+   },
+   {
+    "name": "list-topic-page",
+    "ok": true,
+    "ms": 131
+   },
+   {
+    "name": "list-section-stories",
+    "ok": true,
+    "ms": 222
+   },
+   {
+    "name": "get-article",
+    "ok": true,
+    "ms": 71
+   },
+   {
+    "name": "list-author-stories",
+    "ok": true,
+    "ms": 51
+   },
+   {
+    "name": "list-topics",
+    "ok": true,
+    "ms": 52
+   },
+   {
+    "name": "list-location-topics",
+    "ok": true,
+    "ms": 69
+   }
+  ]
+ },
+ "deleted": true,
+ "seconds": 314
+}

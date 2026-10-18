@@ -1,0 +1,24 @@
+# Public read-only status page (status/server.ts) on 127.0.0.1:18320; clify-agent-tunnel
+# puts it on the Inkbox identity's address. Reads the agent's state, writes nothing.
+[Unit]
+Description=clify agent public status page (read-only, 127.0.0.1:18320)
+After=network-online.target
+
+[Service]
+User=ubuntu
+WorkingDirectory=/data/workspace/clify-agent/agent
+# Caps and the agent's address only; no secrets in the env file.
+EnvironmentFile=/data/home/.config/clify-agent/main.env
+Environment=STATUS_PORT=18320 CLIFY_PEER_HOME=/data/home/.clify-peer STATUS_TUNNEL_FILE=/data/home/.clify-tunnel/status.json
+EnvironmentFile=-/data/home/.config/clify-agent/status.env
+ExecStart=/usr/local/bin/node --no-warnings --import /data/workspace/clify-agent/clify/node_modules/tsx/dist/esm/index.mjs status/server.ts
+Restart=always
+RestartSec=3
+NoNewPrivileges=true
+ProtectSystem=strict
+PrivateTmp=true
+PrivateDevices=true
+MemoryMax=256M
+
+[Install]
+WantedBy=multi-user.target

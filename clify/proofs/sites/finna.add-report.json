@@ -1,0 +1,69 @@
+{
+ "ok": true,
+ "site": "finna",
+ "url": "https://www.finna.fi/",
+ "commands": [
+  {
+   "name": "search-records",
+   "summary": "Keyword search over Finna's index of books, images, archive material and museum objects, with filters, sorting and paging (public Finna API)",
+   "verified": true
+  },
+  {
+   "name": "get-record",
+   "summary": "Get full metadata for one record by its Finna id (public Finna API), optionally choosing which fields to return",
+   "verified": true
+  },
+  {
+   "name": "get-facets",
+   "summary": "List facet values with counts (formats, organisations, languages, years, ...) for a search or for the whole index; the values can be used as search-records filters",
+   "verified": true
+  },
+  {
+   "name": "list-organisations",
+   "summary": "List the organisations (libraries, archives, museums) whose material is in Finna, with record counts, from the building facet",
+   "verified": true
+  },
+  {
+   "name": "search-authorities",
+   "summary": "Search authority records for people and organisations (public Finna API)",
+   "verified": true
+  },
+  {
+   "name": "get-authority",
+   "summary": "Get one authority record (person or organisation) by id, using an id from search-authorities (public Finna API)",
+   "verified": true
+  },
+  {
+   "name": "get-citation",
+   "summary": "Get ready-made citations (APA, Chicago, MLA, Harvard) for a record",
+   "verified": true
+  },
+  {
+   "name": "export-record",
+   "summary": "Export a record as a citation-manager file (RIS, BibTeX, EndNote, RefWorks, MARC ...) and return the raw text",
+   "verified": true
+  },
+  {
+   "name": "get-record-tab",
+   "summary": "Load a record page tab as an HTML fragment, e.g. library holdings/availability or user comments",
+   "verified": false,
+   "writes": true
+  }
+ ],
+ "verified": 8,
+ "writes": 1,
+ "dropped": [],
+ "blockers": [],
+ "loggedIn": false,
+ "seconds": 210,
+ "next": [
+  "clify finna",
+  "clify finna search-records --lookfor \"sibelius\""
+ ],
+ "installed": "/home/ubuntu/clify-runs/batch2/home/bin/finna",
+ "explored": {
+  "steps": 23,
+  "recorded": 22,
+  "heldWrites": 2
+ }
+}

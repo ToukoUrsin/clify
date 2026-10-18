@@ -1,0 +1,5 @@
+#!/bin/sh
+# clify with the benchmark's own CLIFY_HOME (run.mjs rewrites this file with its settings).
+here=$(cd "$(dirname "$0")/.." && pwd)
+export CLIFY_HOME="${BENCH_CLIFY_HOME:-$here/.clify-home}"
+exec "${CLIFY_DIR:-$here/../clify}/bin/clify" "$@"

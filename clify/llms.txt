@@ -1,0 +1,44 @@
+# clify
+
+> clify turns most websites into a JSON CLI and MCP tools for AI agents: so far 133 of 160 public sites tried (open data and government, developer registries, science, maps and weather, culture, news, sports, jobs). It explores the site once in a headless browser, records the requests behind what it clicks, writes typed commands from them, verifies each command live, and installs the CLI. Agents then call the site's own endpoints directly: no browser; in a 20-task benchmark 1.8x faster with 4.8x fewer tokens than browser agents. Proven on 44 unseen public sites (41 with 3+ verified commands).
+
+Start with `clify guide` (compact JSON) and `clify list --query <words>`. Every command prints one JSON object; errors include `next`, the exact command to run next.
+
+## Install
+
+- clify is not on npm (`npm i clify` is an unrelated package): clone the repo
+- `npm install && npx playwright install chromium` in `clify/`, then `export PATH="$PWD/bin:$HOME/.clify/bin:$PATH"`; `clify add` needs `ANTHROPIC_API_KEY`
+- 132 verified site CLIs ship built in (`clify list`)
+
+## Use an installed site
+
+- `clify list [--query words] [--category c]` — find a site, one line each; `clify <host>` (e.g. `clify crates.io`) also works; `clify --version` prints the version
+- `clify <site>` — one line per command, most useful first: summary, runnable example, other flags; `clify <site> <command> --help` for every param and a sample output
+- `clify <site> context` — the signed-in account's ids (project, org, team...) that commands fill in by themselves
+- `clify <site> <command> --param value [--fields a,b|'*'] [--limit N]` — run; output `{"ok":true,"count":N,"nextPage":"--page 2","data":...}`
+- Write commands (`writes: true`) return a dry-run `preview`; add `--yes` to send.
+
+## Add or fix a site
+
+- `clify add <url> [--goal "what you need"] [--account auto|agent|user|none] [--allow-writes]` — explore, generate, verify, install (2–6 min typical, up to ~15 on big sites); prints commands generated/verified/dropped and blockers
+- `clify repair <site> [--command name] [--goal "..."]` — re-verify, model-repair, re-explore
+- `clify check <site>` — re-run all examples (no model calls)
+- `clify login <site>` — log in with the stored account; sessions refresh automatically on 401/403
+
+## MCP
+
+- `clify mcp [site ...]` — stdio MCP server; tools `<site>__<command>`; write tools take `confirm: true`
+
+## Limits
+
+- CAPTCHAs and bot checks are never solved or bypassed; they are reported as blockers. Ask a human: `clify ask "<question>"`.
+- Writes need `--yes`; `clify approve <site> <command> ...` emails the exact request and sends only on a verified approve.
+- robots.txt is obeyed while exploring. Real-identity social networks get read commands only.
+
+## Docs
+
+- [AGENTS.md](AGENTS.md): full agent guide, troubleshooting table
+- [README.md](README.md): how it works, safety rules, tests
+- [SKILL.md](SKILL.md): drop-in skill for Claude Code / Codex
+- [ACCOUNTS.md](ACCOUNTS.md): agent identity, logins, sessions, ask-a-human
+- [proofs/](proofs/): live results (160 unseen sites, 133 with ≥3 verified commands, 116 of them explored and verified in Blaxel sandboxes; agent handoff, cold start)

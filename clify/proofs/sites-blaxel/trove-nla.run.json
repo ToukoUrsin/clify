@@ -1,0 +1,36 @@
+{
+ "url": "https://trove.nla.gov.au/",
+ "category": "culture",
+ "sandbox": "clify-trove-nla-gov-au",
+ "startedAt": "2026-10-18T09:03:42.497Z",
+ "region": "us-pdx-1",
+ "chrome": "Chrome/148.0.7778.96",
+ "sandboxStartMs": 1732,
+ "addSeconds": 21,
+ "addExit": 1,
+ "add": {
+  "ok": false,
+  "site": "trove-nla",
+  "url": "https://trove.nla.gov.au/",
+  "commands": [],
+  "verified": 0,
+  "writes": 0,
+  "dropped": [],
+  "blockers": [
+   "captcha"
+  ],
+  "loggedIn": false,
+  "seconds": 20,
+  "next": [
+   "clify trove-nla",
+   "clify repair trove-nla --goal \"<what you need from the site>\""
+  ],
+  "explored": {
+   "steps": 2,
+   "recorded": 2,
+   "heldWrites": 0
+  }
+ },
+ "deleted": true,
+ "seconds": 23
+}

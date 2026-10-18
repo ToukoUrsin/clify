@@ -1,0 +1,126 @@
+{
+ "url": "https://arstechnica.com/",
+ "category": "news",
+ "sandbox": "clify-arstechnica-com",
+ "startedAt": "2026-10-18T09:32:56.414Z",
+ "region": "us-pdx-1",
+ "chrome": "Chrome/148.0.7778.96",
+ "sandboxStartMs": 1807,
+ "addSeconds": 327,
+ "addExit": 0,
+ "add": {
+  "ok": true,
+  "site": "arstechnica",
+  "url": "https://arstechnica.com/",
+  "commands": [
+   {
+    "name": "list-latest-articles",
+    "summary": "List the newest articles across the whole site from the sitewide RSS feed (title, link, date, author, excerpt).",
+    "verified": true
+   },
+   {
+    "name": "list-section-articles",
+    "summary": "List the newest articles in a site section (e.g. gadgets, security, science) from the section RSS feed.",
+    "verified": true
+   },
+   {
+    "name": "list-tag-articles",
+    "summary": "List articles with a given tag from the tag RSS feed. Items include the full article content.",
+    "verified": true
+   },
+   {
+    "name": "list-author-articles",
+    "summary": "List the newest articles by one Ars Technica author from the author RSS feed.",
+    "verified": true
+   },
+   {
+    "name": "get-article",
+    "summary": "Fetch one article: title, description, author, publish date, body text and the link to its forum comment thread.",
+    "verified": true
+   },
+   {
+    "name": "get-thread-posts",
+    "summary": "Read the posts in a forum thread, including an article's comment thread, one page at a time. Can sort by vote score.",
+    "verified": true
+   },
+   {
+    "name": "list-forum-threads",
+    "summary": "List threads in a forum, e.g. News Discussion (article comment threads): title, url, author, latest activity.",
+    "verified": true
+   },
+   {
+    "name": "list-new-forum-posts",
+    "summary": "List forum threads with the most recent new posts, from Civis 'What's new > New posts'.",
+    "verified": true
+   }
+  ],
+  "verified": 8,
+  "writes": 0,
+  "dropped": [],
+  "blockers": [],
+  "loggedIn": false,
+  "seconds": 326,
+  "next": [
+   "clify arstechnica",
+   "clify arstechnica list-latest-articles"
+  ],
+  "installed": "/home/ubuntu/clify-runs/blaxel-retry/home/bin/arstechnica",
+  "explored": {
+   "steps": 24,
+   "recorded": 701,
+   "heldWrites": 303
+  }
+ },
+ "check": {
+  "on": "blaxel",
+  "node": "v24.22.0",
+  "seconds": 4,
+  "reads": 8,
+  "verified": 8,
+  "failed": [],
+  "results": [
+   {
+    "name": "list-latest-articles",
+    "ok": true,
+    "ms": 382
+   },
+   {
+    "name": "list-section-articles",
+    "ok": true,
+    "ms": 280
+   },
+   {
+    "name": "list-tag-articles",
+    "ok": true,
+    "ms": 62
+   },
+   {
+    "name": "list-author-articles",
+    "ok": true,
+    "ms": 61
+   },
+   {
+    "name": "get-article",
+    "ok": true,
+    "ms": 104
+   },
+   {
+    "name": "get-thread-posts",
+    "ok": true,
+    "ms": 190
+   },
+   {
+    "name": "list-forum-threads",
+    "ok": true,
+    "ms": 185
+   },
+   {
+    "name": "list-new-forum-posts",
+    "ok": true,
+    "ms": 186
+   }
+  ]
+ },
+ "deleted": true,
+ "seconds": 333
+}

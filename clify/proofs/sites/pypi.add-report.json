@@ -1,0 +1,70 @@
+{
+ "ok": true,
+ "site": "pypi",
+ "url": "https://pypi.org/",
+ "commands": [
+  {
+   "name": "get-package",
+   "summary": "Get a package's PyPI page for its latest version: name and version, summary, pip install command, project links and metadata sidebar, and README text.",
+   "verified": true
+  },
+  {
+   "name": "get-package-version",
+   "summary": "Get the PyPI page for one specific version of a package: header, summary, pinned pip command, metadata sidebar and the README as it was at that release.",
+   "verified": true
+  },
+  {
+   "name": "list-package-releases",
+   "summary": "List a package's recent releases (version, link, publish date) from its releases RSS feed.",
+   "verified": true
+  },
+  {
+   "name": "list-latest-updates",
+   "summary": "List the newest releases uploaded across all of PyPI (package + version, link, date) from the site-wide updates RSS feed.",
+   "verified": true
+  },
+  {
+   "name": "list-newest-packages",
+   "summary": "List projects newly created on PyPI (name, link, summary, date) from the newest-packages RSS feed.",
+   "verified": true
+  },
+  {
+   "name": "list-top-projects-by-size",
+   "summary": "List the top 100 PyPI projects ranked by the total size of their release files. The first row is the total for all of PyPI.",
+   "verified": true
+  },
+  {
+   "name": "get-index-totals",
+   "summary": "Get PyPI-wide totals shown on the homepage (number of projects, releases, files, users).",
+   "verified": true
+  },
+  {
+   "name": "get-github-repo",
+   "summary": "Get the GitHub statistics PyPI shows for a project's source repo (stars, forks, open issues, description, last push), from the GitHub API.",
+   "verified": true
+  },
+  {
+   "name": "search-github-issues",
+   "summary": "Search GitHub issues and PRs with a GitHub query, e.g. the open issues of a package's repo, via the GitHub search API (the same call PyPI uses to show open-issue counts).",
+   "verified": true
+  }
+ ],
+ "verified": 9,
+ "writes": 0,
+ "dropped": [],
+ "blockers": [
+  "captcha"
+ ],
+ "loggedIn": false,
+ "seconds": 140,
+ "next": [
+  "clify pypi",
+  "clify pypi get-package --name \"requests\""
+ ],
+ "installed": "/home/ubuntu/clify-runs/batch2/home/bin/pypi",
+ "explored": {
+  "steps": 18,
+  "recorded": 39,
+  "heldWrites": 7
+ }
+}

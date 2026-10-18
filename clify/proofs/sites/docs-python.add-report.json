@@ -1,0 +1,63 @@
+{
+ "ok": true,
+ "site": "docs-python",
+ "url": "https://docs.python.org/3/",
+ "commands": [
+  {
+   "name": "get-glossary",
+   "summary": "Get every Python glossary term with its HTML definition, as a JSON object keyed by term",
+   "verified": true
+  },
+  {
+   "name": "list-modules",
+   "summary": "List all standard-library modules from the Python Module Index, with descriptions and doc links",
+   "verified": true
+  },
+  {
+   "name": "get-index-letter",
+   "summary": "List general index entries (functions, classes, keywords, topics) that start with a given letter, with links to where each is documented",
+   "verified": true
+  },
+  {
+   "name": "list-toc",
+   "summary": "List the table of contents (chapters and pages) of a docs section such as the library reference, tutorial, HOWTOs, language reference or What's New",
+   "verified": true
+  },
+  {
+   "name": "get-page",
+   "summary": "Get a documentation page (module reference, tutorial chapter, HOWTO, What's New) with its title, breadcrumb, source link and full text",
+   "verified": true
+  },
+  {
+   "name": "get-api-entries",
+   "summary": "List the API objects (functions, classes, methods, attributes, exceptions, data) documented on a page, each with signature, anchor and first description paragraph",
+   "verified": true
+  },
+  {
+   "name": "get-release-highlights",
+   "summary": "Get the 'Summary \u2013 Release highlights' bullet points from a Python release's What's New page",
+   "verified": true
+  },
+  {
+   "name": "list-downloads",
+   "summary": "List downloadable documentation archives (PDF, HTML, plain text, EPUB) for a docs version",
+   "verified": true
+  }
+ ],
+ "verified": 8,
+ "writes": 0,
+ "dropped": [],
+ "blockers": [],
+ "loggedIn": false,
+ "seconds": 130,
+ "next": [
+  "clify docs-python",
+  "clify docs-python get-glossary --version \"3\""
+ ],
+ "installed": "/home/ubuntu/clify-runs/batch2/home/bin/docs-python",
+ "explored": {
+  "steps": 7,
+  "recorded": 61,
+  "heldWrites": 0
+ }
+}

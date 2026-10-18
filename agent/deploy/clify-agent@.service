@@ -1,0 +1,16 @@
+# clify agent loop: clify-agent@main (Primitive) and clify-agent@peer (Inkbox).
+[Unit]
+Description=clify email agent (%i) on this InstaBox
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+User=ubuntu
+WorkingDirectory=/data/workspace/clify-agent/agent
+EnvironmentFile=/data/home/.config/clify-agent/%i.env
+ExecStart=/usr/local/bin/node --no-warnings --import /data/workspace/clify-agent/clify/node_modules/tsx/dist/esm/index.mjs src/main.ts serve
+Restart=always
+RestartSec=5
+
+[Install]
+WantedBy=multi-user.target

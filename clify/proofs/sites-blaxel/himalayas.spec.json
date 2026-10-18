@@ -1,0 +1,29 @@
+{
+ "name": "himalayas",
+ "startUrl": "https://himalayas.app/jobs",
+ "origin": "https://himalayas.app",
+ "createdAt": "2026-10-18T08:40:00.062Z",
+ "description": "Himalayas (himalayas.app) is a remote-jobs board. This CLI would list and search remote job postings, but the exploration was blocked by Cloudflare, so no usable endpoints were captured.",
+ "commands": [],
+ "blockers": [
+  "bot-check at https://himalayas.app/jobs",
+  "bot-check at https://himalayas.app/api",
+  "captcha"
+ ],
+ "notes": [
+  "No commands could be generated. The only recorded request was GET https://himalayas.app/jobs, and it returned a 307 redirect into a Cloudflare 'Performing security verification' challenge, not site content. No JSON, embedded data or HTML listing markup was captured.",
+  "I did not invent endpoints. Every command must replay a request the web app was actually seen making, with example args that returned results. Nothing in this recording meets that bar.",
+  "Suggested next step: re-run exploration with a browser profile that can pass the Cloudflare check, such as a real or persistent headed browser, a residential IP, or a slower interaction pace. Then browse job listings, run a search, apply filters (location, category, seniority, salary), page through results and open a job detail page, so the underlying requests get recorded.",
+  "Himalayas publicly advertises a free JSON jobs API under https://himalayas.app/jobs/api, reportedly paginated with limit/offset plus a search variant. It did not appear in this recording, so its paths and params are unverified. Point the explorer at it directly on the next run. If it responds with JSON without a Cloudflare challenge, it should become the basis for list-jobs / search-jobs commands.",
+  "If Cloudflare also challenges plain HTTP clients, any commands produced later may fail when replayed outside a browser. Verify that replayed requests return real data and not the challenge page."
+ ],
+ "dropped": [],
+ "generated": {
+  "by": "clify add",
+  "model": "claude-opus-5-5",
+  "exploredSteps": 2,
+  "recorded": 4,
+  "verifiedAt": "2026-10-18T08:40:12.576Z",
+  "seconds": 23
+ }
+}

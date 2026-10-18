@@ -1,0 +1,394 @@
+{
+ "name": "data-gov",
+ "startUrl": "https://www.data.gov.uk/",
+ "origin": "https://www.data.gov.uk",
+ "createdAt": "2026-10-18T07:16:49.085Z",
+ "description": "data.gov.uk (National Data Library): the UK government's open data directory. The CLI searches and reads dataset metadata through the public CKAN JSON API, lists data files and previews from dataset pages, and browses the curated theme collections and their chart data.",
+ "commands": [
+  {
+   "name": "search-datasets",
+   "summary": "Search the UK open data directory (CKAN package_search). Returns dataset metadata including publisher, licence and resources. Filter with Solr fq, sort, and page by offset.",
+   "method": "GET",
+   "urlTemplate": "https://ckan.publishing.service.gov.uk/api/3/action/package_search",
+   "params": [
+    {
+     "name": "q",
+     "in": "query",
+     "required": true,
+     "type": "string",
+     "description": "Free-text keyword query, e.g. 'air quality'",
+     "example": "air quality"
+    },
+    {
+     "name": "fq",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Solr filter query. Examples: organization:bristol-city-council (publisher slug), res_format:CSV (file format), license_id:uk-ogl (Open Government Licence only). Combine filters with AND."
+    },
+    {
+     "name": "sort",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Sort order. 'score desc, metadata_modified desc' means most relevant; 'metadata_modified desc' means most recent.",
+     "enum": [
+      "score desc, metadata_modified desc",
+      "metadata_modified desc",
+      "title_string asc",
+      "title_string desc"
+     ]
+    },
+    {
+     "name": "rows",
+     "in": "query",
+     "required": false,
+     "type": "number",
+     "description": "Number of results per page (max 1000)",
+     "default": 20
+    },
+    {
+     "name": "start",
+     "in": "query",
+     "required": false,
+     "type": "number",
+     "description": "Result offset for pagination (0-based)",
+     "default": 0
+    }
+   ],
+   "responseType": "json",
+   "resultPath": "result.results",
+   "defaultFields": [
+    "id",
+    "name",
+    "title",
+    "organization.title",
+    "metadata_modified",
+    "license_id",
+    "num_resources",
+    "notes"
+   ],
+   "pagination": {
+    "type": "offset",
+    "param": "start",
+    "step": 20
+   },
+   "mutates": false,
+   "example": {
+    "q": "air quality"
+   },
+   "source": "E8 E1 GET https://www.data.gov.uk/api/{n}/action/package_search",
+   "verified": true
+  },
+  {
+   "name": "get-dataset",
+   "summary": "Get full metadata for one dataset by its UUID or CKAN name (CKAN package_show). Includes publisher, licence, description and every resource with its URL, format and date.",
+   "method": "GET",
+   "urlTemplate": "https://ckan.publishing.service.gov.uk/api/3/action/package_show",
+   "params": [
+    {
+     "name": "id",
+     "in": "query",
+     "required": true,
+     "type": "string",
+     "description": "Dataset UUID (the first path segment after /dataset/ on data.gov.uk) or CKAN dataset name",
+     "example": "bfaf890c-0ebc-42f7-954d-9cde251902a2"
+    }
+   ],
+   "responseType": "json",
+   "resultPath": "result",
+   "defaultFields": [
+    "id",
+    "name",
+    "title",
+    "organization.title",
+    "license_title",
+    "metadata_modified",
+    "notes",
+    "resources"
+   ],
+   "mutates": false,
+   "example": {
+    "id": "bfaf890c-0ebc-42f7-954d-9cde251902a2"
+   },
+   "source": "E8 E2 GET https://www.data.gov.uk/api/{n}/action/package_search",
+   "verified": true
+  },
+  {
+   "name": "list-dataset-files",
+   "summary": "List the data links shown on a dataset page on data.gov.uk: name, format, date, and the link or preview URL for each file.",
+   "method": "GET",
+   "urlTemplate": "/dataset/{id}/{slug}",
+   "params": [
+    {
+     "name": "id",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Dataset UUID",
+     "example": "3f5d7bbf-73af-46cd-8b9e-8e07cedb9506"
+    },
+    {
+     "name": "slug",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Dataset slug (the CKAN 'name'), e.g. bristol-air-quality",
+     "example": "bristol-air-quality"
+    }
+   ],
+   "responseType": "html",
+   "extract": {
+    "list": "tbody tr.govuk-table__row",
+    "fields": {
+     "text": "",
+     "url": "a@href"
+    }
+   },
+   "defaultFields": [
+    "text",
+    "url"
+   ],
+   "mutates": false,
+   "example": {
+    "id": "3f5d7bbf-73af-46cd-8b9e-8e07cedb9506",
+    "slug": "bristol-air-quality"
+   },
+   "source": "E2 E3 GET https://www.data.gov.uk/dataset/{id}/uk-air-quality-measurements-bulk-data-download",
+   "verified": true
+  },
+  {
+   "name": "preview-datafile",
+   "summary": "Open the preview page for one data file of a dataset. Shows the file title and a preview, or a message saying no preview is available.",
+   "method": "GET",
+   "urlTemplate": "/dataset/{id}/{slug}/datafile/{file_id}/preview",
+   "params": [
+    {
+     "name": "id",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Dataset UUID",
+     "example": "3f5d7bbf-73af-46cd-8b9e-8e07cedb9506"
+    },
+    {
+     "name": "slug",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Dataset slug",
+     "example": "bristol-air-quality"
+    },
+    {
+     "name": "file_id",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Data file (CKAN resource) UUID, taken from a preview link or from resources[].id",
+     "example": "6d9e0be5-6917-4eb8-9337-61ea19511911"
+    }
+   ],
+   "responseType": "html",
+   "extract": {
+    "fields": {
+     "title": "h1.datagovuk-heading-xl",
+     "dataset_url": "a.govuk-back-link@href",
+     "body": "div.govuk-grid-column-two-thirds p.govuk-body"
+    }
+   },
+   "defaultFields": [
+    "title",
+    "dataset_url",
+    "body"
+   ],
+   "mutates": false,
+   "example": {
+    "id": "3f5d7bbf-73af-46cd-8b9e-8e07cedb9506",
+    "slug": "bristol-air-quality",
+    "file_id": "6d9e0be5-6917-4eb8-9337-61ea19511911"
+   },
+   "source": "E4 GET https://www.data.gov.uk/dataset/{id}/bristol-air-quality/datafile/{id}/preview",
+   "verified": true
+  },
+  {
+   "name": "list-filter-options",
+   "summary": "List the filter values the directory search offers (publisher names, topics and formats). Use these to build search filters.",
+   "method": "GET",
+   "urlTemplate": "/search",
+   "params": [],
+   "responseType": "html",
+   "extract": {
+    "list": "option",
+    "fields": {
+     "value": "@value",
+     "label": ""
+    }
+   },
+   "defaultFields": [
+    "value",
+    "label"
+   ],
+   "mutates": false,
+   "source": "E1 GET https://www.data.gov.uk/search",
+   "verified": true
+  },
+  {
+   "name": "list-collections",
+   "summary": "List the curated theme collections on the data.gov.uk home page (Business and economy, Environment, etc.).",
+   "method": "GET",
+   "urlTemplate": "/",
+   "params": [],
+   "responseType": "html",
+   "extract": {
+    "list": "div.datagovuk-home-collections__item",
+    "fields": {
+     "name": "h3 a",
+     "url": "h3 a@href",
+     "description": "p.govuk-body"
+    }
+   },
+   "defaultFields": [
+    "name",
+    "url",
+    "description"
+   ],
+   "mutates": false,
+   "source": "E9 GET https://www.data.gov.uk/",
+   "verified": true
+  },
+  {
+   "name": "list-collection-topics",
+   "summary": "List the topics inside a theme collection, e.g. environment has weather and air-quality.",
+   "method": "GET",
+   "urlTemplate": "/collections/{theme}",
+   "params": [
+    {
+     "name": "theme",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Collection theme slug: business-and-economy, environment, government-and-parliament, land-and-property, people, transport, early-years",
+     "example": "environment"
+    }
+   ],
+   "responseType": "html",
+   "extract": {
+    "list": "li.datagovuk-section-navigation__item",
+    "fields": {
+     "name": "a",
+     "url": "a@href"
+    }
+   },
+   "defaultFields": [
+    "name",
+    "url"
+   ],
+   "mutates": false,
+   "example": {
+    "theme": "environment"
+   },
+   "source": "E5 E6 GET https://www.data.gov.uk/collections/environment",
+   "verified": true
+  },
+  {
+   "name": "get-collection-topic",
+   "summary": "Get a collection topic page: headline chart title, description, the chart-data download link and the external 'get the data' link.",
+   "method": "GET",
+   "urlTemplate": "/collections/{theme}/{topic}",
+   "params": [
+    {
+     "name": "theme",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Collection theme slug, e.g. environment",
+     "example": "environment"
+    },
+    {
+     "name": "topic",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Topic slug, e.g. weather, air-quality",
+     "example": "weather"
+    }
+   ],
+   "responseType": "html",
+   "extract": {
+    "fields": {
+     "title": "h1.datagovuk-heading-l",
+     "theme": "h2.datagovuk-collection-name",
+     "intro": "section.govuk-section p.govuk-body-m",
+     "chart_title": "section.datagovuk-headline h2",
+     "chart_download_url": "section.datagovuk-headline a@href",
+     "data_links": "section.datagovuk-link a@href"
+    }
+   },
+   "defaultFields": [
+    "title",
+    "theme",
+    "intro",
+    "chart_title",
+    "chart_download_url",
+    "data_links"
+   ],
+   "mutates": false,
+   "example": {
+    "theme": "environment",
+    "topic": "weather"
+   },
+   "source": "E6 E7",
+   "verified": true
+  },
+  {
+   "name": "download-collection-chart-data",
+   "summary": "Download the raw data behind a collection topic's headline chart, e.g. the UK annual mean temperature series.",
+   "method": "GET",
+   "urlTemplate": "/collections/{theme}/{topic}/download/",
+   "params": [
+    {
+     "name": "theme",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Collection theme slug",
+     "example": "environment"
+    },
+    {
+     "name": "topic",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Topic slug",
+     "example": "air-quality"
+    }
+   ],
+   "responseType": "text",
+   "mutates": false,
+   "example": {
+    "theme": "environment",
+    "topic": "air-quality"
+   },
+   "source": "E6 E7 GET https://www.data.gov.uk/collections/environment/weather",
+   "verified": true
+  }
+ ],
+ "blockers": [],
+ "notes": [
+  "data.gov.uk's /api/3/action/* redirects (301) to https://ckan.publishing.service.gov.uk/api/3/action/*, so the commands call that host directly. The responses are standard CKAN JSON.",
+  "The dataset UUID in data.gov.uk URLs (/dataset/{uuid}/{slug}) is the CKAN package id, and the slug is the CKAN 'name'. Either works with get-dataset.",
+  "search-datasets filtering uses Solr fq syntax: organization:<publisher-slug>, res_format:CSV, license_id:uk-ogl. Publisher slugs are in organization.name of search results.",
+  "The HTML directory search (/search?query=&publisher=&topic=&format=&sort=recent&open_government_licence_only=on&page=N) also works, but its result markup was not captured. The CKAN API is the reliable route.",
+  "Collection topic pages embed chart data in script#chart-<hash>-json, and the hash differs per page. Use download-collection-chart-data to get the series instead.",
+  "Everything is public. No login is needed."
+ ],
+ "dropped": [],
+ "generated": {
+  "by": "clify add",
+  "model": "claude-opus-5-5",
+  "exploredSteps": 20,
+  "recorded": 14,
+  "verifiedAt": "2026-10-18T07:18:07.347Z",
+  "seconds": 178
+ }
+}

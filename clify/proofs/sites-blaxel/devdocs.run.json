@@ -1,0 +1,106 @@
+{
+ "url": "https://devdocs.io/",
+ "category": "dev",
+ "sandbox": "clify-devdocs-io",
+ "startedAt": "2026-10-18T09:27:52.911Z",
+ "region": "us-pdx-1",
+ "chrome": "Chrome/148.0.7778.96",
+ "sandboxStartMs": 2427,
+ "addSeconds": 127,
+ "addExit": 0,
+ "add": {
+  "ok": true,
+  "site": "devdocs",
+  "url": "https://devdocs.io/",
+  "commands": [
+   {
+    "name": "list-docs",
+    "summary": "List every documentation set on DevDocs with its slug, version, release, mtime and size. Use the slug in the other commands.",
+    "verified": true
+   },
+   {
+    "name": "list-entries",
+    "summary": "List all entries (name, path, type) in one documentation set's search index. DevDocs search is done on the client against this list, so filter the result by name to search.",
+    "verified": true
+   },
+   {
+    "name": "list-types",
+    "summary": "List the categories (types) of one documentation set, with entry counts and slugs, e.g. 'Branching and Merging' for git or 'Elements' for html.",
+    "verified": true
+   },
+   {
+    "name": "get-doc-home",
+    "summary": "Get the HTML home/overview page of one documentation set.",
+    "verified": true
+   },
+   {
+    "name": "get-page",
+    "summary": "Get the HTML content of one documentation page, using the slug and an entry path from list-entries.",
+    "verified": true
+   },
+   {
+    "name": "download-doc",
+    "summary": "Download the full offline bundle of one documentation set: a JSON object that maps each page path to its HTML. This can be very large.",
+    "verified": true
+   }
+  ],
+  "verified": 6,
+  "writes": 0,
+  "dropped": [],
+  "blockers": [],
+  "loggedIn": false,
+  "seconds": 127,
+  "next": [
+   "clify devdocs",
+   "clify devdocs list-docs"
+  ],
+  "installed": "/home/ubuntu/clify-runs/blaxel-w2/home/bin/devdocs",
+  "explored": {
+   "steps": 18,
+   "recorded": 118,
+   "heldWrites": 0
+  }
+ },
+ "check": {
+  "on": "blaxel",
+  "node": "v24.22.0",
+  "seconds": 4,
+  "reads": 6,
+  "verified": 6,
+  "failed": [],
+  "results": [
+   {
+    "name": "list-docs",
+    "ok": true,
+    "ms": 537
+   },
+   {
+    "name": "list-entries",
+    "ok": true,
+    "ms": 192
+   },
+   {
+    "name": "list-types",
+    "ok": true,
+    "ms": 111
+   },
+   {
+    "name": "get-doc-home",
+    "ok": true,
+    "ms": 124
+   },
+   {
+    "name": "get-page",
+    "ok": true,
+    "ms": 134
+   },
+   {
+    "name": "download-doc",
+    "ok": true,
+    "ms": 653
+   }
+  ]
+ },
+ "deleted": true,
+ "seconds": 133
+}

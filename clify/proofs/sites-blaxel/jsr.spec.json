@@ -1,0 +1,723 @@
+{
+ "name": "jsr",
+ "startUrl": "https://jsr.io/",
+ "origin": "https://jsr.io",
+ "createdAt": "2026-10-18T08:39:34.552Z",
+ "description": "JSR (jsr.io), the open-source JavaScript/TypeScript package registry. This CLI searches and browses packages and reads package metadata, versions, dependencies, dependents, scores, docs indexes, source files, scopes and users through JSR's public JSON APIs. All commands are read-only.",
+ "commands": [
+  {
+   "name": "search-packages",
+   "summary": "Search JSR packages by keyword, or list all packages when no query is given (public management API)",
+   "method": "GET",
+   "urlTemplate": "https://api.jsr.io/packages",
+   "params": [
+    {
+     "name": "query",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Search keywords, e.g. 'http server'. Omit to browse all packages.",
+     "example": "http server"
+    },
+    {
+     "name": "page",
+     "in": "query",
+     "required": false,
+     "type": "number",
+     "description": "1-based page number",
+     "default": 1
+    },
+    {
+     "name": "api_limit",
+     "key": "limit",
+     "in": "query",
+     "required": false,
+     "type": "number",
+     "description": "Results per page (max 100) (sent to the site as \"limit\"; clify's own --limit only shapes the output)",
+     "default": 20
+    }
+   ],
+   "responseType": "json",
+   "resultPath": "items",
+   "defaultFields": [
+    "scope",
+    "name",
+    "description",
+    "latestVersion",
+    "score",
+    "runtimeCompat",
+    "updatedAt"
+   ],
+   "pagination": {
+    "type": "page",
+    "param": "page"
+   },
+   "mutates": false,
+   "example": {
+    "query": "http server"
+   },
+   "source": "E4 GET https://jsr.io/packages",
+   "verified": true
+  },
+  {
+   "name": "search-packages-by-runtime",
+   "summary": "Full-text package search with an optional runtime-compatibility filter, using the site's Algolia autocomplete index",
+   "method": "POST",
+   "urlTemplate": "https://nm4f4zn5z1-dsn.algolia.net/1/indexes/*/queries?x-algolia-api-key=f1c9c5e7309104ac81f7d333036fb0ad&x-algolia-application-id=NM4F4ZN5Z1",
+   "params": [
+    {
+     "name": "query",
+     "in": "body",
+     "required": true,
+     "type": "string",
+     "description": "Search keywords",
+     "example": "http server"
+    },
+    {
+     "name": "filters",
+     "in": "body",
+     "required": false,
+     "type": "string",
+     "description": "Algolia filter expression on runtime compatibility, e.g. 'runtimeCompat.bun:true'. Runtimes: bun, deno, node, browser, workerd. Combine with AND/OR. Leave empty for no filter.",
+     "example": "runtimeCompat.bun:true"
+    },
+    {
+     "name": "hitsPerPage",
+     "in": "body",
+     "required": false,
+     "type": "number",
+     "description": "Results per page",
+     "default": 20
+    },
+    {
+     "name": "page",
+     "in": "body",
+     "required": false,
+     "type": "number",
+     "description": "0-based page number",
+     "default": 0
+    }
+   ],
+   "bodyTemplate": {
+    "requests": [
+     {
+      "indexName": "prod_packages",
+      "query": "{query}",
+      "filters": "{filters}",
+      "hitsPerPage": "{hitsPerPage}",
+      "page": "{page}"
+     }
+    ]
+   },
+   "bodyEncoding": "json",
+   "headers": {
+    "content-type": "text/plain"
+   },
+   "responseType": "json",
+   "resultPath": "results.0.hits",
+   "defaultFields": [
+    "objectID",
+    "scope",
+    "name",
+    "description",
+    "score",
+    "runtimeCompat"
+   ],
+   "pagination": {
+    "type": "page",
+    "param": "page"
+   },
+   "mutates": false,
+   "example": {
+    "query": "http server",
+    "filters": "runtimeCompat.bun:true"
+   },
+   "source": "E1 POST https://nm4f4zn5z1-dsn.algolia.net/{n}/indexes/*/queries",
+   "verified": true
+  },
+  {
+   "name": "get-package",
+   "summary": "Get metadata for one package: description, latest version, score, runtime compatibility, GitHub repo",
+   "method": "GET",
+   "urlTemplate": "https://api.jsr.io/scopes/{scope}/packages/{package}",
+   "params": [
+    {
+     "name": "scope",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Scope name without '@', e.g. 'http'",
+     "example": "http"
+    },
+    {
+     "name": "package",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Package name, e.g. 'fs'",
+     "example": "fs"
+    }
+   ],
+   "responseType": "json",
+   "defaultFields": [
+    "scope",
+    "name",
+    "description",
+    "latestVersion",
+    "score",
+    "runtimeCompat",
+    "githubRepository",
+    "versionCount",
+    "updatedAt"
+   ],
+   "mutates": false,
+   "example": {
+    "scope": "http",
+    "package": "fs"
+   },
+   "source": "E5 E18 GET https://jsr.io/@http/fs",
+   "verified": true
+  },
+  {
+   "name": "get-package-meta",
+   "summary": "Registry meta.json for a package: latest version and the map of all versions (with yanked flags)",
+   "method": "GET",
+   "urlTemplate": "/@{scope}/{package}/meta.json",
+   "params": [
+    {
+     "name": "scope",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Scope name without '@'",
+     "example": "zod"
+    },
+    {
+     "name": "package",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Package name",
+     "example": "zod"
+    }
+   ],
+   "headers": {
+    "Accept": "application/json"
+   },
+   "responseType": "json",
+   "mutates": false,
+   "example": {
+    "scope": "zod",
+    "package": "zod"
+   },
+   "source": "E20 E19 GET https://jsr.io/@zod/zod/meta.json",
+   "verified": true
+  },
+  {
+   "name": "list-package-dependencies",
+   "summary": "List the dependencies (jsr:/npm: specifiers and version constraints) of a specific package version",
+   "method": "GET",
+   "urlTemplate": "https://api.jsr.io/scopes/{scope}/packages/{package}/versions/{version}/dependencies",
+   "params": [
+    {
+     "name": "scope",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Scope name without '@'",
+     "example": "http"
+    },
+    {
+     "name": "package",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Package name",
+     "example": "fs"
+    },
+    {
+     "name": "version",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Exact version, e.g. 0.30.0 (see get-package latestVersion)",
+     "example": "0.30.0"
+    }
+   ],
+   "responseType": "json",
+   "defaultFields": [
+    "kind",
+    "name",
+    "constraint",
+    "path"
+   ],
+   "mutates": false,
+   "example": {
+    "scope": "http",
+    "package": "fs",
+    "version": "0.30.0"
+   },
+   "source": "E7 GET https://jsr.io/@http/fs/dependencies",
+   "verified": true
+  },
+  {
+   "name": "list-package-dependents",
+   "summary": "List packages that depend on a given package",
+   "method": "GET",
+   "urlTemplate": "https://api.jsr.io/scopes/{scope}/packages/{package}/dependents",
+   "params": [
+    {
+     "name": "scope",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Scope name without '@'",
+     "example": "zod"
+    },
+    {
+     "name": "package",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Package name",
+     "example": "zod"
+    },
+    {
+     "name": "page",
+     "in": "query",
+     "required": false,
+     "type": "number",
+     "description": "1-based page number",
+     "default": 1
+    },
+    {
+     "name": "api_limit",
+     "key": "limit",
+     "in": "query",
+     "required": false,
+     "type": "number",
+     "description": "Results per page (max 100) (sent to the site as \"limit\"; clify's own --limit only shapes the output)",
+     "default": 20
+    }
+   ],
+   "responseType": "json",
+   "resultPath": "items",
+   "defaultFields": [
+    "scope",
+    "package",
+    "versions",
+    "totalVersions"
+   ],
+   "pagination": {
+    "type": "page",
+    "param": "page"
+   },
+   "mutates": false,
+   "example": {
+    "scope": "zod",
+    "package": "zod"
+   },
+   "source": "E8 GET https://jsr.io/@http/fs/dependents",
+   "verified": true
+  },
+  {
+   "name": "get-package-score",
+   "summary": "Get the JSR score breakdown for a package: readme, docs coverage, fast check, provenance, runtime compat",
+   "method": "GET",
+   "urlTemplate": "https://api.jsr.io/scopes/{scope}/packages/{package}/score",
+   "params": [
+    {
+     "name": "scope",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Scope name without '@'",
+     "example": "http"
+    },
+    {
+     "name": "package",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Package name",
+     "example": "fs"
+    }
+   ],
+   "responseType": "json",
+   "mutates": false,
+   "example": {
+    "scope": "http",
+    "package": "fs"
+   },
+   "source": "E9 GET https://jsr.io/@http/fs/score",
+   "verified": true
+  },
+  {
+   "name": "get-package-docs-index",
+   "summary": "Get the structured docs index of a package version: entrypoints, module docs and their symbols (used for symbol search)",
+   "method": "GET",
+   "urlTemplate": "/api/scopes/{scope}/packages/{package}/versions/{version}/docs/search_structured",
+   "params": [
+    {
+     "name": "scope",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Scope name without '@'",
+     "example": "http"
+    },
+    {
+     "name": "package",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Package name",
+     "example": "fs"
+    },
+    {
+     "name": "version",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Exact version, e.g. 0.30.0",
+     "example": "0.30.0"
+    }
+   ],
+   "responseType": "json",
+   "resultPath": "entrypoints",
+   "defaultFields": [
+    "name",
+    "href",
+    "module_doc"
+   ],
+   "mutates": false,
+   "example": {
+    "scope": "http",
+    "package": "fs",
+    "version": "0.30.0"
+   },
+   "source": "E2 E11 E12 GET https://jsr.io/api/scopes/http/packages/fs/versions/0.30.0/docs/search_structured",
+   "verified": true
+  },
+  {
+   "name": "list-package-files",
+   "summary": "List the files of a package version (path, size, checksum) and its exports map, from the registry version metadata",
+   "method": "GET",
+   "urlTemplate": "/@{scope}/{package}/{version}_meta.json",
+   "params": [
+    {
+     "name": "scope",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Scope name without '@'",
+     "example": "http"
+    },
+    {
+     "name": "package",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Package name",
+     "example": "fs"
+    },
+    {
+     "name": "version",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Exact version, e.g. 0.30.0",
+     "example": "0.30.0"
+    }
+   ],
+   "headers": {
+    "Accept": "application/json"
+   },
+   "responseType": "json",
+   "defaultFields": [
+    "manifest",
+    "exports"
+   ],
+   "mutates": false,
+   "example": {
+    "scope": "http",
+    "package": "fs",
+    "version": "0.30.0"
+   },
+   "source": "E13 E19 GET https://jsr.io/@http/fs/0.30.0",
+   "verified": true
+  },
+  {
+   "name": "get-package-file",
+   "summary": "Get the raw source of one file in a package version, e.g. deno.json or mod.ts",
+   "method": "GET",
+   "urlTemplate": "/@{scope}/{package}/{version}/{path}",
+   "params": [
+    {
+     "name": "scope",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Scope name without '@'",
+     "example": "http"
+    },
+    {
+     "name": "package",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Package name",
+     "example": "fs"
+    },
+    {
+     "name": "version",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Exact version, e.g. 0.30.0",
+     "example": "0.30.0"
+    },
+    {
+     "name": "path",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "File path inside the package with no leading slash, e.g. deno.json or serve_dir.ts (see list-package-files)",
+     "example": "deno.json"
+    }
+   ],
+   "headers": {
+    "Accept": "application/json"
+   },
+   "responseType": "text",
+   "mutates": false,
+   "example": {
+    "scope": "http",
+    "package": "fs",
+    "version": "0.30.0",
+    "path": "deno.json"
+   },
+   "source": "E14 E19",
+   "verified": true
+  },
+  {
+   "name": "get-scope",
+   "summary": "Get public info about a scope (creator, creation date, publishing settings)",
+   "method": "GET",
+   "urlTemplate": "https://api.jsr.io/scopes/{scope}",
+   "params": [
+    {
+     "name": "scope",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Scope name without '@'",
+     "example": "http"
+    }
+   ],
+   "responseType": "json",
+   "mutates": false,
+   "example": {
+    "scope": "http"
+   },
+   "source": "E15 GET https://jsr.io/@http",
+   "verified": true
+  },
+  {
+   "name": "list-scope-packages",
+   "summary": "List all packages published in a scope",
+   "method": "GET",
+   "urlTemplate": "https://api.jsr.io/scopes/{scope}/packages",
+   "params": [
+    {
+     "name": "scope",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Scope name without '@'",
+     "example": "http"
+    },
+    {
+     "name": "page",
+     "in": "query",
+     "required": false,
+     "type": "number",
+     "description": "1-based page number",
+     "default": 1
+    },
+    {
+     "name": "api_limit",
+     "key": "limit",
+     "in": "query",
+     "required": false,
+     "type": "number",
+     "description": "Results per page (max 100) (sent to the site as \"limit\"; clify's own --limit only shapes the output)",
+     "default": 100
+    }
+   ],
+   "responseType": "json",
+   "resultPath": "items",
+   "defaultFields": [
+    "scope",
+    "name",
+    "description",
+    "latestVersion",
+    "score",
+    "runtimeCompat"
+   ],
+   "pagination": {
+    "type": "page",
+    "param": "page"
+   },
+   "mutates": false,
+   "example": {
+    "scope": "http"
+   },
+   "source": "E15 GET https://jsr.io/@http",
+   "verified": true
+  },
+  {
+   "name": "list-scope-members",
+   "summary": "List the members of a scope with their roles and user profile links",
+   "method": "GET",
+   "urlTemplate": "/@{scope}/~/members",
+   "params": [
+    {
+     "name": "scope",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Scope name without '@'",
+     "example": "http"
+    }
+   ],
+   "responseType": "html",
+   "extract": {
+    "list": "tbody.divide-y > tr",
+    "fields": {
+     "name": "a",
+     "url": "a@href",
+     "role": "td.py-3.px-3 + td.py-3.px-3"
+    }
+   },
+   "defaultFields": [
+    "name",
+    "role",
+    "url"
+   ],
+   "mutates": false,
+   "example": {
+    "scope": "http"
+   },
+   "source": "E16 GET https://jsr.io/@http/~/members",
+   "verified": true
+  },
+  {
+   "name": "list-user-packages",
+   "summary": "List packages a JSR user recently published (user id is the UUID from a /user/{id} link)",
+   "method": "GET",
+   "urlTemplate": "/user/{id}",
+   "params": [
+    {
+     "name": "id",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "JSR user UUID, e.g. from list-scope-members url",
+     "example": "fc2648a5-21f5-4740-bac0-a28112de5372"
+    }
+   ],
+   "responseType": "html",
+   "extract": {
+    "list": "ul.divide-y.divide-jsr-cyan-50 > li",
+    "fields": {
+     "package": "span.text-jsr-cyan-700",
+     "version": "div.text-tertiary.max-w-20",
+     "score": "div.score-circle",
+     "url": "a.flex-1.flex@href"
+    }
+   },
+   "defaultFields": [
+    "package",
+    "version",
+    "score",
+    "url"
+   ],
+   "mutates": false,
+   "example": {
+    "id": "fc2648a5-21f5-4740-bac0-a28112de5372"
+   },
+   "source": "E17",
+   "verified": true
+  },
+  {
+   "name": "get-registry-stats",
+   "summary": "Get the homepage lists: newest packages, recently updated package versions and featured packages",
+   "method": "GET",
+   "urlTemplate": "https://api.jsr.io/stats",
+   "params": [],
+   "responseType": "json",
+   "mutates": false,
+   "source": "E21 GET https://jsr.io/",
+   "verified": true
+  }
+ ],
+ "blockers": [],
+ "notes": [
+  "Package names are '@scope/name'. Commands take scope (without '@') and package as separate args, e.g. scope=http package=fs.",
+  "Commands that take a version need an exact version. Get it from get-package (latestVersion), list-package-versions or get-package-meta.",
+  "Registry URLs on jsr.io (meta.json, {version}_meta.json, source files) return the HTML viewer if Accept is text/html, so these commands send Accept: application/json.",
+  "search-packages-by-runtime uses JSR's public Algolia search key. Runtime filter syntax is 'runtimeCompat.<runtime>:true' with runtime one of deno, node, bun, browser, workerd. Its page is 0-based, while the api.jsr.io commands use 1-based pages.",
+  "The api.jsr.io endpoints are JSR's documented public management API (see jsr.io/docs/api). No authentication is needed for reads.",
+  "Runtime compatibility values: true means it works, false means it does not, and a missing key means unknown."
+ ],
+ "dropped": [
+  {
+   "name": "list-package-versions",
+   "summary": "List all published versions of a package with yanked status, download counts and publish dates",
+   "method": "GET",
+   "urlTemplate": "https://api.jsr.io/scopes/{scope}/packages/{package}/versions",
+   "params": [
+    {
+     "name": "scope",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Scope name without '@'",
+     "example": "http"
+    },
+    {
+     "name": "package",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Package name",
+     "example": "fs"
+    }
+   ],
+   "responseType": "json",
+   "defaultFields": [
+    "version",
+    "yanked",
+    "lifetimeDownloads",
+    "createdAt"
+   ],
+   "mutates": false,
+   "example": {
+    "scope": "http",
+    "package": "fs"
+   },
+   "source": "E6 GET https://jsr.io/@http/fs/versions",
+   "verified": false,
+   "verifyNote": "Output was {}: the response shape does not match the defaultFields or array assumption, so the version list is not produced. get-package-meta already gives every version with createdAt and yanked flags."
+  }
+ ],
+ "generated": {
+  "by": "clify add",
+  "model": "claude-opus-5-5",
+  "exploredSteps": 29,
+  "recorded": 25,
+  "verifiedAt": "2026-10-18T08:41:19.401Z",
+  "seconds": 315
+ }
+}

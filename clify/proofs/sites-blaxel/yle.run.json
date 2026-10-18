@@ -1,0 +1,116 @@
+{
+ "url": "https://yle.fi/news",
+ "category": "news",
+ "sandbox": "clify-yle-fi-news",
+ "startedAt": "2026-10-18T08:35:24.651Z",
+ "region": "us-pdx-1",
+ "chrome": "Chrome/148.0.7778.96",
+ "sandboxStartMs": 1755,
+ "addSeconds": 234,
+ "addExit": 0,
+ "add": {
+  "ok": true,
+  "site": "yle",
+  "url": "https://yle.fi/news",
+  "commands": [
+   {
+    "name": "search",
+    "summary": "Keyword search across Yle articles and Areena programs, with filters for type, service, language and author",
+    "verified": true
+   },
+   {
+    "name": "get-article",
+    "summary": "Get an article's metadata (headline, description, publish and modify dates, keywords, author, images) from its JSON-LD",
+    "verified": true
+   },
+   {
+    "name": "get-article-text",
+    "summary": "Get an article's body text as an ordered list of paragraphs and subheadings",
+    "verified": true
+   },
+   {
+    "name": "list-latest",
+    "summary": "List the latest Yle News (English) articles, newest first",
+    "verified": true
+   },
+   {
+    "name": "list-front-page",
+    "summary": "List the stories currently on the Yle News (English) front page, with leads",
+    "verified": true
+   },
+   {
+    "name": "list-topic",
+    "summary": "List recent English articles for a topic (e.g. 18-220306 Politics, 18-34837 Domestic news, 18-204933 Economy)",
+    "verified": true
+   },
+   {
+    "name": "get-video-preview",
+    "summary": "Get metadata for a Yle/Areena video program (title, series, duration, start time, HLS manifest URL)",
+    "verified": true
+   }
+  ],
+  "verified": 7,
+  "writes": 0,
+  "dropped": [],
+  "blockers": [],
+  "loggedIn": false,
+  "seconds": 234,
+  "next": [
+   "clify yle",
+   "clify yle search --query \"helsinki\""
+  ],
+  "installed": "/home/ubuntu/clify-runs/blaxel-w1/home/bin/yle",
+  "explored": {
+   "steps": 18,
+   "recorded": 70,
+   "heldWrites": 25
+  }
+ },
+ "check": {
+  "on": "blaxel",
+  "node": "v24.22.0",
+  "seconds": 3,
+  "reads": 7,
+  "verified": 7,
+  "failed": [],
+  "results": [
+   {
+    "name": "search",
+    "ok": true,
+    "ms": 64
+   },
+   {
+    "name": "get-article",
+    "ok": true,
+    "ms": 79
+   },
+   {
+    "name": "get-article-text",
+    "ok": true,
+    "ms": 60
+   },
+   {
+    "name": "list-latest",
+    "ok": true,
+    "ms": 48
+   },
+   {
+    "name": "list-front-page",
+    "ok": true,
+    "ms": 65
+   },
+   {
+    "name": "list-topic",
+    "ok": true,
+    "ms": 59
+   },
+   {
+    "name": "get-video-preview",
+    "ok": true,
+    "ms": 82
+   }
+  ]
+ },
+ "deleted": true,
+ "seconds": 239
+}

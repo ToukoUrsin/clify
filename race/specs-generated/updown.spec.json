@@ -1,0 +1,563 @@
+{
+  "name": "updown",
+  "startUrl": "https://updown.io/checks",
+  "origin": "https://updown.io",
+  "createdAt": "2026-10-18T09:48:52.984Z",
+  "description": "updown.io is a website uptime monitoring service. This CLI lists your checks, adds or updates HTTP/HTTPS checks, and reads check details, downtimes and status pages.",
+  "commands": [
+    {
+      "name": "list-checks",
+      "summary": "List your monitoring checks with alias, target URL, status and check interval. Optionally search and sort.",
+      "method": "GET",
+      "urlTemplate": "/checks",
+      "params": [
+        {
+          "name": "q",
+          "in": "query",
+          "required": false,
+          "type": "string",
+          "description": "Search text matched against the check URL or alias",
+          "example": "example"
+        },
+        {
+          "name": "order",
+          "in": "query",
+          "required": false,
+          "type": "string",
+          "description": "Sort order of the list",
+          "enum": [
+            "alias",
+            "status"
+          ]
+        }
+      ],
+      "responseType": "html",
+      "extract": {
+        "list": "section#checks ul.list > li.https, section#checks ul.list > li.http",
+        "fields": {
+          "url": "a.internal@href",
+          "alias": "span.alias",
+          "target": "a.external@href",
+          "scheme": "div.link span.scheme",
+          "status": "div.status",
+          "period": "div.resolution",
+          "periodDescription": "div.resolution@title",
+          "statusPage": "a.status-page@href"
+        }
+      },
+      "defaultFields": [
+        "url",
+        "alias",
+        "target",
+        "status",
+        "period",
+        "statusPage"
+      ],
+      "mutates": false,
+      "auth": true,
+      "source": "E4 GET https://updown.io/checks",
+      "verified": true,
+      "sample": "{\"url\":\"https://updown.io/checks/ygm8\",\"alias\":\"Book club site (example.org)\",\"target\":\"https://example.org\",\"status\":\"200 OK\",\"period\":\"1 hr\",\"statusPage\":\"https://updown.io/ygm8\"}",
+      "resultFields": [
+        "url",
+        "alias",
+        "target",
+        "scheme",
+        "status",
+        "period",
+        "periodDescription",
+        "statusPage"
+      ],
+      "example": {}
+    },
+    {
+      "name": "add-check",
+      "summary": "Create a new monitoring check (HTTPS by default) with a target URL, check period and alias. Returns the updated checks list.",
+      "method": "POST",
+      "urlTemplate": "/checks",
+      "params": [
+        {
+          "name": "url",
+          "key": "check[url]",
+          "in": "body",
+          "required": true,
+          "type": "string",
+          "description": "Target host/path without the scheme, e.g. example.net or example.net/health",
+          "example": "example.net"
+        },
+        {
+          "name": "type",
+          "key": "check[type]",
+          "in": "body",
+          "required": false,
+          "type": "string",
+          "description": "Check type / scheme, e.g. https or http",
+          "default": "https"
+        },
+        {
+          "name": "alias",
+          "key": "check[alias]",
+          "in": "body",
+          "required": false,
+          "type": "string",
+          "description": "Human-friendly name shown for the check",
+          "example": "My website"
+        },
+        {
+          "name": "period",
+          "key": "check[period]",
+          "in": "body",
+          "required": false,
+          "type": "string",
+          "description": "Check interval in seconds (15s, 30s, 1m, 2m, 5m, 10m, 30m, 1h)",
+          "enum": [
+            "15",
+            "30",
+            "60",
+            "120",
+            "300",
+            "600",
+            "1800",
+            "3600"
+          ],
+          "default": "3600",
+          "example": "1800"
+        },
+        {
+          "name": "apdex_t",
+          "key": "check[apdex_t]",
+          "in": "body",
+          "required": false,
+          "type": "string",
+          "description": "Apdex threshold in seconds",
+          "enum": [
+            "0.125",
+            "0.25",
+            "0.5",
+            "1.0",
+            "2.0",
+            "4.0",
+            "8.0"
+          ],
+          "default": "0.5"
+        },
+        {
+          "name": "string_match",
+          "key": "check[string_match]",
+          "in": "body",
+          "required": false,
+          "type": "string",
+          "description": "Optional text that must appear in the response body for the check to be up"
+        }
+      ],
+      "bodyTemplate": {
+        "check[locations][lan]": "",
+        "check[locations][mia]": "",
+        "check[locations][tor]": "",
+        "check[locations][rbx]": "",
+        "check[locations][fra]": "",
+        "check[locations][cap]": "",
+        "check[locations][hel]": "",
+        "check[locations][sin]": "",
+        "check[locations][tok]": "",
+        "check[locations][syd]": "",
+        "check[headers_json]": "{}",
+        "check[http_verb]": "get/head",
+        "check[http_body]": "",
+        "check[type]": "{type}",
+        "check[url]": "{url}",
+        "check[alias]": "{alias}",
+        "check[string_match]": "{string_match}",
+        "check[period]": "{period}",
+        "check[apdex_t]": "{apdex_t}",
+        "button": ""
+      },
+      "bodyEncoding": "form",
+      "responseType": "html",
+      "extract": {
+        "list": "section#checks ul.list > li.https, section#checks ul.list > li.http",
+        "fields": {
+          "url": "a.internal@href",
+          "alias": "span.alias",
+          "target": "a.external@href",
+          "status": "div.status",
+          "period": "div.resolution",
+          "statusPage": "a.status-page@href"
+        }
+      },
+      "defaultFields": [
+        "url",
+        "alias",
+        "target",
+        "status",
+        "period"
+      ],
+      "csrf": {
+        "from": "/checks",
+        "selector": "form#new_check input[name=authenticity_token]@value",
+        "field": "authenticity_token"
+      },
+      "mutates": true,
+      "auth": true,
+      "example": {
+        "url": "example.net",
+        "alias": "My website",
+        "period": "1800"
+      },
+      "source": "E2 POST https://updown.io/checks",
+      "verified": false,
+      "verifyNote": "write: dry-run preview only, not sent"
+    },
+    {
+      "name": "get-check",
+      "summary": "Show a check's detail page: alias, latest result, next scheduled check, yearly SLA and downtime summary.",
+      "method": "GET",
+      "urlTemplate": "/checks/{token}",
+      "params": [
+        {
+          "name": "token",
+          "in": "path",
+          "required": true,
+          "type": "string",
+          "description": "Check token, the last segment of the check url from list-checks (/checks/<token>)",
+          "example": "e3l3"
+        },
+        {
+          "name": "range",
+          "in": "query",
+          "required": false,
+          "type": "string",
+          "description": "Statistics range; 'months' shows the long-term (10 years) view instead of 60 days",
+          "enum": [
+            "months"
+          ]
+        }
+      ],
+      "responseType": "html",
+      "extract": {
+        "fields": {
+          "alias": "h2 span.alias",
+          "scheme": "h2 span.scheme",
+          "nextCheck": "div.result.next-check span.timeline",
+          "lastResultTime": "div.results a.result span.timeline",
+          "lastResult": "div.results a.result span.details",
+          "lastResultUrl": "div.results a.result@href",
+          "slaYear": "div.heatmap.sla span.pct",
+          "downtimes": "div.empty-state p"
+        }
+      },
+      "defaultFields": [
+        "alias",
+        "nextCheck",
+        "lastResultTime",
+        "lastResult",
+        "slaYear",
+        "downtimes"
+      ],
+      "mutates": false,
+      "auth": true,
+      "example": {
+        "token": "e3l3"
+      },
+      "source": "E5 E6",
+      "verified": true,
+      "sample": "{\"alias\":\"Book club site\",\"nextCheck\":\"10:02:40 (UTC) Oct 18, 2026\",\"lastResultTime\":\"09:03:06 (UTC) Oct 18, 2026\",\"lastResult\":\"UP from Los Angeles, US ├ IPv6: 200 OK (22 ms) 2606:4700:10::ac42:93f3 └ IPv4: 200 OK (25 ms) 104.20.23.154\",\"slaYear\":\"100.00%\",\"downtimes\":\"No downtimes in this period. View all →\"}",
+      "resultFields": [
+        "alias",
+        "scheme",
+        "nextCheck",
+        "lastResultTime",
+        "lastResult",
+        "lastResultUrl",
+        "slaYear",
+        "downtimes"
+      ]
+    },
+    {
+      "name": "get-check-settings",
+      "summary": "Read a check's editable settings (alias, enabled flag, string match, period, form action). The target URL is in list-checks.",
+      "method": "GET",
+      "urlTemplate": "/checks/{token}/edit",
+      "params": [
+        {
+          "name": "token",
+          "in": "path",
+          "required": true,
+          "type": "string",
+          "description": "Check token, the last segment of the check url from list-checks",
+          "example": "e3l3"
+        }
+      ],
+      "headers": {
+        "x-requested-with": "XMLHttpRequest"
+      },
+      "responseType": "html",
+      "extract": {
+        "fields": {
+          "alias": "input#check_alias@value",
+          "enabled": "input#check_enabled@checked",
+          "stringMatch": "input#check_string_match@value",
+          "period": "input#check_period_chronic@value",
+          "action": "form.edit_check@action"
+        }
+      },
+      "defaultFields": [
+        "alias",
+        "enabled",
+        "stringMatch",
+        "period",
+        "action"
+      ],
+      "mutates": false,
+      "auth": true,
+      "example": {
+        "token": "e3l3"
+      },
+      "source": "E3",
+      "verified": true,
+      "sample": "{\"alias\":\"Book club site\",\"enabled\":\"checked\",\"period\":\"1 hour\",\"action\":\"/checks/e3l3\"}",
+      "resultFields": [
+        "alias",
+        "enabled",
+        "period",
+        "action"
+      ]
+    },
+    {
+      "name": "update-check",
+      "summary": "Update an existing check's URL, type, alias, check period, apdex, string match or enabled state.",
+      "method": "POST",
+      "urlTemplate": "/checks/{token}",
+      "params": [
+        {
+          "name": "token",
+          "in": "path",
+          "required": true,
+          "type": "string",
+          "description": "Check token, the last segment of the check url from list-checks",
+          "example": "e3l3"
+        },
+        {
+          "name": "url",
+          "key": "check[url]",
+          "in": "body",
+          "required": false,
+          "type": "string",
+          "description": "Target host/path without scheme, e.g. example.net"
+        },
+        {
+          "name": "type",
+          "key": "check[type]",
+          "in": "body",
+          "required": false,
+          "type": "string",
+          "description": "Check type / scheme, e.g. https or http"
+        },
+        {
+          "name": "alias",
+          "key": "check[alias]",
+          "in": "body",
+          "required": false,
+          "type": "string",
+          "description": "Display name of the check"
+        },
+        {
+          "name": "period",
+          "key": "check[period]",
+          "in": "body",
+          "required": false,
+          "type": "string",
+          "description": "Check interval in seconds",
+          "enum": [
+            "15",
+            "30",
+            "60",
+            "120",
+            "300",
+            "600",
+            "1800",
+            "3600"
+          ]
+        },
+        {
+          "name": "apdex_t",
+          "key": "check[apdex_t]",
+          "in": "body",
+          "required": false,
+          "type": "string",
+          "description": "Apdex threshold in seconds",
+          "enum": [
+            "0.125",
+            "0.25",
+            "0.5",
+            "1.0",
+            "2.0",
+            "4.0",
+            "8.0"
+          ]
+        },
+        {
+          "name": "string_match",
+          "key": "check[string_match]",
+          "in": "body",
+          "required": false,
+          "type": "string",
+          "description": "Text that must appear in the response body"
+        },
+        {
+          "name": "enabled",
+          "key": "check[enabled]",
+          "in": "body",
+          "required": false,
+          "type": "boolean",
+          "description": "Enable (true) or disable (false) monitoring"
+        }
+      ],
+      "bodyTemplate": {
+        "_method": "patch",
+        "check[url]": "{url}",
+        "check[type]": "{type}",
+        "check[alias]": "{alias}",
+        "check[period]": "{period}",
+        "check[apdex_t]": "{apdex_t}",
+        "check[string_match]": "{string_match}",
+        "check[enabled]": "{enabled}"
+      },
+      "bodyEncoding": "form",
+      "headers": {
+        "x-requested-with": "XMLHttpRequest"
+      },
+      "responseType": "html",
+      "extract": {
+        "fields": {
+          "url": "a.internal@href",
+          "alias": "span.alias",
+          "target": "a.external@href",
+          "status": "div.status",
+          "period": "div.resolution"
+        }
+      },
+      "defaultFields": [
+        "url",
+        "alias",
+        "target",
+        "status",
+        "period"
+      ],
+      "csrf": {
+        "from": "/checks/{token}/edit",
+        "selector": "input[name=authenticity_token]@value",
+        "field": "authenticity_token"
+      },
+      "mutates": true,
+      "auth": true,
+      "example": {
+        "token": "e3l3",
+        "alias": "Book club site"
+      },
+      "source": "E1 POST https://updown.io/checks/5tns",
+      "verified": false,
+      "verifyNote": "write: dry-run preview only, not sent"
+    },
+    {
+      "name": "list-status-pages",
+      "summary": "List your public status pages with their name, public URL, visibility info and edit link.",
+      "method": "GET",
+      "urlTemplate": "/status_pages",
+      "params": [],
+      "responseType": "html",
+      "extract": {
+        "list": "section#status_pages ul.list > li",
+        "fields": {
+          "name": "li > div a",
+          "url": "div.url a@href",
+          "info": "li > div",
+          "editUrl": "div.actions a@href"
+        }
+      },
+      "defaultFields": [
+        "name",
+        "url",
+        "info",
+        "editUrl"
+      ],
+      "mutates": false,
+      "auth": true,
+      "source": "E8",
+      "verified": true,
+      "sample": "{\"url\":\"https://updown.io/p/6x3i6\",\"editUrl\":\"https://updown.io/status_pages/6x3i6/edit\"}",
+      "resultFields": [
+        "url",
+        "editUrl"
+      ],
+      "example": {}
+    },
+    {
+      "name": "list-downtimes",
+      "summary": "Show the downtimes page for your checks (optionally filtered by check token).",
+      "method": "GET",
+      "urlTemplate": "/downtimes",
+      "params": [
+        {
+          "name": "q",
+          "in": "query",
+          "required": false,
+          "type": "string",
+          "description": "Filter by check token or text"
+        }
+      ],
+      "responseType": "html",
+      "extract": {
+        "fields": {
+          "content": "section#downtimes div.center",
+          "emptyMessage": "div.empty-state p"
+        }
+      },
+      "defaultFields": [
+        "content",
+        "emptyMessage"
+      ],
+      "mutates": false,
+      "auth": true,
+      "source": "E7 GET https://updown.io/downtimes",
+      "verified": true,
+      "sample": "{\"content\":\"No downtimes yet! Go break something... or maybe don't. Send a test alert instead\",\"emptyMessage\":\"No downtimes yet! Go break something... or maybe don't.\"}",
+      "resultFields": [
+        "content",
+        "emptyMessage"
+      ],
+      "example": {}
+    },
+    {
+      "name": "me",
+      "summary": "The signed-in account's own profile/settings (needs the saved session)",
+      "method": "GET",
+      "urlTemplate": "/api",
+      "params": [],
+      "responseType": "html",
+      "mutates": false,
+      "auth": true,
+      "source": "GET https://updown.io/api"
+    }
+  ],
+  "blockers": [],
+  "notes": [
+    "Check tokens are the last segment of the check url returned by list-checks (/checks/<token>).",
+    "Check URLs are given without the scheme; the scheme is chosen with --type (https by default).",
+    "period is in seconds: 15, 30, 60, 120, 300, 600, 1800 (30 min) or 3600 (1 hour)."
+  ],
+  "auth": {
+    "headerNames": [
+      "x-csrf-token"
+    ]
+  },
+  "dropped": [],
+  "generated": {
+    "by": "clify add",
+    "model": "claude-opus-5-5",
+    "exploredSteps": 0,
+    "recorded": 16,
+    "verifiedAt": "2026-10-18T09:50:51.905Z",
+    "seconds": 119
+  }
+}

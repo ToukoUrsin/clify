@@ -1,0 +1,926 @@
+{
+ "name": "govinfo",
+ "startUrl": "https://www.govinfo.gov/",
+ "origin": "https://www.govinfo.gov",
+ "createdAt": "2026-10-18T08:58:45.916Z",
+ "description": "GovInfo (U.S. Government Publishing Office): browse collections such as Congressional Bills and the Federal Register, read daily Federal Register tables of contents, look up document details, related documents, committee publications and government authors, and fetch document text and MODS metadata.",
+ "commands": [
+  {
+   "name": "list-categories",
+   "summary": "List GovInfo collection categories and the collections (code, slug) in each",
+   "method": "GET",
+   "urlTemplate": "/wssearch/ui-fragment/getCategoryBrowseData",
+   "params": [],
+   "responseType": "json",
+   "defaultFields": [
+    "label",
+    "slug",
+    "collections"
+   ],
+   "mutates": false,
+   "source": "E6 GET https://www.govinfo.gov/wssearch/ui-fragment/getCategoryBrowseData",
+   "verified": true
+  },
+  {
+   "name": "get-collection",
+   "summary": "Get metadata for a collection: title, description, help/RSS links and related resources",
+   "method": "GET",
+   "urlTemplate": "/wssearch/ui-fragment/getCollectionData/{collection}",
+   "params": [
+    {
+     "name": "collection",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Lowercase collection code, e.g. bills, fr, plaw, crpt, chrg, budget, cpd",
+     "example": "bills"
+    }
+   ],
+   "responseType": "json",
+   "defaultFields": [
+    "title",
+    "collectionCode",
+    "description",
+    "rss",
+    "relatedResources"
+   ],
+   "mutates": false,
+   "example": {
+    "collection": "bills"
+   },
+   "source": "E2 E7 GET https://www.govinfo.gov/wssearch/ui-fragment/getCollectionData/bills",
+   "verified": true
+  },
+  {
+   "name": "browse-collection",
+   "summary": "List the top-level browse nodes of a collection (congresses for bills, years for the Federal Register) with document counts",
+   "method": "GET",
+   "urlTemplate": "/wssearch/rb/{collection}?fetchChildrenOnly=0",
+   "params": [
+    {
+     "name": "collection",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Lowercase collection code, e.g. bills, fr",
+     "example": "bills"
+    },
+    {
+     "name": "sortDirection",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Sort direction: 1 = newest first (default), 0 = reverse",
+     "enum": [
+      "0",
+      "1"
+     ],
+     "default": "1"
+    }
+   ],
+   "responseType": "json",
+   "resultPath": "childNodes",
+   "defaultFields": [
+    "nodeValue.displayValue",
+    "nodeValue.value",
+    "nodeValue.docCount",
+    "nodeValue.browsePath"
+   ],
+   "mutates": false,
+   "example": {
+    "collection": "bills"
+   },
+   "source": "E3 E8 GET https://www.govinfo.gov/wssearch/rb/bills",
+   "verified": true
+  },
+  {
+   "name": "list-bill-types",
+   "summary": "List the bill types (hr, s, hres, hjres, hconres, ...) in a Congress, with counts",
+   "method": "GET",
+   "urlTemplate": "/wssearch/rb/bills/{congress}?fetchChildrenOnly=1",
+   "params": [
+    {
+     "name": "congress",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Congress number, e.g. 119",
+     "example": "119"
+    },
+    {
+     "name": "sortDirection",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Sort direction (1 default, 0 reverse)",
+     "enum": [
+      "0",
+      "1"
+     ],
+     "default": "1"
+    }
+   ],
+   "responseType": "json",
+   "resultPath": "childNodes",
+   "defaultFields": [
+    "nodeValue.displayValue",
+    "nodeValue.value",
+    "nodeValue.docCount",
+    "nodeValue.browsePath"
+   ],
+   "mutates": false,
+   "example": {
+    "congress": "119"
+   },
+   "source": "E4 GET https://www.govinfo.gov/wssearch/rb/bills/{n}",
+   "verified": true
+  },
+  {
+   "name": "list-bill-ranges",
+   "summary": "List the bill-number ranges (e.g. [0-99]) for one bill type in a Congress, with counts",
+   "method": "GET",
+   "urlTemplate": "/wssearch/rb/bills/{congress}/{billType}?fetchChildrenOnly=1",
+   "params": [
+    {
+     "name": "congress",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Congress number, e.g. 119",
+     "example": "119"
+    },
+    {
+     "name": "billType",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Bill type code",
+     "enum": [
+      "hr",
+      "s",
+      "hres",
+      "sres",
+      "hjres",
+      "sjres",
+      "hconres",
+      "sconres"
+     ],
+     "example": "hr"
+    },
+    {
+     "name": "sortDirection",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Sort direction (1 default, 0 reverse)",
+     "enum": [
+      "0",
+      "1"
+     ],
+     "default": "1"
+    }
+   ],
+   "responseType": "json",
+   "resultPath": "childNodes",
+   "defaultFields": [
+    "nodeValue.displayValue",
+    "nodeValue.browsePathAlias",
+    "nodeValue.docCount"
+   ],
+   "mutates": false,
+   "example": {
+    "congress": "119",
+    "billType": "hr"
+   },
+   "source": "E5 GET https://www.govinfo.gov/wssearch/rb/bills/{n}/hr",
+   "verified": true
+  },
+  {
+   "name": "list-bills",
+   "summary": "List bill versions (package IDs, titles, publish dates, file links) in a bill-number range of a Congress and bill type",
+   "method": "GET",
+   "urlTemplate": "/wssearch/rb/bills/{congress}/{billType}/{range}?fetchChildrenOnly=1",
+   "params": [
+    {
+     "name": "congress",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Congress number, e.g. 119",
+     "example": "119"
+    },
+    {
+     "name": "billType",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Bill type code",
+     "enum": [
+      "hr",
+      "s",
+      "hres",
+      "sres",
+      "hjres",
+      "sjres",
+      "hconres",
+      "sconres"
+     ],
+     "example": "hr"
+    },
+    {
+     "name": "range",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Bill-number range in brackets, as given by list-bill-ranges browsePathAlias, e.g. [0-99], [100-199]",
+     "example": "[0-99]"
+    },
+    {
+     "name": "sortDirection",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Sort direction (1 default, 0 reverse)",
+     "enum": [
+      "0",
+      "1"
+     ],
+     "default": "1"
+    },
+    {
+     "name": "pageSize",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Results per page",
+     "enum": [
+      "20",
+      "50",
+      "100"
+     ],
+     "default": "20"
+    },
+    {
+     "name": "offset",
+     "in": "query",
+     "required": false,
+     "type": "number",
+     "description": "Zero-based page index (not item offset)",
+     "default": 0
+    }
+   ],
+   "responseType": "json",
+   "resultPath": "childNodes",
+   "defaultFields": [
+    "nodeValue.packageid",
+    "nodeValue.browseline1",
+    "nodeValue.title",
+    "nodeValue.publishdate",
+    "nodeValue.htmlfile",
+    "nodeValue.pdffile"
+   ],
+   "pagination": {
+    "type": "page",
+    "param": "offset"
+   },
+   "mutates": false,
+   "example": {
+    "congress": "119",
+    "billType": "hr",
+    "range": "[0-99]"
+   },
+   "source": "E1 GET https://www.govinfo.gov/wssearch/rb/bills/{n}/hr/[0-99]",
+   "verified": true
+  },
+  {
+   "name": "list-fr-months",
+   "summary": "List the months of a Federal Register year, with document counts",
+   "method": "GET",
+   "urlTemplate": "/wssearch/rb/fr/{year}?fetchChildrenOnly=1",
+   "params": [
+    {
+     "name": "year",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Four-digit year, e.g. 2025",
+     "example": "2025"
+    },
+    {
+     "name": "sortDirection",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Sort direction (1 default, 0 reverse)",
+     "enum": [
+      "0",
+      "1"
+     ],
+     "default": "1"
+    }
+   ],
+   "responseType": "json",
+   "resultPath": "childNodes",
+   "defaultFields": [
+    "nodeValue.displayValue",
+    "nodeValue.value",
+    "nodeValue.docCount"
+   ],
+   "mutates": false,
+   "example": {
+    "year": "2025"
+   },
+   "source": "E9 GET https://www.govinfo.gov/wssearch/rb/fr/{n}",
+   "verified": true
+  },
+  {
+   "name": "list-fr-issues",
+   "summary": "List the daily Federal Register issues in a month (issue labels like 'Friday, January 31, Pages 8625-8752') with whole-issue download links",
+   "method": "GET",
+   "urlTemplate": "/wssearch/rb/fr/{year}/{month}?fetchChildrenOnly=1",
+   "params": [
+    {
+     "name": "year",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Four-digit year",
+     "example": "2025"
+    },
+    {
+     "name": "month",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Two-digit month, 01-12",
+     "example": "01"
+    },
+    {
+     "name": "sortDirection",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Sort direction (1 default, 0 reverse)",
+     "enum": [
+      "0",
+      "1"
+     ],
+     "default": "1"
+    }
+   ],
+   "responseType": "json",
+   "resultPath": "childNodes",
+   "defaultFields": [
+    "nodeValue.value",
+    "nodeValue.docCount",
+    "nodeValue.entireIssueDetails"
+   ],
+   "mutates": false,
+   "example": {
+    "year": "2025",
+    "month": "01"
+   },
+   "source": "E10 GET https://www.govinfo.gov/wssearch/rb/fr/{n}/{n}",
+   "verified": true
+  },
+  {
+   "name": "list-fr-issue-agencies",
+   "summary": "List the agencies that have documents in one daily Federal Register issue, with counts",
+   "method": "GET",
+   "urlTemplate": "/wssearch/rb/fr/{year}/{month}/{issue}?fetchChildrenOnly=1",
+   "params": [
+    {
+     "name": "year",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Four-digit year",
+     "example": "2025"
+    },
+    {
+     "name": "month",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Two-digit month",
+     "example": "01"
+    },
+    {
+     "name": "issue",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Issue label exactly as returned by list-fr-issues (nodeValue.value)",
+     "example": "Friday, January 31, Pages 8625-8752"
+    },
+    {
+     "name": "sortDirection",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Sort direction (1 default, 0 reverse)",
+     "enum": [
+      "0",
+      "1"
+     ],
+     "default": "1"
+    }
+   ],
+   "responseType": "json",
+   "resultPath": "childNodes",
+   "defaultFields": [
+    "nodeValue.value",
+    "nodeValue.docCount"
+   ],
+   "mutates": false,
+   "example": {
+    "year": "2025",
+    "month": "01",
+    "issue": "Friday, January 31, Pages 8625-8752"
+   },
+   "source": "E11 GET https://www.govinfo.gov/wssearch/rb/fr/{n}/{n}/Friday%2C%20January%2031%2C%20Pages%208625-8752",
+   "verified": true
+  },
+  {
+   "name": "list-fr-agency-documents",
+   "summary": "List one agency's documents in a daily Federal Register issue (granule IDs, titles, sections, pages)",
+   "method": "GET",
+   "urlTemplate": "/wssearch/rb/fr/{year}/{month}/{issue}/{agency}?fetchChildrenOnly=1",
+   "params": [
+    {
+     "name": "year",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Four-digit year",
+     "example": "2025"
+    },
+    {
+     "name": "month",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Two-digit month",
+     "example": "01"
+    },
+    {
+     "name": "issue",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Issue label as returned by list-fr-issues",
+     "example": "Friday, January 31, Pages 8625-8752"
+    },
+    {
+     "name": "agency",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Agency name as returned by list-fr-issue-agencies",
+     "example": "Environmental Protection Agency"
+    },
+    {
+     "name": "sortDirection",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Sort direction (1 default, 0 reverse)",
+     "enum": [
+      "0",
+      "1"
+     ],
+     "default": "1"
+    }
+   ],
+   "responseType": "json",
+   "resultPath": "childNodes",
+   "defaultFields": [
+    "nodeValue.packageid",
+    "nodeValue.granuleid",
+    "nodeValue.title",
+    "nodeValue.section",
+    "nodeValue.browseline2",
+    "nodeValue.htmlfile",
+    "nodeValue.pdffile"
+   ],
+   "mutates": false,
+   "example": {
+    "year": "2025",
+    "month": "01",
+    "issue": "Friday, January 31, Pages 8625-8752",
+    "agency": "Environmental Protection Agency"
+   },
+   "source": "E12 GET https://www.govinfo.gov/wssearch/rb/fr/{n}/{n}/Friday%2C%20January%2031%2C%20Pages%208625-8752/Environmental%20Protection%20Agency",
+   "verified": true
+  },
+  {
+   "name": "get-fr-toc",
+   "summary": "Get the Federal Register table of contents for a date: every agency with its document subjects, pages and FR doc numbers",
+   "method": "GET",
+   "urlTemplate": "/wssearch/today/FR/{date}",
+   "params": [
+    {
+     "name": "date",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Issue date, YYYY-MM-DD (business days only)",
+     "example": "2025-01-31"
+    }
+   ],
+   "responseType": "json",
+   "resultPath": "data.agencies",
+   "defaultFields": [
+    "agencyheading",
+    "tocsubjects"
+   ],
+   "mutates": false,
+   "example": {
+    "date": "2025-01-31"
+   },
+   "source": "E17 GET https://www.govinfo.gov/wssearch/today/FR/2025-01-31",
+   "verified": true
+  },
+  {
+   "name": "get-content-details",
+   "summary": "Get details for a document (granule) or package: title, metadata table, download links (PDF/HTML/MODS/ZIP), citations and dates",
+   "method": "GET",
+   "urlTemplate": "/wssearch/getContentDetail",
+   "params": [
+    {
+     "name": "packageId",
+     "in": "query",
+     "required": true,
+     "type": "string",
+     "description": "Package ID, e.g. FR-2025-01-31 or BILLS-119hr30ih",
+     "example": "FR-2025-01-31"
+    },
+    {
+     "name": "granuleId",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Granule ID within the package, e.g. FR doc number 2025-02106; omit for package-level details",
+     "example": "2025-02106"
+    }
+   ],
+   "headers": {
+    "x-requested-with": "XMLHttpRequest"
+   },
+   "responseType": "json",
+   "defaultFields": [
+    "title",
+    "collection",
+    "metadata.columnnamevalueset",
+    "download",
+    "dcMD.origDateIssued",
+    "documentincontext.agencies"
+   ],
+   "mutates": false,
+   "example": {
+    "packageId": "FR-2025-01-31",
+    "granuleId": "2025-02106"
+   },
+   "source": "E13 GET https://www.govinfo.gov/wssearch/getContentDetail",
+   "verified": true
+  },
+  {
+   "name": "list-related-collections",
+   "summary": "List the kinds of related documents available for a granule (e.g. FR-DOCKETID: documents sharing a docket ID)",
+   "method": "GET",
+   "urlTemplate": "/wssearch/publink/relateddocs/{relatedType}/{packageId}/{granuleId}",
+   "params": [
+    {
+     "name": "packageId",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Package ID, e.g. FR-2025-01-31",
+     "example": "FR-2025-01-31"
+    },
+    {
+     "name": "granuleId",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Granule ID, e.g. 2025-02106",
+     "example": "2025-02106"
+    },
+    {
+     "name": "relatedType",
+     "in": "path",
+     "required": false,
+     "type": "string",
+     "description": "Related-content group; FR_CNT for Federal Register documents",
+     "default": "FR_CNT"
+    }
+   ],
+   "headers": {
+    "x-requested-with": "XMLHttpRequest"
+   },
+   "responseType": "json",
+   "resultPath": "relateddocs.collectionset",
+   "defaultFields": [
+    "collectioncode",
+    "collectiontitle",
+    "versionset"
+   ],
+   "mutates": false,
+   "example": {
+    "packageId": "FR-2025-01-31",
+    "granuleId": "2025-02106"
+   },
+   "source": "E14 GET https://www.govinfo.gov/wssearch/publink/relateddocs/FR_CNT/FR-2025-01-31/2025-02106",
+   "verified": true
+  },
+  {
+   "name": "list-related-documents",
+   "summary": "List documents related to a granule within a related collection, e.g. Federal Register documents sharing its docket ID",
+   "method": "GET",
+   "urlTemplate": "/wssearch/publink/relateddocs/sub/{relatedCollection}/{packageId}/{granuleId}/{api_limit}",
+   "params": [
+    {
+     "name": "packageId",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Package ID, e.g. FR-2025-01-31",
+     "example": "FR-2025-01-31"
+    },
+    {
+     "name": "granuleId",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Granule ID, e.g. 2025-02106",
+     "example": "2025-02106"
+    },
+    {
+     "name": "relatedCollection",
+     "in": "path",
+     "required": false,
+     "type": "string",
+     "description": "Related collection code from list-related-collections",
+     "default": "FR-DOCKETID"
+    },
+    {
+     "name": "api_limit",
+     "in": "path",
+     "required": false,
+     "type": "number",
+     "description": "Maximum number of related documents (the web app sends 25) (sent to the site as \"limit\"; clify's own --limit only shapes the output)",
+     "default": 25
+    }
+   ],
+   "headers": {
+    "x-requested-with": "XMLHttpRequest"
+   },
+   "responseType": "json",
+   "resultPath": "0.contents",
+   "defaultFields": [
+    "packageId",
+    "granuleId",
+    "citation",
+    "issuedDate",
+    "action",
+    "docketNumber",
+    "gtitle"
+   ],
+   "mutates": false,
+   "example": {
+    "packageId": "FR-2025-01-31",
+    "granuleId": "2025-02106"
+   },
+   "source": "E15 GET https://www.govinfo.gov/wssearch/publink/relateddocs/sub/FR-DOCKETID/FR-2025-01-31/2025-02106/{n}",
+   "verified": true
+  },
+  {
+   "name": "get-document-in-context",
+   "summary": "Show where a granule sits in its package (issue/agency browse node) plus whole-issue download renditions",
+   "method": "GET",
+   "urlTemplate": "/wssearch/documentsInContext/{granuleId}",
+   "params": [
+    {
+     "name": "granuleId",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Granule ID, e.g. 2025-02106",
+     "example": "2025-02106"
+    }
+   ],
+   "headers": {
+    "x-requested-with": "XMLHttpRequest"
+   },
+   "responseType": "json",
+   "defaultFields": [
+    "childNodes",
+    "nodeValue.entireIssueDetails"
+   ],
+   "mutates": false,
+   "example": {
+    "granuleId": "2025-02106"
+   },
+   "source": "E16 GET https://www.govinfo.gov/wssearch/documentsInContext/2025-02106",
+   "verified": true
+  },
+  {
+   "name": "list-government-authors",
+   "summary": "List government authors (agencies, courts, congressional bodies) grouped by executive, judicial and legislative branch",
+   "method": "GET",
+   "urlTemplate": "/wssearch/browsegovernmentauthor/authors",
+   "params": [],
+   "responseType": "json",
+   "defaultFields": [
+    "executive",
+    "judicial",
+    "legislative"
+   ],
+   "mutates": false,
+   "source": "E18 GET https://www.govinfo.gov/wssearch/browsegovernmentauthor/authors",
+   "verified": true
+  },
+  {
+   "name": "browse-committee",
+   "summary": "List the publication collections (bills, reports, hearings, ...) available for a congressional committee",
+   "method": "GET",
+   "urlTemplate": "/wssearch/browsecommittee/chamber/{chamber}/committee/{committee}?fetchChildrenOnly=0",
+   "params": [
+    {
+     "name": "chamber",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Chamber",
+     "enum": [
+      "senate",
+      "house",
+      "joint"
+     ],
+     "example": "senate"
+    },
+    {
+     "name": "committee",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Committee slug without the chamber prefix (from /browse/committee, e.g. senate-judiciary \u2192 judiciary)",
+     "example": "judiciary"
+    }
+   ],
+   "headers": {
+    "x-requested-with": "XMLHttpRequest"
+   },
+   "responseType": "json",
+   "resultPath": "childNodes",
+   "defaultFields": [
+    "nodeValue.displayValue",
+    "nodeValue.browsePath"
+   ],
+   "mutates": false,
+   "example": {
+    "chamber": "senate",
+    "committee": "judiciary"
+   },
+   "source": "E19 GET https://www.govinfo.gov/wssearch/browsecommittee/chamber/senate/committee/judiciary",
+   "verified": true
+  },
+  {
+   "name": "browse-committee-collection",
+   "summary": "List the Congresses for which a committee has publications in one collection (e.g. hearings, reports, bills)",
+   "method": "GET",
+   "urlTemplate": "/wssearch/browsecommittee/chamber/{chamber}/committee/{committee}/collection/{collection}?fetchChildrenOnly=1",
+   "params": [
+    {
+     "name": "chamber",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Chamber",
+     "enum": [
+      "senate",
+      "house",
+      "joint"
+     ],
+     "example": "senate"
+    },
+    {
+     "name": "committee",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Committee slug, e.g. judiciary",
+     "example": "judiciary"
+    },
+    {
+     "name": "collection",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Uppercase collection code from browse-committee, e.g. CHRG, BILLS, CRPT",
+     "example": "CHRG"
+    }
+   ],
+   "headers": {
+    "x-requested-with": "XMLHttpRequest"
+   },
+   "responseType": "json",
+   "resultPath": "childNodes",
+   "defaultFields": [
+    "nodeValue.displayValue",
+    "nodeValue.value",
+    "nodeValue.browsePath"
+   ],
+   "mutates": false,
+   "example": {
+    "chamber": "senate",
+    "committee": "judiciary",
+    "collection": "CHRG"
+   },
+   "source": "E20 GET https://www.govinfo.gov/wssearch/browsecommittee/chamber/senate/committee/judiciary/collection/CHRG",
+   "verified": true
+  },
+  {
+   "name": "get-document-html",
+   "summary": "Fetch the full text (HTML rendition) of a bill version or a Federal Register document",
+   "method": "GET",
+   "urlTemplate": "/content/pkg/{packageId}/html/{fileId}.htm",
+   "params": [
+    {
+     "name": "packageId",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Package ID, e.g. FR-2025-01-31 or BILLS-119hr1rh",
+     "example": "FR-2025-01-31"
+    },
+    {
+     "name": "fileId",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "File ID: the granule ID for FR documents (2025-02106), or the package ID again for bills (BILLS-119hr1rh)",
+     "example": "2025-02106"
+    }
+   ],
+   "responseType": "text",
+   "mutates": false,
+   "example": {
+    "packageId": "FR-2025-01-31",
+    "fileId": "2025-02106"
+   },
+   "source": "E12 E13 GET https://www.govinfo.gov/wssearch/rb/fr/{n}/{n}/Friday%2C%20January%2031%2C%20Pages%208625-8752/Environmental%20Protection%20Agency",
+   "verified": true
+  },
+  {
+   "name": "get-package-mods",
+   "summary": "Get the MODS bibliographic metadata of a package (converted from XML to JSON): titles, names/sponsors, dates, identifiers, links",
+   "method": "GET",
+   "urlTemplate": "/metadata/pkg/{packageId}/mods.xml",
+   "params": [
+    {
+     "name": "packageId",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Package ID, e.g. BILLS-119hr30ih or FR-2025-01-31",
+     "example": "BILLS-119hr30ih"
+    }
+   ],
+   "responseType": "json",
+   "resultPath": "mods",
+   "defaultFields": [
+    "titleInfo",
+    "name",
+    "originInfo",
+    "identifier",
+    "location",
+    "relatedItem"
+   ],
+   "mutates": false,
+   "example": {
+    "packageId": "BILLS-119hr30ih"
+   },
+   "source": "E13",
+   "verified": true
+  }
+ ],
+ "blockers": [],
+ "notes": [
+  "Keyword search is not available: /app/search is disallowed by robots.txt. The official search API (POST https://api.govinfo.gov/search) needs an api.data.gov key and is not included here.",
+  "Bills browse path: browse-collection(bills) \u2192 list-bill-types(congress) \u2192 list-bill-ranges \u2192 list-bills. Federal Register path: list-fr-months \u2192 list-fr-issues \u2192 list-fr-issue-agencies \u2192 list-fr-agency-documents. get-fr-toc(date) returns a whole issue in a single call.",
+  "In list-bills, offset is a zero-based page index, not an item offset.",
+  "Package IDs follow BILLS-{congress}{type}{number}{version} (e.g. BILLS-119hr30ih) and FR-{YYYY-MM-DD}. FR granule IDs are FR document numbers (e.g. 2025-02106).",
+  "Other downloads follow these patterns: /content/pkg/{pkg}/pdf/{id}.pdf, /content/pkg/{pkg}/xml/{id}.xml, /content/pkg/{pkg}.zip, /metadata/granule/{pkg}/{granule}/mods.xml.",
+  "Human-readable detail pages are at https://www.govinfo.gov/app/details/{packageId}[/{granuleId}]."
+ ],
+ "dropped": [],
+ "generated": {
+  "by": "clify add",
+  "model": "claude-opus-5-5",
+  "exploredSteps": 30,
+  "recorded": 80,
+  "verifiedAt": "2026-10-18T09:00:28.988Z",
+  "seconds": 284
+ }
+}

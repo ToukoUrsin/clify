@@ -1,0 +1,30 @@
+{
+ "name": "biodiversitylibrary",
+ "startUrl": "https://www.biodiversitylibrary.org/",
+ "origin": "https://www.biodiversitylibrary.org",
+ "createdAt": "2026-10-18T08:57:36.738Z",
+ "description": "Biodiversity Heritage Library (biodiversitylibrary.org), an open-access digital library of biodiversity literature. No CLI commands could be generated because exploration was blocked.",
+ "commands": [],
+ "blockers": [
+  "bot-check at https://www.biodiversitylibrary.org/",
+  "bot-check at https://www.biodiversitylibrary.org/browse/collections",
+  "bot-check at https://www.biodiversitylibrary.org/docs/api3.html",
+  "captcha"
+ ],
+ "notes": [
+  "No commands were generated. The only recorded request was GET / (status 307), and it was intercepted by Cloudflare's 'Performing security verification' challenge. No HTML content, XHR/fetch traffic or JSON endpoints were observed, so there is nothing to replay.",
+  "The explorer was also blocked on /browse/collections and /docs/api3.html. It did not try to solve the bot check, and the CLI should not try to bypass it either.",
+  "robots.txt disallows /search, so a site-search command scraped from HTML would not be appropriate even if the challenge were absent.",
+  "BHL publishes a documented public API (API v3, served under /api3 with an 'op' query parameter and JSON/XML output). It requires a personal API key, and no API traffic appeared in this recording. Commands for it were not written because they would be guessed rather than recorded, and the key cannot be hard-coded into a spec.",
+  "Recommended next step: re-run exploration from an environment Cloudflare does not challenge, or with a user-supplied BHL API key. Record real API v3 calls (for example searching publications or names, and looking up title, item, page or part metadata) so commands can be built from observed requests."
+ ],
+ "dropped": [],
+ "generated": {
+  "by": "clify add",
+  "model": "claude-opus-5-5",
+  "exploredSteps": 4,
+  "recorded": 5,
+  "verifiedAt": "2026-10-18T08:57:45.955Z",
+  "seconds": 28
+ }
+}

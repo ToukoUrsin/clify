@@ -1,0 +1,38 @@
+{
+ "url": "https://www.speedrun.com/",
+ "category": "sports-ent",
+ "sandbox": "clify-www-speedrun-com",
+ "startedAt": "2026-10-18T08:21:35.794Z",
+ "region": "us-pdx-1",
+ "chrome": "Chrome/148.0.7778.96",
+ "sandboxStartMs": 2142,
+ "addSeconds": 19,
+ "addExit": 1,
+ "add": {
+  "ok": false,
+  "site": "speedrun",
+  "url": "https://www.speedrun.com/",
+  "commands": [],
+  "verified": 0,
+  "writes": 0,
+  "dropped": [],
+  "blockers": [
+   "bot-check at https://www.speedrun.com/",
+   "bot-check at https://www.speedrun.com/games",
+   "captcha"
+  ],
+  "loggedIn": false,
+  "seconds": 19,
+  "next": [
+   "clify speedrun",
+   "clify repair speedrun --goal \"<what you need from the site>\""
+  ],
+  "explored": {
+   "steps": 3,
+   "recorded": 4,
+   "heldWrites": 0
+  }
+ },
+ "deleted": true,
+ "seconds": 21
+}

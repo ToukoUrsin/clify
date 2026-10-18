@@ -1,0 +1,39 @@
+{
+ "task": "github-playwright-release",
+ "site": "github",
+ "mode": "cli",
+ "trial": 1,
+ "tag": "main",
+ "ok": true,
+ "why": "all expected values present",
+ "answer": "v1.64.1, published 2026-10-14",
+ "expected": {
+  "expect": [
+   "1.64.1",
+   "2026-10-14"
+  ],
+  "detail": {
+   "tag_name": "v1.64.1",
+   "published_at": "2026-10-14T11:51:33Z"
+  }
+ },
+ "wallMs": 7833,
+ "apiMs": 6319,
+ "turns": 3,
+ "toolCalls": 2,
+ "tokens": {
+  "input": 6,
+  "output": 348,
+  "cacheWrite": 4850,
+  "cacheRead": 10733,
+  "total": 15937
+ },
+ "costUsd": 0.0333806,
+ "models": [
+  "claude-opus-5-5"
+ ],
+ "exitCode": 0,
+ "timedOut": false,
+ "subtype": "success",
+ "startedAt": "2026-10-17T23:23:00.053Z"
+}

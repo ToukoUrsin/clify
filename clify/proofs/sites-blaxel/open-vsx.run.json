@@ -1,0 +1,156 @@
+{
+ "url": "https://open-vsx.org/",
+ "category": "dev",
+ "sandbox": "clify-open-vsx-org",
+ "startedAt": "2026-10-18T08:55:02.685Z",
+ "region": "us-pdx-1",
+ "chrome": "Chrome/148.0.7778.96",
+ "sandboxStartMs": 1904,
+ "addSeconds": 185,
+ "addExit": 0,
+ "add": {
+  "ok": true,
+  "site": "open-vsx",
+  "url": "https://open-vsx.org/",
+  "commands": [
+   {
+    "name": "search-extensions",
+    "summary": "Search Open VSX extensions by keyword, with optional category filter, sorting and offset paging",
+    "verified": true
+   },
+   {
+    "name": "get-extension",
+    "summary": "Get full metadata of the latest version of an extension: description, files, links, all version URLs and download count",
+    "verified": true
+   },
+   {
+    "name": "get-extension-version",
+    "summary": "Get metadata of one specific version of an extension. The version can also be 'latest' or 'pre-release'.",
+    "verified": true
+   },
+   {
+    "name": "get-extension-file",
+    "summary": "Fetch a text file from an extension version, such as README.md or CHANGELOG.md. The request redirects to the content CDN.",
+    "verified": true
+   },
+   {
+    "name": "list-extension-reviews",
+    "summary": "List user ratings and review comments for an extension",
+    "verified": true
+   },
+   {
+    "name": "list-extension-versions",
+    "summary": "List published versions of an extension, newest first, as a version-to-URL map with offset paging",
+    "verified": true
+   },
+   {
+    "name": "query-extensions",
+    "summary": "Query extension metadata by id (namespace.name), with optional version and all-versions flag; returns one entry per target platform (e.g. linux-x64, alpine-arm64, universal)",
+    "verified": true
+   },
+   {
+    "name": "get-namespace-details",
+    "summary": "Get a publisher namespace's profile (display name, description, website, social links) and its extensions with stats",
+    "verified": true
+   },
+   {
+    "name": "list-namespace-extensions",
+    "summary": "List the names of all extensions in a namespace (a map of name to API URL) and whether the namespace is verified",
+    "verified": true
+   },
+   {
+    "name": "list-version-changes",
+    "summary": "Page through the registry-wide feed of extension version changes (publish/state updates), oldest first, using a cursor",
+    "verified": true
+   },
+   {
+    "name": "get-registry-version",
+    "summary": "Get the Open VSX server version and limits, such as the maximum extension size",
+    "verified": true
+   }
+  ],
+  "verified": 11,
+  "writes": 0,
+  "dropped": [],
+  "blockers": [],
+  "loggedIn": false,
+  "seconds": 184,
+  "next": [
+   "clify open-vsx",
+   "clify open-vsx search-extensions --query \"python\""
+  ],
+  "installed": "/home/ubuntu/clify-runs/blaxel-w1/home/bin/open-vsx",
+  "explored": {
+   "steps": 22,
+   "recorded": 43,
+   "heldWrites": 0
+  }
+ },
+ "check": {
+  "on": "blaxel",
+  "node": "v24.22.0",
+  "seconds": 4,
+  "reads": 11,
+  "verified": 11,
+  "failed": [],
+  "results": [
+   {
+    "name": "search-extensions",
+    "ok": true,
+    "ms": 311
+   },
+   {
+    "name": "get-extension",
+    "ok": true,
+    "ms": 223
+   },
+   {
+    "name": "get-extension-version",
+    "ok": true,
+    "ms": 17
+   },
+   {
+    "name": "get-extension-file",
+    "ok": true,
+    "ms": 60
+   },
+   {
+    "name": "list-extension-reviews",
+    "ok": true,
+    "ms": 489
+   },
+   {
+    "name": "list-extension-versions",
+    "ok": true,
+    "ms": 15
+   },
+   {
+    "name": "query-extensions",
+    "ok": true,
+    "ms": 21
+   },
+   {
+    "name": "get-namespace-details",
+    "ok": true,
+    "ms": 221
+   },
+   {
+    "name": "list-namespace-extensions",
+    "ok": true,
+    "ms": 16
+   },
+   {
+    "name": "list-version-changes",
+    "ok": true,
+    "ms": 17
+   },
+   {
+    "name": "get-registry-version",
+    "ok": true,
+    "ms": 16
+   }
+  ]
+ },
+ "deleted": true,
+ "seconds": 190
+}

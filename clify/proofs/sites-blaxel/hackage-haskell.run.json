@@ -1,0 +1,186 @@
+{
+ "url": "https://hackage.haskell.org/",
+ "category": "dev",
+ "sandbox": "clify-hackage-haskell-org",
+ "startedAt": "2026-10-18T08:23:03.066Z",
+ "region": "us-pdx-1",
+ "chrome": "Chrome/148.0.7778.96",
+ "sandboxStartMs": 3153,
+ "addSeconds": 297,
+ "addExit": 0,
+ "add": {
+  "ok": true,
+  "site": "hackage-haskell",
+  "url": "https://hackage.haskell.org/",
+  "commands": [
+   {
+    "name": "search-packages",
+    "summary": "Search Hackage packages by keyword, with optional filter expressions in the query, sorting and pagination (50 results per page)",
+    "verified": true
+   },
+   {
+    "name": "get-package",
+    "summary": "Get a package's detail page: synopsis, description, latest version, modules and changelog link",
+    "verified": true
+   },
+   {
+    "name": "get-package-versions",
+    "summary": "List all versions of a package with their status (normal or deprecated), as JSON",
+    "verified": true
+   },
+   {
+    "name": "get-preferred-versions",
+    "summary": "Get a package's preferred versions (normal-version list, plus deprecated versions if any), as JSON",
+    "verified": true
+   },
+   {
+    "name": "get-package-dependencies",
+    "summary": "List the dependencies and version constraints of a specific package version",
+    "verified": true
+   },
+   {
+    "name": "list-reverse-dependencies",
+    "summary": "List the packages that depend on a given package (reverse dependencies of its latest version)",
+    "verified": true
+   },
+   {
+    "name": "get-changelog",
+    "summary": "Get the changelog of a specific package version",
+    "verified": true
+   },
+   {
+    "name": "get-docs-index",
+    "summary": "Get the Haddock identifier index (functions, types and their modules) for a package version, as JSON",
+    "verified": true
+   },
+   {
+    "name": "list-recent-uploads",
+    "summary": "List the 20 most recently uploaded package versions on Hackage, newest first, from the recent-uploads RSS feed. Each item has the package-version title, package link, upload date, and a description na",
+    "verified": true
+   },
+   {
+    "name": "list-packages-by-tag",
+    "summary": "List all packages that have a given tag (e.g. parsing, json, network)",
+    "verified": true
+   },
+   {
+    "name": "list-categories",
+    "summary": "List all package categories with their package counts",
+    "verified": true
+   },
+   {
+    "name": "list-deprecated-packages",
+    "summary": "List deprecated packages and the packages that replace them",
+    "verified": true
+   },
+   {
+    "name": "list-candidates",
+    "summary": "List candidate package versions (uploaded for review but not yet published)",
+    "verified": true
+   },
+   {
+    "name": "get-user",
+    "summary": "Get a Hackage user's profile: the package groups (maintainers, candidates) they belong to",
+    "verified": true
+   }
+  ],
+  "verified": 14,
+  "writes": 0,
+  "dropped": [],
+  "blockers": [],
+  "loggedIn": false,
+  "seconds": 297,
+  "next": [
+   "clify hackage-haskell",
+   "clify hackage-haskell search-packages --query \"json parser\""
+  ],
+  "installed": "/home/ubuntu/clify-runs/blaxel-w1/home/bin/hackage-haskell",
+  "explored": {
+   "steps": 20,
+   "recorded": 26,
+   "heldWrites": 0
+  }
+ },
+ "check": {
+  "on": "blaxel",
+  "node": "v24.22.0",
+  "seconds": 11,
+  "reads": 14,
+  "verified": 14,
+  "failed": [],
+  "results": [
+   {
+    "name": "search-packages",
+    "ok": true,
+    "ms": 309
+   },
+   {
+    "name": "get-package",
+    "ok": true,
+    "ms": 53
+   },
+   {
+    "name": "get-package-versions",
+    "ok": true,
+    "ms": 93
+   },
+   {
+    "name": "get-preferred-versions",
+    "ok": true,
+    "ms": 93
+   },
+   {
+    "name": "get-package-dependencies",
+    "ok": true,
+    "ms": 16
+   },
+   {
+    "name": "list-reverse-dependencies",
+    "ok": true,
+    "ms": 314
+   },
+   {
+    "name": "get-changelog",
+    "ok": true,
+    "ms": 16
+   },
+   {
+    "name": "get-docs-index",
+    "ok": true,
+    "ms": 15
+   },
+   {
+    "name": "list-recent-uploads",
+    "ok": true,
+    "ms": 240
+   },
+   {
+    "name": "list-packages-by-tag",
+    "ok": true,
+    "ms": 248
+   },
+   {
+    "name": "list-categories",
+    "ok": true,
+    "ms": 560
+   },
+   {
+    "name": "list-deprecated-packages",
+    "ok": true,
+    "ms": 258
+   },
+   {
+    "name": "list-candidates",
+    "ok": true,
+    "ms": 6815
+   },
+   {
+    "name": "get-user",
+    "ok": true,
+    "ms": 102
+   }
+  ]
+ },
+ "deleted": true,
+ "seconds": 312
+}

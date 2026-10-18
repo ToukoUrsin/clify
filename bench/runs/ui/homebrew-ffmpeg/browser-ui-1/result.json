@@ -1,0 +1,39 @@
+{
+ "task": "homebrew-ffmpeg",
+ "site": "homebrew",
+ "mode": "browser-ui",
+ "trial": 1,
+ "tag": "ui",
+ "ok": true,
+ "why": "all expected values present",
+ "answer": "9.0.2, GPL-3.0-or-later",
+ "expected": {
+  "expect": [
+   "9.0.2",
+   "GPL-3.0-or-later"
+  ],
+  "detail": {
+   "versions.stable": "9.0.2",
+   "license": "GPL-3.0-or-later"
+  }
+ },
+ "wallMs": 9121,
+ "apiMs": 6889,
+ "turns": 4,
+ "toolCalls": 3,
+ "tokens": {
+  "input": 8,
+  "output": 357,
+  "cacheWrite": 6419,
+  "cacheRead": 44007,
+  "total": 50791
+ },
+ "costUsd": 0.0480684,
+ "models": [
+  "claude-opus-5-5"
+ ],
+ "exitCode": 0,
+ "timedOut": false,
+ "subtype": "success",
+ "startedAt": "2026-10-17T23:28:39.841Z"
+}

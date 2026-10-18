@@ -1,0 +1,41 @@
+{
+ "task": "ubuntu-lts-supported",
+ "site": "endoflife",
+ "mode": "browser-ui",
+ "trial": 1,
+ "tag": "ui2",
+ "ok": true,
+ "why": "all expected values present",
+ "answer": "26.04, 24.04, 22.04",
+ "expected": {
+  "expect": [
+   "26.04",
+   "24.04",
+   "22.04"
+  ],
+  "detail": [
+   "26.04",
+   "24.04",
+   "22.04"
+  ]
+ },
+ "wallMs": 15404,
+ "apiMs": 12657,
+ "turns": 5,
+ "toolCalls": 4,
+ "tokens": {
+  "input": 10,
+  "output": 719,
+  "cacheWrite": 17341,
+  "cacheRead": 60543,
+  "total": 78613
+ },
+ "costUsd": 0.1132336,
+ "models": [
+  "claude-opus-5-5"
+ ],
+ "exitCode": 0,
+ "timedOut": false,
+ "subtype": "success",
+ "startedAt": "2026-10-17T23:33:49.034Z"
+}

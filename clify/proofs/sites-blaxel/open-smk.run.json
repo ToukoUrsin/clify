@@ -1,0 +1,136 @@
+{
+ "url": "https://open.smk.dk/",
+ "category": "culture",
+ "sandbox": "clify-open-smk-dk",
+ "startedAt": "2026-10-18T09:13:39.388Z",
+ "region": "us-pdx-1",
+ "chrome": "Chrome/148.0.7778.96",
+ "sandboxStartMs": 2455,
+ "addSeconds": 306,
+ "addExit": 0,
+ "add": {
+  "ok": true,
+  "site": "open-smk",
+  "url": "https://open.smk.dk/",
+  "commands": [
+   {
+    "name": "search-artworks",
+    "summary": "Search the SMK collection by keyword, with optional facet filters, a date or geo range, language and offset pagination.",
+    "verified": true
+   },
+   {
+    "name": "list-search-facets",
+    "summary": "List facet values with counts (artists, creators, work types, colours and so on) for a keyword search. Use the values as filters in search-artworks.",
+    "verified": true
+   },
+   {
+    "name": "get-artworks",
+    "summary": "Get full metadata for one or more artworks by object number (comma-separated): title, creator, dates, dimensions, exhibitions, literature and image URLs.",
+    "verified": true
+   },
+   {
+    "name": "get-similar-artworks",
+    "summary": "Get the object numbers of artworks that are visually similar to an artwork.",
+    "verified": true
+   },
+   {
+    "name": "get-artwork-enrichment",
+    "summary": "Get enrichment records for an artwork, such as visual feature extraction (brightness, contrast, saturation, colour temperature) and similar-image data.",
+    "verified": true
+   },
+   {
+    "name": "list-themes",
+    "summary": "List curated themes (e.g. '10 Highlights', 'Animals') with their Danish and English titles and the object numbers of their artworks.",
+    "verified": true
+   },
+   {
+    "name": "get-theme",
+    "summary": "Get one curated theme: titles, HTML description in Danish and English, and the object numbers of its artworks.",
+    "verified": true
+   },
+   {
+    "name": "get-iiif-manifest",
+    "summary": "Get the IIIF Presentation 3 manifest for an artwork: label, rights, attribution, metadata, and canvases with image size and image service URLs.",
+    "verified": true
+   },
+   {
+    "name": "get-iiif-image-info",
+    "summary": "Get IIIF Image API info.json for an artwork image: full width and height, available sizes, tiles and supported formats, for building zoom or crop URLs.",
+    "verified": true
+   }
+  ],
+  "verified": 9,
+  "writes": 0,
+  "dropped": [],
+  "blockers": [],
+  "loggedIn": false,
+  "seconds": 305,
+  "next": [
+   "clify open-smk",
+   "clify open-smk search-artworks --query \"hammersh\u00f8i\" --filters \"[artist:Vilhelm Hammersh\u00f8i]\""
+  ],
+  "installed": "/home/ubuntu/clify-runs/blaxel-w2/home/bin/open-smk",
+  "explored": {
+   "steps": 26,
+   "recorded": 107,
+   "heldWrites": 1
+  }
+ },
+ "check": {
+  "on": "blaxel",
+  "node": "v24.22.0",
+  "seconds": 9,
+  "reads": 9,
+  "verified": 9,
+  "failed": [],
+  "results": [
+   {
+    "name": "search-artworks",
+    "ok": true,
+    "ms": 795
+   },
+   {
+    "name": "list-search-facets",
+    "ok": true,
+    "ms": 186
+   },
+   {
+    "name": "get-artworks",
+    "ok": true,
+    "ms": 183
+   },
+   {
+    "name": "get-similar-artworks",
+    "ok": true,
+    "ms": 786
+   },
+   {
+    "name": "get-artwork-enrichment",
+    "ok": true,
+    "ms": 790
+   },
+   {
+    "name": "list-themes",
+    "ok": true,
+    "ms": 2742
+   },
+   {
+    "name": "get-theme",
+    "ok": true,
+    "ms": 406
+   },
+   {
+    "name": "get-iiif-manifest",
+    "ok": true,
+    "ms": 714
+   },
+   {
+    "name": "get-iiif-image-info",
+    "ok": true,
+    "ms": 812
+   }
+  ]
+ },
+ "deleted": true,
+ "seconds": 318
+}

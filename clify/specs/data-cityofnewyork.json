@@ -1,0 +1,408 @@
+{
+ "name": "data-cityofnewyork",
+ "startUrl": "https://data.cityofnewyork.us/",
+ "origin": "https://data.cityofnewyork.us",
+ "createdAt": "2026-10-18T08:31:48.593Z",
+ "description": "NYC Open Data (Socrata catalog at data.cityofnewyork.us). The CLI searches the dataset catalog by keyword, tag, category and sort order; reads dataset metadata and columns; runs SoQL queries against rows; exports CSV; and lists change history and attachments. It needs no login.",
+ "commands": [
+  {
+   "name": "search-datasets",
+   "summary": "Search the NYC Open Data catalog by keyword, tag, category or asset type, with sorting and offset paging",
+   "method": "GET",
+   "urlTemplate": "/api/catalog/v1?explicitly_hidden=false&published=true&search_context=data.cityofnewyork.us&show_unsupported_data_federated_assets=false&approval_status=approved&audience=public",
+   "params": [
+    {
+     "name": "q",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Free-text search keywords. Omit or leave empty to browse everything.",
+     "example": "restaurant"
+    },
+    {
+     "name": "tags",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Filter by a catalog tag, e.g. food, restaurant, taxi.",
+     "example": "food"
+    },
+    {
+     "name": "categories",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Filter by domain category. The values come from list-catalog-facets.",
+     "enum": [
+      "Housing & Development",
+      "City Government",
+      "Health",
+      "Education",
+      "Recreation",
+      "Transportation",
+      "Social Services",
+      "Public Safety",
+      "Environment",
+      "Business"
+     ]
+    },
+    {
+     "name": "only",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Restrict results to one asset type.",
+     "enum": [
+      "dataset",
+      "map",
+      "chart",
+      "file",
+      "href",
+      "filter"
+     ]
+    },
+    {
+     "name": "order",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Sort order. page_views_total means most viewed.",
+     "enum": [
+      "relevance",
+      "page_views_total",
+      "name",
+      "updatedAt",
+      "createdAt"
+     ],
+     "default": "relevance"
+    },
+    {
+     "name": "api_limit",
+     "key": "limit",
+     "in": "query",
+     "required": false,
+     "type": "number",
+     "description": "Number of results per page. (sent to the site as \"limit\"; clify's own --limit only shapes the output)",
+     "default": 20
+    },
+    {
+     "name": "offset",
+     "in": "query",
+     "required": false,
+     "type": "number",
+     "description": "Zero-based result offset, used for paging.",
+     "default": 0
+    }
+   ],
+   "headers": {
+    "x-socrata-host": "data.cityofnewyork.us"
+   },
+   "responseType": "json",
+   "resultPath": "results",
+   "defaultFields": [
+    "resource.id",
+    "resource.name",
+    "resource.attribution",
+    "resource.type",
+    "classification.domain_category",
+    "resource.updatedAt",
+    "resource.page_views.page_views_total",
+    "link"
+   ],
+   "pagination": {
+    "type": "offset",
+    "param": "offset",
+    "step": 20
+   },
+   "mutates": false,
+   "example": {
+    "q": "restaurant"
+   },
+   "source": "E5 GET https://data.cityofnewyork.us/api/catalog/v1",
+   "verified": true
+  },
+  {
+   "name": "suggest-dataset-titles",
+   "summary": "Autocomplete dataset titles that match a partial keyword",
+   "method": "GET",
+   "urlTemplate": "/api/catalog/v1/autocomplete?explicitly_hidden=false&offset=0&order=name&published=true&search_context=data.cityofnewyork.us&show_unsupported_data_federated_assets=false&audience=public",
+   "params": [
+    {
+     "name": "q",
+     "in": "query",
+     "required": true,
+     "type": "string",
+     "description": "Partial search text.",
+     "example": "taxi"
+    },
+    {
+     "name": "api_limit",
+     "key": "limit",
+     "in": "query",
+     "required": false,
+     "type": "number",
+     "description": "Maximum number of suggestions. (sent to the site as \"limit\"; clify's own --limit only shapes the output)",
+     "default": 6
+    }
+   ],
+   "headers": {
+    "x-socrata-host": "data.cityofnewyork.us"
+   },
+   "responseType": "json",
+   "resultPath": "results",
+   "defaultFields": [
+    "title"
+   ],
+   "mutates": false,
+   "example": {
+    "q": "taxi"
+   },
+   "source": "E4 GET https://data.cityofnewyork.us/api/catalog/v1/autocomplete",
+   "verified": true
+  },
+  {
+   "name": "list-catalog-facets",
+   "summary": "List the catalog's browse facets: domain categories and custom facets such as Data Collection, with their options",
+   "method": "GET",
+   "urlTemplate": "/api/browse_config",
+   "params": [],
+   "responseType": "json",
+   "mutates": false,
+   "source": "E6 GET https://data.cityofnewyork.us/api/browse_config",
+   "verified": true
+  },
+  {
+   "name": "get-dataset",
+   "summary": "Get full metadata for a dataset by its 4x4 id: name, description, agency, category, view and download counts, update times and column definitions",
+   "method": "GET",
+   "urlTemplate": "/api/views/{id}.json",
+   "params": [
+    {
+     "name": "id",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Dataset id in 4x4 form, e.g. 43nn-pn8j.",
+     "example": "8meu-9t5y"
+    }
+   ],
+   "responseType": "json",
+   "defaultFields": [
+    "id",
+    "name",
+    "category",
+    "attribution",
+    "description",
+    "rowsUpdatedAt",
+    "viewCount",
+    "columns"
+   ],
+   "mutates": false,
+   "example": {
+    "id": "8meu-9t5y"
+   },
+   "source": "E13 GET https://data.cityofnewyork.us/api/views/8meu-9t5y.json",
+   "verified": true
+  },
+  {
+   "name": "query-dataset",
+   "summary": "Run a SoQL query against a dataset's rows: select, filter, aggregate, count, or page with LIMIT/OFFSET",
+   "method": "POST",
+   "urlTemplate": "/api/v3/views/{id}/query.json",
+   "params": [
+    {
+     "name": "id",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Dataset id in 4x4 form, e.g. 8meu-9t5y.",
+     "example": "8meu-9t5y"
+    },
+    {
+     "name": "query",
+     "in": "body",
+     "required": true,
+     "type": "string",
+     "description": "SoQL query with no FROM clause. Use column field names from get-dataset (columns[].fieldName), backtick-quoted if needed. Examples: \"SELECT `zone`, `borough` WHERE `borough`='Queens' LIMIT 10 OFFSET 1",
+     "example": "SELECT `zone`, `locationid`, `borough` LIMIT 10"
+    }
+   ],
+   "bodyTemplate": {
+    "query": "{query}"
+   },
+   "bodyEncoding": "json",
+   "headers": {
+    "x-socrata-federation": "Honey Badger"
+   },
+   "responseType": "json",
+   "mutates": false,
+   "example": {
+    "id": "8meu-9t5y",
+    "query": "SELECT `zone`, `locationid`, `borough` LIMIT 10"
+   },
+   "source": "E8 E9 E15",
+   "verified": true
+  },
+  {
+   "name": "export-dataset-csv",
+   "summary": "Download the entire dataset as CSV text (this can be very large for big datasets)",
+   "method": "POST",
+   "urlTemplate": "/api/v3/views/{id}/export.csv?accessType=DOWNLOAD",
+   "params": [
+    {
+     "name": "id",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Dataset id in 4x4 form.",
+     "example": "8meu-9t5y"
+    }
+   ],
+   "bodyTemplate": {
+    "serializationOptions": {
+     "defaultGroupSeparator": ",",
+     "defaultDecimalSeparator": "."
+    }
+   },
+   "bodyEncoding": "json",
+   "headers": {
+    "accept": "text/csv"
+   },
+   "responseType": "text",
+   "mutates": false,
+   "example": {
+    "id": "8meu-9t5y"
+   },
+   "source": "E19 POST https://data.cityofnewyork.us/api/v3/views/8meu-9t5y/export.csv",
+   "verified": true
+  },
+  {
+   "name": "list-dataset-changes",
+   "summary": "List a dataset's update/version history (archive entries with version number and timestamp), using cursor paging",
+   "method": "GET",
+   "urlTemplate": "/api/publishing/v1/revision/{id}/changes?show=all",
+   "params": [
+    {
+     "name": "id",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Dataset id in 4x4 form.",
+     "example": "43nn-pn8j"
+    },
+    {
+     "name": "api_limit",
+     "key": "limit",
+     "in": "query",
+     "required": false,
+     "type": "number",
+     "description": "Entries per page. (sent to the site as \"limit\"; clify's own --limit only shapes the output)",
+     "default": 10
+    },
+    {
+     "name": "cursor",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Cursor from meta.next of the previous page. Leave empty for the first page."
+    }
+   ],
+   "responseType": "json",
+   "resultPath": "resource",
+   "defaultFields": [
+    "type",
+    "value.version",
+    "value.created_at",
+    "value.visible"
+   ],
+   "pagination": {
+    "type": "cursor",
+    "param": "cursor",
+    "nextPath": "meta.next"
+   },
+   "mutates": false,
+   "example": {
+    "id": "43nn-pn8j"
+   },
+   "source": "E18 GET https://data.cityofnewyork.us/api/publishing/v1/revision/43nn-pn8j/changes",
+   "verified": true
+  },
+  {
+   "name": "list-dataset-attachments",
+   "summary": "List the file ids of a dataset's attachments (data dictionaries, user guides) with their scan state",
+   "method": "GET",
+   "urlTemplate": "/api/views/{id}/files?method=attachmentJudgements",
+   "params": [
+    {
+     "name": "id",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Dataset id in 4x4 form.",
+     "example": "43nn-pn8j"
+    }
+   ],
+   "responseType": "json",
+   "resultPath": "files",
+   "mutates": false,
+   "example": {
+    "id": "43nn-pn8j"
+   },
+   "source": "E12 E17 GET https://data.cityofnewyork.us/api/views/8meu-9t5y/files",
+   "verified": true
+  }
+ ],
+ "blockers": [],
+ "notes": [
+  "Datasets are identified by 4x4 ids such as 43nn-pn8j (Restaurant Inspections) or 8meu-9t5y (NYC Taxi Zones). search-datasets returns them in results[].resource.id.",
+  "To page through catalog search results, increase offset by limit (20 by default). Requesting the /browse?page=N HTML page is blocked.",
+  "query-dataset takes a SoQL query without a FROM clause. Get the field names from get-dataset columns[].fieldName. Page rows with LIMIT/OFFSET, and count rows with 'SELECT count(*)'.",
+  "The web app sends an x-app-token header and session CSRF headers to /api/v3 endpoints. Anonymous requests usually work but may be throttled.",
+  "export-dataset-csv streams the whole dataset; Restaurant Inspections, for example, has about 300k rows. When you only need a subset, use query-dataset with LIMIT.",
+  "The category filter (categories), the asset-type filter (only) and the extra sort keys follow the standard Socrata Catalog API. The UI's radio filters for them were not captured in the recording.",
+  "download-attachment may return binary content such as a PDF or XLSX."
+ ],
+ "dropped": [
+  {
+   "name": "download-attachment",
+   "summary": "Download one dataset attachment file by its file id",
+   "method": "GET",
+   "urlTemplate": "/api/views/{id}/files/{fileId}?download=true",
+   "params": [
+    {
+     "name": "id",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Dataset id in 4x4 form.",
+     "example": "8meu-9t5y"
+    },
+    {
+     "name": "fileId",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Attachment file id (UUID) from list-dataset-attachments or from get-dataset metadata.attachments.",
+     "example": "a43ee93e-2f53-4d35-80cc-483a6d25d934"
+    }
+   ],
+   "responseType": "text",
+   "mutates": false,
+   "example": {
+    "id": "8meu-9t5y",
+    "fileId": "a43ee93e-2f53-4d35-80cc-483a6d25d934"
+   },
+   "source": "",
+   "verified": false,
+   "verifyNote": "Attachments are binary Office/ZIP files (the output starts with PK). Decoding them as text produces garbled bytes that an agent cannot use, and the command has no recorded source."
+  }
+ ],
+ "generated": {
+  "by": "clify add",
+  "model": "claude-opus-5-5",
+  "exploredSteps": 25,
+  "recorded": 66,
+  "verifiedAt": "2026-10-18T08:32:54.995Z",
+  "seconds": 210
+ }
+}

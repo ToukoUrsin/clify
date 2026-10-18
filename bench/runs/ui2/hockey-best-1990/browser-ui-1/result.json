@@ -1,0 +1,45 @@
+{
+ "task": "hockey-best-1990",
+ "site": "scrapethis",
+ "mode": "browser-ui",
+ "trial": 1,
+ "tag": "ui2",
+ "ok": true,
+ "why": "all expected values present",
+ "answer": "Chicago Blackhawks, 49 wins",
+ "expected": {
+  "expect": [
+   "Chicago Blackhawks"
+  ],
+  "number": 49,
+  "detail": {
+   "name": "Chicago Blackhawks",
+   "year": "1990",
+   "wins": "49",
+   "losses": "23",
+   "winPct": "0.613",
+   "goalsFor": "284",
+   "goalsAgainst": "211",
+   "rows": 582
+  }
+ },
+ "wallMs": 18400,
+ "apiMs": 14787,
+ "turns": 6,
+ "toolCalls": 5,
+ "tokens": {
+  "input": 10,
+  "output": 662,
+  "cacheWrite": 10324,
+  "cacheRead": 57006,
+  "total": 68002
+ },
+ "costUsd": 0.0763012,
+ "models": [
+  "claude-opus-5-5"
+ ],
+ "exitCode": 0,
+ "timedOut": false,
+ "subtype": "success",
+ "startedAt": "2026-10-17T23:33:23.493Z"
+}

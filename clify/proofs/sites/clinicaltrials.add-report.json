@@ -1,0 +1,68 @@
+{
+ "ok": true,
+ "site": "clinicaltrials",
+ "url": "https://clinicaltrials.gov/",
+ "commands": [
+  {
+   "name": "search-studies",
+   "summary": "Search or list clinical studies by condition, keyword, intervention, sponsor, location or NCT IDs, with facet filters, sorting and offset paging. Returns compact study hits.",
+   "verified": true
+  },
+  {
+   "name": "count-studies",
+   "summary": "Get the total number of matching studies and per-facet counts (status, sex, phase, study type, \u2026) for a search, without listing studies.",
+   "verified": true
+  },
+  {
+   "name": "get-study",
+   "summary": "Get the full record of one study by NCT ID: protocol (description, eligibility, arms, outcomes, locations, contacts), results if posted, and derived data. Uses the public REST API v2.",
+   "verified": true
+  },
+  {
+   "name": "suggest",
+   "summary": "Autocomplete or normalize a condition, intervention, lead sponsor or facility name before searching.",
+   "verified": true
+  },
+  {
+   "name": "get-field-metadata",
+   "summary": "Get the study data structure: every field with its piece name (used in fields/sort/AREA[] expressions), type, description and rules.",
+   "verified": true
+  },
+  {
+   "name": "list-search-areas",
+   "summary": "List the search areas (term, cond, intr, \u2026), their query param names, and the weighted fields each one searches.",
+   "verified": true
+  },
+  {
+   "name": "get-stats",
+   "summary": "Get registry statistics: total studies, recruiting and registered counts by location and study type, registrations and results by year, and the last update date.",
+   "verified": true
+  },
+  {
+   "name": "get-api-spec",
+   "summary": "Get the OpenAPI 3 (YAML) spec of the public ClinicalTrials.gov REST API v2, the reference for query syntax, filters and field names.",
+   "verified": true
+  }
+ ],
+ "verified": 8,
+ "writes": 0,
+ "dropped": [
+  {
+   "name": "get-study-version",
+   "reason": "The internal history endpoint returns 403 and the public v2 API has no version-history equivalent."
+  }
+ ],
+ "blockers": [],
+ "loggedIn": false,
+ "seconds": 211,
+ "next": [
+  "clify clinicaltrials",
+  "clify clinicaltrials search-studies --ids \"NCT00001372\""
+ ],
+ "installed": "/home/ubuntu/clify-runs/batch2/home/bin/clinicaltrials",
+ "explored": {
+  "steps": 20,
+  "recorded": 45,
+  "heldWrites": 0
+ }
+}

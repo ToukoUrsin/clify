@@ -1,0 +1,35 @@
+{
+ "task": "books-mystery-max",
+ "site": "books",
+ "mode": "cli",
+ "trial": 2,
+ "tag": "clisame",
+ "ok": true,
+ "why": "all expected values present",
+ "answer": "Boar Island (Anna Pigeon #19) — £59.48",
+ "expected": {
+  "expect": [
+   "Boar Island",
+   "59.48"
+  ]
+ },
+ "wallMs": 14696,
+ "apiMs": 12769,
+ "turns": 4,
+ "toolCalls": 3,
+ "tokens": {
+  "input": 8,
+  "output": 495,
+  "cacheWrite": 6425,
+  "cacheRead": 17001,
+  "total": 23929
+ },
+ "costUsd": 0.0454572,
+ "models": [
+  "claude-opus-5-5"
+ ],
+ "exitCode": 0,
+ "timedOut": false,
+ "subtype": "success",
+ "startedAt": "2026-10-18T12:48:14.194Z"
+}

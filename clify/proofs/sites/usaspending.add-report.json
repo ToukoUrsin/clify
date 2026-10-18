@@ -1,0 +1,211 @@
+{
+ "ok": true,
+ "site": "usaspending",
+ "url": "https://www.usaspending.gov/",
+ "commands": [
+  {
+   "name": "search-transactions",
+   "summary": "Keyword search of contract transactions (award types A/B/C/D), with sorting and paging",
+   "verified": true
+  },
+  {
+   "name": "count-keyword-transactions",
+   "summary": "Count transactions matching a keyword, broken out by award group (contracts, grants, idvs, loans, direct_payments, other)",
+   "verified": true
+  },
+  {
+   "name": "summarize-keyword-spending",
+   "summary": "Total prime award count and obligated amount for a keyword search",
+   "verified": true
+  },
+  {
+   "name": "search-state-awards",
+   "summary": "Top contract awards performed in a U.S. state within a date range, sorted by award amount",
+   "verified": true
+  },
+  {
+   "name": "list-federal-account-awards",
+   "summary": "Contract awards funded by a federal account (agency id + main account code), sorted by award amount",
+   "verified": true
+  },
+  {
+   "name": "get-award",
+   "summary": "Full details of one award: amounts, dates, parent IDV, recipient, place of performance, contract data",
+   "verified": true
+  },
+  {
+   "name": "count-award-children",
+   "summary": "Count an award's transactions, subawards, or funding federal accounts",
+   "verified": true
+  },
+  {
+   "name": "list-award-transactions",
+   "summary": "List the transactions (modifications) of an award, paged",
+   "verified": false,
+   "writes": true
+  },
+  {
+   "name": "list-award-federal-accounts",
+   "summary": "Federal accounts that funded an award, with obligated amounts and funding agency",
+   "verified": true
+  },
+  {
+   "name": "get-award-funding-rollup",
+   "summary": "Rollup of an award's funding: total obligation, number of awarding/funding agencies and federal accounts",
+   "verified": false,
+   "writes": true
+  },
+  {
+   "name": "search-recipients",
+   "summary": "List or search award recipients by name, UEI or DUNS, sorted by total amount",
+   "verified": false,
+   "writes": true
+  },
+  {
+   "name": "get-recipient",
+   "summary": "Recipient profile: name, UEI/DUNS, parents, business types, location, and transaction totals for a year",
+   "verified": true
+  },
+  {
+   "name": "recipient-spending-by-category",
+   "summary": "Top breakdown of a recipient's obligations by agency, sub-agency, NAICS, PSC, CFDA, federal account, country or state",
+   "verified": true
+  },
+  {
+   "name": "recipient-spending-over-time",
+   "summary": "A recipient's obligations per fiscal year, quarter or month, split by award type",
+   "verified": true
+  },
+  {
+   "name": "recipient-new-awards-over-time",
+   "summary": "Count of new awards to a recipient per fiscal year, quarter or month",
+   "verified": true
+  },
+  {
+   "name": "get-state-profile",
+   "summary": "State spending profile: population, income, total prime award amount and count, per-capita amount",
+   "verified": true
+  },
+  {
+   "name": "get-state-awards-by-type",
+   "summary": "A state's prime award amounts and counts by award type (contracts, grants, loans, direct payments, other)",
+   "verified": true
+  },
+  {
+   "name": "state-spending-by-category",
+   "summary": "Top breakdown of spending performed in a state by recipient, county, congressional district, agency, NAICS, PSC or CFDA",
+   "verified": true
+  },
+  {
+   "name": "state-spending-over-time",
+   "summary": "Transaction obligations performed in a state per fiscal year, quarter or month",
+   "verified": true
+  },
+  {
+   "name": "state-spending-by-geography",
+   "summary": "Map data: spending in a state per county or congressional district, with population and per-capita amount",
+   "verified": true
+  },
+  {
+   "name": "list-agencies",
+   "summary": "All top-tier federal agencies with toptier_code, slug, budget authority, obligations and outlays",
+   "verified": true
+  },
+  {
+   "name": "get-agency",
+   "summary": "Agency overview for a fiscal year: name, mission, website, sub-tier count, disaster codes",
+   "verified": true
+  },
+  {
+   "name": "get-agency-award-summary",
+   "summary": "An agency's award transaction count, total obligations and latest action date for a fiscal year",
+   "verified": true
+  },
+  {
+   "name": "get-agency-new-award-count",
+   "summary": "Number of new awards an agency made in a fiscal year",
+   "verified": true
+  },
+  {
+   "name": "get-agency-obligations-by-category",
+   "summary": "An agency's award obligations for a fiscal year split by category (contracts, grants, loans, ...)",
+   "verified": true
+  },
+  {
+   "name": "list-agency-sub-agencies",
+   "summary": "An agency's sub-agencies and their offices, with obligations, transaction counts and new award counts",
+   "verified": true
+  },
+  {
+   "name": "list-agency-sub-components",
+   "summary": "An agency's budgetary sub-components (bureaus) with obligations, outlays and budgetary resources",
+   "verified": true
+  },
+  {
+   "name": "get-agency-budgetary-resources",
+   "summary": "An agency's budgetary resources, obligations and outlays per fiscal year, with obligations by period",
+   "verified": true
+  },
+  {
+   "name": "list-federal-accounts",
+   "summary": "List or keyword-search federal (Treasury) accounts for a fiscal year, sorted by budgetary resources",
+   "verified": true
+  },
+  {
+   "name": "get-federal-account",
+   "summary": "Federal account details by account number (agency-main, e.g. 017-1804): title, parent agency, bureau, totals and child Treasury accounts for a fiscal year",
+   "verified": true
+  },
+  {
+   "name": "get-federal-account-fy-snapshot",
+   "summary": "A federal account's budgetary resources, obligations, outlays and balances for one fiscal year",
+   "verified": true
+  },
+  {
+   "name": "request-award-download",
+   "summary": "Start a bulk CSV download job of prime award transactions matching a keyword; returns file_name for get-download-status",
+   "verified": true
+  },
+  {
+   "name": "get-download-status",
+   "summary": "Check a bulk download job; when status is 'ready', file_url points to the zip",
+   "verified": true
+  },
+  {
+   "name": "autocomplete-awarding-agency",
+   "summary": "Find awarding agencies and sub-agencies by partial name",
+   "verified": true
+  },
+  {
+   "name": "list-states",
+   "summary": "States and territories with FIPS code, postal code and name (FIPS is used by the state profile commands)",
+   "verified": true
+  },
+  {
+   "name": "list-def-codes",
+   "summary": "Disaster Emergency Fund (DEFC) codes with public law, title and disaster type",
+   "verified": true
+  },
+  {
+   "name": "list-glossary",
+   "summary": "USAspending glossary of spending terms with plain-language and official definitions",
+   "verified": true
+  }
+ ],
+ "verified": 34,
+ "writes": 3,
+ "dropped": [],
+ "blockers": [],
+ "loggedIn": false,
+ "seconds": 334,
+ "next": [
+  "clify usaspending",
+  "clify usaspending search-transactions --keyword \"cybersecurity\" --sort \"Action Date\" --order \"desc\""
+ ],
+ "installed": "/home/ubuntu/clify-runs/batch2/home/bin/usaspending",
+ "explored": {
+  "steps": 28,
+  "recorded": 141,
+  "heldWrites": 17
+ }
+}

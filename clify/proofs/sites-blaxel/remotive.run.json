@@ -1,0 +1,75 @@
+{
+ "url": "https://remotive.com/",
+ "category": "jobs-market",
+ "sandbox": "clify-remotive-com",
+ "startedAt": "2026-10-18T08:45:59.886Z",
+ "region": "us-pdx-1",
+ "chrome": "Chrome/148.0.7778.96",
+ "sandboxStartMs": 2518,
+ "addSeconds": 307,
+ "addExit": 0,
+ "add": {
+  "ok": true,
+  "site": "remotive",
+  "url": "https://remotive.com/",
+  "commands": [
+   {
+    "name": "get-job",
+    "summary": "Get one remote job posting's detail page by its category slug and job slug (the slug ends in the numeric job id).",
+    "verified": true
+   },
+   {
+    "name": "list-job-index-pages",
+    "summary": "List Remotive's browse pages for jobs by category, location, employment type, career level and posting date, e.g. /remote-jobs/l-germany, /remote-jobs/cl-senior, /remote-jobs/posted-last-24h.",
+    "verified": true
+   }
+  ],
+  "verified": 2,
+  "writes": 0,
+  "dropped": [
+   {
+    "name": "search-jobs",
+    "reason": "The live call returned no 'results' array, so resultPath results.0.hits resolved to undefined and the runtime crashed on .slice. The request targets the paid 'remotive_unlimited' index with paywallProfile 'custom', which most likely needs a logged-in paying session. No live response schema was provided to build a correct shape. Separately, the fixed facetFilters template sends empty 'category:' etc. filters when those params are omitted, which would break unfiltered searches."
+   },
+   {
+    "name": "list-job-facets",
+    "reason": "This hits the same endpoint and fails the same way: the response had no 'results' array, so results.0.facets was undefined. It also uses the paywalled 'remotive_unlimited' index and paywallProfile, which likely needs a session. There is no live evidence to repair the result path."
+   }
+  ],
+  "blockers": [],
+  "loggedIn": false,
+  "seconds": 307,
+  "next": [
+   "clify remotive",
+   "clify remotive get-job --category \"software-development\" --slug \"python-developer-6288354\""
+  ],
+  "installed": "/home/ubuntu/clify-runs/blaxel-w1/home/bin/remotive",
+  "explored": {
+   "steps": 28,
+   "recorded": 157,
+   "heldWrites": 7
+  }
+ },
+ "check": {
+  "on": "blaxel",
+  "node": "v24.22.0",
+  "seconds": 2,
+  "reads": 2,
+  "verified": 2,
+  "failed": [],
+  "results": [
+   {
+    "name": "get-job",
+    "ok": true,
+    "ms": 106
+   },
+   {
+    "name": "list-job-index-pages",
+    "ok": true,
+    "ms": 30
+   }
+  ]
+ },
+ "deleted": true,
+ "seconds": 312
+}

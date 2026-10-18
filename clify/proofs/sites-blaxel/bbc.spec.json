@@ -1,0 +1,566 @@
+{
+ "name": "bbc",
+ "startUrl": "https://www.bbc.com/news",
+ "origin": "https://www.bbc.com",
+ "createdAt": "2026-10-18T08:25:28.662Z",
+ "description": "BBC (www.bbc.com): read BBC News and Sport from the command line. Covers article, video and live-blog details, section, region and topic listings, live pages, football scores, fixtures, tables and team lookup, the BBC News TV schedule, JSON page content and video media streams.",
+ "commands": [
+  {
+   "name": "list-section-news",
+   "summary": "List the latest stories (articles, videos, live pages) on a top-level BBC section page such as news, sport, business or technology.",
+   "method": "GET",
+   "urlTemplate": "/{section}",
+   "params": [
+    {
+     "name": "section",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Top-level section slug, e.g. news (homepage top stories), sport, business, innovation, culture, arts, travel, technology",
+     "example": "technology"
+    }
+   ],
+   "responseType": "html",
+   "extract": {
+    "list": "a[href*=\"/articles/\"], a[href*=\"/videos/\"], a[href*=\"/live/\"]",
+    "fields": {
+     "title": "h2",
+     "summary": "p",
+     "url": "@href",
+     "text": ""
+    }
+   },
+   "defaultFields": [
+    "title",
+    "summary",
+    "url"
+   ],
+   "mutates": false,
+   "example": {
+    "section": "technology"
+   },
+   "source": "E34 E39 E43 GET https://www.bbc.com/technology",
+   "verified": true
+  },
+  {
+   "name": "list-subsection-news",
+   "summary": "List the latest stories on a BBC sub-section page, e.g. technology/artificial-intelligence.",
+   "method": "GET",
+   "urlTemplate": "/{section}/{subsection}",
+   "params": [
+    {
+     "name": "section",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Parent section slug, e.g. technology, business, culture",
+     "example": "technology"
+    },
+    {
+     "name": "subsection",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Sub-section slug, e.g. artificial-intelligence",
+     "example": "artificial-intelligence"
+    }
+   ],
+   "responseType": "html",
+   "extract": {
+    "list": "a[href*=\"/articles/\"], a[href*=\"/videos/\"], a[href*=\"/live/\"]",
+    "fields": {
+     "title": "h2",
+     "summary": "p",
+     "url": "@href",
+     "text": ""
+    }
+   },
+   "defaultFields": [
+    "title",
+    "summary",
+    "url"
+   ],
+   "mutates": false,
+   "example": {
+    "section": "technology",
+    "subsection": "artificial-intelligence"
+   },
+   "source": "E35 GET https://www.bbc.com/technology/artificial-intelligence",
+   "verified": true
+  },
+  {
+   "name": "list-region-news",
+   "summary": "List the latest BBC News stories for a world region (Europe, Asia, Africa, ...).",
+   "method": "GET",
+   "urlTemplate": "/news/world/{region}",
+   "params": [
+    {
+     "name": "region",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "World region slug",
+     "enum": [
+      "africa",
+      "asia",
+      "australia",
+      "europe",
+      "latin_america",
+      "middle_east",
+      "us_and_canada"
+     ],
+     "example": "europe"
+    }
+   ],
+   "responseType": "html",
+   "extract": {
+    "list": "a[href*=\"/articles/\"], a[href*=\"/videos/\"], a[href*=\"/live/\"]",
+    "fields": {
+     "title": "h2",
+     "summary": "p",
+     "url": "@href",
+     "text": ""
+    }
+   },
+   "defaultFields": [
+    "title",
+    "summary",
+    "url"
+   ],
+   "mutates": false,
+   "example": {
+    "region": "europe"
+   },
+   "source": "E28 GET https://www.bbc.com/news/world/europe",
+   "verified": true
+  },
+  {
+   "name": "list-topic-articles",
+   "summary": "List stories tagged with a BBC News topic (e.g. France), paginated.",
+   "method": "GET",
+   "urlTemplate": "/news/topics/{topicId}",
+   "params": [
+    {
+     "name": "topicId",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Topic id from a /news/topics/{id} URL",
+     "example": "c302m85qenyt"
+    },
+    {
+     "name": "page",
+     "in": "query",
+     "required": false,
+     "type": "number",
+     "description": "Page number, starting at 1",
+     "example": "2"
+    }
+   ],
+   "responseType": "html",
+   "extract": {
+    "list": "a[href*=\"/articles/\"], a[href*=\"/videos/\"], a[href*=\"/live/\"]",
+    "fields": {
+     "title": "h2",
+     "summary": "p",
+     "url": "@href",
+     "text": ""
+    }
+   },
+   "defaultFields": [
+    "title",
+    "summary",
+    "url"
+   ],
+   "pagination": {
+    "type": "page",
+    "param": "page"
+   },
+   "mutates": false,
+   "example": {
+    "topicId": "c302m85qenyt"
+   },
+   "source": "E29 GET https://www.bbc.com/news/topics/c302m85qenyt",
+   "verified": true
+  },
+  {
+   "name": "get-article",
+   "summary": "Get a BBC News article's metadata: headline, description, author, publish/modify dates, image.",
+   "method": "GET",
+   "urlTemplate": "/news/articles/{id}",
+   "params": [
+    {
+     "name": "id",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Article id from /news/articles/{id}",
+     "example": "c6d937wedj7jo"
+    }
+   ],
+   "responseType": "html",
+   "extract": {
+    "jsonScript": "script[type=\"application/ld+json\"]"
+   },
+   "defaultFields": [
+    "headline",
+    "description",
+    "author",
+    "datePublished",
+    "dateModified",
+    "url",
+    "image.url"
+   ],
+   "mutates": false,
+   "example": {
+    "id": "c6d937wedj7jo"
+   },
+   "source": "E30 E31 E32 E33 GET https://www.bbc.com/news/articles/c6d937wedj7jo",
+   "verified": true
+  },
+  {
+   "name": "get-video",
+   "summary": "Get a BBC News video page: title, description, publish time and related video links.",
+   "method": "GET",
+   "urlTemplate": "/news/videos/{id}",
+   "params": [
+    {
+     "name": "id",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Video id from /news/videos/{id}",
+     "example": "c6e3xjw37wn7o"
+    }
+   ],
+   "responseType": "html",
+   "extract": {
+    "fields": {
+     "title": "h1",
+     "description": "meta[name=\"description\"]@content",
+     "published": "time@datetime",
+     "related": "a[href*=\"/videos/\"]@href"
+    }
+   },
+   "defaultFields": [
+    "title",
+    "description",
+    "published",
+    "related"
+   ],
+   "mutates": false,
+   "example": {
+    "id": "c6e3xjw37wn7o"
+   },
+   "source": "E36 GET https://www.bbc.com/news/videos/c6e3xjw37wn7o",
+   "verified": true
+  },
+  {
+   "name": "get-live-blog",
+   "summary": "Get a BBC live blog page: title, description and latest update time.",
+   "method": "GET",
+   "urlTemplate": "/news/live/{id}",
+   "params": [
+    {
+     "name": "id",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Live blog id from /news/live/{id}",
+     "example": "c64gv8k21kx0t"
+    }
+   ],
+   "responseType": "html",
+   "extract": {
+    "fields": {
+     "title": "h1",
+     "description": "meta[name=\"description\"]@content",
+     "updated": "time@datetime"
+    }
+   },
+   "defaultFields": [
+    "title",
+    "description",
+    "updated"
+   ],
+   "mutates": false,
+   "example": {
+    "id": "c64gv8k21kx0t"
+   },
+   "source": "E38 GET https://www.bbc.com/news/live/c64gv8k21kx0t",
+   "verified": true
+  },
+  {
+   "name": "list-live-pages",
+   "summary": "List the BBC live blogs currently running (news and sport), from the /live index.",
+   "method": "GET",
+   "urlTemplate": "/live",
+   "params": [],
+   "responseType": "html",
+   "extract": {
+    "list": "a[href*=\"/live/\"]",
+    "fields": {
+     "title": "h2",
+     "summary": "p",
+     "url": "@href",
+     "text": ""
+    }
+   },
+   "defaultFields": [
+    "title",
+    "summary",
+    "url"
+   ],
+   "mutates": false,
+   "source": "E37 GET https://www.bbc.com/live",
+   "verified": true
+  },
+  {
+   "name": "list-football-scores",
+   "summary": "List football matches (scores and fixtures, all competitions) on a given date.",
+   "method": "GET",
+   "urlTemplate": "/sport/football/scores-fixtures/{date}",
+   "params": [
+    {
+     "name": "date",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Match date, YYYY-MM-DD",
+     "example": "2026-10-17"
+    }
+   ],
+   "responseType": "html",
+   "extract": {
+    "list": "a[href*=\"/sport/football/live/\"]",
+    "fields": {
+     "match": "",
+     "url": "@href"
+    }
+   },
+   "defaultFields": [
+    "match",
+    "url"
+   ],
+   "mutates": false,
+   "example": {
+    "date": "2026-10-17"
+   },
+   "source": "E40 E41 GET https://www.bbc.com/sport/football/scores-fixtures",
+   "verified": true
+  },
+  {
+   "name": "list-team-fixtures",
+   "summary": "List a football team's recent results and upcoming fixtures.",
+   "method": "GET",
+   "urlTemplate": "/sport/football/teams/{team}/scores-fixtures",
+   "params": [
+    {
+     "name": "team",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Team slug (from search-football-teams URLs), e.g. arsenal, arsenal-ladies",
+     "example": "arsenal"
+    }
+   ],
+   "responseType": "html",
+   "extract": {
+    "list": "a[href*=\"/sport/football/live/\"]",
+    "fields": {
+     "match": "",
+     "url": "@href"
+    }
+   },
+   "defaultFields": [
+    "match",
+    "url"
+   ],
+   "mutates": false,
+   "example": {
+    "team": "arsenal"
+   },
+   "source": "E18 E40 GET https://search.api.bbci.co.uk/formula/sport-football-scoresFixtures-suggest",
+   "verified": true
+  },
+  {
+   "name": "get-league-table",
+   "summary": "Get the current standings table for a football competition.",
+   "method": "GET",
+   "urlTemplate": "/sport/football/{competition}/table",
+   "params": [
+    {
+     "name": "competition",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Competition slug, e.g. premier-league, championship, scottish-premiership",
+     "example": "premier-league"
+    }
+   ],
+   "responseType": "html",
+   "extract": {
+    "list": "table tbody tr",
+    "fields": {
+     "team": "a",
+     "teamUrl": "a@href",
+     "row": ""
+    }
+   },
+   "defaultFields": [
+    "team",
+    "row",
+    "teamUrl"
+   ],
+   "mutates": false,
+   "example": {
+    "competition": "premier-league"
+   },
+   "source": "E42 GET https://www.bbc.com/sport/football/premier-league/table",
+   "verified": true
+  },
+  {
+   "name": "search-football-teams",
+   "summary": "Find football teams and competitions by name. Returns BBC URNs and scores-fixtures URLs (the team slug is in the URL).",
+   "method": "GET",
+   "urlTemplate": "https://search.api.bbci.co.uk/formula/sport-football-scoresFixtures-suggest",
+   "params": [
+    {
+     "name": "q",
+     "in": "query",
+     "required": true,
+     "type": "string",
+     "description": "Team or competition name (partial ok)",
+     "example": "Arsenal"
+    }
+   ],
+   "responseType": "json",
+   "resultPath": "results",
+   "defaultFields": [
+    "title",
+    "subtitle",
+    "uri",
+    "url"
+   ],
+   "mutates": false,
+   "example": {
+    "q": "Arsenal"
+   },
+   "source": "E18 GET https://search.api.bbci.co.uk/formula/sport-football-scoresFixtures-suggest",
+   "verified": true
+  },
+  {
+   "name": "list-tv-schedule",
+   "summary": "List the BBC News TV channel programme schedule (titles, synopses, start times) for a country feed.",
+   "method": "GET",
+   "urlTemplate": "https://web-cdn.api.bbci.co.uk/xd/schedule",
+   "params": [
+    {
+     "name": "country",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Two-letter country code of the schedule feed",
+     "default": "us",
+     "example": "us"
+    }
+   ],
+   "responseType": "json",
+   "defaultFields": [
+    "startTime",
+    "title",
+    "synopsis",
+    "id"
+   ],
+   "mutates": false,
+   "example": {
+    "country": "us"
+   },
+   "source": "E4 GET https://web-cdn.api.bbci.co.uk/xd/schedule",
+   "verified": true
+  },
+  {
+   "name": "get-page-content",
+   "summary": "Get structured JSON content for a BBC page path (e.g. a /reel/video/{id}/watch video): title, summary, publish times, metadata.",
+   "method": "GET",
+   "urlTemplate": "https://web-cdn.api.bbci.co.uk/xd/page/content",
+   "params": [
+    {
+     "name": "path",
+     "in": "query",
+     "required": true,
+     "type": "string",
+     "description": "Site path starting with /, e.g. /reel/video/p0p7tc6s/watch",
+     "example": "/reel/video/p0p7tc6s/watch"
+    }
+   ],
+   "responseType": "json",
+   "resultPath": "content",
+   "defaultFields": [
+    "id",
+    "title",
+    "summary",
+    "path",
+    "firstPublishedAt",
+    "lastPublishedAt"
+   ],
+   "mutates": false,
+   "example": {
+    "path": "/reel/video/p0p7tc6s/watch"
+   },
+   "source": "E14 GET https://web-cdn.api.bbci.co.uk/xd/page/content",
+   "verified": true
+  },
+  {
+   "name": "get-media-streams",
+   "summary": "Resolve a BBC media PID into playable stream URLs (HLS video renditions and thumbnails).",
+   "method": "GET",
+   "urlTemplate": "https://open.live.bbc.co.uk/mediaselector/6/select/version/3.0/mediaset/pc/cvid/urn:bbc:pips:pid:{pid}/format/json/cors/1",
+   "params": [
+    {
+     "name": "pid",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "BBC programme/clip PID, e.g. p0ph9dhb (found in video page data)",
+     "example": "p0ph9dhb"
+    }
+   ],
+   "responseType": "json",
+   "resultPath": "media",
+   "defaultFields": [
+    "kind",
+    "type",
+    "width",
+    "height",
+    "bitrate",
+    "connection"
+   ],
+   "mutates": false,
+   "example": {
+    "pid": "p0ph9dhb"
+   },
+   "source": "E16 GET https://open.live.bbc.co.uk/mediaselector/{n}/select/version/3.0/mediaset/pc/cvid/urn:bbc:pips:pid:p0ph9dhb/format/json/cors/{n}",
+   "verified": true
+  }
+ ],
+ "blockers": [],
+ "notes": [
+  "There is no keyword/full-text search. BBC's robots.txt disallows /search, so find content through section, region and topic listings, list-live-pages, or search-football-teams.",
+  "Listing commands return relative hrefs such as /news/articles/{id}, /news/videos/{id} and /news/live/{id}. The last path segment is the id that get-article, get-video and get-live-blog take. The same story can appear more than once on a listing page.",
+  "get-article returns schema.org metadata only (headline, description, author, dates, image), not the full body text. The body is in the page's script#__NEXT_DATA__.",
+  "Pagination on section and region pages is client-side only. Only topic pages (?page=N) have real paginated URLs.",
+  "Football: use search-football-teams to get a team slug (from the result url /sport/football/teams/{slug}/scores-fixtures), then call list-team-fixtures.",
+  "Content is geo-dependent: the recording came from a US IP, and some UK-only content may differ.",
+  "Saving articles needs a signed-in BBC account. No save endpoint was captured (the explorer was not logged in), so writes are not supported."
+ ],
+ "dropped": [],
+ "generated": {
+  "by": "clify add",
+  "model": "claude-opus-5-5",
+  "exploredSteps": 30,
+  "recorded": 604,
+  "verifiedAt": "2026-10-18T08:27:11.932Z",
+  "seconds": 297
+ }
+}

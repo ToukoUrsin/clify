@@ -1,0 +1,966 @@
+{
+ "name": "ensembl",
+ "startUrl": "https://www.ensembl.org/",
+ "origin": "https://www.ensembl.org",
+ "createdAt": "2026-10-18T09:21:08.404Z",
+ "description": "Ensembl (ensembl.org) genome browser: search thousands of genome assemblies, read genome metadata and stats, look up genes, transcripts, proteins, homologues, external references and variants (with predicted consequences), and fetch reference sequence through Ensembl's public JSON and GraphQL APIs.",
+ "commands": [
+  {
+   "name": "search-genomes",
+   "summary": "Search genome assemblies by name. Can list every assembly of one species by taxonomy id, and can sort (e.g. by contig N50) and paginate.",
+   "method": "GET",
+   "urlTemplate": "/api/search/genomes/v3",
+   "params": [
+    {
+     "name": "query",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Free-text search: common name, scientific name or assembly name/accession",
+     "example": "mouse"
+    },
+    {
+     "name": "species_taxonomy_id",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "NCBI species taxonomy id. Restricts results to all assemblies of that species (e.g. 9606 = human, 10090 = mouse)",
+     "example": "9606"
+    },
+    {
+     "name": "sort",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Field to sort by, e.g. contig_n50. Omit for relevance ranking",
+     "example": "contig_n50"
+    },
+    {
+     "name": "order",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Sort direction",
+     "enum": [
+      "asc",
+      "desc"
+     ]
+    },
+    {
+     "name": "page",
+     "in": "query",
+     "required": false,
+     "type": "number",
+     "description": "1-based page number",
+     "default": 1
+    },
+    {
+     "name": "per_page",
+     "in": "query",
+     "required": false,
+     "type": "number",
+     "description": "Results per page (UI offers 20 or 100)",
+     "default": 20
+    }
+   ],
+   "responseType": "json",
+   "resultPath": "matches",
+   "defaultFields": [
+    "genome_id",
+    "genome_tag",
+    "common_name",
+    "scientific_name",
+    "assembly.name",
+    "is_reference",
+    "species_taxonomy_id",
+    "contig_n50"
+   ],
+   "pagination": {
+    "type": "page",
+    "param": "page"
+   },
+   "mutates": false,
+   "example": {
+    "query": "mouse",
+    "page": "1",
+    "per_page": "20"
+   },
+   "source": "E2 GET https://www.ensembl.org/api/search/genomes/v3",
+   "verified": true
+  },
+  {
+   "name": "export-genomes-csv",
+   "summary": "Download genome search results as CSV text, matching search-genomes for the same query.",
+   "method": "GET",
+   "urlTemplate": "/api/search/genomes/v3/download?format=csv",
+   "params": [
+    {
+     "name": "query",
+     "in": "query",
+     "required": true,
+     "type": "string",
+     "description": "Free-text genome search query",
+     "example": "mouse"
+    },
+    {
+     "name": "species_taxonomy_id",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "NCBI species taxonomy id that restricts the export to one species' assemblies",
+     "example": "9606"
+    }
+   ],
+   "responseType": "text",
+   "mutates": false,
+   "example": {
+    "query": "mouse"
+   },
+   "source": "E2 GET https://www.ensembl.org/api/search/genomes/v3",
+   "verified": true
+  },
+  {
+   "name": "get-genome",
+   "summary": "Get metadata for one genome by its UUID: assembly, providers, annotation version/date, release and reference status.",
+   "method": "GET",
+   "urlTemplate": "/api/metadata/genome/{genome_id}/details",
+   "params": [
+    {
+     "name": "genome_id",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Genome UUID (genome_id from search-genomes)",
+     "example": "59871324-7803-4234-856e-2a2bd96d7b3c"
+    }
+   ],
+   "responseType": "json",
+   "mutates": false,
+   "example": {
+    "genome_id": "59871324-7803-4234-856e-2a2bd96d7b3c"
+   },
+   "source": "E21 GET https://www.ensembl.org/api/metadata/genome/{id}/details",
+   "verified": true
+  },
+  {
+   "name": "get-genome-stats",
+   "summary": "Get statistics for a genome: assembly (N50, length, GC%), coding, non-coding, pseudogene and variation counts.",
+   "method": "GET",
+   "urlTemplate": "/api/metadata/genome/{genome_id}/stats",
+   "params": [
+    {
+     "name": "genome_id",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Genome UUID",
+     "example": "59871324-7803-4234-856e-2a2bd96d7b3c"
+    }
+   ],
+   "responseType": "json",
+   "resultPath": "genome_stats",
+   "mutates": false,
+   "example": {
+    "genome_id": "59871324-7803-4234-856e-2a2bd96d7b3c"
+   },
+   "source": "E23 GET https://www.ensembl.org/api/metadata/genome/{id}/stats",
+   "verified": true
+  },
+  {
+   "name": "get-genome-example-objects",
+   "summary": "Get example gene, location and variant ids for a genome. These are handy starting points for gene and variant lookups.",
+   "method": "GET",
+   "urlTemplate": "/api/metadata/genome/{genome_id}/example_objects",
+   "params": [
+    {
+     "name": "genome_id",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Genome UUID",
+     "example": "59871324-7803-4234-856e-2a2bd96d7b3c"
+    }
+   ],
+   "responseType": "json",
+   "defaultFields": [
+    "type",
+    "id"
+   ],
+   "mutates": false,
+   "example": {
+    "genome_id": "59871324-7803-4234-856e-2a2bd96d7b3c"
+   },
+   "source": "E22 GET https://www.ensembl.org/api/metadata/genome/{id}/example_objects",
+   "verified": true
+  },
+  {
+   "name": "list-popular-species",
+   "summary": "List popular species with their taxonomy id and number of available genomes.",
+   "method": "GET",
+   "urlTemplate": "/api/metadata/popular_species",
+   "params": [],
+   "responseType": "json",
+   "resultPath": "popular_species",
+   "defaultFields": [
+    "species_taxonomy_id",
+    "name",
+    "genomes_count"
+   ],
+   "mutates": false,
+   "source": "E4 GET https://www.ensembl.org/api/metadata/popular_species",
+   "verified": true
+  },
+  {
+   "name": "list-genome-groups",
+   "summary": "List genome group categories, such as external projects like VGP and BGE, with genome counts.",
+   "method": "GET",
+   "urlTemplate": "/api/metadata/genome_group_categories",
+   "params": [],
+   "responseType": "json",
+   "resultPath": "group_categories",
+   "mutates": false,
+   "source": "E8 GET https://www.ensembl.org/api/metadata/genome_group_categories",
+   "verified": true
+  },
+  {
+   "name": "get-genome-counts",
+   "summary": "Get the total number of genomes in Ensembl and the count per taxonomic group (Animals, Archaea, \u2026).",
+   "method": "GET",
+   "urlTemplate": "/api/metadata/genome_counts",
+   "params": [],
+   "responseType": "json",
+   "mutates": false,
+   "source": "E3 GET https://www.ensembl.org/api/metadata/genome_counts",
+   "verified": true
+  },
+  {
+   "name": "list-releases",
+   "summary": "List Ensembl data releases (name, type integrated/partial, is_current).",
+   "method": "GET",
+   "urlTemplate": "/api/metadata/releases",
+   "params": [
+    {
+     "name": "current_only",
+     "in": "query",
+     "required": false,
+     "type": "boolean",
+     "description": "Only return the current release(s)",
+     "default": true
+    }
+   ],
+   "responseType": "json",
+   "mutates": false,
+   "example": {
+    "current_only": "true"
+   },
+   "source": "E1 GET https://www.ensembl.org/api/metadata/releases",
+   "verified": true
+  },
+  {
+   "name": "search-genes",
+   "summary": "Search genes by symbol, name or stable id within one genome. Returns stable ids, biotype and location.",
+   "method": "POST",
+   "urlTemplate": "/api/search/genes",
+   "params": [
+    {
+     "name": "query",
+     "in": "body",
+     "required": true,
+     "type": "string",
+     "description": "Gene symbol, name or Ensembl stable id",
+     "example": "BRCA2"
+    },
+    {
+     "name": "genome_id",
+     "in": "body",
+     "required": false,
+     "type": "string",
+     "description": "Genome UUID to search in (default: Human GRCh38.p14)",
+     "default": "59871324-7803-4234-856e-2a2bd96d7b3c"
+    },
+    {
+     "name": "page",
+     "in": "body",
+     "required": false,
+     "type": "number",
+     "description": "1-based page number",
+     "default": 1
+    },
+    {
+     "name": "per_page",
+     "in": "body",
+     "required": false,
+     "type": "number",
+     "description": "Results per page",
+     "default": 50
+    }
+   ],
+   "bodyTemplate": {
+    "genome_ids": [
+     "{genome_id}"
+    ],
+    "query": "{query}",
+    "page": "{page}",
+    "per_page": "{per_page}"
+   },
+   "bodyEncoding": "json",
+   "responseType": "json",
+   "resultPath": "matches",
+   "defaultFields": [
+    "stable_id",
+    "unversioned_stable_id",
+    "symbol",
+    "name",
+    "biotype",
+    "slice.region.name",
+    "slice.location.start",
+    "slice.location.end"
+   ],
+   "pagination": {
+    "type": "page",
+    "param": "page"
+   },
+   "mutates": false,
+   "example": {
+    "query": "BRCA2"
+   },
+   "source": "E6 POST https://www.ensembl.org/api/search/genes",
+   "verified": true
+  },
+  {
+   "name": "search-variants",
+   "summary": "Search variants (e.g. by rsID) within one genome.",
+   "method": "POST",
+   "urlTemplate": "/api/search/variants",
+   "params": [
+    {
+     "name": "query",
+     "in": "body",
+     "required": true,
+     "type": "string",
+     "description": "Variant identifier, e.g. an rsID",
+     "example": "rs699"
+    },
+    {
+     "name": "genome_id",
+     "in": "body",
+     "required": false,
+     "type": "string",
+     "description": "Genome UUID (default: Human GRCh38.p14)",
+     "default": "59871324-7803-4234-856e-2a2bd96d7b3c"
+    },
+    {
+     "name": "page",
+     "in": "body",
+     "required": false,
+     "type": "number",
+     "description": "1-based page number",
+     "default": 1
+    },
+    {
+     "name": "per_page",
+     "in": "body",
+     "required": false,
+     "type": "number",
+     "description": "Results per page",
+     "default": 50
+    }
+   ],
+   "bodyTemplate": {
+    "genome_ids": [
+     "{genome_id}"
+    ],
+    "query": "{query}",
+    "page": "{page}",
+    "per_page": "{per_page}"
+   },
+   "bodyEncoding": "json",
+   "responseType": "json",
+   "resultPath": "matches",
+   "pagination": {
+    "type": "page",
+    "param": "page"
+   },
+   "mutates": false,
+   "example": {
+    "query": "rs699"
+   },
+   "source": "E7 POST https://www.ensembl.org/api/search/variants",
+   "verified": true
+  },
+  {
+   "name": "get-gene-summary",
+   "summary": "Get a gene's versioned stable id, symbol, chromosome location, strand and biotype.",
+   "method": "POST",
+   "urlTemplate": "/api/graphql/core",
+   "params": [
+    {
+     "name": "geneId",
+     "in": "body",
+     "required": true,
+     "type": "string",
+     "description": "Ensembl gene stable id (unversioned ok), e.g. ENSG00000139618",
+     "example": "ENSG00000139618"
+    },
+    {
+     "name": "genomeId",
+     "in": "body",
+     "required": false,
+     "type": "string",
+     "description": "Genome UUID (default: Human GRCh38.p14)",
+     "default": "59871324-7803-4234-856e-2a2bd96d7b3c"
+    }
+   ],
+   "bodyTemplate": {
+    "operationName": "GeneSummary",
+    "query": "query GeneSummary($genomeId: String!, $geneId: String!) { gene(by_id: { genome_id: $genomeId, stable_id: $geneId }) { stable_id unversioned_stable_id symbol slice { location { start end } strand { code } region { name } } metadata { biotype { label } } } }",
+    "variables": {
+     "genomeId": "{genomeId}",
+     "geneId": "{geneId}"
+    }
+   },
+   "bodyEncoding": "json",
+   "responseType": "json",
+   "resultPath": "data.gene",
+   "mutates": false,
+   "example": {
+    "geneId": "ENSG00000139618"
+   },
+   "source": "E9 POST https://www.ensembl.org/api/graphql/core (GraphQL operation GeneSummary)",
+   "verified": true
+  },
+  {
+   "name": "get-gene-overview",
+   "summary": "Get a gene's full name, alternative symbols (synonyms), HGNC accession and biotype.",
+   "method": "POST",
+   "urlTemplate": "/api/graphql/core",
+   "params": [
+    {
+     "name": "geneId",
+     "in": "body",
+     "required": true,
+     "type": "string",
+     "description": "Ensembl gene stable id",
+     "example": "ENSG00000139618"
+    },
+    {
+     "name": "genomeId",
+     "in": "body",
+     "required": false,
+     "type": "string",
+     "description": "Genome UUID (default: Human GRCh38.p14)",
+     "default": "59871324-7803-4234-856e-2a2bd96d7b3c"
+    }
+   ],
+   "bodyTemplate": {
+    "operationName": "GeneOverview",
+    "query": "query GeneOverview($genomeId: String!, $geneId: String!) { gene(by_id: { genome_id: $genomeId, stable_id: $geneId }) { alternative_symbols name stable_id symbol metadata { name { accession_id url } biotype { value } } } }",
+    "variables": {
+     "genomeId": "{genomeId}",
+     "geneId": "{geneId}"
+    }
+   },
+   "bodyEncoding": "json",
+   "responseType": "json",
+   "resultPath": "data.gene",
+   "mutates": false,
+   "example": {
+    "geneId": "ENSG00000139618"
+   },
+   "source": "E10 POST https://www.ensembl.org/api/graphql/core (GraphQL operation GeneOverview)",
+   "verified": true
+  },
+  {
+   "name": "get-gene-structure",
+   "summary": "Get a gene's transcripts with exon layout, CDS coordinates, protein product ids and canonical/MANE flags. This is what the feature explorer gene view draws.",
+   "method": "POST",
+   "urlTemplate": "/api/graphql/core",
+   "params": [
+    {
+     "name": "geneId",
+     "in": "body",
+     "required": true,
+     "type": "string",
+     "description": "Ensembl gene stable id",
+     "example": "ENSG00000139618"
+    },
+    {
+     "name": "genomeId",
+     "in": "body",
+     "required": false,
+     "type": "string",
+     "description": "Genome UUID (default: Human GRCh38.p14)",
+     "default": "59871324-7803-4234-856e-2a2bd96d7b3c"
+    }
+   ],
+   "bodyTemplate": {
+    "operationName": "DefaultEntityViewerGene",
+    "query": "query DefaultEntityViewerGene($genomeId: String!, $geneId: String!) { gene(by_id: { genome_id: $genomeId, stable_id: $geneId }) { stable_id symbol unversioned_stable_id version slice { location { start end length } strand { code } } transcripts_page(page: 1, per_page: 100) { transcripts { stable_id unversioned_stable_id slice { location { start end length } region { name } strand { code } } relative_location { start end } spliced_exons { relative_location { start end } exon { stable_id slice { location { length } } } } product_generating_contexts { product_type cds { relative_start relative_end } cdna { length } product { stable_id unversioned_stable_id length } } metadata { biotype { value } canonical { value label } mane { value label } } } } } }",
+    "variables": {
+     "genomeId": "{genomeId}",
+     "geneId": "{geneId}"
+    }
+   },
+   "bodyEncoding": "json",
+   "responseType": "json",
+   "resultPath": "data.gene",
+   "mutates": false,
+   "example": {
+    "geneId": "ENSG00000139618"
+   },
+   "source": "E11 POST https://www.ensembl.org/api/graphql/core (GraphQL operation DefaultEntityViewerGene)",
+   "verified": true
+  },
+  {
+   "name": "list-gene-transcripts",
+   "summary": "List all transcripts of a gene with biotype, length, canonical/MANE status and protein length. Also returns the gene location and region checksum.",
+   "method": "POST",
+   "urlTemplate": "/api/graphql/core",
+   "params": [
+    {
+     "name": "geneId",
+     "in": "body",
+     "required": true,
+     "type": "string",
+     "description": "Ensembl gene stable id",
+     "example": "ENSG00000135744"
+    },
+    {
+     "name": "genomeId",
+     "in": "body",
+     "required": false,
+     "type": "string",
+     "description": "Genome UUID (default: Human GRCh38.p14)",
+     "default": "59871324-7803-4234-856e-2a2bd96d7b3c"
+    }
+   ],
+   "bodyTemplate": {
+    "operationName": "GeneForVariantTranscriptConsequences",
+    "query": "query GeneForVariantTranscriptConsequences($genomeId: String!, $geneId: String!) { gene(by_id: { genome_id: $genomeId, stable_id: $geneId }) { stable_id unversioned_stable_id symbol slice { location { start end length } region { sequence { checksum } length } strand { code } } transcripts { stable_id unversioned_stable_id slice { location { length } } metadata { biotype { value } canonical { value label definition } mane { value label definition } } product_generating_contexts { product_type product { length } } } } }",
+    "variables": {
+     "genomeId": "{genomeId}",
+     "geneId": "{geneId}"
+    }
+   },
+   "bodyEncoding": "json",
+   "responseType": "json",
+   "resultPath": "data.gene",
+   "mutates": false,
+   "example": {
+    "geneId": "ENSG00000135744"
+   },
+   "source": "E19 POST https://www.ensembl.org/api/graphql/core (GraphQL operation GeneForVariantTranscriptConsequences)",
+   "verified": true
+  },
+  {
+   "name": "get-gene-external-references",
+   "summary": "Get cross-references (NCBI Gene, HGNC, OMIM, GeneCards, UniProt, RefSeq, \u2026) for a gene and for each of its transcripts and proteins.",
+   "method": "POST",
+   "urlTemplate": "/api/graphql/core",
+   "params": [
+    {
+     "name": "geneId",
+     "in": "body",
+     "required": true,
+     "type": "string",
+     "description": "Ensembl gene stable id",
+     "example": "ENSG00000139618"
+    },
+    {
+     "name": "genomeId",
+     "in": "body",
+     "required": false,
+     "type": "string",
+     "description": "Genome UUID (default: Human GRCh38.p14)",
+     "default": "59871324-7803-4234-856e-2a2bd96d7b3c"
+    }
+   ],
+   "bodyTemplate": {
+    "operationName": "GeneExternalReferences",
+    "query": "query GeneExternalReferences($geneId: String!, $genomeId: String!) { gene(by_id: { stable_id: $geneId, genome_id: $genomeId }) { stable_id symbol external_references { accession_id name description url source { id name } } transcripts_page(page: 1, per_page: 100) { transcripts { ...transcriptFields } } } } fragment transcriptFields on Transcript { stable_id slice { location { length } } external_references { accession_id name description url source { id name } } product_generating_contexts { product_type product { external_references { accession_id name description url source { id name } } } } metadata { canonical { value } mane { value } biotype { value } } }",
+    "variables": {
+     "geneId": "{geneId}",
+     "genomeId": "{genomeId}"
+    }
+   },
+   "bodyEncoding": "json",
+   "responseType": "json",
+   "resultPath": "data.gene",
+   "mutates": false,
+   "example": {
+    "geneId": "ENSG00000139618"
+   },
+   "source": "E15 POST https://www.ensembl.org/api/graphql/core (GraphQL operation GeneExternalReferences)",
+   "verified": true
+  },
+  {
+   "name": "get-gene-homologies",
+   "summary": "List homologues/orthologues of a gene in other species, with homology type and percent identity/coverage.",
+   "method": "POST",
+   "urlTemplate": "/api/graphql/compara",
+   "params": [
+    {
+     "name": "geneId",
+     "in": "body",
+     "required": true,
+     "type": "string",
+     "description": "Versioned Ensembl gene stable id, e.g. ENSG00000139618.19 (use stable_id from get-gene-summary)",
+     "example": "ENSG00000139618.19"
+    },
+    {
+     "name": "genomeId",
+     "in": "body",
+     "required": false,
+     "type": "string",
+     "description": "Genome UUID (default: Human GRCh38.p14)",
+     "default": "59871324-7803-4234-856e-2a2bd96d7b3c"
+    }
+   ],
+   "bodyTemplate": {
+    "operationName": "EntityViewerGeneHomologies",
+    "query": "query EntityViewerGeneHomologies($genomeId: String!, $geneId: String!) { homologies(genome_id: $genomeId, gene_stable_id: $geneId) { target_genome { genome_id common_name scientific_name assembly { accession_id name } } target_gene { stable_id symbol version unversioned_stable_id } query_genome { genome_id common_name scientific_name assembly { accession_id name } } query_gene { stable_id symbol version unversioned_stable_id } subtype { accession_id label value definition } stats { query_percent_id query_percent_coverage target_percent_id target_percent_coverage } } }",
+    "variables": {
+     "genomeId": "{genomeId}",
+     "geneId": "{geneId}"
+    }
+   },
+   "bodyEncoding": "json",
+   "responseType": "json",
+   "resultPath": "data.homologies",
+   "defaultFields": [
+    "target_genome.common_name",
+    "target_genome.scientific_name",
+    "target_genome.genome_id",
+    "target_gene.stable_id",
+    "target_gene.symbol",
+    "subtype.label",
+    "stats.query_percent_id",
+    "stats.target_percent_id"
+   ],
+   "mutates": false,
+   "example": {
+    "geneId": "ENSG00000139618.19"
+   },
+   "source": "E14 POST https://www.ensembl.org/api/graphql/compara (GraphQL operation EntityViewerGeneHomologies)",
+   "verified": true
+  },
+  {
+   "name": "get-transcript",
+   "summary": "Get one transcript's location, exons, CDS coordinates and protein product (id, length, sequence checksum).",
+   "method": "POST",
+   "urlTemplate": "/api/graphql/core",
+   "params": [
+    {
+     "name": "transcriptId",
+     "in": "body",
+     "required": true,
+     "type": "string",
+     "description": "Versioned Ensembl transcript stable id, e.g. ENST00000366667.6",
+     "example": "ENST00000366667.6"
+    },
+    {
+     "name": "genomeId",
+     "in": "body",
+     "required": false,
+     "type": "string",
+     "description": "Genome UUID (default: Human GRCh38.p14)",
+     "default": "59871324-7803-4234-856e-2a2bd96d7b3c"
+    }
+   ],
+   "bodyTemplate": {
+    "operationName": "TranscriptForVariantTranscriptConsequences",
+    "query": "query TranscriptForVariantTranscriptConsequences($genomeId: String!, $transcriptId: String!) { transcript(by_id: { genome_id: $genomeId, stable_id: $transcriptId }) { slice { location { start end length } } relative_location { start end length } spliced_exons { index relative_location { start end length } } product_generating_contexts { cds { relative_start relative_end nucleotide_length } product { stable_id length sequence { checksum } } } } }",
+    "variables": {
+     "genomeId": "{genomeId}",
+     "transcriptId": "{transcriptId}"
+    }
+   },
+   "bodyEncoding": "json",
+   "responseType": "json",
+   "resultPath": "data.transcript",
+   "mutates": false,
+   "example": {
+    "transcriptId": "ENST00000366667.6"
+   },
+   "source": "E20 POST https://www.ensembl.org/api/graphql/core (GraphQL operation TranscriptForVariantTranscriptConsequences)",
+   "verified": true
+  },
+  {
+   "name": "get-protein-domains",
+   "summary": "Get a protein's length and its domain/family matches (Pfam, PANTHER, InterPro, \u2026) with positions.",
+   "method": "POST",
+   "urlTemplate": "/api/graphql/core",
+   "params": [
+    {
+     "name": "productId",
+     "in": "body",
+     "required": true,
+     "type": "string",
+     "description": "Versioned Ensembl protein stable id, e.g. ENSP00000369497.3",
+     "example": "ENSP00000369497.3"
+    },
+    {
+     "name": "genomeId",
+     "in": "body",
+     "required": false,
+     "type": "string",
+     "description": "Genome UUID (default: Human GRCh38.p14)",
+     "default": "59871324-7803-4234-856e-2a2bd96d7b3c"
+    }
+   ],
+   "bodyTemplate": {
+    "operationName": "ProteinDomains",
+    "query": "query ProteinDomains($genomeId: String!, $productId: String!) { product(by_id: { genome_id: $genomeId, stable_id: $productId }) { length family_matches { relative_location { start end } sequence_family { name description url source { name } } via { accession_id description url source { name } } } } }",
+    "variables": {
+     "genomeId": "{genomeId}",
+     "productId": "{productId}"
+    }
+   },
+   "bodyEncoding": "json",
+   "responseType": "json",
+   "resultPath": "data.product",
+   "mutates": false,
+   "example": {
+    "productId": "ENSP00000369497.3"
+   },
+   "source": "E12 POST https://www.ensembl.org/api/graphql/core (GraphQL operation ProteinDomains)",
+   "verified": true
+  },
+  {
+   "name": "get-protein-structure-stats",
+   "summary": "Get PDBe summary counts for a UniProt accession: number of PDB structures, ligands, interaction partners and similar proteins.",
+   "method": "GET",
+   "urlTemplate": "https://www.ebi.ac.uk/pdbe/graph-api/uniprot/summary_stats/{uniprot_id}",
+   "params": [
+    {
+     "name": "uniprot_id",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "UniProt accession, e.g. P51587 (BRCA2)",
+     "example": "P51587"
+    }
+   ],
+   "responseType": "json",
+   "mutates": false,
+   "example": {
+    "uniprot_id": "P51587"
+   },
+   "source": "E13 GET https://www.ebi.ac.uk/pdbe/graph-api/uniprot/summary_stats/P51587",
+   "verified": true
+  },
+  {
+   "name": "get-variant",
+   "summary": "Get variant details: location, alleles, allele type, dbSNP source, VEP prediction, citation count, phenotype assertions and population allele frequencies.",
+   "method": "POST",
+   "urlTemplate": "/api/graphql/variation",
+   "params": [
+    {
+     "name": "variantId",
+     "in": "body",
+     "required": true,
+     "type": "string",
+     "description": "Variant id in the form {chromosome}:{position}:{rsID}, e.g. 1:230710048:rs699",
+     "example": "1:230710048:rs699"
+    },
+    {
+     "name": "genomeId",
+     "in": "body",
+     "required": false,
+     "type": "string",
+     "description": "Genome UUID (default: Human GRCh38.p14)",
+     "default": "59871324-7803-4234-856e-2a2bd96d7b3c"
+    }
+   ],
+   "bodyTemplate": {
+    "operationName": "VariantDetails",
+    "query": "query VariantDetails($genomeId: String!, $variantId: String!) { variant(by_id: { genome_id: $genomeId, variant_id: $variantId }) { name alternative_names { name url } slice { location { start end length } region { name } } allele_type { value } primary_source { url source { name release } } prediction_results { score result analysis_method { tool } } ensembl_website_display_data { count_citations } alleles { name allele_type { value } slice { location { start end } strand { code } } allele_sequence reference_sequence phenotype_assertions { feature } prediction_results { score result analysis_method { tool } } population_frequencies { is_minor_allele is_hpmaf allele_frequency } ensembl_website_display_data { count_transcript_consequences count_overlapped_genes count_regulatory_consequences count_variant_phenotypes count_gene_phenotypes representative_population_allele_frequency } } } }",
+    "variables": {
+     "genomeId": "{genomeId}",
+     "variantId": "{variantId}"
+    }
+   },
+   "bodyEncoding": "json",
+   "responseType": "json",
+   "resultPath": "data.variant",
+   "mutates": false,
+   "example": {
+    "variantId": "1:230710048:rs699"
+   },
+   "source": "E16 POST https://www.ensembl.org/api/graphql/variation (GraphQL operation VariantDetails)",
+   "verified": true
+  },
+  {
+   "name": "get-variant-consequences",
+   "summary": "Get the predicted molecular consequences of each allele of a variant on overlapping transcripts: consequence terms plus cDNA, CDS and protein positions with ref/alt.",
+   "method": "POST",
+   "urlTemplate": "/api/graphql/variation",
+   "params": [
+    {
+     "name": "variantId",
+     "in": "body",
+     "required": true,
+     "type": "string",
+     "description": "Variant id {chromosome}:{position}:{rsID}",
+     "example": "1:230710048:rs699"
+    },
+    {
+     "name": "genomeId",
+     "in": "body",
+     "required": false,
+     "type": "string",
+     "description": "Genome UUID (default: Human GRCh38.p14)",
+     "default": "59871324-7803-4234-856e-2a2bd96d7b3c"
+    }
+   ],
+   "bodyTemplate": {
+    "operationName": "VariantPredictedMolecularConsequences",
+    "query": "query VariantPredictedMolecularConsequences($genomeId: String!, $variantId: String!) { variant(by_id: { genome_id: $genomeId, variant_id: $variantId }) { alleles { predicted_molecular_consequences { stable_id gene_stable_id gene_symbol cdna_location { ...RelativeLocationFields } cds_location { ...RelativeLocationFields } protein_location { ...RelativeLocationFields } consequences { value } } } } } fragment RelativeLocationFields on VariantRelativeLocation { start end length ref_sequence alt_sequence }",
+    "variables": {
+     "genomeId": "{genomeId}",
+     "variantId": "{variantId}"
+    }
+   },
+   "bodyEncoding": "json",
+   "responseType": "json",
+   "resultPath": "data.variant.alleles",
+   "mutates": false,
+   "example": {
+    "variantId": "1:230710048:rs699"
+   },
+   "source": "E18 POST https://www.ensembl.org/api/graphql/variation (GraphQL operation VariantPredictedMolecularConsequences)",
+   "verified": true
+  },
+  {
+   "name": "get-region",
+   "summary": "Get a chromosome/region's length, topology and sequence checksum. Use the checksum with get-sequence.",
+   "method": "POST",
+   "urlTemplate": "/api/graphql/core",
+   "params": [
+    {
+     "name": "regionName",
+     "in": "body",
+     "required": true,
+     "type": "string",
+     "description": "Region/chromosome name, e.g. 1, X, MT",
+     "example": "1"
+    },
+    {
+     "name": "genomeId",
+     "in": "body",
+     "required": false,
+     "type": "string",
+     "description": "Genome UUID (default: Human GRCh38.p14)",
+     "default": "59871324-7803-4234-856e-2a2bd96d7b3c"
+    }
+   ],
+   "bodyTemplate": {
+    "operationName": "RegionChecksum",
+    "query": "query RegionChecksum($genomeId: String!, $regionName: String!) { region(by_name: { genome_id: $genomeId, name: $regionName }) { name length topology sequence { checksum } } }",
+    "variables": {
+     "genomeId": "{genomeId}",
+     "regionName": "{regionName}"
+    }
+   },
+   "bodyEncoding": "json",
+   "responseType": "json",
+   "resultPath": "data.region",
+   "mutates": false,
+   "example": {
+    "regionName": "1"
+   },
+   "source": "E17 POST https://www.ensembl.org/api/graphql/core (GraphQL operation RegionChecksum)",
+   "verified": true
+  },
+  {
+   "name": "get-sequence",
+   "summary": "Fetch raw DNA or protein sequence (plain text) for a sequence checksum over a coordinate range, via refget. Uses 0-based start and exclusive end.",
+   "method": "GET",
+   "urlTemplate": "/api/refget/sequence/{checksum}?accept=text%2Fplain",
+   "params": [
+    {
+     "name": "checksum",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Sequence checksum: a region checksum from get-region, or a protein sequence checksum from get-transcript",
+     "example": "2648ae1bacce4ec4b6cf337dcae37816"
+    },
+    {
+     "name": "start",
+     "in": "query",
+     "required": false,
+     "type": "number",
+     "description": "0-based start coordinate (inclusive). For a 1-based genomic position P, use P-1. Example: 230710027 for a variant flank",
+     "example": "230710027"
+    },
+    {
+     "name": "end",
+     "in": "query",
+     "required": false,
+     "type": "number",
+     "description": "End coordinate (exclusive, 0-based). Equals the 1-based inclusive end. Length returned = end - start",
+     "example": "230710068"
+    }
+   ],
+   "headers": {
+    "accept": "text/plain"
+   },
+   "responseType": "text",
+   "mutates": false,
+   "example": {
+    "checksum": "2648ae1bacce4ec4b6cf337dcae37816",
+    "start": "230710027",
+    "end": "230710068"
+   },
+   "source": "E25",
+   "verified": true
+  }
+ ],
+ "blockers": [],
+ "notes": [
+  "Most gene/variant commands take a genomeId (genome UUID). It defaults to Human GRCh38.p14 (59871324-7803-4234-856e-2a2bd96d7b3c). For other species, find the genome_id with search-genomes (use species_taxonomy_id to list all assemblies of one species).",
+  "Typical flow: search-genes \u2192 stable_id \u2192 get-gene-summary / get-gene-structure / list-gene-transcripts / get-gene-external-references / get-gene-homologies (homologies needs the versioned id, e.g. ENSG00000139618.19).",
+  "Variant ids use the form {chromosome}:{position}:{rsID} (e.g. 1:230710048:rs699). search-variants did not resolve rsIDs in the recording (0 hits), so build the id from a known position or from get-genome-example-objects.",
+  "Protein ids for get-protein-domains come from product.stable_id in get-gene-structure or get-transcript. UniProt accessions for get-protein-structure-stats (PDBe host) come from get-gene-external-references.",
+  "get-sequence returns plain text. Pass a region checksum (get-region) with genomic start/end, or a protein sequence checksum (get-transcript product.sequence.checksum) with protein coordinates.",
+  "export-genomes-csv was described by the explorer but not captured as a request; its parameters mirror search-genomes.",
+  "The GraphQL TranscriptSearch operation returned no hits for gene symbols or rsIDs, so it was left out; use search-genes instead.",
+  "The genome browser and BLAST are blocked by robots.txt and are not covered."
+ ],
+ "dropped": [
+  {
+   "name": "get-help-menu",
+   "summary": "Get the Ensembl help/documentation menu tree (article titles and URLs).",
+   "method": "GET",
+   "urlTemplate": "/api/docs/menus",
+   "params": [
+    {
+     "name": "name",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Menu name",
+     "default": "help"
+    }
+   ],
+   "responseType": "json",
+   "resultPath": "items",
+   "mutates": false,
+   "example": {
+    "name": "help"
+   },
+   "source": "E24 GET https://www.ensembl.org/api/docs/menus",
+   "verified": false,
+   "verifyNote": "Output is the help navigation menu tree, not site data, and no command fetches the article content."
+  }
+ ],
+ "generated": {
+  "by": "clify add",
+  "model": "claude-opus-5-5",
+  "exploredSteps": 25,
+  "recorded": 57,
+  "verifiedAt": "2026-10-18T09:23:23.268Z",
+  "seconds": 263
+ }
+}

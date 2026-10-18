@@ -1,0 +1,6 @@
+On Quotes to Scrape (quotes.toscrape.com), which author has the most quotes across the whole site (every page), and how many quotes do they have?
+
+Start from https://quotes.toscrape.com/. Work it out using only the tools you have, then end your reply with one final line exactly in the form:
+ANSWER: <short answer>
+
+The website is available as a command-line tool: run `clify quotes` to see its commands (JSON help), then call them. Use clify only; do not use curl, wget, Python HTTP or other network tools.

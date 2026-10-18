@@ -1,0 +1,6 @@
+On GitHub, look at the 20 most recent releases of the microsoft/playwright repository. How many of those 20 were published in 2026?
+
+Start from https://github.com/. Work it out using only the tools you have, then end your reply with one final line exactly in the form:
+ANSWER: <short answer>
+
+The website is available as a command-line tool: run `clify github` to see its commands (JSON help), then call them. Use clify only; do not use curl, wget, Python HTTP or other network tools.

@@ -1,0 +1,43 @@
+{
+  "title": "Six real jobs on five signed-in SaaS dashboards and one forum.",
+  "checks": "accounts",
+  "intro": "The agent's own accounts on these sites are already signed in for you. Writes on these accounts are approved: actually create the objects. Do not delete or change anything else, and do not post on the forum. Use the exact names given, with your RACER_ID filled in.",
+  "tasks": [
+    {
+      "id": "updown", "label": "UPDOWN", "kind": "monitor · create",
+      "url": "https://updown.io/checks",
+      "match": ["updown.io", "clify updown"],
+      "prompt": "On updown.io, add an HTTPS check for https://example.com/race-<RACER_ID> that runs every 5 minutes, with the alias race-<RACER_ID>. Report the new check's token (the short code in its URL)."
+    },
+    {
+      "id": "healthchecks", "label": "HEALTHCHECKS", "kind": "cron check · create",
+      "url": "https://healthchecks.io/",
+      "match": ["healthchecks.io", "hc-ping.com", "clify healthchecks"],
+      "prompt": "On Healthchecks.io, add a check named race-<RACER_ID> with the tag race, a period of 1 hour and a grace time of 10 minutes. Report its ping URL."
+    },
+    {
+      "id": "svix", "label": "SVIX", "kind": "app + endpoint",
+      "url": "https://dashboard.svix.com/",
+      "match": ["svix.com", "clify svix"],
+      "prompt": "In the Svix dashboard, create a consumer application named race-<RACER_ID>, add an endpoint https://example.com/hooks/race-<RACER_ID> to it, then list the application's endpoints. Report the application ID (app_...) and the endpoint ID (ep_...)."
+    },
+    {
+      "id": "appwrite", "label": "APPWRITE", "kind": "table + column",
+      "url": "https://cloud.appwrite.io/console",
+      "match": ["appwrite.io", "clify appwrite"],
+      "prompt": "In Appwrite, open the project \"My first project\" and its database named race. Create a table named race-<RACER_ID> and give it a required string column called email with size 255. Report the table ID."
+    },
+    {
+      "id": "hookdeck", "label": "HOOKDECK", "kind": "connection · create",
+      "url": "https://dashboard.hookdeck.com/",
+      "match": ["hookdeck.com", "hkdk.events", "clify hookdeck"],
+      "prompt": "In Hookdeck, create a connection named race-<RACER_ID> from a new source named race-<RACER_ID> to a new HTTP destination named race-<RACER_ID> with the URL https://example.com/race-<RACER_ID>. Report the source's webhook URL."
+    },
+    {
+      "id": "forum", "label": "FORUM", "kind": "public · 3 topics",
+      "url": "https://forum.rclone.org/c/bug/7",
+      "match": ["forum.rclone.org", "clify rclone"],
+      "prompt": "On the rclone forum (forum.rclone.org), find the 3 most recently created topics in the \"Suspected Bug\" category, ignoring pinned topics. For each give the title and the username of the person who started the topic."
+    }
+  ]
+}

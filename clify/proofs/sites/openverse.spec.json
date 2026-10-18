@@ -1,0 +1,512 @@
+{
+ "name": "openverse",
+ "startUrl": "https://openverse.org/",
+ "origin": "https://openverse.org",
+ "createdAt": "2026-10-18T07:27:14.553Z",
+ "description": "Openverse (openverse.org) is a search engine for openly licensed images and audio. This CLI calls its public REST API at api.openverse.org/v1 to search media, get item details and related items, fetch audio waveforms and oEmbed data, list content sources, and check the anonymous rate limit.",
+ "commands": [
+  {
+   "name": "search-images",
+   "summary": "Search openly licensed images by keyword, with filters for license, category, aspect ratio, size, source, tags and creator",
+   "method": "GET",
+   "urlTemplate": "https://api.openverse.org/v1/images/",
+   "params": [
+    {
+     "name": "q",
+     "in": "query",
+     "required": true,
+     "type": "string",
+     "description": "Search keywords",
+     "example": "cat"
+    },
+    {
+     "name": "page",
+     "in": "query",
+     "required": false,
+     "type": "number",
+     "description": "Result page number, starting at 1",
+     "default": 1
+    },
+    {
+     "name": "page_size",
+     "in": "query",
+     "required": false,
+     "type": "number",
+     "description": "Results per page. Anonymous requests are capped at 20.",
+     "default": 20
+    },
+    {
+     "name": "license",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Comma-separated license codes, e.g. by,by-sa,by-nd,by-nc,by-nc-sa,by-nc-nd,cc0,pdm",
+     "example": "cc0,by"
+    },
+    {
+     "name": "license_type",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Comma-separated usage permissions the license must allow",
+     "enum": [
+      "commercial",
+      "modification"
+     ]
+    },
+    {
+     "name": "category",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Image category",
+     "enum": [
+      "photograph",
+      "illustration",
+      "digitized_artwork"
+     ]
+    },
+    {
+     "name": "aspect_ratio",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Image aspect ratio",
+     "enum": [
+      "tall",
+      "wide",
+      "square"
+     ]
+    },
+    {
+     "name": "size",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Image size",
+     "enum": [
+      "small",
+      "medium",
+      "large"
+     ]
+    },
+    {
+     "name": "source",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Comma-separated source names, e.g. flickr,wikimedia (see list-image-sources)"
+    },
+    {
+     "name": "tags",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Match images with these tags"
+    },
+    {
+     "name": "creator",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Match images by this creator name"
+    }
+   ],
+   "responseType": "json",
+   "resultPath": "results",
+   "defaultFields": [
+    "id",
+    "title",
+    "creator",
+    "license",
+    "license_version",
+    "url",
+    "foreign_landing_url",
+    "source"
+   ],
+   "pagination": {
+    "type": "page",
+    "param": "page"
+   },
+   "mutates": false,
+   "example": {
+    "q": "cat"
+   },
+   "source": "",
+   "verified": true
+  },
+  {
+   "name": "get-image-oembed",
+   "summary": "Get oEmbed data for an Openverse image page URL, for embedding with attribution",
+   "method": "GET",
+   "urlTemplate": "https://api.openverse.org/v1/images/oembed/",
+   "params": [
+    {
+     "name": "url",
+     "in": "query",
+     "required": true,
+     "type": "string",
+     "description": "Openverse image page URL in the form https://openverse.org/image/<id>, where <id> is the image UUID from search-images",
+     "example": "https://openverse.org/image/1c5442f6-6bb6-4ab7-b603-f598e7579dd2"
+    }
+   ],
+   "responseType": "json",
+   "defaultFields": [
+    "type",
+    "title",
+    "author_name",
+    "author_url",
+    "license_url",
+    "width",
+    "height",
+    "url"
+   ],
+   "mutates": false,
+   "example": {
+    "url": "https://openverse.org/image/1c5442f6-6bb6-4ab7-b603-f598e7579dd2"
+   },
+   "source": "",
+   "verified": true
+  },
+  {
+   "name": "list-image-sources",
+   "summary": "List all image content sources (e.g. flickr, wikimedia) with their media counts",
+   "method": "GET",
+   "urlTemplate": "https://api.openverse.org/v1/images/stats/",
+   "params": [],
+   "responseType": "json",
+   "defaultFields": [
+    "source_name",
+    "display_name",
+    "media_count",
+    "source_url"
+   ],
+   "mutates": false,
+   "source": "",
+   "verified": true
+  },
+  {
+   "name": "search-audio",
+   "summary": "Search openly licensed audio by keyword, with filters for category, length, file extension, license and source",
+   "method": "GET",
+   "urlTemplate": "https://api.openverse.org/v1/audio/",
+   "params": [
+    {
+     "name": "q",
+     "in": "query",
+     "required": true,
+     "type": "string",
+     "description": "Search keywords",
+     "example": "piano"
+    },
+    {
+     "name": "page",
+     "in": "query",
+     "required": false,
+     "type": "number",
+     "description": "Result page number, starting at 1",
+     "default": 1
+    },
+    {
+     "name": "page_size",
+     "in": "query",
+     "required": false,
+     "type": "number",
+     "description": "Results per page. Anonymous requests are capped at 20.",
+     "default": 20
+    },
+    {
+     "name": "category",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Audio category",
+     "enum": [
+      "music",
+      "sound_effect",
+      "podcast",
+      "audiobook",
+      "news",
+      "pronunciation"
+     ]
+    },
+    {
+     "name": "length",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Audio duration bucket",
+     "enum": [
+      "shortest",
+      "short",
+      "medium",
+      "long"
+     ]
+    },
+    {
+     "name": "extension",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "File extension, e.g. mp3, ogg, flac, wav"
+    },
+    {
+     "name": "license",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Comma-separated license codes, e.g. by,by-sa,cc0,pdm"
+    },
+    {
+     "name": "license_type",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Comma-separated usage permissions the license must allow",
+     "enum": [
+      "commercial",
+      "modification"
+     ]
+    },
+    {
+     "name": "source",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Comma-separated source names, e.g. freesound,jamendo (see list-audio-sources)"
+    }
+   ],
+   "responseType": "json",
+   "resultPath": "results",
+   "defaultFields": [
+    "id",
+    "title",
+    "creator",
+    "duration",
+    "license",
+    "url",
+    "foreign_landing_url",
+    "source"
+   ],
+   "pagination": {
+    "type": "page",
+    "param": "page"
+   },
+   "mutates": false,
+   "example": {
+    "q": "piano"
+   },
+   "source": "",
+   "verified": true
+  },
+  {
+   "name": "list-audio-sources",
+   "summary": "List all audio content sources (e.g. freesound, jamendo) with their media counts",
+   "method": "GET",
+   "urlTemplate": "https://api.openverse.org/v1/audio/stats/",
+   "params": [],
+   "responseType": "json",
+   "defaultFields": [
+    "source_name",
+    "display_name",
+    "media_count",
+    "source_url"
+   ],
+   "mutates": false,
+   "source": "",
+   "verified": true
+  },
+  {
+   "name": "get-rate-limit",
+   "summary": "Show the current API rate-limit status for this client (requests used and remaining)",
+   "method": "GET",
+   "urlTemplate": "https://api.openverse.org/v1/rate_limit/",
+   "params": [],
+   "responseType": "json",
+   "mutates": false,
+   "source": "",
+   "verified": true
+  }
+ ],
+ "blockers": [
+  "bot-check at https://openverse.org/",
+  "captcha"
+ ],
+ "notes": [
+  "All commands call the public API at api.openverse.org/v1, not the openverse.org frontend. The frontend sits behind a Cloudflare bot check, and robots.txt disallows /search/. The only recorded request was a 307 on the openverse.org homepage (E1). These commands are built from the explorer's description of the documented API at api.openverse.org/v1/.",
+  "The example IDs for get-image, get-related-images, get-image-oembed, get-audio, get-related-audio and get-audio-waveform are placeholders, because no real UUID was captured. Run search-images or search-audio first and pass a result's id field. These examples will fail verification until real IDs are substituted.",
+  "The search-images and search-audio examples ('cat', 'piano') are common keywords, not queries copied from the recording.",
+  "Anonymous limits are 20 requests per minute and 200 per day. Use get-rate-limit to check the remaining quota, and keep page_size at 20 or below.",
+  "Combining a narrow filter with page 2 can return an empty results array. In the recording this happened with filtered image and audio queries, and also on page 2 of a plain image search. Check the result_count and page_count fields in the raw response before paging further.",
+  "Sort order was not tested, so no sort parameter is exposed. No search-suggestion (as-you-type) endpoint was found. All commands are read-only, and none need login."
+ ],
+ "dropped": [
+  {
+   "name": "get-image",
+   "summary": "Get full details of one image by its Openverse ID (UUID), including license, attribution, dimensions and tags",
+   "method": "GET",
+   "urlTemplate": "https://api.openverse.org/v1/images/{id}/",
+   "params": [
+    {
+     "name": "id",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Image UUID, taken from the id field of search-images results"
+    }
+   ],
+   "responseType": "json",
+   "defaultFields": [
+    "id",
+    "title",
+    "creator",
+    "license",
+    "license_version",
+    "attribution",
+    "url",
+    "foreign_landing_url"
+   ],
+   "mutates": false,
+   "example": {
+    "id": "<image-uuid-from-search-images>"
+   },
+   "source": "",
+   "verified": false,
+   "verifyNote": "the site answered with a bot check (HTTP 404); clify does not bypass these"
+  },
+  {
+   "name": "get-related-images",
+   "summary": "List images related to a given image ID",
+   "method": "GET",
+   "urlTemplate": "https://api.openverse.org/v1/images/{id}/related/",
+   "params": [
+    {
+     "name": "id",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Image UUID, taken from search-images results"
+    }
+   ],
+   "responseType": "json",
+   "resultPath": "results",
+   "defaultFields": [
+    "id",
+    "title",
+    "creator",
+    "license",
+    "url",
+    "foreign_landing_url",
+    "source"
+   ],
+   "mutates": false,
+   "example": {
+    "id": "<image-uuid-from-search-images>"
+   },
+   "source": "",
+   "verified": false,
+   "verifyNote": "the site answered with a bot check (HTTP 404); clify does not bypass these"
+  },
+  {
+   "name": "get-audio",
+   "summary": "Get full details of one audio track by its Openverse ID (UUID), including license, duration, genres and file URL",
+   "method": "GET",
+   "urlTemplate": "https://api.openverse.org/v1/audio/{id}/",
+   "params": [
+    {
+     "name": "id",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Audio UUID, taken from the id field of search-audio results"
+    }
+   ],
+   "responseType": "json",
+   "defaultFields": [
+    "id",
+    "title",
+    "creator",
+    "duration",
+    "license",
+    "attribution",
+    "url",
+    "foreign_landing_url"
+   ],
+   "mutates": false,
+   "example": {
+    "id": "<audio-uuid-from-search-audio>"
+   },
+   "source": "",
+   "verified": false,
+   "verifyNote": "the site answered with a bot check (HTTP 404); clify does not bypass these"
+  },
+  {
+   "name": "get-related-audio",
+   "summary": "List audio tracks related to a given audio ID",
+   "method": "GET",
+   "urlTemplate": "https://api.openverse.org/v1/audio/{id}/related/",
+   "params": [
+    {
+     "name": "id",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Audio UUID, taken from search-audio results"
+    }
+   ],
+   "responseType": "json",
+   "resultPath": "results",
+   "defaultFields": [
+    "id",
+    "title",
+    "creator",
+    "duration",
+    "license",
+    "url",
+    "source"
+   ],
+   "mutates": false,
+   "example": {
+    "id": "<audio-uuid-from-search-audio>"
+   },
+   "source": "",
+   "verified": false,
+   "verifyNote": "the site answered with a bot check (HTTP 404); clify does not bypass these"
+  },
+  {
+   "name": "get-audio-waveform",
+   "summary": "Get the waveform peak data (array of amplitude points) for an audio track",
+   "method": "GET",
+   "urlTemplate": "https://api.openverse.org/v1/audio/{id}/waveform/",
+   "params": [
+    {
+     "name": "id",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Audio UUID, taken from search-audio results"
+    }
+   ],
+   "responseType": "json",
+   "defaultFields": [
+    "len",
+    "points"
+   ],
+   "mutates": false,
+   "example": {
+    "id": "<audio-uuid-from-search-audio>"
+   },
+   "source": "",
+   "verified": false,
+   "verifyNote": "the site answered with a bot check (HTTP 404); clify does not bypass these"
+  }
+ ],
+ "generated": {
+  "by": "clify add",
+  "model": "claude-opus-5-5",
+  "exploredSteps": 8,
+  "recorded": 3,
+  "verifiedAt": "2026-10-18T07:28:11.143Z",
+  "seconds": 135
+ }
+}

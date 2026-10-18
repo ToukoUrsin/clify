@@ -1,0 +1,58 @@
+09:48:45 🔭 exploring https://forum.rclone.org/
+09:48:45 🌐 https://forum.rclone.org/
+09:48:48   ⛔ held write POST https://forum.rclone.org/srv/pv
+09:48:48   ⛔ held write POST https://forum.rclone.org/message-bus/50fa3fa352a44ca5afd90fba05f94330/poll
+09:48:55 → click {"i":20,"intent":"list categories"}
+09:48:55   ⛔ held write POST https://forum.rclone.org/srv/pv
+09:48:58 → click {"i":24,"intent":"list topics in category"}
+09:48:58   ⛔ held write POST https://forum.rclone.org/srv/pv
+09:49:01 → scroll {"direction":"down"}
+09:49:03 → click {"i":97,"intent":"open topic detail"}
+09:49:04   ⛔ held write POST https://forum.rclone.org/srv/pv
+09:49:07 → click {"i":8,"intent":"open search"}
+09:49:11 → type {"i":9,"text":"google drive mount","intent":"search suggestions as you type"}
+09:49:13   ⛔ held write POST https://forum.rclone.org/message-bus/50fa3fa352a44ca5afd90fba05f94330/poll
+09:49:13 → click {"i":12,"intent":"search topics and posts by keyword"}
+09:49:16 → goto {"url":"https://forum.rclone.org/search?q=google%20drive%20mount","intent":"search topics and posts by keyword"}
+09:49:19 → press {"key":"Enter"}
+09:49:22 → crush_type {"i":"9","text":"google drive mount category:support order:latest","intent":"search within a category sorted by latest","submit":"true"}
+09:49:24 → type {"i":9,"text":"google drive mount category:support order:latest","intent":"search within a category sorted by latest","submit":true}
+09:49:27 → click {"i":14,"intent":"open topic detail"}
+09:49:28   ⛔ held write POST https://forum.rclone.org/srv/pv
+09:49:31 → click {"i":24,"intent":"open user profile"}
+09:49:34 → click {"i":13,"intent":"list topics in category"}
+09:49:34   ⛔ held write POST https://forum.rclone.org/srv/pv
+09:49:37 → scroll {"direction":"down"}
+09:49:38   ⛔ held write POST https://forum.rclone.org/message-bus/50fa3fa352a44ca5afd90fba05f94330/poll
+09:49:40 → scroll {"direction":"up"}
+09:49:43 → click {"i":23,"intent":"sort category topics by views"}
+09:49:43   ⛔ held write POST https://forum.rclone.org/srv/pv
+09:49:46 → click {"i":19,"intent":"list hot topics in category"}
+09:49:46   ⛔ held write POST https://forum.rclone.org/srv/pv
+09:49:49 → click {"i":15,"intent":"list all categories"}
+09:49:50   ⛔ held write POST https://forum.rclone.org/srv/pv
+09:49:53 → click {"i":18,"intent":"list latest topics across all categories"}
+09:49:53   ⛔ held write POST https://forum.rclone.org/srv/pv
+09:49:56 → click {"i":19,"intent":"list hot topics across all categories"}
+09:49:57   ⛔ held write POST https://forum.rclone.org/srv/pv
+09:50:00 → click {"i":29,"intent":"open user profile"}
+09:50:03   ⛔ held write POST https://forum.rclone.org/message-bus/50fa3fa352a44ca5afd90fba05f94330/poll
+09:50:04 → click {"i":70,"intent":"open topic detail"}
+09:50:05   ⛔ held write POST https://forum.rclone.org/srv/pv
+09:50:07 → scroll {"direction":"down"}
+09:50:10 → scroll {"direction":"down"}
+09:50:17 → done {"summary":"Read-only Discourse forum (forum.rclone.org) with no login. Calls captured:\n- List categories: GET /categories_and_latest\n- La
+09:50:17 📼 recorded 22 calls, 16 held writes
+09:50:17 🧠 synthesizing from 17 endpoints (42k chars)
+09:51:06 🔎 verify round 0: list-categories, list-category-topics, list-category-hot-topics, list-latest-topics, list-hot-topics, get-topic, search, get-user-card
+09:51:07   ✓ list-categories (784 ms)
+09:51:07   ✓ list-category-topics (691 ms)
+09:51:07   ✓ list-category-hot-topics (722 ms)
+09:51:07   ✓ list-latest-topics (689 ms)
+09:51:07   ✓ list-hot-topics (313 ms)
+09:51:07   ✓ get-topic (329 ms)
+09:51:07   ✗ search: response was not JSON (content-type text/html; charset=utf-8): rclone forum empty Home Categories Guidelines Terms of Service Privacy Policy Powered by Discourse, best viewed with Jav (231 ms)
+09:51:07   ✓ get-user-card (278 ms)
+09:51:20   🔧 search: Discourse serves crawler HTML for /search/query on non-XHR requests. The full-page /search.json endpoint returns the same JSON (topics, posts, users) anonymously. Removed type_filter because that endpoint ignores it, and added paging.
+09:51:20 🔎 verify round 1: search
+09:51:20   ✓ search (852 ms)

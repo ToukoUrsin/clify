@@ -1,0 +1,38 @@
+{
+ "url": "https://www.si.edu/search",
+ "category": "culture",
+ "sandbox": "clify-www-si-edu-search",
+ "startedAt": "2026-10-18T09:23:20.939Z",
+ "region": "us-pdx-1",
+ "chrome": "Chrome/148.0.7778.96",
+ "sandboxStartMs": 1571,
+ "addSeconds": 23,
+ "addExit": 1,
+ "add": {
+  "ok": false,
+  "site": "si",
+  "url": "https://www.si.edu/search",
+  "commands": [],
+  "verified": 0,
+  "writes": 0,
+  "dropped": [],
+  "blockers": [
+   "bot-check at https://www.si.edu/search",
+   "bot-check at https://www.si.edu/collections",
+   "captcha"
+  ],
+  "loggedIn": false,
+  "seconds": 22,
+  "next": [
+   "clify si",
+   "clify repair si --goal \"<what you need from the site>\""
+  ],
+  "explored": {
+   "steps": 3,
+   "recorded": 4,
+   "heldWrites": 0
+  }
+ },
+ "deleted": true,
+ "seconds": 24
+}

@@ -1,0 +1,35 @@
+#!/usr/bin/env bash
+# Runs on the Linux machine that races. Live race on the signed-in dashboards with the dashboard on
+# 127.0.0.1:$PORT (default 8870). Cleans up leftovers and checks every saved
+# session first, waits for Enter, races mode A vs C, then keeps serving.
+#   race/bin/live-race          live race (A: browser clicks + screenshots vs C: clify)
+#   race/bin/live-race replay   replay of the representative recorded run (4x after 10 s)
+#   race/bin/live-race js       live race with mode B (browser + page JavaScript) vs C
+set -euo pipefail
+cd "$(dirname "$(readlink -f "$0")")/../.."
+PORT=${PORT:-8870}
+VIEW_PORT=${VIEW_PORT:-$PORT}  # the port on the viewer's machine (race/bin/demo forwards its 8790 here)
+mode=${1:-live}
+if ss -ltn "sport = :$PORT" | grep -q LISTEN; then echo "port $PORT is busy (an old dashboard?): pkill -f 'race/server.mjs' and retry" >&2; exit 1; fi
+url="http://127.0.0.1:$VIEW_PORT"
+if [ "$mode" = replay ]; then
+  run=$(cat race/results/accounts-replay.txt)
+  echo "REPLAY of $run  ->  $url"
+  exec env PORT=$PORT RACE_REPLAY_SPEED=${RACE_REPLAY_SPEED:-4} RACE_REPLAY_FAST_AFTER_MS=${RACE_REPLAY_FAST_AFTER_MS:-10000} node race/server.mjs --replay "$run"
+fi
+browser_mode=ui; [ "$mode" = js ] && browser_mode=js
+node race/accounts/cleanup.mjs >/tmp/race-cleanup.log 2>&1 || { cat /tmp/race-cleanup.log; echo "preflight failed: fix the session above or run: race/bin/live-race replay" >&2; exit 1; }
+grep -q '"removed": \[\]' /tmp/race-cleanup.log || { echo "removed leftovers:"; grep -A20 removed /tmp/race-cleanup.log | sed -n '2,20p' | grep -v '^\s*\]' || true; }
+dir=race/runs/$(date -u +%Y-%m-%dT%H-%M-%S-000Z)-live
+mkdir -p "$dir"
+PORT=$PORT node race/server.mjs --dir "$dir" >/dev/null & srv=$!
+trap 'kill $srv 2>/dev/null || true' EXIT
+echo
+echo "  Dashboard: $url   (tunnel: ssh -L $VIEW_PORT:127.0.0.1:$PORT $(hostname))"
+echo
+read -r -p "  Open the dashboard, then press Enter to start the race... " _ || true
+RACE_RUN_DIR="$dir" RACE_TASKS=race/tasks/accounts.json RACE_BROWSER_MODE=$browser_mode nice -n 10 node race/run.mjs
+echo "Race finished and cleaned up. The dashboard stays up on $url until Ctrl-C (or the ssh session ends)."
+# Block on stdin, not on the server: a closed ssh session gives EOF here even
+# without a pty (no SIGHUP), and the EXIT trap then stops the dashboard.
+while read -r _; do :; done

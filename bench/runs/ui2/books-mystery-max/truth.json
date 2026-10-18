@@ -1,0 +1,13 @@
+{
+ "expect": [
+  "Boar Island",
+  "59.48"
+ ],
+ "detail": {
+  "title": "Boar Island (Anna Pigeon #19)",
+  "price": "£59.48",
+  "url": "https://books.toscrape.com/catalogue/boar-island-anna-pigeon-19_613/index.html",
+  "n": 32
+ },
+ "at": "2026-10-17T23:31:05.120Z"
+}

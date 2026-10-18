@@ -1,0 +1,196 @@
+{
+ "url": "https://swiftpackageindex.com/",
+ "category": "dev",
+ "sandbox": "clify-swiftpackageindex-com",
+ "startedAt": "2026-10-18T09:00:52.893Z",
+ "region": "us-pdx-1",
+ "chrome": "Chrome/148.0.7778.96",
+ "sandboxStartMs": 1692,
+ "addSeconds": 196,
+ "addExit": 0,
+ "add": {
+  "ok": true,
+  "site": "swiftpackageindex",
+  "url": "https://swiftpackageindex.com/",
+  "commands": [
+   {
+    "name": "search-packages",
+    "summary": "Search Swift packages by keyword. Supports inline filters such as stars:>500, platform:ios,linux, last_activity:>2025-01-01 and product:library inside the query.",
+    "verified": true
+   },
+   {
+    "name": "get-package",
+    "summary": "Get details for a package: summary, authors, history, activity, dependencies, license, stars, products, data race safety, latest stable version, default branch and keywords.",
+    "verified": true
+   },
+   {
+    "name": "get-package-readme",
+    "summary": "Get the rendered README text of a package.",
+    "verified": true
+   },
+   {
+    "name": "get-package-releases",
+    "summary": "Get the release notes of a package, newest first: version, release date and changes.",
+    "verified": true
+   },
+   {
+    "name": "get-package-builds",
+    "summary": "Get a package's build compatibility matrix: one row per platform per Swift version, with results for the latest stable release and the default branch, plus build ids.",
+    "verified": true
+   },
+   {
+    "name": "get-build",
+    "summary": "Get one build's status, Swift version, platform, build command and full build log by build id (UUID).",
+    "verified": true
+   },
+   {
+    "name": "list-author-packages",
+    "summary": "List all packages by an author/owner as a JSON package collection (repo URL, summary, license, keywords, versions with verified compatibility).",
+    "verified": true
+   },
+   {
+    "name": "list-keyword-packages",
+    "summary": "List packages tagged with a keyword/topic, e.g. networking, 20 per page.",
+    "verified": true
+   },
+   {
+    "name": "get-collection",
+    "summary": "List the packages in a curated custom package collection, e.g. sswg-graduated.",
+    "verified": true
+   },
+   {
+    "name": "get-documentation-index",
+    "summary": "Get the DocC documentation navigation index (modules, symbols, articles with paths) for a package version.",
+    "verified": true
+   },
+   {
+    "name": "get-documentation-page",
+    "summary": "Get a DocC documentation page as JSON (abstract, overview content, topic sections) for a module or symbol path in a package version.",
+    "verified": true
+   },
+   {
+    "name": "get-package-score",
+    "summary": "Get a package's maintainer information: total package score and the per-trait score breakdown used for search ranking.",
+    "verified": true
+   },
+   {
+    "name": "list-recent-builds",
+    "summary": "List the most recent builds across all packages (build monitor): package, author, status, time, reference, Swift version and platform.",
+    "verified": true
+   },
+   {
+    "name": "list-recent-activity",
+    "summary": "List recently added packages and recent package releases from the home page.",
+    "verified": true
+   },
+   {
+    "name": "get-swift6-readiness",
+    "summary": "Get the Ready for Swift 6 stats: time series of packages with zero data race safety errors and total errors, for all packages and subsets.",
+    "verified": true
+   }
+  ],
+  "verified": 15,
+  "writes": 0,
+  "dropped": [],
+  "blockers": [],
+  "loggedIn": false,
+  "seconds": 196,
+  "next": [
+   "clify swiftpackageindex",
+   "clify swiftpackageindex search-packages --query \"networking\""
+  ],
+  "installed": "/home/ubuntu/clify-runs/blaxel-w1/home/bin/swiftpackageindex",
+  "explored": {
+   "steps": 21,
+   "recorded": 30,
+   "heldWrites": 0
+  }
+ },
+ "check": {
+  "on": "blaxel",
+  "node": "v24.22.0",
+  "seconds": 5,
+  "reads": 15,
+  "verified": 15,
+  "failed": [],
+  "results": [
+   {
+    "name": "search-packages",
+    "ok": true,
+    "ms": 204
+   },
+   {
+    "name": "get-package",
+    "ok": true,
+    "ms": 209
+   },
+   {
+    "name": "get-package-readme",
+    "ok": true,
+    "ms": 150
+   },
+   {
+    "name": "get-package-releases",
+    "ok": true,
+    "ms": 66
+   },
+   {
+    "name": "get-package-builds",
+    "ok": true,
+    "ms": 100
+   },
+   {
+    "name": "get-build",
+    "ok": true,
+    "ms": 133
+   },
+   {
+    "name": "list-author-packages",
+    "ok": true,
+    "ms": 31
+   },
+   {
+    "name": "list-keyword-packages",
+    "ok": true,
+    "ms": 147
+   },
+   {
+    "name": "get-collection",
+    "ok": true,
+    "ms": 85
+   },
+   {
+    "name": "get-documentation-index",
+    "ok": true,
+    "ms": 245
+   },
+   {
+    "name": "get-documentation-page",
+    "ok": true,
+    "ms": 138
+   },
+   {
+    "name": "get-package-score",
+    "ok": true,
+    "ms": 63
+   },
+   {
+    "name": "list-recent-builds",
+    "ok": true,
+    "ms": 481
+   },
+   {
+    "name": "list-recent-activity",
+    "ok": true,
+    "ms": 51
+   },
+   {
+    "name": "get-swift6-readiness",
+    "ok": true,
+    "ms": 45
+   }
+  ]
+ },
+ "deleted": true,
+ "seconds": 203
+}

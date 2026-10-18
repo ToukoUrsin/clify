@@ -1,0 +1,206 @@
+{
+ "url": "https://www.airnow.gov/",
+ "category": "maps-weather",
+ "sandbox": "clify-www-airnow-gov",
+ "startedAt": "2026-10-18T09:19:50.243Z",
+ "region": "us-pdx-1",
+ "chrome": "Chrome/148.0.7778.96",
+ "sandboxStartMs": 2379,
+ "addSeconds": 203,
+ "addExit": 0,
+ "add": {
+  "ok": true,
+  "site": "airnow",
+  "url": "https://www.airnow.gov/",
+  "commands": [
+   {
+    "name": "suggest-reporting-areas",
+    "summary": "Autocomplete AirNow reporting area names (e.g. 'Denver-Boulder, CO') from a city name or ZIP fragment",
+    "verified": true
+   },
+   {
+    "name": "geocode-location",
+    "summary": "Resolve a U.S. city, region or ZIP code to latitude/longitude (x=longitude, y=latitude) for use with get-current-aqi and get-weather",
+    "verified": true
+   },
+   {
+    "name": "get-current-aqi",
+    "summary": "Get current observed AQI and today/tomorrow forecasts per pollutant for the reporting area nearest a latitude/longitude",
+    "verified": true
+   },
+   {
+    "name": "get-reporting-area-location",
+    "summary": "Get the latitude/longitude of a named reporting area",
+    "verified": true
+   },
+   {
+    "name": "get-reporting-area-providers",
+    "summary": "Get the data and forecast provider agencies (with URLs) for a reporting area",
+    "verified": true
+   },
+   {
+    "name": "get-interpolated-pm25",
+    "summary": "Get the current interpolated PM2.5 AQI and category for a reporting area",
+    "verified": true
+   },
+   {
+    "name": "get-weather",
+    "summary": "Get current weather (temperature \u00b0F, wind, humidity, pressure) at a latitude/longitude",
+    "verified": true
+   },
+   {
+    "name": "get-reporting-area-hourly",
+    "summary": "Get the last 24 hours of hourly AQI (with dominant pollutant) for a reporting area",
+    "verified": true
+   },
+   {
+    "name": "get-reporting-area-daily",
+    "summary": "Get the last 30 days of daily AQI (with dominant pollutant) for a reporting area",
+    "verified": true
+   },
+   {
+    "name": "get-site-hourly",
+    "summary": "Get the last 24 hours of hourly AQI and concentrations per pollutant for a monitoring site",
+    "verified": true
+   },
+   {
+    "name": "get-site-daily",
+    "summary": "Get the last 30 days of daily AQI and concentrations per pollutant for a monitoring site",
+    "verified": true
+   },
+   {
+    "name": "list-state-aqi",
+    "summary": "List current observations and forecasts for every reporting area in a state",
+    "verified": true
+   },
+   {
+    "name": "get-state-history",
+    "summary": "Get daily AQI for ozone, PM2.5 and PM10 for every reporting area in a state on a past date",
+    "verified": true
+   },
+   {
+    "name": "get-top-aqi",
+    "summary": "List the U.S. reporting areas with the highest current NowCast AQI",
+    "verified": true
+   },
+   {
+    "name": "list-state-alerts",
+    "summary": "List states that currently have an AirNow notification (e.g. Wildfires) and its alert type",
+    "verified": true
+   },
+   {
+    "name": "search-site",
+    "summary": "Keyword search of AirNow.gov pages and documents (EPA search, scoped to www.airnow.gov), 10 results per page",
+    "verified": true
+   }
+  ],
+  "verified": 16,
+  "writes": 0,
+  "dropped": [],
+  "blockers": [],
+  "loggedIn": false,
+  "seconds": 203,
+  "next": [
+   "clify airnow",
+   "clify airnow suggest-reporting-areas --term \"Denver\""
+  ],
+  "installed": "/home/ubuntu/clify-runs/blaxel-w2/home/bin/airnow",
+  "explored": {
+   "steps": 23,
+   "recorded": 112,
+   "heldWrites": 0
+  }
+ },
+ "check": {
+  "on": "blaxel",
+  "node": "v24.22.0",
+  "seconds": 5,
+  "reads": 16,
+  "verified": 16,
+  "failed": [],
+  "results": [
+   {
+    "name": "suggest-reporting-areas",
+    "ok": true,
+    "ms": 185
+   },
+   {
+    "name": "geocode-location",
+    "ok": true,
+    "ms": 50
+   },
+   {
+    "name": "get-current-aqi",
+    "ok": true,
+    "ms": 29
+   },
+   {
+    "name": "get-reporting-area-location",
+    "ok": true,
+    "ms": 83
+   },
+   {
+    "name": "get-reporting-area-providers",
+    "ok": true,
+    "ms": 27
+   },
+   {
+    "name": "get-interpolated-pm25",
+    "ok": true,
+    "ms": 355
+   },
+   {
+    "name": "get-weather",
+    "ok": true,
+    "ms": 62
+   },
+   {
+    "name": "get-reporting-area-hourly",
+    "ok": true,
+    "ms": 27
+   },
+   {
+    "name": "get-reporting-area-daily",
+    "ok": true,
+    "ms": 28
+   },
+   {
+    "name": "get-site-hourly",
+    "ok": true,
+    "ms": 27
+   },
+   {
+    "name": "get-site-daily",
+    "ok": true,
+    "ms": 28
+   },
+   {
+    "name": "list-state-aqi",
+    "ok": true,
+    "ms": 76
+   },
+   {
+    "name": "get-state-history",
+    "ok": true,
+    "ms": 27
+   },
+   {
+    "name": "get-top-aqi",
+    "ok": true,
+    "ms": 32
+   },
+   {
+    "name": "list-state-alerts",
+    "ok": true,
+    "ms": 171
+   },
+   {
+    "name": "search-site",
+    "ok": true,
+    "ms": 637
+   }
+  ]
+ },
+ "deleted": true,
+ "seconds": 211
+}

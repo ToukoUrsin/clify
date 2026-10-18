@@ -1,0 +1,50 @@
+# 40 real public sites, no prior spec, robots.txt allows the start page (checked with robots-check.ts).
+# Package registries / dev tools
+https://crates.io/
+https://pypi.org/
+https://rubygems.org/
+https://packagist.org/
+https://pkg.go.dev/
+https://hub.docker.com/
+https://formulae.brew.sh/
+https://www.nuget.org/
+https://www.jsdelivr.com/
+https://huggingface.co/models
+https://docs.rs/
+# Docs
+https://developer.mozilla.org/en-US/
+https://docs.python.org/3/
+# Government / open data portals
+https://catalog.data.gov/dataset
+https://www.data.gov.uk/
+https://www.federalregister.gov/
+https://clinicaltrials.gov/
+https://www.usaspending.gov/
+https://www.legislation.gov.uk/
+https://www.weather.gov/
+https://earthquake.usgs.gov/earthquakes/map/
+https://data.europa.eu/en
+https://ted.europa.eu/en/
+https://www.hankintailmoitukset.fi/fi/
+# Science / culture / catalogs
+https://arxiv.org/
+https://pubmed.ncbi.nlm.nih.gov/
+https://www.rcsb.org/
+https://www.metmuseum.org/art/collection/search
+https://www.artic.edu/collection
+https://musicbrainz.org/
+https://openverse.org/
+https://images.nasa.gov/
+https://www.gutenberg.org/
+https://archive.org/
+https://www.inaturalist.org/observations
+# Media / community / search-heavy
+https://news.ycombinator.com/
+https://www.tvmaze.com/
+https://dev.to/
+https://www.theguardian.com/international
+https://www.ycombinator.com/companies
+https://remoteok.com/
+https://www.openstreetmap.org/
+https://www.finna.fi/
+https://lichess.org/

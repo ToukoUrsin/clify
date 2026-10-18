@@ -1,0 +1,547 @@
+{
+ "name": "pkg-go",
+ "startUrl": "https://pkg.go.dev/",
+ "origin": "https://pkg.go.dev",
+ "createdAt": "2026-10-18T07:09:41.488Z",
+ "description": "pkg.go.dev is the Go package and module index. This CLI uses its public JSON API (/v1) to search packages and to look up package and module metadata, versions, symbols, importers and vulnerabilities. It also reads a few server-rendered pages: package docs, the standard library listing and the golang.org/x sub-repositories.",
+ "commands": [
+  {
+   "name": "search-packages",
+   "summary": "Search Go packages by keyword, with an optional filter expression (e.g. on import counts) and cursor paging",
+   "method": "GET",
+   "urlTemplate": "/v1/search",
+   "params": [
+    {
+     "name": "q",
+     "in": "query",
+     "required": true,
+     "type": "string",
+     "description": "Search query (package name, keywords, or symbol such as io.Reader)",
+     "example": "http router"
+    },
+    {
+     "name": "limit_value",
+     "key": "limit",
+     "in": "query",
+     "required": false,
+     "type": "number",
+     "description": "Maximum number of results per page",
+     "example": "10"
+    },
+    {
+     "name": "filter",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Go-expression filter over result fields, e.g. importedByCounts.packages > 1000 or hasPrefix(packagePath, \"github.com/\")",
+     "example": "importedByCounts.packages > 1000"
+    },
+    {
+     "name": "token",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Page token: the nextPageToken from a previous response. Made-up values return 400."
+    }
+   ],
+   "responseType": "json",
+   "resultPath": "items",
+   "defaultFields": [
+    "packagePath",
+    "modulePath",
+    "version",
+    "synopsis",
+    "importedByCounts.packages"
+   ],
+   "pagination": {
+    "type": "cursor",
+    "param": "token",
+    "nextPath": "nextPageToken"
+   },
+   "mutates": false,
+   "example": {
+    "q": "http router",
+    "limit_value": "10"
+   },
+   "source": "E1 GET https://pkg.go.dev/v1/search",
+   "verified": true
+  },
+  {
+   "name": "get-package",
+   "summary": "Get metadata for a Go package (module, version, name, synopsis, latest flag, std flag), optionally at a specific version",
+   "method": "GET",
+   "urlTemplate": "/v1/package/{path}",
+   "params": [
+    {
+     "name": "path",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Package import path, slashes kept, e.g. github.com/gorilla/mux or net/http",
+     "example": "github.com/gorilla/mux"
+    },
+    {
+     "name": "version",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Module version, semver like v1.7.0. Standard-library versions use the v1.27.2 form, not go1.27.2.",
+     "example": "v1.7.0"
+    },
+    {
+     "name": "module",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Module path, used to disambiguate when the package path could belong to several modules"
+    }
+   ],
+   "responseType": "json",
+   "defaultFields": [
+    "path",
+    "name",
+    "modulePath",
+    "version",
+    "isLatest",
+    "isStandardLibrary",
+    "synopsis",
+    "isRedistributable"
+   ],
+   "mutates": false,
+   "example": {
+    "path": "github.com/gorilla/mux"
+   },
+   "source": "E2 GET https://pkg.go.dev/v1/package/github.com/gorilla/mux",
+   "verified": true
+  },
+  {
+   "name": "get-module",
+   "summary": "Get metadata for a Go module (latest or given version, commit time, repo URL, go.mod presence)",
+   "method": "GET",
+   "urlTemplate": "/v1/module/{path}",
+   "params": [
+    {
+     "name": "path",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Module path, slashes kept, e.g. github.com/gorilla/mux",
+     "example": "github.com/gorilla/mux"
+    },
+    {
+     "name": "version",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Module version (semver, e.g. v1.8.0). Defaults to latest."
+    }
+   ],
+   "responseType": "json",
+   "defaultFields": [
+    "path",
+    "version",
+    "commitTime",
+    "isLatest",
+    "repoUrl",
+    "hasGoMod",
+    "isRedistributable",
+    "isStandardLibrary"
+   ],
+   "mutates": false,
+   "example": {
+    "path": "github.com/gorilla/mux"
+   },
+   "source": "E6 GET https://pkg.go.dev/v1/module/github.com/gorilla/mux",
+   "verified": true
+  },
+  {
+   "name": "list-module-packages",
+   "summary": "List the packages contained in a Go module, with an optional filter (e.g. name == \"main\")",
+   "method": "GET",
+   "urlTemplate": "/v1/packages/{path}",
+   "params": [
+    {
+     "name": "path",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Module path, slashes kept, e.g. github.com/gorilla/mux or golang.org/x/tools",
+     "example": "github.com/gorilla/mux"
+    },
+    {
+     "name": "version",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Module version (semver). Defaults to latest."
+    },
+    {
+     "name": "filter",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Filter expression over package fields (path, name, synopsis), e.g. name == \"main\""
+    },
+    {
+     "name": "token",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Page token from the previous response's packages.nextPageToken"
+    }
+   ],
+   "responseType": "json",
+   "resultPath": "packages.items",
+   "defaultFields": [
+    "path",
+    "name",
+    "synopsis",
+    "isRedistributable"
+   ],
+   "pagination": {
+    "type": "cursor",
+    "param": "token",
+    "nextPath": "packages.nextPageToken"
+   },
+   "mutates": false,
+   "example": {
+    "path": "github.com/gorilla/mux"
+   },
+   "source": "E7 GET https://pkg.go.dev/v1/packages/github.com/gorilla/mux",
+   "verified": true
+  },
+  {
+   "name": "list-versions",
+   "summary": "List all versions of a Go module, with commit time, deprecation and retraction status",
+   "method": "GET",
+   "urlTemplate": "/v1/versions/{path}",
+   "params": [
+    {
+     "name": "path",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Module path, slashes kept, e.g. github.com/gorilla/mux",
+     "example": "github.com/gorilla/mux"
+    },
+    {
+     "name": "filter",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Filter expression over version fields, e.g. retracted == false or hasPrefix(version, \"v1.8\")"
+    },
+    {
+     "name": "token",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Page token from the previous response's nextPageToken"
+    }
+   ],
+   "responseType": "json",
+   "resultPath": "items",
+   "defaultFields": [
+    "version",
+    "commitTime",
+    "latestVersion",
+    "deprecated",
+    "deprecationReason",
+    "retracted",
+    "retractionReason",
+    "hasGoMod"
+   ],
+   "pagination": {
+    "type": "cursor",
+    "param": "token",
+    "nextPath": "nextPageToken"
+   },
+   "mutates": false,
+   "example": {
+    "path": "github.com/gorilla/mux"
+   },
+   "source": "E4 GET https://pkg.go.dev/v1/versions/github.com/gorilla/mux",
+   "verified": true
+  },
+  {
+   "name": "list-symbols",
+   "summary": "List exported symbols (types, funcs, methods, fields, consts, vars) of a Go package, optionally for a GOOS/GOARCH build context and filter",
+   "method": "GET",
+   "urlTemplate": "/v1/symbols/{path}",
+   "params": [
+    {
+     "name": "path",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Package import path, slashes kept, e.g. net/http or github.com/gorilla/mux",
+     "example": "net/http"
+    },
+    {
+     "name": "version",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Module version. For the standard library use the v1.27.2 form; go1.22.0 returns 404."
+    },
+    {
+     "name": "GOOS",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Target OS build context, e.g. linux, windows, darwin, js",
+     "example": "windows"
+    },
+    {
+     "name": "GOARCH",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Target architecture build context, e.g. amd64, arm64, wasm",
+     "example": "amd64"
+    },
+    {
+     "name": "filter",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Filter expression over symbol fields (name, kind, synopsis, parent), e.g. kind == \"Type\" or hasPrefix(name, \"Server\")",
+     "example": "hasPrefix(name, \"Server\")"
+    },
+    {
+     "name": "token",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Page token from the previous response's symbols.nextPageToken"
+    }
+   ],
+   "responseType": "json",
+   "resultPath": "symbols.items",
+   "defaultFields": [
+    "name",
+    "kind",
+    "parent",
+    "synopsis"
+   ],
+   "pagination": {
+    "type": "cursor",
+    "param": "token",
+    "nextPath": "symbols.nextPageToken"
+   },
+   "mutates": false,
+   "example": {
+    "path": "net/http",
+    "GOOS": "windows",
+    "GOARCH": "amd64",
+    "filter": "hasPrefix(name, \"Server\")"
+   },
+   "source": "E5 E9 GET https://pkg.go.dev/v1/symbols/github.com/gorilla/mux",
+   "verified": true
+  },
+  {
+   "name": "list-importers",
+   "summary": "List import paths of packages that import a given Go package (excluding packages in the same module), paged by cursor",
+   "method": "GET",
+   "urlTemplate": "/v1/imported-by/{path}",
+   "params": [
+    {
+     "name": "path",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Package import path, slashes kept, e.g. github.com/gorilla/mux",
+     "example": "github.com/gorilla/mux"
+    },
+    {
+     "name": "filter",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Filter expression on the importer path (variable `path`), e.g. hasPrefix(path, \"github.com/kubernetes\")"
+    },
+    {
+     "name": "token",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Page token from the previous response's importedBy.nextPageToken"
+    }
+   ],
+   "responseType": "json",
+   "resultPath": "importedBy.items",
+   "pagination": {
+    "type": "cursor",
+    "param": "token",
+    "nextPath": "importedBy.nextPageToken"
+   },
+   "mutates": false,
+   "example": {
+    "path": "github.com/gorilla/mux"
+   },
+   "source": "E3 GET https://pkg.go.dev/v1/imported-by/github.com/gorilla/mux",
+   "verified": true
+  },
+  {
+   "name": "list-vulns",
+   "summary": "List known Go vulnerabilities (from the Go vuln DB) affecting a module at a given version (latest by default)",
+   "method": "GET",
+   "urlTemplate": "/v1/vulns/{path}",
+   "params": [
+    {
+     "name": "path",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Module path, slashes kept, e.g. golang.org/x/net",
+     "example": "golang.org/x/net"
+    },
+    {
+     "name": "version",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Module version to check (semver, e.g. v0.1.0). Defaults to latest, which often has no known vulns.",
+     "example": "v0.1.0"
+    },
+    {
+     "name": "token",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Page token from the previous response's nextPageToken"
+    }
+   ],
+   "responseType": "json",
+   "resultPath": "items",
+   "pagination": {
+    "type": "cursor",
+    "param": "token",
+    "nextPath": "nextPageToken"
+   },
+   "mutates": false,
+   "example": {
+    "path": "golang.org/x/net",
+    "version": "v0.1.0"
+   },
+   "source": "E8",
+   "verified": true
+  },
+  {
+   "name": "get-package-doc",
+   "summary": "Fetch the rendered documentation page of a package (README, doc text, repo link), optionally at a version (path@version) and GOOS",
+   "method": "GET",
+   "urlTemplate": "/{path}",
+   "params": [
+    {
+     "name": "path",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Import path, slashes kept, optionally suffixed with @version, e.g. github.com/gorilla/mux, github.com/gorilla/mux@v1.7.0, net/http",
+     "example": "github.com/gorilla/mux"
+    },
+    {
+     "name": "GOOS",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Build context to render docs for, e.g. windows, linux, darwin, js"
+    }
+   ],
+   "responseType": "html",
+   "extract": {
+    "fields": {
+     "title": "title",
+     "repository": "div.UnitMeta-repo > a@href",
+     "goModUrl": "ul.UnitMeta-details summary.go-textSubtle a@href",
+     "buildContexts": "select.go-Select option",
+     "documentation": "div.Documentation",
+     "readme": "div.UnitReadme-content"
+    }
+   },
+   "defaultFields": [
+    "title",
+    "repository",
+    "readme",
+    "documentation"
+   ],
+   "mutates": false,
+   "example": {
+    "path": "github.com/gorilla/mux"
+   },
+   "source": "E10 E11 E12 GET https://pkg.go.dev/github.com/gorilla/mux",
+   "verified": true
+  },
+  {
+   "name": "list-std-packages",
+   "summary": "List the Go standard library packages with links and synopses",
+   "method": "GET",
+   "urlTemplate": "/std",
+   "params": [],
+   "responseType": "html",
+   "extract": {
+    "list": "div.UnitDirectories-subdirectory, div.UnitDirectories-pathCell",
+    "fields": {
+     "name": "a || span",
+     "url": "a@href",
+     "synopsis": "div.UnitDirectories-mobileSynopsis"
+    }
+   },
+   "defaultFields": [
+    "name",
+    "url",
+    "synopsis"
+   ],
+   "mutates": false,
+   "source": "E13 GET https://pkg.go.dev/std",
+   "verified": true
+  },
+  {
+   "name": "list-subrepos",
+   "summary": "List the official Go sub-repositories (golang.org/x/...) with short descriptions",
+   "method": "GET",
+   "urlTemplate": "/golang.org/x",
+   "params": [],
+   "responseType": "html",
+   "extract": {
+    "list": "ul.SubRepo-links > li",
+    "fields": {
+     "name": "a",
+     "url": "a@href",
+     "description": ""
+    }
+   },
+   "defaultFields": [
+    "name",
+    "url",
+    "description"
+   ],
+   "mutates": false,
+   "source": "E17 GET https://pkg.go.dev/golang.org/x",
+   "verified": true
+  }
+ ],
+ "blockers": [],
+ "notes": [
+  "The JSON API at https://pkg.go.dev/v1 is the documented public API (spec at /v1/openapi.yaml). It is rate-limited to about 45 QPS per client and answers 429 when exceeded.",
+  "Path params are import or module paths that contain slashes (e.g. github.com/gorilla/mux). Pass them as-is: do not URL-encode the slashes.",
+  "Pagination is cursor-based. Pass the nextPageToken from the previous response as --token. Invented tokens return 400. As long as nextPageToken is non-empty there may be more results, even if the current page is short.",
+  "Filters are Go-like expressions: ==, !=, <, >, &&, ||, !, plus the functions contains(s,sub), hasPrefix(s,pre), hasSuffix(s,suf) and matches(s,re). The variables are the fields of each list item, e.g. name, kind, path, importedByCounts.packages.",
+  "Standard-library versions use the module-style form v1.27.2 (go1.27.2 \u2192 v1.27.2). go1.x.y returns 404 on API routes.",
+  "list-importers may report total -1 when the count has not been computed yet.",
+  "list-vulns returns {items:null,total:0} when a module has no known vulnerabilities. The recorded example golang.org/x/net returned empty at its latest version.",
+  "The HTML /search page is disallowed by robots.txt. Use search-packages (the JSON API) instead.",
+  "The package page tabs (?tab=imports, licenses, versions, importedby) exist in HTML but were not mapped to extract fields. Use list-versions and list-importers for the equivalent data. A package's own import list is only available on the HTML imports tab.",
+  "list-module-packages with path=std likely returns the standard library packages via JSON as an alternative to list-std-packages, but this was not recorded."
+ ],
+ "dropped": [],
+ "generated": {
+  "by": "clify add",
+  "model": "claude-opus-5-5",
+  "exploredSteps": 30,
+  "recorded": 30,
+  "verifiedAt": "2026-10-18T07:10:49.412Z",
+  "seconds": 217
+ }
+}

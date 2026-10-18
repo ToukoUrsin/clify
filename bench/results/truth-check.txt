@@ -1,0 +1,24 @@
+bench ground truth, recomputed without clify on 2026-10-18T10:35:18.427Z
+
+AGREE   books-mystery-max: {"expect":["Boar Island","59.48"]} (main,ui,ui2)
+AGREE   books-travel-over-40: {"number":5} (main,smoke,ui,ui2)
+AGREE   books-cheapest-first-5-pages: {"expect":["Patience","10.16"]} (hard,ui,ui2)
+AGREE   quotes-humor-author: {"expect":["Jane Austen","December 16 1775"]} (main,ui,ui2)
+AGREE   quotes-love-count: {"number":14} (main,ui,ui2)
+AGREE   quotes-top-author: {"expect":["Albert Einstein"],"number":10} (hard,ui,ui2)
+AGREE   scrapethis-oscar-2012: {"expect":["Argo"],"number":3} (main,smoke,ui,ui2)
+AGREE   scrapethis-hockey-detroit-1995: {"number":62} (main,ui,ui2)
+AGREE   hockey-best-1990: {"expect":["Chicago Blackhawks"],"number":49} (hard,ui,ui2)
+AGREE   webscraper-laptop-max: {"expect":["Asus ROG Strix SCAR Edition GL503VM-ED115T","1799"]} (main,ui,ui2)
+AGREE   endoflife-ubuntu-2204: {"expect":["2027-06-01"]} (main,ui,ui2)
+AGREE   ubuntu-lts-supported: {"expect":["26.04","24.04","22.04"]} (hard,ui,ui2)
+AGREE   crates-serde-vs-tokio: {"expect":["serde"]} (hard,ui,ui2)
+AGREE   crates-tokio: {"expect":["1.53.3","MIT"]} (main,ui,ui2)
+AGREE   hex-phoenix: {"expect":["1.8.15","MIT"]} (main,ui,ui2)
+AGREE   homebrew-ffmpeg: {"expect":["9.0.2","GPL-3.0-or-later"]} (main,ui,ui2)
+AGREE   nodejs-latest-lts: {"expect":["24.22.0","Krypton"]} (main,ui,ui2)
+AGREE   debian-nginx-bookworm: {"expect":["1.22.1-9+deb12u10"]} (main,ui,ui2)
+AGREE   github-playwright-release: {"expect":["1.64.1","2026-10-14"]} (main,ui,ui2)
+AGREE   github-playwright-releases-2026: {"number":13} (hard,ui,ui2)
+
+20 of 20 tasks agree with every recorded truth; 7 track facts that may have moved since the runs (0 did); 0 errors.

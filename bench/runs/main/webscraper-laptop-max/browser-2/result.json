@@ -1,0 +1,43 @@
+{
+ "task": "webscraper-laptop-max",
+ "site": "webscraper",
+ "mode": "browser",
+ "trial": 2,
+ "tag": "main",
+ "ok": true,
+ "why": "all expected values present",
+ "answer": "Asus ROG Strix SCAR Edition GL503VM-ED115T — $1799",
+ "expected": {
+  "expect": [
+   "Asus ROG Strix SCAR Edition GL503VM-ED115T",
+   "1799"
+  ],
+  "detail": {
+   "title": "Asus ROG Strix SCAR Edition GL503VM-ED115T",
+   "price": "$1799",
+   "description": "Asus ROG Strix SCAR Edition GL503VM-ED115T, 15.6\" FHD 120Hz, Core i7-7700HQ, 16GB, 256GB SSD + 1TB SSHD, GeForce GTX 1060 6GB, Windows 10 Home",
+   "reviews": "8 reviews",
+   "url": "https://webscraper.io/test-sites/e-commerce/allinone/product/59",
+   "n": 117
+  }
+ },
+ "wallMs": 12675,
+ "apiMs": 9404,
+ "turns": 4,
+ "toolCalls": 3,
+ "tokens": {
+  "input": 8,
+  "output": 586,
+  "cacheWrite": 6282,
+  "cacheRead": 43385,
+  "total": 50261
+ },
+ "costUsd": 0.051838999999999996,
+ "models": [
+  "claude-opus-5-5"
+ ],
+ "exitCode": 0,
+ "timedOut": false,
+ "subtype": "success",
+ "startedAt": "2026-10-17T23:21:49.370Z"
+}

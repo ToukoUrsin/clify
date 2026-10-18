@@ -1,0 +1,574 @@
+{
+ "name": "ebi",
+ "startUrl": "https://www.ebi.ac.uk/",
+ "origin": "https://www.ebi.ac.uk",
+ "createdAt": "2026-10-18T08:12:28.134Z",
+ "description": "EBI Search (EMBL-EBI): keyword search across all EMBL-EBI data resources such as UniProt, PDBe, Ensembl, Europe PMC, ChEBI and Reactome, with entry lookup, cross-references, gene/protein identification and FASTA sequence download.",
+ "commands": [
+  {
+   "name": "search-domain",
+   "summary": "Keyword search within one EBI Search domain (e.g. uniprot, proteinSequences, pubmed, chebi, pdbe), with field selection, facet filters, sorting and offset paging",
+   "method": "GET",
+   "urlTemplate": "/ebisearch/ws/rest/{domain}?format=json",
+   "params": [
+    {
+     "name": "domain",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Domain id, e.g. uniprot, proteinSequences, pubmed, chebi, pdbe, ensembl_gene, reactome, allebi. Run list-domains for all ids.",
+     "example": "uniprot"
+    },
+    {
+     "name": "query",
+     "in": "query",
+     "required": true,
+     "type": "string",
+     "description": "Lucene-style query, e.g. insulin, or field:value such as name:insulin AND TAXONOMY:9606",
+     "example": "insulin"
+    },
+    {
+     "name": "api_fields",
+     "key": "fields",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Comma-separated retrievable fields to return for each entry. Valid fields depend on the domain (see get-domain-info). uniprot example: descRecName,organism_scientific_name,acc,status. Sent to the site",
+     "example": "descRecName,organism_scientific_name,acc,status"
+    },
+    {
+     "name": "facets",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Facet filters as facetId:value, comma-separated, e.g. TAXONOMY:9606,status:Reviewed (see get-search-facets for values)",
+     "example": "TAXONOMY:9606,status:Reviewed"
+    },
+    {
+     "name": "sort",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Sort as field:ascending|descending, e.g. publication_date:descending. Only sortable fields are allowed (see get-domain-info); uniprot does not allow sorting on id or length."
+    },
+    {
+     "name": "size",
+     "in": "query",
+     "required": false,
+     "type": "number",
+     "description": "Results per page (max 100)",
+     "default": 15
+    },
+    {
+     "name": "start",
+     "in": "query",
+     "required": false,
+     "type": "number",
+     "description": "Zero-based result offset for paging",
+     "default": 0
+    }
+   ],
+   "responseType": "json",
+   "resultPath": "entries",
+   "defaultFields": [
+    "id",
+    "acc",
+    "source",
+    "score",
+    "fields"
+   ],
+   "pagination": {
+    "type": "offset",
+    "param": "start",
+    "step": 15
+   },
+   "mutates": false,
+   "example": {
+    "domain": "uniprot",
+    "query": "insulin",
+    "api_fields": "descRecName,organism_scientific_name,acc,status",
+    "facets": "TAXONOMY:9606,status:Reviewed"
+   },
+   "source": "E3 E14 E25 E47 E128",
+   "verified": true
+  },
+  {
+   "name": "get-search-facets",
+   "summary": "Get facet value counts for a query in a domain, e.g. source database, organism (TAXONOMY) or review status, to discover filter values for search-domain",
+   "method": "GET",
+   "urlTemplate": "/ebisearch/ws/rest/{domain}?size=0&format=json",
+   "params": [
+    {
+     "name": "domain",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Domain id, e.g. uniprot, proteinSequences, pubmed",
+     "example": "proteinSequences"
+    },
+    {
+     "name": "query",
+     "in": "query",
+     "required": true,
+     "type": "string",
+     "description": "Search query",
+     "example": "insulin"
+    },
+    {
+     "name": "facetfields",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Comma-separated facet ids to return, e.g. domain_source, TAXONOMY, status. Omit to get all facets.",
+     "example": "domain_source"
+    },
+    {
+     "name": "facetcount",
+     "in": "query",
+     "required": false,
+     "type": "number",
+     "description": "Maximum number of values per facet",
+     "default": 11
+    },
+    {
+     "name": "facets",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Facet filters already applied, e.g. TAXONOMY:9606"
+    }
+   ],
+   "responseType": "json",
+   "resultPath": "facets",
+   "defaultFields": [
+    "id",
+    "label",
+    "total",
+    "facetValues"
+   ],
+   "mutates": false,
+   "example": {
+    "domain": "proteinSequences",
+    "query": "insulin",
+    "facetfields": "domain_source",
+    "facetcount": "50"
+   },
+   "source": "E3 E14 GET https://www.ebi.ac.uk/ebisearch/ws/rest/proteinSequences/",
+   "verified": true
+  },
+  {
+   "name": "count-all-domains",
+   "summary": "Search all EMBL-EBI data at once and get hit counts per domain and subdomain (the tree behind the 'All results' page)",
+   "method": "GET",
+   "urlTemplate": "/ebisearch/ws/rest/allebi?format=json",
+   "params": [
+    {
+     "name": "query",
+     "in": "query",
+     "required": true,
+     "type": "string",
+     "description": "Keyword query",
+     "example": "insulin"
+    }
+   ],
+   "responseType": "json",
+   "resultPath": "domains",
+   "defaultFields": [
+    "id",
+    "hitCount",
+    "subdomains"
+   ],
+   "mutates": false,
+   "example": {
+    "query": "insulin"
+   },
+   "source": "E2 GET https://www.ebi.ac.uk/ebisearch/ws/rest/allebi",
+   "verified": true
+  },
+  {
+   "name": "list-domains",
+   "summary": "List all EBI Search domains and subdomains (ids, names, descriptions, index info) as a tree",
+   "method": "GET",
+   "urlTemplate": "/ebisearch/ws/rest?format=json",
+   "params": [],
+   "responseType": "json",
+   "resultPath": "domains",
+   "defaultFields": [
+    "id",
+    "name",
+    "description",
+    "subdomains"
+   ],
+   "mutates": false,
+   "source": "E131 E15 GET https://www.ebi.ac.uk/ebisearch/ws/rest",
+   "verified": true
+  },
+  {
+   "name": "get-domain-info",
+   "summary": "Get one domain's metadata: searchable/retrievable/sortable fields, facets, and index info. Use it to find valid values for fields, facets and sort.",
+   "method": "GET",
+   "urlTemplate": "/ebisearch/ws/rest/{domain}?format=json",
+   "params": [
+    {
+     "name": "domain",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Domain id, e.g. uniprot, pubmed, pdbe",
+     "example": "uniprot"
+    }
+   ],
+   "responseType": "json",
+   "resultPath": "domains",
+   "defaultFields": [
+    "id",
+    "name",
+    "description",
+    "fieldInfos",
+    "facets",
+    "indexInfos"
+   ],
+   "mutates": false,
+   "example": {
+    "domain": "uniprot"
+   },
+   "source": "E125 GET https://www.ebi.ac.uk/ebisearch/ws/rest/uniprot",
+   "verified": true
+  },
+  {
+   "name": "get-entries",
+   "summary": "Fetch one or more entries by id or accession from a domain, with selected fields",
+   "method": "GET",
+   "urlTemplate": "/ebisearch/ws/rest/{domain}/entry/{ids}?format=json",
+   "params": [
+    {
+     "name": "domain",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Domain id, e.g. uniprot",
+     "example": "uniprot"
+    },
+    {
+     "name": "ids",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Entry id(s), comma-separated, e.g. P01308 or P06213,P08069",
+     "example": "P06213,P08069"
+    },
+    {
+     "name": "api_fields",
+     "key": "fields",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Comma-separated retrievable fields for the domain, e.g. descRecName,organism_scientific_name,status,length (sent to the site as \"fields\"; clify's own --fields only shapes the output)",
+     "example": "descRecName,organism_scientific_name,status"
+    },
+    {
+     "name": "fieldurl",
+     "in": "query",
+     "required": false,
+     "type": "boolean",
+     "description": "Include links to the source resource page",
+     "default": true
+    },
+    {
+     "name": "viewurl",
+     "in": "query",
+     "required": false,
+     "type": "boolean",
+     "description": "Include alternative view links such as FASTA",
+     "default": true
+    }
+   ],
+   "responseType": "json",
+   "resultPath": "entries",
+   "defaultFields": [
+    "id",
+    "acc",
+    "source",
+    "fields",
+    "fieldURLs",
+    "viewURLs"
+   ],
+   "mutates": false,
+   "example": {
+    "domain": "uniprot",
+    "ids": "P06213,P08069",
+    "api_fields": "descRecName,organism_scientific_name,status"
+   },
+   "source": "E126 E129 GET https://www.ebi.ac.uk/ebisearch/ws/rest/uniprot/entry/P01308",
+   "verified": true
+  },
+  {
+   "name": "list-entry-xref-domains",
+   "summary": "List the domains an entry is cross-referenced to, with the number of referenced entries in each (e.g. pdbe, alphafold, europepmc)",
+   "method": "GET",
+   "urlTemplate": "/ebisearch/ws/rest/{domain}/entry/{id}/xref?includehidden=false&format=json",
+   "params": [
+    {
+     "name": "domain",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Source domain id, e.g. uniprot, omim, reactome, hgnc",
+     "example": "uniprot"
+    },
+    {
+     "name": "id",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Entry id in the source domain, e.g. INS_HUMAN or P01308 for uniprot, 176730 for omim",
+     "example": "INS_HUMAN"
+    }
+   ],
+   "responseType": "json",
+   "resultPath": "domains",
+   "defaultFields": [
+    "id",
+    "referenceEntryCount"
+   ],
+   "mutates": false,
+   "example": {
+    "domain": "uniprot",
+    "id": "INS_HUMAN"
+   },
+   "source": "E4 E24 E41 E48 E50 E121 GET https://www.ebi.ac.uk/ebisearch/ws/rest/uniprot/entry/INS_HUMAN/xref",
+   "verified": true
+  },
+  {
+   "name": "get-entry-xrefs",
+   "summary": "Get the entries in a target domain that cross-reference a given entry (e.g. AlphaFold or BioModels entries for UniProt INS_HUMAN)",
+   "method": "GET",
+   "urlTemplate": "/ebisearch/ws/rest/{domain}/entry/{id}/xref/{targetDomain}?format=json",
+   "params": [
+    {
+     "name": "domain",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Source domain id, e.g. uniprot",
+     "example": "uniprot"
+    },
+    {
+     "name": "id",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Entry id(s) in the source domain, comma-separated, e.g. INS_HUMAN or P01308",
+     "example": "INS_HUMAN"
+    },
+    {
+     "name": "targetDomain",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Target domain id taken from list-entry-xref-domains for this entry (only those with referenceEntryCount > 0 return results), e.g. alphafold, biomodels, complex-portal, europepmc",
+     "example": "biomodels"
+    },
+    {
+     "name": "api_fields",
+     "key": "fields",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Comma-separated retrievable fields of the target domain to return, e.g. name,description. Sent to the site as \"fields\"; clify's own --fields only shapes the output."
+    },
+    {
+     "name": "size",
+     "in": "query",
+     "required": false,
+     "type": "number",
+     "description": "Number of references per page (max 100)",
+     "default": 15
+    },
+    {
+     "name": "start",
+     "in": "query",
+     "required": false,
+     "type": "number",
+     "description": "Zero-based offset into the references",
+     "default": 0
+    }
+   ],
+   "responseType": "json",
+   "resultPath": "entries",
+   "defaultFields": [
+    "id",
+    "source",
+    "referenceCount",
+    "references"
+   ],
+   "pagination": {
+    "type": "offset",
+    "param": "start",
+    "step": 15
+   },
+   "mutates": false,
+   "example": {
+    "domain": "uniprot",
+    "id": "INS_HUMAN",
+    "targetDomain": "biomodels"
+   },
+   "source": "E130",
+   "verified": true
+  },
+  {
+   "name": "identify-term",
+   "summary": "Identify what a search term refers to (gene, protein, etc., grouped by orthology and organism) with links to summary pages",
+   "method": "GET",
+   "urlTemplate": "/ebisearch/summary/api/identificationsearchbox",
+   "params": [
+    {
+     "name": "term",
+     "in": "query",
+     "required": true,
+     "type": "string",
+     "description": "Gene or protein name or symbol, e.g. insulin, INS, INSR, IDE",
+     "example": "INSR"
+    }
+   ],
+   "responseType": "json",
+   "resultPath": "spines",
+   "defaultFields": [
+    "id",
+    "label",
+    "details",
+    "identifications"
+   ],
+   "mutates": false,
+   "example": {
+    "term": "INSR"
+   },
+   "source": "E7 GET https://www.ebi.ac.uk/ebisearch/summary/api/identificationsearchbox",
+   "verified": true
+  },
+  {
+   "name": "get-summary-details",
+   "summary": "Get the gene/protein summary details (expression, structures, literature...) for an identification returned by identify-term",
+   "method": "GET",
+   "urlTemplate": "/ebisearch/summary/api/summarydetails",
+   "params": [
+    {
+     "name": "term",
+     "in": "query",
+     "required": true,
+     "type": "string",
+     "description": "The original search term",
+     "example": "insulin"
+    },
+    {
+     "name": "spine",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Spine id from identify-term, e.g. molecular",
+     "default": "molecular"
+    },
+    {
+     "name": "tid",
+     "in": "query",
+     "required": true,
+     "type": "string",
+     "description": "Identification id (iid) from identify-term, e.g. synENSG00000144749",
+     "example": "synENSG00000144749"
+    },
+    {
+     "name": "classification",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "NCBI taxonomy id of the organism, e.g. 9606 for human",
+     "example": "9606"
+    }
+   ],
+   "responseType": "json",
+   "mutates": false,
+   "example": {
+    "term": "insulin",
+    "spine": "molecular",
+    "tid": "synENSG00000144749",
+    "classification": "9606"
+   },
+   "source": "E122 GET https://www.ebi.ac.uk/ebisearch/summary/api/summarydetails",
+   "verified": true
+  },
+  {
+   "name": "fetch-sequence",
+   "summary": "Download raw database entries such as a FASTA sequence via dbfetch (e.g. UniProtKB P01308 in FASTA)",
+   "method": "GET",
+   "urlTemplate": "/Tools/dbfetch/dbfetch?style=raw",
+   "params": [
+    {
+     "name": "id",
+     "in": "query",
+     "required": true,
+     "type": "string",
+     "description": "Accession(s), comma-separated, e.g. P01308",
+     "example": "P01308"
+    },
+    {
+     "name": "db",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "dbfetch database name",
+     "enum": [
+      "uniprotkb",
+      "embl",
+      "pdb",
+      "ensemblgene",
+      "interpro",
+      "chebi"
+     ],
+     "default": "uniprotkb"
+    },
+    {
+     "name": "format",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Output format; available formats depend on the database",
+     "enum": [
+      "fasta",
+      "default",
+      "uniprot"
+     ],
+     "default": "fasta"
+    }
+   ],
+   "responseType": "text",
+   "mutates": false,
+   "example": {
+    "id": "P01308",
+    "db": "uniprotkb",
+    "format": "fasta"
+   },
+   "source": "E135 GET https://www.ebi.ac.uk/Tools/dbfetch/dbfetch",
+   "verified": true
+  }
+ ],
+ "blockers": [],
+ "notes": [
+  "Domain ids are case-sensitive. Group domains (allebi, proteinSequences, genomes, literature, ...) aggregate source domains (uniprot, pdbe, pubmed, ...). Each result's 'source' field gives its source domain; use that for entry and xref lookups.",
+  "Valid 'fields', 'facets' and 'sort' values differ per domain. Check get-domain-info first: requesting fields that are not retrievable can cause an error.",
+  "Without a 'fields' parameter, search results contain only id, acc and source.",
+  "Facet filter syntax is facetId:value, comma-separated (e.g. TAXONOMY:9606,status:Reviewed). Use get-search-facets to discover values.",
+  "Sort syntax is field:descending or field:ascending, e.g. sort=publication_date:descending on pubmed.",
+  "Paging is offset-based: start=0,15,30... with size up to 100.",
+  "UniProt entries accept either the accession (P01308) or the entry name (INS_HUMAN) as the id.",
+  "fetch-sequence returns plain text (e.g. FASTA), not JSON."
+ ],
+ "dropped": [],
+ "generated": {
+  "by": "clify add",
+  "model": "claude-opus-5-5",
+  "exploredSteps": 22,
+  "recorded": 290,
+  "verifiedAt": "2026-10-18T08:13:49.639Z",
+  "seconds": 240
+ }
+}

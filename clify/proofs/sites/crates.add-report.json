@@ -1,0 +1,118 @@
+{
+ "ok": true,
+ "site": "crates",
+ "url": "https://crates.io/",
+ "commands": [
+  {
+   "name": "search-crates",
+   "summary": "Search or list crates by text query, with optional keyword/category/letter/user/team filters, sorting and pagination",
+   "verified": true
+  },
+  {
+   "name": "get-crate",
+   "summary": "Get a crate's details: description, links, download totals, keywords, categories and default version",
+   "verified": true
+  },
+  {
+   "name": "list-versions",
+   "summary": "List all published versions of a crate, with downloads, yanked status, license and MSRV",
+   "verified": true
+  },
+  {
+   "name": "get-version",
+   "summary": "Get details of one crate version: features, license, checksum, MSRV, edition, publisher",
+   "verified": true
+  },
+  {
+   "name": "list-dependencies",
+   "summary": "List the dependencies of a specific crate version, with version requirement, kind (normal/dev/build), optional flag and target",
+   "verified": true
+  },
+  {
+   "name": "list-reverse-dependencies",
+   "summary": "List crates that depend on a crate (dependents), sorted by the dependents' downloads",
+   "verified": true
+  },
+  {
+   "name": "get-crate-downloads",
+   "summary": "Get daily download counts for a crate over roughly the last 90 days, broken down by version id",
+   "verified": true
+  },
+  {
+   "name": "get-version-downloads",
+   "summary": "Get daily download counts for one specific crate version",
+   "verified": true
+  },
+  {
+   "name": "list-owners",
+   "summary": "List the owners (users and GitHub teams) of a crate",
+   "verified": true
+  },
+  {
+   "name": "get-readme",
+   "summary": "Get the rendered README (HTML) of a specific crate version",
+   "verified": true
+  },
+  {
+   "name": "list-source-files",
+   "summary": "List the files in a published crate version's source package, with sizes and sha256",
+   "verified": true
+  },
+  {
+   "name": "get-advisories",
+   "summary": "List RustSec security advisories (OSV format) affecting a crate",
+   "verified": true
+  },
+  {
+   "name": "get-docs-status",
+   "summary": "Check whether docs.rs built documentation successfully for a crate version",
+   "verified": true
+  },
+  {
+   "name": "get-user",
+   "summary": "Get a crates.io user's public profile (numeric id, name, GitHub link) by login",
+   "verified": true
+  },
+  {
+   "name": "get-team",
+   "summary": "Get a crate-owning GitHub team's profile (numeric id, name, org URL) by team login",
+   "verified": true
+  },
+  {
+   "name": "list-categories",
+   "summary": "List all crate categories with their slugs, descriptions and crate counts",
+   "verified": true
+  },
+  {
+   "name": "get-category",
+   "summary": "Get one category's details, including subcategories, parent categories and crate count",
+   "verified": true
+  },
+  {
+   "name": "list-keywords",
+   "summary": "List crate keywords with crate counts, sorted by popularity or alphabetically",
+   "verified": true
+  },
+  {
+   "name": "get-summary",
+   "summary": "Get the home-page summary: total crates and downloads, new, most-downloaded and just-updated crates, popular keywords and categories",
+   "verified": true
+  }
+ ],
+ "verified": 19,
+ "writes": 0,
+ "dropped": [],
+ "blockers": [],
+ "loggedIn": false,
+ "seconds": 167,
+ "next": [
+  "clify crates",
+  "clify crates search-crates --q \"http client\" --sort \"downloads\""
+ ],
+ "installed": "/home/ubuntu/clify-runs/batch2/home/bin/crates",
+ "explored": {
+  "steps": 23,
+  "recorded": 84,
+  "heldWrites": 0
+ }
+}

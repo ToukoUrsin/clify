@@ -1,0 +1,36 @@
+{
+ "url": "https://openalex.org/",
+ "category": "science",
+ "sandbox": "clify-openalex-org",
+ "startedAt": "2026-10-18T08:37:58.191Z",
+ "region": "us-pdx-1",
+ "chrome": "Chrome/148.0.7778.96",
+ "sandboxStartMs": 2503,
+ "addSeconds": 35,
+ "addExit": 1,
+ "add": {
+  "ok": false,
+  "site": "openalex",
+  "url": "https://openalex.org/",
+  "commands": [],
+  "verified": 0,
+  "writes": 0,
+  "dropped": [],
+  "blockers": [
+   "captcha"
+  ],
+  "loggedIn": false,
+  "seconds": 34,
+  "next": [
+   "clify openalex",
+   "clify repair openalex --goal \"<what you need from the site>\""
+  ],
+  "explored": {
+   "steps": 6,
+   "recorded": 1,
+   "heldWrites": 0
+  }
+ },
+ "deleted": true,
+ "seconds": 38
+}

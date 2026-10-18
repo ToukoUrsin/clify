@@ -1,0 +1,533 @@
+{
+ "name": "finna",
+ "startUrl": "https://www.finna.fi/",
+ "origin": "https://www.finna.fi",
+ "createdAt": "2026-10-18T07:39:29.924Z",
+ "description": "Finna.fi is the Finnish national search service for libraries, archives and museums. This CLI searches and reads records and authority data through the public read-only Finna REST API (api.finna.fi) and gets citations, exports and holdings from www.finna.fi.",
+ "commands": [
+  {
+   "name": "search-records",
+   "summary": "Keyword search over Finna's index of books, images, archive material and museum objects, with filters, sorting and paging (public Finna API)",
+   "method": "GET",
+   "urlTemplate": "https://api.finna.fi/api/v1/search",
+   "params": [
+    {
+     "name": "lookfor",
+     "in": "query",
+     "required": true,
+     "type": "string",
+     "description": "Search terms",
+     "example": "sibelius"
+    },
+    {
+     "name": "type",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Which field to search",
+     "enum": [
+      "AllFields",
+      "Title",
+      "Author",
+      "Subject"
+     ],
+     "default": "AllFields"
+    },
+    {
+     "name": "filter",
+     "key": "filter[]",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Facet filter as field:\"value\", e.g. format:\"0/Book/\", format:\"0/Image/\", online_boolean:\"1\", building:\"0/Helmet/\". Facet values come from get-facets or list-organisations.",
+     "example": "format:\"0/Book/\""
+    },
+    {
+     "name": "sort",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Sort order, e.g. 'relevance,id asc', 'main_date_str desc' (newest first), 'main_date_str asc', 'title,id asc', 'author,id asc', 'first_indexed desc'",
+     "example": "main_date_str desc"
+    },
+    {
+     "name": "page",
+     "in": "query",
+     "required": false,
+     "type": "number",
+     "description": "Page number, starting at 1",
+     "default": 1
+    },
+    {
+     "name": "api_limit",
+     "key": "limit",
+     "in": "query",
+     "required": false,
+     "type": "number",
+     "description": "Results per page (0-100) (sent to the site as \"limit\"; clify's own --limit only shapes the output)",
+     "default": 20
+    },
+    {
+     "name": "lng",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Language for translated values",
+     "enum": [
+      "fi",
+      "sv",
+      "en-gb"
+     ],
+     "default": "fi"
+    }
+   ],
+   "responseType": "json",
+   "resultPath": "records",
+   "defaultFields": [
+    "id",
+    "title",
+    "year",
+    "nonPresenterAuthors",
+    "formats",
+    "buildings",
+    "languages",
+    "onlineUrls"
+   ],
+   "pagination": {
+    "type": "page",
+    "param": "page"
+   },
+   "mutates": false,
+   "example": {
+    "lookfor": "sibelius"
+   },
+   "source": "E1 GET https://api.finna.fi/api/v1/",
+   "verified": true
+  },
+  {
+   "name": "get-record",
+   "summary": "Get full metadata for one record by its Finna id (public Finna API), optionally choosing which fields to return",
+   "method": "GET",
+   "urlTemplate": "https://api.finna.fi/api/v1/record",
+   "params": [
+    {
+     "name": "id",
+     "in": "query",
+     "required": true,
+     "type": "string",
+     "description": "Finna record id, e.g. helmet.1830976 or museovirasto.2588B7F548C8DB31DF7968B845EB1520",
+     "example": "helmet.1830976"
+    },
+    {
+     "name": "field",
+     "key": "field[]",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Return only this field. Examples: title, authors, subjects, summary, images, imageRights, urls, buildings, year, fullRecord. Leave empty for the default field set.",
+     "example": "title"
+    },
+    {
+     "name": "lng",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Language for translated values",
+     "enum": [
+      "fi",
+      "sv",
+      "en-gb"
+     ],
+     "default": "fi"
+    }
+   ],
+   "responseType": "json",
+   "resultPath": "records",
+   "defaultFields": [
+    "id",
+    "title",
+    "year",
+    "nonPresenterAuthors",
+    "formats",
+    "buildings",
+    "subjects",
+    "images"
+   ],
+   "mutates": false,
+   "example": {
+    "id": "helmet.1830976"
+   },
+   "source": "E1 GET https://api.finna.fi/api/v1/",
+   "verified": true
+  },
+  {
+   "name": "get-facets",
+   "summary": "List facet values with counts (formats, organisations, languages, years, ...) for a search or for the whole index; the values can be used as search-records filters",
+   "method": "GET",
+   "urlTemplate": "https://api.finna.fi/api/v1/search?limit=0",
+   "params": [
+    {
+     "name": "facet",
+     "key": "facet[]",
+     "in": "query",
+     "required": true,
+     "type": "string",
+     "description": "Facet field to count",
+     "enum": [
+      "format",
+      "building",
+      "language",
+      "main_date_str",
+      "author_facet",
+      "topic_facet",
+      "genre_facet",
+      "geographic_facet",
+      "era_facet",
+      "usage_rights_str_mv",
+      "sector_str_mv",
+      "online_boolean"
+     ],
+     "example": "format"
+    },
+    {
+     "name": "lookfor",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Search terms to scope the counts (empty = whole index)",
+     "example": "sibelius"
+    },
+    {
+     "name": "filter",
+     "key": "filter[]",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Facet filter as field:\"value\", e.g. online_boolean:\"1\""
+    },
+    {
+     "name": "lng",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Language for translated values",
+     "enum": [
+      "fi",
+      "sv",
+      "en-gb"
+     ],
+     "default": "fi"
+    }
+   ],
+   "responseType": "json",
+   "resultPath": "facets",
+   "mutates": false,
+   "example": {
+    "facet": "format",
+    "lookfor": "sibelius"
+   },
+   "source": "E1 GET https://api.finna.fi/api/v1/",
+   "verified": true
+  },
+  {
+   "name": "list-organisations",
+   "summary": "List the organisations (libraries, archives, museums) whose material is in Finna, with record counts, from the building facet",
+   "method": "GET",
+   "urlTemplate": "https://api.finna.fi/api/v1/search?limit=0&facet[]=building",
+   "params": [
+    {
+     "name": "lookfor",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Optional search terms; lists only the organisations that have matching records"
+    },
+    {
+     "name": "lng",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Language for organisation names",
+     "enum": [
+      "fi",
+      "sv",
+      "en-gb"
+     ],
+     "default": "fi"
+    }
+   ],
+   "responseType": "json",
+   "resultPath": "facets.building",
+   "defaultFields": [
+    "value",
+    "translated",
+    "count"
+   ],
+   "mutates": false,
+   "example": {
+    "lng": "en-gb"
+   },
+   "source": "E1 GET https://api.finna.fi/api/v1/",
+   "verified": true
+  },
+  {
+   "name": "search-authorities",
+   "summary": "Search authority records for people and organisations (public Finna API)",
+   "method": "GET",
+   "urlTemplate": "https://api.finna.fi/api/v1/authority/search",
+   "params": [
+    {
+     "name": "lookfor",
+     "in": "query",
+     "required": true,
+     "type": "string",
+     "description": "Name or search terms",
+     "example": "sibelius"
+    },
+    {
+     "name": "type",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Search field",
+     "default": "AllFields"
+    },
+    {
+     "name": "filter",
+     "key": "filter[]",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Facet filter as field:\"value\", e.g. to limit results to persons or to corporate bodies"
+    },
+    {
+     "name": "page",
+     "in": "query",
+     "required": false,
+     "type": "number",
+     "description": "Page number, starting at 1",
+     "default": 1
+    },
+    {
+     "name": "api_limit",
+     "key": "limit",
+     "in": "query",
+     "required": false,
+     "type": "number",
+     "description": "Results per page (0-100) (sent to the site as \"limit\"; clify's own --limit only shapes the output)",
+     "default": 20
+    },
+    {
+     "name": "lng",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Language",
+     "enum": [
+      "fi",
+      "sv",
+      "en-gb"
+     ],
+     "default": "fi"
+    }
+   ],
+   "responseType": "json",
+   "resultPath": "records",
+   "defaultFields": [
+    "id",
+    "title",
+    "heading",
+    "type"
+   ],
+   "pagination": {
+    "type": "page",
+    "param": "page"
+   },
+   "mutates": false,
+   "example": {
+    "lookfor": "sibelius"
+   },
+   "source": "E1 GET https://api.finna.fi/api/v1/",
+   "verified": true
+  },
+  {
+   "name": "get-authority",
+   "summary": "Get one authority record (person or organisation) by id, using an id from search-authorities (public Finna API)",
+   "method": "GET",
+   "urlTemplate": "https://api.finna.fi/api/v1/authority/record",
+   "params": [
+    {
+     "name": "id",
+     "in": "query",
+     "required": true,
+     "type": "string",
+     "description": "Authority record id exactly as returned by search-authorities, e.g. melinda.(FI-ASTERI-N)000030333 or ahaa-eac.EAC_2022113969",
+     "example": "melinda.(FI-ASTERI-N)000030333"
+    },
+    {
+     "name": "lng",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Language",
+     "enum": [
+      "fi",
+      "sv",
+      "en-gb"
+     ],
+     "default": "fi"
+    }
+   ],
+   "responseType": "json",
+   "resultPath": "records",
+   "defaultFields": [
+    "id",
+    "title",
+    "heading",
+    "type"
+   ],
+   "mutates": false,
+   "example": {
+    "id": "melinda.(FI-ASTERI-N)000030333"
+   },
+   "source": "E1",
+   "verified": true
+  },
+  {
+   "name": "get-citation",
+   "summary": "Get ready-made citations (APA, Chicago, MLA, Harvard) for a record",
+   "method": "GET",
+   "urlTemplate": "/Record/{id}/Cite",
+   "params": [
+    {
+     "name": "id",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Finna record id",
+     "example": "helmet.1830976"
+    }
+   ],
+   "responseType": "html",
+   "extract": {
+    "list": "div#content > p.text-left",
+    "fields": {
+     "citation": ""
+    }
+   },
+   "defaultFields": [
+    "citation"
+   ],
+   "mutates": false,
+   "example": {
+    "id": "helmet.1830976"
+   },
+   "source": "E8 GET https://www.finna.fi/Record/helmet.1830976/Cite",
+   "verified": true
+  },
+  {
+   "name": "export-record",
+   "summary": "Export a record as a citation-manager file (RIS, BibTeX, EndNote, RefWorks, MARC ...) and return the raw text",
+   "method": "GET",
+   "urlTemplate": "/Record/{id}/Export",
+   "params": [
+    {
+     "name": "id",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Finna record id",
+     "example": "helmet.1830976"
+    },
+    {
+     "name": "style",
+     "in": "query",
+     "required": true,
+     "type": "string",
+     "description": "Export format, e.g. RIS, BibTeX, EndNote, MARC, MARCXML (RefWorks and EndNoteWeb redirect to external services)",
+     "example": "RIS"
+    }
+   ],
+   "responseType": "text",
+   "mutates": false,
+   "example": {
+    "id": "helmet.1830976",
+    "style": "RIS"
+   },
+   "source": "E7 GET https://www.finna.fi/Record/helmet.1830976",
+   "verified": true
+  },
+  {
+   "name": "get-record-tab",
+   "summary": "Load a record page tab as an HTML fragment, e.g. library holdings/availability or user comments",
+   "method": "POST",
+   "urlTemplate": "/Record/{id}/AjaxTab",
+   "params": [
+    {
+     "name": "id",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Finna record id",
+     "example": "helmet.1830976"
+    },
+    {
+     "name": "tab",
+     "in": "body",
+     "required": true,
+     "type": "string",
+     "description": "Tab to load",
+     "enum": [
+      "holdings",
+      "usercomments",
+      "details",
+      "description",
+      "toc",
+      "componentparts"
+     ],
+     "example": "holdings"
+    }
+   ],
+   "bodyTemplate": {
+    "tab": "{tab}",
+    "sid": ""
+   },
+   "bodyEncoding": "form",
+   "headers": {
+    "X-Requested-With": "XMLHttpRequest"
+   },
+   "responseType": "html",
+   "extract": {
+    "fields": {
+     "text": "body"
+    }
+   },
+   "mutates": true,
+   "example": {
+    "id": "helmet.1830976",
+    "tab": "holdings"
+   },
+   "source": "E2 E3 POST https://www.finna.fi/Record/helmet.1830976/AjaxTab",
+   "verified": false,
+   "verifyNote": "write: dry-run preview only, not sent"
+  }
+ ],
+ "blockers": [],
+ "notes": [
+  "finna.fi's own /Search/Results and /AJAX/JSON endpoints are blocked by robots.txt or return 403, so searches go through the public read-only REST API at https://api.finna.fi/api/v1 (OpenAPI spec: https://api.finna.fi/api/v1/?openapi). The API's terms of use apply.",
+  "Record ids look like '<source>.<local id>', e.g. helmet.1830976 or museovirasto.2588B7F548C8DB31DF7968B845EB1520. The human-readable page is https://www.finna.fi/Record/{id}.",
+  "Filters use the raw facet value with quotes, e.g. format:\"0/Book/\" or building:\"0/Helmet/\". Hierarchical values have a level prefix (0/, 1/...). Use get-facets or list-organisations to find valid values.",
+  "Cover images and thumbnails are binary and are not a command. Fetch https://www.finna.fi/Cover/Show?source=Solr&id={id}&index=0&size=large (size small|medium|large), or use the paths in the 'images' field of the API record.",
+  "Adding a record to favourites (/Record/{id}/Save) and other personal features need a Finna login and are not included.",
+  "The get-authority example id was not seen in the recording. Take real ids from search-authorities."
+ ],
+ "dropped": [],
+ "generated": {
+  "by": "clify add",
+  "model": "claude-opus-5-5",
+  "exploredSteps": 23,
+  "recorded": 22,
+  "verifiedAt": "2026-10-18T07:40:55.399Z",
+  "seconds": 210
+ }
+}

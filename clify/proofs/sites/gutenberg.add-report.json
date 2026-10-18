@@ -1,0 +1,88 @@
+{
+ "ok": true,
+ "site": "gutenberg",
+ "url": "https://www.gutenberg.org/",
+ "commands": [
+  {
+   "name": "get-book",
+   "summary": "Get one eBook's detail page: title, summary, the bibliographic table (author, subjects, language, release date, downloads) and the author link",
+   "verified": true
+  },
+  {
+   "name": "list-author-books",
+   "summary": "List the eBooks by one author (25 per page), sorted by popularity, title or release date",
+   "verified": true
+  },
+  {
+   "name": "list-subject-books",
+   "summary": "List the eBooks under a Library-of-Congress-style subject (25 per page)",
+   "verified": true
+  },
+  {
+   "name": "list-bookshelf-books",
+   "summary": "List the eBooks on a reading list (bookshelf) or in a main category (25 per page)",
+   "verified": true
+  },
+  {
+   "name": "list-bookshelves",
+   "summary": "List all volunteer-curated reading lists (bookshelves) A\u2013Z with their links",
+   "verified": true
+  },
+  {
+   "name": "search-bookshelves",
+   "summary": "Find reading lists and categories whose names match keywords (use | to OR several terms)",
+   "verified": true
+  },
+  {
+   "name": "list-categories",
+   "summary": "List the main subject categories (Literature, Science & Technology, History, \u2026) with their bookshelf links",
+   "verified": true
+  },
+  {
+   "name": "get-top-downloads",
+   "summary": "Top 100 most-downloaded eBooks and authors for yesterday, the last 7 days and the last 30 days",
+   "verified": true
+  },
+  {
+   "name": "list-also-downloaded",
+   "summary": "Books that readers of a given eBook also downloaded (related books)",
+   "verified": true
+  },
+  {
+   "name": "get-book-text",
+   "summary": "Download the full plain-text (UTF-8) content of an eBook",
+   "verified": true
+  },
+  {
+   "name": "get-book-rdf",
+   "summary": "Get an eBook's machine-readable RDF/XML catalog metadata (title, creators, subjects, formats), converted to JSON",
+   "verified": true
+  },
+  {
+   "name": "list-new-books",
+   "summary": "eBooks posted or updated today (RSS feed of new releases)",
+   "verified": true
+  },
+  {
+   "name": "list-featured-books",
+   "summary": "The home page shelves: about 10 newest releases followed by about 10 most popular books",
+   "verified": true
+  }
+ ],
+ "verified": 13,
+ "writes": 0,
+ "dropped": [],
+ "blockers": [],
+ "loggedIn": false,
+ "seconds": 172,
+ "next": [
+  "clify gutenberg",
+  "clify gutenberg get-book --id \"1661\""
+ ],
+ "installed": "/home/ubuntu/clify-runs/batch2/home/bin/gutenberg",
+ "explored": {
+  "steps": 23,
+  "recorded": 21,
+  "heldWrites": 0
+ }
+}

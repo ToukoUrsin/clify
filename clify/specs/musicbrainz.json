@@ -1,0 +1,706 @@
+{
+ "name": "musicbrainz",
+ "startUrl": "https://musicbrainz.org/",
+ "origin": "https://musicbrainz.org",
+ "createdAt": "2026-10-18T07:28:18.503Z",
+ "description": "MusicBrainz (open music encyclopedia): browse genres, instruments, artists, release groups, statistics and relationship types from the public musicbrainz.org web pages and their JSON helper endpoints.",
+ "commands": [
+  {
+   "name": "list-genres",
+   "summary": "List all genres in MusicBrainz, with each genre's name and detail URL (the MBID is in the URL)",
+   "method": "GET",
+   "urlTemplate": "/genres",
+   "params": [],
+   "responseType": "html",
+   "extract": {
+    "list": "div#content li",
+    "fields": {
+     "name": "a bdi || a",
+     "url": "a@href"
+    }
+   },
+   "defaultFields": [
+    "name",
+    "url"
+   ],
+   "mutates": false,
+   "source": "E14 GET https://musicbrainz.org/genres",
+   "verified": true
+  },
+  {
+   "name": "get-genre",
+   "summary": "Get one genre: name, primary tag, relationships (parent genres, subgenres, fusions/influences) and its Wikipedia summary",
+   "method": "GET",
+   "urlTemplate": "/genre/{id}",
+   "params": [
+    {
+     "name": "id",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Genre MBID (UUID)",
+     "example": "ceeaa283-5d7b-4202-8d1d-e25d116b2a18"
+    }
+   ],
+   "responseType": "html",
+   "extract": {
+    "fields": {
+     "name": "h1 bdi",
+     "primary_tag_url": "a[href^='/tag/']@href",
+     "relationships": "h2.relationships + table.details",
+     "wikipedia": "div.wikipedia-extract-body",
+     "wikipedia_url": "div.wikipedia-extract a[href*='wikipedia.org']@href"
+    }
+   },
+   "defaultFields": [
+    "name",
+    "primary_tag_url",
+    "relationships",
+    "wikipedia"
+   ],
+   "mutates": false,
+   "example": {
+    "id": "ceeaa283-5d7b-4202-8d1d-e25d116b2a18"
+   },
+   "source": "E11",
+   "verified": true
+  },
+  {
+   "name": "get-wikipedia-extract",
+   "summary": "Get the cached Wikipedia summary (HTML) for a genre, instrument, artist or release group; wikipediaExtract is null when none is linked",
+   "method": "GET",
+   "urlTemplate": "/{entity_type}/{id}/wikipedia-extract",
+   "params": [
+    {
+     "name": "entity_type",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Entity type",
+     "enum": [
+      "genre",
+      "instrument",
+      "artist",
+      "release-group"
+     ],
+     "example": "instrument"
+    },
+    {
+     "name": "id",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Entity MBID (UUID)",
+     "example": "540280f1-d6cf-46bf-968b-695e99e216d7"
+    }
+   ],
+   "responseType": "json",
+   "resultPath": "wikipediaExtract",
+   "defaultFields": [
+    "title",
+    "url",
+    "language",
+    "content"
+   ],
+   "mutates": false,
+   "example": {
+    "entity_type": "instrument",
+    "id": "540280f1-d6cf-46bf-968b-695e99e216d7"
+   },
+   "source": "E1 E2 E3 E4 GET https://musicbrainz.org/genre/{id}/wikipedia-extract",
+   "verified": true
+  },
+  {
+   "name": "list-instruments",
+   "summary": "List all instruments, each with its name, short description and detail URL (the MBID is in the URL)",
+   "method": "GET",
+   "urlTemplate": "/instruments",
+   "params": [],
+   "responseType": "html",
+   "extract": {
+    "list": "div#content li",
+    "fields": {
+     "name": "a bdi || a",
+     "url": "a@href",
+     "text": ""
+    }
+   },
+   "defaultFields": [
+    "name",
+    "url",
+    "text"
+   ],
+   "mutates": false,
+   "source": "E15 GET https://musicbrainz.org/instruments",
+   "verified": true
+  },
+  {
+   "name": "get-instrument",
+   "summary": "Get one instrument: name, type, description, relationships (subtypes, parent type, related instruments) and Wikidata link",
+   "method": "GET",
+   "urlTemplate": "/instrument/{id}",
+   "params": [
+    {
+     "name": "id",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Instrument MBID (UUID)",
+     "example": "540280f1-d6cf-46bf-968b-695e99e216d7"
+    }
+   ],
+   "responseType": "html",
+   "extract": {
+    "fields": {
+     "name": "h1 a bdi",
+     "comment": "h1 span.comment bdi",
+     "type": "p.subheader",
+     "description": "h2 + p",
+     "relationships": "h2.relationships + table.details",
+     "wikidata_url": "a[href*='wikidata.org']@href"
+    }
+   },
+   "defaultFields": [
+    "name",
+    "comment",
+    "type",
+    "description",
+    "relationships",
+    "wikidata_url"
+   ],
+   "mutates": false,
+   "example": {
+    "id": "540280f1-d6cf-46bf-968b-695e99e216d7"
+   },
+   "source": "E16",
+   "verified": true
+  },
+  {
+   "name": "list-instrument-artists",
+   "summary": "List artists credited with playing an instrument, with artist type, gender, area and credit (paginated)",
+   "method": "GET",
+   "urlTemplate": "/instrument/{id}/artists",
+   "params": [
+    {
+     "name": "id",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Instrument MBID (UUID)",
+     "example": "540280f1-d6cf-46bf-968b-695e99e216d7"
+    },
+    {
+     "name": "page",
+     "in": "query",
+     "required": false,
+     "type": "number",
+     "description": "Page number, starting at 1",
+     "default": 1
+    }
+   ],
+   "responseType": "html",
+   "extract": {
+    "list": "tr.odd, tr.even",
+    "fields": {
+     "name": "a bdi",
+     "url": "a[href^='/artist/']@href",
+     "row": ""
+    }
+   },
+   "defaultFields": [
+    "name",
+    "url",
+    "row"
+   ],
+   "pagination": {
+    "type": "page",
+    "param": "page"
+   },
+   "mutates": false,
+   "example": {
+    "id": "540280f1-d6cf-46bf-968b-695e99e216d7"
+   },
+   "source": "E12",
+   "verified": true
+  },
+  {
+   "name": "list-instrument-releases",
+   "summary": "List releases featuring an instrument, with artist, format, tracks, country, date, label and catalog number (paginated)",
+   "method": "GET",
+   "urlTemplate": "/instrument/{id}/releases",
+   "params": [
+    {
+     "name": "id",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Instrument MBID (UUID)",
+     "example": "540280f1-d6cf-46bf-968b-695e99e216d7"
+    },
+    {
+     "name": "page",
+     "in": "query",
+     "required": false,
+     "type": "number",
+     "description": "Page number, starting at 1",
+     "default": 1
+    }
+   ],
+   "responseType": "html",
+   "extract": {
+    "list": "tr.odd, tr.even",
+    "fields": {
+     "title": "a bdi",
+     "url": "a[href^='/release/']@href",
+     "artist": "td + td a bdi",
+     "row": ""
+    }
+   },
+   "defaultFields": [
+    "title",
+    "url",
+    "artist",
+    "row"
+   ],
+   "pagination": {
+    "type": "page",
+    "param": "page"
+   },
+   "mutates": false,
+   "example": {
+    "id": "540280f1-d6cf-46bf-968b-695e99e216d7"
+   },
+   "source": "E17",
+   "verified": true
+  },
+  {
+   "name": "list-instrument-recordings",
+   "summary": "List recordings featuring an instrument, with artist and length (paginated)",
+   "method": "GET",
+   "urlTemplate": "/instrument/{id}/recordings",
+   "params": [
+    {
+     "name": "id",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Instrument MBID (UUID)",
+     "example": "540280f1-d6cf-46bf-968b-695e99e216d7"
+    },
+    {
+     "name": "page",
+     "in": "query",
+     "required": false,
+     "type": "number",
+     "description": "Page number, starting at 1",
+     "default": 1
+    }
+   ],
+   "responseType": "html",
+   "extract": {
+    "list": "tr.odd, tr.even",
+    "fields": {
+     "title": "a bdi",
+     "url": "a[href^='/recording/']@href",
+     "artist": "td + td a bdi",
+     "row": ""
+    }
+   },
+   "defaultFields": [
+    "title",
+    "url",
+    "artist",
+    "row"
+   ],
+   "pagination": {
+    "type": "page",
+    "param": "page"
+   },
+   "mutates": false,
+   "example": {
+    "id": "540280f1-d6cf-46bf-968b-695e99e216d7"
+   },
+   "source": "E18",
+   "verified": true
+  },
+  {
+   "name": "list-entity-tags",
+   "summary": "List the user-applied tags (with vote counts and any linked genre) on an instrument, artist or release group",
+   "method": "GET",
+   "urlTemplate": "/{entity_type}/{id}/tags",
+   "params": [
+    {
+     "name": "entity_type",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Entity type",
+     "enum": [
+      "instrument",
+      "artist",
+      "release-group"
+     ],
+     "example": "instrument"
+    },
+    {
+     "name": "id",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Entity MBID (UUID)",
+     "example": "540280f1-d6cf-46bf-968b-695e99e216d7"
+    }
+   ],
+   "responseType": "html",
+   "resultPath": "aggregatedTags",
+   "extract": {
+    "jsonScript": "script[type=\"application/json\"]"
+   },
+   "defaultFields": [
+    "tag.name",
+    "count",
+    "tag.genre.name",
+    "tag.genre.gid"
+   ],
+   "mutates": false,
+   "example": {
+    "entity_type": "instrument",
+    "id": "540280f1-d6cf-46bf-968b-695e99e216d7"
+   },
+   "source": "E27 GET https://musicbrainz.org/instrument/{id}/tags",
+   "verified": true
+  },
+  {
+   "name": "get-artist",
+   "summary": "Get an artist's details: name, type, country, begin/end dates, area, genres and external links (relations: Discogs, Wikidata, etc.)",
+   "method": "GET",
+   "urlTemplate": "/ws/2/artist/{id}?fmt=json&inc=genres+url-rels",
+   "params": [
+    {
+     "name": "id",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Artist MBID (UUID)",
+     "example": "437a0e49-c6ae-42f6-a6c1-84f25ed366bc"
+    }
+   ],
+   "responseType": "json",
+   "defaultFields": [
+    "id",
+    "name",
+    "type",
+    "disambiguation",
+    "country",
+    "life-span.begin",
+    "begin-area.name",
+    "genres"
+   ],
+   "mutates": false,
+   "example": {
+    "id": "437a0e49-c6ae-42f6-a6c1-84f25ed366bc"
+   },
+   "source": "E19",
+   "verified": true
+  },
+  {
+   "name": "get-release-group",
+   "summary": "Get a release group (album/single): title, artist credit, type, first release date, genres, external links and its list of release versions",
+   "method": "GET",
+   "urlTemplate": "/ws/2/release-group/{id}?fmt=json&inc=artist-credits+genres+releases+url-rels",
+   "params": [
+    {
+     "name": "id",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Release group MBID (UUID)",
+     "example": "187935b5-a0a4-3e6f-9684-48b67a5190a1"
+    }
+   ],
+   "responseType": "json",
+   "defaultFields": [
+    "id",
+    "title",
+    "primary-type",
+    "secondary-types",
+    "first-release-date",
+    "artist-credit",
+    "genres",
+    "releases"
+   ],
+   "mutates": false,
+   "example": {
+    "id": "187935b5-a0a4-3e6f-9684-48b67a5190a1"
+   },
+   "source": "E20",
+   "verified": true
+  },
+  {
+   "name": "list-release-group-releases",
+   "summary": "List every release version of a release group, with date, country, status, barcode, labels/catalog numbers and media formats",
+   "method": "GET",
+   "urlTemplate": "/ws/2/release?fmt=json&inc=labels+media&limit=100",
+   "params": [
+    {
+     "name": "id",
+     "key": "release-group",
+     "in": "query",
+     "required": true,
+     "type": "string",
+     "description": "Release group MBID (UUID)",
+     "example": "187935b5-a0a4-3e6f-9684-48b67a5190a1"
+    },
+    {
+     "name": "offset",
+     "in": "query",
+     "required": false,
+     "type": "number",
+     "description": "Result offset, a multiple of 100",
+     "default": 0
+    }
+   ],
+   "responseType": "json",
+   "resultPath": "releases",
+   "defaultFields": [
+    "id",
+    "title",
+    "date",
+    "country",
+    "status",
+    "barcode",
+    "label-info",
+    "media"
+   ],
+   "pagination": {
+    "type": "offset",
+    "param": "offset",
+    "step": 100
+   },
+   "mutates": false,
+   "example": {
+    "id": "187935b5-a0a4-3e6f-9684-48b67a5190a1"
+   },
+   "source": "E20",
+   "verified": true
+  },
+  {
+   "name": "get-statistics",
+   "summary": "Get the database statistics overview: counts of artists, releases, recordings, labels, works, disc IDs, editors, etc.",
+   "method": "GET",
+   "urlTemplate": "/statistics",
+   "params": [],
+   "responseType": "html",
+   "extract": {
+    "list": "table.database-statistics tr",
+    "fields": {
+     "label": "th",
+     "value": "td"
+    }
+   },
+   "defaultFields": [
+    "label",
+    "value"
+   ],
+   "mutates": false,
+   "source": "E23 GET https://musicbrainz.org/statistics",
+   "verified": true
+  },
+  {
+   "name": "get-country-statistics",
+   "summary": "Get per-country counts of artists, releases, labels, events and places, ranked",
+   "method": "GET",
+   "urlTemplate": "/statistics/countries",
+   "params": [],
+   "responseType": "html",
+   "extract": {
+    "list": "tr.odd, tr.even",
+    "fields": {
+     "country": "a",
+     "row": ""
+    }
+   },
+   "defaultFields": [
+    "country",
+    "row"
+   ],
+   "mutates": false,
+   "source": "E25 GET https://musicbrainz.org/statistics/countries",
+   "verified": true
+  },
+  {
+   "name": "get-statistic-timeline",
+   "summary": "Get the historical time series for one statistic as a map of date -> value (e.g. artist or release count over time)",
+   "method": "GET",
+   "urlTemplate": "/statistics/dataset/{stat}",
+   "params": [
+    {
+     "name": "stat",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Statistic key, e.g. count.artist, count.release, count.recording, count.label, count.work, count.releasegroup",
+     "example": "count.artist"
+    }
+   ],
+   "headers": {
+    "X-Requested-With": "XMLHttpRequest"
+   },
+   "responseType": "json",
+   "defaultFields": [
+    "name",
+    "data"
+   ],
+   "mutates": false,
+   "example": {
+    "stat": "count.artist"
+   },
+   "source": "E7 E8 E24 GET https://musicbrainz.org/statistics/dataset/count.artist",
+   "verified": true
+  },
+  {
+   "name": "list-history-events",
+   "summary": "List MusicBrainz project milestones (date, title, description, blog link) shown on the statistics timeline",
+   "method": "GET",
+   "urlTemplate": "/ws/js/events",
+   "params": [],
+   "headers": {
+    "X-Requested-With": "XMLHttpRequest"
+   },
+   "responseType": "json",
+   "defaultFields": [
+    "date",
+    "title",
+    "description",
+    "link"
+   ],
+   "mutates": false,
+   "source": "E6 GET https://musicbrainz.org/ws/js/events",
+   "verified": true
+  },
+  {
+   "name": "list-relationship-type-pairs",
+   "summary": "List the entity-type pairs that have relationship types (e.g. Artist-Instrument), each with a link to its relationship types",
+   "method": "GET",
+   "urlTemplate": "/relationships",
+   "params": [],
+   "responseType": "html",
+   "extract": {
+    "list": "table.wikitable td a",
+    "fields": {
+     "pair": "",
+     "url": "@href"
+    }
+   },
+   "defaultFields": [
+    "pair",
+    "url"
+   ],
+   "mutates": false,
+   "source": "E26 GET https://musicbrainz.org/relationships",
+   "verified": true
+  },
+  {
+   "name": "list-relationship-types",
+   "summary": "List the relationship types between two entity types (e.g. artist-instrument), with link phrases, description and documentation link",
+   "method": "GET",
+   "urlTemplate": "/relationships/{pair}",
+   "params": [
+    {
+     "name": "pair",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Entity-type pair, lowercase and joined by '-', in the order used on /relationships, e.g. artist-instrument, artist-release_group, area-area",
+     "example": "artist-instrument"
+    }
+   ],
+   "responseType": "html",
+   "extract": {
+    "list": "div#content ul > li",
+    "fields": {
+     "name": "span strong",
+     "details": "div.reldetails",
+     "doc_url": "div.reldetails a@href"
+    }
+   },
+   "defaultFields": [
+    "name",
+    "details",
+    "doc_url"
+   ],
+   "mutates": false,
+   "example": {
+    "pair": "artist-instrument"
+   },
+   "source": "E28 GET https://musicbrainz.org/relationships/artist-instrument",
+   "verified": true
+  }
+ ],
+ "blockers": [],
+ "notes": [
+  "All IDs are MusicBrainz MBIDs (UUIDs). They appear in result URLs such as /artist/{mbid}, /release-group/{mbid} and /genre/{mbid}.",
+  "Keyword search (/search), tag pages (/tag/...), /recording/... and /area/... pages are disallowed by robots.txt, so this CLI has no search command. Find entities by browsing (list-genres, list-instruments, artist discography) or via known MBIDs.",
+  "An intermittent bot check (/__meb_verify, a 'Verifying your browser' page) blocked release detail (/release/{id}), artist tabs (/artist/{id}/releases) and label pages (/label/{id}). Those commands are omitted. If any command returns a page titled 'Verifying your browser', wait and retry.",
+  "For heavy or programmatic use, MusicBrainz documents an official JSON web service at https://musicbrainz.org/ws/2/ (e.g. /ws/2/release/{mbid}?inc=recordings&fmt=json). It requires a descriptive User-Agent and allows about 1 request per second. It was not captured in this recording.",
+  "Keep request rates low (around 1 per second) to avoid triggering the bot check.",
+  "HTML table rows for instrument tabs, release-group releases and country statistics return a 'row' field holding the whole row's text, because the columns cannot be targeted individually."
+ ],
+ "dropped": [
+  {
+   "name": "list-artist-release-groups",
+   "summary": "List an artist's discography (release groups: albums, singles, EPs, etc.) with type, secondary types, first release date and MBID",
+   "method": "GET",
+   "urlTemplate": "/ws/2/release-group?fmt=json&limit=100",
+   "params": [
+    {
+     "name": "id",
+     "key": "artist",
+     "in": "query",
+     "required": true,
+     "type": "string",
+     "description": "Artist MBID (UUID)",
+     "example": "437a0e49-c6ae-42f6-a6c1-84f25ed366bc"
+    },
+    {
+     "name": "offset",
+     "in": "query",
+     "required": false,
+     "type": "number",
+     "description": "Result offset, a multiple of 100",
+     "default": 0
+    }
+   ],
+   "responseType": "json",
+   "resultPath": "release-groups",
+   "defaultFields": [
+    "id",
+    "title",
+    "primary-type",
+    "secondary-types",
+    "first-release-date",
+    "disambiguation"
+   ],
+   "pagination": {
+    "type": "offset",
+    "param": "offset",
+    "step": 100
+   },
+   "mutates": false,
+   "example": {
+    "id": "437a0e49-c6ae-42f6-a6c1-84f25ed366bc"
+   },
+   "source": "E19",
+   "verified": false,
+   "verifyNote": "request failed: fetch failed"
+  }
+ ],
+ "generated": {
+  "by": "clify add",
+  "model": "claude-opus-5-5",
+  "exploredSteps": 29,
+  "recorded": 34,
+  "verifiedAt": "2026-10-18T07:31:14.379Z",
+  "seconds": 364
+ }
+}

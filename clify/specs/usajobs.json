@@ -1,0 +1,493 @@
+{
+ "name": "usajobs",
+ "startUrl": "https://www.usajobs.gov/",
+ "origin": "https://www.usajobs.gov",
+ "createdAt": "2026-10-18T08:35:14.757Z",
+ "description": "USAJOBS (usajobs.gov), the U.S. federal government's job board. The CLI searches federal job announcements with filters, sorting and pagination, fetches job details, suggests keywords and locations, lists recruiting events, and saves jobs for signed-in users.",
+ "commands": [
+  {
+   "name": "get-job",
+   "summary": "Get one job announcement's details (title, agency, salary, location, dates, description, duties, qualifications) by its numeric announcement id",
+   "method": "GET",
+   "urlTemplate": "/job/{id}",
+   "params": [
+    {
+     "name": "id",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Numeric job announcement id (DocumentID / number in the /job/ URL)",
+     "example": "885810700"
+    }
+   ],
+   "responseType": "html",
+   "extract": {
+    "jsonScript": "script[type=\"application/ld+json\"]"
+   },
+   "defaultFields": [
+    "title",
+    "hiringOrganization",
+    "baseSalary.value.value",
+    "baseSalary.value.unitText",
+    "jobLocation",
+    "datePosted",
+    "validThrough",
+    "description"
+   ],
+   "mutates": false,
+   "example": {
+    "id": "885810700"
+   },
+   "source": "E13 GET https://www.usajobs.gov/job/{n}",
+   "verified": true
+  },
+  {
+   "name": "suggest-keywords",
+   "summary": "Get keyword or job-title suggestions for a partial search term",
+   "method": "GET",
+   "urlTemplate": "https://data.usajobs.gov/api/autocomplete/keyword",
+   "params": [
+    {
+     "name": "term",
+     "in": "query",
+     "required": true,
+     "type": "string",
+     "description": "Partial keyword",
+     "example": "nurse"
+    },
+    {
+     "name": "size",
+     "in": "query",
+     "required": false,
+     "type": "number",
+     "description": "Maximum number of suggestions",
+     "default": 10
+    }
+   ],
+   "responseType": "json",
+   "defaultFields": [
+    "Name",
+    "CodeText"
+   ],
+   "mutates": false,
+   "example": {
+    "term": "nurse"
+   },
+   "source": "E4",
+   "verified": true
+  },
+  {
+   "name": "suggest-locations",
+   "summary": "Get location name suggestions for a partial place name, to use as search-jobs --location",
+   "method": "GET",
+   "urlTemplate": "https://data.usajobs.gov/api/autocomplete/location",
+   "params": [
+    {
+     "name": "term",
+     "in": "query",
+     "required": true,
+     "type": "string",
+     "description": "Partial location name",
+     "example": "Denver"
+    },
+    {
+     "name": "size",
+     "in": "query",
+     "required": false,
+     "type": "number",
+     "description": "Maximum number of suggestions",
+     "default": 10
+    }
+   ],
+   "responseType": "json",
+   "defaultFields": [
+    "Name",
+    "Tier",
+    "Ranking"
+   ],
+   "mutates": false,
+   "example": {
+    "term": "Denver"
+   },
+   "source": "E5",
+   "verified": true
+  },
+  {
+   "name": "list-events",
+   "summary": "List federal recruiting events (career fairs, webinars, info sessions), optionally only online events",
+   "method": "GET",
+   "urlTemplate": "/event",
+   "params": [
+    {
+     "name": "online",
+     "key": "IsOnline",
+     "in": "query",
+     "required": false,
+     "type": "boolean",
+     "description": "true = only online/virtual events"
+    }
+   ],
+   "headers": {
+    "hx-request": "true",
+    "hx-target": "events-section"
+   },
+   "responseType": "html",
+   "extract": {
+    "list": "div#events-section > div.page-section",
+    "fields": {
+     "title": "h2",
+     "url": "h2 a[href^='/Event/']@href || a[href^='/Event/']@href || a[href^='https://www.usajobs.gov/Event/']@href || header a@href",
+     "date": "div.mt-8.ml-2 > span.ml-2",
+     "time_or_venue": "div.mt-2.ml-2 > span.ml-2",
+     "address": "div.text-gray.ml-9",
+     "website": "div.mt-4 > a.font-bold@href",
+     "description": "div.text-wrap > p",
+     "host": "div.flex.flex-col a"
+    }
+   },
+   "defaultFields": [
+    "title",
+    "url",
+    "date",
+    "time_or_venue",
+    "address",
+    "website",
+    "host"
+   ],
+   "mutates": false,
+   "example": {
+    "online": "true"
+   },
+   "source": "E9 E15",
+   "verified": true
+  },
+  {
+   "name": "get-event",
+   "summary": "Get a recruiting event's details (date, time, venue, address, website, description, host) by event id",
+   "method": "GET",
+   "urlTemplate": "/Event/{id}",
+   "params": [
+    {
+     "name": "id",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Numeric event id (from /Event/{id} URLs)",
+     "example": "5746"
+    }
+   ],
+   "responseType": "html",
+   "extract": {
+    "fields": {
+     "title": "div.page-section h2",
+     "date": "div.mt-8.ml-2 > span.ml-2",
+     "time": "div.mt-2.ml-2 > span.ml-2",
+     "address": "div.text-gray.ml-9",
+     "website": "div.mt-4 > a.font-bold@href",
+     "description": "div.text-wrap",
+     "host": "div.page-section p > a",
+     "host_url": "div.page-section p > a@href",
+     "audience": "li.badge"
+    }
+   },
+   "defaultFields": [
+    "title",
+    "date",
+    "time",
+    "address",
+    "website",
+    "host",
+    "audience",
+    "description"
+   ],
+   "mutates": false,
+   "example": {
+    "id": "5746"
+   },
+   "source": "E16 GET https://www.usajobs.gov/Event/{n}",
+   "verified": true
+  },
+  {
+   "name": "list-event-jobs",
+   "summary": "List the job announcements linked to a recruiting event",
+   "method": "GET",
+   "urlTemplate": "/Event/{id}",
+   "params": [
+    {
+     "name": "id",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Numeric event id",
+     "example": "5746"
+    }
+   ],
+   "responseType": "html",
+   "extract": {
+    "list": "ul.ml-8.space-y-2 > li.mt-1",
+    "fields": {
+     "title": "a",
+     "url": "a@href"
+    }
+   },
+   "defaultFields": [
+    "title",
+    "url"
+   ],
+   "mutates": false,
+   "example": {
+    "id": "5746"
+   },
+   "source": "E16 GET https://www.usajobs.gov/Event/{n}",
+   "verified": true
+  }
+ ],
+ "blockers": [
+  "bot-check at https://usajobshelp.opm.gov/hc/en-us/articles/53059807800979-What-are-hiring-paths-and-how-can-they-help-you"
+ ],
+ "notes": [
+  "search-jobs replays the site's internal POST /Search/ExecuteSearch. Only Keyword, LocationName, HiringPath and ResultsPerPage were seen in recorded bodies. Agency, PositionScheduleTypeCode, JobCategoryCode, Page, SortField and SortDirection follow the same envelope but their key names are inferred from the UI URL params (a, ws, j, p, s/sd).",
+  "Bare city names can resolve to the wrong place: 'Denver' resolved to 'Denver, Arkansas' and returned 0 jobs. Pass 'City, State' or use suggest-locations first. ResolvedLocations in the raw response shows how the location was interpreted.",
+  "The recording did not show a remote-only filter (UI param rmi=true) in the search body, so the command does not expose one. Facet counts, including remote, are in the raw response under 'f'.",
+  "Use the DocumentID (or the number at the end of PositionURI) from search-jobs as the id for get-job. get-job reads the schema.org JobPosting JSON-LD embedded in the announcement page.",
+  "Applying and saving jobs require a login.gov-authenticated USAJOBS session. save-job without a session redirects (302) to sign-in. Applying was not recorded and is not supported.",
+  "list-events returns the first 10 events. The event list's pagination parameter was not recorded."
+ ],
+ "auth": {
+  "headerNames": []
+ },
+ "dropped": [
+  {
+   "name": "save-job",
+   "summary": "Save a job announcement to the signed-in user's USAJOBS saved jobs (requires login.gov sign-in)",
+   "method": "GET",
+   "urlTemplate": "/Applicant/Profile/QuickSave/{id}",
+   "params": [
+    {
+     "name": "id",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Numeric job announcement id to save",
+     "example": "887234800"
+    }
+   ],
+   "responseType": "html",
+   "mutates": false,
+   "auth": true,
+   "example": {
+    "id": "887234800"
+   },
+   "source": "E14 GET https://www.usajobs.gov/Applicant/Profile/QuickSave/{n}",
+   "verified": false,
+   "verifyNote": "needs login: run `clify login` then `clify repair` to verify"
+  },
+  {
+   "name": "search-jobs",
+   "summary": "Search federal job announcements by keyword, location, hiring path, agency, work schedule or occupational series, with sorting and pagination",
+   "method": "POST",
+   "urlTemplate": "/Search/ExecuteSearch",
+   "params": [
+    {
+     "name": "keyword",
+     "key": "Keyword",
+     "in": "body",
+     "required": false,
+     "type": "string",
+     "description": "Free-text keyword or job title, e.g. 'nurse'",
+     "example": "nurse"
+    },
+    {
+     "name": "location",
+     "in": "body",
+     "required": false,
+     "type": "string",
+     "description": "Location name such as a city, state or 'City, ST'. Ambiguous names may resolve unexpectedly ('Denver' resolved to 'Denver, Arkansas'), so prefer 'Denver, Colorado'. Use suggest-locations to get exact ",
+     "example": "Denver, Colorado"
+    },
+    {
+     "name": "hiring_path",
+     "in": "body",
+     "required": false,
+     "type": "string",
+     "description": "Who can apply. 'public' means jobs open to U.S. citizens.",
+     "enum": [
+      "public",
+      "fed-competitive",
+      "fed-excepted",
+      "fed-internal-search",
+      "fed-transition",
+      "vet",
+      "mspouse",
+      "disability",
+      "native",
+      "student",
+      "graduates",
+      "peace",
+      "overseas",
+      "land",
+      "ses",
+      "special-authorities",
+      "nguard"
+     ],
+     "example": "public"
+    },
+    {
+     "name": "agency",
+     "in": "body",
+     "required": false,
+     "type": "string",
+     "description": "Agency subelement code, e.g. HE37 (Indian Health Service)",
+     "example": "HE37"
+    },
+    {
+     "name": "work_schedule",
+     "in": "body",
+     "required": false,
+     "type": "string",
+     "description": "Position schedule type code: 1=Full-time, 2=Part-time, 3=Shift work, 4=Intermittent, 5=Job sharing, 6=Multiple schedules",
+     "enum": [
+      "1",
+      "2",
+      "3",
+      "4",
+      "5",
+      "6"
+     ],
+     "example": "1"
+    },
+    {
+     "name": "series",
+     "in": "body",
+     "required": false,
+     "type": "string",
+     "description": "Occupational series code (4 digits), e.g. 0610 (Nurse), 0602 (Medical Officer)",
+     "example": "0610"
+    },
+    {
+     "name": "sort",
+     "key": "SortField",
+     "in": "body",
+     "required": false,
+     "type": "string",
+     "description": "Sort field (the UI's 's' URL param), e.g. 'salary'",
+     "enum": [
+      "relevance",
+      "salary",
+      "opendate",
+      "closedate",
+      "title",
+      "department",
+      "location"
+     ],
+     "default": "relevance"
+    },
+    {
+     "name": "sort_direction",
+     "key": "SortDirection",
+     "in": "body",
+     "required": false,
+     "type": "string",
+     "description": "Sort direction (the UI's 'sd' URL param)",
+     "enum": [
+      "asc",
+      "desc"
+     ],
+     "default": "desc"
+    },
+    {
+     "name": "page",
+     "key": "Page",
+     "in": "body",
+     "required": false,
+     "type": "number",
+     "description": "1-based results page number",
+     "default": 1
+    },
+    {
+     "name": "per_page",
+     "key": "ResultsPerPage",
+     "in": "body",
+     "required": false,
+     "type": "number",
+     "description": "Results per page",
+     "default": 25
+    }
+   ],
+   "bodyTemplate": {
+    "Keyword": "{keyword}",
+    "JobTitle": [],
+    "GradeBucket": [],
+    "JobCategoryCode": [
+     "{series}"
+    ],
+    "JobCategoryFamily": [],
+    "LocationName": [
+     "{location}"
+    ],
+    "Department": [],
+    "Agency": [
+     "{agency}"
+    ],
+    "PositionOfferingTypeCode": [],
+    "TravelPercentage": [],
+    "PositionScheduleTypeCode": [
+     "{work_schedule}"
+    ],
+    "SecurityClearanceRequired": [],
+    "PositionSensitivity": [],
+    "JobGradeCode": [],
+    "ShowAllFilters": [],
+    "HiringPath": [
+     "{hiring_path}"
+    ],
+    "SocTitle": [],
+    "ResultsPerPage": "{per_page}",
+    "Page": "{page}",
+    "SortField": "{sort}",
+    "SortDirection": "{sort_direction}",
+    "MCOTags": [],
+    "CyberWorkRole": [],
+    "CyberWorkGrouping": [],
+    "IsAuthenticated": false
+   },
+   "bodyEncoding": "json",
+   "headers": {
+    "content-type": "application/json; charset=utf-8",
+    "x-requested-with": "XMLHttpRequest",
+    "accept": "application/json, text/javascript, */*; q=0.01"
+   },
+   "responseType": "json",
+   "resultPath": "Jobs",
+   "defaultFields": [
+    "DocumentID",
+    "Title",
+    "Agency",
+    "Department",
+    "LocationName",
+    "SalaryDisplay",
+    "DateDisplay",
+    "PositionURI"
+   ],
+   "pagination": {
+    "type": "page",
+    "param": "page"
+   },
+   "mutates": false,
+   "example": {
+    "keyword": "nurse"
+   },
+   "source": "E1",
+   "verified": false,
+   "verifyNote": "HTTP 503 (HTTP 503)"
+  }
+ ],
+ "generated": {
+  "by": "clify add",
+  "model": "claude-opus-5-5",
+  "exploredSteps": 29,
+  "recorded": 40,
+  "verifiedAt": "2026-10-18T08:37:30.399Z",
+  "seconds": 484
+ }
+}

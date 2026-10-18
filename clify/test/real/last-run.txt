@@ -1,0 +1,31 @@
+PASS record books
+PASS record quotes
+PASS record hnsearch
+PASS record wikipedia
+PASS record scrapethis
+PASS record httpbinform
+PASS recorder: books captured category + page 2 + detail
+PASS recorder: hnsearch captured search XHR
+PASS write guard: httpbin POST held, not sent
+PASS captcha: stops and reports blocker
+PASS books list-books
+PASS books get-book
+PASS quotes get-author
+PASS quotes by-tag
+PASS hnsearch search
+PASS wikipedia summary
+PASS wikipedia article
+PASS recorder: wikipedia followed in-article link
+PASS scrapethis oscar-films (xhr JSON)
+PASS scrapethis search-teams
+PASS recorder: scrapethis xhr captured, analytics not held
+PASS hnsearch get-item
+PASS error: missing param
+PASS error: bad enum
+PASS error: unknown flag
+PASS write: dry-run preview, nothing sent
+PASS write: --yes sends
+PASS mcp: read tool + write preview
+PASS mcp: live read
+---- 29 passed, 0 failed
+ran 2026-10-17 01:25 PDT on a Linux build machine

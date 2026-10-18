@@ -1,0 +1,77 @@
+{
+ "ok": true,
+ "site": "inaturalist",
+ "url": "https://www.inaturalist.org/observations",
+ "commands": [
+  {
+   "name": "search-observations",
+   "summary": "Search wildlife observations by text, taxon, place, user, quality grade and date range, with sorting and pagination",
+   "verified": true
+  },
+  {
+   "name": "get-observation",
+   "summary": "Get full details of one observation by its numeric id: taxon, photos, location, identifications and observer",
+   "verified": true
+  },
+  {
+   "name": "list-species-counts",
+   "summary": "Count observed species (leaf taxa) matching observation filters, e.g. the most-observed species in a place",
+   "verified": true
+  },
+  {
+   "name": "list-top-observers",
+   "summary": "List the users with the most observations that match the given filters (taxon, place, project)",
+   "verified": true
+  },
+  {
+   "name": "search-taxa",
+   "summary": "Search taxa (species, genera, families and so on) by scientific or common name, optionally filtered by rank",
+   "verified": true
+  },
+  {
+   "name": "get-taxon",
+   "summary": "Get details of a taxon by numeric id: name, rank, ancestry, common name, conservation status and Wikipedia summary",
+   "verified": true
+  },
+  {
+   "name": "search-places",
+   "summary": "Find places (countries, states, parks and so on) by name to get the place_id that the observation filters use",
+   "verified": true
+  },
+  {
+   "name": "search-projects",
+   "summary": "Search iNaturalist projects (bioblitzes, collections, umbrella projects) by name",
+   "verified": true
+  },
+  {
+   "name": "get-user",
+   "summary": "Get a user's public profile (login, name, observation and species counts) by login or numeric id",
+   "verified": true
+  },
+  {
+   "name": "list-identifications",
+   "summary": "List identifications (species IDs that users added to observations), filterable by taxon, identifier and whether they are current",
+   "verified": true
+  }
+ ],
+ "verified": 10,
+ "writes": 0,
+ "dropped": [],
+ "blockers": [
+  "bot-check at https://www.inaturalist.org/observations",
+  "bot-check at https://www.inaturalist.org/taxa/47851",
+  "captcha"
+ ],
+ "loggedIn": false,
+ "seconds": 89,
+ "next": [
+  "clify inaturalist",
+  "clify inaturalist search-observations --taxon_id \"47851\""
+ ],
+ "installed": "/home/ubuntu/clify-runs/batch2/home/bin/inaturalist",
+ "explored": {
+  "steps": 3,
+  "recorded": 4,
+  "heldWrites": 0
+ }
+}

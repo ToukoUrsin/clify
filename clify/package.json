@@ -1,0 +1,30 @@
+{
+  "name": "clify",
+  "version": "0.3.0",
+  "description": "Turn a website into a JSON CLI and MCP server for agents: explore once in headless Chrome, record the HTTP request behind each button, generate and verify typed commands.",
+  "type": "module",
+  "bin": {
+    "clify": "bin/clify"
+  },
+  "scripts": {
+    "typecheck": "tsc --noEmit",
+    "test": "bash test/local.sh",
+    "test:live": "bash test/real/run.sh"
+  },
+  "dependencies": {
+    "@anthropic-ai/sdk": "^0.135.0",
+    "@modelcontextprotocol/sdk": "^1.32.1",
+    "node-html-parser": "^6.1.13",
+    "playwright": "^1.64.1",
+    "tsx": "^4.23.15",
+    "zod": "^3.25.76"
+  },
+  "devDependencies": {
+    "@types/node": "^22.10.0",
+    "typescript": "^5.9.3"
+  },
+  "license": "MIT",
+  "engines": {
+    "node": ">=22"
+  }
+}

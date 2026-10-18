@@ -1,0 +1,273 @@
+{
+ "name": "eur-lex-europa",
+ "startUrl": "https://eur-lex.europa.eu/",
+ "origin": "https://eur-lex.europa.eu",
+ "createdAt": "2026-10-18T08:31:34.477Z",
+ "description": "EUR-Lex (eur-lex.europa.eu), the official portal for European Union law. This CLI searches EU legal documents by keyword with facet filters, sorting and paging, gets search suggestions, and fetches a document's text or metadata by CELEX number.",
+ "commands": [],
+ "blockers": [
+  "captcha"
+ ],
+ "notes": [
+  "EUR-Lex uses an AWS WAF bot challenge. During exploration, after many requests (especially the export dialog), every page started returning HTTP 202 with an empty #challenge-container body. If a command returns an empty title or text, the IP is being challenged: slow down and retry later.",
+  "The document detail pages (get-document-text, get-document-info) were never loaded successfully in the recording because the challenge blocked them, so their extract selectors are best-effort.",
+  "CELEX numbers are encoded as sector + year + type letter + number, e.g. 32016R0679 = sector 3 (legislation), 2016, Regulation, no. 679. Search result URLs contain them as uri=CELEX:<id>.",
+  "Other document URL patterns: PDF at /legal-content/EN/TXT/PDF/?uri=CELEX:<id>; language-auto page at /legal-content/AUTO/?uri=CELEX:<id>; replace EN with another language code (FR, DE, ...) for other languages.",
+  "Exporting results (export-documents.html, formats CSV/TSV/Excel/XML/PDF) was not recorded end to end because the submit was held, so no export command is provided. For bulk access, page through search-documents instead.",
+  "Search facet codes are the ones shown in EUR-Lex's filter sidebar. Combine several filters in one call, e.g. act_type=REG, year=2025, author=EP."
+ ],
+ "dropped": [
+  {
+   "name": "get-document-text",
+   "summary": "Fetch the full English text and title of an EU legal document by its CELEX number",
+   "method": "GET",
+   "urlTemplate": "/legal-content/EN/TXT/HTML/?uri=CELEX:{celex}",
+   "params": [
+    {
+     "name": "celex",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "CELEX number of the document, e.g. 32016R0679 (the GDPR)",
+     "example": "32016R0679"
+    }
+   ],
+   "responseType": "html",
+   "extract": {
+    "fields": {
+     "title": "#tit_1",
+     "text": ".eli-container"
+    }
+   },
+   "defaultFields": [
+    "title",
+    "text"
+   ],
+   "mutates": false,
+   "example": {
+    "celex": "32016R0679"
+   },
+   "source": "E10",
+   "verified": false,
+   "verifyNote": "only 0 of 2 fields extracted (missing: title, text)"
+  },
+  {
+   "name": "suggest-search-terms",
+   "summary": "Get autocomplete suggestions for a partial EUR-Lex quick-search query",
+   "method": "GET",
+   "urlTemplate": "/autocomplete.html?quickSearch=true",
+   "params": [
+    {
+     "name": "query",
+     "key": "searchString",
+     "in": "query",
+     "required": true,
+     "type": "string",
+     "description": "Partial search text to complete, e.g. 'data protection'",
+     "example": "data protection"
+    }
+   ],
+   "headers": {
+    "X-Requested-With": "XMLHttpRequest"
+   },
+   "responseType": "json",
+   "resultPath": "suggestions",
+   "defaultFields": [
+    "value"
+   ],
+   "mutates": false,
+   "example": {
+    "query": "data protection"
+   },
+   "source": "E2 GET https://eur-lex.europa.eu/autocomplete.html",
+   "verified": false,
+   "verifyNote": "failed on Blaxel: response was not JSON (content-type text/html; charset=UTF-8): "
+  },
+  {
+   "name": "search-documents",
+   "summary": "Keyword search over EU law documents (regulations, directives, decisions, case law, etc.), with filters by type of act, year, month, author, collection and procedure, plus sorting and paging",
+   "method": "GET",
+   "urlTemplate": "/search.html?scope=EURLEX&lang=en&type=quick",
+   "params": [
+    {
+     "name": "text",
+     "in": "query",
+     "required": true,
+     "type": "string",
+     "description": "Search keywords, e.g. 'data protection'",
+     "example": "data protection"
+    },
+    {
+     "name": "act_type",
+     "key": "FM_CODED",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Filter by type of act code, e.g. REG (regulation), DIR (directive), DEC (decision), REC (recommendation)",
+     "example": "REG"
+    },
+    {
+     "name": "year",
+     "key": "DD_YEAR",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Filter by year of the document, e.g. 2025",
+     "example": "2025"
+    },
+    {
+     "name": "month",
+     "key": "DD_MONTH",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Filter by month of the document, given as a number, e.g. 03"
+    },
+    {
+     "name": "author",
+     "key": "AU_CODED",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Filter by author code, e.g. EP (European Parliament), CONSIL (Council), COM (European Commission)",
+     "example": "EP"
+    },
+    {
+     "name": "collection",
+     "key": "DTS_DOM",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Filter by collection/domain code, e.g. EU_LAW, EU_CASE_LAW, ALL"
+    },
+    {
+     "name": "subcollection",
+     "key": "DTS_SUBDOM",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Filter by sub-collection code, e.g. LEGISLATION, PRE_ACTS, CONSLEG"
+    },
+    {
+     "name": "procedure_type",
+     "key": "PROC_TYP",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Filter by legislative procedure type code, e.g. COD (ordinary legislative procedure)"
+    },
+    {
+     "name": "sort",
+     "key": "sortOne",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Sort key. DD = date of document. Omit to sort by relevance.",
+     "enum": [
+      "DD"
+     ]
+    },
+    {
+     "name": "order",
+     "key": "sortOneOrder",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Sort direction, used together with sort",
+     "enum": [
+      "desc",
+      "asc"
+     ]
+    },
+    {
+     "name": "page",
+     "in": "query",
+     "required": false,
+     "type": "number",
+     "description": "Result page number, starting at 1",
+     "default": 1
+    }
+   ],
+   "responseType": "html",
+   "extract": {
+    "list": "div.SearchResult",
+    "fields": {
+     "title": "a.title || h2",
+     "url": "a.title@href || h2 a@href",
+     "celex": "div.SearchResultData dd || dd",
+     "metadata": "div.SearchResultData || dl"
+    }
+   },
+   "defaultFields": [
+    "title",
+    "celex",
+    "url",
+    "metadata"
+   ],
+   "pagination": {
+    "type": "page",
+    "param": "page"
+   },
+   "mutates": false,
+   "example": {
+    "text": "data protection",
+    "act_type": "REG",
+    "year": "2025"
+   },
+   "source": "E6 E8 GET https://eur-lex.europa.eu/search.html",
+   "verified": false,
+   "verifyNote": "failed on Blaxel: empty list: the example args returned nothing or the selector/resultPath is wrong"
+  },
+  {
+   "name": "get-document-info",
+   "summary": "Fetch the 'all information' page for an EU legal document by CELEX number: title, dates, author/form, legal basis, relationships and classifications",
+   "method": "GET",
+   "urlTemplate": "/legal-content/EN/ALL/?uri=CELEX:{celex}",
+   "params": [
+    {
+     "name": "celex",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "CELEX number of the document, e.g. 32016R0679",
+     "example": "32016R0679"
+    }
+   ],
+   "responseType": "html",
+   "extract": {
+    "fields": {
+     "title": "#title || title",
+     "dates": "#PPDates_Contents",
+     "misc": "#PPMisc_Contents",
+     "relationships": "#PPLinked_Contents",
+     "classifications": "#PPClass_Contents",
+     "procedure": "#PPProc_Contents",
+     "content": "#MainContent || body"
+    }
+   },
+   "defaultFields": [
+    "title",
+    "dates",
+    "misc",
+    "relationships",
+    "classifications",
+    "procedure"
+   ],
+   "mutates": false,
+   "example": {
+    "celex": "32016R0679"
+   },
+   "source": "E9",
+   "verified": false,
+   "verifyNote": "failed on Blaxel: only 1 of 7 fields extracted (missing: title, dates, misc, relationships, classifications, procedure)"
+  }
+ ],
+ "generated": {
+  "by": "clify add",
+  "model": "claude-opus-5-5",
+  "exploredSteps": 17,
+  "recorded": 21,
+  "verifiedAt": "2026-10-18T08:32:54.002Z",
+  "seconds": 208
+ }
+}

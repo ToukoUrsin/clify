@@ -1,0 +1,7 @@
+node_modules/
+build/
+out/*
+!out/clify-submission-*.mp4
+!out/frames/
+public/sub/
+public/ask/

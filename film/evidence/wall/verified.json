@@ -1,0 +1,5304 @@
+{
+ "verifiedAt": "2026-10-17T23:08:54.252Z",
+ "clify": "/home/ubuntu/clify-film-snap/clify/bin/clify",
+ "total": 252,
+ "ok": 126,
+ "strong": 79,
+ "results": [
+  {
+   "site": "adviceslip",
+   "ok": true,
+   "commandsOk": [
+    {
+     "name": "get-advice",
+     "ms": 628,
+     "argv": "get-advice --limit 3",
+     "sample": "{\"slip\":{\"id\":110,\"advice\":\"Give up your seat for someone who needs it.\"}}"
+    }
+   ],
+   "commandsFail": [],
+   "reasons": [],
+   "origin": "https://api.adviceslip.com",
+   "description": "Advice Slip public read-only CLI.",
+   "nCommands": 1,
+   "strong": false,
+   "robots": "robots.txt HTTP 404"
+  },
+  {
+   "site": "alternative",
+   "ok": true,
+   "commandsOk": [
+    {
+     "name": "index",
+     "ms": 372,
+     "argv": "index --count 1 --limit 3",
+     "sample": "{\"name\":\"Fear and Greed Index\",\"data\":[{\"value\":\"55\",\"value_classification\":\"Greed\",\"timestamp\":\"1792195200\",\"time_until_update\":\"3152\"}],\"metadata\":{\"error\":null}}"
+    },
+    {
+     "name": "historical",
+     "ms": 379,
+     "argv": "historical --count 7 --limit 3",
+     "sample": "{\"name\":\"Fear and Greed Index\",\"data\":[{\"value\":\"55\",\"value_classification\":\"Greed\",\"timestamp\":\"1792195200\",\"time_until_update\":\"3151\"}],\"metadata\":{\"error\":null}}"
+    }
+   ],
+   "commandsFail": [],
+   "reasons": [],
+   "origin": "https://api.alternative.me",
+   "description": "Crypto Fear and Greed Index public read-only data.",
+   "nCommands": 2,
+   "strong": true,
+   "robots": "robots.txt HTTP 404"
+  },
+  {
+   "site": "anilist",
+   "ok": true,
+   "commandsOk": [
+    {
+     "name": "search-anime",
+     "ms": 308,
+     "argv": "search-anime --query Cowboy Bebop --limit 3",
+     "sample": "[{\"id\":1,\"title\":{\"romaji\":\"Cowboy Bebop\",\"english\":\"Cowboy Bebop\"}},{\"id\":5,\"title\":{\"romaji\":\"Cowboy Bebop: Tengoku no Tobira\",\"english\":\"Cowboy Bebop: The Movie - Knockin' on Heaven's Door\"}},{\"id\":17205,\"title\":{\"romaji\":\"Cowboy Bebop: Ein no Natsuyasumi\",\"english\":\"Ein's Summer Vacation\"}}]"
+    }
+   ],
+   "commandsFail": [],
+   "reasons": [],
+   "origin": "https://graphql.anilist.co",
+   "description": "AniList public read-only CLI.",
+   "nCommands": 1,
+   "strong": false,
+   "robots": "robots.txt 0 disallow rules for *"
+  },
+  {
+   "site": "arch",
+   "ok": false,
+   "commandsOk": [
+    {
+     "name": "package",
+     "ms": 1551,
+     "argv": "package --repo core --arch x86_64 --name bash --limit 3",
+     "sample": "\"Arch Linux Home Packages Forums Wiki GitLab Security AUR Download bash 5.3.20-1 Package Actions Source Files / View Changes Bug Reports / Add New Bug Search Wiki / Manual Pages Security Issues Download From Mirror Architecture: x86_64 Repository: Core Description: The GNU Bourne Again shell Upstrea"
+    }
+   ],
+   "commandsFail": [
+    {
+     "name": "search",
+     "why": "robots disallows /packages/search/json/"
+    }
+   ],
+   "reasons": [],
+   "origin": "https://archlinux.org",
+   "description": "Public read-only Arch Linux Packages endpoints used by the website.",
+   "nCommands": 2,
+   "strong": false,
+   "robots": "robots.txt 3 disallow rules for *"
+  },
+  {
+   "site": "artic",
+   "ok": false,
+   "commandsOk": [
+    {
+     "name": "artwork",
+     "ms": 413,
+     "argv": "artwork --id 27992 --limit 3",
+     "sample": "{\"data\":{\"id\":27992,\"api_model\":\"artworks\",\"api_link\":\"https://api.artic.edu/api/v1/artworks/27992\",\"is_boosted\":true,\"title\":\"A Sunday on La Grande Jatte — 1884\",\"alt_titles\":null,\"thumbnail\":{\"lqip\":\"data:image/gif;base64,R0lGODlhCAAFAPUAAE1WUFVTU1NWUFZYVllbVlpaW1tcWF1cXVxiWl1jWl9mX2NmVWVnXF9eZlxd"
+    }
+   ],
+   "commandsFail": [
+    {
+     "name": "search",
+     "why": "HTTP 400"
+    }
+   ],
+   "reasons": [],
+   "origin": "https://api.artic.edu",
+   "description": "Art Institute public artwork API",
+   "nCommands": 2,
+   "strong": false,
+   "robots": "robots.txt 0 disallow rules for *"
+  },
+  {
+   "site": "arxiv",
+   "ok": false,
+   "commandsOk": [],
+   "commandsFail": [
+    {
+     "name": "search",
+     "why": "robots disallows /api/query"
+    },
+    {
+     "name": "paper",
+     "why": "robots disallows /api/query"
+    }
+   ],
+   "reasons": [],
+   "origin": "https://export.arxiv.org",
+   "description": "arXiv public Atom API responses",
+   "nCommands": 2,
+   "strong": false,
+   "robots": "robots.txt 1 disallow rules for *"
+  },
+  {
+   "site": "askubuntu",
+   "ok": true,
+   "commandsOk": [
+    {
+     "name": "questions",
+     "ms": 295,
+     "argv": "questions --limit 3",
+     "sample": "{\"items\":[{\"tags\":[\"upgrade\",\"raspberrypi\",\"c#\"],\"owner\":{\"account_id\":43639385,\"reputation\":1,\"user_id\":2326181,\"user_type\":\"registered\",\"profile_image\":\"https://www.gravatar.com/avatar/02fd027f667f8aa029ca1221b8fdbf77?s=256&d=identicon&r=PG&f=y&so-version=2\",\"display_name\":\"Volker Koch\",\"link\":\"ht"
+    },
+    {
+     "name": "search",
+     "ms": 338,
+     "argv": "search --q python --limit 3",
+     "sample": "{\"items\":[{\"tags\":[\"python\"],\"owner\":{\"account_id\":13279168,\"reputation\":1,\"user_id\":1739664,\"user_type\":\"registered\",\"profile_image\":\"https://lh6.googleusercontent.com/-CNcwlucJH-4/AAAAAAAAAAI/AAAAAAAAABI/0uR2fisvXjo/s256-rj/photo.jpg\",\"display_name\":\"Sachin Mirajkar\",\"link\":\"https://askubuntu.com/"
+    }
+   ],
+   "commandsFail": [],
+   "reasons": [],
+   "origin": "https://api.stackexchange.com/2.3/",
+   "description": "Public read-only Ask Ubuntu endpoints used by the website.",
+   "nCommands": 2,
+   "strong": true,
+   "robots": "robots.txt HTTP 400"
+  },
+  {
+   "site": "aviationweather",
+   "ok": true,
+   "commandsOk": [
+    {
+     "name": "get",
+     "ms": 282,
+     "argv": "get --ids KJFK --limit 3",
+     "sample": "[{\"icaoId\":\"KJFK\",\"receiptTime\":\"2026-10-17T22:54:11.814Z\",\"obsTime\":1792277460,\"reportTime\":\"2026-10-17T23:00:00.000Z\",\"temp\":9.4,\"dewp\":-3.9,\"wdir\":350,\"wspd\":11,\"visib\":\"10+\",\"altim\":1026.2,\"slp\":1025.9,\"qcField\":12,\"metarType\":\"METAR\",\"rawOb\":\"METAR KJFK 172251Z 35011KT 10SM FEW200 FEW250 09/M04"
+    }
+   ],
+   "commandsFail": [],
+   "reasons": [],
+   "origin": "https://aviationweather.gov",
+   "description": "Aviation Weather public read-only command.",
+   "nCommands": 1,
+   "strong": false,
+   "robots": "robots.txt HTTP 404"
+  },
+  {
+   "site": "bigdatacloud-geo",
+   "ok": true,
+   "commandsOk": [
+    {
+     "name": "get",
+     "ms": 217,
+     "argv": "get --latitude 60.17 --longitude 24.94 --limit 3",
+     "sample": "{\"latitude\":60.17,\"lookupSource\":\"coordinates\",\"longitude\":24.94,\"localityLanguageRequested\":\"en\",\"continent\":\"Europe\",\"continentCode\":\"EU\",\"countryName\":\"Finland\",\"countryCode\":\"FI\",\"principalSubdivision\":\"Uusimaa\",\"principalSubdivisionCode\":\"FI-18\",\"city\":\"Helsinki\",\"locality\":\"Kluuvi\",\"postcode\":"
+    }
+   ],
+   "commandsFail": [],
+   "reasons": [],
+   "origin": "https://api.bigdatacloud.net",
+   "description": "BigDataCloud Geocoder public read-only command.",
+   "nCommands": 1,
+   "strong": false,
+   "robots": "robots.txt 0 disallow rules for *"
+  },
+  {
+   "site": "bitfinex",
+   "ok": false,
+   "commandsOk": [
+    {
+     "name": "ticker",
+     "ms": 352,
+     "argv": "ticker --symbol tBTCUSD --limit 3",
+     "sample": "[81362,2.00603681,81383]"
+    }
+   ],
+   "commandsFail": [
+    {
+     "name": "stats",
+     "why": "no data (status 200)"
+    }
+   ],
+   "reasons": [],
+   "origin": "https://api.bitfinex.com",
+   "description": "Bitfinex public market data public read-only data.",
+   "nCommands": 2,
+   "strong": false,
+   "robots": "robots.txt 18 disallow rules for *"
+  },
+  {
+   "site": "bitstamp",
+   "ok": false,
+   "commandsOk": [],
+   "commandsFail": [
+    {
+     "name": "ticker",
+     "why": "robots disallows /api/v2/ticker/x/"
+    },
+    {
+     "name": "order-book",
+     "why": "robots disallows /api/v2/ticker/x/"
+    }
+   ],
+   "reasons": [],
+   "origin": "https://www.bitstamp.net",
+   "description": "Bitstamp public exchange public read-only data.",
+   "nCommands": 2,
+   "strong": false,
+   "robots": "robots.txt 9 disallow rules for *"
+  },
+  {
+   "site": "blockchain",
+   "ok": true,
+   "commandsOk": [
+    {
+     "name": "latest-block",
+     "ms": 432,
+     "argv": "latest-block --limit 3",
+     "sample": "{\"hash\":\"00000000000000000001d4976ce65a806336f88fc8b77c0a2af16ba52ea65b53\",\"time\":1792277980,\"block_index\":971912,\"height\":971912,\"txIndexes\":[2100777968203314,7039247921151512,6724052702874674,945307608240275,1872963406499060,8942872280821214,1113572651963600,5865716262044427,5062834604868747,46765"
+    },
+    {
+     "name": "stats",
+     "ms": 771,
+     "argv": "stats --limit 3",
+     "sample": "\"971912\""
+    }
+   ],
+   "commandsFail": [],
+   "reasons": [],
+   "origin": "https://blockchain.info",
+   "description": "Blockchain.com explorer API public read-only data.",
+   "nCommands": 2,
+   "strong": true,
+   "robots": "robots.txt 6 disallow rules for *"
+  },
+  {
+   "site": "bls",
+   "ok": false,
+   "commandsOk": [],
+   "commandsFail": [
+    {
+     "name": "series",
+     "why": "robots disallows /publicAPI/v2/timeseries/data/x"
+    }
+   ],
+   "reasons": [],
+   "origin": "https://api.bls.gov",
+   "description": "US Bureau of Labor Statistics public read-only API.",
+   "nCommands": 1,
+   "strong": false,
+   "robots": "robots.txt 1 disallow rules for *"
+  },
+  {
+   "site": "books",
+   "ok": true,
+   "commandsOk": [
+    {
+     "name": "list-books",
+     "ms": 482,
+     "argv": "list-books --page 2 --limit 3",
+     "sample": "[{\"title\":\"In Her Wake\",\"price\":\"£12.84\",\"stock\":\"In stock\",\"rating\":\"star-rating One\",\"url\":\"https://books.toscrape.com/catalogue/in-her-wake_980/index.html\"},{\"title\":\"How Music Works\",\"price\":\"£37.32\",\"stock\":\"In stock\",\"rating\":\"star-rating Two\",\"url\":\"https://books.toscrape.com/catalogue/how-mu"
+    },
+    {
+     "name": "list-category",
+     "ms": 475,
+     "argv": "list-category --category mystery_3 --limit 3",
+     "sample": "[{\"title\":\"Sharp Objects\",\"price\":\"£47.82\",\"url\":\"https://books.toscrape.com/catalogue/sharp-objects_997/index.html\"},{\"title\":\"In a Dark, Dark Wood\",\"price\":\"£19.63\",\"url\":\"https://books.toscrape.com/catalogue/in-a-dark-dark-wood_963/index.html\"},{\"title\":\"The Past Never Ends\",\"price\":\"£56.50\",\"url"
+    },
+    {
+     "name": "get-book",
+     "ms": 378,
+     "argv": "get-book --slug the-mysterious-affair-at-styles-hercule-poirot-1_452 --limit 3",
+     "sample": "{\"title\":\"The Mysterious Affair at Styles (Hercule Poirot #1)\",\"price\":\"£24.80\",\"stock\":\"In stock (6 available)\",\"upc\":\"2da5edf8b5776c9a\"}"
+    }
+   ],
+   "commandsFail": [],
+   "reasons": [],
+   "origin": "https://books.toscrape.com",
+   "description": "Books to Scrape (scraping sandbox): browse the catalogue, filter by category, open a book. Hand-written from recording.jsonl.",
+   "nCommands": 3,
+   "strong": true,
+   "robots": "robots.txt HTTP 404"
+  },
+  {
+   "site": "caniuse",
+   "ok": false,
+   "commandsOk": [],
+   "commandsFail": [
+    {
+     "name": "feature",
+     "why": "no data (status undefined)"
+    },
+    {
+     "name": "search",
+     "why": "no data (status undefined)"
+    }
+   ],
+   "reasons": [],
+   "origin": "https://caniuse.com",
+   "description": "Public read-only Can I Use endpoints used by the website.",
+   "nCommands": 2,
+   "strong": false,
+   "robots": "robots.txt 0 disallow rules for *"
+  },
+  {
+   "site": "cdc",
+   "ok": false,
+   "commandsOk": [],
+   "commandsFail": [
+    {
+     "name": "query",
+     "why": "HTTP 404"
+    },
+    {
+     "name": "metadata",
+     "why": "HTTP 404"
+    }
+   ],
+   "reasons": [],
+   "origin": "https://data.cdc.gov",
+   "description": "CDC Open Data public read-only API.",
+   "nCommands": 2,
+   "strong": false,
+   "robots": "robots.txt 54 disallow rules for *"
+  },
+  {
+   "site": "cdnjs",
+   "ok": false,
+   "commandsOk": [],
+   "commandsFail": [
+    {
+     "name": "search",
+     "why": "robots disallows /libraries"
+    },
+    {
+     "name": "get-library",
+     "why": "robots disallows /libraries/x"
+    }
+   ],
+   "reasons": [],
+   "origin": "https://api.cdnjs.com",
+   "description": "Public read-only cdnjs endpoints used by the website.",
+   "nCommands": 2,
+   "strong": false,
+   "robots": "robots.txt 1 disallow rules for *"
+  },
+  {
+   "site": "celestrak",
+   "ok": false,
+   "commandsOk": [],
+   "commandsFail": [
+    {
+     "name": "get",
+     "why": "robots disallows /NORAD/elements/gp.php"
+    }
+   ],
+   "reasons": [],
+   "origin": "https://celestrak.org",
+   "description": "CelesTrak public read-only command.",
+   "nCommands": 1,
+   "strong": false,
+   "robots": "robots.txt 22 disallow rules for *"
+  },
+  {
+   "site": "census",
+   "ok": true,
+   "commandsOk": [
+    {
+     "name": "population",
+     "ms": 787,
+     "argv": "population --get NAME,P1_001N --for state:* --limit 3",
+     "sample": "\"An official website of the United States government Here’s how you know Official websites use .gov A .gov website belongs to an official government organization in the United States. Secure .gov websites use HTTPS A lock ( ) or https:// means you‘ve safely connected to the .gov website. Share sensi"
+    }
+   ],
+   "commandsFail": [],
+   "reasons": [],
+   "origin": "https://api.census.gov",
+   "description": "US Census API public read-only API.",
+   "nCommands": 1,
+   "strong": false,
+   "robots": "robots.txt 0 disallow rules for *"
+  },
+  {
+   "site": "chicago",
+   "ok": true,
+   "commandsOk": [
+    {
+     "name": "query",
+     "ms": 943,
+     "argv": "query --dataset ijzp-q8t2 --$limit 5 --limit 3",
+     "sample": "[{\"id\":\"14352791\",\"case_number\":\"JK444016\",\"date\":\"2026-10-09T00:00:00.000\",\"block\":\"075XX S TRUMBULL AVE\",\"iucr\":\"0710\",\"primary_type\":\"THEFT\",\"description\":\"THEFT FROM MOTOR VEHICLE\",\"location_description\":\"RESIDENCE\",\"arrest\":false,\"domestic\":false,\"beat\":\"0835\",\"district\":\"008\",\"ward\":\"18\",\"comm"
+    },
+    {
+     "name": "metadata",
+     "ms": 437,
+     "argv": "metadata --dataset ijzp-q8t2 --limit 3",
+     "sample": "{\"id\":\"ijzp-q8t2\",\"name\":\"Crimes - 2001 to Present\",\"assetType\":\"dataset\",\"attribution\":\"Chicago Police Department\",\"attributionLink\":\"https://www.chicagopolice.org/data-statistics/\",\"averageRating\":0,\"category\":\"Public Safety\",\"createdAt\":1317405571,\"description\":\"This dataset reflects reported inc"
+    }
+   ],
+   "commandsFail": [],
+   "reasons": [],
+   "origin": "https://data.cityofchicago.org",
+   "description": "Chicago Data Portal public read-only API.",
+   "nCommands": 2,
+   "strong": true,
+   "robots": "robots.txt 54 disallow rules for *"
+  },
+  {
+   "site": "chucknorris",
+   "ok": true,
+   "commandsOk": [
+    {
+     "name": "search-jokes",
+     "ms": 683,
+     "argv": "search-jokes --query music --limit 3",
+     "sample": "{\"total\":25,\"result\":[{\"categories\":[],\"created_at\":\"2020-01-05 13:42:20.262289\",\"icon_url\":\"https://api.chucknorris.io/img/avatar/chuck-norris.png\",\"id\":\"2M8O6f1OTROCE0Xjab5pPQ\",\"updated_at\":\"2020-01-05 13:42:20.262289\",\"url\":\"https://api.chucknorris.io/jokes/2M8O6f1OTROCE0Xjab5pPQ\",\"value\":\"Chuck "
+    }
+   ],
+   "commandsFail": [],
+   "reasons": [],
+   "origin": "https://api.chucknorris.io",
+   "description": "Chuck Norris Jokes public read-only CLI.",
+   "nCommands": 1,
+   "strong": false,
+   "robots": "robots.txt 0 disallow rules for *"
+  },
+  {
+   "site": "citybikes",
+   "ok": false,
+   "commandsOk": [],
+   "commandsFail": [
+    {
+     "name": "get",
+     "why": "no data (status undefined)"
+    }
+   ],
+   "reasons": [],
+   "origin": "https://api.citybik.es",
+   "description": "CityBikes public read-only command.",
+   "nCommands": 1,
+   "strong": false,
+   "robots": "robots.txt HTTP 404"
+  },
+  {
+   "site": "cleveland-museum",
+   "ok": false,
+   "commandsOk": [
+    {
+     "name": "search",
+     "ms": 330,
+     "argv": "search --query Rembrandt --limit 3",
+     "sample": "[{\"id\":124089,\"accession_number\":\"1944.90\",\"share_license_status\":\"CC0\",\"tombstone\":\"Portrait of a Woman, 1635 or earlier. Rembrandt van Rijn (Dutch, 1606–1669), and Studio. Oil on wood; framed: 97.8 x 83.8 x 6.4 cm (38 1/2 x 33 x 2 1/2 in.); unframed: 77.5 x 64.8 cm (30 1/2 x 25 1/2 in.). The Cleve"
+    }
+   ],
+   "commandsFail": [
+    {
+     "name": "artwork",
+     "why": "HTTP 404"
+    }
+   ],
+   "reasons": [],
+   "origin": "https://openaccess-api.clevelandart.org",
+   "description": "Cleveland Museum open access API",
+   "nCommands": 2,
+   "strong": false,
+   "robots": "robots.txt 0 disallow rules for *"
+  },
+  {
+   "site": "cocktaildb",
+   "ok": true,
+   "commandsOk": [
+    {
+     "name": "search-cocktails",
+     "ms": 591,
+     "argv": "search-cocktails --query margarita --limit 3",
+     "sample": "{\"drinks\":[{\"idDrink\":\"11007\",\"strDrink\":\"Margarita\",\"strDrinkAlternate\":null,\"strTags\":\"IBA,ContemporaryClassic\",\"strVideo\":null,\"strCategory\":\"Ordinary Drink\",\"strIBA\":\"Contemporary Classics\",\"strAlcoholic\":\"Alcoholic\",\"strGlass\":\"Cocktail glass\",\"strInstructions\":\"Rub the rim of the glass with th"
+    }
+   ],
+   "commandsFail": [],
+   "reasons": [],
+   "origin": "https://www.thecocktaildb.com",
+   "description": "TheCocktailDB public read-only CLI.",
+   "nCommands": 1,
+   "strong": false,
+   "robots": "robots.txt 0 disallow rules for *"
+  },
+  {
+   "site": "codeberg",
+   "ok": false,
+   "commandsOk": [],
+   "commandsFail": [
+    {
+     "name": "repo",
+     "why": "robots disallows /api/v1/repos/x/x"
+    },
+    {
+     "name": "search",
+     "why": "robots disallows /api/v1/repos/search"
+    }
+   ],
+   "reasons": [],
+   "origin": "https://codeberg.org",
+   "description": "Public read-only Codeberg endpoints used by the website.",
+   "nCommands": 2,
+   "strong": false,
+   "robots": "robots.txt 58 disallow rules for *"
+  },
+  {
+   "site": "coinbase",
+   "ok": true,
+   "commandsOk": [
+    {
+     "name": "spot",
+     "ms": 231,
+     "argv": "spot --product BTC-USD --limit 3",
+     "sample": "{\"data\":{\"amount\":\"81234.805\",\"base\":\"BTC\",\"currency\":\"USD\"}}"
+    },
+    {
+     "name": "buy",
+     "ms": 208,
+     "argv": "buy --product BTC-USD --limit 3",
+     "sample": "{\"data\":{\"amount\":\"81234.805\",\"base\":\"BTC\",\"currency\":\"USD\"}}"
+    }
+   ],
+   "commandsFail": [],
+   "reasons": [],
+   "origin": "https://api.coinbase.com",
+   "description": "Coinbase public prices public read-only data.",
+   "nCommands": 2,
+   "strong": true,
+   "robots": "robots.txt HTTP 404"
+  },
+  {
+   "site": "coingecko",
+   "ok": false,
+   "commandsOk": [],
+   "commandsFail": [
+    {
+     "name": "price",
+     "why": "robots disallows /api/v3/simple/price"
+    }
+   ],
+   "reasons": [],
+   "origin": "https://api.coingecko.com",
+   "description": "CoinGecko public read-only CLI.",
+   "nCommands": 1,
+   "strong": false,
+   "robots": "robots.txt 5 disallow rules for *"
+  },
+  {
+   "site": "coinlore",
+   "ok": true,
+   "commandsOk": [
+    {
+     "name": "ticker",
+     "ms": 561,
+     "argv": "ticker --id 90 --limit 3",
+     "sample": "[{\"id\":\"90\",\"symbol\":\"BTC\",\"name\":\"Bitcoin\",\"nameid\":\"bitcoin\",\"rank\":1,\"price_usd\":\"81348.13\",\"percent_change_24h\":\"-0.54\",\"percent_change_1h\":\"0.12\",\"percent_change_7d\":\"-1.82\",\"price_btc\":\"1.00\",\"market_cap_usd\":\"1624591454195.80\",\"volume24\":13254990434.85264,\"volume24a\":23729131590.17088,\"csuppl"
+    },
+    {
+     "name": "global",
+     "ms": 180,
+     "argv": "global --limit 3",
+     "sample": "[{\"coins_count\":14993,\"active_markets\":26349,\"total_mcap\":2684275509673.8784,\"total_volume\":64032619839.03658,\"btc_d\":\"60.52\",\"eth_d\":\"10.91\",\"mcap_change\":\"-0.84\",\"volume_change\":\"-45.84\",\"avg_change_percent\":\"-0.14\",\"volume_ath\":344187126190825200,\"mcap_ath\":33248067879029.688}]"
+    }
+   ],
+   "commandsFail": [],
+   "reasons": [],
+   "origin": "https://api.coinlore.net",
+   "description": "CoinLore crypto market data public read-only data.",
+   "nCommands": 2,
+   "strong": true,
+   "robots": "robots.txt 0 disallow rules for *"
+  },
+  {
+   "site": "contracts",
+   "ok": false,
+   "commandsOk": [],
+   "commandsFail": [
+    {
+     "name": "search",
+     "why": "HTTP 400"
+    }
+   ],
+   "reasons": [],
+   "origin": "https://www.contractsfinder.service.gov.uk",
+   "description": "UK Contracts Finder public read-only API.",
+   "nCommands": 1,
+   "strong": false,
+   "robots": "robots.txt HTTP 404"
+  },
+  {
+   "site": "coverart",
+   "ok": false,
+   "commandsOk": [],
+   "commandsFail": [
+    {
+     "name": "get-release-group",
+     "why": "HTTP 404"
+    }
+   ],
+   "reasons": [],
+   "origin": "https://coverartarchive.org",
+   "description": "Cover Art Archive public read-only CLI.",
+   "nCommands": 1,
+   "strong": false,
+   "robots": "robots.txt 0 disallow rules for *"
+  },
+  {
+   "site": "crates",
+   "ok": true,
+   "commandsOk": [
+    {
+     "name": "get-crate",
+     "ms": 570,
+     "argv": "get-crate --name serde --limit 3",
+     "sample": "{\"id\":\"serde\",\"name\":\"serde\",\"updated_at\":\"2026-07-18T23:05:13.266456Z\",\"versions\":[2817185,1748414,1746112,1739049,1731560,1730829,1729657,1729573,1728804,1728680,1476368,1453061,1387964,1370847,1336088,1317878,1311481,1311391,1310780,1262146,1246742,1236532,1232938,1231005,1227207,1195122,1155749,"
+    },
+    {
+     "name": "search",
+     "ms": 419,
+     "argv": "search --q http --limit 3",
+     "sample": "[{\"id\":\"http\",\"name\":\"http\",\"updated_at\":\"2026-07-29T14:57:21.755258Z\",\"versions\":null,\"keywords\":null,\"categories\":null,\"badges\":[],\"created_at\":\"2014-11-20T23:30:38.809367Z\",\"downloads\":1127886038,\"recent_downloads\":279380699,\"default_version\":\"1.5.0\",\"num_versions\":45,\"yanked\":false,\"max_version\""
+    }
+   ],
+   "commandsFail": [],
+   "reasons": [],
+   "origin": "https://crates.io",
+   "description": "Public read-only crates.io endpoints used by the website.",
+   "nCommands": 2,
+   "strong": true,
+   "robots": "robots.txt 0 disallow rules for *"
+  },
+  {
+   "site": "crossref",
+   "ok": true,
+   "commandsOk": [
+    {
+     "name": "search",
+     "ms": 379,
+     "argv": "search --query machine learning --limit 3",
+     "sample": "[{\"indexed\":{\"date-parts\":[[2026,4,30]],\"date-time\":\"2026-04-30T05:48:45Z\",\"timestamp\":1777528125213,\"version\":\"3.51.4\"},\"reference-count\":0,\"publisher\":\"Oxford University Press\",\"isbn-type\":[{\"value\":\"9780198828044\",\"type\":\"print\"},{\"value\":\"9780191883873\",\"type\":\"electronic\"}],\"content-domain\":{\"d"
+    },
+    {
+     "name": "work",
+     "ms": 336,
+     "argv": "work --doi 10.1038/s41586-020-2649-2 --limit 3",
+     "sample": "{\"status\":\"ok\",\"message-type\":\"work\",\"message-version\":\"1.0.0\",\"message\":{\"indexed\":{\"date-parts\":[[2026,10,17]],\"date-time\":\"2026-10-17T09:42:32Z\",\"timestamp\":1792230152954,\"version\":\"4.4.0\"},\"reference-count\":57,\"publisher\":\"Springer Science and Business Media LLC\",\"issue\":\"7825\",\"license\":[{\"star"
+    }
+   ],
+   "commandsFail": [],
+   "reasons": [],
+   "origin": "https://api.crossref.org",
+   "description": "Crossref scholarly metadata",
+   "nCommands": 2,
+   "strong": true,
+   "robots": "robots.txt HTTP 404"
+  },
+  {
+   "site": "cve",
+   "ok": false,
+   "commandsOk": [
+    {
+     "name": "get-page",
+     "ms": 446,
+     "argv": "get-page --cve CVE-2024-3094 --limit 3",
+     "sample": "{\"title\":\"Common vulnerabilities and Exposures (CVE)\"}"
+    }
+   ],
+   "commandsFail": [
+    {
+     "name": "home",
+     "why": "no data (status 200)"
+    }
+   ],
+   "reasons": [],
+   "origin": "https://www.cve.org",
+   "description": "CVE Program: public read-only HTML pages.",
+   "nCommands": 2,
+   "strong": false,
+   "robots": "robots.txt 0 disallow rules for *"
+  },
+  {
+   "site": "dataeuropa",
+   "ok": false,
+   "commandsOk": [],
+   "commandsFail": [
+    {
+     "name": "search",
+     "why": "HTTP 400"
+    }
+   ],
+   "reasons": [],
+   "origin": "https://data.europa.eu",
+   "description": "data.europa.eu public read-only API.",
+   "nCommands": 1,
+   "strong": false,
+   "robots": "robots.txt 30 disallow rules for *"
+  },
+  {
+   "site": "datagov",
+   "ok": false,
+   "commandsOk": [],
+   "commandsFail": [
+    {
+     "name": "search",
+     "why": "HTTP 404"
+    },
+    {
+     "name": "dataset",
+     "why": "HTTP 404"
+    }
+   ],
+   "reasons": [],
+   "origin": "https://catalog.data.gov",
+   "description": "Data.gov Catalog public read-only API.",
+   "nCommands": 2,
+   "strong": false,
+   "robots": "robots.txt 0 disallow rules for *"
+  },
+  {
+   "site": "datagovau",
+   "ok": false,
+   "commandsOk": [],
+   "commandsFail": [
+    {
+     "name": "search",
+     "why": "robots disallows /api/3/action/package_search"
+    }
+   ],
+   "reasons": [],
+   "origin": "https://data.gov.au",
+   "description": "data.gov.au public read-only API.",
+   "nCommands": 1,
+   "strong": false,
+   "robots": "robots.txt 1 disallow rules for *"
+  },
+  {
+   "site": "datamuse",
+   "ok": true,
+   "commandsOk": [
+    {
+     "name": "means-like",
+     "ms": 169,
+     "argv": "means-like --word ocean --limit 3",
+     "sample": "[{\"word\":\"sea\",\"score\":40041792,\"tags\":[\"syn\",\"n\",\"results_type:primary_rel\"]},{\"word\":\"expanse\",\"score\":30041645,\"tags\":[\"n\"]},{\"word\":\"oceanic\",\"score\":30041524,\"tags\":[\"adj\",\"n\",\"prop\"]}]"
+    },
+    {
+     "name": "rhyme",
+     "ms": 170,
+     "argv": "rhyme --word blue --limit 3",
+     "sample": "[{\"word\":\"slew\",\"score\":41039,\"numSyllables\":1},{\"word\":\"subdue\",\"score\":31034,\"numSyllables\":2},{\"word\":\"pursue\",\"score\":28033,\"numSyllables\":2}]"
+    }
+   ],
+   "commandsFail": [],
+   "reasons": [],
+   "origin": "https://api.datamuse.com",
+   "description": "Datamuse word relationships",
+   "nCommands": 2,
+   "strong": true,
+   "robots": "robots.txt HTTP 404"
+  },
+  {
+   "site": "datasg",
+   "ok": false,
+   "commandsOk": [],
+   "commandsFail": [
+    {
+     "name": "metadata",
+     "why": "HTTP 404"
+    }
+   ],
+   "reasons": [],
+   "origin": "https://api-open.data.gov.sg",
+   "description": "data.gov.sg public read-only API.",
+   "nCommands": 1,
+   "strong": false,
+   "robots": "robots.txt HTTP 404"
+  },
+  {
+   "site": "datausa",
+   "ok": false,
+   "commandsOk": [],
+   "commandsFail": [
+    {
+     "name": "population",
+     "why": "HTTP 404"
+    }
+   ],
+   "reasons": [],
+   "origin": "https://datausa.io",
+   "description": "Data USA public read-only API.",
+   "nCommands": 1,
+   "strong": false,
+   "robots": "robots.txt HTTP 404"
+  },
+  {
+   "site": "db-transport",
+   "ok": false,
+   "commandsOk": [],
+   "commandsFail": [
+    {
+     "name": "get",
+     "why": "HTTP 503"
+    }
+   ],
+   "reasons": [],
+   "origin": "https://v6.db.transport.rest",
+   "description": "DB transport public read-only command.",
+   "nCommands": 1,
+   "strong": false,
+   "robots": "robots.txt HTTP 503"
+  },
+  {
+   "site": "dblp",
+   "ok": false,
+   "commandsOk": [],
+   "commandsFail": [
+    {
+     "name": "search",
+     "why": "robots disallows /search/publ"
+    },
+    {
+     "name": "record",
+     "why": "robots disallows /rec/x.bib"
+    }
+   ],
+   "reasons": [],
+   "origin": "https://dblp.org",
+   "description": "DBLP computer science bibliography",
+   "nCommands": 2,
+   "strong": false,
+   "robots": "robots.txt 44 disallow rules for *"
+  },
+  {
+   "site": "de-wikipedia",
+   "ok": false,
+   "commandsOk": [],
+   "commandsFail": [
+    {
+     "name": "summary",
+     "why": "robots disallows /api/rest_v1/page/summary/x"
+    },
+    {
+     "name": "html",
+     "why": "robots disallows /api/rest_v1/page/html/x"
+    }
+   ],
+   "reasons": [],
+   "origin": "https://de.wikipedia.org",
+   "description": "de Wikipedia public REST article pages",
+   "nCommands": 2,
+   "strong": false,
+   "robots": "robots.txt 338 disallow rules for *"
+  },
+  {
+   "site": "debian",
+   "ok": true,
+   "commandsOk": [
+    {
+     "name": "search",
+     "ms": 716,
+     "argv": "search --keywords curl --limit 3",
+     "sample": "\"skip the navigation Packages About Debian Getting Debian Support Developers' Corner / Packages / Package Search Results package names descriptions source package names package contents all options Limit to suite: [bullseye] [bullseye-updates] [bullseye-backports] [bookworm] [bookworm-updates] [book"
+    },
+    {
+     "name": "package",
+     "ms": 832,
+     "argv": "package --section web --name curl --limit 3",
+     "sample": "\"skip the navigation Packages About Debian Getting Debian Support Developers' Corner / Packages / trixie (stable) / web / curl package names descriptions source package names package contents all options [ bullseye ] [ bookworm ] [ bookworm-backports ] [ trixie ] [ trixie-backports ] [ forky ] [ sid"
+    }
+   ],
+   "commandsFail": [],
+   "reasons": [],
+   "origin": "https://packages.debian.org",
+   "description": "Public read-only Debian Packages endpoints used by the website.",
+   "nCommands": 2,
+   "strong": true,
+   "robots": "robots.txt 0 disallow rules for *"
+  },
+  {
+   "site": "depsdev",
+   "ok": false,
+   "commandsOk": [],
+   "commandsFail": [
+    {
+     "name": "npm-package",
+     "why": "robots disallows /v3/systems/npm/packages/x"
+    },
+    {
+     "name": "pypi-package",
+     "why": "robots disallows /v3/systems/pypi/packages/x"
+    }
+   ],
+   "reasons": [],
+   "origin": "https://api.deps.dev",
+   "description": "Public read-only deps.dev endpoints used by the website.",
+   "nCommands": 2,
+   "strong": false,
+   "robots": "robots.txt 1 disallow rules for *"
+  },
+  {
+   "site": "devdocs",
+   "ok": false,
+   "commandsOk": [
+    {
+     "name": "docs",
+     "ms": 799,
+     "argv": "docs --limit 3",
+     "sample": "[{\"name\":\"Angular\",\"slug\":\"angular\",\"type\":\"angular\",\"links\":{\"home\":\"https://angular.dev/\",\"code\":\"https://github.com/angular/angular\"},\"version\":\"\",\"release\":\"22.0.0\",\"mtime\":1780544785,\"db_size\":8825224,\"attribution\":\"Super-powered by Google &copy;2010&ndash;2025.<br />\\n      Code licensed under"
+    }
+   ],
+   "commandsFail": [
+    {
+     "name": "archive",
+     "why": "HTTP 404"
+    }
+   ],
+   "reasons": [],
+   "origin": "https://devdocs.io",
+   "description": "Public read-only DevDocs endpoints used by the website.",
+   "nCommands": 2,
+   "strong": false,
+   "robots": "robots.txt 1 disallow rules for *"
+  },
+  {
+   "site": "devto",
+   "ok": true,
+   "commandsOk": [
+    {
+     "name": "articles",
+     "ms": 223,
+     "argv": "articles --limit 3",
+     "sample": "[{\"type_of\":\"article\",\"id\":4863859,\"title\":\"Dev Opportunity Radar #21: $500K Y Combinator Funding, Bolt Builders Week, and AI Safety Research Residency\",\"description\":\"TL;DR  Welcome back to Dev Opportunity Radar!  This is a weekly series where I share opportunities,...\",\"readable_publish_date\":\"Oct"
+    },
+    {
+     "name": "search",
+     "ms": 240,
+     "argv": "search --tag python --count 5 --limit 3",
+     "sample": "[{\"type_of\":\"article\",\"id\":4866647,\"title\":\"Python performance: native loops, NumPy and the vectorize trap\",\"description\":\"Python performance depends on execution and data boundaries. A measured NumPy and Numba example shows when batching wins and when conversion erases it.\",\"readable_publish_date\":"
+    }
+   ],
+   "commandsFail": [],
+   "reasons": [],
+   "origin": "https://dev.to/",
+   "description": "Public read-only DEV Community endpoints used by the website.",
+   "nCommands": 2,
+   "strong": true,
+   "robots": "robots.txt 16 disallow rules for *"
+  },
+  {
+   "site": "dictionary",
+   "ok": false,
+   "commandsOk": [],
+   "commandsFail": [
+    {
+     "name": "define",
+     "why": "HTTP 403: this endpoint needs a login. Run: clify login dictionary"
+    }
+   ],
+   "reasons": [],
+   "origin": "https://api.dictionaryapi.dev",
+   "description": "Free Dictionary API public read-only CLI.",
+   "nCommands": 1,
+   "strong": false,
+   "robots": "robots.txt 0 disallow rules for *"
+  },
+  {
+   "site": "dictionary-api",
+   "ok": false,
+   "commandsOk": [],
+   "commandsFail": [
+    {
+     "name": "define",
+     "why": "HTTP 403: this endpoint needs a login. Run: clify login dictionary-api"
+    }
+   ],
+   "reasons": [],
+   "origin": "https://api.dictionaryapi.dev",
+   "description": "Free English dictionary definitions",
+   "nCommands": 1,
+   "strong": false,
+   "robots": "robots.txt 0 disallow rules for *"
+  },
+  {
+   "site": "discourse",
+   "ok": true,
+   "commandsOk": [
+    {
+     "name": "latest",
+     "ms": 300,
+     "argv": "latest --limit 3",
+     "sample": "{\"users\":[{\"id\":115923,\"username\":\"Discourse\",\"name\":null,\"avatar_template\":\"/user_avatar/meta.discourse.org/discourse/{size}/580155_2.png\",\"admin\":true,\"trust_level\":4},{\"id\":1390,\"username\":\"singpolyma\",\"name\":\"Stephen Paul Weber\",\"avatar_template\":\"/user_avatar/meta.discourse.org/singpolyma/{size"
+    },
+    {
+     "name": "top",
+     "ms": 410,
+     "argv": "top --limit 3",
+     "sample": "{\"users\":[{\"id\":8722,\"username\":\"Falco\",\"name\":\"Falco\",\"avatar_template\":\"/user_avatar/meta.discourse.org/falco/{size}/179432_2.png\",\"flair_name\":\"team\",\"flair_url\":\"https://global.discourse-cdn.com/meta/original/3X/e/b/ebee30bd98aef20357e4a177a5a1e45b877ce088.svg\",\"flair_color\":\"111\",\"flair_group_i"
+    }
+   ],
+   "commandsFail": [
+    {
+     "name": "search",
+     "why": "robots disallows /search.json"
+    }
+   ],
+   "reasons": [],
+   "origin": "https://meta.discourse.org/",
+   "description": "Public read-only Discourse Meta endpoints used by the website.",
+   "nCommands": 3,
+   "strong": true,
+   "robots": "robots.txt 15 disallow rules for *"
+  },
+  {
+   "site": "discussgodot",
+   "ok": true,
+   "commandsOk": [
+    {
+     "name": "latest",
+     "ms": 899,
+     "argv": "latest --limit 3",
+     "sample": "{\"users\":[{\"id\":-1,\"username\":\"system\",\"name\":\"system\",\"avatar_template\":\"/uploads/default/original/2X/4/4b0a7fa8a6334634b94a13d421f0d99e6f04e21f.svg\",\"admin\":true,\"moderator\":true,\"trust_level\":4},{\"id\":1,\"username\":\"winston-yallow\",\"name\":\"\",\"avatar_template\":\"/user_avatar/forum.godotengine.org/wi"
+    },
+    {
+     "name": "top",
+     "ms": 903,
+     "argv": "top --limit 3",
+     "sample": "{\"users\":[{\"id\":51996,\"username\":\"obssidian-art\",\"name\":\"Amaury \",\"avatar_template\":\"/letter_avatar_proxy/v4/letter/o/ee7513/{size}.png\",\"trust_level\":1},{\"id\":1357,\"username\":\"Dad3353\",\"name\":\"Douglas ALLEN\",\"avatar_template\":\"/user_avatar/forum.godotengine.org/dad3353/{size}/70645_2.png\",\"trust_le"
+    }
+   ],
+   "commandsFail": [
+    {
+     "name": "search",
+     "why": "robots disallows /search.json"
+    }
+   ],
+   "reasons": [],
+   "origin": "https://forum.godotengine.org/",
+   "description": "Public read-only Godot Forum endpoints used by the website.",
+   "nCommands": 3,
+   "strong": true,
+   "robots": "robots.txt 15 disallow rules for *"
+  },
+  {
+   "site": "discussgohugo",
+   "ok": true,
+   "commandsOk": [
+    {
+     "name": "latest",
+     "ms": 451,
+     "argv": "latest --limit 3",
+     "sample": "{\"users\":[{\"id\":198,\"username\":\"RickCogley\",\"name\":\"Rick Cogley\",\"avatar_template\":\"/user_avatar/discourse.gohugo.io/rickcogley/{size}/10269_2.png\",\"moderator\":true,\"trust_level\":4},{\"id\":5068,\"username\":\"amca\",\"name\":\"Alasdair\",\"avatar_template\":\"/user_avatar/discourse.gohugo.io/amca/{size}/5608_2."
+    },
+    {
+     "name": "top",
+     "ms": 477,
+     "argv": "top --limit 3",
+     "sample": "{\"users\":[{\"id\":3893,\"username\":\"jmooring\",\"name\":\"Joe Mooring\",\"avatar_template\":\"/user_avatar/discourse.gohugo.io/jmooring/{size}/4214_2.png\",\"moderator\":true,\"trust_level\":2},{\"id\":20186,\"username\":\"markupandmatcha\",\"name\":\"Tiffany\",\"avatar_template\":\"https://avatars.discourse-cdn.com/v4/letter/m"
+    }
+   ],
+   "commandsFail": [
+    {
+     "name": "search",
+     "why": "robots disallows /search.json"
+    }
+   ],
+   "reasons": [],
+   "origin": "https://discourse.gohugo.io/",
+   "description": "Public read-only Hugo Forum endpoints used by the website.",
+   "nCommands": 3,
+   "strong": true,
+   "robots": "robots.txt 15 disallow rules for *"
+  },
+  {
+   "site": "discusskde",
+   "ok": true,
+   "commandsOk": [
+    {
+     "name": "latest",
+     "ms": 914,
+     "argv": "latest --limit 3",
+     "sample": "{\"users\":[{\"id\":-1,\"username\":\"system\",\"name\":\"system\",\"avatar_template\":\"https://discuss-cdn.kde.org/uploads/default/original/1X/4b778a82191813749a62470f289238e50507f2c1.svg\",\"admin\":true,\"moderator\":true,\"trust_level\":4},{\"id\":24123,\"username\":\"TheSpruce\",\"name\":\"\",\"avatar_template\":\"/letter_avata"
+    },
+    {
+     "name": "top",
+     "ms": 1108,
+     "argv": "top --limit 3",
+     "sample": "{\"users\":[{\"id\":11,\"username\":\"Paul_Brown\",\"name\":\"Paul Brown\",\"avatar_template\":\"/user_avatar/discuss.kde.org/paul_brown/{size}/37_2.png\",\"primary_group_name\":\"developers\",\"flair_name\":\"developers\",\"flair_url\":\"https://discuss-cdn.kde.org/uploads/default/original/1X/3022ca538bd29459ba55e057d80ff22c"
+    }
+   ],
+   "commandsFail": [
+    {
+     "name": "search",
+     "why": "robots disallows /search.json"
+    }
+   ],
+   "reasons": [],
+   "origin": "https://discuss.kde.org/",
+   "description": "Public read-only KDE Discuss endpoints used by the website.",
+   "nCommands": 3,
+   "strong": true,
+   "robots": "robots.txt 15 disallow rules for *"
+  },
+  {
+   "site": "django",
+   "ok": true,
+   "commandsOk": [
+    {
+     "name": "home",
+     "ms": 369,
+     "argv": "home --limit 3",
+     "sample": "{\"title\":\"The web framework for perfectionists with deadlines | Django\"}"
+    },
+    {
+     "name": "page",
+     "ms": 397,
+     "argv": "page --limit 3",
+     "sample": "{\"title\":\"Getting started with Django\"}"
+    }
+   ],
+   "commandsFail": [],
+   "reasons": [],
+   "origin": "https://www.djangoproject.com",
+   "description": "Django: public read-only HTML pages.",
+   "nCommands": 2,
+   "strong": true,
+   "robots": "robots.txt 2 disallow rules for *"
+  },
+  {
+   "site": "doaj",
+   "ok": false,
+   "commandsOk": [
+    {
+     "name": "search",
+     "ms": 442,
+     "argv": "search --query machine learning --limit 3",
+     "sample": "[{\"last_updated\":\"2025-08-20T01:49:50Z\",\"bibjson\":{\"identifier\":[{\"id\":\"10.46481/jnsps.2025.2273\",\"type\":\"doi\"},{\"id\":\"2714-2817\",\"type\":\"pissn\"},{\"id\":\"2714-4704\",\"type\":\"eissn\"}],\"journal\":{\"volume\":\"7\",\"number\":\"1\",\"country\":\"NG\",\"issns\":[\"2714-2817\",\"2714-4704\"],\"publisher\":\"Nigerian Society of "
+    }
+   ],
+   "commandsFail": [
+    {
+     "name": "journal",
+     "why": "HTTP 404"
+    }
+   ],
+   "reasons": [],
+   "origin": "https://doaj.org",
+   "description": "Directory of Open Access Journals",
+   "nCommands": 2,
+   "strong": false,
+   "robots": "robots.txt 13 disallow rules for *"
+  },
+  {
+   "site": "docker",
+   "ok": true,
+   "commandsOk": [
+    {
+     "name": "get-repository",
+     "ms": 316,
+     "argv": "get-repository --namespace library --name ubuntu --limit 3",
+     "sample": "{\"user\":\"library\",\"name\":\"ubuntu\",\"namespace\":\"library\",\"repository_type\":\"image\",\"status\":1,\"status_description\":\"active\",\"description\":\"Ubuntu is a Debian-based Linux operating system based on free software.\",\"is_private\":false,\"is_automated\":false,\"star_count\":17874,\"pull_count\":10109314538,\"last"
+    },
+    {
+     "name": "search",
+     "ms": 444,
+     "argv": "search --query python --limit 3",
+     "sample": "[{\"repo_name\":\"python\",\"short_description\":\"Python is an interpreted, interactive, object-oriented, open-source programming language.\",\"star_count\":10538,\"pull_count\":9413879348,\"repo_owner\":\"\",\"is_automated\":false,\"is_official\":true},{\"repo_name\":\"circleci/python\",\"short_description\":\"Python is an "
+    }
+   ],
+   "commandsFail": [],
+   "reasons": [],
+   "origin": "https://hub.docker.com",
+   "description": "Public read-only Docker Hub endpoints used by the website.",
+   "nCommands": 2,
+   "strong": true,
+   "robots": "robots.txt 0 disallow rules for *"
+  },
+  {
+   "site": "dogapi",
+   "ok": true,
+   "commandsOk": [
+    {
+     "name": "random-image",
+     "ms": 302,
+     "argv": "random-image --limit 3",
+     "sample": "{\"message\":\"https://images.dog.ceo/breeds/kuvasz/n02104029_4513.jpg\",\"status\":\"success\"}"
+    }
+   ],
+   "commandsFail": [],
+   "reasons": [],
+   "origin": "https://dog.ceo",
+   "description": "Dog CEO public read-only CLI.",
+   "nCommands": 1,
+   "strong": false,
+   "robots": "robots.txt 2 disallow rules for *"
+  },
+  {
+   "site": "dummyjson",
+   "ok": true,
+   "commandsOk": [
+    {
+     "name": "get-product",
+     "ms": 221,
+     "argv": "get-product --id 1 --limit 3",
+     "sample": "{\"id\":1,\"title\":\"Essence Mascara Lash Princess\",\"description\":\"The Essence Mascara Lash Princess is a popular mascara known for its volumizing and lengthening effects. Achieve dramatic lashes with this long-lasting and cruelty-free formula.\",\"category\":\"beauty\",\"price\":9.99,\"discountPercentage\":10.4"
+    }
+   ],
+   "commandsFail": [],
+   "reasons": [],
+   "origin": "https://dummyjson.com",
+   "description": "DummyJSON public read-only CLI.",
+   "nCommands": 1,
+   "strong": false,
+   "robots": "robots.txt 3 disallow rules for *"
+  },
+  {
+   "site": "endoflife",
+   "ok": true,
+   "commandsOk": [
+    {
+     "name": "product",
+     "ms": 255,
+     "argv": "product --product nodejs --limit 3",
+     "sample": "[{\"cycle\":\"26\",\"releaseDate\":\"2026-05-05\",\"lts\":\"2026-10-28\",\"eol\":\"2029-04-30\",\"latest\":\"26.12.0\",\"latestReleaseDate\":\"2026-10-14\",\"support\":\"2027-10-27\",\"extendedSupport\":false},{\"cycle\":\"25\",\"releaseDate\":\"2025-10-15\",\"eol\":\"2026-06-01\",\"latest\":\"25.9.0\",\"latestReleaseDate\":\"2026-04-01\",\"lts\":fal"
+    },
+    {
+     "name": "release",
+     "ms": 246,
+     "argv": "release --product python --cycle 3.12 --limit 3",
+     "sample": "{\"releaseDate\":\"2023-10-02\",\"eol\":\"2028-10-31\",\"latest\":\"3.12.15\",\"latestReleaseDate\":\"2026-10-01\",\"pep\":\"PEP-0693\",\"lts\":false,\"support\":\"2025-04-02\"}"
+    }
+   ],
+   "commandsFail": [],
+   "reasons": [],
+   "origin": "https://endoflife.date",
+   "description": "Public read-only endoflife.date endpoints used by the website.",
+   "nCommands": 2,
+   "strong": true,
+   "robots": "robots.txt 0 disallow rules for *"
+  },
+  {
+   "site": "espn",
+   "ok": false,
+   "commandsOk": [],
+   "commandsFail": [],
+   "reasons": [
+    "denied: ToS"
+   ]
+  },
+  {
+   "site": "europe-pmc",
+   "ok": false,
+   "commandsOk": [
+    {
+     "name": "paper",
+     "ms": 1190,
+     "argv": "paper --id 31452104 --limit 3",
+     "sample": "[{\"id\":\"31452104\",\"source\":\"MED\",\"pmid\":\"31452104\",\"doi\":\"10.1007/978-1-4939-9752-7_10\",\"title\":\"Molegro Virtual Docker for Docking.\",\"authorString\":\"Bitencourt-Ferreira G, de Azevedo WF.\",\"journalTitle\":\"Methods Mol Biol\",\"journalVolume\":\"2053\",\"pubYear\":\"2019\",\"journalIssn\":\"1064-3745; 1940-6029; "
+    }
+   ],
+   "commandsFail": [
+    {
+     "name": "search",
+     "why": "HTTP 404"
+    }
+   ],
+   "reasons": [],
+   "origin": "https://www.ebi.ac.uk",
+   "description": "Europe PMC literature search",
+   "nCommands": 2,
+   "strong": false,
+   "robots": "robots.txt 170 disallow rules for *"
+  },
+  {
+   "site": "eurostat",
+   "ok": true,
+   "commandsOk": [
+    {
+     "name": "data",
+     "ms": 687,
+     "argv": "data --dataset sdg_01_10 --lang en --geo EU27_2020 --limit 3",
+     "sample": "{\"version\":\"2.0\",\"class\":\"dataset\",\"label\":\"Persons at risk of poverty or social exclusion\",\"source\":\"ESTAT\",\"updated\":\"2026-10-05T23:00:00+0200\",\"value\":{\"1\":24,\"2\":23.7,\"3\":22.4,\"4\":21.7,\"5\":21.8,\"6\":21.5,\"7\":21.7,\"8\":21.5,\"9\":21.2,\"10\":20.9,\"11\":20.9,\"13\":104877,\"14\":103556,\"15\":98142,\"16\":95066,"
+    }
+   ],
+   "commandsFail": [],
+   "reasons": [],
+   "origin": "https://ec.europa.eu",
+   "description": "Eurostat public read-only API.",
+   "nCommands": 1,
+   "strong": false,
+   "robots": "robots.txt 199 disallow rules for *"
+  },
+  {
+   "site": "exoplanet",
+   "ok": true,
+   "commandsOk": [
+    {
+     "name": "get",
+     "ms": 1392,
+     "argv": "get --query select top 5 pl_name from pscomppars --limit 3",
+     "sample": "[{\"pl_name\":\"55 Cnc b\"},{\"pl_name\":\"55 Cnc c\"},{\"pl_name\":\"55 Cnc d\"}]"
+    }
+   ],
+   "commandsFail": [],
+   "reasons": [],
+   "origin": "https://exoplanetarchive.ipac.caltech.edu",
+   "description": "NASA Exoplanet Archive public read-only command.",
+   "nCommands": 1,
+   "strong": false,
+   "robots": "robots.txt 3 disallow rules for *"
+  },
+  {
+   "site": "fakestore",
+   "ok": false,
+   "commandsOk": [],
+   "commandsFail": [
+    {
+     "name": "get-product",
+     "why": "HTTP 403: this endpoint needs a login. Run: clify login fakestore"
+    }
+   ],
+   "reasons": [],
+   "origin": "https://fakestoreapi.com",
+   "description": "Fake Store API public read-only CLI.",
+   "nCommands": 1,
+   "strong": false,
+   "robots": "robots.txt 0 disallow rules for *"
+  },
+  {
+   "site": "fda",
+   "ok": true,
+   "commandsOk": [
+    {
+     "name": "recalls",
+     "ms": 292,
+     "argv": "recalls --limit 5 --limit 3",
+     "sample": "[{\"status\":\"Terminated\",\"city\":\"Davie\",\"state\":\"FL\",\"country\":\"United States\",\"classification\":\"Class II\",\"openfda\":{},\"product_type\":\"Food\",\"event_id\":\"75272\",\"recalling_firm\":\"Pharmatech LLC\",\"address_1\":\"4131 SW 47th Ave Ste 1403\",\"address_2\":\"\",\"postal_code\":\"33314-4036\",\"voluntary_mandated\":\"Vo"
+    }
+   ],
+   "commandsFail": [],
+   "reasons": [],
+   "origin": "https://api.fda.gov",
+   "description": "FDA Enforcement Data public read-only API.",
+   "nCommands": 1,
+   "strong": false,
+   "robots": "robots.txt HTTP 404"
+  },
+  {
+   "site": "federalregister",
+   "ok": true,
+   "commandsOk": [
+    {
+     "name": "search",
+     "ms": 425,
+     "argv": "search --conditions[term] climate --per_page 5 --limit 3",
+     "sample": "[{\"title\":\"Rescission of Climate-Related Disclosure Rules\",\"type\":\"Proposed Rule\",\"abstract\":\"The Securities and Exchange Commission (\\\"Commission\\\") proposes to rescind amendments to its rules under the Securities Act of 1933 (\\\"Securities Act\\\") and Securities Exchange Act of 1934 (\\\"Exchange Act\\"
+    },
+    {
+     "name": "document",
+     "ms": 422,
+     "argv": "document --document_number 2024-00001 --limit 3",
+     "sample": "{\"abstract\":\"In accordance with the Privacy Act of 1974, we are issuing public notice of our intent to modify our existing systems of records listed below under the System Name and Number section. This notice publishes details of the modified systems as set forth below under the caption, SUPPLEMENTA"
+    }
+   ],
+   "commandsFail": [],
+   "reasons": [],
+   "origin": "https://www.federalregister.gov",
+   "description": "Federal Register public read-only API.",
+   "nCommands": 2,
+   "strong": true,
+   "robots": "robots.txt 8 disallow rules for *"
+  },
+  {
+   "site": "fedora",
+   "ok": false,
+   "commandsOk": [
+    {
+     "name": "latest",
+     "ms": 276,
+     "argv": "latest --limit 3",
+     "sample": "{\"users\":[{\"id\":35680,\"username\":\"djenkins605\",\"name\":\"Diane Jenkins\",\"avatar_template\":\"https://avatars.discourse-cdn.com/v4/letter/d/ffd117/{size}.png\",\"trust_level\":0},{\"id\":22049,\"username\":\"devguy\",\"name\":\"Dev Guy\",\"avatar_template\":\"/user_avatar/discussion.fedoraproject.org/devguy/{size}/39463"
+    }
+   ],
+   "commandsFail": [
+    {
+     "name": "top",
+     "why": "request failed: fetch failed"
+    },
+    {
+     "name": "search",
+     "why": "robots disallows /search.json"
+    }
+   ],
+   "reasons": [],
+   "origin": "https://discussion.fedoraproject.org/",
+   "description": "Public read-only Fedora Discussion endpoints used by the website.",
+   "nCommands": 3,
+   "strong": false,
+   "robots": "robots.txt 15 disallow rules for *"
+  },
+  {
+   "site": "fi-wikipedia",
+   "ok": false,
+   "commandsOk": [],
+   "commandsFail": [
+    {
+     "name": "summary",
+     "why": "robots disallows /api/rest_v1/page/summary/x"
+    },
+    {
+     "name": "html",
+     "why": "robots disallows /api/rest_v1/page/html/x"
+    }
+   ],
+   "reasons": [],
+   "origin": "https://fi.wikipedia.org",
+   "description": "fi Wikipedia public REST article pages",
+   "nCommands": 2,
+   "strong": false,
+   "robots": "robots.txt 226 disallow rules for *"
+  },
+  {
+   "site": "finlex",
+   "ok": false,
+   "commandsOk": [],
+   "commandsFail": [
+    {
+     "name": "search",
+     "why": "HTTP 400"
+    }
+   ],
+   "reasons": [],
+   "origin": "https://www.finlex.fi",
+   "description": "Finlex public read-only API.",
+   "nCommands": 1,
+   "strong": false,
+   "robots": "robots.txt 1 disallow rules for *"
+  },
+  {
+   "site": "flask",
+   "ok": true,
+   "commandsOk": [
+    {
+     "name": "home",
+     "ms": 371,
+     "argv": "home --limit 3",
+     "sample": "{\"title\":\"Welcome to Flask — Flask Documentation (3.1.x)\"}"
+    },
+    {
+     "name": "page",
+     "ms": 233,
+     "argv": "page --limit 3",
+     "sample": "{\"title\":\"Welcome to Flask¶\"}"
+    }
+   ],
+   "commandsFail": [],
+   "reasons": [],
+   "origin": "https://flask.palletsprojects.com",
+   "description": "Flask: public read-only HTML pages.",
+   "nCommands": 2,
+   "strong": true,
+   "robots": "robots.txt 1 disallow rules for *"
+  },
+  {
+   "site": "fosstodon",
+   "ok": true,
+   "commandsOk": [
+    {
+     "name": "public",
+     "ms": 397,
+     "argv": "public --limit 3",
+     "sample": "[{\"id\":\"117458761177233649\",\"created_at\":\"2026-10-17T23:05:21.000Z\",\"in_reply_to_id\":null,\"in_reply_to_account_id\":null,\"sensitive\":false,\"spoiler_text\":\"\",\"visibility\":\"public\",\"language\":\"en\",\"uri\":\"https://sportsbots.xyz/users/barstoolsports/statuses/2111594443744940195\",\"url\":\"https://twitter.co"
+    },
+    {
+     "name": "tag",
+     "ms": 404,
+     "argv": "tag --tag opensource --count 5 --limit 3",
+     "sample": "[{\"id\":\"117458733849631081\",\"created_at\":\"2026-10-17T23:00:21.000Z\",\"in_reply_to_id\":null,\"in_reply_to_account_id\":null,\"sensitive\":false,\"spoiler_text\":\"\",\"visibility\":\"public\",\"language\":\"en\",\"uri\":\"https://mastodon.social/ap/users/116868947609378765/statuses/117458732389188994\",\"url\":\"https://mas"
+    }
+   ],
+   "commandsFail": [],
+   "reasons": [],
+   "origin": "https://fosstodon.org/api/v1/",
+   "description": "Public read-only Fosstodon endpoints used by the website.",
+   "nCommands": 2,
+   "strong": true,
+   "robots": "robots.txt 3 disallow rules for *"
+  },
+  {
+   "site": "fr-wikipedia",
+   "ok": false,
+   "commandsOk": [],
+   "commandsFail": [
+    {
+     "name": "summary",
+     "why": "robots disallows /api/rest_v1/page/summary/x"
+    },
+    {
+     "name": "html",
+     "why": "robots disallows /api/rest_v1/page/html/x"
+    }
+   ],
+   "reasons": [],
+   "origin": "https://fr.wikipedia.org",
+   "description": "fr Wikipedia public REST article pages",
+   "nCommands": 2,
+   "strong": false,
+   "robots": "robots.txt 224 disallow rules for *"
+  },
+  {
+   "site": "frankfurter",
+   "ok": true,
+   "commandsOk": [
+    {
+     "name": "convert-rate",
+     "ms": 248,
+     "argv": "convert-rate --base EUR --target USD --limit 3",
+     "sample": "{\"amount\":1,\"base\":\"EUR\",\"date\":\"2026-10-16\",\"rates\":{\"USD\":1.1253}}"
+    }
+   ],
+   "commandsFail": [],
+   "reasons": [],
+   "origin": "https://api.frankfurter.app",
+   "description": "Frankfurter public read-only CLI.",
+   "nCommands": 1,
+   "strong": false,
+   "robots": "robots.txt HTTP 404"
+  },
+  {
+   "site": "gateio",
+   "ok": true,
+   "commandsOk": [
+    {
+     "name": "ticker",
+     "ms": 591,
+     "argv": "ticker --currency_pair BTC_USDT --limit 3",
+     "sample": "[{\"currency_pair\":\"BTC_USDT\",\"last\":\"81334.9\",\"lowest_ask\":\"81335\",\"lowest_size\":\"2.44126\",\"highest_bid\":\"81334.9\",\"highest_size\":\"2.714481\",\"change_percentage\":\"-0.5\",\"base_volume\":\"2863.983977\",\"quote_volume\":\"233323580.9647797\",\"high_24h\":\"81791.5\",\"low_24h\":\"80817\"}]"
+    },
+    {
+     "name": "currencies",
+     "ms": 562,
+     "argv": "currencies --currency_pair BTC_USDT --limit 3",
+     "sample": "[{\"currency_pair\":\"BTC_USDT\",\"last\":\"81334.9\",\"lowest_ask\":\"81335\",\"lowest_size\":\"2.44126\",\"highest_bid\":\"81334.9\",\"highest_size\":\"2.714481\",\"change_percentage\":\"-0.5\",\"base_volume\":\"2863.983977\",\"quote_volume\":\"233323580.9647797\",\"high_24h\":\"81791.5\",\"low_24h\":\"80817\"}]"
+    }
+   ],
+   "commandsFail": [],
+   "reasons": [],
+   "origin": "https://api.gateio.ws",
+   "description": "Gate.io public market data public read-only data.",
+   "nCommands": 2,
+   "strong": true,
+   "robots": "robots.txt HTTP 404"
+  },
+  {
+   "site": "gemini",
+   "ok": true,
+   "commandsOk": [
+    {
+     "name": "ticker",
+     "ms": 438,
+     "argv": "ticker --symbol btcusd --limit 3",
+     "sample": "{\"bid\":\"81253.54000\",\"ask\":\"81253.55000\",\"last\":\"81253.55000\",\"volume\":{\"BTC\":\"43.37046534\",\"USD\":\"3524004.274026957\",\"timestamp\":1792278420000}}"
+    },
+    {
+     "name": "symbols",
+     "ms": 406,
+     "argv": "symbols --limit 3",
+     "sample": "[\"2zgusd\",\"2zrlusd\",\"2zusd\"]"
+    }
+   ],
+   "commandsFail": [],
+   "reasons": [],
+   "origin": "https://api.gemini.com",
+   "description": "Gemini public exchange public read-only data.",
+   "nCommands": 2,
+   "strong": true,
+   "robots": "robots.txt HTTP 404"
+  },
+  {
+   "site": "ghibli",
+   "ok": true,
+   "commandsOk": [
+    {
+     "name": "get-film",
+     "ms": 272,
+     "argv": "get-film --id 2baf70d1-42bb-4437-b551-e5fed5a87abe --limit 3",
+     "sample": "{\"id\":\"2baf70d1-42bb-4437-b551-e5fed5a87abe\",\"title\":\"Castle in the Sky\",\"original_title\":\"天空の城ラピュタ\",\"original_title_romanised\":\"Tenkū no shiro Rapyuta\",\"image\":\"https://image.tmdb.org/t/p/w600_and_h900_bestv2/npOnzAbLh6VOIu3naU5QaEcTepo.jpg\",\"movie_banner\":\"https://image.tmdb.org/t/p/w533_and_h300_"
+    }
+   ],
+   "commandsFail": [],
+   "reasons": [],
+   "origin": "https://ghibliapi.vercel.app",
+   "description": "Studio Ghibli API public read-only CLI.",
+   "nCommands": 1,
+   "strong": false,
+   "robots": "robots.txt HTTP 404"
+  },
+  {
+   "site": "github",
+   "ok": true,
+   "commandsOk": [
+    {
+     "name": "repo",
+     "ms": 336,
+     "argv": "repo --owner octocat --repo Hello-World --limit 3",
+     "sample": "{\"id\":1296269,\"node_id\":\"MDEwOlJlcG9zaXRvcnkxMjk2MjY5\",\"name\":\"Hello-World\",\"full_name\":\"octocat/Hello-World\",\"private\":false,\"owner\":{\"login\":\"octocat\",\"id\":583231,\"node_id\":\"MDQ6VXNlcjU4MzIzMQ==\",\"avatar_url\":\"https://avatars.githubusercontent.com/u/583231?v=4\",\"gravatar_id\":\"\",\"url\":\"https://api."
+    },
+    {
+     "name": "search",
+     "ms": 491,
+     "argv": "search --q playwright --limit 3",
+     "sample": "[{\"id\":221981891,\"node_id\":\"MDEwOlJlcG9zaXRvcnkyMjE5ODE4OTE=\",\"name\":\"playwright\",\"full_name\":\"microsoft/playwright\",\"private\":false,\"owner\":{\"login\":\"microsoft\",\"id\":6154722,\"node_id\":\"MDEyOk9yZ2FuaXphdGlvbjYxNTQ3MjI=\",\"avatar_url\":\"https://avatars.githubusercontent.com/u/6154722?v=4\",\"gravatar_id\""
+    }
+   ],
+   "commandsFail": [],
+   "reasons": [],
+   "origin": "https://api.github.com",
+   "description": "Public read-only GitHub endpoints used by the website.",
+   "nCommands": 2,
+   "strong": true,
+   "robots": "robots.txt HTTP 404"
+  },
+  {
+   "site": "gitlab",
+   "ok": false,
+   "commandsOk": [],
+   "commandsFail": [
+    {
+     "name": "project",
+     "why": "robots disallows /api/v4/projects/x"
+    },
+    {
+     "name": "search",
+     "why": "robots disallows /api/v4/projects"
+    }
+   ],
+   "reasons": [],
+   "origin": "https://gitlab.com",
+   "description": "Public read-only GitLab endpoints used by the website.",
+   "nCommands": 2,
+   "strong": false,
+   "robots": "robots.txt 86 disallow rules for *"
+  },
+  {
+   "site": "go-dev",
+   "ok": true,
+   "commandsOk": [
+    {
+     "name": "home",
+     "ms": 385,
+     "argv": "home --limit 3",
+     "sample": "{\"title\":\"The Go Programming Language\",\"description\":\"Go is an open source programming language that makes it simple to build secure, scalable systems.\"}"
+    },
+    {
+     "name": "page",
+     "ms": 299,
+     "argv": "page --limit 3",
+     "sample": "{\"title\":\"Documentation\"}"
+    }
+   ],
+   "commandsFail": [],
+   "reasons": [],
+   "origin": "https://go.dev",
+   "description": "Go: public read-only HTML pages.",
+   "nCommands": 2,
+   "strong": true,
+   "robots": "robots.txt 0 disallow rules for *"
+  },
+  {
+   "site": "golang",
+   "ok": false,
+   "commandsOk": [],
+   "commandsFail": [
+    {
+     "name": "module-info",
+     "why": "robots disallows /x/@latest"
+    },
+    {
+     "name": "version-list",
+     "why": "robots disallows /x/@v/list"
+    }
+   ],
+   "reasons": [],
+   "origin": "https://proxy.golang.org",
+   "description": "Public read-only Go Packages endpoints used by the website.",
+   "nCommands": 2,
+   "strong": false,
+   "robots": "robots.txt 1 disallow rules for *"
+  },
+  {
+   "site": "google-books",
+   "ok": false,
+   "commandsOk": [],
+   "commandsFail": [],
+   "reasons": [
+    "denied: Google ToS"
+   ]
+  },
+  {
+   "site": "govuk",
+   "ok": false,
+   "commandsOk": [
+    {
+     "name": "search",
+     "ms": 219,
+     "argv": "search --q tax --count 5 --limit 3",
+     "sample": "[{\"description\":\"Renew or tax your vehicle for the first time using a reminder letter, your log book or the green 'new keeper' slip - and how to tax if you do not have any documents\",\"format\":\"transaction\",\"link\":\"/vehicle-tax\",\"organisations\":[{\"organisation_type\":\"executive_agency\",\"organisation_s"
+    }
+   ],
+   "commandsFail": [
+    {
+     "name": "content",
+     "why": "HTTP 404"
+    }
+   ],
+   "reasons": [],
+   "origin": "https://www.gov.uk",
+   "description": "GOV.UK Search public read-only API.",
+   "nCommands": 2,
+   "strong": false,
+   "robots": "robots.txt 2 disallow rules for *"
+  },
+  {
+   "site": "gutenberg",
+   "ok": true,
+   "commandsOk": [
+    {
+     "name": "home",
+     "ms": 488,
+     "argv": "home --limit 3",
+     "sample": "{\"title\":\"Search | Project Gutenberg\",\"description\":\"Project Gutenberg is a library of over 75,000 free eBooks. Choose from ebook formats or read online. No fees, no registration, no ads.\"}"
+    },
+    {
+     "name": "get-page",
+     "ms": 468,
+     "argv": "get-page --id 1342 --limit 3",
+     "sample": "{\"title\":\"Pride and Prejudice by Jane Austen\",\"description\":\"Pride and Prejudice by Jane Austen. Free eBook digitized and proofread by volunteers.\"}"
+    }
+   ],
+   "commandsFail": [],
+   "reasons": [],
+   "origin": "https://www.gutenberg.org",
+   "description": "Project Gutenberg: public read-only HTML pages.",
+   "nCommands": 2,
+   "strong": true,
+   "robots": "robots.txt 1 disallow rules for *"
+  },
+  {
+   "site": "gutendex",
+   "ok": false,
+   "commandsOk": [],
+   "commandsFail": [
+    {
+     "name": "search",
+     "why": "HTTP 403: this endpoint needs a login. Run: clify login gutendex"
+    },
+    {
+     "name": "book",
+     "why": "robots disallows /books/x"
+    }
+   ],
+   "reasons": [],
+   "origin": "https://gutendex.com",
+   "description": "Project Gutenberg book search",
+   "nCommands": 2,
+   "strong": false,
+   "robots": "robots.txt 1 disallow rules for *"
+  },
+  {
+   "site": "hachyderm",
+   "ok": true,
+   "commandsOk": [
+    {
+     "name": "public",
+     "ms": 642,
+     "argv": "public --limit 3",
+     "sample": "[{\"id\":\"117458761309480617\",\"created_at\":\"2026-10-17T23:07:41.000Z\",\"in_reply_to_id\":null,\"in_reply_to_account_id\":null,\"sensitive\":false,\"spoiler_text\":\"\",\"visibility\":\"public\",\"language\":\"en\",\"uri\":\"https://masto.ai/users/emsc/statuses/117458761271220902\",\"url\":\"https://masto.ai/@emsc/117458761271"
+    },
+    {
+     "name": "tag",
+     "ms": 654,
+     "argv": "tag --tag opensource --limit 5 --limit 3",
+     "sample": "[{\"id\":\"117458733820980776\",\"created_at\":\"2026-10-17T23:00:21.000Z\",\"in_reply_to_id\":null,\"in_reply_to_account_id\":null,\"sensitive\":false,\"spoiler_text\":\"\",\"visibility\":\"public\",\"language\":\"en\",\"uri\":\"https://mastodon.social/ap/users/116868947609378765/statuses/117458732389188994\",\"url\":\"https://mas"
+    }
+   ],
+   "commandsFail": [],
+   "reasons": [],
+   "origin": "https://hachyderm.io//api/v1/",
+   "description": "Public read-only Hachyderm API endpoints used by the website.",
+   "nCommands": 2,
+   "strong": true,
+   "robots": "robots.txt 3 disallow rules for *"
+  },
+  {
+   "site": "hackernews",
+   "ok": true,
+   "commandsOk": [
+    {
+     "name": "get-item",
+     "ms": 313,
+     "argv": "get-item --id 8863 --limit 3",
+     "sample": "{\"by\":\"dhouston\",\"descendants\":71,\"id\":8863,\"kids\":[9224,8917,8884,8887,8952,8869,8873,8958,8940,8908,9005,9671,9067,9055,8865,8881,8872,8955,10403,8903,8928,9125,8998,8901,8902,8907,8894,8870,8878,8980,8934,8943,8876],\"score\":104,\"time\":1175714200,\"title\":\"My YC app: Dropbox - Throw away your USB d"
+    }
+   ],
+   "commandsFail": [],
+   "reasons": [],
+   "origin": "https://hacker-news.firebaseio.com",
+   "description": "Hacker News public read-only CLI.",
+   "nCommands": 1,
+   "strong": false,
+   "robots": "robots.txt 1 disallow rules for *"
+  },
+  {
+   "site": "hex",
+   "ok": true,
+   "commandsOk": [
+    {
+     "name": "get-package",
+     "ms": 358,
+     "argv": "get-package --name phoenix --limit 3",
+     "sample": "\"Hex Find packages Packages Pricing Docs Change color theme Light Dark System Log In Change color theme Light Dark System Toggle navigation ? ? Packages Pricing Docs Log In Packages phoenix 1.8.15 1.8.15 1.8.14 1.8.13 1.8.12 1.8.11 1.8.10 1.8.9 1.8.8 1.8.7 1.8.6 1.8.5 1.8.4 1.8.3 1.8.2 1.8.1 1.8.0 1"
+    },
+    {
+     "name": "search",
+     "ms": 1074,
+     "argv": "search --search ecto --limit 3",
+     "sample": "\"Hex Find packages Packages Pricing Docs Change color theme Light Dark System Log In Change color theme Light Dark System Toggle navigation ? ? Packages Pricing Docs Log In Packages Browse and discover packages for the Erlang ecosystem Filters Sort Sort: Recent downloads Sort: Total downloads Sort: "
+    }
+   ],
+   "commandsFail": [],
+   "reasons": [],
+   "origin": "https://hex.pm/api",
+   "description": "Public read-only Hex.pm endpoints used by the website.",
+   "nCommands": 2,
+   "strong": true,
+   "robots": "robots.txt 1 disallow rules for *"
+  },
+  {
+   "site": "hn",
+   "ok": true,
+   "commandsOk": [
+    {
+     "name": "top",
+     "ms": 243,
+     "argv": "top --limit 3",
+     "sample": "[50126253,50092722,50126312]"
+    },
+    {
+     "name": "new",
+     "ms": 245,
+     "argv": "new --limit 3",
+     "sample": "[50135990,50135988,50135977]"
+    },
+    {
+     "name": "item",
+     "ms": 319,
+     "argv": "item --id 50126253 --limit 3",
+     "sample": "{\"by\":\"alkyon\",\"descendants\":48,\"id\":50126253,\"kids\":[50135889,50135866,50134812,50135036,50134316,50134167,50134673,50134889,50134467,50134287,50134371],\"score\":245,\"text\":\"<a href=\\\"https:&#x2F;&#x2F;archive.ph&#x2F;zIPG4\\\" rel=\\\"nofollow\\\">https:&#x2F;&#x2F;archive.ph&#x2F;zIPG4</a>\",\"time\":17921"
+    }
+   ],
+   "commandsFail": [],
+   "reasons": [],
+   "origin": "https://hacker-news.firebaseio.com/v0/",
+   "description": "Public read-only Hacker News endpoints used by the website.",
+   "nCommands": 3,
+   "strong": true,
+   "robots": "robots.txt 1 disallow rules for *"
+  },
+  {
+   "site": "hnsearch",
+   "ok": false,
+   "commandsOk": [
+    {
+     "name": "search",
+     "ms": 477,
+     "argv": "search --query playwright --limit 3",
+     "sample": "[{\"_highlightResult\":{\"author\":{\"matchLevel\":\"none\",\"matchedWords\":[],\"value\":\"sakisv\"},\"title\":{\"fullyHighlighted\":false,\"matchLevel\":\"full\",\"matchedWords\":[\"playwright\"],\"value\":\"Tracking supermarket prices with <em>Playwright</em>\"},\"url\":{\"fullyHighlighted\":false,\"matchLevel\":\"full\",\"matchedWord"
+    }
+   ],
+   "commandsFail": [
+    {
+     "name": "search-by-date",
+     "why": "missing --query"
+    },
+    {
+     "name": "get-item",
+     "why": "missing --id"
+    },
+    {
+     "name": "get-user",
+     "why": "missing --username"
+    }
+   ],
+   "reasons": [],
+   "origin": "https://hn.algolia.com",
+   "description": "Hacker News search. The web app calls Algolia directly (recorded: POST .../indexes/Item_dev/query and Item_dev_sort_date); this spec uses the site's documented public API with the same parameters.",
+   "nCommands": 4,
+   "strong": false,
+   "robots": "robots.txt HTTP 404"
+  },
+  {
+   "site": "homebrew",
+   "ok": true,
+   "commandsOk": [
+    {
+     "name": "get-formula",
+     "ms": 288,
+     "argv": "get-formula --name wget --limit 3",
+     "sample": "{\"name\":\"wget\",\"full_name\":\"wget\",\"tap\":\"homebrew/core\",\"oldnames\":[],\"aliases\":[],\"versioned_formulae\":[],\"desc\":\"Internet file retriever\",\"license\":\"GPL-3.0-or-later\",\"homepage\":\"https://www.gnu.org/software/wget/\",\"versions\":{\"stable\":\"1.25.0\",\"head\":\"HEAD\",\"bottle\":true},\"urls\":{\"stable\":{\"url\":"
+    },
+    {
+     "name": "search",
+     "ms": 941,
+     "argv": "search --limit 3",
+     "sample": "[{\"name\":\"a2ps\",\"full_name\":\"a2ps\",\"tap\":\"homebrew/core\",\"oldnames\":[],\"aliases\":[],\"versioned_formulae\":[],\"desc\":\"Any-to-PostScript filter\",\"license\":\"GPL-3.0-or-later\",\"homepage\":\"https://www.gnu.org/software/a2ps/\",\"versions\":{\"stable\":\"4.15.8\",\"head\":null,\"bottle\":true},\"urls\":{\"stable\":{\"url\":"
+    }
+   ],
+   "commandsFail": [],
+   "reasons": [],
+   "origin": "https://formulae.brew.sh",
+   "description": "Public read-only Homebrew Formulae endpoints used by the website.",
+   "nCommands": 2,
+   "strong": true,
+   "robots": "robots.txt 0 disallow rules for *"
+  },
+  {
+   "site": "huobi",
+   "ok": true,
+   "commandsOk": [
+    {
+     "name": "ticker",
+     "ms": 277,
+     "argv": "ticker --symbol btcusdt --limit 3",
+     "sample": "{\"ch\":\"market.btcusdt.detail.merged\",\"status\":\"ok\",\"ts\":1792278465263,\"tick\":{\"id\":389162547839,\"version\":389162547839,\"open\":81737.81,\"close\":81317.77,\"low\":80804.06,\"high\":81767.05,\"amount\":3149.4200872600245,\"vol\":256823563.45742267,\"count\":167473,\"bid\":[81301.95,0.599437],\"ask\":[81301.96,2.93818"
+    },
+    {
+     "name": "symbols",
+     "ms": 264,
+     "argv": "symbols --symbol btcusdt --limit 3",
+     "sample": "{\"ch\":\"market.btcusdt.detail.merged\",\"status\":\"ok\",\"ts\":1792278466354,\"tick\":{\"id\":389162547839,\"version\":389162547839,\"open\":81737.81,\"close\":81317.77,\"low\":80804.06,\"high\":81767.05,\"amount\":3149.4200872600245,\"vol\":256823563.45742267,\"count\":167473,\"bid\":[81301.95,0.599437],\"ask\":[81301.96,2.93818"
+    }
+   ],
+   "commandsFail": [],
+   "reasons": [],
+   "origin": "https://api.huobi.pro",
+   "description": "HTX public market data public read-only data.",
+   "nCommands": 2,
+   "strong": true,
+   "robots": "robots.txt HTTP 404"
+  },
+  {
+   "site": "iana",
+   "ok": true,
+   "commandsOk": [
+    {
+     "name": "home",
+     "ms": 216,
+     "argv": "home --limit 3",
+     "sample": "{\"title\":\"Domain Name Services\"}"
+    },
+    {
+     "name": "page",
+     "ms": 449,
+     "argv": "page --limit 3",
+     "sample": "{\"title\":\"Protocol Registries\"}"
+    }
+   ],
+   "commandsFail": [],
+   "reasons": [],
+   "origin": "https://www.iana.org",
+   "description": "IANA: public read-only HTML pages.",
+   "nCommands": 2,
+   "strong": true,
+   "robots": "robots.txt 0 disallow rules for *"
+  },
+  {
+   "site": "ietf",
+   "ok": false,
+   "commandsOk": [
+    {
+     "name": "document",
+     "ms": 487,
+     "argv": "document --name draft-ietf-httpbis-semantics --limit 3",
+     "sample": "{\"abstract\":\"The Hypertext Transfer Protocol (HTTP) is a stateless application-level protocol for distributed, collaborative, hypertext information systems. This document describes the overall architecture of HTTP, establishes common terminology, and defines aspects of the protocol that are shared b"
+    }
+   ],
+   "commandsFail": [
+    {
+     "name": "search",
+     "why": "no data (status 200)"
+    }
+   ],
+   "reasons": [],
+   "origin": "https://datatracker.ietf.org",
+   "description": "Public read-only IETF Datatracker endpoints used by the website.",
+   "nCommands": 2,
+   "strong": false,
+   "robots": "robots.txt 1 disallow rules for *"
+  },
+  {
+   "site": "internet-archive",
+   "ok": false,
+   "commandsOk": [
+    {
+     "name": "search",
+     "ms": 422,
+     "argv": "search --query Apollo 11 --limit 3",
+     "sample": "[{\"identifier\":\"hisdtx-HISD_News_Minute_May_11\",\"mediatype\":\"movies\",\"title\":\"HISD News Minute May 11\"},{\"identifier\":\"KAZU_90_3_FM_20181002_100000\",\"mediatype\":\"audio\",\"title\":\"KAZU 90.3 FM [NPR for the Monterey Bay Area] : October 02, 2018 03:00AM-04:00AM PDT\"},{\"identifier\":\"zujlc9eqglddem9ntpjxu"
+    }
+   ],
+   "commandsFail": [
+    {
+     "name": "metadata",
+     "why": "no data (status 200)"
+    }
+   ],
+   "reasons": [],
+   "origin": "https://archive.org",
+   "description": "Internet Archive advanced search and metadata",
+   "nCommands": 2,
+   "strong": false,
+   "robots": "robots.txt 2 disallow rules for *"
+  },
+  {
+   "site": "itunes",
+   "ok": false,
+   "commandsOk": [],
+   "commandsFail": [
+    {
+     "name": "search",
+     "why": "robots disallows /search"
+    }
+   ],
+   "reasons": [],
+   "origin": "https://itunes.apple.com",
+   "description": "iTunes Search public read-only CLI.",
+   "nCommands": 1,
+   "strong": false,
+   "robots": "robots.txt 9 disallow rules for *"
+  },
+  {
+   "site": "jikan",
+   "ok": false,
+   "commandsOk": [],
+   "commandsFail": [
+    {
+     "name": "search-anime",
+     "why": "request failed: fetch failed"
+    }
+   ],
+   "reasons": [],
+   "origin": "https://api.jikan.moe",
+   "description": "Jikan MyAnimeList API public read-only CLI.",
+   "nCommands": 1,
+   "strong": false,
+   "robots": "robots.txt fetch failed: fetch failed"
+  },
+  {
+   "site": "jokes",
+   "ok": true,
+   "commandsOk": [
+    {
+     "name": "list-jokes",
+     "ms": 334,
+     "argv": "list-jokes --limit 3",
+     "sample": "[{\"type\":\"programming\",\"setup\":\"Why did the developer go broke buying Bitcoin?\",\"punchline\":\"He kept calling it bytecoin and didn't get any.\",\"id\":413},{\"type\":\"programming\",\"setup\":\"How do you generate a random string?\",\"punchline\":\"Put a Windows user in front of Vim and tell them to exit.\",\"id\":40"
+    }
+   ],
+   "commandsFail": [],
+   "reasons": [],
+   "origin": "https://official-joke-api.appspot.com",
+   "description": "Official Joke API public read-only CLI.",
+   "nCommands": 1,
+   "strong": false,
+   "robots": "robots.txt HTTP 404"
+  },
+  {
+   "site": "jolpica",
+   "ok": true,
+   "commandsOk": [
+    {
+     "name": "results",
+     "ms": 698,
+     "argv": "results --season current --round last --limit 3",
+     "sample": "{\"MRData\":{\"xmlns\":\"\",\"series\":\"f1\",\"url\":\"https://api.jolpi.ca/ergast/f1/current/last/results.json\",\"limit\":\"30\",\"offset\":\"0\",\"total\":\"22\",\"RaceTable\":{\"season\":\"2026\",\"round\":\"17\",\"Races\":[{\"season\":\"2026\",\"round\":\"17\",\"url\":\"https://en.wikipedia.org/wiki/2026_Singapore_Grand_Prix\",\"raceName\":\"Sin"
+    },
+    {
+     "name": "drivers",
+     "ms": 727,
+     "argv": "drivers --season current --limit 3",
+     "sample": "{\"MRData\":{\"xmlns\":\"\",\"series\":\"f1\",\"url\":\"https://api.jolpi.ca/ergast/f1/current/drivers.json\",\"limit\":\"30\",\"offset\":\"0\",\"total\":\"32\",\"DriverTable\":{\"season\":\"2026\",\"Drivers\":[{\"driverId\":\"albon\",\"permanentNumber\":\"23\",\"code\":\"ALB\",\"url\":\"http://en.wikipedia.org/wiki/Alexander_Albon\",\"givenName\":\"A"
+    }
+   ],
+   "commandsFail": [],
+   "reasons": [],
+   "origin": "https://api.jolpi.ca",
+   "description": "Jolpica F1 API public read-only data.",
+   "nCommands": 2,
+   "strong": true,
+   "robots": "robots.txt HTTP 404"
+  },
+  {
+   "site": "jpl",
+   "ok": true,
+   "commandsOk": [
+    {
+     "name": "lookup",
+     "ms": 167,
+     "argv": "lookup --sstr 433 --limit 3",
+     "sample": "{\"object\":{\"pha\":false,\"shortname\":\"433 Eros\",\"prefix\":null,\"orbit_class\":{\"code\":\"AMO\",\"name\":\"Amor\"},\"spkid\":\"20000433\",\"des\":\"433\",\"kind\":\"an\",\"fullname\":\"433 Eros (A898 PA)\",\"orbit_id\":\"659\",\"neo\":true},\"orbit\":{\"orbit_id\":\"659\",\"condition_code\":\"0\",\"moid\":\"0.149\",\"comment\":null,\"t_jup\":\"4.582\","
+    }
+   ],
+   "commandsFail": [],
+   "reasons": [],
+   "origin": "https://ssd-api.jpl.nasa.gov",
+   "description": "NASA JPL Small-Body Database public read-only API.",
+   "nCommands": 1,
+   "strong": false,
+   "robots": "robots.txt HTTP 404"
+  },
+  {
+   "site": "jpl-cad",
+   "ok": true,
+   "commandsOk": [
+    {
+     "name": "get",
+     "ms": 161,
+     "argv": "get --des 433 --limit 3",
+     "sample": "{\"signature\":{\"source\":\"NASA/JPL SBDB Close Approach Data API\",\"version\":\"1.5\"},\"count\":0}"
+    }
+   ],
+   "commandsFail": [],
+   "reasons": [],
+   "origin": "https://ssd-api.jpl.nasa.gov",
+   "description": "JPL Close Approach public read-only command.",
+   "nCommands": 1,
+   "strong": false,
+   "robots": "robots.txt HTTP 404"
+  },
+  {
+   "site": "jpl-fireball",
+   "ok": false,
+   "commandsOk": [],
+   "commandsFail": [
+    {
+     "name": "get",
+     "why": "no data (status undefined)"
+    }
+   ],
+   "reasons": [],
+   "origin": "https://ssd-api.jpl.nasa.gov",
+   "description": "JPL Fireball public read-only command.",
+   "nCommands": 1,
+   "strong": false,
+   "robots": "robots.txt HTTP 404"
+  },
+  {
+   "site": "jpl-sbdb",
+   "ok": true,
+   "commandsOk": [
+    {
+     "name": "get",
+     "ms": 201,
+     "argv": "get --sstr Ceres --limit 3",
+     "sample": "{\"signature\":{\"source\":\"NASA/JPL Small-Body Database (SBDB) API\",\"version\":\"1.3\"},\"orbit\":{\"sb_used\":\"SB441-N373\",\"equinox\":\"J2000\",\"model_pars\":[],\"moid\":\"1.58\",\"condition_code\":\"0\",\"elements\":[{\"sigma\":\"4.8e-12\",\"name\":\"e\",\"title\":\"eccentricity\",\"value\":\"0.0797\",\"units\":null,\"label\":\"e\"},{\"label\":"
+    }
+   ],
+   "commandsFail": [],
+   "reasons": [],
+   "origin": "https://ssd-api.jpl.nasa.gov",
+   "description": "JPL Small Body DB public read-only command.",
+   "nCommands": 1,
+   "strong": false,
+   "robots": "robots.txt HTTP 404"
+  },
+  {
+   "site": "jpl-sentry",
+   "ok": false,
+   "commandsOk": [],
+   "commandsFail": [
+    {
+     "name": "get",
+     "why": "no data (status undefined)"
+    }
+   ],
+   "reasons": [],
+   "origin": "https://ssd-api.jpl.nasa.gov",
+   "description": "JPL Sentry public read-only command.",
+   "nCommands": 1,
+   "strong": false,
+   "robots": "robots.txt HTTP 404"
+  },
+  {
+   "site": "jsdelivr",
+   "ok": false,
+   "commandsOk": [],
+   "commandsFail": [
+    {
+     "name": "package",
+     "why": "no data (status undefined)"
+    },
+    {
+     "name": "files",
+     "why": "no data (status undefined)"
+    }
+   ],
+   "reasons": [],
+   "origin": "https://data.jsdelivr.com",
+   "description": "Public read-only jsDelivr endpoints used by the website.",
+   "nCommands": 2,
+   "strong": false,
+   "robots": "robots.txt HTTP 400"
+  },
+  {
+   "site": "jsonplaceholder",
+   "ok": true,
+   "commandsOk": [
+    {
+     "name": "get-post",
+     "ms": 217,
+     "argv": "get-post --id 1 --limit 3",
+     "sample": "{\"userId\":1,\"id\":1,\"title\":\"sunt aut facere repellat provident occaecati excepturi optio reprehenderit\",\"body\":\"quia et suscipit\\nsuscipit recusandae consequuntur expedita et cum\\nreprehenderit molestiae ut ut quas totam\\nnostrum rerum est autem sunt rem eveniet architecto\"}"
+    }
+   ],
+   "commandsFail": [],
+   "reasons": [],
+   "origin": "https://jsonplaceholder.typicode.com",
+   "description": "JSONPlaceholder public read-only CLI.",
+   "nCommands": 1,
+   "strong": false,
+   "robots": "robots.txt 0 disallow rules for *"
+  },
+  {
+   "site": "juliaforum",
+   "ok": true,
+   "commandsOk": [
+    {
+     "name": "latest",
+     "ms": 322,
+     "argv": "latest --limit 3",
+     "sample": "{\"users\":[{\"id\":88,\"username\":\"Tamas_Papp\",\"name\":\"Tamas Papp\",\"avatar_template\":\"/user_avatar/discourse.julialang.org/tamas_papp/{size}/25949_2.png\",\"trust_level\":3},{\"id\":2,\"username\":\"vchuravy\",\"name\":\"Valentin Churavy\",\"avatar_template\":\"/user_avatar/discourse.julialang.org/vchuravy/{size}/8_2.p"
+    },
+    {
+     "name": "top",
+     "ms": 419,
+     "argv": "top --limit 3",
+     "sample": "{\"users\":[{\"id\":9674,\"username\":\"fonsp\",\"name\":\"Fons van der Plas\",\"avatar_template\":\"/user_avatar/discourse.julialang.org/fonsp/{size}/222349_2.png\",\"trust_level\":2},{\"id\":10074,\"username\":\"gdalle\",\"name\":\"Guillaume Dalle\",\"avatar_template\":\"/user_avatar/discourse.julialang.org/gdalle/{size}/224680"
+    }
+   ],
+   "commandsFail": [
+    {
+     "name": "search",
+     "why": "robots disallows /search.json"
+    }
+   ],
+   "reasons": [],
+   "origin": "https://discourse.julialang.org/",
+   "description": "Public read-only Julia Discourse endpoints used by the website.",
+   "nCommands": 3,
+   "strong": true,
+   "robots": "robots.txt 15 disallow rules for *"
+  },
+  {
+   "site": "kalshi",
+   "ok": false,
+   "commandsOk": [],
+   "commandsFail": [],
+   "reasons": [
+    "denied: ToS"
+   ]
+  },
+  {
+   "site": "kraken",
+   "ok": true,
+   "commandsOk": [
+    {
+     "name": "ticker",
+     "ms": 214,
+     "argv": "ticker --pair XBTUSD --limit 3",
+     "sample": "{\"XXBTZUSD\":{\"a\":[\"81226.40000\",\"1\",\"1.000\"],\"b\":[\"81226.30000\",\"2\",\"2.000\"],\"c\":[\"81226.40000\",\"0.00197000\"],\"v\":[\"577.05767819\",\"593.95847796\"],\"p\":[\"81342.90407\",\"81348.89583\"],\"t\":[67308,69469],\"l\":[\"80655.20000\",\"80655.20000\"],\"h\":[\"81656.40000\",\"81681.90000\"],\"o\":\"81500.90000\"}}"
+    },
+    {
+     "name": "asset-pairs",
+     "ms": 351,
+     "argv": "asset-pairs --limit 3",
+     "sample": "{\"error\":[],\"result\":{\"unixtime\":1792278471,\"rfc1123\":\"Sat, 17 Oct 26 23:07:51 +0000\"}}"
+    }
+   ],
+   "commandsFail": [],
+   "reasons": [],
+   "origin": "https://api.kraken.com",
+   "description": "Kraken public market data public read-only data.",
+   "nCommands": 2,
+   "strong": true,
+   "robots": "robots.txt HTTP 404"
+  },
+  {
+   "site": "kubernetes",
+   "ok": true,
+   "commandsOk": [
+    {
+     "name": "home",
+     "ms": 264,
+     "argv": "home --limit 3",
+     "sample": "{\"title\":\"Kubernetes\",\"description\":\"Kubernetes, also known as K8s, is an open source system for automating deployment, scaling, and management of containerized applications. It groups containers that make up an application into logical units for easy management and discovery. Kubernetes builds upon"
+    },
+    {
+     "name": "page",
+     "ms": 306,
+     "argv": "page --limit 3",
+     "sample": "{\"title\":\"Kubernetes Documentation\",\"description\":\"Kubernetes is an open source container orchestration engine for automating deployment, scaling, and management of containerized applications. The open source project is hosted by the Cloud Native Computing Foundation.\"}"
+    }
+   ],
+   "commandsFail": [],
+   "reasons": [],
+   "origin": "https://kubernetes.io",
+   "description": "Kubernetes: public read-only HTML pages.",
+   "nCommands": 2,
+   "strong": true,
+   "robots": "robots.txt 5 disallow rules for *"
+  },
+  {
+   "site": "kucoin",
+   "ok": true,
+   "commandsOk": [
+    {
+     "name": "ticker",
+     "ms": 310,
+     "argv": "ticker --symbol BTC-USDT --limit 3",
+     "sample": "{\"time\":1792278443218,\"sequence\":\"38836185864\",\"price\":\"81344.3\",\"size\":\"0.00502164\",\"bestBid\":\"81344.3\",\"bestBidSize\":\"0.00747836\",\"bestAsk\":\"81344.4\",\"bestAskSize\":\"1.14253313\"}"
+    },
+    {
+     "name": "symbols",
+     "ms": 311,
+     "argv": "symbols --symbol BTC-USDT --limit 3",
+     "sample": "{\"time\":1792278443218,\"sequence\":\"38836185864\",\"price\":\"81344.3\",\"size\":\"0.00502164\",\"bestBid\":\"81344.3\",\"bestBidSize\":\"0.00747836\",\"bestAsk\":\"81344.4\",\"bestAskSize\":\"1.14253313\"}"
+    }
+   ],
+   "commandsFail": [],
+   "reasons": [],
+   "origin": "https://api.kucoin.com",
+   "description": "KuCoin public market data public read-only data.",
+   "nCommands": 2,
+   "strong": true,
+   "robots": "robots.txt HTTP 404"
+  },
+  {
+   "site": "launchpad",
+   "ok": false,
+   "commandsOk": [],
+   "commandsFail": [
+    {
+     "name": "project",
+     "why": "HTTP 404"
+    },
+    {
+     "name": "search",
+     "why": "HTTP 400"
+    }
+   ],
+   "reasons": [],
+   "origin": "https://api.launchpad.net",
+   "description": "Public read-only Launchpad endpoints used by the website.",
+   "nCommands": 2,
+   "strong": false,
+   "robots": "robots.txt HTTP 404"
+  },
+  {
+   "site": "lemmyca",
+   "ok": true,
+   "commandsOk": [
+    {
+     "name": "posts",
+     "ms": 204,
+     "argv": "posts --limit 3",
+     "sample": "{\"posts\":[{\"post\":{\"id\":71803421,\"name\":\"Threadiverse Vibrancy Challenge Conclusion and Awards Ceremony\",\"body\":\"Hi, thank you to everyone who participated in the Threadiverse Vibrancy Challenge.\\n\\nThe rules of the challenge were [here](https://lemmy.ca/post/70151876). Ten categories had to be comp"
+    },
+    {
+     "name": "communities",
+     "ms": 191,
+     "argv": "communities --limit 3",
+     "sample": "{\"communities\":[{\"community\":{\"id\":2069733,\"name\":\"crystalpalace\",\"title\":\"Crystal Palace FC\",\"description\":\"A community for supporters of the South London football club Crystal Palace FC.\",\"removed\":false,\"published\":\"2026-10-17T15:58:41.448439Z\",\"deleted\":false,\"nsfw\":false,\"actor_id\":\"https://lem"
+    }
+   ],
+   "commandsFail": [],
+   "reasons": [],
+   "origin": "https://lemmy.ca/api/v3/",
+   "description": "Public read-only Lemmy CA endpoints used by the website.",
+   "nCommands": 2,
+   "strong": true,
+   "robots": "robots.txt 12 disallow rules for *"
+  },
+  {
+   "site": "lemmygrad",
+   "ok": false,
+   "commandsOk": [],
+   "commandsFail": [
+    {
+     "name": "posts",
+     "why": "robots disallows /api/v3/post/list"
+    },
+    {
+     "name": "communities",
+     "why": "robots disallows /api/v3/community/list"
+    }
+   ],
+   "reasons": [],
+   "origin": "https://lemmygrad.ml/api/v3/",
+   "description": "Public read-only Lemmy Grad endpoints used by the website.",
+   "nCommands": 2,
+   "strong": false,
+   "robots": "robots.txt 1 disallow rules for *"
+  },
+  {
+   "site": "lemmyml",
+   "ok": true,
+   "commandsOk": [
+    {
+     "name": "posts",
+     "ms": 632,
+     "argv": "posts --limit 3",
+     "sample": "{\"posts\":[{\"post\":{\"id\":54102413,\"name\":\"Linus Torvalds shares his thoughts on Anti-AI coding rules\",\"url\":\"https://lemmy.ml/api/v3/image_proxy?url=https%3A%2F%2Fmedia.piefed.social%2Fposts%2FTS%2FlY%2FTSlYv9DvdaiTI2U.png\",\"body\":\"\",\"creator_id\":19083734,\"community_id\":14701,\"removed\":false,\"locked\""
+    },
+    {
+     "name": "communities",
+     "ms": 601,
+     "argv": "communities --limit 3",
+     "sample": "{\"communities\":[{\"community\":{\"id\":1837521,\"name\":\"neverwinternights\",\"title\":\"Neverwinternights\",\"description\":\"A community for discussing the CRPG Neverwinter Nights. \",\"removed\":false,\"published\":\"2026-10-17T14:46:18.555946Z\",\"updated\":\"2026-10-17T14:46:18.555954Z\",\"deleted\":false,\"nsfw\":false,\"a"
+    }
+   ],
+   "commandsFail": [],
+   "reasons": [],
+   "origin": "https://lemmy.ml/api/v3/",
+   "description": "Public read-only Lemmy ML endpoints used by the website.",
+   "nCommands": 2,
+   "strong": true,
+   "robots": "robots.txt 12 disallow rules for *"
+  },
+  {
+   "site": "lemmyworld",
+   "ok": true,
+   "commandsOk": [
+    {
+     "name": "posts",
+     "ms": 474,
+     "argv": "posts --limit 3",
+     "sample": "{\"posts\":[{\"post\":{\"id\":53204125,\"name\":\"Praxis\",\"url\":\"https://media.piefed.zip/posts/f0/5Q/f05QSu7doxBLBFL.jpeg\",\"body\":\"\",\"creator_id\":20376929,\"community_id\":79185,\"removed\":false,\"locked\":false,\"published\":\"2026-10-16T12:25:43.104350Z\",\"updated\":\"2026-10-16T12:25:44.788690Z\",\"deleted\":false,\"ns"
+    },
+    {
+     "name": "communities",
+     "ms": 398,
+     "argv": "communities --limit 3",
+     "sample": "{\"communities\":[{\"community\":{\"id\":1985057,\"name\":\"crystalpalace\",\"title\":\"Crystal Palace FC\",\"description\":\"A community for supporters of the South London football club Crystal Palace FC.\",\"removed\":false,\"published\":\"2026-10-17T15:58:41.448439Z\",\"deleted\":false,\"nsfw\":false,\"actor_id\":\"https://lem"
+    }
+   ],
+   "commandsFail": [],
+   "reasons": [],
+   "origin": "https://lemmy.world/api/v3/",
+   "description": "Public read-only Lemmy World endpoints used by the website.",
+   "nCommands": 2,
+   "strong": true,
+   "robots": "robots.txt 12 disallow rules for *"
+  },
+  {
+   "site": "lemmyzip",
+   "ok": true,
+   "commandsOk": [
+    {
+     "name": "posts",
+     "ms": 801,
+     "argv": "posts --limit 3",
+     "sample": "{\"posts\":[{\"post\":{\"id\":73344609,\"name\":\"Praxis\",\"url\":\"https://lemmy.zip/api/v3/image_proxy?url=https%3A%2F%2Fmedia.piefed.zip%2Fposts%2Ff0%2F5Q%2Ff05QSu7doxBLBFL.jpeg\",\"body\":\"\",\"creator_id\":28598982,\"community_id\":22300,\"removed\":false,\"locked\":false,\"published\":\"2026-10-16T12:25:43.104350Z\",\"upd"
+    },
+    {
+     "name": "communities",
+     "ms": 414,
+     "argv": "communities --limit 3",
+     "sample": "{\"communities\":[{\"community\":{\"id\":2100911,\"name\":\"crystalpalace\",\"title\":\"Crystal Palace FC\",\"description\":\"A community for supporters of the South London football club Crystal Palace FC.\",\"removed\":false,\"published\":\"2026-10-17T15:58:41.448439Z\",\"deleted\":false,\"nsfw\":false,\"actor_id\":\"https://lem"
+    }
+   ],
+   "commandsFail": [],
+   "reasons": [],
+   "origin": "https://lemmy.zip/api/v3/",
+   "description": "Public read-only Lemmy.zip endpoints used by the website.",
+   "nCommands": 2,
+   "strong": true,
+   "robots": "robots.txt 12 disallow rules for *"
+  },
+  {
+   "site": "library-of-congress",
+   "ok": false,
+   "commandsOk": [],
+   "commandsFail": [
+    {
+     "name": "search",
+     "why": "robots disallows /search/"
+    },
+    {
+     "name": "item",
+     "why": "HTTP 404"
+    }
+   ],
+   "reasons": [],
+   "origin": "https://www.loc.gov",
+   "description": "Library of Congress catalog search",
+   "nCommands": 2,
+   "strong": false,
+   "robots": "robots.txt 12 disallow rules for *"
+  },
+  {
+   "site": "lichess",
+   "ok": false,
+   "commandsOk": [],
+   "commandsFail": [
+    {
+     "name": "player",
+     "why": "robots disallows /api/user/x"
+    },
+    {
+     "name": "games",
+     "why": "robots disallows /api/games/user/x"
+    }
+   ],
+   "reasons": [],
+   "origin": "https://lichess.org",
+   "description": "Lichess public API public read-only data.",
+   "nCommands": 2,
+   "strong": false,
+   "robots": "robots.txt 10 disallow rules for *"
+  },
+  {
+   "site": "llspacedevs",
+   "ok": true,
+   "commandsOk": [
+    {
+     "name": "get",
+     "ms": 589,
+     "argv": "get --limit 3 --limit 3",
+     "sample": "{\"count\":8116,\"next\":\"https://ll.thespacedevs.com/2.2.0/launch/?limit=5&offset=5\",\"previous\":null,\"results\":[{\"id\":\"e3df2ecd-c239-472f-95e4-2b89b4f75800\",\"url\":\"https://ll.thespacedevs.com/2.2.0/launch/e3df2ecd-c239-472f-95e4-2b89b4f75800/\",\"slug\":\"sputnik-8k74ps-sputnik-1\",\"name\":\"Sputnik 8K74PS | "
+    }
+   ],
+   "commandsFail": [],
+   "reasons": [],
+   "origin": "https://ll.thespacedevs.com",
+   "description": "Space Launches public read-only command.",
+   "nCommands": 1,
+   "strong": false,
+   "robots": "robots.txt 0 disallow rules for *"
+  },
+  {
+   "site": "lobsters",
+   "ok": false,
+   "commandsOk": [],
+   "commandsFail": [
+    {
+     "name": "hottest",
+     "why": "robots disallows /hottest.json"
+    },
+    {
+     "name": "recent",
+     "why": "robots disallows /recent.json"
+    },
+    {
+     "name": "tag",
+     "why": "robots disallows /t/x.json"
+    }
+   ],
+   "reasons": [],
+   "origin": "https://lobste.rs/",
+   "description": "Public read-only Lobsters endpoints used by the website.",
+   "nCommands": 3,
+   "strong": false,
+   "robots": "robots.txt 1 disallow rules for *"
+  },
+  {
+   "site": "loc",
+   "ok": true,
+   "commandsOk": [
+    {
+     "name": "search",
+     "ms": 214,
+     "argv": "search --q robot --fo json --c 5 --limit 3",
+     "sample": "[{\"access_restricted\":false,\"aka\":[\"http://lccn.loc.gov/2021760378\",\"http://www.loc.gov/item/2021760378/\",\"https://search.catalog.loc.gov/instances/b0fc8bf2-eeb4-4db5-9ccb-777723a28bb4\",\"https://hdl.loc.gov/loc.gdc/gdcebookspublic.2021760378\",\"http://www.loc.gov/resource/gdcebookspublic.2021760378/\""
+    }
+   ],
+   "commandsFail": [],
+   "reasons": [],
+   "origin": "https://www.loc.gov",
+   "description": "Library of Congress public read-only API.",
+   "nCommands": 1,
+   "strong": false,
+   "robots": "robots.txt 12 disallow rules for *"
+  },
+  {
+   "site": "man7",
+   "ok": true,
+   "commandsOk": [
+    {
+     "name": "home",
+     "ms": 692,
+     "argv": "home --limit 3",
+     "sample": "{\"title\":\"Linux man pages online\"}"
+    },
+    {
+     "name": "get-page",
+     "ms": 679,
+     "argv": "get-page --page ls --limit 3",
+     "sample": "{\"title\":\"ls(1) — Linux manual page\"}"
+    }
+   ],
+   "commandsFail": [],
+   "reasons": [],
+   "origin": "https://man7.org",
+   "description": "Linux man-pages: public read-only HTML pages.",
+   "nCommands": 2,
+   "strong": true,
+   "robots": "robots.txt 4 disallow rules for *"
+  },
+  {
+   "site": "manifold",
+   "ok": true,
+   "commandsOk": [
+    {
+     "name": "markets",
+     "ms": 404,
+     "argv": "markets --limit 3 --limit 3",
+     "sample": "[{\"id\":\"2EqCP9tNny\",\"creatorId\":\"j3qXHWAZS4b37tlcY3u22l1D1qF3\",\"creatorUsername\":\"Jack1\",\"creatorName\":\"Jack\",\"createdTime\":1792278385979,\"creatorAvatarUrl\":\"https://firebasestorage.googleapis.com/v0/b/mantic-markets.appspot.com/o/user-images%2FJack1%2F69Ouyz6NyO.jpeg?alt=media&token=61dde0cb-6297-4"
+    },
+    {
+     "name": "market",
+     "ms": 707,
+     "argv": "market --id nd0200upRn --limit 3",
+     "sample": "{\"id\":\"nd0200upRn\",\"creatorId\":\"KyhGnarhvGWpurbrlBwUeQUjdi83\",\"creatorUsername\":\"goldduck\",\"creatorName\":\"goldduck\",\"createdTime\":1792275637366,\"creatorAvatarUrl\":\"https://firebasestorage.googleapis.com/v0/b/mantic-markets.appspot.com/o/user-images%2Fgoldduck%2FUCSOdUSSAC.jpeg?alt=media&token=d9f475"
+    }
+   ],
+   "commandsFail": [],
+   "reasons": [],
+   "origin": "https://api.manifold.markets",
+   "description": "Manifold Markets public API public read-only data.",
+   "nCommands": 2,
+   "strong": true,
+   "robots": "robots.txt HTTP 404"
+  },
+  {
+   "site": "mastodonart",
+   "ok": false,
+   "commandsOk": [],
+   "commandsFail": [
+    {
+     "name": "public",
+     "why": "HTTP 422"
+    },
+    {
+     "name": "tag",
+     "why": "HTTP 422"
+    }
+   ],
+   "reasons": [],
+   "origin": "https://mastodon.art/api/v1/",
+   "description": "Public read-only Mastodon.art endpoints used by the website.",
+   "nCommands": 2,
+   "strong": false,
+   "robots": "robots.txt 2 disallow rules for *"
+  },
+  {
+   "site": "maven",
+   "ok": false,
+   "commandsOk": [],
+   "commandsFail": [
+    {
+     "name": "search",
+     "why": "no data (status undefined)"
+    },
+    {
+     "name": "artifact",
+     "why": "no data (status undefined)"
+    }
+   ],
+   "reasons": [],
+   "origin": "https://search.maven.org",
+   "description": "Public read-only Maven Central endpoints used by the website.",
+   "nCommands": 2,
+   "strong": false,
+   "robots": "robots.txt 0 disallow rules for *"
+  },
+  {
+   "site": "mdn",
+   "ok": true,
+   "commandsOk": [
+    {
+     "name": "home",
+     "ms": 210,
+     "argv": "home --limit 3",
+     "sample": "{\"title\":\"JavaScript | MDN\",\"description\":\"JavaScript (JS) is a lightweight interpreted (or just-in-time compiled) programming language with first-class functions. While it is most well-known as the scripting language for Web pages, many non-browser environments also use it, such as Node.js, Apache "
+    },
+    {
+     "name": "page",
+     "ms": 286,
+     "argv": "page --limit 3",
+     "sample": "{\"title\":\"HTTP: Hypertext Transfer Protocol\",\"description\":\"HTTP is an application-layer protocol for transmitting hypermedia documents, such as HTML. It was designed for communication between web browsers and web servers, but it can also be used for other purposes, such as machine-to-machine commun"
+    }
+   ],
+   "commandsFail": [],
+   "reasons": [],
+   "origin": "https://developer.mozilla.org",
+   "description": "MDN Web Docs: public read-only HTML pages.",
+   "nCommands": 2,
+   "strong": true,
+   "robots": "robots.txt 3 disallow rules for *"
+  },
+  {
+   "site": "mempool",
+   "ok": true,
+   "commandsOk": [
+    {
+     "name": "blocks",
+     "ms": 418,
+     "argv": "blocks --limit 3",
+     "sample": "[{\"id\":\"00000000000000000001d4976ce65a806336f88fc8b77c0a2af16ba52ea65b53\",\"height\":971912,\"version\":1073733632,\"timestamp\":1792277980,\"tx_count\":3890,\"size\":1607958,\"weight\":3997665,\"merkle_root\":\"237f689c65bf4e673186eb62129eb7df3025936e06f376d84e47cdc8cc72d4f4\",\"previousblockhash\":\"0000000000000000"
+    },
+    {
+     "name": "address",
+     "ms": 407,
+     "argv": "address --address 1A1zP1eP5QGefi2DMPTfTL5SLmv7DivfNa --limit 3",
+     "sample": "{\"address\":\"1A1zP1eP5QGefi2DMPTfTL5SLmv7DivfNa\",\"chain_stats\":{\"funded_txo_count\":80433,\"funded_txo_sum\":5766589344,\"spent_txo_count\":0,\"spent_txo_sum\":0,\"tx_count\":66969},\"mempool_stats\":{\"funded_txo_count\":2,\"funded_txo_sum\":4218,\"spent_txo_count\":0,\"spent_txo_sum\":0,\"tx_count\":2}}"
+    }
+   ],
+   "commandsFail": [],
+   "reasons": [],
+   "origin": "https://mempool.space",
+   "description": "mempool Bitcoin explorer public read-only data.",
+   "nCommands": 2,
+   "strong": true,
+   "robots": "robots.txt 0 disallow rules for *"
+  },
+  {
+   "site": "met-museum",
+   "ok": false,
+   "commandsOk": [
+    {
+     "name": "object",
+     "ms": 424,
+     "argv": "object --id 436535 --limit 3",
+     "sample": "{\"objectID\":436535,\"isHighlight\":true,\"accessionNumber\":\"1993.132\",\"accessionYear\":\"1993\",\"isPublicDomain\":true,\"primaryImage\":\"https://images.metmuseum.org/CRDImages/ep/original/DP-42549-001.jpg\",\"primaryImageSmall\":\"https://images.metmuseum.org/CRDImages/ep/web-large/DP-42549-001.jpg\",\"additionalI"
+    }
+   ],
+   "commandsFail": [
+    {
+     "name": "search",
+     "why": "HTTP 410"
+    }
+   ],
+   "reasons": [],
+   "origin": "https://collectionapi.metmuseum.org",
+   "description": "Metropolitan Museum collection API",
+   "nCommands": 2,
+   "strong": false,
+   "robots": "robots.txt HTTP 404"
+  },
+  {
+   "site": "mitre",
+   "ok": true,
+   "commandsOk": [
+    {
+     "name": "home",
+     "ms": 364,
+     "argv": "home --limit 3",
+     "sample": "{\"title\":\"Techniques - Enterprise | MITRE ATT&CK®\"}"
+    },
+    {
+     "name": "page",
+     "ms": 292,
+     "argv": "page --limit 3",
+     "sample": "{\"title\":\"Command and Scripting Interpreter\"}"
+    }
+   ],
+   "commandsFail": [],
+   "reasons": [],
+   "origin": "https://attack.mitre.org",
+   "description": "MITRE ATT&CK: public read-only HTML pages.",
+   "nCommands": 2,
+   "strong": true,
+   "robots": "robots.txt 2 disallow rules for *"
+  },
+  {
+   "site": "mlb",
+   "ok": true,
+   "commandsOk": [
+    {
+     "name": "sports",
+     "ms": 230,
+     "argv": "sports --limit 3",
+     "sample": "{\"copyright\":\"Copyright 2026 MLB Advanced Media, L.P.  Use of any content on this page acknowledges agreement to the terms posted here http://gdx.mlb.com/components/copyright.txt\",\"sports\":[{\"id\":1,\"code\":\"mlb\",\"link\":\"/api/v1/sports/1\",\"name\":\"Major League Baseball\",\"abbreviation\":\"MLB\",\"sortOrder\""
+    },
+    {
+     "name": "schedule",
+     "ms": 218,
+     "argv": "schedule --sportId 1 --date 2026-10-17 --limit 3",
+     "sample": "{\"copyright\":\"Copyright 2026 MLB Advanced Media, L.P.  Use of any content on this page acknowledges agreement to the terms posted here http://gdx.mlb.com/components/copyright.txt\",\"totalItems\":1,\"totalEvents\":0,\"totalGames\":1,\"totalGamesInProgress\":0,\"dates\":[{\"date\":\"2026-10-17\",\"totalItems\":1,\"tot"
+    }
+   ],
+   "commandsFail": [],
+   "reasons": [],
+   "origin": "https://statsapi.mlb.com",
+   "description": "MLB Stats API public read-only data.",
+   "nCommands": 2,
+   "strong": true,
+   "robots": "robots.txt HTTP 404"
+  },
+  {
+   "site": "mstdn_social",
+   "ok": false,
+   "commandsOk": [],
+   "commandsFail": [
+    {
+     "name": "public",
+     "why": "HTTP 422"
+    },
+    {
+     "name": "tag",
+     "why": "HTTP 422"
+    }
+   ],
+   "reasons": [],
+   "origin": "https://mstdn.social/api/v1/",
+   "description": "Public read-only Mstdn.social endpoints used by the website.",
+   "nCommands": 2,
+   "strong": false,
+   "robots": "robots.txt 3 disallow rules for *"
+  },
+  {
+   "site": "musicbrainz",
+   "ok": false,
+   "commandsOk": [],
+   "commandsFail": [
+    {
+     "name": "search-artists",
+     "why": "robots disallows /ws/2/artist/"
+    }
+   ],
+   "reasons": [],
+   "origin": "https://musicbrainz.org",
+   "description": "MusicBrainz public read-only CLI.",
+   "nCommands": 1,
+   "strong": false,
+   "robots": "robots.txt 35 disallow rules for *"
+  },
+  {
+   "site": "nasa",
+   "ok": false,
+   "commandsOk": [],
+   "commandsFail": [],
+   "reasons": [
+    "spec mentions a key/auth header"
+   ]
+  },
+  {
+   "site": "nasa-apod",
+   "ok": false,
+   "commandsOk": [],
+   "commandsFail": [],
+   "reasons": [
+    "spec mentions a key/auth header"
+   ]
+  },
+  {
+   "site": "nasa-earth",
+   "ok": false,
+   "commandsOk": [],
+   "commandsFail": [],
+   "reasons": [
+    "spec mentions a key/auth header"
+   ]
+  },
+  {
+   "site": "nasa-neo",
+   "ok": false,
+   "commandsOk": [],
+   "commandsFail": [],
+   "reasons": [
+    "spec mentions a key/auth header"
+   ]
+  },
+  {
+   "site": "nbp",
+   "ok": true,
+   "commandsOk": [
+    {
+     "name": "rate",
+     "ms": 715,
+     "argv": "rate --table A --code USD --limit 3",
+     "sample": "{\"table\":\"A\",\"currency\":\"dolar amerykański\",\"code\":\"USD\",\"rates\":[{\"no\":\"202/A/NBP/2026\",\"effectiveDate\":\"2026-10-16\",\"mid\":3.8827}]}"
+    },
+    {
+     "name": "table",
+     "ms": 709,
+     "argv": "table --table A --limit 3",
+     "sample": "[{\"table\":\"A\",\"no\":\"202/A/NBP/2026\",\"effectiveDate\":\"2026-10-16\",\"rates\":[{\"currency\":\"bat (Tajlandia)\",\"code\":\"THB\",\"mid\":0.1162},{\"currency\":\"dolar amerykański\",\"code\":\"USD\",\"mid\":3.8827},{\"currency\":\"dolar australijski\",\"code\":\"AUD\",\"mid\":2.7025},{\"currency\":\"dolar Hongkongu\",\"code\":\"HKD\",\"mid\":0"
+    }
+   ],
+   "commandsFail": [],
+   "reasons": [],
+   "origin": "https://api.nbp.pl",
+   "description": "National Bank of Poland rates public read-only data.",
+   "nCommands": 2,
+   "strong": true,
+   "robots": "robots.txt HTTP 404"
+  },
+  {
+   "site": "nhl",
+   "ok": true,
+   "commandsOk": [
+    {
+     "name": "standings",
+     "ms": 235,
+     "argv": "standings --limit 3",
+     "sample": "{\"wildCardIndicator\":true,\"standingsDateTimeUtc\":\"2026-10-17T23:07:45Z\",\"standings\":[{\"conferenceAbbrev\":\"E\",\"conferenceHomeSequence\":9,\"conferenceL10Sequence\":1,\"conferenceName\":\"Eastern\",\"conferenceRoadSequence\":1,\"conferenceSequence\":1,\"date\":\"2026-10-17\",\"divisionAbbrev\":\"M\",\"divisionHomeSequenc"
+    },
+    {
+     "name": "schedule",
+     "ms": 244,
+     "argv": "schedule --limit 3",
+     "sample": "{\"wildCardIndicator\":true,\"standingsDateTimeUtc\":\"2026-10-17T23:07:45Z\",\"standings\":[{\"conferenceAbbrev\":\"E\",\"conferenceHomeSequence\":9,\"conferenceL10Sequence\":1,\"conferenceName\":\"Eastern\",\"conferenceRoadSequence\":1,\"conferenceSequence\":1,\"date\":\"2026-10-17\",\"divisionAbbrev\":\"M\",\"divisionHomeSequenc"
+    }
+   ],
+   "commandsFail": [],
+   "reasons": [],
+   "origin": "https://api-web.nhle.com",
+   "description": "NHL public API public read-only data.",
+   "nCommands": 2,
+   "strong": true,
+   "robots": "robots.txt HTTP 404"
+  },
+  {
+   "site": "nobel",
+   "ok": true,
+   "commandsOk": [
+    {
+     "name": "get-prizes",
+     "ms": 215,
+     "argv": "get-prizes --category physics --year 2020 --limit 3",
+     "sample": "[{\"awardYear\":\"2020\",\"category\":{\"en\":\"Chemistry\",\"no\":\"Kjemi\",\"se\":\"Kemi\"},\"categoryFullName\":{\"en\":\"The Nobel Prize in Chemistry\",\"no\":\"Nobelprisen i kjemi\",\"se\":\"Nobelpriset i kemi\"},\"dateAwarded\":\"2020-10-07\",\"prizeAmount\":10000000,\"prizeAmountAdjusted\":12429614,\"links\":[{\"rel\":\"nobelPrize\",\"hre"
+    }
+   ],
+   "commandsFail": [],
+   "reasons": [],
+   "origin": "https://api.nobelprize.org",
+   "description": "Nobel Prize API public read-only CLI.",
+   "nCommands": 1,
+   "strong": false,
+   "robots": "robots.txt 0 disallow rules for *"
+  },
+  {
+   "site": "nodejs",
+   "ok": true,
+   "commandsOk": [
+    {
+     "name": "releases",
+     "ms": 180,
+     "argv": "releases --limit 3",
+     "sample": "[{\"version\":\"v26.12.0\",\"date\":\"2026-10-14\",\"files\":[\"aix-ppc64\",\"headers\",\"linux-arm64\",\"linux-ppc64le\",\"linux-s390x\",\"linux-x64\",\"linux-x64-musl\",\"osx-arm64-tar\",\"osx-x64-pkg\",\"osx-x64-tar\",\"src\",\"win-arm64-7z\",\"win-arm64-zip\",\"win-x64-7z\",\"win-x64-exe\",\"win-x64-msi\",\"win-x64-zip\"],\"npm\":\"11.20.0\","
+    },
+    {
+     "name": "release",
+     "ms": 173,
+     "argv": "release --version 22.0.0 --limit 3",
+     "sample": "\"d7743fddf5e867124f555a91f6c729104fd5c75d9382f10286c3fbb3fd12ef07  node-v22.0.0-aix-ppc64.tar.gz\\nffb6e5a0c7e3720e242765ac68025ccd8ade5a35fb9e48d23b99df994f068fe1  node-v22.0.0-arm64.msi\\nea96d349cfaa67aa87ceeaa3e5b52c9167f7ac302fd8d1ff162d0785e9dc0785  node-v22.0.0-darwin-arm64.tar.gz\\n1e4c5dc71444"
+    }
+   ],
+   "commandsFail": [],
+   "reasons": [],
+   "origin": "https://nodejs.org",
+   "description": "Public read-only Node.js Releases endpoints used by the website.",
+   "nCommands": 2,
+   "strong": true,
+   "robots": "robots.txt 2 disallow rules for *"
+  },
+  {
+   "site": "nominatim",
+   "ok": false,
+   "commandsOk": [],
+   "commandsFail": [
+    {
+     "name": "get",
+     "why": "robots disallows /search"
+    }
+   ],
+   "reasons": [],
+   "origin": "https://nominatim.openstreetmap.org",
+   "description": "Nominatim public read-only command.",
+   "nCommands": 1,
+   "strong": false,
+   "robots": "robots.txt 10 disallow rules for *"
+  },
+  {
+   "site": "npm",
+   "ok": false,
+   "commandsOk": [
+    {
+     "name": "search",
+     "ms": 316,
+     "argv": "search --text playwright --limit 3",
+     "sample": "[{\"downloads\":{\"monthly\":473720030,\"weekly\":113562399},\"dependents\":\"5714\",\"updated\":\"2026-10-17T22:40:59.282Z\",\"searchScore\":2212.7004,\"package\":{\"name\":\"playwright\",\"keywords\":[],\"version\":\"1.64.1\",\"description\":\"A high-level API to automate web browsers\",\"sanitized_name\":\"playwright\",\"publisher\":"
+    }
+   ],
+   "commandsFail": [
+    {
+     "name": "get-package",
+     "why": "no data (status undefined)"
+    }
+   ],
+   "reasons": [],
+   "origin": "https://registry.npmjs.org",
+   "description": "Public read-only npm Registry endpoints used by the website.",
+   "nCommands": 2,
+   "strong": false,
+   "robots": "robots.txt 0 disallow rules for *"
+  },
+  {
+   "site": "nuget",
+   "ok": true,
+   "commandsOk": [
+    {
+     "name": "get-package",
+     "ms": 238,
+     "argv": "get-package --id newtonsoft.json --limit 3",
+     "sample": "{\"versions\":[\"3.5.8\",\"4.0.1\",\"4.0.2\",\"4.0.3\",\"4.0.4\",\"4.0.5\",\"4.0.6\",\"4.0.7\",\"4.0.8\",\"4.5.1\",\"4.5.2\",\"4.5.3\",\"4.5.4\",\"4.5.5\",\"4.5.6\",\"4.5.7\",\"4.5.8\",\"4.5.9\",\"4.5.10\",\"4.5.11\",\"5.0.1\",\"5.0.2\",\"5.0.3\",\"5.0.4\",\"5.0.5\",\"5.0.6\",\"5.0.7\",\"5.0.8\",\"6.0.1-beta1\",\"6.0.1\",\"6.0.2\",\"6.0.3\",\"6.0.4\",\"6.0.5\",\"6.0.6\""
+    },
+    {
+     "name": "search",
+     "ms": 473,
+     "argv": "search --q json --limit 3",
+     "sample": "[{\"@id\":\"https://api.nuget.org/v3/registration5-semver1/newtonsoft.json/index.json\",\"@type\":\"Package\",\"registration\":\"https://api.nuget.org/v3/registration5-semver1/newtonsoft.json/index.json\",\"id\":\"Newtonsoft.Json\",\"version\":\"13.0.4\",\"description\":\"Json.NET is a popular high-performance JSON framew"
+    }
+   ],
+   "commandsFail": [],
+   "reasons": [],
+   "origin": "https://api.nuget.org",
+   "description": "Public read-only NuGet endpoints used by the website.",
+   "nCommands": 2,
+   "strong": true,
+   "robots": "robots.txt HTTP 404"
+  },
+  {
+   "site": "numpy",
+   "ok": true,
+   "commandsOk": [
+    {
+     "name": "home",
+     "ms": 235,
+     "argv": "home --limit 3",
+     "sample": "{\"title\":\"NumPy\",\"description\":\"Why NumPy? Powerful n-dimensional arrays. Numerical computing tools. Interoperable. Performant. Open source.\"}"
+    },
+    {
+     "name": "page",
+     "ms": 294,
+     "argv": "page --limit 3",
+     "sample": "{\"title\":\"NumPy Documentation\"}"
+    }
+   ],
+   "commandsFail": [],
+   "reasons": [],
+   "origin": "https://numpy.org",
+   "description": "NumPy: public read-only HTML pages.",
+   "nCommands": 2,
+   "strong": true,
+   "robots": "robots.txt 0 disallow rules for *"
+  },
+  {
+   "site": "nvd",
+   "ok": false,
+   "commandsOk": [
+    {
+     "name": "home",
+     "ms": 304,
+     "argv": "home --limit 3",
+     "sample": "{\"title\":\"NVD - Home\"}"
+    }
+   ],
+   "commandsFail": [
+    {
+     "name": "get-page",
+     "why": "no data (status 200)"
+    }
+   ],
+   "reasons": [],
+   "origin": "https://nvd.nist.gov",
+   "description": "NVD Vulnerability Database: public read-only HTML pages.",
+   "nCommands": 2,
+   "strong": false,
+   "robots": "robots.txt 0 disallow rules for *"
+  },
+  {
+   "site": "nvdapi",
+   "ok": true,
+   "commandsOk": [
+    {
+     "name": "cves",
+     "ms": 287,
+     "argv": "cves --resultsPerPage 5 --limit 3",
+     "sample": "[{\"cve\":{\"id\":\"CVE-1999-0095\",\"sourceIdentifier\":\"cve@mitre.org\",\"published\":\"1988-10-01T04:00:00.000\",\"lastModified\":\"2026-06-16T21:47:34.460\",\"vulnStatus\":\"Modified\",\"cveTags\":[],\"descriptions\":[{\"lang\":\"en\",\"value\":\"The debug command in Sendmail is enabled, allowing attackers to execute commands "
+    }
+   ],
+   "commandsFail": [],
+   "reasons": [],
+   "origin": "https://services.nvd.nist.gov",
+   "description": "NIST National Vulnerability Database public read-only API.",
+   "nCommands": 1,
+   "strong": false,
+   "robots": "robots.txt HTTP 404"
+  },
+  {
+   "site": "nyc",
+   "ok": true,
+   "commandsOk": [
+    {
+     "name": "query",
+     "ms": 575,
+     "argv": "query --dataset h9gi-nx95 --$limit 5 --limit 3",
+     "sample": "[{\"crash_date\":\"2021-09-11T00:00:00.000\",\"crash_time\":\"2:39\",\"on_street_name\":\"WHITESTONE EXPRESSWAY\",\"off_street_name\":\"20 AVENUE\",\"number_of_persons_injured\":\"2\",\"number_of_persons_killed\":\"0\",\"number_of_pedestrians_injured\":\"0\",\"number_of_pedestrians_killed\":\"0\",\"number_of_cyclist_injured\":\"0\",\"n"
+    },
+    {
+     "name": "metadata",
+     "ms": 506,
+     "argv": "metadata --dataset h9gi-nx95 --limit 3",
+     "sample": "{\"id\":\"h9gi-nx95\",\"name\":\"Motor Vehicle Collisions - Crashes\",\"assetType\":\"dataset\",\"attribution\":\"Police Department (NYPD)\",\"averageRating\":0,\"category\":\"Public Safety\",\"createdAt\":1398703304,\"description\":\"<b>NOTE:</b> This dataset is temporarily not updating while its automated update process is "
+    }
+   ],
+   "commandsFail": [],
+   "reasons": [],
+   "origin": "https://data.cityofnewyork.us",
+   "description": "NYC Open Data public read-only API.",
+   "nCommands": 2,
+   "strong": true,
+   "robots": "robots.txt 54 disallow rules for *"
+  },
+  {
+   "site": "oeis",
+   "ok": false,
+   "commandsOk": [],
+   "commandsFail": [
+    {
+     "name": "search",
+     "why": "robots disallows /search"
+    },
+    {
+     "name": "sequence",
+     "why": "HTTP 403: this endpoint needs a login. Run: clify login oeis"
+    }
+   ],
+   "reasons": [],
+   "origin": "https://oeis.org",
+   "description": "Online Encyclopedia of Integer Sequences",
+   "nCommands": 2,
+   "strong": false,
+   "robots": "robots.txt 12 disallow rules for *"
+  },
+  {
+   "site": "okx",
+   "ok": true,
+   "commandsOk": [
+    {
+     "name": "ticker",
+     "ms": 305,
+     "argv": "ticker --instId BTC-USDT --limit 3",
+     "sample": "[{\"instType\":\"SPOT\",\"instId\":\"BTC-USDT\",\"last\":\"81311\",\"lastSz\":\"0.00001501\",\"askPx\":\"81310.3\",\"askSz\":\"0.67081348\",\"bidPx\":\"81310.2\",\"bidSz\":\"0.48988565\",\"open24h\":\"81749.3\",\"high24h\":\"81796.6\",\"low24h\":\"80813.6\",\"volCcy24h\":\"111019859.729557585\",\"vol24h\":\"1362.85960151\",\"ts\":\"1792278479362\",\"sodUt"
+    },
+    {
+     "name": "instruments",
+     "ms": 310,
+     "argv": "instruments --instId BTC-USDT --limit 3",
+     "sample": "[{\"instType\":\"SPOT\",\"instId\":\"BTC-USDT\",\"last\":\"81311\",\"lastSz\":\"0.00001501\",\"askPx\":\"81310.3\",\"askSz\":\"0.28247996\",\"bidPx\":\"81310.2\",\"bidSz\":\"0.55112805\",\"open24h\":\"81749.3\",\"high24h\":\"81796.6\",\"low24h\":\"80813.6\",\"volCcy24h\":\"110983209.203114665\",\"vol24h\":\"1362.41127265\",\"ts\":\"1792278480461\",\"sodUt"
+    }
+   ],
+   "commandsFail": [],
+   "reasons": [],
+   "origin": "https://www.okx.com",
+   "description": "OKX public market data public read-only data.",
+   "nCommands": 2,
+   "strong": true,
+   "robots": "robots.txt 216 disallow rules for *"
+  },
+  {
+   "site": "open-elevation",
+   "ok": true,
+   "commandsOk": [
+    {
+     "name": "get",
+     "ms": 671,
+     "argv": "get --locations 60.17,24.94 --limit 3",
+     "sample": "{\"results\":[{\"latitude\":60.17,\"longitude\":24.94,\"elevation\":0}]}"
+    }
+   ],
+   "commandsFail": [],
+   "reasons": [],
+   "origin": "https://api.open-elevation.com",
+   "description": "Open Elevation public read-only command.",
+   "nCommands": 1,
+   "strong": false,
+   "robots": "robots.txt HTTP 404"
+  },
+  {
+   "site": "open-library",
+   "ok": false,
+   "commandsOk": [],
+   "commandsFail": [],
+   "reasons": [
+    "denied: robots.txt disallows /search"
+   ]
+  },
+  {
+   "site": "open-meteo",
+   "ok": false,
+   "commandsOk": [],
+   "commandsFail": [
+    {
+     "name": "get",
+     "why": "robots disallows /v1/forecast"
+    }
+   ],
+   "reasons": [],
+   "origin": "https://api.open-meteo.com",
+   "description": "Open-Meteo public read-only command.",
+   "nCommands": 1,
+   "strong": false,
+   "robots": "robots.txt 1 disallow rules for *"
+  },
+  {
+   "site": "open-notify",
+   "ok": true,
+   "commandsOk": [
+    {
+     "name": "get",
+     "ms": 195,
+     "argv": "get --limit 3",
+     "sample": "{\"timestamp\":1792278480,\"iss_position\":{\"longitude\":\"14.6504\",\"latitude\":\"-26.0466\"},\"message\":\"success\"}"
+    }
+   ],
+   "commandsFail": [],
+   "reasons": [],
+   "origin": "http://api.open-notify.org",
+   "description": "Open Notify public read-only command.",
+   "nCommands": 1,
+   "strong": false,
+   "robots": "robots.txt HTTP 404"
+  },
+  {
+   "site": "openalex",
+   "ok": false,
+   "commandsOk": [
+    {
+     "name": "work",
+     "ms": 740,
+     "argv": "work --id https://openalex.org/W2741809807 --limit 3",
+     "sample": "{\"id\":\"https://openalex.org/W2741809807\",\"doi\":\"https://doi.org/10.7717/peerj.4375\",\"title\":\"The state of OA: a large-scale analysis of the prevalence and impact of Open Access articles\",\"display_name\":\"The state of OA: a large-scale analysis of the prevalence and impact of Open Access articles\",\"pu"
+    }
+   ],
+   "commandsFail": [
+    {
+     "name": "search",
+     "why": "HTTP 400"
+    }
+   ],
+   "reasons": [],
+   "origin": "https://api.openalex.org",
+   "description": "Open scholarly works and authors",
+   "nCommands": 2,
+   "strong": false,
+   "robots": "robots.txt 0 disallow rules for *"
+  },
+  {
+   "site": "openaq",
+   "ok": false,
+   "commandsOk": [],
+   "commandsFail": [
+    {
+     "name": "get",
+     "why": "HTTP 410"
+    }
+   ],
+   "reasons": [],
+   "origin": "https://api.openaq.org",
+   "description": "OpenAQ public read-only command.",
+   "nCommands": 1,
+   "strong": false,
+   "robots": "robots.txt HTTP 404"
+  },
+  {
+   "site": "openbrewery",
+   "ok": false,
+   "commandsOk": [],
+   "commandsFail": [
+    {
+     "name": "search-breweries",
+     "why": "HTTP 403: this endpoint needs a login. Run: clify login openbrewery"
+    }
+   ],
+   "reasons": [],
+   "origin": "https://api.openbrewerydb.org",
+   "description": "Open Brewery DB public read-only CLI.",
+   "nCommands": 1,
+   "strong": false,
+   "robots": "robots.txt 0 disallow rules for *"
+  },
+  {
+   "site": "opencanada",
+   "ok": false,
+   "commandsOk": [],
+   "commandsFail": [
+    {
+     "name": "search",
+     "why": "HTTP 404"
+    }
+   ],
+   "reasons": [],
+   "origin": "https://open.canada.ca",
+   "description": "Open Canada public read-only API.",
+   "nCommands": 1,
+   "strong": false,
+   "robots": "robots.txt 73 disallow rules for *"
+  },
+  {
+   "site": "opendota",
+   "ok": false,
+   "commandsOk": [
+    {
+     "name": "heroes",
+     "ms": 1478,
+     "argv": "heroes --limit 3",
+     "sample": "[{\"id\":1,\"name\":\"npc_dota_hero_antimage\",\"primary_attr\":\"agi\",\"attack_type\":\"Melee\",\"roles\":[\"Carry\",\"Escape\",\"Nuker\"],\"img\":\"/apps/dota2/images/dota_react/heroes/antimage.png?\",\"icon\":\"/apps/dota2/images/dota_react/heroes/icons/antimage.png?\",\"base_health\":120,\"base_health_regen\":1,\"base_mana\":75,\""
+    }
+   ],
+   "commandsFail": [
+    {
+     "name": "player",
+     "why": "HTTP 500"
+    }
+   ],
+   "reasons": [],
+   "origin": "https://api.opendota.com",
+   "description": "OpenDota public API public read-only data.",
+   "nCommands": 2,
+   "strong": false,
+   "robots": "robots.txt HTTP 404"
+  },
+  {
+   "site": "openfda",
+   "ok": false,
+   "commandsOk": [],
+   "commandsFail": [
+    {
+     "name": "drug-labels",
+     "why": "HTTP 404"
+    },
+    {
+     "name": "device-events",
+     "why": "HTTP 404"
+    }
+   ],
+   "reasons": [],
+   "origin": "https://api.fda.gov",
+   "description": "openFDA public read-only API.",
+   "nCommands": 2,
+   "strong": false,
+   "robots": "robots.txt HTTP 404"
+  },
+  {
+   "site": "openfootball",
+   "ok": false,
+   "commandsOk": [
+    {
+     "name": "premier-league",
+     "ms": 283,
+     "argv": "premier-league --limit 3",
+     "sample": "{\"name\":\"English Premier League 2025/26\",\"matches\":[{\"round\":\"Matchday 1\",\"date\":\"2025-08-15\",\"time\":\"20:00\",\"team1\":\"Liverpool FC\",\"team2\":\"AFC Bournemouth\",\"score\":{\"ft\":[4,2],\"ht\":[1,0]}},{\"round\":\"Matchday 1\",\"date\":\"2025-08-16\",\"time\":\"12:30\",\"team1\":\"Aston Villa FC\",\"team2\":\"Newcastle United F"
+    }
+   ],
+   "commandsFail": [
+    {
+     "name": "world-cup",
+     "why": "HTTP 404"
+    }
+   ],
+   "reasons": [],
+   "origin": "https://raw.githubusercontent.com",
+   "description": "openfootball JSON public read-only data.",
+   "nCommands": 2,
+   "strong": false,
+   "robots": "robots.txt HTTP 404"
+  },
+  {
+   "site": "openligadb",
+   "ok": true,
+   "commandsOk": [
+    {
+     "name": "matches",
+     "ms": 858,
+     "argv": "matches --league bl1 --season 2025 --limit 3",
+     "sample": "[{\"matchID\":77256,\"matchDateTime\":\"2025-08-22T20:30:00\",\"timeZoneID\":\"W. Europe Standard Time\",\"leagueId\":4821,\"leagueName\":\"1. Fußball-Bundesliga 2025/2026\",\"leagueSeason\":2025,\"leagueShortcut\":\"bl1\",\"matchDateTimeUTC\":\"2025-08-22T18:30:00Z\",\"group\":{\"groupName\":\"1. Spieltag\",\"groupOrderID\":1,\"grou"
+    },
+    {
+     "name": "teams",
+     "ms": 687,
+     "argv": "teams --league bl1 --season 2025 --limit 3",
+     "sample": "[{\"teamId\":199,\"teamName\":\"1. FC Heidenheim 1846\",\"shortName\":\"Heidenheim\",\"teamIconUrl\":\"https://upload.wikimedia.org/wikipedia/commons/9/9d/1._FC_Heidenheim_1846.svg\",\"teamGroupName\":null},{\"teamId\":65,\"teamName\":\"1. FC Köln\",\"shortName\":\"Köln\",\"teamIconUrl\":\"https://upload.wikimedia.org/wikipedia"
+    }
+   ],
+   "commandsFail": [],
+   "reasons": [],
+   "origin": "https://api.openligadb.de",
+   "description": "OpenLigaDB football data public read-only data.",
+   "nCommands": 2,
+   "strong": true,
+   "robots": "robots.txt HTTP 404"
+  },
+  {
+   "site": "openmeteo",
+   "ok": false,
+   "commandsOk": [],
+   "commandsFail": [
+    {
+     "name": "forecast",
+     "why": "robots disallows /v1/forecast"
+    }
+   ],
+   "reasons": [],
+   "origin": "https://api.open-meteo.com",
+   "description": "Open-Meteo Weather public read-only API.",
+   "nCommands": 1,
+   "strong": false,
+   "robots": "robots.txt 1 disallow rules for *"
+  },
+  {
+   "site": "openmeteo-air",
+   "ok": false,
+   "commandsOk": [],
+   "commandsFail": [
+    {
+     "name": "get",
+     "why": "robots disallows /v1/air-quality"
+    }
+   ],
+   "reasons": [],
+   "origin": "https://air-quality-api.open-meteo.com",
+   "description": "Open-Meteo Air Quality public read-only command.",
+   "nCommands": 1,
+   "strong": false,
+   "robots": "robots.txt 1 disallow rules for *"
+  },
+  {
+   "site": "openmeteo-marine",
+   "ok": false,
+   "commandsOk": [],
+   "commandsFail": [
+    {
+     "name": "get",
+     "why": "robots disallows /v1/marine"
+    }
+   ],
+   "reasons": [],
+   "origin": "https://marine-api.open-meteo.com",
+   "description": "Open-Meteo Marine public read-only command.",
+   "nCommands": 1,
+   "strong": false,
+   "robots": "robots.txt 1 disallow rules for *"
+  },
+  {
+   "site": "opensky",
+   "ok": false,
+   "commandsOk": [],
+   "commandsFail": [
+    {
+     "name": "get",
+     "why": "request failed: fetch failed"
+    }
+   ],
+   "reasons": [],
+   "origin": "https://opensky-network.org",
+   "description": "OpenSky Network public read-only command.",
+   "nCommands": 1,
+   "strong": false,
+   "robots": "robots.txt fetch failed: fetch failed"
+  },
+  {
+   "site": "opentdb",
+   "ok": true,
+   "commandsOk": [
+    {
+     "name": "get-questions",
+     "ms": 399,
+     "argv": "get-questions --amount 3 --category 18 --limit 3",
+     "sample": "{\"response_code\":0,\"results\":[{\"type\":\"multiple\",\"difficulty\":\"easy\",\"category\":\"Science: Computers\",\"question\":\"On Twitter, what was the original character limit for a Tweet?\",\"correct_answer\":\"140\",\"incorrect_answers\":[\"120\",\"160\",\"100\"]},{\"type\":\"multiple\",\"difficulty\":\"easy\",\"category\":\"Science:"
+    }
+   ],
+   "commandsFail": [],
+   "reasons": [],
+   "origin": "https://opentdb.com",
+   "description": "Open Trivia DB public read-only CLI.",
+   "nCommands": 1,
+   "strong": false,
+   "robots": "robots.txt HTTP 404"
+  },
+  {
+   "site": "opentopodata",
+   "ok": true,
+   "commandsOk": [
+    {
+     "name": "elevation",
+     "ms": 352,
+     "argv": "elevation --locations 60.17,24.94 --limit 3",
+     "sample": "[{\"dataset\":\"aster30m\",\"elevation\":20,\"location\":{\"lat\":60.17,\"lng\":24.94}}]"
+    }
+   ],
+   "commandsFail": [],
+   "reasons": [],
+   "origin": "https://api.opentopodata.org",
+   "description": "OpenTopoData public read-only API.",
+   "nCommands": 1,
+   "strong": false,
+   "robots": "robots.txt 0 disallow rules for *"
+  },
+  {
+   "site": "orcid",
+   "ok": false,
+   "commandsOk": [],
+   "commandsFail": [
+    {
+     "name": "search",
+     "why": "robots disallows /v3.0/expanded-search/"
+    },
+    {
+     "name": "record",
+     "why": "robots disallows /v3.0/x/person"
+    }
+   ],
+   "reasons": [],
+   "origin": "https://pub.orcid.org",
+   "description": "ORCID public researcher search",
+   "nCommands": 2,
+   "strong": false,
+   "robots": "robots.txt 1 disallow rules for *"
+  },
+  {
+   "site": "osv",
+   "ok": false,
+   "commandsOk": [],
+   "commandsFail": [
+    {
+     "name": "query-package",
+     "why": "HTTP 405"
+    }
+   ],
+   "reasons": [],
+   "origin": "https://api.osv.dev",
+   "description": "Public read-only OSV endpoints used by the website.",
+   "nCommands": 1,
+   "strong": false,
+   "robots": "robots.txt HTTP 404"
+  },
+  {
+   "site": "ourairports",
+   "ok": true,
+   "commandsOk": [
+    {
+     "name": "get",
+     "ms": 691,
+     "argv": "get --id EHAM --limit 3",
+     "sample": "\"Temporarily unavailable OurAirports is undergoing some routine maintenance, and is temporarily unavailable. We'll be back online soon. Is this is a planned outage, you may find more information on our Instagram page. Open data downloads are also available on GitHub: https://github.com/davidmegginso"
+    }
+   ],
+   "commandsFail": [],
+   "reasons": [],
+   "origin": "https://ourairports.com",
+   "description": "OurAirports public read-only command.",
+   "nCommands": 1,
+   "strong": false,
+   "robots": "robots.txt 0 disallow rules for *"
+  },
+  {
+   "site": "packagist",
+   "ok": false,
+   "commandsOk": [
+    {
+     "name": "search",
+     "ms": 538,
+     "argv": "search --q http client --limit 3",
+     "sample": "[{\"name\":\"guzzlehttp/guzzle\",\"description\":\"Guzzle is a PHP HTTP client library\",\"url\":\"https://packagist.org/packages/guzzlehttp/guzzle\",\"repository\":\"https://github.com/guzzle/guzzle\",\"downloads\":1127748390,\"favers\":24299},{\"name\":\"psr/http-client\",\"description\":\"Common interface for HTTP clients\""
+    }
+   ],
+   "commandsFail": [
+    {
+     "name": "get-package",
+     "why": "no data (status undefined)"
+    }
+   ],
+   "reasons": [],
+   "origin": "https://packagist.org",
+   "description": "Public read-only Packagist endpoints used by the website.",
+   "nCommands": 2,
+   "strong": false,
+   "robots": "robots.txt 3 disallow rules for *"
+  },
+  {
+   "site": "pandas",
+   "ok": true,
+   "commandsOk": [
+    {
+     "name": "home",
+     "ms": 327,
+     "argv": "home --limit 3",
+     "sample": "{\"title\":\"pandas - Python Data Analysis Library\"}"
+    },
+    {
+     "name": "page",
+     "ms": 303,
+     "argv": "page --limit 3",
+     "sample": "{\"title\":\"pandas documentation#\"}"
+    }
+   ],
+   "commandsFail": [],
+   "reasons": [],
+   "origin": "https://pandas.pydata.org",
+   "description": "pandas: public read-only HTML pages.",
+   "nCommands": 2,
+   "strong": true,
+   "robots": "robots.txt 1 disallow rules for *"
+  },
+  {
+   "site": "paulgraham",
+   "ok": false,
+   "commandsOk": [
+    {
+     "name": "home",
+     "ms": 379,
+     "argv": "home --limit 3",
+     "sample": "{\"title\":\"Essays\"}"
+    }
+   ],
+   "commandsFail": [
+    {
+     "name": "get-page",
+     "why": "no data (status 200)"
+    }
+   ],
+   "reasons": [],
+   "origin": "https://paulgraham.com",
+   "description": "Paul Graham Essays: public read-only HTML pages.",
+   "nCommands": 2,
+   "strong": false,
+   "robots": "robots.txt 12 disallow rules for *"
+  },
+  {
+   "site": "pokeapi",
+   "ok": false,
+   "commandsOk": [],
+   "commandsFail": [
+    {
+     "name": "get-pokemon",
+     "why": "no data (status undefined)"
+    }
+   ],
+   "reasons": [],
+   "origin": "https://pokeapi.co",
+   "description": "PokeAPI public read-only CLI.",
+   "nCommands": 1,
+   "strong": false,
+   "robots": "robots.txt 0 disallow rules for *"
+  },
+  {
+   "site": "pokemoncards",
+   "ok": false,
+   "commandsOk": [],
+   "commandsFail": [
+    {
+     "name": "search-cards",
+     "why": "HTTP 500"
+    }
+   ],
+   "reasons": [],
+   "origin": "https://api.pokemontcg.io",
+   "description": "Pokemon TCG API public read-only CLI.",
+   "nCommands": 1,
+   "strong": false,
+   "robots": "robots.txt 0 disallow rules for *"
+  },
+  {
+   "site": "polymarket",
+   "ok": false,
+   "commandsOk": [],
+   "commandsFail": [],
+   "reasons": [
+    "denied: ToS"
+   ]
+  },
+  {
+   "site": "postgresql",
+   "ok": true,
+   "commandsOk": [
+    {
+     "name": "home",
+     "ms": 885,
+     "argv": "home --limit 3",
+     "sample": "{\"title\":\"PostgreSQL: The world's most advanced open source database\",\"description\":\"The official site for PostgreSQL, the world's most advanced open source database\"}"
+    },
+    {
+     "name": "page",
+     "ms": 705,
+     "argv": "page --limit 3",
+     "sample": "{\"title\":\"Part I. Tutorial\"}"
+    }
+   ],
+   "commandsFail": [],
+   "reasons": [],
+   "origin": "https://www.postgresql.org",
+   "description": "PostgreSQL: public read-only HTML pages.",
+   "nCommands": 2,
+   "strong": true,
+   "robots": "robots.txt 9 disallow rules for *"
+  },
+  {
+   "site": "pubmed",
+   "ok": false,
+   "commandsOk": [],
+   "commandsFail": [
+    {
+     "name": "search",
+     "why": "robots disallows /entrez/eutils/esearch.fcgi"
+    }
+   ],
+   "reasons": [],
+   "origin": "https://eutils.ncbi.nlm.nih.gov",
+   "description": "PubMed public read-only API.",
+   "nCommands": 1,
+   "strong": false,
+   "robots": "robots.txt 1 disallow rules for *"
+  },
+  {
+   "site": "pypi",
+   "ok": false,
+   "commandsOk": [],
+   "commandsFail": [
+    {
+     "name": "get-project",
+     "why": "robots disallows /pypi/x/json"
+    },
+    {
+     "name": "release",
+     "why": "robots disallows /pypi/x/x/json"
+    }
+   ],
+   "reasons": [],
+   "origin": "https://pypi.org",
+   "description": "Public read-only PyPI endpoints used by the website.",
+   "nCommands": 2,
+   "strong": false,
+   "robots": "robots.txt 12 disallow rules for *"
+  },
+  {
+   "site": "pypi-simple",
+   "ok": false,
+   "commandsOk": [],
+   "commandsFail": [
+    {
+     "name": "index",
+     "why": "robots disallows /simple/x/"
+    },
+    {
+     "name": "root",
+     "why": "robots disallows /simple/"
+    }
+   ],
+   "reasons": [],
+   "origin": "https://pypi.org",
+   "description": "Public read-only PyPI Simple Index endpoints used by the website.",
+   "nCommands": 2,
+   "strong": false,
+   "robots": "robots.txt 12 disallow rules for *"
+  },
+  {
+   "site": "python",
+   "ok": true,
+   "commandsOk": [
+    {
+     "name": "downloads",
+     "ms": 223,
+     "argv": "downloads --limit 3",
+     "sample": "\"Notice: This page displays a fallback because interactive scripts did not run. Possible causes include disabled JavaScript or failure to load scripts or stylesheets. Skip to content ▼ Close Python PSF Docs PyPI Jobs Community ▲ The Python Network Donate ≡ Menu Search This Site GO A A Smaller Larger"
+    },
+    {
+     "name": "pep",
+     "ms": 283,
+     "argv": "pep --number 8 --limit 3",
+     "sample": "\"<!DOCTYPE html> PEP 8 – Style Guide for Python Code | peps.python.org Following system colour scheme Selected dark colour scheme Selected light colour scheme document.documentElement.dataset.colour_scheme = localStorage.getItem(\\\"colour_scheme\\\") || \\\"auto\\\" Python Enhancement Proposals Python » PE"
+    }
+   ],
+   "commandsFail": [],
+   "reasons": [],
+   "origin": "https://www.python.org",
+   "description": "Public read-only Python.org endpoints used by the website.",
+   "nCommands": 2,
+   "strong": true,
+   "robots": "robots.txt 2 disallow rules for *"
+  },
+  {
+   "site": "python-docs",
+   "ok": true,
+   "commandsOk": [
+    {
+     "name": "home",
+     "ms": 221,
+     "argv": "home --limit 3",
+     "sample": "{\"title\":\"The Python standard library — Python 3.15.0 documentation\",\"description\":\"This library reference manual describes the standard library distributed with Python. It also describes some of the optional components that are commonly included in Python distributions. Elsewhere...\"}"
+    },
+    {
+     "name": "page",
+     "ms": 185,
+     "argv": "page --limit 3",
+     "sample": "{\"title\":\"The Python Tutorial¶\",\"description\":\"Python is an easy to learn, powerful programming language. It has efficient high-level data structures and a simple but effective approach to object-oriented programming. Python’s elegant syntax an...\"}"
+    }
+   ],
+   "commandsFail": [],
+   "reasons": [],
+   "origin": "https://docs.python.org",
+   "description": "Python Documentation: public read-only HTML pages.",
+   "nCommands": 2,
+   "strong": true,
+   "robots": "robots.txt 22 disallow rules for *"
+  },
+  {
+   "site": "pythonforum",
+   "ok": true,
+   "commandsOk": [
+    {
+     "name": "latest",
+     "ms": 358,
+     "argv": "latest --limit 3",
+     "sample": "{\"users\":[{\"id\":3524,\"username\":\"cdce8p\",\"name\":\"Marc Mueller\",\"avatar_template\":\"/user_avatar/discuss.python.org/cdce8p/{size}/3575_2.png\",\"trust_level\":2},{\"id\":10,\"username\":\"guido\",\"name\":\"Guido van Rossum\",\"avatar_template\":\"/user_avatar/discuss.python.org/guido/{size}/21_2.png\",\"primary_group_"
+    },
+    {
+     "name": "top",
+     "ms": 375,
+     "argv": "top --limit 3",
+     "sample": "{\"users\":[{\"id\":13,\"username\":\"vstinner\",\"name\":\"Victor Stinner\",\"avatar_template\":\"/user_avatar/discuss.python.org/vstinner/{size}/15130_2.png\",\"flair_name\":\"committers\",\"flair_url\":\"https://us1.discourse-cdn.com/flex002/uploads/python1/original/1X/ca0883b21b8210c5a62c9ac02353de5f24a4d6fc.png\",\"fla"
+    }
+   ],
+   "commandsFail": [
+    {
+     "name": "search",
+     "why": "robots disallows /search.json"
+    }
+   ],
+   "reasons": [],
+   "origin": "https://discuss.python.org/",
+   "description": "Public read-only Discuss Python endpoints used by the website.",
+   "nCommands": 3,
+   "strong": true,
+   "robots": "robots.txt 15 disallow rules for *"
+  },
+  {
+   "site": "quotes",
+   "ok": true,
+   "commandsOk": [
+    {
+     "name": "list-quotes",
+     "ms": 377,
+     "argv": "list-quotes --limit 3",
+     "sample": "[{\"text\":\"“The world as we have created it is a process of our thinking. It cannot be changed without changing our thinking.”\",\"author\":\"Albert Einstein\",\"tags\":\"change,deep-thoughts,thinking,world\",\"authorUrl\":\"https://quotes.toscrape.com/author/Albert-Einstein\"},{\"text\":\"“It is our choices, Harry,"
+    },
+    {
+     "name": "by-tag",
+     "ms": 372,
+     "argv": "by-tag --tag love --page 2 --limit 3",
+     "sample": "[{\"text\":\"“To love at all is to be vulnerable. Love anything and your heart will be wrung and possibly broken. If you want to make sure of keeping it intact you must give it to no one, not even an animal. Wrap it carefully round with hobbies and little luxuries; avoid all entanglements. Lock it up s"
+    },
+    {
+     "name": "get-author",
+     "ms": 379,
+     "argv": "get-author --slug Albert-Einstein --limit 3",
+     "sample": "{\"name\":\"Albert Einstein\",\"born\":\"March 14, 1879\",\"location\":\"in Ulm, Germany\",\"bio\":\"In 1879, Albert Einstein was born in Ulm, Germany. He completed his Ph.D. at the University of Zurich by 1909. His 1905 paper explaining the photoelectric effect, the basis of electronics, earned him the Nobel Priz"
+    }
+   ],
+   "commandsFail": [],
+   "reasons": [],
+   "origin": "https://quotes.toscrape.com",
+   "description": "Quotes to Scrape (scraping sandbox): quotes by page or tag, author bios. Hand-written from recording.jsonl.",
+   "nCommands": 3,
+   "strong": true,
+   "robots": "robots.txt HTTP 404"
+  },
+  {
+   "site": "r-project",
+   "ok": true,
+   "commandsOk": [
+    {
+     "name": "home",
+     "ms": 635,
+     "argv": "home --limit 3",
+     "sample": "{\"title\":\"R: The R Project for Statistical Computing\"}"
+    },
+    {
+     "name": "page",
+     "ms": 627,
+     "argv": "page --limit 3",
+     "sample": "{\"title\":\"What is R?\"}"
+    }
+   ],
+   "commandsFail": [],
+   "reasons": [],
+   "origin": "https://www.r-project.org",
+   "description": "R Project: public read-only HTML pages.",
+   "nCommands": 2,
+   "strong": true,
+   "robots": "robots.txt HTTP 404"
+  },
+  {
+   "site": "radiobrowser",
+   "ok": false,
+   "commandsOk": [],
+   "commandsFail": [
+    {
+     "name": "search-stations",
+     "why": "robots disallows /json/stations/search"
+    }
+   ],
+   "reasons": [],
+   "origin": "https://de1.api.radio-browser.info",
+   "description": "Radio Browser public read-only CLI.",
+   "nCommands": 1,
+   "strong": false,
+   "robots": "robots.txt 1 disallow rules for *"
+  },
+  {
+   "site": "randomdog",
+   "ok": true,
+   "commandsOk": [
+    {
+     "name": "random-dog",
+     "ms": 577,
+     "argv": "random-dog --limit 3",
+     "sample": "{\"fileSizeBytes\":167387,\"url\":\"https://random.dog/597a7bac-c3ef-41df-be42-9e5bf9188696.jpg\"}"
+    }
+   ],
+   "commandsFail": [],
+   "reasons": [],
+   "origin": "https://random.dog",
+   "description": "Random Dog public read-only CLI.",
+   "nCommands": 1,
+   "strong": false,
+   "robots": "robots.txt HTTP 404"
+  },
+  {
+   "site": "randomuser",
+   "ok": true,
+   "commandsOk": [
+    {
+     "name": "list-users",
+     "ms": 245,
+     "argv": "list-users --results 3 --limit 3",
+     "sample": "{\"results\":[{\"gender\":\"male\",\"name\":{\"title\":\"Mr\",\"first\":\"Terrance\",\"last\":\"Craig\"},\"location\":{\"street\":{\"number\":6712,\"name\":\"Depaul Dr\"},\"city\":\"Simi Valley\",\"state\":\"Louisiana\",\"country\":\"United States\",\"postcode\":19007,\"coordinates\":{\"latitude\":\"88.1446\",\"longitude\":\"-78.7578\"},\"timezone\":{\"of"
+    }
+   ],
+   "commandsFail": [],
+   "reasons": [],
+   "origin": "https://randomuser.me",
+   "description": "Random User public read-only CLI.",
+   "nCommands": 1,
+   "strong": false,
+   "robots": "robots.txt 0 disallow rules for *"
+  },
+  {
+   "site": "restcountries",
+   "ok": true,
+   "commandsOk": [
+    {
+     "name": "get",
+     "ms": 246,
+     "argv": "get --name Finland --limit 3",
+     "sample": "{\"success\":false,\"data\":null,\"errors\":[{\"message\":\"This API version has been deprecated. Please visit https://restcountries.com/docs/countries/legacy-api-deprecation to migrate to our new version (v5).\"}]}"
+    }
+   ],
+   "commandsFail": [],
+   "reasons": [],
+   "origin": "https://restcountries.com",
+   "description": "REST Countries public read-only command.",
+   "nCommands": 1,
+   "strong": false,
+   "robots": "robots.txt 2 disallow rules for *"
+  },
+  {
+   "site": "rfc",
+   "ok": true,
+   "commandsOk": [
+    {
+     "name": "rfc",
+     "ms": 670,
+     "argv": "rfc --limit 3",
+     "sample": "\"<?xml version='1.0' encoding='utf-8'?>\\n<rfc-index xmlns=\\\"https://www.rfc-editor.org/rfc-index\\\" xmlns:xsi=\\\"http://www.w3.org/2001/XMLSchema-instance\\\" xsi:schemaLocation=\\\"https://www.rfc-editor.org/rfc-index https://www.rfc-editor.org/rfc-index.xsd\\\">\\n  <bcp-entry>\\n    <doc-id>BCP1</doc-id>\\n"
+    },
+    {
+     "name": "text",
+     "ms": 321,
+     "argv": "text --number 9110 --limit 3",
+     "sample": "\"\\n\\n\\n\\nInternet Engineering Task Force (IETF)                  R. Fielding, Ed.\\nRequest for Comments: 9110                                         Adobe\\nSTD: 97                                               M. Nottingham, Ed.\\nObsoletes: 2818, 7230, 7231, 7232, 7233, 7235,                    Fas"
+    }
+   ],
+   "commandsFail": [],
+   "reasons": [],
+   "origin": "https://www.rfc-editor.org",
+   "description": "Public read-only RFC Editor endpoints used by the website.",
+   "nCommands": 2,
+   "strong": true,
+   "robots": "robots.txt 3 disallow rules for *"
+  },
+  {
+   "site": "rickmorty",
+   "ok": true,
+   "commandsOk": [
+    {
+     "name": "get-character",
+     "ms": 220,
+     "argv": "get-character --id 1 --limit 3",
+     "sample": "{\"id\":1,\"name\":\"Rick Sanchez\",\"status\":\"Alive\",\"species\":\"Human\",\"type\":\"\",\"gender\":\"Male\",\"origin\":{\"name\":\"Earth (C-137)\",\"url\":\"https://rickandmortyapi.com/api/location/1\"},\"location\":{\"name\":\"Citadel of Ricks\",\"url\":\"https://rickandmortyapi.com/api/location/3\"},\"image\":\"https://rickandmortyapi.c"
+    }
+   ],
+   "commandsFail": [],
+   "reasons": [],
+   "origin": "https://rickandmortyapi.com",
+   "description": "Rick and Morty API public read-only CLI.",
+   "nCommands": 1,
+   "strong": false,
+   "robots": "robots.txt 0 disallow rules for *"
+  },
+  {
+   "site": "ruby-lang",
+   "ok": true,
+   "commandsOk": [
+    {
+     "name": "home",
+     "ms": 301,
+     "argv": "home --limit 3",
+     "sample": "{\"title\":\"Ruby Programming Language\",\"description\":\"A Programmer's Best Friend\"}"
+    },
+    {
+     "name": "page",
+     "ms": 294,
+     "argv": "page --limit 3",
+     "sample": "{\"title\":\"Documentation\",\"description\":\"Guides, tutorials, and reference material to help you learn more about Ruby{: .summary}### Installing RubyAlthough you can easily [try Ruby in your browser][...\"}"
+    }
+   ],
+   "commandsFail": [],
+   "reasons": [],
+   "origin": "https://www.ruby-lang.org",
+   "description": "Ruby Language: public read-only HTML pages.",
+   "nCommands": 2,
+   "strong": true,
+   "robots": "robots.txt 0 disallow rules for *"
+  },
+  {
+   "site": "rubygems",
+   "ok": false,
+   "commandsOk": [],
+   "commandsFail": [
+    {
+     "name": "get-gem",
+     "why": "HTTP 403: this endpoint needs a login. Run: clify login rubygems"
+    },
+    {
+     "name": "search",
+     "why": "HTTP 404"
+    }
+   ],
+   "reasons": [],
+   "origin": "https://rubygems.org/api/v1",
+   "description": "Public read-only RubyGems endpoints used by the website.",
+   "nCommands": 2,
+   "strong": false,
+   "robots": "robots.txt 5 disallow rules for *"
+  },
+  {
+   "site": "rustforum",
+   "ok": true,
+   "commandsOk": [
+    {
+     "name": "latest",
+     "ms": 302,
+     "argv": "latest --limit 3",
+     "sample": "{\"users\":[{\"id\":-1,\"username\":\"system\",\"name\":\"system\",\"avatar_template\":\"/user_avatar/users.rust-lang.org/system/{size}/51372_2.png\",\"admin\":true,\"moderator\":true,\"trust_level\":4},{\"id\":1288,\"username\":\"notriddle\",\"name\":\"Michael Howell\",\"avatar_template\":\"/user_avatar/users.rust-lang.org/notriddle"
+    },
+    {
+     "name": "top",
+     "ms": 401,
+     "argv": "top --limit 3",
+     "sample": "{\"users\":[{\"id\":1273,\"username\":\"kornel\",\"name\":\"Kornel\",\"avatar_template\":\"/user_avatar/users.rust-lang.org/kornel/{size}/4823_2.png\",\"trust_level\":3},{\"id\":27721,\"username\":\"Redglyph\",\"name\":\"Redglyph\",\"avatar_template\":\"/user_avatar/users.rust-lang.org/redglyph/{size}/27961_2.png\",\"trust_level\":2"
+    }
+   ],
+   "commandsFail": [
+    {
+     "name": "search",
+     "why": "robots disallows /search.json"
+    }
+   ],
+   "reasons": [],
+   "origin": "https://users.rust-lang.org/",
+   "description": "Public read-only Rust Users Forum endpoints used by the website.",
+   "nCommands": 3,
+   "strong": true,
+   "robots": "robots.txt 15 disallow rules for *"
+  },
+  {
+   "site": "scrapethis",
+   "ok": true,
+   "commandsOk": [
+    {
+     "name": "oscar-films",
+     "ms": 343,
+     "argv": "oscar-films --year 2015 --limit 3",
+     "sample": "[{\"title\":\"Spotlight  \",\"year\":2015,\"awards\":2,\"nominations\":6,\"best_picture\":true},{\"title\":\"Mad Max: Fury Road \",\"year\":2015,\"awards\":6,\"nominations\":10},{\"title\":\"The Revenant   \",\"year\":2015,\"awards\":3,\"nominations\":12}]"
+    },
+    {
+     "name": "search-teams",
+     "ms": 476,
+     "argv": "search-teams --q new york --limit 3",
+     "sample": "[{\"name\":\"New York Islanders\",\"year\":\"1990\",\"wins\":\"25\",\"losses\":\"45\",\"winPct\":\"0.312\",\"goalsFor\":\"223\",\"goalsAgainst\":\"290\"},{\"name\":\"New York Rangers\",\"year\":\"1990\",\"wins\":\"36\",\"losses\":\"31\",\"winPct\":\"0.45\",\"goalsFor\":\"297\",\"goalsAgainst\":\"265\"},{\"name\":\"New York Islanders\",\"year\":\"1991\",\"wins\":\"3"
+    }
+   ],
+   "commandsFail": [],
+   "reasons": [],
+   "origin": "https://www.scrapethissite.com",
+   "description": "Scrape This Site (scraping sandbox): Oscar-winning films by year (JSON) and a searchable, paginated hockey-team stats table.",
+   "nCommands": 2,
+   "strong": true,
+   "robots": "robots.txt 2 disallow rules for *"
+  },
+  {
+   "site": "scryfall",
+   "ok": true,
+   "commandsOk": [
+    {
+     "name": "get-card",
+     "ms": 213,
+     "argv": "get-card --name Black Lotus --limit 3",
+     "sample": "{\"object\":\"card\",\"id\":\"bd8fa327-dd41-4737-8f19-2cf5eb1f7cdd\",\"oracle_id\":\"5089ec1a-f881-4d55-af14-5d996171203b\",\"multiverse_ids\":[382866],\"mtgo_id\":53155,\"mtgo_foil_id\":53156,\"name\":\"Black Lotus\",\"lang\":\"en\",\"released_at\":\"2014-06-16\",\"uri\":\"https://api.scryfall.com/cards/bd8fa327-dd41-4737-8f19-2cf"
+    }
+   ],
+   "commandsFail": [],
+   "reasons": [],
+   "origin": "https://api.scryfall.com",
+   "description": "Scryfall public read-only CLI.",
+   "nCommands": 1,
+   "strong": false,
+   "robots": "robots.txt 9 disallow rules for *"
+  },
+  {
+   "site": "sec",
+   "ok": false,
+   "commandsOk": [],
+   "commandsFail": [
+    {
+     "name": "submissions",
+     "why": "no data (status undefined)"
+    }
+   ],
+   "reasons": [],
+   "origin": "https://data.sec.gov",
+   "description": "SEC EDGAR public read-only API.",
+   "nCommands": 1,
+   "strong": false,
+   "robots": "robots.txt HTTP 404"
+  },
+  {
+   "site": "semantic-scholar",
+   "ok": false,
+   "commandsOk": [],
+   "commandsFail": [
+    {
+     "name": "search",
+     "why": "HTTP 429: rate limited by the site; wait before retrying"
+    },
+    {
+     "name": "paper",
+     "why": "HTTP 429: rate limited by the site; wait before retrying"
+    }
+   ],
+   "reasons": [],
+   "origin": "https://api.semanticscholar.org",
+   "description": "Semantic Scholar paper search",
+   "nCommands": 2,
+   "strong": false,
+   "robots": "robots.txt HTTP 429"
+  },
+  {
+   "site": "serverfault",
+   "ok": true,
+   "commandsOk": [
+    {
+     "name": "questions",
+     "ms": 342,
+     "argv": "questions --limit 3",
+     "sample": "{\"items\":[{\"tags\":[\"powershell\"],\"owner\":{\"account_id\":3885242,\"reputation\":143,\"user_id\":331652,\"user_type\":\"registered\",\"profile_image\":\"https://www.gravatar.com/avatar/8463013a453190e779e152f68f489090?s=256&d=identicon&r=PG\",\"display_name\":\"My1\",\"link\":\"https://serverfault.com/users/331652/my1\"},"
+    },
+    {
+     "name": "search",
+     "ms": 335,
+     "argv": "search --q python --limit 3",
+     "sample": "{\"items\":[{\"tags\":[\"centos\",\"yum\"],\"owner\":{\"account_id\":922210,\"reputation\":763,\"user_id\":410793,\"user_type\":\"registered\",\"profile_image\":\"https://www.gravatar.com/avatar/3b66f0829fcc6c7f3c01796e0cc975e1?s=256&d=identicon&r=PG\",\"display_name\":\"tadoman\",\"link\":\"https://serverfault.com/users/410793/t"
+    }
+   ],
+   "commandsFail": [],
+   "reasons": [],
+   "origin": "https://api.stackexchange.com/2.3/",
+   "description": "Public read-only Server Fault endpoints used by the website.",
+   "nCommands": 2,
+   "strong": true,
+   "robots": "robots.txt HTTP 400"
+  },
+  {
+   "site": "solar",
+   "ok": false,
+   "commandsOk": [],
+   "commandsFail": [
+    {
+     "name": "get-body",
+     "why": "robots disallows /rest/bodies/x"
+    }
+   ],
+   "reasons": [],
+   "origin": "https://api.le-systeme-solaire.net",
+   "description": "Solar System OpenData public read-only CLI.",
+   "nCommands": 1,
+   "strong": false,
+   "robots": "robots.txt 3 disallow rules for *"
+  },
+  {
+   "site": "solar-system",
+   "ok": false,
+   "commandsOk": [],
+   "commandsFail": [
+    {
+     "name": "get",
+     "why": "robots disallows /rest/bodies"
+    }
+   ],
+   "reasons": [],
+   "origin": "https://api.le-systeme-solaire.net",
+   "description": "Solar System OpenData public read-only command.",
+   "nCommands": 1,
+   "strong": false,
+   "robots": "robots.txt 3 disallow rules for *"
+  },
+  {
+   "site": "spaceflightnews",
+   "ok": true,
+   "commandsOk": [
+    {
+     "name": "latest-articles",
+     "ms": 717,
+     "argv": "latest-articles --count 3 --limit 3",
+     "sample": "{\"count\":36520,\"next\":\"https://api.spaceflightnewsapi.net/v4/articles/?limit=3&offset=3\",\"previous\":null,\"results\":[{\"id\":40423,\"title\":\"APOD: 2026 October 17 – 3D 67P\",\"authors\":[{\"name\":\"NASA\",\"socials\":null}],\"url\":\"https://science.nasa.gov/image-article/apod-2026-october-17-3d-67p/\",\"image_url\":"
+    }
+   ],
+   "commandsFail": [],
+   "reasons": [],
+   "origin": "https://api.spaceflightnewsapi.net",
+   "description": "Spaceflight News public read-only CLI.",
+   "nCommands": 1,
+   "strong": false,
+   "robots": "robots.txt HTTP 404"
+  },
+  {
+   "site": "spacex",
+   "ok": false,
+   "commandsOk": [],
+   "commandsFail": [
+    {
+     "name": "get",
+     "why": "HTTP 522"
+    }
+   ],
+   "reasons": [],
+   "origin": "https://api.spacexdata.com",
+   "description": "SpaceX API public read-only command.",
+   "nCommands": 1,
+   "strong": false,
+   "robots": "robots.txt fetch failed: The operation was aborted due to timeout"
+  },
+  {
+   "site": "spacex-cores",
+   "ok": false,
+   "commandsOk": [],
+   "commandsFail": [
+    {
+     "name": "get",
+     "why": "HTTP 522"
+    }
+   ],
+   "reasons": [],
+   "origin": "https://api.spacexdata.com",
+   "description": "SpaceX Cores public read-only command.",
+   "nCommands": 1,
+   "strong": false,
+   "robots": "robots.txt fetch failed: The operation was aborted due to timeout"
+  },
+  {
+   "site": "spacex-rockets",
+   "ok": false,
+   "commandsOk": [],
+   "commandsFail": [
+    {
+     "name": "get",
+     "why": "HTTP 525"
+    }
+   ],
+   "reasons": [],
+   "origin": "https://api.spacexdata.com",
+   "description": "SpaceX Rockets public read-only command.",
+   "nCommands": 1,
+   "strong": false,
+   "robots": "robots.txt fetch failed: The operation was aborted due to timeout"
+  },
+  {
+   "site": "speedrun",
+   "ok": false,
+   "commandsOk": [],
+   "commandsFail": [
+    {
+     "name": "games",
+     "why": "robots disallows /api/v1/games"
+    },
+    {
+     "name": "game",
+     "why": "robots disallows /api/v1/games/x"
+    }
+   ],
+   "reasons": [],
+   "origin": "https://www.speedrun.com",
+   "description": "Speedrun.com public API public read-only data.",
+   "nCommands": 2,
+   "strong": false,
+   "robots": "robots.txt 1 disallow rules for *"
+  },
+  {
+   "site": "sqlite",
+   "ok": true,
+   "commandsOk": [
+    {
+     "name": "home",
+     "ms": 478,
+     "argv": "home --limit 3",
+     "sample": "{\"title\":\"SQLite Home Page\"}"
+    },
+    {
+     "name": "page",
+     "ms": 486,
+     "argv": "page --limit 3",
+     "sample": "{\"title\":\"SQL As Understood By SQLite\"}"
+    }
+   ],
+   "commandsFail": [],
+   "reasons": [],
+   "origin": "https://www.sqlite.org",
+   "description": "SQLite: public read-only HTML pages.",
+   "nCommands": 2,
+   "strong": true,
+   "robots": "robots.txt 5 disallow rules for *"
+  },
+  {
+   "site": "stackexchange",
+   "ok": true,
+   "commandsOk": [
+    {
+     "name": "search",
+     "ms": 310,
+     "argv": "search --q playwright --site stackoverflow --limit 3",
+     "sample": "[{\"tags\":[\"javascript\",\"chromium\",\"ui-automation\",\"playwright\"],\"owner\":{\"account_id\":47229547,\"reputation\":1,\"user_id\":33214297,\"user_type\":\"registered\",\"profile_image\":\"https://www.gravatar.com/avatar/d13c2d4ae45c71be8e2f00a4c14517e1?s=256&d=identicon&r=PG&f=y&so-version=2\",\"display_name\":\"Vasanth"
+    },
+    {
+     "name": "questions",
+     "ms": 288,
+     "argv": "questions --site stackoverflow --limit 3",
+     "sample": "[{\"tags\":[\"java\",\"spring\",\"multithreading\",\"spring-batch\"],\"owner\":{\"account_id\":13566844,\"reputation\":309,\"user_id\":9786749,\"user_type\":\"registered\",\"profile_image\":\"https://i.sstatic.net/z7Bck.jpg?s=256\",\"display_name\":\"un0tec\",\"link\":\"https://stackoverflow.com/users/9786749/un0tec\"},\"post_state\":"
+    }
+   ],
+   "commandsFail": [],
+   "reasons": [],
+   "origin": "https://api.stackexchange.com/2.3",
+   "description": "Public read-only Stack Exchange endpoints used by the website.",
+   "nCommands": 2,
+   "strong": true,
+   "robots": "robots.txt HTTP 400"
+  },
+  {
+   "site": "stackoverflow",
+   "ok": true,
+   "commandsOk": [
+    {
+     "name": "questions",
+     "ms": 280,
+     "argv": "questions --limit 3",
+     "sample": "{\"items\":[{\"tags\":[\"java\",\"spring\",\"multithreading\",\"spring-batch\"],\"owner\":{\"account_id\":13566844,\"reputation\":309,\"user_id\":9786749,\"user_type\":\"registered\",\"profile_image\":\"https://i.sstatic.net/z7Bck.jpg?s=256\",\"display_name\":\"un0tec\",\"link\":\"https://stackoverflow.com/users/9786749/un0tec\"},\"is_"
+    },
+    {
+     "name": "search",
+     "ms": 355,
+     "argv": "search --q python --limit 3",
+     "sample": "{\"items\":[{\"tags\":[\"python\",\"iterator\",\"generator\",\"yield\"],\"owner\":{\"account_id\":9828,\"reputation\":148454,\"user_id\":18300,\"user_type\":\"registered\",\"accept_rate\":92,\"profile_image\":\"https://i.sstatic.net/jcyI4.jpg?s=256\",\"display_name\":\"Alex. S.\",\"link\":\"https://stackoverflow.com/users/18300/alex-s\""
+    }
+   ],
+   "commandsFail": [],
+   "reasons": [],
+   "origin": "https://api.stackexchange.com/2.3/",
+   "description": "Public read-only Stack Overflow endpoints used by the website.",
+   "nCommands": 2,
+   "strong": true,
+   "robots": "robots.txt HTTP 400"
+  },
+  {
+   "site": "statbank",
+   "ok": true,
+   "commandsOk": [
+    {
+     "name": "table",
+     "ms": 942,
+     "argv": "table --table FOLK1A --limit 3",
+     "sample": "{\"id\":\"FOLK1A\",\"text\":\"Befolkningen den 1. i kvartalet\",\"description\":\"Befolkningen den 1. i kvartalet efter område, køn, alder, civilstand og tid\",\"unit\":\"Antal\",\"suppressedDataValue\":\"0\",\"updated\":\"2026-08-10T08:00:00\",\"active\":true,\"contacts\":[{\"name\":\"Dorthe Larsen\",\"phone\":\"+4523498326\",\"mail\":"
+    }
+   ],
+   "commandsFail": [],
+   "reasons": [],
+   "origin": "https://api.statbank.dk",
+   "description": "Statistics Denmark public read-only API.",
+   "nCommands": 1,
+   "strong": false,
+   "robots": "robots.txt HTTP 404"
+  },
+  {
+   "site": "steam",
+   "ok": false,
+   "commandsOk": [],
+   "commandsFail": [],
+   "reasons": [
+    "denied: ToS"
+   ]
+  },
+  {
+   "site": "sunrise",
+   "ok": false,
+   "commandsOk": [],
+   "commandsFail": [
+    {
+     "name": "get",
+     "why": "robots disallows /json"
+    }
+   ],
+   "reasons": [],
+   "origin": "https://api.sunrise-sunset.org",
+   "description": "Sunrise Sunset public read-only command.",
+   "nCommands": 1,
+   "strong": false,
+   "robots": "robots.txt 1 disallow rules for *"
+  },
+  {
+   "site": "superuser",
+   "ok": true,
+   "commandsOk": [
+    {
+     "name": "questions",
+     "ms": 277,
+     "argv": "questions --limit 3",
+     "sample": "{\"items\":[{\"tags\":[\"command-line\",\"string\",\"exiftool\"],\"owner\":{\"account_id\":47228864,\"reputation\":11,\"user_id\":3398257,\"user_type\":\"registered\",\"profile_image\":\"https://www.gravatar.com/avatar/ec2fdb0cf7c9d2d97605692d1d9e1887?s=256&d=identicon&r=PG&f=y&so-version=2\",\"display_name\":\"Ruud\",\"link\":\"ht"
+    },
+    {
+     "name": "search",
+     "ms": 321,
+     "argv": "search --q python --limit 3",
+     "sample": "{\"items\":[{\"tags\":[\"python\"],\"owner\":{\"account_id\":1060660,\"reputation\":427,\"user_id\":119710,\"user_type\":\"registered\",\"accept_rate\":44,\"profile_image\":\"https://www.gravatar.com/avatar/39ae22259f3226479b90af7cf4bb6122?s=256&d=identicon&r=PG\",\"display_name\":\"Gnijuohz\",\"link\":\"https://superuser.com/use"
+    }
+   ],
+   "commandsFail": [],
+   "reasons": [],
+   "origin": "https://api.stackexchange.com/2.3/",
+   "description": "Public read-only Super User endpoints used by the website.",
+   "nCommands": 2,
+   "strong": true,
+   "robots": "robots.txt HTTP 400"
+  },
+  {
+   "site": "tensorflow",
+   "ok": true,
+   "commandsOk": [
+    {
+     "name": "home",
+     "ms": 471,
+     "argv": "home --limit 3",
+     "sample": "{\"title\":\"TensorFlow\",\"description\":\"An end-to-end open source machine learning platform for everyone. Discover TensorFlow's flexible ecosystem of tools, libraries and community resources.\"}"
+    },
+    {
+     "name": "page",
+     "ms": 458,
+     "argv": "page --limit 3",
+     "sample": "{\"title\":\"Introduction to TensorFlow\",\"description\":\"TensorFlow makes it easy for beginners and experts to create machine learning models for desktop, mobile, web, and cloud.\"}"
+    }
+   ],
+   "commandsFail": [],
+   "reasons": [],
+   "origin": "https://www.tensorflow.org",
+   "description": "TensorFlow: public read-only HTML pages.",
+   "nCommands": 2,
+   "strong": true,
+   "robots": "robots.txt 0 disallow rules for *"
+  },
+  {
+   "site": "themealdb",
+   "ok": true,
+   "commandsOk": [
+    {
+     "name": "search-meals",
+     "ms": 324,
+     "argv": "search-meals --query Arrabiata --limit 3",
+     "sample": "{\"meals\":[{\"idMeal\":\"52771\",\"strMeal\":\"Spicy Arrabiata Penne\",\"strMealAlternate\":null,\"strCategory\":\"Vegetarian\",\"strArea\":\"Italian\",\"strCountry\":\"Italy\",\"strInstructions\":\"Bring a large pot of water to a boil. Add kosher salt to the boiling water, then add the pasta. Cook according to the package i"
+    }
+   ],
+   "commandsFail": [],
+   "reasons": [],
+   "origin": "https://www.themealdb.com",
+   "description": "TheMealDB public read-only CLI.",
+   "nCommands": 1,
+   "strong": false,
+   "robots": "robots.txt 0 disallow rules for *"
+  },
+  {
+   "site": "thespacedevs",
+   "ok": true,
+   "commandsOk": [
+    {
+     "name": "get",
+     "ms": 623,
+     "argv": "get --count 3 --limit 3",
+     "sample": "{\"count\":476,\"next\":\"https://ll.thespacedevs.com/2.2.0/launch/upcoming/?count=3&limit=10&offset=10\",\"previous\":null,\"results\":[{\"id\":\"3b430f81-0ff1-4d85-8a1a-cef0de326198\",\"url\":\"https://ll.thespacedevs.com/2.2.0/launch/3b430f81-0ff1-4d85-8a1a-cef0de326198/\",\"slug\":\"falcon-9-block-5-bandwagon-5-dedi"
+    }
+   ],
+   "commandsFail": [],
+   "reasons": [],
+   "origin": "https://ll.thespacedevs.com",
+   "description": "Launch Library 2 public read-only command.",
+   "nCommands": 1,
+   "strong": false,
+   "robots": "robots.txt 0 disallow rules for *"
+  },
+  {
+   "site": "tides",
+   "ok": true,
+   "commandsOk": [
+    {
+     "name": "observations",
+     "ms": 438,
+     "argv": "observations --station 8518750 --limit 3",
+     "sample": "[{\"t\":\"2024-01-01 00:00\",\"v\":\"0.589\",\"s\":\"0.016\",\"f\":\"0,0,0,0\",\"q\":\"v\"},{\"t\":\"2024-01-01 00:06\",\"v\":\"0.617\",\"s\":\"0.009\",\"f\":\"0,0,0,0\",\"q\":\"v\"},{\"t\":\"2024-01-01 00:12\",\"v\":\"0.64\",\"s\":\"0.013\",\"f\":\"0,0,0,0\",\"q\":\"v\"}]"
+    }
+   ],
+   "commandsFail": [],
+   "reasons": [],
+   "origin": "https://api.tidesandcurrents.noaa.gov",
+   "description": "NOAA Tides & Currents public read-only API.",
+   "nCommands": 1,
+   "strong": false,
+   "robots": "robots.txt HTTP 403"
+  },
+  {
+   "site": "tides-noaa",
+   "ok": true,
+   "commandsOk": [
+    {
+     "name": "get",
+     "ms": 416,
+     "argv": "get --product water_level --station 9414290 --begin_date 20250101 --end_date 20250101 --limit 3",
+     "sample": "{\"metadata\":{\"id\":\"9414290\",\"name\":\"San Francisco\",\"lat\":\"37.8063\",\"lon\":\"-122.4659\"},\"data\":[{\"t\":\"2025-01-01 00:00\",\"v\":\"0.035\",\"s\":\"0.052\",\"f\":\"0,0,0,0\",\"q\":\"v\"},{\"t\":\"2025-01-01 00:06\",\"v\":\"-0.012\",\"s\":\"0.06\",\"f\":\"0,0,0,0\",\"q\":\"v\"},{\"t\":\"2025-01-01 00:12\",\"v\":\"-0.051\",\"s\":\"0.058\",\"f\":\"0,0,0,0\",\""
+    }
+   ],
+   "commandsFail": [],
+   "reasons": [],
+   "origin": "https://api.tidesandcurrents.noaa.gov",
+   "description": "NOAA Tides public read-only command.",
+   "nCommands": 1,
+   "strong": false,
+   "robots": "robots.txt HTTP 403"
+  },
+  {
+   "site": "timeapi",
+   "ok": true,
+   "commandsOk": [
+    {
+     "name": "get",
+     "ms": 726,
+     "argv": "get --latitude 60.17 --longitude 24.94 --limit 3",
+     "sample": "{\"year\":2026,\"month\":10,\"day\":18,\"hour\":2,\"minute\":8,\"seconds\":17,\"milliSeconds\":442,\"dateTime\":\"2026-10-18T02:08:17.4422206\",\"date\":\"10/18/2026\",\"time\":\"02:08\",\"timeZone\":\"Europe/Helsinki\",\"dayOfWeek\":\"Sunday\",\"dstActive\":true}"
+    }
+   ],
+   "commandsFail": [],
+   "reasons": [],
+   "origin": "https://timeapi.io",
+   "description": "TimeAPI public read-only command.",
+   "nCommands": 1,
+   "strong": false,
+   "robots": "robots.txt 2 disallow rules for *"
+  },
+  {
+   "site": "tiobe",
+   "ok": true,
+   "commandsOk": [
+    {
+     "name": "home",
+     "ms": 967,
+     "argv": "home --limit 3",
+     "sample": "{\"title\":\"TIOBE Index - TIOBE\"}"
+    },
+    {
+     "name": "page",
+     "ms": 986,
+     "argv": "page --limit 3",
+     "sample": "{\"title\":\"TIOBE Index for October 2026\"}"
+    }
+   ],
+   "commandsFail": [],
+   "reasons": [],
+   "origin": "https://www.tiobe.com",
+   "description": "TIOBE Index: public read-only HTML pages.",
+   "nCommands": 2,
+   "strong": true,
+   "robots": "robots.txt 1 disallow rules for *"
+  },
+  {
+   "site": "transport-ch",
+   "ok": false,
+   "commandsOk": [],
+   "commandsFail": [
+    {
+     "name": "get",
+     "why": "robots disallows /v1/locations"
+    }
+   ],
+   "reasons": [],
+   "origin": "https://transport.opendata.ch",
+   "description": "Swiss transport public read-only command.",
+   "nCommands": 1,
+   "strong": false,
+   "robots": "robots.txt 5 disallow rules for *"
+  },
+  {
+   "site": "tvmaze",
+   "ok": true,
+   "commandsOk": [
+    {
+     "name": "search-shows",
+     "ms": 657,
+     "argv": "search-shows --query Severance --limit 3",
+     "sample": "[{\"score\":0.8917556,\"show\":{\"id\":44933,\"url\":\"https://www.tvmaze.com/shows/44933/severance\",\"name\":\"Severance\",\"type\":\"Scripted\",\"language\":\"English\",\"genres\":[\"Drama\",\"Science-Fiction\",\"Mystery\"],\"status\":\"Running\",\"runtime\":null,\"averageRuntime\":49,\"premiered\":\"2022-02-18\",\"ended\":null,\"officialSi"
+    }
+   ],
+   "commandsFail": [],
+   "reasons": [],
+   "origin": "https://api.tvmaze.com",
+   "description": "TVmaze public read-only CLI.",
+   "nCommands": 1,
+   "strong": false,
+   "robots": "robots.txt HTTP 404"
+  },
+  {
+   "site": "ukpolice",
+   "ok": true,
+   "commandsOk": [
+    {
+     "name": "stops",
+     "ms": 19321,
+     "argv": "stops --force metropolitan --date 2024-01 --limit 3",
+     "sample": "[{\"age_range\":\"over 34\",\"outcome\":\"A no further action disposal\",\"involved_person\":true,\"self_defined_ethnicity\":\"Other ethnic group - Not stated\",\"gender\":\"Male\",\"legislation\":\"Misuse of Drugs Act 1971 (section 23)\",\"outcome_linked_to_object_of_search\":null,\"datetime\":\"2024-01-30T17:11:00+00:00\",\"r"
+    },
+    {
+     "name": "forces",
+     "ms": 490,
+     "argv": "forces --limit 3",
+     "sample": "[{\"id\":\"avon-and-somerset\",\"name\":\"Avon and Somerset Constabulary\"},{\"id\":\"bedfordshire\",\"name\":\"Bedfordshire Police\"},{\"id\":\"cambridgeshire\",\"name\":\"Cambridgeshire Constabulary\"}]"
+    }
+   ],
+   "commandsFail": [],
+   "reasons": [],
+   "origin": "https://data.police.uk",
+   "description": "UK Police Data public read-only API.",
+   "nCommands": 2,
+   "strong": true,
+   "robots": "robots.txt 0 disallow rules for *"
+  },
+  {
+   "site": "usa-spending",
+   "ok": false,
+   "commandsOk": [],
+   "commandsFail": [
+    {
+     "name": "awards",
+     "why": "HTTP 405"
+    }
+   ],
+   "reasons": [],
+   "origin": "https://api.usaspending.gov",
+   "description": "USAspending public read-only API.",
+   "nCommands": 1,
+   "strong": false,
+   "robots": "robots.txt HTTP 404"
+  },
+  {
+   "site": "uselessfacts",
+   "ok": true,
+   "commandsOk": [
+    {
+     "name": "random-fact",
+     "ms": 688,
+     "argv": "random-fact --limit 3",
+     "sample": "{\"id\":\"6d9f0396027a46966036c5db605569e1\",\"text\":\"The average talker sprays about 300 microscopic saliva droplets per minute, about 2.5 droplets per word.\",\"source\":\"djtech.net\",\"source_url\":\"http://www.djtech.net/humor/useless_facts.htm\",\"language\":\"en\",\"permalink\":\"https://uselessfacts.jsph.pl/api/"
+    }
+   ],
+   "commandsFail": [],
+   "reasons": [],
+   "origin": "https://uselessfacts.jsph.pl",
+   "description": "Useless Facts public read-only CLI.",
+   "nCommands": 1,
+   "strong": false,
+   "robots": "robots.txt HTTP 404"
+  },
+  {
+   "site": "usgs",
+   "ok": false,
+   "commandsOk": [
+    {
+     "name": "feed",
+     "ms": 204,
+     "argv": "feed --limit 3",
+     "sample": "[{\"type\":\"Feature\",\"properties\":{\"mag\":1.81,\"place\":\"12 km NE of Pāhala, Hawaii\",\"time\":1792277693500,\"updated\":1792277902990,\"tz\":null,\"url\":\"https://earthquake.usgs.gov/earthquakes/eventpage/hv75059911\",\"detail\":\"https://earthquake.usgs.gov/earthquakes/feed/v1.0/detail/hv75059911.geojson\",\"felt\":n"
+    }
+   ],
+   "commandsFail": [
+    {
+     "name": "query",
+     "why": "HTTP 400"
+    }
+   ],
+   "reasons": [],
+   "origin": "https://earthquake.usgs.gov",
+   "description": "USGS Earthquake Hazards public read-only API.",
+   "nCommands": 2,
+   "strong": false,
+   "robots": "robots.txt HTTP 404"
+  },
+  {
+   "site": "usgs-earthquake",
+   "ok": false,
+   "commandsOk": [],
+   "commandsFail": [
+    {
+     "name": "get",
+     "why": "HTTP 400"
+    }
+   ],
+   "reasons": [],
+   "origin": "https://earthquake.usgs.gov",
+   "description": "USGS Earthquakes public read-only command.",
+   "nCommands": 1,
+   "strong": false,
+   "robots": "robots.txt HTTP 404"
+  },
+  {
+   "site": "usgs-hazards",
+   "ok": false,
+   "commandsOk": [],
+   "commandsFail": [
+    {
+     "name": "get",
+     "why": "HTTP 404"
+    }
+   ],
+   "reasons": [],
+   "origin": "https://volcanoes.usgs.gov",
+   "description": "USGS Volcanoes public read-only command.",
+   "nCommands": 1,
+   "strong": false,
+   "robots": "robots.txt HTTP 404"
+  },
+  {
+   "site": "vim",
+   "ok": true,
+   "commandsOk": [
+    {
+     "name": "home",
+     "ms": 656,
+     "argv": "home --limit 3",
+     "sample": "{\"title\":\"welcome home : vim online\"}"
+    },
+    {
+     "name": "page",
+     "ms": 648,
+     "argv": "page --limit 3",
+     "sample": "{\"title\":\"Documentation\"}"
+    }
+   ],
+   "commandsFail": [],
+   "reasons": [],
+   "origin": "https://www.vim.org",
+   "description": "Vim: public read-only HTML pages.",
+   "nCommands": 2,
+   "strong": true,
+   "robots": "robots.txt 1 disallow rules for *"
+  },
+  {
+   "site": "vivaldi_social",
+   "ok": true,
+   "commandsOk": [
+    {
+     "name": "public",
+     "ms": 484,
+     "argv": "public --limit 3",
+     "sample": "[{\"id\":\"117458763854394272\",\"created_at\":\"2026-10-17T23:05:07.000Z\",\"in_reply_to_id\":null,\"in_reply_to_account_id\":null,\"sensitive\":false,\"spoiler_text\":\"\",\"visibility\":\"public\",\"language\":\"es\",\"uri\":\"https://pubeurope.com/users/es/statuses/117458751151896985\",\"url\":\"https://pubeurope.com/@es/117458"
+    },
+    {
+     "name": "tag",
+     "ms": 545,
+     "argv": "tag --tag opensource --limit 5 --limit 3",
+     "sample": "[{\"id\":\"117458733893204525\",\"created_at\":\"2026-10-17T23:00:21.000Z\",\"in_reply_to_id\":null,\"in_reply_to_account_id\":null,\"sensitive\":false,\"spoiler_text\":\"\",\"visibility\":\"public\",\"language\":\"en\",\"uri\":\"https://mastodon.social/ap/users/116868947609378765/statuses/117458732389188994\",\"url\":\"https://mas"
+    }
+   ],
+   "commandsFail": [],
+   "reasons": [],
+   "origin": "https://social.vivaldi.net//api/v1/",
+   "description": "Public read-only Vivaldi Social API endpoints used by the website.",
+   "nCommands": 2,
+   "strong": true,
+   "robots": "robots.txt 3 disallow rules for *"
+  },
+  {
+   "site": "w3",
+   "ok": true,
+   "commandsOk": [
+    {
+     "name": "home",
+     "ms": 227,
+     "argv": "home --limit 3",
+     "sample": "{\"title\":\"W3C\",\"description\":\"The World Wide Web Consortium (W3C) develops standards and guidelines to help everyone build a web based on the principles of accessibility, internationalization, privacy and security.\"}"
+    },
+    {
+     "name": "page",
+     "ms": 975,
+     "argv": "page --limit 3",
+     "sample": "{\"title\":\"HTML\"}"
+    }
+   ],
+   "commandsFail": [],
+   "reasons": [],
+   "origin": "https://www.w3.org",
+   "description": "W3C: public read-only HTML pages.",
+   "nCommands": 2,
+   "strong": true,
+   "robots": "robots.txt 112 disallow rules for *"
+  },
+  {
+   "site": "wayback",
+   "ok": false,
+   "commandsOk": [],
+   "commandsFail": [
+    {
+     "name": "check-availability",
+     "why": "HTTP 503"
+    }
+   ],
+   "reasons": [],
+   "origin": "https://archive.org",
+   "description": "Wayback Machine public read-only CLI.",
+   "nCommands": 1,
+   "strong": false,
+   "robots": "robots.txt 2 disallow rules for *"
+  },
+  {
+   "site": "weather",
+   "ok": false,
+   "commandsOk": [],
+   "commandsFail": [
+    {
+     "name": "points",
+     "why": "robots disallows /points/x,x"
+    },
+    {
+     "name": "alerts",
+     "why": "robots disallows /alerts/active"
+    }
+   ],
+   "reasons": [],
+   "origin": "https://api.weather.gov",
+   "description": "National Weather Service public read-only API.",
+   "nCommands": 2,
+   "strong": false,
+   "robots": "robots.txt 1 disallow rules for *"
+  },
+  {
+   "site": "weather-gov",
+   "ok": false,
+   "commandsOk": [],
+   "commandsFail": [
+    {
+     "name": "get",
+     "why": "robots disallows /points/x,x"
+    }
+   ],
+   "reasons": [],
+   "origin": "https://api.weather.gov",
+   "description": "National Weather Service public read-only command.",
+   "nCommands": 1,
+   "strong": false,
+   "robots": "robots.txt 1 disallow rules for *"
+  },
+  {
+   "site": "weather-gov-alerts",
+   "ok": false,
+   "commandsOk": [],
+   "commandsFail": [
+    {
+     "name": "get",
+     "why": "robots disallows /alerts/active"
+    }
+   ],
+   "reasons": [],
+   "origin": "https://api.weather.gov",
+   "description": "NWS Alerts public read-only command.",
+   "nCommands": 1,
+   "strong": false,
+   "robots": "robots.txt 1 disallow rules for *"
+  },
+  {
+   "site": "weatherapi",
+   "ok": false,
+   "commandsOk": [],
+   "commandsFail": [],
+   "reasons": [
+    "denied: needs key"
+   ]
+  },
+  {
+   "site": "weatherkit",
+   "ok": false,
+   "commandsOk": [],
+   "commandsFail": [],
+   "reasons": [
+    "denied: needs Apple key"
+   ]
+  },
+  {
+   "site": "webscraper",
+   "ok": true,
+   "commandsOk": [
+    {
+     "name": "home",
+     "ms": 483,
+     "argv": "home --limit 3",
+     "sample": "{\"title\":\"Static | Web Scraper Test Sites\",\"description\":\"Test Web Scraper's features and performance on mock e-commerce sites. Extract product data, prices, and categories in a controlled environment.\"}"
+    },
+    {
+     "name": "page",
+     "ms": 444,
+     "argv": "page --limit 3",
+     "sample": "{\"title\":\"Test Sites\",\"description\":\"Test Web Scraper's features and performance on mock e-commerce sites. Extract product data, prices, and categories in a controlled environment.\"}"
+    }
+   ],
+   "commandsFail": [],
+   "reasons": [],
+   "origin": "https://webscraper.io",
+   "description": "Web Scraper Test Sites: public read-only HTML pages.",
+   "nCommands": 2,
+   "strong": true,
+   "robots": "robots.txt 5 disallow rules for *"
+  },
+  {
+   "site": "wikidata",
+   "ok": false,
+   "commandsOk": [
+    {
+     "name": "entity",
+     "ms": 564,
+     "argv": "entity --id Q42 --limit 3",
+     "sample": "{\"entities\":{\"Q42\":{\"pageid\":138,\"ns\":0,\"title\":\"Q42\",\"lastrevid\":2557857485,\"modified\":\"2026-10-17T04:21:25Z\",\"type\":\"item\",\"id\":\"Q42\",\"labels\":{\"ar\":{\"language\":\"ar\",\"value\":\"دوغلاس آدمز\"},\"ary\":{\"language\":\"ary\",\"value\":\"دوڭلاس أدامز\"},\"arz\":{\"language\":\"arz\",\"value\":\"دوجلاس ادامز\"},\"az\":{\"langua"
+    }
+   ],
+   "commandsFail": [
+    {
+     "name": "search",
+     "why": "robots disallows /w/api.php"
+    }
+   ],
+   "reasons": [],
+   "origin": "https://www.wikidata.org",
+   "description": "Wikidata entity search and labels",
+   "nCommands": 2,
+   "strong": false,
+   "robots": "robots.txt 212 disallow rules for *"
+  },
+  {
+   "site": "wikimedia-commons",
+   "ok": false,
+   "commandsOk": [],
+   "commandsFail": [
+    {
+     "name": "search",
+     "why": "robots disallows /w/api.php"
+    },
+    {
+     "name": "file",
+     "why": "robots disallows /w/api.php"
+    }
+   ],
+   "reasons": [],
+   "origin": "https://commons.wikimedia.org",
+   "description": "Commons media search and metadata",
+   "nCommands": 2,
+   "strong": false,
+   "robots": "robots.txt 239 disallow rules for *"
+  },
+  {
+   "site": "wikipedia",
+   "ok": false,
+   "commandsOk": [
+    {
+     "name": "article",
+     "ms": 266,
+     "argv": "article --title Hacker_News --limit 3",
+     "sample": "{\"title\":\"Hacker News\",\"lead\":\"Hacker News (HN) is an American social news website focusing on computer science and entrepreneurship. It is run by the investment fund and startup incubator Y Combinator. In general, content that can be submitted is defined as \\\"anything that gratifies one's intellect"
+    }
+   ],
+   "commandsFail": [
+    {
+     "name": "summary",
+     "why": "robots disallows /api/rest_v1/page/summary/x"
+    },
+    {
+     "name": "random",
+     "why": "robots disallows /api/rest_v1/page/random/summary"
+    }
+   ],
+   "reasons": [],
+   "origin": "https://en.wikipedia.org",
+   "description": "English Wikipedia: article summaries and article text. Uses /wiki/ pages and the public REST API (both allowed by robots.txt).",
+   "nCommands": 3,
+   "strong": false,
+   "robots": "robots.txt 428 disallow rules for *"
+  },
+  {
+   "site": "wikipedia-geo",
+   "ok": false,
+   "commandsOk": [],
+   "commandsFail": [
+    {
+     "name": "get",
+     "why": "robots disallows /w/api.php"
+    }
+   ],
+   "reasons": [],
+   "origin": "https://en.wikipedia.org",
+   "description": "Wikipedia public read-only command.",
+   "nCommands": 1,
+   "strong": false,
+   "robots": "robots.txt 428 disallow rules for *"
+  },
+  {
+   "site": "wikiquote",
+   "ok": false,
+   "commandsOk": [],
+   "commandsFail": [
+    {
+     "name": "search",
+     "why": "robots disallows /w/api.php"
+    },
+    {
+     "name": "page",
+     "why": "robots disallows /api/rest_v1/page/summary/x"
+    }
+   ],
+   "reasons": [],
+   "origin": "https://en.wikiquote.org",
+   "description": "Wikiquote search and quote page summaries",
+   "nCommands": 2,
+   "strong": false,
+   "robots": "robots.txt 200 disallow rules for *"
+  },
+  {
+   "site": "wikisource",
+   "ok": false,
+   "commandsOk": [],
+   "commandsFail": [
+    {
+     "name": "search",
+     "why": "robots disallows /w/api.php"
+    },
+    {
+     "name": "page",
+     "why": "robots disallows /api/rest_v1/page/summary/x"
+    }
+   ],
+   "reasons": [],
+   "origin": "https://en.wikisource.org",
+   "description": "Wikisource public-domain text search and page summaries",
+   "nCommands": 2,
+   "strong": false,
+   "robots": "robots.txt 200 disallow rules for *"
+  },
+  {
+   "site": "wikivoyage",
+   "ok": false,
+   "commandsOk": [],
+   "commandsFail": [
+    {
+     "name": "search",
+     "why": "robots disallows /w/api.php"
+    },
+    {
+     "name": "summary",
+     "why": "robots disallows /api/rest_v1/page/summary/x"
+    }
+   ],
+   "reasons": [],
+   "origin": "https://en.wikivoyage.org",
+   "description": "Travel guide search and summaries",
+   "nCommands": 2,
+   "strong": false,
+   "robots": "robots.txt 200 disallow rules for *"
+  },
+  {
+   "site": "wiktionary",
+   "ok": false,
+   "commandsOk": [],
+   "commandsFail": [
+    {
+     "name": "search",
+     "why": "robots disallows /w/api.php"
+    },
+    {
+     "name": "page",
+     "why": "robots disallows /api/rest_v1/page/summary/x"
+    }
+   ],
+   "reasons": [],
+   "origin": "https://en.wiktionary.org",
+   "description": "English Wiktionary lookup and search",
+   "nCommands": 2,
+   "strong": false,
+   "robots": "robots.txt 200 disallow rules for *"
+  },
+  {
+   "site": "worldbank",
+   "ok": true,
+   "commandsOk": [
+    {
+     "name": "indicator",
+     "ms": 239,
+     "argv": "indicator --country FIN --indicator SP.POP.TOTL --format json --limit 3",
+     "sample": "[{\"page\":1,\"pages\":2,\"per_page\":50,\"total\":66,\"sourceid\":\"2\",\"lastupdated\":\"2026-10-08\"},[{\"indicator\":{\"id\":\"SP.POP.TOTL\",\"value\":\"Population, total\"},\"country\":{\"id\":\"FI\",\"value\":\"Finland\"},\"countryiso3code\":\"FIN\",\"date\":\"2025\",\"value\":5646436,\"unit\":\"\",\"obs_status\":\"\",\"decimal\":0},{\"indicator\":{\""
+    }
+   ],
+   "commandsFail": [],
+   "reasons": [],
+   "origin": "https://api.worldbank.org",
+   "description": "World Bank Data public read-only API.",
+   "nCommands": 1,
+   "strong": false,
+   "robots": "robots.txt HTTP 404"
+  },
+  {
+   "site": "worldcities",
+   "ok": true,
+   "commandsOk": [
+    {
+     "name": "timezone",
+     "ms": 668,
+     "argv": "timezone --lat 60.17 --lng 24.94 --username demo --limit 3",
+     "sample": "{\"status\":{\"message\":\"the daily limit of 20000 credits for demo has been exceeded. Please use an application specific account. Do not use the demo account for your application.\",\"value\":18}}"
+    }
+   ],
+   "commandsFail": [],
+   "reasons": [],
+   "origin": "https://secure.geonames.org",
+   "description": "World Cities data public read-only API.",
+   "nCommands": 1,
+   "strong": false,
+   "robots": "robots.txt HTTP 404"
+  },
+  {
+   "site": "yc",
+   "ok": false,
+   "commandsOk": [],
+   "commandsFail": [],
+   "reasons": [
+    "denied: uses an embedded search key"
+   ]
+  },
+  {
+   "site": "yesno",
+   "ok": true,
+   "commandsOk": [
+    {
+     "name": "answer",
+     "ms": 716,
+     "argv": "answer --limit 3",
+     "sample": "{\"answer\":\"no\",\"forced\":false,\"image\":\"https://yesno.wtf/assets/no/20-56c4b19517aa69c8f7081939198341a4.gif\"}"
+    }
+   ],
+   "commandsFail": [],
+   "reasons": [],
+   "origin": "https://yesno.wtf",
+   "description": "YesNo API public read-only CLI.",
+   "nCommands": 1,
+   "strong": false,
+   "robots": "robots.txt 0 disallow rules for *"
+  },
+  {
+   "site": "youtube",
+   "ok": false,
+   "commandsOk": [],
+   "commandsFail": [],
+   "reasons": [
+    "denied: ToS forbids automated access"
+   ]
+  },
+  {
+   "site": "zenodo",
+   "ok": false,
+   "commandsOk": [],
+   "commandsFail": [
+    {
+     "name": "search",
+     "why": "robots disallows /api/records"
+    },
+    {
+     "name": "record",
+     "why": "robots disallows /api/records/x"
+    }
+   ],
+   "reasons": [],
+   "origin": "https://zenodo.org",
+   "description": "Zenodo research repository",
+   "nCommands": 2,
+   "strong": false,
+   "robots": "robots.txt 10 disallow rules for *"
+  },
+  {
+   "site": "zippopotam",
+   "ok": true,
+   "commandsOk": [
+    {
+     "name": "get",
+     "ms": 178,
+     "argv": "get --country us --postcode 90210 --limit 3",
+     "sample": "{\"country\":\"United States\",\"country abbreviation\":\"US\",\"post code\":\"90210\",\"places\":[{\"place name\":\"Beverly Hills\",\"longitude\":\"-118.4065\",\"latitude\":\"34.0901\",\"state\":\"California\",\"state abbreviation\":\"CA\"}]}"
+    }
+   ],
+   "commandsFail": [],
+   "reasons": [],
+   "origin": "https://api.zippopotam.us",
+   "description": "Zippopotam public read-only command.",
+   "nCommands": 1,
+   "strong": false,
+   "robots": "robots.txt HTTP 404"
+  }
+ ]
+}

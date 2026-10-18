@@ -1,0 +1,34 @@
+09:48:53 🧠 synthesizing from 16 endpoints (36k chars)
+09:49:51 🔎 verify round 0: list-checks, add-check, get-checks-status, get-check, get-check-status, update-check-name, update-check-schedule, ping-check, pause-check, delete-check, list-projects, list-integrations, preview-cron, preview-oncalendar
+09:49:53   ✓ list-checks (667 ms)
+09:49:53   ✓ add-check: write: dry-run preview only, not sent
+09:49:53   ✓ get-checks-status (541 ms)
+09:49:53   ✓ get-check (857 ms)
+09:49:53   ✓ get-check-status (741 ms)
+09:49:53   ✓ update-check-name: write: dry-run preview only, not sent
+09:49:53   ✓ update-check-schedule: write: dry-run preview only, not sent
+09:49:53   ✓ ping-check: write: dry-run preview only, not sent
+09:49:53   ✓ pause-check: write: dry-run preview only, not sent
+09:49:53   ✓ delete-check: write: dry-run preview only, not sent
+09:49:53   ✓ list-projects (405 ms)
+09:49:53   ✓ list-integrations (402 ms)
+09:49:53   ✗ preview-cron: HTTP 403: the site rejected the saved session and re-login did not fix it. (HTTP 403) (1197 ms)
+09:49:53   ✗ preview-oncalendar: HTTP 403: the site rejected the saved session and re-login did not fix it. (HTTP 403) (1182 ms)
+09:50:18   🔧 preview-cron: The request failed Django CSRF verification. The token now comes from the csrftoken cookie, which is the value Django compares against X-CSRFToken. Added the HTTPS Referer that Django requires. Not yet re-run.
+09:50:18   🔧 preview-oncalendar: Same CSRF failure and same fix: token from the csrftoken cookie plus a Referer header. Not yet re-run.
+09:50:18   🔧 list-projects: The output included a junk '#' link (the create-project link). The list now keeps only project links, and the summary field, which was always empty, is removed.
+09:50:18 🔎 verify round 1: preview-cron, preview-oncalendar, list-projects
+09:50:20   ✗ preview-cron: HTTP 403: the site rejected the saved session and re-login did not fix it. (HTTP 403) (1449 ms)
+09:50:20   ✗ preview-oncalendar: HTTP 403: the site rejected the saved session and re-login did not fix it. (HTTP 403) (1544 ms)
+09:50:20   ✓ list-projects (749 ms)
+09:50:36   🔧 preview-cron: Django rejected the CSRF token. The fix takes the token from a form on a logged-in page (/projects/), sends it as both the form field and the header, and adds a same-origin Referer, which Django checks over HTTPS.
+09:50:36   🔧 preview-oncalendar: Same Django CSRF failure as preview-cron. The fix takes the token from a form on a logged-in page, sends it as both the field and the header, and adds a same-origin Referer.
+09:50:36 🔎 verify round 2: preview-cron, preview-oncalendar
+09:50:37   ✗ preview-cron: request failed: could not read the CSRF token from /projects/ (546 ms)
+09:50:37   ✗ preview-oncalendar: request failed: could not read the CSRF token from /projects/ (644 ms)
+09:50:53   🔧 preview-cron: The CSRF token could not be read from /projects/, so the request was never sent. Fixed by taking the token from the public login page form and its csrftoken cookie. Set auth to false because the preview endpoint does not need a login.
+09:50:53   🔧 preview-oncalendar: Same problem: the CSRF token could not be read from /projects/, so the request was never sent. Fixed by taking the token from the login page form and its csrftoken cookie. Set auth to false because the preview endpoint does not need a login.
+09:50:53 🔎 verify round 3: preview-cron, preview-oncalendar
+09:50:55   ✓ preview-cron (1028 ms)
+09:50:55   ✓ preview-oncalendar (1328 ms)
+09:50:55   ⚑ context projectId = 0d103ac6-8389-4868-8f5f-944911961863 (same value on every recorded request (list-checks, add-check, get-checks-status))

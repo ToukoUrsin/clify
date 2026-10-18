@@ -1,0 +1,116 @@
+{
+ "url": "https://opam.ocaml.org/packages/",
+ "category": "dev",
+ "sandbox": "clify-opam-ocaml-org-packages",
+ "startedAt": "2026-10-18T09:24:14.453Z",
+ "region": "us-pdx-1",
+ "chrome": "Chrome/148.0.7778.96",
+ "sandboxStartMs": 1700,
+ "addSeconds": 112,
+ "addExit": 0,
+ "add": {
+  "ok": true,
+  "site": "opam-ocaml",
+  "url": "https://opam.ocaml.org/packages/",
+  "commands": [
+   {
+    "name": "list-packages",
+    "summary": "List every opam package alphabetically by name, with latest version and description. The full list comes back in one response; filter it yourself to search.",
+    "verified": true
+   },
+   {
+    "name": "list-recent-packages",
+    "summary": "List opam packages sorted by their most recent publish date, newest first, with latest version and description.",
+    "verified": true
+   },
+   {
+    "name": "get-package",
+    "summary": "Get details of the latest version of an opam package: synopsis, description, author, license and latest version.",
+    "verified": true
+   },
+   {
+    "name": "list-package-versions",
+    "summary": "List all published versions of an opam package, with links to each version's detail page.",
+    "verified": true
+   },
+   {
+    "name": "get-package-version",
+    "summary": "Get details of a specific version of an opam package: synopsis, description, author, license, source URL/checksums and other metadata.",
+    "verified": true
+   },
+   {
+    "name": "get-package-dependencies",
+    "summary": "List the dependency formula entries (dependencies, optional deps and conflicts) of a specific opam package version, with version constraints.",
+    "verified": true
+   },
+   {
+    "name": "list-package-dependents",
+    "summary": "List the packages that require a given opam package (reverse dependencies, 'Required by'), with their version constraints.",
+    "verified": true
+   }
+  ],
+  "verified": 7,
+  "writes": 0,
+  "dropped": [],
+  "blockers": [],
+  "loggedIn": false,
+  "seconds": 111,
+  "next": [
+   "clify opam-ocaml",
+   "clify opam-ocaml list-packages"
+  ],
+  "installed": "/home/ubuntu/clify-runs/blaxel-w2/home/bin/opam-ocaml",
+  "explored": {
+   "steps": 8,
+   "recorded": 7,
+   "heldWrites": 0
+  }
+ },
+ "check": {
+  "on": "blaxel",
+  "node": "v24.22.0",
+  "seconds": 7,
+  "reads": 7,
+  "verified": 7,
+  "failed": [],
+  "results": [
+   {
+    "name": "list-packages",
+    "ok": true,
+    "ms": 1855
+   },
+   {
+    "name": "list-recent-packages",
+    "ok": true,
+    "ms": 1715
+   },
+   {
+    "name": "get-package",
+    "ok": true,
+    "ms": 170
+   },
+   {
+    "name": "list-package-versions",
+    "ok": true,
+    "ms": 251
+   },
+   {
+    "name": "get-package-version",
+    "ok": true,
+    "ms": 230
+   },
+   {
+    "name": "get-package-dependencies",
+    "ok": true,
+    "ms": 391
+   },
+   {
+    "name": "list-package-dependents",
+    "ok": true,
+    "ms": 178
+   }
+  ]
+ },
+ "deleted": true,
+ "seconds": 121
+}

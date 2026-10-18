@@ -1,0 +1,17 @@
+{
+  "ok": false,
+  "site": "svix",
+  "url": "https://dashboard.svix.com/",
+  "commands": [],
+  "verified": 0,
+  "writes": 0,
+  "dropped": [],
+  "blockers": [
+    "robots.txt disallows /; clify does not crawl it"
+  ],
+  "loggedIn": false,
+  "seconds": 0,
+  "next": [
+    "clify add <another start URL on the site>"
+  ]
+}

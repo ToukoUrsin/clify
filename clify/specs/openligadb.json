@@ -1,0 +1,604 @@
+{
+ "name": "openligadb",
+ "startUrl": "https://www.openligadb.de/",
+ "origin": "https://www.openligadb.de",
+ "createdAt": "2026-10-18T08:53:50.616Z",
+ "description": "OpenLigaDB: a free community sports-results database for the Bundesliga and many other leagues. This CLI wraps its public JSON API at api.openligadb.de to list leagues, teams, matchdays, fixtures/results, standings, top scorers and change timestamps.",
+ "commands": [
+  {
+   "name": "list-leagues",
+   "summary": "List all available leagues across all sports and seasons, with shortcut and season ids for the other commands",
+   "method": "GET",
+   "urlTemplate": "https://api.openligadb.de/getavailableleagues",
+   "params": [],
+   "responseType": "json",
+   "defaultFields": [
+    "leagueId",
+    "leagueName",
+    "leagueShortcut",
+    "leagueSeason",
+    "sport.sportName"
+   ],
+   "mutates": false,
+   "source": "E2 GET https://api.openligadb.de/swagger/v1/swagger.json",
+   "verified": true
+  },
+  {
+   "name": "list-leagues-by-season",
+   "summary": "List leagues for one season from the website's league overview (name, created info, results/schedule links that contain the league shortcut)",
+   "method": "GET",
+   "urlTemplate": "/Leagues",
+   "params": [
+    {
+     "name": "season",
+     "in": "query",
+     "required": true,
+     "type": "string",
+     "description": "Season start year, e.g. 2025 for 2025/2026",
+     "example": "2025"
+    }
+   ],
+   "responseType": "html",
+   "extract": {
+    "list": "tbody > tr",
+    "fields": {
+     "name": "td.lead",
+     "created": "td.small",
+     "resultsUrl": "a@href"
+    }
+   },
+   "defaultFields": [
+    "name",
+    "resultsUrl",
+    "created"
+   ],
+   "mutates": false,
+   "example": {
+    "season": "2025"
+   },
+   "source": "E4 GET https://www.openligadb.de/Leagues",
+   "verified": true
+  },
+  {
+   "name": "list-sports",
+   "summary": "List all sports available in OpenLigaDB",
+   "method": "GET",
+   "urlTemplate": "https://api.openligadb.de/getavailablesports",
+   "params": [],
+   "responseType": "json",
+   "defaultFields": [
+    "sportId",
+    "sportName"
+   ],
+   "mutates": false,
+   "source": "E2 GET https://api.openligadb.de/swagger/v1/swagger.json",
+   "verified": true
+  },
+  {
+   "name": "list-teams",
+   "summary": "List the teams of a league in a season, with the teamId values used by match commands",
+   "method": "GET",
+   "urlTemplate": "https://api.openligadb.de/getavailableteams/{league}/{season}",
+   "params": [
+    {
+     "name": "league",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "League shortcut, e.g. bl1, bl2, bl3",
+     "example": "bl1"
+    },
+    {
+     "name": "season",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Season start year, e.g. 2025",
+     "example": "2025"
+    }
+   ],
+   "responseType": "json",
+   "defaultFields": [
+    "teamId",
+    "teamName",
+    "shortName",
+    "teamIconUrl"
+   ],
+   "mutates": false,
+   "example": {
+    "league": "bl1",
+    "season": "2025"
+   },
+   "source": "E2 GET https://api.openligadb.de/swagger/v1/swagger.json",
+   "verified": true
+  },
+  {
+   "name": "list-matchdays",
+   "summary": "List the matchdays (groups) of a league season, with groupOrderID used as the matchday number",
+   "method": "GET",
+   "urlTemplate": "https://api.openligadb.de/getavailablegroups/{league}/{season}",
+   "params": [
+    {
+     "name": "league",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "League shortcut, e.g. bl1",
+     "example": "bl1"
+    },
+    {
+     "name": "season",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Season start year, e.g. 2025",
+     "example": "2025"
+    }
+   ],
+   "responseType": "json",
+   "defaultFields": [
+    "groupOrderID",
+    "groupName",
+    "groupID"
+   ],
+   "mutates": false,
+   "example": {
+    "league": "bl1",
+    "season": "2025"
+   },
+   "source": "E2 GET https://api.openligadb.de/swagger/v1/swagger.json",
+   "verified": true
+  },
+  {
+   "name": "get-current-matchday",
+   "summary": "Get the current matchday (group) of a league",
+   "method": "GET",
+   "urlTemplate": "https://api.openligadb.de/getcurrentgroup/{league}",
+   "params": [
+    {
+     "name": "league",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "League shortcut, e.g. bl1",
+     "example": "bl1"
+    }
+   ],
+   "responseType": "json",
+   "defaultFields": [
+    "groupOrderID",
+    "groupName",
+    "groupID"
+   ],
+   "mutates": false,
+   "example": {
+    "league": "bl1"
+   },
+   "source": "E2 GET https://api.openligadb.de/swagger/v1/swagger.json",
+   "verified": true
+  },
+  {
+   "name": "list-matchday-matches",
+   "summary": "List all matches (fixtures and results) of one matchday in a league season",
+   "method": "GET",
+   "urlTemplate": "https://api.openligadb.de/getmatchdata/{league}/{season}/{matchday}",
+   "params": [
+    {
+     "name": "league",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "League shortcut, e.g. bl1",
+     "example": "bl1"
+    },
+    {
+     "name": "season",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Season start year, e.g. 2025",
+     "example": "2025"
+    },
+    {
+     "name": "matchday",
+     "in": "path",
+     "required": true,
+     "type": "number",
+     "description": "Matchday number (groupOrderID), e.g. 1",
+     "example": "1"
+    }
+   ],
+   "responseType": "json",
+   "defaultFields": [
+    "matchID",
+    "matchDateTime",
+    "team1.teamName",
+    "team2.teamName",
+    "matchIsFinished",
+    "matchResults",
+    "group.groupName"
+   ],
+   "mutates": false,
+   "example": {
+    "league": "bl1",
+    "season": "2025",
+    "matchday": "1"
+   },
+   "source": "E2 GET https://api.openligadb.de/swagger/v1/swagger.json",
+   "verified": true
+  },
+  {
+   "name": "search-team-matches",
+   "summary": "List a league season's matches for teams whose name contains the given text",
+   "method": "GET",
+   "urlTemplate": "https://api.openligadb.de/getmatchdata/{league}/{season}/{team}",
+   "params": [
+    {
+     "name": "league",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "League shortcut, e.g. bl1",
+     "example": "bl1"
+    },
+    {
+     "name": "season",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Season start year, e.g. 2025",
+     "example": "2025"
+    },
+    {
+     "name": "team",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Part of a team name, e.g. Bayern. Must not be purely numeric, because a number is read as a matchday.",
+     "example": "Bayern"
+    }
+   ],
+   "responseType": "json",
+   "defaultFields": [
+    "matchID",
+    "matchDateTime",
+    "team1.teamName",
+    "team2.teamName",
+    "matchIsFinished",
+    "matchResults",
+    "group.groupName"
+   ],
+   "mutates": false,
+   "example": {
+    "league": "bl1",
+    "season": "2025",
+    "team": "Bayern"
+   },
+   "source": "E2 GET https://api.openligadb.de/swagger/v1/swagger.json",
+   "verified": true
+  },
+  {
+   "name": "get-match",
+   "summary": "Get full details of one match by matchID: teams, results, goals, location and viewers",
+   "method": "GET",
+   "urlTemplate": "https://api.openligadb.de/getmatchdata/{matchId}",
+   "params": [
+    {
+     "name": "matchId",
+     "in": "path",
+     "required": true,
+     "type": "number",
+     "description": "Match id (matchID from match listings)",
+     "example": "66924"
+    }
+   ],
+   "responseType": "json",
+   "defaultFields": [
+    "matchID",
+    "matchDateTime",
+    "team1.teamName",
+    "team2.teamName",
+    "matchResults",
+    "goals",
+    "location",
+    "numberOfViewers"
+   ],
+   "mutates": false,
+   "example": {
+    "matchId": "66924"
+   },
+   "source": "E2 GET https://api.openligadb.de/swagger/v1/swagger.json",
+   "verified": true
+  },
+  {
+   "name": "get-head-to-head",
+   "summary": "List all recorded matches between two teams, identified by teamId",
+   "method": "GET",
+   "urlTemplate": "https://api.openligadb.de/getmatchdata/{team1}/{team2}",
+   "params": [
+    {
+     "name": "team1",
+     "in": "path",
+     "required": true,
+     "type": "number",
+     "description": "First teamId (from list-teams), e.g. 40 = FC Bayern",
+     "example": "40"
+    },
+    {
+     "name": "team2",
+     "in": "path",
+     "required": true,
+     "type": "number",
+     "description": "Second teamId, e.g. 7 = Borussia Dortmund",
+     "example": "7"
+    }
+   ],
+   "responseType": "json",
+   "defaultFields": [
+    "matchID",
+    "matchDateTime",
+    "leagueName",
+    "team1.teamName",
+    "team2.teamName",
+    "matchResults"
+   ],
+   "mutates": false,
+   "example": {
+    "team1": "40",
+    "team2": "7"
+   },
+   "source": "E2 GET https://api.openligadb.de/swagger/v1/swagger.json",
+   "verified": true
+  },
+  {
+   "name": "list-team-matches",
+   "summary": "List a team's matches in a time window around today, given as weeks in the past and weeks in the future",
+   "method": "GET",
+   "urlTemplate": "https://api.openligadb.de/getmatchesbyteamid/{teamId}/{weeksPast}/{weeksFuture}",
+   "params": [
+    {
+     "name": "teamId",
+     "in": "path",
+     "required": true,
+     "type": "number",
+     "description": "teamId from list-teams",
+     "example": "40"
+    },
+    {
+     "name": "weeksPast",
+     "in": "path",
+     "required": false,
+     "type": "number",
+     "description": "Number of weeks back from today",
+     "default": 2
+    },
+    {
+     "name": "weeksFuture",
+     "in": "path",
+     "required": false,
+     "type": "number",
+     "description": "Number of weeks ahead of today",
+     "default": 2
+    }
+   ],
+   "responseType": "json",
+   "defaultFields": [
+    "matchID",
+    "matchDateTime",
+    "leagueName",
+    "team1.teamName",
+    "team2.teamName",
+    "matchIsFinished",
+    "matchResults"
+   ],
+   "mutates": false,
+   "example": {
+    "teamId": "40",
+    "weeksPast": "4",
+    "weeksFuture": "4"
+   },
+   "source": "E2 GET https://api.openligadb.de/swagger/v1/swagger.json",
+   "verified": true
+  },
+  {
+   "name": "get-next-match",
+   "summary": "Get the next upcoming match of a league",
+   "method": "GET",
+   "urlTemplate": "https://api.openligadb.de/getnextmatchbyleagueshortcut/{league}",
+   "params": [
+    {
+     "name": "league",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "League shortcut, e.g. bl1",
+     "example": "bl1"
+    }
+   ],
+   "responseType": "json",
+   "defaultFields": [
+    "matchID",
+    "matchDateTime",
+    "team1.teamName",
+    "team2.teamName",
+    "group.groupName"
+   ],
+   "mutates": false,
+   "example": {
+    "league": "bl1"
+   },
+   "source": "E2 GET https://api.openligadb.de/swagger/v1/swagger.json",
+   "verified": true
+  },
+  {
+   "name": "get-last-match",
+   "summary": "Get the most recently played match of a league",
+   "method": "GET",
+   "urlTemplate": "https://api.openligadb.de/getlastmatchbyleagueshortcut/{league}",
+   "params": [
+    {
+     "name": "league",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "League shortcut, e.g. bl1",
+     "example": "bl1"
+    }
+   ],
+   "responseType": "json",
+   "defaultFields": [
+    "matchID",
+    "matchDateTime",
+    "team1.teamName",
+    "team2.teamName",
+    "matchResults",
+    "group.groupName"
+   ],
+   "mutates": false,
+   "example": {
+    "league": "bl1"
+   },
+   "source": "E2 GET https://api.openligadb.de/swagger/v1/swagger.json",
+   "verified": true
+  },
+  {
+   "name": "get-standings",
+   "summary": "Get the league table (standings) for a league season",
+   "method": "GET",
+   "urlTemplate": "https://api.openligadb.de/getbltable/{league}/{season}",
+   "params": [
+    {
+     "name": "league",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "League shortcut, e.g. bl1",
+     "example": "bl1"
+    },
+    {
+     "name": "season",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Season start year, e.g. 2025",
+     "example": "2025"
+    }
+   ],
+   "responseType": "json",
+   "defaultFields": [
+    "teamName",
+    "points",
+    "matches",
+    "won",
+    "draw",
+    "lost",
+    "goalDiff",
+    "teamInfoId"
+   ],
+   "mutates": false,
+   "example": {
+    "league": "bl1",
+    "season": "2025"
+   },
+   "source": "E2 GET https://api.openligadb.de/swagger/v1/swagger.json",
+   "verified": true
+  },
+  {
+   "name": "get-top-scorers",
+   "summary": "Get the goal scorers ranking for a league season",
+   "method": "GET",
+   "urlTemplate": "https://api.openligadb.de/getgoalgetters/{league}/{season}",
+   "params": [
+    {
+     "name": "league",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "League shortcut, e.g. bl1",
+     "example": "bl1"
+    },
+    {
+     "name": "season",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Season start year, e.g. 2025",
+     "example": "2025"
+    }
+   ],
+   "responseType": "json",
+   "defaultFields": [
+    "goalGetterName",
+    "goalCount",
+    "goalGetterId"
+   ],
+   "mutates": false,
+   "example": {
+    "league": "bl1",
+    "season": "2025"
+   },
+   "source": "E2 GET https://api.openligadb.de/swagger/v1/swagger.json",
+   "verified": true
+  },
+  {
+   "name": "get-last-change",
+   "summary": "Get the timestamp of the last data change for one matchday; a cheap poll before refetching match data",
+   "method": "GET",
+   "urlTemplate": "https://api.openligadb.de/getlastchangedate/{league}/{season}/{matchday}",
+   "params": [
+    {
+     "name": "league",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "League shortcut, e.g. bl1",
+     "example": "bl1"
+    },
+    {
+     "name": "season",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Season start year, e.g. 2025",
+     "example": "2025"
+    },
+    {
+     "name": "matchday",
+     "in": "path",
+     "required": true,
+     "type": "number",
+     "description": "Matchday number (groupOrderID)",
+     "example": "1"
+    }
+   ],
+   "responseType": "text",
+   "mutates": false,
+   "example": {
+    "league": "bl1",
+    "season": "2025",
+    "matchday": "1"
+   },
+   "source": "E2",
+   "verified": true
+  }
+ ],
+ "blockers": [],
+ "notes": [
+  "The API at api.openligadb.de is public: no login and no API key. It allows 60 requests per minute per IP. Poll get-last-change and only refetch match data when the timestamp changes. Finished seasons never change.",
+  "Leagues are identified by a shortcut (bl1 = 1. Bundesliga, bl2, bl3, \u2026). Seasons are identified by their start year (2025 = 2025/2026). Use list-leagues or list-leagues-by-season to find shortcuts. In list-leagues-by-season, resultsUrl has the form /Matches/{shortcut}/{season}.",
+  "The website itself is a Blazor/SignalR app (_blazor/negotiate, _blazor/initializers). Match pages render client-side, so match data comes from the API, not the HTML.",
+  "search-team-matches and list-matchday-matches share the same URL shape. A numeric third segment is read as a matchday, and text is read as a team-name filter.",
+  "Team ids: 40 = FC Bayern M\u00fcnchen and 7 = Borussia Dortmund were used as examples. Get others from list-teams. The get-match example id (66924) was not in the recording and may need replacing with a matchID from list-matchday-matches.",
+  "getgrouptable (group-stage tables, e.g. ucl/2025) returned 404 and is not included.",
+  "Data is licensed under ODbL 1.0."
+ ],
+ "dropped": [],
+ "generated": {
+  "by": "clify add",
+  "model": "claude-opus-5-5",
+  "exploredSteps": 11,
+  "recorded": 12,
+  "verifiedAt": "2026-10-18T08:54:55.679Z",
+  "seconds": 205
+ }
+}

@@ -1,0 +1,963 @@
+{
+ "name": "digi-kansalliskirjasto",
+ "startUrl": "https://digi.kansalliskirjasto.fi/",
+ "origin": "https://digi.kansalliskirjasto.fi",
+ "createdAt": "2026-10-18T09:21:27.835Z",
+ "description": "Finnish National Library's Digi service (digitized newspapers, journals, books, maps, music and more). The CLI searches full text and metadata, reads issue (binding) details and page OCR text, browses serial titles by year, searches user-made clippings, lists collections, and harvests OAI-PMH metadata.",
+ "commands": [
+  {
+   "name": "search-materials",
+   "summary": "Full-text and metadata search over digitized materials. Returns matching pages (bindings) with OCR highlights.",
+   "method": "POST",
+   "urlTemplate": "/rest/binding-search/search/binding",
+   "params": [
+    {
+     "name": "query",
+     "in": "body",
+     "required": true,
+     "type": "string",
+     "description": "Search terms. Supports Digi query syntax (quotes, AND/OR, wildcards).",
+     "example": "sibelius"
+    },
+    {
+     "name": "format",
+     "in": "body",
+     "required": false,
+     "type": "string",
+     "description": "Material type to search. Sent as a single-element formats array. An empty value can cause a server error, so it defaults to NEWSPAPER.",
+     "enum": [
+      "NEWSPAPER",
+      "JOURNAL",
+      "PRINTING",
+      "BOOK",
+      "MANUSCRIPT",
+      "MAP",
+      "MUSIC_NOTATION",
+      "PICTURE",
+      "CARD_INDEX",
+      "ARK_KIRJE",
+      "ARK_KASIKIRJOITUS"
+     ],
+     "default": "NEWSPAPER",
+     "example": "NEWSPAPER"
+    },
+    {
+     "name": "orderBy",
+     "in": "body",
+     "required": false,
+     "type": "string",
+     "description": "Sort order. DATE is oldest first and DATE_DESC is newest first.",
+     "enum": [
+      "RELEVANCE",
+      "DATE",
+      "DATE_DESC"
+     ],
+     "default": "RELEVANCE"
+    },
+    {
+     "name": "startDate",
+     "in": "body",
+     "required": false,
+     "type": "string",
+     "description": "Earliest publication date, ISO format, e.g. 1900-01-01"
+    },
+    {
+     "name": "endDate",
+     "in": "body",
+     "required": false,
+     "type": "string",
+     "description": "Latest publication date, ISO format, e.g. 1939-12-31"
+    },
+    {
+     "name": "fuzzy",
+     "in": "body",
+     "required": false,
+     "type": "boolean",
+     "description": "Fuzzy matching, which tolerates OCR errors",
+     "default": false
+    },
+    {
+     "name": "requireAllKeywords",
+     "in": "body",
+     "required": false,
+     "type": "boolean",
+     "description": "true means all terms must match (AND); false means any term (OR)",
+     "default": true
+    },
+    {
+     "name": "queryTargetsOcrText",
+     "in": "body",
+     "required": false,
+     "type": "boolean",
+     "description": "Search the OCR full text",
+     "default": true
+    },
+    {
+     "name": "queryTargetsMetadata",
+     "in": "body",
+     "required": false,
+     "type": "boolean",
+     "description": "Also search metadata such as titles and authors",
+     "default": false
+    },
+    {
+     "name": "offset",
+     "in": "query",
+     "required": false,
+     "type": "number",
+     "description": "Result offset",
+     "default": 0
+    },
+    {
+     "name": "count",
+     "in": "query",
+     "required": false,
+     "type": "number",
+     "description": "Results per page",
+     "default": 20
+    }
+   ],
+   "bodyTemplate": {
+    "archiveCollections": [],
+    "authors": [],
+    "collections": [],
+    "districts": [],
+    "endDate": "{endDate}",
+    "exactCollectionMaterialType": false,
+    "formats": [
+     "{format}"
+    ],
+    "fuzzy": "{fuzzy}",
+    "hasIllustrations": false,
+    "importStartDate": null,
+    "importTime": "ANY",
+    "includeUnauthorizedResults": false,
+    "languages": [],
+    "orderBy": "{orderBy}",
+    "pages": "",
+    "publicationPlaces": [],
+    "publications": [],
+    "publishers": [],
+    "query": "{query}",
+    "queryTargetsMetadata": "{queryTargetsMetadata}",
+    "queryTargetsOcrText": "{queryTargetsOcrText}",
+    "requireAllKeywords": "{requireAllKeywords}",
+    "searchForBindings": false,
+    "showLastPage": false,
+    "startDate": "{startDate}",
+    "tags": []
+   },
+   "bodyEncoding": "json",
+   "responseType": "json",
+   "resultPath": "rows",
+   "defaultFields": [
+    "bindingId",
+    "bindingTitle",
+    "date",
+    "generalType",
+    "pageNumber",
+    "publicationId",
+    "url",
+    "textHighlights.text"
+   ],
+   "pagination": {
+    "type": "offset",
+    "param": "offset",
+    "step": 20
+   },
+   "mutates": false,
+   "example": {
+    "query": "sibelius",
+    "format": "NEWSPAPER"
+   },
+   "source": "E4",
+   "verified": true
+  },
+  {
+   "name": "search-articles",
+   "summary": "Search component parts (articles or sections within issues) by keyword. Returns article titles with their binding and page.",
+   "method": "POST",
+   "urlTemplate": "/rest/binding-search/search/component-parts",
+   "params": [
+    {
+     "name": "query",
+     "in": "body",
+     "required": true,
+     "type": "string",
+     "description": "Search terms",
+     "example": "sibelius"
+    },
+    {
+     "name": "format",
+     "in": "body",
+     "required": false,
+     "type": "string",
+     "description": "Material type to search. Sent as a single-element formats array. An empty value causes a server error, so it defaults to NEWSPAPER.",
+     "enum": [
+      "NEWSPAPER",
+      "JOURNAL",
+      "PRINTING",
+      "BOOK",
+      "MANUSCRIPT",
+      "MAP",
+      "MUSIC_NOTATION",
+      "PICTURE",
+      "CARD_INDEX",
+      "ARK_KIRJE",
+      "ARK_KASIKIRJOITUS"
+     ],
+     "default": "NEWSPAPER",
+     "example": "NEWSPAPER"
+    },
+    {
+     "name": "orderBy",
+     "in": "body",
+     "required": false,
+     "type": "string",
+     "description": "Sort order",
+     "enum": [
+      "RELEVANCE",
+      "DATE",
+      "DATE_DESC"
+     ],
+     "default": "RELEVANCE"
+    },
+    {
+     "name": "startDate",
+     "in": "body",
+     "required": false,
+     "type": "string",
+     "description": "Earliest publication date, ISO format, e.g. 1900-01-01"
+    },
+    {
+     "name": "endDate",
+     "in": "body",
+     "required": false,
+     "type": "string",
+     "description": "Latest publication date, ISO format, e.g. 1939-12-31"
+    },
+    {
+     "name": "offset",
+     "in": "query",
+     "required": false,
+     "type": "number",
+     "description": "Result offset",
+     "default": 0
+    },
+    {
+     "name": "count",
+     "in": "query",
+     "required": false,
+     "type": "number",
+     "description": "Results per page",
+     "default": 20
+    }
+   ],
+   "bodyTemplate": {
+    "archiveCollections": [],
+    "authors": [],
+    "collections": [],
+    "districts": [],
+    "endDate": "{endDate}",
+    "exactCollectionMaterialType": false,
+    "formats": [
+     "{format}"
+    ],
+    "fuzzy": false,
+    "hasIllustrations": false,
+    "importStartDate": null,
+    "importTime": "ANY",
+    "includeUnauthorizedResults": false,
+    "languages": [],
+    "orderBy": "{orderBy}",
+    "pages": "",
+    "publicationPlaces": [],
+    "publications": [],
+    "publishers": [],
+    "query": "{query}",
+    "queryTargetsMetadata": false,
+    "queryTargetsOcrText": true,
+    "requireAllKeywords": true,
+    "searchForBindings": false,
+    "showLastPage": false,
+    "startDate": "{startDate}",
+    "tags": []
+   },
+   "bodyEncoding": "json",
+   "responseType": "json",
+   "resultPath": "rows",
+   "defaultFields": [
+    "title",
+    "bindingRow.bindingId",
+    "bindingRow.bindingTitle",
+    "bindingRow.date",
+    "bindingRow.pageNumber",
+    "bindingRow.generalType",
+    "bindingRow.url"
+   ],
+   "pagination": {
+    "type": "offset",
+    "param": "offset",
+    "step": 20
+   },
+   "mutates": false,
+   "example": {
+    "query": "sibelius",
+    "format": "NEWSPAPER"
+   },
+   "source": "E7",
+   "verified": true
+  },
+  {
+   "name": "get-binding",
+   "summary": "Get details of one issue or volume (binding): title, date, ISSN, page list with image URLs, PDF link and citation info.",
+   "method": "GET",
+   "urlTemplate": "/rest/binding",
+   "params": [
+    {
+     "name": "id",
+     "in": "query",
+     "required": true,
+     "type": "number",
+     "description": "Binding id (bindingId from search results)",
+     "example": "407492"
+    }
+   ],
+   "responseType": "json",
+   "resultPath": "bindingInformation",
+   "defaultFields": [
+    "id",
+    "title",
+    "publicationTitle",
+    "generalType",
+    "issue",
+    "citationInfo.publishingDate",
+    "citationInfo.issn",
+    "downloadPdfUrl"
+   ],
+   "mutates": false,
+   "example": {
+    "id": "407492"
+   },
+   "source": "E12 GET https://digi.kansalliskirjasto.fi/rest/binding",
+   "verified": true
+  },
+  {
+   "name": "get-page-ocr",
+   "summary": "Get the OCR text blocks of one page of a binding.",
+   "method": "GET",
+   "urlTemplate": "/rest/binding/ocr-data",
+   "params": [
+    {
+     "name": "bindingId",
+     "in": "query",
+     "required": true,
+     "type": "number",
+     "description": "Binding id",
+     "example": "407492"
+    },
+    {
+     "name": "page",
+     "in": "query",
+     "required": true,
+     "type": "number",
+     "description": "Page number, 1-based",
+     "example": "8"
+    },
+    {
+     "name": "oldOcr",
+     "in": "query",
+     "required": false,
+     "type": "boolean",
+     "description": "Return the original OCR instead of the re-OCR version",
+     "default": false
+    }
+   ],
+   "responseType": "json",
+   "resultPath": "blocks",
+   "defaultFields": [
+    "text",
+    "x",
+    "y",
+    "width",
+    "height"
+   ],
+   "mutates": false,
+   "example": {
+    "bindingId": "407492",
+    "page": "8"
+   },
+   "source": "E13 GET https://digi.kansalliskirjasto.fi/rest/binding/ocr-data",
+   "verified": true
+  },
+  {
+   "name": "get-ocr-hits",
+   "summary": "Get the positions (bounding boxes) of a search term on one page of a binding.",
+   "method": "GET",
+   "urlTemplate": "/rest/binding-search/ocr-hits/{bindingId}",
+   "params": [
+    {
+     "name": "bindingId",
+     "in": "path",
+     "required": true,
+     "type": "number",
+     "description": "Binding id",
+     "example": "937314"
+    },
+    {
+     "name": "page",
+     "in": "query",
+     "required": true,
+     "type": "number",
+     "description": "Page number",
+     "example": "34"
+    },
+    {
+     "name": "term",
+     "in": "query",
+     "required": true,
+     "type": "string",
+     "description": "Term to locate, as in search result 'terms'",
+     "example": "Sibelius"
+    }
+   ],
+   "responseType": "json",
+   "defaultFields": [
+    "text",
+    "x",
+    "y",
+    "width",
+    "height"
+   ],
+   "mutates": false,
+   "example": {
+    "bindingId": "937314",
+    "page": "34",
+    "term": "Sibelius"
+   },
+   "source": "E8 GET https://digi.kansalliskirjasto.fi/rest/binding-search/ocr-hits/{n}",
+   "verified": true
+  },
+  {
+   "name": "list-page-component-parts",
+   "summary": "List the component parts (articles or sections) that appear on a given page of a binding.",
+   "method": "GET",
+   "urlTemplate": "/rest/binding/component-parts-for-page",
+   "params": [
+    {
+     "name": "bindingId",
+     "in": "query",
+     "required": true,
+     "type": "number",
+     "description": "Binding id",
+     "example": "2581142"
+    },
+    {
+     "name": "page",
+     "in": "query",
+     "required": true,
+     "type": "number",
+     "description": "Page number",
+     "example": "1"
+    }
+   ],
+   "responseType": "json",
+   "mutates": false,
+   "example": {
+    "bindingId": "2581142",
+    "page": "1"
+   },
+   "source": "E9 GET https://digi.kansalliskirjasto.fi/rest/binding/component-parts-for-page",
+   "verified": true
+  },
+  {
+   "name": "get-title-info",
+   "summary": "Get descriptive metadata for a serial title by ISSN: publishing period, places, supplements, political orientation, predecessors and successors.",
+   "method": "GET",
+   "urlTemplate": "/rest/binding/title-data",
+   "params": [
+    {
+     "name": "issn",
+     "in": "query",
+     "required": true,
+     "type": "string",
+     "description": "ISSN or local title id (publicationId), e.g. 1457-4314 or fk14195",
+     "example": "1457-4314"
+    }
+   ],
+   "responseType": "json",
+   "defaultFields": [
+    "title",
+    "identification",
+    "publishingStart",
+    "publishingEnd",
+    "publisher",
+    "publishingLocations",
+    "successors",
+    "predecessors"
+   ],
+   "mutates": false,
+   "example": {
+    "issn": "1457-4314"
+   },
+   "source": "E23 GET https://digi.kansalliskirjasto.fi/rest/binding/title-data",
+   "verified": true
+  },
+  {
+   "name": "list-title-years",
+   "summary": "List the years for which a serial title (newspaper or journal) has digitized issues.",
+   "method": "GET",
+   "urlTemplate": "/rest/serial-publication/titles/{issn}",
+   "params": [
+    {
+     "name": "issn",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "ISSN or local title id",
+     "example": "1457-4314"
+    }
+   ],
+   "responseType": "json",
+   "defaultFields": [
+    "title",
+    "years"
+   ],
+   "mutates": false,
+   "example": {
+    "issn": "1457-4314"
+   },
+   "source": "E24 GET https://digi.kansalliskirjasto.fi/rest/serial-publication/titles/1457-4314",
+   "verified": true
+  },
+  {
+   "name": "list-title-issues",
+   "summary": "List all digitized issues of a serial title for one year, with binding ids and dates.",
+   "method": "GET",
+   "urlTemplate": "/rest/serial-publication/titles/{issn}/year/{year}",
+   "params": [
+    {
+     "name": "issn",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "ISSN or local title id",
+     "example": "1457-4314"
+    },
+    {
+     "name": "year",
+     "in": "path",
+     "required": true,
+     "type": "number",
+     "description": "Publication year",
+     "example": "1825"
+    }
+   ],
+   "responseType": "json",
+   "defaultFields": [
+    "id",
+    "issue",
+    "publishingDate",
+    "uri"
+   ],
+   "mutates": false,
+   "example": {
+    "issn": "1457-4314",
+    "year": "1825"
+   },
+   "source": "E25 GET https://digi.kansalliskirjasto.fi/rest/serial-publication/titles/1457-4314/year/{n}",
+   "verified": true
+  },
+  {
+   "name": "list-serial-publications",
+   "summary": "List all digitized newspaper and journal titles, with ISSN or id, years, languages, places and coverage. The response is large.",
+   "method": "GET",
+   "urlTemplate": "/rest/browse/serial-publication-titles",
+   "params": [],
+   "responseType": "json",
+   "resultPath": "titles",
+   "defaultFields": [
+    "identification",
+    "title",
+    "generalType",
+    "languageCodes",
+    "firstYear",
+    "publishedTimes",
+    "bindingCount",
+    "digitizationCoverage"
+   ],
+   "mutates": false,
+   "source": "E27 GET https://digi.kansalliskirjasto.fi/rest/browse/serial-publication-titles",
+   "verified": true
+  },
+  {
+   "name": "search-clippings",
+   "summary": "Search user-made clippings (cut-out articles with category, subject and keywords) by keyword and date.",
+   "method": "POST",
+   "urlTemplate": "/rest/article-search/search-by-type",
+   "params": [
+    {
+     "name": "query",
+     "in": "body",
+     "required": true,
+     "type": "string",
+     "description": "Search terms",
+     "example": "laulut"
+    },
+    {
+     "name": "orderBy",
+     "in": "body",
+     "required": false,
+     "type": "string",
+     "description": "Sort order",
+     "enum": [
+      "RELEVANCE",
+      "CREATED_DESC"
+     ],
+     "default": "RELEVANCE"
+    },
+    {
+     "name": "startDate",
+     "in": "body",
+     "required": false,
+     "type": "string",
+     "description": "Earliest publication date, ISO format"
+    },
+    {
+     "name": "endDate",
+     "in": "body",
+     "required": false,
+     "type": "string",
+     "description": "Latest publication date, ISO format"
+    },
+    {
+     "name": "offset",
+     "in": "query",
+     "required": false,
+     "type": "number",
+     "description": "Result offset",
+     "default": 0
+    },
+    {
+     "name": "count",
+     "in": "query",
+     "required": false,
+     "type": "number",
+     "description": "Results per page",
+     "default": 20
+    }
+   ],
+   "bodyTemplate": {
+    "archiveCollections": [],
+    "categoryIds": [],
+    "collections": [],
+    "endDate": "{endDate}",
+    "exactCollectionMaterialType": false,
+    "fuzzy": false,
+    "generalTypes": [],
+    "includeCollected": false,
+    "keywords": [],
+    "onlyCollected": false,
+    "orderBy": "{orderBy}",
+    "query": "{query}",
+    "queryTargetsMetadata": true,
+    "queryTargetsOcrText": true,
+    "requireAllKeywords": true,
+    "startDate": "{startDate}",
+    "subjectIds": [],
+    " titles": []
+   },
+   "bodyEncoding": "json",
+   "responseType": "json",
+   "resultPath": "rows",
+   "defaultFields": [
+    "articleId",
+    "title",
+    "bindingTitle",
+    "bindingDate",
+    "categoryName",
+    "subjectName",
+    "url",
+    "allKeywords"
+   ],
+   "pagination": {
+    "type": "offset",
+    "param": "offset",
+    "step": 20
+   },
+   "mutates": false,
+   "example": {
+    "query": "laulut"
+   },
+   "source": "E14",
+   "verified": true
+  },
+  {
+   "name": "get-clipping",
+   "summary": "Get one user clipping (article) by id: title, text, keywords and source binding.",
+   "method": "GET",
+   "urlTemplate": "/rest/article/{articleId}",
+   "params": [
+    {
+     "name": "articleId",
+     "in": "path",
+     "required": true,
+     "type": "number",
+     "description": "Clipping id (articleId from search-clippings)",
+     "example": "79508866"
+    }
+   ],
+   "responseType": "json",
+   "mutates": false,
+   "example": {
+    "articleId": "79508866"
+   },
+   "source": "E15 GET https://digi.kansalliskirjasto.fi/rest/article/{n}",
+   "verified": true
+  },
+  {
+   "name": "list-clipping-categories",
+   "summary": "List clipping categories and subjects (ids and Finnish names) used to classify clippings.",
+   "method": "GET",
+   "urlTemplate": "/rest/article-search/reference-data/static",
+   "params": [],
+   "responseType": "json",
+   "mutates": false,
+   "source": "E28 GET https://digi.kansalliskirjasto.fi/rest/article-search/reference-data/static",
+   "verified": true
+  },
+  {
+   "name": "search-clipping-keywords",
+   "summary": "Look up keywords that users have assigned to clippings.",
+   "method": "POST",
+   "urlTemplate": "/rest/article-search/reference-data/keyword/search",
+   "params": [
+    {
+     "name": "query",
+     "in": "body",
+     "required": false,
+     "type": "string",
+     "description": "Keyword prefix or text to match"
+    },
+    {
+     "name": "maxResults",
+     "in": "body",
+     "required": false,
+     "type": "number",
+     "description": "Maximum number of values to return",
+     "default": 26
+    }
+   ],
+   "bodyTemplate": {
+    "generalTypes": null,
+    "maxResults": "{maxResults}",
+    "query": "{query}",
+    "selectedIds": []
+   },
+   "bodyEncoding": "json",
+   "responseType": "json",
+   "resultPath": "queryResults",
+   "mutates": false,
+   "example": {
+    "query": "laulu"
+   },
+   "source": "E29 POST https://digi.kansalliskirjasto.fi/rest/article-search/reference-data/keyword/search",
+   "verified": true
+  },
+  {
+   "name": "search-filter-values",
+   "summary": "Look up values for search filters: titles, collections, publishers, publishing places, tags or authors.",
+   "method": "POST",
+   "urlTemplate": "/rest/binding-search/reference-data/search/{type}",
+   "params": [
+    {
+     "name": "type",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Which filter dimension to look up",
+     "enum": [
+      "title",
+      "collection",
+      "publisher",
+      "publishing-place",
+      "tag",
+      "author"
+     ],
+     "example": "title"
+    },
+    {
+     "name": "query",
+     "in": "body",
+     "required": false,
+     "type": "string",
+     "description": "Text to match"
+    },
+    {
+     "name": "maxResults",
+     "in": "body",
+     "required": false,
+     "type": "number",
+     "description": "Maximum number of values to return",
+     "default": 26
+    }
+   ],
+   "bodyTemplate": {
+    "generalTypes": null,
+    "maxResults": "{maxResults}",
+    "query": "{query}",
+    "selectedIds": []
+   },
+   "bodyEncoding": "json",
+   "responseType": "json",
+   "resultPath": "queryResults",
+   "mutates": false,
+   "example": {
+    "type": "title",
+    "query": "sibelius"
+   },
+   "source": "E10 E11 E18 E20 E21 E22 POST https://digi.kansalliskirjasto.fi/rest/binding-search/reference-data/search/title",
+   "verified": true
+  },
+  {
+   "name": "get-public-access-cutoffs",
+   "summary": "Show, per material type, the date up to which material is freely viewable. Newer material is restricted for anonymous users.",
+   "method": "GET",
+   "urlTemplate": "/rest/binding-search/reference-data/user-specific?types=NEWSPAPER&types=JOURNAL&types=PRINTING&types=BOOK&types=MANUSCRIPT&types=MAP&types=MUSIC_NOTATION&types=PICTURE&types=CARD_INDEX&types=ARK_KIRJE&types=ARK_KASIKIRJOITUS",
+   "params": [],
+   "responseType": "json",
+   "mutates": false,
+   "source": "E17 GET https://digi.kansalliskirjasto.fi/rest/binding-search/reference-data/user-specific",
+   "verified": true
+  },
+  {
+   "name": "list-collections",
+   "summary": "List the collection tree (collection ids and names, nested by category).",
+   "method": "GET",
+   "urlTemplate": "/rest/collections/data",
+   "params": [],
+   "responseType": "json",
+   "resultPath": "tree",
+   "defaultFields": [
+    "id",
+    "name",
+    "children"
+   ],
+   "mutates": false,
+   "source": "E16 GET https://digi.kansalliskirjasto.fi/rest/collections/data",
+   "verified": true
+  },
+  {
+   "name": "get-collection",
+   "summary": "Get a collection's name, HTML description and material types.",
+   "method": "GET",
+   "urlTemplate": "/rest/collections/{id}",
+   "params": [
+    {
+     "name": "id",
+     "in": "path",
+     "required": true,
+     "type": "number",
+     "description": "Collection id",
+     "example": "742"
+    }
+   ],
+   "responseType": "json",
+   "defaultFields": [
+    "name",
+    "description",
+    "materialTypes",
+    "bannerUrl"
+   ],
+   "mutates": false,
+   "example": {
+    "id": "742"
+   },
+   "source": "E31 GET https://digi.kansalliskirjasto.fi/rest/collections/{n}",
+   "verified": true
+  },
+  {
+   "name": "harvest-oai-records",
+   "summary": "Harvest Dublin Core metadata records for a collection through the public OAI-PMH interface (ListRecords).",
+   "method": "GET",
+   "urlTemplate": "/interfaces/OAI-PMH?verb=ListRecords",
+   "params": [
+    {
+     "name": "set",
+     "in": "query",
+     "required": true,
+     "type": "string",
+     "description": "OAI set spec: col-{collectionId}, e.g. col-742",
+     "example": "col-742"
+    },
+    {
+     "name": "metadataPrefix",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Metadata format",
+     "default": "qdc_finna"
+    }
+   ],
+   "responseType": "json",
+   "resultPath": "OAI-PMH.ListRecords.record",
+   "defaultFields": [
+    "header.identifier",
+    "header.datestamp",
+    "header.setSpec",
+    "metadata"
+   ],
+   "mutates": false,
+   "example": {
+    "set": "col-742"
+   },
+   "source": "E34 GET https://digi.kansalliskirjasto.fi/interfaces/OAI-PMH",
+   "verified": true
+  }
+ ],
+ "blockers": [],
+ "notes": [
+  "A binding is one issue or volume. Use bindingId from search-materials or search-articles with get-binding, get-page-ocr and get-ocr-hits.",
+  "Human-readable pages live at /sanomalehti/binding/{id} (newspapers) and /aikakausi/binding/{id} (journals). Clippings live at .../binding/{id}/articles/{articleId}.",
+  "The format and collection params are sent as single-element arrays. Omit them to search all types and collections.",
+  "Serial titles are identified by ISSN (e.g. 1457-4314) or a local id (e.g. fk14195). This is the publicationId in search results or the identification field in list-serial-publications.",
+  "Material newer than the cutoff dates from get-public-access-cutoffs is restricted for anonymous users. Search excludes it (includeUnauthorizedResults=false).",
+  "robots.txt disallows /papers-for-day, page .txt downloads and /name-search, so these are not exposed. Use get-page-ocr for page text.",
+  "OAI-PMH returns at most one batch per call. Follow resumptionToken manually if the response includes one.",
+  "Everything here works without login. No write endpoints were recorded."
+ ],
+ "dropped": [
+  {
+   "name": "get-clipping-comments",
+   "summary": "List the public comments on a user clipping.",
+   "method": "GET",
+   "urlTemplate": "/rest/article/{articleId}/comments",
+   "params": [
+    {
+     "name": "articleId",
+     "in": "path",
+     "required": true,
+     "type": "number",
+     "description": "Clipping id",
+     "example": "78604852"
+    }
+   ],
+   "responseType": "json",
+   "mutates": false,
+   "example": {
+    "articleId": "78604852"
+   },
+   "source": "E30 GET https://digi.kansalliskirjasto.fi/rest/article/{n}/comments",
+   "verified": false,
+   "verifyNote": "empty list: the example args returned nothing or the selector/resultPath is wrong"
+  }
+ ],
+ "generated": {
+  "by": "clify add",
+  "model": "claude-opus-5-5",
+  "exploredSteps": 30,
+  "recorded": 94,
+  "verifiedAt": "2026-10-18T09:23:44.802Z",
+  "seconds": 359
+ }
+}

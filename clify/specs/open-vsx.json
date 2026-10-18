@@ -1,0 +1,519 @@
+{
+ "name": "open-vsx",
+ "startUrl": "https://open-vsx.org/",
+ "origin": "https://open-vsx.org",
+ "createdAt": "2026-10-18T08:57:10.268Z",
+ "description": "Open VSX Registry (open-vsx.org), the open-source VS Code extension marketplace. This CLI searches extensions and reads extension details, versions, README/CHANGELOG files, reviews, publisher namespaces and the registry change feed through its public JSON API.",
+ "commands": [
+  {
+   "name": "search-extensions",
+   "summary": "Search Open VSX extensions by keyword, with optional category filter, sorting and offset paging",
+   "method": "GET",
+   "urlTemplate": "/api/-/search",
+   "params": [
+    {
+     "name": "query",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Free-text search term. Omit it to list all extensions, for example the most downloaded or most recently updated.",
+     "example": "python"
+    },
+    {
+     "name": "category",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Category name filter, e.g. Linters, Themes, Programming Languages, Snippets, Debuggers, Formatters",
+     "example": "Linters"
+    },
+    {
+     "name": "sortBy",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Sort key",
+     "enum": [
+      "relevance",
+      "downloadCount",
+      "timestamp",
+      "rating"
+     ],
+     "default": "relevance"
+    },
+    {
+     "name": "sortOrder",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Sort direction",
+     "enum": [
+      "desc",
+      "asc"
+     ],
+     "default": "desc"
+    },
+    {
+     "name": "size",
+     "in": "query",
+     "required": false,
+     "type": "number",
+     "description": "Number of results per page",
+     "default": 30
+    },
+    {
+     "name": "offset",
+     "in": "query",
+     "required": false,
+     "type": "number",
+     "description": "Number of results to skip, for paging",
+     "default": 0
+    }
+   ],
+   "responseType": "json",
+   "resultPath": "extensions",
+   "defaultFields": [
+    "namespace",
+    "name",
+    "displayName",
+    "version",
+    "description",
+    "downloadCount",
+    "averageRating",
+    "timestamp"
+   ],
+   "pagination": {
+    "type": "offset",
+    "param": "offset",
+    "step": 30
+   },
+   "mutates": false,
+   "example": {
+    "query": "python"
+   },
+   "source": "E1 GET https://open-vsx.org/api/-/search",
+   "verified": true
+  },
+  {
+   "name": "get-extension",
+   "summary": "Get full metadata of the latest version of an extension: description, files, links, all version URLs and download count",
+   "method": "GET",
+   "urlTemplate": "/api/{namespace}/{extension}",
+   "params": [
+    {
+     "name": "namespace",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Publisher namespace, i.e. the part before the dot in the extension id",
+     "example": "ms-python"
+    },
+    {
+     "name": "extension",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Extension name, i.e. the part after the dot in the extension id",
+     "example": "python"
+    }
+   ],
+   "responseType": "json",
+   "defaultFields": [
+    "namespace",
+    "name",
+    "displayName",
+    "version",
+    "description",
+    "downloadCount",
+    "averageRating",
+    "files.download"
+   ],
+   "mutates": false,
+   "example": {
+    "namespace": "ms-python",
+    "extension": "python"
+   },
+   "source": "E5 E8 GET https://open-vsx.org/api/ms-python/python",
+   "verified": true
+  },
+  {
+   "name": "get-extension-version",
+   "summary": "Get metadata of one specific version of an extension. The version can also be 'latest' or 'pre-release'.",
+   "method": "GET",
+   "urlTemplate": "/api/{namespace}/{extension}/{version}",
+   "params": [
+    {
+     "name": "namespace",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Publisher namespace",
+     "example": "ms-python"
+    },
+    {
+     "name": "extension",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Extension name",
+     "example": "python"
+    },
+    {
+     "name": "version",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Exact version string, 'latest' or 'pre-release'",
+     "example": "2025.20.1"
+    }
+   ],
+   "responseType": "json",
+   "defaultFields": [
+    "namespace",
+    "name",
+    "displayName",
+    "version",
+    "timestamp",
+    "description",
+    "engines",
+    "files.download"
+   ],
+   "mutates": false,
+   "example": {
+    "namespace": "ms-python",
+    "extension": "python",
+    "version": "2025.20.1"
+   },
+   "source": "E7 GET https://open-vsx.org/api/ms-python/python/2025.20.1",
+   "verified": true
+  },
+  {
+   "name": "get-extension-file",
+   "summary": "Fetch a text file from an extension version, such as README.md or CHANGELOG.md. The request redirects to the content CDN.",
+   "method": "GET",
+   "urlTemplate": "/api/{namespace}/{extension}/{version}/file/{fileName}",
+   "params": [
+    {
+     "name": "namespace",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Publisher namespace",
+     "example": "ms-python"
+    },
+    {
+     "name": "extension",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Extension name",
+     "example": "python"
+    },
+    {
+     "name": "version",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Exact version string. Use get-extension to find the latest one.",
+     "example": "2026.4.0"
+    },
+    {
+     "name": "fileName",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "File name as listed in the extension's files map. It is case-sensitive, e.g. README.md, readme.md or CHANGELOG.md.",
+     "example": "README.md"
+    }
+   ],
+   "headers": {
+    "Accept": "text/plain"
+   },
+   "responseType": "text",
+   "mutates": false,
+   "example": {
+    "namespace": "ms-python",
+    "extension": "python",
+    "version": "2026.4.0",
+    "fileName": "README.md"
+   },
+   "source": "E15 E16 E17 E18 E19 E20 E21 GET https://open-vsx.org/api/ms-python/python/2026.4.0/file/README.md",
+   "verified": true
+  },
+  {
+   "name": "list-extension-reviews",
+   "summary": "List user ratings and review comments for an extension",
+   "method": "GET",
+   "urlTemplate": "/api/{namespace}/{extension}/reviews",
+   "params": [
+    {
+     "name": "namespace",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Publisher namespace",
+     "example": "ms-python"
+    },
+    {
+     "name": "extension",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Extension name",
+     "example": "python"
+    }
+   ],
+   "responseType": "json",
+   "resultPath": "reviews",
+   "defaultFields": [
+    "rating",
+    "comment",
+    "timestamp",
+    "user.loginName",
+    "user.provider"
+   ],
+   "mutates": false,
+   "example": {
+    "namespace": "ms-python",
+    "extension": "python"
+   },
+   "source": "E6 GET https://open-vsx.org/api/ms-python/python/reviews",
+   "verified": true
+  },
+  {
+   "name": "list-extension-versions",
+   "summary": "List published versions of an extension, newest first, as a version-to-URL map with offset paging",
+   "method": "GET",
+   "urlTemplate": "/api/{namespace}/{extension}/versions",
+   "params": [
+    {
+     "name": "namespace",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Publisher namespace",
+     "example": "redhat"
+    },
+    {
+     "name": "extension",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Extension name",
+     "example": "java"
+    },
+    {
+     "name": "size",
+     "in": "query",
+     "required": false,
+     "type": "number",
+     "description": "Number of versions per page (server default 18)",
+     "default": 18
+    },
+    {
+     "name": "offset",
+     "in": "query",
+     "required": false,
+     "type": "number",
+     "description": "Number of versions to skip",
+     "default": 0
+    }
+   ],
+   "responseType": "json",
+   "resultPath": "versions",
+   "pagination": {
+    "type": "offset",
+    "param": "offset",
+    "step": 18
+   },
+   "mutates": false,
+   "example": {
+    "namespace": "redhat",
+    "extension": "java"
+   },
+   "source": "E11 GET https://open-vsx.org/api/redhat/java/versions",
+   "verified": true
+  },
+  {
+   "name": "query-extensions",
+   "summary": "Query extension metadata by id (namespace.name), with optional version and all-versions flag; returns one entry per target platform (e.g. linux-x64, alpine-arm64, universal)",
+   "method": "GET",
+   "urlTemplate": "/api/-/query",
+   "params": [
+    {
+     "name": "extensionId",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Full extension id as namespace.name",
+     "example": "redhat.java"
+    },
+    {
+     "name": "namespaceName",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Return extensions of this namespace only"
+    },
+    {
+     "name": "extensionName",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Extension name, used together with namespaceName"
+    },
+    {
+     "name": "extensionVersion",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Return only this version"
+    },
+    {
+     "name": "includeAllVersions",
+     "in": "query",
+     "required": false,
+     "type": "boolean",
+     "description": "Return one entry per version instead of only the latest"
+    }
+   ],
+   "responseType": "json",
+   "resultPath": "extensions",
+   "defaultFields": [
+    "namespace",
+    "name",
+    "version",
+    "targetPlatform",
+    "timestamp",
+    "displayName",
+    "downloadCount",
+    "files.download"
+   ],
+   "mutates": false,
+   "example": {
+    "extensionId": "redhat.java"
+   },
+   "source": "E12",
+   "verified": true
+  },
+  {
+   "name": "get-namespace-details",
+   "summary": "Get a publisher namespace's profile (display name, description, website, social links) and its extensions with stats",
+   "method": "GET",
+   "urlTemplate": "/api/{namespace}/details",
+   "params": [
+    {
+     "name": "namespace",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Publisher namespace",
+     "example": "redhat"
+    }
+   ],
+   "responseType": "json",
+   "defaultFields": [
+    "name",
+    "displayName",
+    "description",
+    "website",
+    "verified",
+    "extensions"
+   ],
+   "mutates": false,
+   "example": {
+    "namespace": "redhat"
+   },
+   "source": "E4 GET https://open-vsx.org/api/redhat/details",
+   "verified": true
+  },
+  {
+   "name": "list-namespace-extensions",
+   "summary": "List the names of all extensions in a namespace (a map of name to API URL) and whether the namespace is verified",
+   "method": "GET",
+   "urlTemplate": "/api/{namespace}",
+   "params": [
+    {
+     "name": "namespace",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Publisher namespace",
+     "example": "redhat"
+    }
+   ],
+   "responseType": "json",
+   "resultPath": "extensions",
+   "mutates": false,
+   "example": {
+    "namespace": "redhat"
+   },
+   "source": "E13 GET https://open-vsx.org/api/redhat",
+   "verified": true
+  },
+  {
+   "name": "list-version-changes",
+   "summary": "Page through the registry-wide feed of extension version changes (publish/state updates), oldest first, using a cursor",
+   "method": "GET",
+   "urlTemplate": "/api/-/version-changes",
+   "params": [
+    {
+     "name": "cursor",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Opaque nextCursor value from the previous page"
+    }
+   ],
+   "responseType": "json",
+   "resultPath": "changes",
+   "defaultFields": [
+    "namespace",
+    "name",
+    "version",
+    "targetPlatform",
+    "state",
+    "timestamp",
+    "lastUpdated",
+    "url"
+   ],
+   "pagination": {
+    "type": "cursor",
+    "param": "cursor",
+    "nextPath": "nextCursor"
+   },
+   "mutates": false,
+   "source": "E14",
+   "verified": true
+  },
+  {
+   "name": "get-registry-version",
+   "summary": "Get the Open VSX server version and limits, such as the maximum extension size",
+   "method": "GET",
+   "urlTemplate": "/api/version",
+   "params": [],
+   "responseType": "json",
+   "mutates": false,
+   "source": "E3",
+   "verified": true
+  }
+ ],
+ "blockers": [],
+ "notes": [
+  "Extension ids are 'namespace.name' (e.g. redhat.java). Path-based commands take them split into namespace and extension.",
+  "Version-specific file URLs (README, CHANGELOG, .vsix, icon) are listed in the 'files' object of get-extension / get-extension-version. File names are case-sensitive (redhat/java uses readme.md, ms-python/python uses README.md).",
+  "get-extension-file returns raw text and follows a 302 redirect to openvsx.eclipsecontent.org. Binary files such as .vsix should be downloaded from files.download instead of being read as text.",
+  "search-extensions uses offset paging: the step equals size (30 by default). totalSize gives the total number of matches.",
+  "The cursor parameter name for list-version-changes was inferred and not seen in the recording. Pass the nextCursor value from the previous response; hasMore=false marks the end.",
+  "All commands are anonymous reads. Publishing, reviewing and deleting need an Open VSX access token and are not covered. The full OpenAPI spec is at /v3/api-docs/registry."
+ ],
+ "dropped": [],
+ "generated": {
+  "by": "clify add",
+  "model": "claude-opus-5-5",
+  "exploredSteps": 22,
+  "recorded": 43,
+  "verifiedAt": "2026-10-18T08:58:09.299Z",
+  "seconds": 184
+ }
+}

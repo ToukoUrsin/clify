@@ -1,0 +1,41 @@
+{
+ "task": "hex-phoenix",
+ "site": "hex",
+ "mode": "browser-ui",
+ "trial": 1,
+ "tag": "ui2",
+ "ok": true,
+ "why": "all expected values present",
+ "answer": "1.8.15, MIT License",
+ "expected": {
+  "expect": [
+   "1.8.15",
+   "MIT"
+  ],
+  "detail": {
+   "latest_stable_version": "1.8.15",
+   "meta.licenses": [
+    "MIT"
+   ]
+  }
+ },
+ "wallMs": 16831,
+ "apiMs": 14167,
+ "turns": 4,
+ "toolCalls": 3,
+ "tokens": {
+  "input": 8,
+  "output": 494,
+  "cacheWrite": 13178,
+  "cacheRead": 43193,
+  "total": 56873
+ },
+ "costUsd": 0.0844406,
+ "models": [
+  "claude-opus-5-5"
+ ],
+ "exitCode": 0,
+ "timedOut": false,
+ "subtype": "success",
+ "startedAt": "2026-10-17T23:32:52.911Z"
+}

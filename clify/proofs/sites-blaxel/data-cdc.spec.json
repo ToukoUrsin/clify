@@ -1,0 +1,444 @@
+{
+ "name": "data-cdc",
+ "startUrl": "https://data.cdc.gov/",
+ "origin": "https://data.cdc.gov",
+ "createdAt": "2026-10-18T08:17:54.946Z",
+ "description": "data.cdc.gov is the CDC's open-data portal (Socrata). This CLI searches the dataset catalog, lists categories and tags, reads dataset metadata, and queries or exports dataset rows through the public Socrata Discovery, SODA and views APIs.",
+ "commands": [
+  {
+   "name": "search-datasets",
+   "summary": "Search the data.cdc.gov catalog by keyword, with optional category/tag/type filters, sort order and paging",
+   "method": "GET",
+   "urlTemplate": "/api/catalog/v1?domains=data.cdc.gov&search_context=data.cdc.gov",
+   "params": [
+    {
+     "name": "q",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Full-text search keywords",
+     "example": "influenza"
+    },
+    {
+     "name": "categories",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Filter by domain category name. Get the names from list-categories, e.g. 'Vaccinations' or 'National Center for Health Statistics'.",
+     "example": "Vaccinations"
+    },
+    {
+     "name": "tags",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Filter by domain tag. Get the tags from list-tags, e.g. 'flu' or 'covid-19'.",
+     "example": "flu"
+    },
+    {
+     "name": "only",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Restrict results to one asset type",
+     "enum": [
+      "dataset",
+      "chart",
+      "map",
+      "filter",
+      "file",
+      "story",
+      "link",
+      "href",
+      "datalens",
+      "calendar",
+      "form"
+     ],
+     "example": "dataset"
+    },
+    {
+     "name": "order",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Sort order. Relevance is used when omitted.",
+     "enum": [
+      "relevance",
+      "name",
+      "createdAt",
+      "updatedAt",
+      "page_views_last_week",
+      "page_views_last_month",
+      "page_views_total"
+     ],
+     "example": "updatedAt"
+    },
+    {
+     "name": "api_limit",
+     "key": "limit",
+     "in": "query",
+     "required": false,
+     "type": "number",
+     "description": "Results per page (sent to the site as \"limit\"; clify's own --limit only shapes the output)",
+     "default": 20
+    },
+    {
+     "name": "offset",
+     "in": "query",
+     "required": false,
+     "type": "number",
+     "description": "Number of results to skip, for paging",
+     "default": 0
+    }
+   ],
+   "responseType": "json",
+   "resultPath": "results",
+   "defaultFields": [
+    "resource.id",
+    "resource.name",
+    "resource.type",
+    "resource.description",
+    "classification.domain_category",
+    "resource.updatedAt",
+    "resource.page_views.page_views_last_month",
+    "permalink"
+   ],
+   "pagination": {
+    "type": "offset",
+    "param": "offset",
+    "step": 20
+   },
+   "mutates": false,
+   "example": {
+    "q": "influenza",
+    "only": "dataset",
+    "order": "updatedAt"
+   },
+   "source": "E19 GET https://data.cdc.gov/api/catalog/v1",
+   "verified": true
+  },
+  {
+   "name": "list-categories",
+   "summary": "List all dataset categories on data.cdc.gov with their dataset counts",
+   "method": "GET",
+   "urlTemplate": "/api/catalog/v1/domain_categories?domains=data.cdc.gov",
+   "params": [],
+   "responseType": "json",
+   "resultPath": "results",
+   "defaultFields": [
+    "domain_category",
+    "count"
+   ],
+   "mutates": false,
+   "source": "E21 GET https://data.cdc.gov/api/catalog/v1/domain_categories",
+   "verified": true
+  },
+  {
+   "name": "list-tags",
+   "summary": "List the most-used dataset tags on data.cdc.gov with their counts",
+   "method": "GET",
+   "urlTemplate": "/api/catalog/v1/domain_tags?domains=data.cdc.gov",
+   "params": [],
+   "responseType": "json",
+   "resultPath": "results",
+   "defaultFields": [
+    "domain_tag",
+    "count"
+   ],
+   "mutates": false,
+   "source": "E22 GET https://data.cdc.gov/api/catalog/v1/domain_tags",
+   "verified": true
+  },
+  {
+   "name": "autocomplete-datasets",
+   "summary": "Suggest dataset titles that match a partial search term",
+   "method": "GET",
+   "urlTemplate": "/api/catalog/v1/autocomplete?domains=data.cdc.gov",
+   "params": [
+    {
+     "name": "q",
+     "in": "query",
+     "required": true,
+     "type": "string",
+     "description": "Partial title text",
+     "example": "influ"
+    }
+   ],
+   "responseType": "json",
+   "resultPath": "results",
+   "defaultFields": [
+    "title"
+   ],
+   "mutates": false,
+   "example": {
+    "q": "influ"
+   },
+   "source": "E23 GET https://data.cdc.gov/api/catalog/v1/autocomplete",
+   "verified": true
+  },
+  {
+   "name": "get-dataset",
+   "summary": "Get full metadata for one dataset by its 4x4 id, including columns, field names, data types and stats",
+   "method": "GET",
+   "urlTemplate": "/api/views/{id}.json",
+   "params": [
+    {
+     "name": "id",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Dataset 4x4 id, e.g. ynw2-4viq",
+     "example": "ynw2-4viq"
+    }
+   ],
+   "responseType": "json",
+   "defaultFields": [
+    "id",
+    "name",
+    "category",
+    "attribution",
+    "description",
+    "rowsUpdatedAt",
+    "viewCount",
+    "columns"
+   ],
+   "mutates": false,
+   "example": {
+    "id": "ynw2-4viq"
+   },
+   "source": "E10 E24 GET https://data.cdc.gov/api/views/vh55-3he6.json",
+   "verified": true
+  },
+  {
+   "name": "get-dataset-metadata",
+   "summary": "Get a dataset's catalog metadata: tags, contact info, custom fields, ISO update dates and API/web URIs",
+   "method": "GET",
+   "urlTemplate": "/api/views/metadata/v1/{id}",
+   "params": [
+    {
+     "name": "id",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Dataset 4x4 id, e.g. vh55-3he6",
+     "example": "vh55-3he6"
+    }
+   ],
+   "responseType": "json",
+   "defaultFields": [
+    "id",
+    "name",
+    "category",
+    "attribution",
+    "dataUpdatedAt",
+    "tags",
+    "customFields",
+    "dataUri"
+   ],
+   "mutates": false,
+   "example": {
+    "id": "vh55-3he6"
+   },
+   "source": "E25 GET https://data.cdc.gov/api/views/metadata/v1/vh55-3he6",
+   "verified": true
+  },
+  {
+   "name": "query-rows",
+   "summary": "Query a dataset's rows with SoQL (SODA API): filter, full-text search, select/aggregate, group, sort and page",
+   "method": "GET",
+   "urlTemplate": "/resource/{id}.json",
+   "params": [
+    {
+     "name": "id",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Dataset 4x4 id, e.g. ynw2-4viq (find ids with search-datasets)",
+     "example": "ynw2-4viq"
+    },
+    {
+     "name": "where",
+     "key": "$where",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "SoQL filter expression on column field names (see get-dataset columns.fieldName), e.g. jurisdiction='United States'",
+     "example": "jurisdiction='United States'"
+    },
+    {
+     "name": "q",
+     "key": "$q",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Full-text search across all row values",
+     "example": "Texas"
+    },
+    {
+     "name": "select",
+     "key": "$select",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Comma-separated columns or aggregates, e.g. geography,count(*)",
+     "example": "geography,count(*)"
+    },
+    {
+     "name": "group",
+     "key": "$group",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Columns to group by. Use together with an aggregate in select.",
+     "example": "geography"
+    },
+    {
+     "name": "order",
+     "key": "$order",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Sort expression, e.g. 'week_ending_date DESC'",
+     "example": "week_ending_date DESC"
+    },
+    {
+     "name": "api_limit",
+     "key": "$limit",
+     "in": "query",
+     "required": false,
+     "type": "number",
+     "description": "Maximum number of rows to return (sent to the site as \"$limit\"; clify's own --limit only shapes the output)",
+     "default": 100
+    },
+    {
+     "name": "offset",
+     "key": "$offset",
+     "in": "query",
+     "required": false,
+     "type": "number",
+     "description": "Number of rows to skip, for paging (sent as \"$offset\")",
+     "default": 0
+    }
+   ],
+   "responseType": "json",
+   "pagination": {
+    "type": "offset",
+    "param": "offset",
+    "step": 100
+   },
+   "mutates": false,
+   "example": {
+    "id": "ynw2-4viq",
+    "where": "jurisdiction='United States'",
+    "order": "week_ending_date DESC",
+    "api_limit": "5"
+   },
+   "source": "E20 E26",
+   "verified": true
+  },
+  {
+   "name": "run-soql-query",
+   "summary": "Run a full SoQL query string against a dataset through the v3 query API, e.g. 'select jurisdiction, sum(influenza_deaths) group by jurisdiction limit 10'",
+   "method": "GET",
+   "urlTemplate": "/api/v3/views/{id}/query.json",
+   "params": [
+    {
+     "name": "id",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Dataset 4x4 id",
+     "example": "ynw2-4viq"
+    },
+    {
+     "name": "query",
+     "in": "query",
+     "required": true,
+     "type": "string",
+     "description": "SoQL query string (SELECT ... WHERE ... GROUP BY ... ORDER BY ... LIMIT ...), without a FROM clause",
+     "example": "select jurisdiction, sum(influenza_deaths) group by jurisdiction limit 10"
+    }
+   ],
+   "responseType": "json",
+   "mutates": false,
+   "example": {
+    "id": "ynw2-4viq",
+    "query": "select jurisdiction, sum(influenza_deaths) group by jurisdiction limit 10"
+   },
+   "source": "E5 E6 E7 POST https://data.cdc.gov/api/v3/views/vh55-3he6/query.json",
+   "verified": true
+  },
+  {
+   "name": "export-rows",
+   "summary": "Download a dataset export in JSON: view metadata under meta, rows as positional arrays under data",
+   "method": "GET",
+   "urlTemplate": "/api/views/{id}/rows.json?accessType=DOWNLOAD",
+   "params": [
+    {
+     "name": "id",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Dataset 4x4 id",
+     "example": "ynw2-4viq"
+    },
+    {
+     "name": "max_rows",
+     "in": "query",
+     "required": false,
+     "type": "number",
+     "description": "Maximum number of rows to export. Omit for the full dataset, which can be very large.",
+     "example": "5"
+    }
+   ],
+   "responseType": "json",
+   "mutates": false,
+   "example": {
+    "id": "ynw2-4viq",
+    "max_rows": "5"
+   },
+   "source": "E28 GET https://data.cdc.gov/api/views/ynw2-4viq/rows.json",
+   "verified": true
+  },
+  {
+   "name": "get-data-catalog",
+   "summary": "Get the full DCAT (Project Open Data) catalog of every public dataset on data.cdc.gov",
+   "method": "GET",
+   "urlTemplate": "/data.json",
+   "params": [],
+   "responseType": "json",
+   "resultPath": "dataset",
+   "defaultFields": [
+    "identifier",
+    "title",
+    "description",
+    "modified",
+    "keyword",
+    "landingPage",
+    "contactPoint.fn"
+   ],
+   "mutates": false,
+   "source": "E27 GET https://data.cdc.gov/data.json",
+   "verified": true
+  }
+ ],
+ "blockers": [],
+ "notes": [
+  "Datasets are identified by a Socrata 4x4 id such as 'ynw2-4viq'. In search-datasets results this is resource.id.",
+  "Column names for query-rows and run-soql-query are the fieldName values in get-dataset's columns array, e.g. week_ending_date or influenza_deaths.",
+  "SODA returns every value as a string. Numeric comparisons in $where still work on number-typed columns.",
+  "/resource/{id}.csv export failed during recording; use query-rows (JSON) or export-rows instead.",
+  "export-rows returns rows as positional arrays. Map them to columns using meta.view.columns.",
+  "The v3 query API (run-soql-query) may require an app token for anonymous use. If it fails, use query-rows with $select/$where/$group/$order.",
+  "The /browse HTML catalog is blocked by robots.txt; search-datasets uses the public Discovery API."
+ ],
+ "dropped": [],
+ "generated": {
+  "by": "clify add",
+  "model": "claude-opus-5-5",
+  "exploredSteps": 12,
+  "recorded": 50,
+  "verifiedAt": "2026-10-18T08:18:59.063Z",
+  "seconds": 243
+ }
+}

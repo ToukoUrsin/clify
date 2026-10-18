@@ -1,0 +1,42 @@
+09:45:57 🔭 exploring https://updown.io/checks (logged in from the vault)
+09:45:57 🌐 https://updown.io/checks
+09:46:02 → type {"i":18,"text":"example.net","intent":"set check URL"}
+09:46:06 → type {"i":19,"text":"race-gen-1","intent":"set check alias"}
+09:46:07 → select {"i":21,"option":"30 mins","intent":"set check period"}
+09:46:10 → click {"i":26,"intent":"add HTTPS check"}
+09:46:10   ✉ write sent (--allow-writes) POST https://updown.io/checks
+09:46:16 → type {"i":10,"text":"example","intent":"search checks","submit":true}
+09:46:18 → select {"i":12,"option":"Status","intent":"sort checks"}
+09:46:22 → click {"i":21,"intent":"open check detail"}
+09:46:28 → click {"i":15,"intent":"view check stats over 10 years range"}
+09:46:31 → goto {"url":"https://updown.io/checks/e3l3","intent":"open check detail"}
+09:46:33 → goto {"url":"https://updown.io/downtimes","intent":"list downtimes"}
+09:46:36 → goto {"url":"https://updown.io/status_pages","intent":"list status pages"}
+09:46:40 → goto {"url":"https://updown.io/api","intent":"open API docs"}
+09:46:45 → goto {"url":"https://updown.io/api/checks","intent":"list checks as JSON"}
+09:46:50 → goto {"url":"https://updown.io/checks","intent":"list my checks"}
+09:46:55 → click {"i":24,"intent":"open edit form for check"}
+09:46:59 → type {"i":23,"text":"race-gen-1 edited","intent":"change check alias"}
+09:47:05   ✗ locator.fill: Timeout 6000ms exceeded.
+09:47:06 → click {"i":30,"intent":"update check"}
+09:47:06   ✉ write sent (--allow-writes) POST https://updown.io/checks/5tns
+09:47:10 → click {"i":24,"intent":"open edit form for check"}
+09:47:13 → click {"i":31,"intent":"delete check"}
+09:47:19 → done {"summary":"Covered the user's goal: listed checks (GET /checks, server-rendered), searched checks and changed the sort order, and added an 
+09:47:19 📼 recorded 16 calls, 0 held writes
+09:47:19 🧠 synthesizing from 9 endpoints (29k chars)
+09:48:15 🔎 verify round 0: list-checks, add-check, get-check, get-check-settings, update-check, list-downtimes, list-status-pages
+09:48:16   ✓ list-checks (727 ms)
+09:48:16   ✓ add-check: write: dry-run preview only, not sent
+09:48:16   ✓ get-check (588 ms)
+09:48:16   ✓ get-check-settings (555 ms)
+09:48:16   ✓ update-check: write: dry-run preview only, not sent
+09:48:16   ✓ list-downtimes (585 ms)
+09:48:16   ✓ list-status-pages (191 ms)
+09:48:48   🔧 get-check: alias came back as a fake URL ('https://updown.io/checks/Book%20club%20site') because the selector contains 'url'. Selectors now avoid h2.url so the plain text is returned.
+09:48:48   🔧 get-check-settings: The url field returned a mangled relative URL ('https://updown.io/checks/e3l3/example.com'): the scheme-less value 'example.com' was resolved against the page URL. Renamed it to target and used a CSS-escaped id selector so the raw value is kept. The scheme comes from the type field.
+09:48:48   🔧 list-status-pages: name and info were turned into fake URLs because their selectors contain 'url'. name now uses an href-based selector, and the redundant info field is dropped.
+09:48:48 🔎 verify round 1: get-check, get-check-settings, list-status-pages
+09:48:48   ✓ get-check (555 ms)
+09:48:48   ✓ get-check-settings (555 ms)
+09:48:48   ✓ list-status-pages (559 ms)

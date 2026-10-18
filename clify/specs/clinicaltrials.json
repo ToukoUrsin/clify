@@ -1,0 +1,418 @@
+{
+ "name": "clinicaltrials",
+ "startUrl": "https://clinicaltrials.gov/",
+ "origin": "https://clinicaltrials.gov",
+ "createdAt": "2026-10-18T07:18:14.520Z",
+ "description": "ClinicalTrials.gov (NIH/NLM registry of over 600k clinical studies). The CLI searches studies, fetches full study records and their version history, autocompletes conditions, interventions, sponsors and facilities, and returns registry statistics and field metadata, all through the site's internal /api/int endpoints.",
+ "commands": [
+  {
+   "name": "search-studies",
+   "summary": "Search or list clinical studies by condition, keyword, intervention, sponsor, location or NCT IDs, with facet filters, sorting and offset paging. Returns compact study hits.",
+   "method": "GET",
+   "urlTemplate": "/api/int/studies?checkSpell=false&highlight=false&columns=conditions%2Cinterventions%2Ccollaborators",
+   "params": [
+    {
+     "name": "cond",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Condition or disease search area, e.g. 'breast cancer'. Use suggest --dictionary Condition for canonical terms.",
+     "example": "breast cancer"
+    },
+    {
+     "name": "term",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Other terms: free-text search over NCT ID, acronym, titles, keywords and more. Supports Essie expression syntax (AND/OR/NOT, AREA[Field]value)."
+    },
+    {
+     "name": "intr",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Intervention or treatment search area, e.g. 'tamoxifen'"
+    },
+    {
+     "name": "spons",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Sponsor or collaborator name search area"
+    },
+    {
+     "name": "locStr",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Location text, e.g. 'Boston, Massachusetts'"
+    },
+    {
+     "name": "ids",
+     "key": "filter.ids",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Restrict to these NCT IDs, comma-separated, e.g. NCT00001372,NCT04368728",
+     "example": "NCT00001372"
+    },
+    {
+     "name": "aggFilters",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Facet filters as comma-separated 'facetId:key key' groups, e.g. 'status:rec not,sex:f'. Facet ids and keys come from the aggFilters block of count-studies (e.g. status keys: not=not yet recruiting, re"
+    },
+    {
+     "name": "sort",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Sort order: '@relevance', or 'FieldPiece:asc|desc', e.g. 'LastUpdatePostDate:desc' or 'StartDate:desc'",
+     "default": "@relevance"
+    },
+    {
+     "name": "api_fields",
+     "key": "fields",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Comma-separated field pieces to return (see get-field-metadata) (sent to the site as \"fields\"; clify's own --fields only shapes the output)",
+     "default": "NCTId,BriefTitle,OverallStatus,LastKnownStatus,StatusVerifiedDate,HasResults,Condition,InterventionType,InterventionName,Phase,StudyType,LeadSponsorName,StartDate,PrimaryCompletionDate,EnrollmentCount,LocationFacility,LocationCity,LocationState,LocationCountry,LastUpdatePostDate"
+    },
+    {
+     "name": "from",
+     "in": "query",
+     "required": false,
+     "type": "number",
+     "description": "Result offset (0-based)",
+     "default": 0
+    },
+    {
+     "name": "api_limit",
+     "key": "limit",
+     "in": "query",
+     "required": false,
+     "type": "number",
+     "description": "Results per page (the UI uses up to 100) (sent to the site as \"limit\"; clify's own --limit only shapes the output)",
+     "default": 20
+    }
+   ],
+   "responseType": "json",
+   "resultPath": "hits",
+   "defaultFields": [
+    "id",
+    "study.protocolSection.identificationModule.briefTitle",
+    "study.protocolSection.statusModule.overallStatus",
+    "study.protocolSection.conditionsModule.conditions",
+    "study.protocolSection.designModule.phases",
+    "study.protocolSection.sponsorCollaboratorsModule.leadSponsor.name",
+    "study.protocolSection.statusModule.startDateStruct.date",
+    "study.hasResults"
+   ],
+   "pagination": {
+    "type": "offset",
+    "param": "from",
+    "step": 20
+   },
+   "mutates": false,
+   "example": {
+    "ids": "NCT00001372"
+   },
+   "source": "E10 GET https://clinicaltrials.gov/api/int/studies",
+   "verified": true
+  },
+  {
+   "name": "count-studies",
+   "summary": "Get the total number of matching studies and per-facet counts (status, sex, phase, study type, \u2026) for a search, without listing studies.",
+   "method": "GET",
+   "urlTemplate": "/api/int/studies?checkSpell=false&from=0&limit=1&fields=NCTId",
+   "params": [
+    {
+     "name": "cond",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Condition or disease search area"
+    },
+    {
+     "name": "term",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Other terms / Essie expression"
+    },
+    {
+     "name": "intr",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Intervention or treatment search area"
+    },
+    {
+     "name": "spons",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Sponsor or collaborator search area"
+    },
+    {
+     "name": "locStr",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Location text"
+    },
+    {
+     "name": "ids",
+     "key": "filter.ids",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Comma-separated NCT IDs",
+     "example": "NCT00001372"
+    },
+    {
+     "name": "aggFilters",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Facet filters, e.g. 'status:rec'"
+    }
+   ],
+   "responseType": "json",
+   "defaultFields": [
+    "total",
+    "terms",
+    "aggFilters"
+   ],
+   "mutates": false,
+   "example": {
+    "ids": "NCT00001372"
+   },
+   "source": "E10 GET https://clinicaltrials.gov/api/int/studies",
+   "verified": true
+  },
+  {
+   "name": "get-study",
+   "summary": "Get the full record of one study by NCT ID: protocol (description, eligibility, arms, outcomes, locations, contacts), results if posted, and derived data. Uses the public REST API v2.",
+   "method": "GET",
+   "urlTemplate": "/api/v2/studies/{nctId}?format=json",
+   "params": [
+    {
+     "name": "nctId",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "NCT identifier, 'NCT' followed by 8 digits",
+     "example": "NCT04368728"
+    },
+    {
+     "name": "api_fields",
+     "key": "fields",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Comma-separated field pieces or section names to return, e.g. 'NCTId,BriefTitle,EligibilityCriteria' or 'ProtocolSection'. Leave empty for the full record. (Sent to the site as \"fields\".)"
+    },
+    {
+     "name": "markupFormat",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Format of rich-text fields",
+     "enum": [
+      "markdown",
+      "legacy"
+     ],
+     "default": "markdown"
+    }
+   ],
+   "responseType": "json",
+   "defaultFields": [
+    "protocolSection.identificationModule.nctId",
+    "protocolSection.identificationModule.briefTitle",
+    "protocolSection.statusModule.overallStatus",
+    "protocolSection.descriptionModule.briefSummary",
+    "protocolSection.eligibilityModule",
+    "protocolSection.armsInterventionsModule",
+    "protocolSection.outcomesModule",
+    "hasResults"
+   ],
+   "mutates": false,
+   "example": {
+    "nctId": "NCT04368728"
+   },
+   "source": "E6 E8",
+   "verified": true
+  },
+  {
+   "name": "suggest",
+   "summary": "Autocomplete or normalize a condition, intervention, lead sponsor or facility name before searching.",
+   "method": "GET",
+   "urlTemplate": "/api/int/suggest",
+   "params": [
+    {
+     "name": "input",
+     "in": "query",
+     "required": true,
+     "type": "string",
+     "description": "Partial text to complete, e.g. 'tamox'",
+     "example": "breast cancer"
+    },
+    {
+     "name": "dictionary",
+     "in": "query",
+     "required": true,
+     "type": "string",
+     "description": "Which vocabulary to search",
+     "enum": [
+      "Condition",
+      "InterventionName",
+      "LeadSponsorName",
+      "LocationFacility"
+     ],
+     "example": "Condition"
+    }
+   ],
+   "responseType": "json",
+   "mutates": false,
+   "example": {
+    "input": "breast cancer",
+    "dictionary": "Condition"
+   },
+   "source": "E1 GET https://clinicaltrials.gov/api/int/suggest",
+   "verified": true
+  },
+  {
+   "name": "get-field-metadata",
+   "summary": "Get the study data structure: every field with its piece name (used in fields/sort/AREA[] expressions), type, description and rules.",
+   "method": "GET",
+   "urlTemplate": "/api/v2/studies/metadata",
+   "params": [
+    {
+     "name": "includeIndexedOnly",
+     "in": "query",
+     "required": false,
+     "type": "boolean",
+     "description": "Include fields that are indexed only (searchable but not part of the record)",
+     "default": true
+    },
+    {
+     "name": "includeHistoricOnly",
+     "in": "query",
+     "required": false,
+     "type": "boolean",
+     "description": "Include fields that exist only in historic versions of records",
+     "default": false
+    }
+   ],
+   "responseType": "json",
+   "defaultFields": [
+    "name",
+    "piece",
+    "title",
+    "type",
+    "sourceType",
+    "description",
+    "children"
+   ],
+   "mutates": false,
+   "source": "E11",
+   "verified": true
+  },
+  {
+   "name": "list-search-areas",
+   "summary": "List the search areas (term, cond, intr, \u2026), their query param names, and the weighted fields each one searches.",
+   "method": "GET",
+   "urlTemplate": "/api/int/searchAreas",
+   "params": [],
+   "responseType": "json",
+   "mutates": false,
+   "source": "E9 GET https://clinicaltrials.gov/api/int/searchAreas",
+   "verified": true
+  },
+  {
+   "name": "get-stats",
+   "summary": "Get registry statistics: total studies, recruiting and registered counts by location and study type, registrations and results by year, and the last update date.",
+   "method": "GET",
+   "urlTemplate": "/api/int/stats/report",
+   "params": [],
+   "responseType": "json",
+   "mutates": false,
+   "source": "E3 GET https://clinicaltrials.gov/api/int/stats/report",
+   "verified": true
+  },
+  {
+   "name": "get-api-spec",
+   "summary": "Get the OpenAPI 3 (YAML) spec of the public ClinicalTrials.gov REST API v2, the reference for query syntax, filters and field names.",
+   "method": "GET",
+   "urlTemplate": "/api/oas/v2",
+   "params": [],
+   "headers": {
+    "accept": "application/json, application/yaml"
+   },
+   "responseType": "text",
+   "mutates": false,
+   "source": "E12 GET https://clinicaltrials.gov/api/oas/v2",
+   "verified": true
+  }
+ ],
+ "blockers": [],
+ "notes": [
+  "robots.txt disallows /search, /expert-search and /api/v2/*, so every command uses the internal /api/int endpoints the web app calls.",
+  "search-studies was only recorded with filter.ids (My Saved Studies page). The cond/term/intr/spons/locStr params are inferred from list-search-areas, whose 'param' value gives each area's query name. Check them with count-studies before relying on them.",
+  "aggFilters syntax is 'facetId:key1 key2,facetId2:key'. Get the valid facet ids and keys from the aggFilters array returned by count-studies.",
+  "Field and sort names are 'piece' names from get-field-metadata (e.g. BriefTitle, OverallStatus, LastUpdatePostDate).",
+  "Study IDs look like NCT########. get-study returns large records; the default fields omit resultsSection, so request it explicitly if needed.",
+  "Text fields contain HTML entities (e.g. &#x2F;) and some descriptions are HTML.",
+  "Saving studies is stored only in browser localStorage, and the download dialog sent no recorded request, so neither is available as a command. Location autocomplete uses Google Places and is not exposed."
+ ],
+ "dropped": [
+  {
+   "name": "get-study-version",
+   "summary": "Get a historical version of a study record (version 0 = the original registration) to see how it changed over time.",
+   "method": "GET",
+   "urlTemplate": "/api/int/studies/{nctId}/history/{version}",
+   "params": [
+    {
+     "name": "nctId",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "NCT identifier",
+     "example": "NCT04368728"
+    },
+    {
+     "name": "version",
+     "in": "path",
+     "required": true,
+     "type": "number",
+     "description": "Version number, starting at 0. Available versions are listed in get-study's history.",
+     "example": "0"
+    }
+   ],
+   "responseType": "json",
+   "defaultFields": [
+    "studyVersion",
+    "study.protocolSection"
+   ],
+   "mutates": false,
+   "example": {
+    "nctId": "NCT04368728",
+    "version": "0"
+   },
+   "source": "E7 GET https://clinicaltrials.gov/api/int/studies/NCT04368728/history/{n}",
+   "verified": false,
+   "verifyNote": "The internal history endpoint returns 403 and the public v2 API has no version-history equivalent."
+  }
+ ],
+ "generated": {
+  "by": "clify add",
+  "model": "claude-opus-5-5",
+  "exploredSteps": 20,
+  "recorded": 45,
+  "verifiedAt": "2026-10-18T07:19:33.108Z",
+  "seconds": 211
+ }
+}

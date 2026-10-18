@@ -1,0 +1,176 @@
+{
+ "url": "https://ec.europa.eu/eurostat/databrowser/",
+ "category": "gov-eu",
+ "sandbox": "clify-ec-europa-eu-eurostat-databrowser",
+ "startedAt": "2026-10-18T08:09:45.355Z",
+ "region": "us-pdx-1",
+ "chrome": "Chrome/148.0.7778.96",
+ "sandboxStartMs": 3022,
+ "addSeconds": 226,
+ "addExit": 0,
+ "add": {
+  "ok": true,
+  "site": "ec-europa",
+  "url": "https://ec.europa.eu/eurostat/databrowser/",
+  "commands": [
+   {
+    "name": "search-datasets",
+    "summary": "Search Eurostat datasets by keyword (autocomplete suggestions). Returns dataset codes with highlighted titles.",
+    "verified": true
+   },
+   {
+    "name": "list-all-datasets",
+    "summary": "List every Eurostat dataflow (code, title, last data/structure update). Set comext=true for the Comext (international trade) database. Large response.",
+    "verified": true
+   },
+   {
+    "name": "list-themes",
+    "summary": "List top-level statistical themes (navigation tree roots). crossCutting=true returns the cross-cutting / EU-policy themes instead.",
+    "verified": true
+   },
+   {
+    "name": "get-theme-navtree",
+    "summary": "Get the category navigation tree under a theme (e.g. popul = Population and social conditions).",
+    "verified": true
+   },
+   {
+    "name": "get-full-tree",
+    "summary": "Get the full Eurostat navigation tree (categories and datasets), optionally only the branch under one category code.",
+    "verified": true
+   },
+   {
+    "name": "list-category-datasets",
+    "summary": "List the datasets in a navigation-tree category (e.g. scheme popul, category une = unemployment), with titles, update dates and links.",
+    "verified": true
+   },
+   {
+    "name": "get-dataset-info",
+    "summary": "Get dataset metadata: title, description, observation count, time coverage, last data/structure update, DOI, source dataset, metadata links.",
+    "verified": true
+   },
+   {
+    "name": "get-dataset-status",
+    "summary": "Check that a dataset code exists and has data; returns its canonical id, default view id and last data/structure update timestamps (ms).",
+    "verified": true
+   },
+   {
+    "name": "get-dataset-dimensions",
+    "summary": "List a dataset's dimensions (freq, geo, sex, age, unit, ...) with all available codes and labels. Use these codes as filters in get-data.",
+    "verified": true
+   },
+   {
+    "name": "get-dataset-categories",
+    "summary": "Get where a dataset sits in the navigation tree (theme and category breadcrumbs).",
+    "verified": true
+   },
+   {
+    "name": "get-dataset-relations",
+    "summary": "List datasets derived from this dataset and the source dataset(s) it is derived from (code -> title).",
+    "verified": true
+   },
+   {
+    "name": "get-data",
+    "summary": "Fetch dataset values as JSON-stat from the public statistics API, filtered by dimension codes (geo, sex, age, unit, s_adj, na_item, ...) and time range.",
+    "verified": true
+   },
+   {
+    "name": "get-codelist",
+    "summary": "Get all codes and labels of a Eurostat codelist (e.g. geo = countries/regions/aggregates).",
+    "verified": true
+   }
+  ],
+  "verified": 13,
+  "writes": 0,
+  "dropped": [],
+  "blockers": [],
+  "loggedIn": false,
+  "seconds": 226,
+  "next": [
+   "clify ec-europa",
+   "clify ec-europa search-datasets --text \"unemployment\""
+  ],
+  "installed": "/home/ubuntu/clify-runs/blaxel-w1/home/bin/ec-europa",
+  "explored": {
+   "steps": 21,
+   "recorded": 225,
+   "heldWrites": 1
+  }
+ },
+ "check": {
+  "on": "blaxel",
+  "node": "v24.22.0",
+  "seconds": 12,
+  "reads": 13,
+  "verified": 13,
+  "failed": [],
+  "results": [
+   {
+    "name": "search-datasets",
+    "ok": true,
+    "ms": 613
+   },
+   {
+    "name": "list-all-datasets",
+    "ok": true,
+    "ms": 1035
+   },
+   {
+    "name": "list-themes",
+    "ok": true,
+    "ms": 473
+   },
+   {
+    "name": "get-theme-navtree",
+    "ok": true,
+    "ms": 495
+   },
+   {
+    "name": "get-full-tree",
+    "ok": true,
+    "ms": 836
+   },
+   {
+    "name": "list-category-datasets",
+    "ok": true,
+    "ms": 478
+   },
+   {
+    "name": "get-dataset-info",
+    "ok": true,
+    "ms": 482
+   },
+   {
+    "name": "get-dataset-status",
+    "ok": true,
+    "ms": 191
+   },
+   {
+    "name": "get-dataset-dimensions",
+    "ok": true,
+    "ms": 3242
+   },
+   {
+    "name": "get-dataset-categories",
+    "ok": true,
+    "ms": 467
+   },
+   {
+    "name": "get-dataset-relations",
+    "ok": true,
+    "ms": 487
+   },
+   {
+    "name": "get-data",
+    "ok": true,
+    "ms": 483
+   },
+   {
+    "name": "get-codelist",
+    "ok": true,
+    "ms": 577
+   }
+  ]
+ },
+ "deleted": true,
+ "seconds": 241
+}

@@ -1,0 +1,1002 @@
+{
+  "name": "appwrite",
+  "startUrl": "https://cloud.appwrite.io/console",
+  "origin": "https://cloud.appwrite.io",
+  "createdAt": "2026-10-18T09:45:15.652Z",
+  "description": "Appwrite Cloud console: list your organizations, projects, TablesDB databases, tables, columns, indexes and rows, and create tables and string columns.",
+  "commands": [
+    {
+      "name": "list-projects",
+      "summary": "List the projects in an organization, optionally filtered by a name search",
+      "method": "GET",
+      "urlTemplate": "/v1/organization/projects?queries%5B0%5D=%7B%22method%22%3A%22orderDesc%22%2C%22attribute%22%3A%22%24createdAt%22%7D&queries%5B1%5D=%7B%22method%22%3A%22limit%22%2C%22values%22%3A%5B100%5D%7D",
+      "params": [
+        {
+          "name": "organizationId",
+          "key": "X-Appwrite-Organization",
+          "in": "header",
+          "required": true,
+          "type": "string",
+          "description": "Organization (team) id. Get it from list-organizations.",
+          "example": "6ad465a90029cef9877f",
+          "context": "organizationId"
+        },
+        {
+          "name": "search",
+          "in": "query",
+          "required": false,
+          "type": "string",
+          "description": "Free-text search on project name or id"
+        }
+      ],
+      "headers": {
+        "X-Appwrite-Project": "console",
+        "X-Appwrite-Response-Format": "2.4.0"
+      },
+      "responseType": "json",
+      "resultPath": "projects",
+      "defaultFields": [
+        "$id",
+        "name",
+        "region",
+        "status",
+        "teamId",
+        "$createdAt"
+      ],
+      "mutates": false,
+      "auth": true,
+      "example": {},
+      "source": "E16 GET https://cloud.appwrite.io/v1/organization/projects",
+      "verified": true,
+      "sample": "{\"$id\":\"6ad465aa0026dab1fac0\",\"name\":\"My first project\",\"region\":\"fra\",\"status\":\"active\",\"teamId\":\"6ad465a90029cef9877f\",\"$createdAt\":\"2026-10-18T06:22:34.947+00:00\"}",
+      "resultFields": [
+        "$id",
+        "$createdAt",
+        "$updatedAt",
+        "name",
+        "teamId",
+        "region",
+        "smtpEnabled",
+        "smtpSenderName",
+        "smtpSenderEmail",
+        "smtpReplyToName",
+        "smtpReplyToEmail",
+        "smtpHost",
+        "smtpPort",
+        "smtpUsername",
+        "smtpPassword",
+        "smtpSecure",
+        "pingCount",
+        "pingedAt",
+        "labels",
+        "status",
+        "onboarding",
+        "authMethods",
+        "services",
+        "protocols",
+        "blocks",
+        "consoleAccessedAt",
+        "wafEnabled",
+        "parentId",
+        "billingLimits",
+        "firstAccessedAt",
+        "mcpAccessedAt",
+        "oAuth2ServerEnabled",
+        "oAuth2ServerAuthorizationUrl",
+        "oAuth2ServerScopes",
+        "oAuth2ServerDefaultScopes",
+        "oAuth2ServerInstallationScopes",
+        "oAuth2ServerAuthorizationDetailsTypes",
+        "oAuth2ServerAccessTokenDuration",
+        "oAuth2ServerRefreshTokenDuration",
+        "oAuth2ServerPublicAccessTokenDuration"
+      ]
+    },
+    {
+      "name": "list-databases",
+      "summary": "List the TablesDB databases in a project",
+      "method": "GET",
+      "urlTemplate": "https://fra.cloud.appwrite.io/v1/tablesdb?queries%5B0%5D=%7B%22method%22%3A%22orderDesc%22%2C%22attribute%22%3A%22%24createdAt%22%7D&queries%5B1%5D=%7B%22method%22%3A%22limit%22%2C%22values%22%3A%5B100%5D%7D",
+      "params": [
+        {
+          "name": "projectId",
+          "key": "X-Appwrite-Project",
+          "in": "header",
+          "required": true,
+          "type": "string",
+          "description": "Project id. Get it from list-projects.",
+          "example": "6ad465aa0026dab1fac0",
+          "context": "projectId"
+        },
+        {
+          "name": "search",
+          "in": "query",
+          "required": false,
+          "type": "string",
+          "description": "Free-text search on database name or id"
+        }
+      ],
+      "headers": {
+        "X-Appwrite-Mode": "admin",
+        "X-Appwrite-Response-Format": "2.4.0"
+      },
+      "responseType": "json",
+      "resultPath": "databases",
+      "defaultFields": [
+        "$id",
+        "name",
+        "type",
+        "status",
+        "enabled",
+        "$createdAt"
+      ],
+      "mutates": false,
+      "auth": true,
+      "example": {},
+      "source": "E35 E19 GET https://fra.cloud.appwrite.io/v1/tablesdb",
+      "verified": true,
+      "sample": "{\"$id\":\"6ad471f2900e99d2b0e4\",\"name\":\"race\",\"type\":\"tablesdb\",\"status\":\"ready\",\"enabled\":true,\"$createdAt\":\"2026-10-18T07:14:58.590+00:00\"}",
+      "resultFields": [
+        "$id",
+        "name",
+        "$createdAt",
+        "$updatedAt",
+        "enabled",
+        "type",
+        "status",
+        "engine",
+        "specification",
+        "replicas",
+        "error",
+        "containerStatus",
+        "lifecycleState",
+        "policies",
+        "archives"
+      ]
+    },
+    {
+      "name": "list-tables",
+      "summary": "List the tables in a database",
+      "method": "GET",
+      "urlTemplate": "https://fra.cloud.appwrite.io/v1/tablesdb/{databaseId}/tables?queries%5B0%5D=%7B%22method%22%3A%22orderAsc%22%2C%22attribute%22%3A%22%24createdAt%22%7D&queries%5B1%5D=%7B%22method%22%3A%22limit%22%2C%22values%22%3A%5B100%5D%7D",
+      "params": [
+        {
+          "name": "projectId",
+          "key": "X-Appwrite-Project",
+          "in": "header",
+          "required": true,
+          "type": "string",
+          "description": "Project id",
+          "example": "6ad465aa0026dab1fac0",
+          "context": "projectId"
+        },
+        {
+          "name": "databaseId",
+          "in": "path",
+          "required": true,
+          "type": "string",
+          "description": "Database id. Get it from list-databases.",
+          "example": "6ad471f2900e99d2b0e4",
+          "context": "databaseId"
+        },
+        {
+          "name": "search",
+          "in": "query",
+          "required": false,
+          "type": "string",
+          "description": "Free-text search on table name or id"
+        }
+      ],
+      "headers": {
+        "X-Appwrite-Mode": "admin",
+        "X-Appwrite-Response-Format": "2.4.0"
+      },
+      "responseType": "json",
+      "resultPath": "tables",
+      "defaultFields": [
+        "$id",
+        "name",
+        "databaseId",
+        "enabled",
+        "rowSecurity",
+        "$createdAt"
+      ],
+      "mutates": false,
+      "auth": true,
+      "example": {},
+      "source": "E24 GET https://fra.cloud.appwrite.io/v1/tablesdb/{id}/tables",
+      "verified": true,
+      "sample": "{\"$id\":\"6ad4947000260c96461e\",\"name\":\"race-gen-1\",\"databaseId\":\"6ad471f2900e99d2b0e4\",\"enabled\":true,\"rowSecurity\":false,\"$createdAt\":\"2026-10-18T09:42:08.712+00:00\"}",
+      "resultFields": [
+        "$id",
+        "$createdAt",
+        "$updatedAt",
+        "$permissions",
+        "databaseId",
+        "name",
+        "enabled",
+        "rowSecurity",
+        "columns",
+        "indexes",
+        "bytesMax",
+        "bytesUsed"
+      ]
+    },
+    {
+      "name": "create-table",
+      "summary": "Create a new table in a database",
+      "method": "POST",
+      "urlTemplate": "https://fra.cloud.appwrite.io/v1/tablesdb/{databaseId}/tables",
+      "params": [
+        {
+          "name": "projectId",
+          "key": "X-Appwrite-Project",
+          "in": "header",
+          "required": true,
+          "type": "string",
+          "description": "Project id",
+          "example": "6ad465aa0026dab1fac0",
+          "context": "projectId"
+        },
+        {
+          "name": "databaseId",
+          "in": "path",
+          "required": true,
+          "type": "string",
+          "description": "Database id",
+          "example": "6ad471f2900e99d2b0e4",
+          "context": "databaseId"
+        },
+        {
+          "name": "name",
+          "in": "body",
+          "required": true,
+          "type": "string",
+          "description": "Table name",
+          "example": "race-gen-1"
+        },
+        {
+          "name": "tableId",
+          "in": "body",
+          "required": false,
+          "type": "string",
+          "description": "Custom table id. 'unique()' lets the server generate one.",
+          "default": "unique()"
+        }
+      ],
+      "bodyTemplate": {
+        "tableId": "{tableId}",
+        "name": "{name}"
+      },
+      "bodyEncoding": "json",
+      "headers": {
+        "X-Appwrite-Mode": "admin",
+        "X-Appwrite-Response-Format": "2.4.0"
+      },
+      "responseType": "json",
+      "defaultFields": [
+        "$id",
+        "name",
+        "databaseId",
+        "enabled",
+        "rowSecurity",
+        "$createdAt"
+      ],
+      "mutates": true,
+      "auth": true,
+      "example": {
+        "name": "race-gen-1"
+      },
+      "source": "E3 POST https://fra.cloud.appwrite.io/v1/tablesdb/{id}/tables",
+      "verified": false,
+      "verifyNote": "write: dry-run preview only, not sent"
+    },
+    {
+      "name": "list-columns",
+      "summary": "List the columns of a table, with their type, size, required flag and status",
+      "method": "GET",
+      "urlTemplate": "https://fra.cloud.appwrite.io/v1/tablesdb/{databaseId}/tables/{tableId}/columns?queries%5B0%5D=%7B%22method%22%3A%22orderAsc%22%2C%22attribute%22%3A%22%24createdAt%22%7D&queries%5B1%5D=%7B%22method%22%3A%22limit%22%2C%22values%22%3A%5B100%5D%7D&total=true",
+      "params": [
+        {
+          "name": "projectId",
+          "key": "X-Appwrite-Project",
+          "in": "header",
+          "required": true,
+          "type": "string",
+          "description": "Project id",
+          "example": "6ad465aa0026dab1fac0",
+          "context": "projectId"
+        },
+        {
+          "name": "databaseId",
+          "in": "path",
+          "required": true,
+          "type": "string",
+          "description": "Database id",
+          "example": "6ad471f2900e99d2b0e4",
+          "context": "databaseId"
+        },
+        {
+          "name": "tableId",
+          "in": "path",
+          "required": true,
+          "type": "string",
+          "description": "Table id. Get it from list-tables.",
+          "example": "6ad4947000260c96461e"
+        }
+      ],
+      "headers": {
+        "X-Appwrite-Mode": "admin",
+        "X-Appwrite-Response-Format": "2.4.0"
+      },
+      "responseType": "json",
+      "resultPath": "columns",
+      "defaultFields": [
+        "key",
+        "type",
+        "status",
+        "size",
+        "required",
+        "array",
+        "default",
+        "error"
+      ],
+      "mutates": false,
+      "auth": true,
+      "example": {
+        "tableId": "6ad4947000260c96461e"
+      },
+      "source": "E25 GET https://fra.cloud.appwrite.io/v1/tablesdb/{id}/tables/{id}/columns",
+      "verified": true,
+      "sample": "{\"key\":\"race_gen_2\",\"type\":\"string\",\"status\":\"available\",\"size\":255,\"required\":false,\"array\":false,\"default\":null,\"error\":\"\"}",
+      "resultFields": [
+        "key",
+        "type",
+        "status",
+        "error",
+        "required",
+        "array",
+        "$createdAt",
+        "$updatedAt",
+        "size",
+        "default",
+        "encrypt"
+      ]
+    },
+    {
+      "name": "create-string-column",
+      "summary": "Add a string column to a table. The column is created asynchronously: status starts as 'processing'; check it with list-columns.",
+      "method": "POST",
+      "urlTemplate": "https://fra.cloud.appwrite.io/v1/tablesdb/{databaseId}/tables/{tableId}/columns/string",
+      "params": [
+        {
+          "name": "projectId",
+          "key": "X-Appwrite-Project",
+          "in": "header",
+          "required": true,
+          "type": "string",
+          "description": "Project id",
+          "example": "6ad465aa0026dab1fac0",
+          "context": "projectId"
+        },
+        {
+          "name": "databaseId",
+          "in": "path",
+          "required": true,
+          "type": "string",
+          "description": "Database id",
+          "example": "6ad471f2900e99d2b0e4",
+          "context": "databaseId"
+        },
+        {
+          "name": "tableId",
+          "in": "path",
+          "required": true,
+          "type": "string",
+          "description": "Table id",
+          "example": "6ad4947000260c96461e"
+        },
+        {
+          "name": "key",
+          "in": "body",
+          "required": true,
+          "type": "string",
+          "description": "Column key (name), e.g. title",
+          "example": "race_gen_2"
+        },
+        {
+          "name": "size",
+          "in": "body",
+          "required": false,
+          "type": "number",
+          "description": "Maximum length in characters",
+          "default": 255
+        },
+        {
+          "name": "required",
+          "in": "body",
+          "required": false,
+          "type": "boolean",
+          "description": "Whether rows must provide a value",
+          "default": false
+        },
+        {
+          "name": "array",
+          "in": "body",
+          "required": false,
+          "type": "boolean",
+          "description": "Whether the column holds an array of strings",
+          "default": false
+        },
+        {
+          "name": "encrypt",
+          "in": "body",
+          "required": false,
+          "type": "boolean",
+          "description": "Encrypt values at rest",
+          "default": false
+        },
+        {
+          "name": "defaultValue",
+          "key": "default",
+          "in": "body",
+          "required": false,
+          "type": "string",
+          "description": "Default value. Only allowed when required is false."
+        }
+      ],
+      "bodyTemplate": {
+        "key": "{key}",
+        "size": "{size}",
+        "required": "{required}",
+        "array": "{array}",
+        "encrypt": "{encrypt}"
+      },
+      "bodyEncoding": "json",
+      "headers": {
+        "X-Appwrite-Mode": "admin",
+        "X-Appwrite-Response-Format": "2.4.0"
+      },
+      "responseType": "json",
+      "defaultFields": [
+        "key",
+        "type",
+        "status",
+        "size",
+        "required",
+        "array",
+        "default",
+        "error"
+      ],
+      "mutates": true,
+      "auth": true,
+      "example": {
+        "tableId": "6ad4947000260c96461e",
+        "key": "race_gen_2"
+      },
+      "source": "E4 POST https://fra.cloud.appwrite.io/v1/tablesdb/{id}/tables/{id}/columns/string",
+      "verified": false,
+      "verifyNote": "write: dry-run preview only, not sent"
+    },
+    {
+      "name": "list-organizations",
+      "summary": "List the organizations (teams) the signed-in user belongs to, with their billing plan",
+      "method": "GET",
+      "urlTemplate": "/v1/organizations",
+      "params": [],
+      "headers": {
+        "X-Appwrite-Project": "console",
+        "X-Appwrite-Response-Format": "2.4.0"
+      },
+      "responseType": "json",
+      "resultPath": "teams",
+      "defaultFields": [
+        "$id",
+        "name",
+        "billingPlan",
+        "status",
+        "total",
+        "$createdAt"
+      ],
+      "mutates": false,
+      "auth": true,
+      "source": "E8 GET https://cloud.appwrite.io/v1/organizations",
+      "verified": true,
+      "sample": "{\"$id\":\"6ad465a90029cef9877f\",\"name\":\"Personal Projects\",\"billingPlan\":\"tier-0\",\"status\":\"active\",\"total\":1,\"$createdAt\":\"2026-10-18T06:22:33.993+00:00\"}",
+      "resultFields": [
+        "$id",
+        "$createdAt",
+        "$updatedAt",
+        "name",
+        "total",
+        "prefs",
+        "billingBudget",
+        "budgetAlerts",
+        "billingPlan",
+        "billingPlanId",
+        "billingPlanDetails",
+        "billingEmail",
+        "billingStartDate",
+        "billingCurrentInvoiceDate",
+        "billingNextInvoiceDate",
+        "billingTrialStartDate",
+        "billingTrialDays",
+        "billingAggregationId",
+        "billingInvoiceId",
+        "paymentMethodId",
+        "billingAddressId",
+        "backupPaymentMethodId",
+        "status",
+        "remarks",
+        "agreementBAA",
+        "programManagerName",
+        "programManagerCalendar",
+        "programDiscordChannelName",
+        "programDiscordChannelUrl",
+        "billingLimits",
+        "billingPlanDowngrade",
+        "billingTaxId",
+        "markedForDeletion",
+        "platform",
+        "projects"
+      ],
+      "example": {}
+    },
+    {
+      "name": "get-database",
+      "summary": "Get details of one database",
+      "method": "GET",
+      "urlTemplate": "https://fra.cloud.appwrite.io/v1/tablesdb/{databaseId}",
+      "params": [
+        {
+          "name": "projectId",
+          "key": "X-Appwrite-Project",
+          "in": "header",
+          "required": true,
+          "type": "string",
+          "description": "Project id",
+          "example": "6ad465aa0026dab1fac0",
+          "context": "projectId"
+        },
+        {
+          "name": "databaseId",
+          "in": "path",
+          "required": true,
+          "type": "string",
+          "description": "Database id",
+          "example": "6ad471f2900e99d2b0e4",
+          "context": "databaseId"
+        }
+      ],
+      "headers": {
+        "X-Appwrite-Mode": "admin",
+        "X-Appwrite-Response-Format": "2.4.0"
+      },
+      "responseType": "json",
+      "defaultFields": [
+        "$id",
+        "name",
+        "type",
+        "status",
+        "enabled",
+        "$createdAt",
+        "$updatedAt"
+      ],
+      "mutates": false,
+      "auth": true,
+      "example": {},
+      "source": "E23 GET https://fra.cloud.appwrite.io/v1/tablesdb/{id}",
+      "verified": true,
+      "sample": "{\"$id\":\"6ad471f2900e99d2b0e4\",\"name\":\"race\",\"type\":\"tablesdb\",\"status\":\"ready\",\"enabled\":true,\"$createdAt\":\"2026-10-18T07:14:58.590+00:00\",\"$updatedAt\":\"2026-10-18T07:15:07.567+00:00\"}",
+      "resultFields": [
+        "$id",
+        "name",
+        "$createdAt",
+        "$updatedAt",
+        "enabled",
+        "type",
+        "status",
+        "engine",
+        "specification",
+        "replicas",
+        "error",
+        "containerStatus",
+        "lifecycleState",
+        "policies",
+        "archives"
+      ]
+    },
+    {
+      "name": "get-table",
+      "summary": "Get one table, including its columns and indexes",
+      "method": "GET",
+      "urlTemplate": "https://fra.cloud.appwrite.io/v1/tablesdb/{databaseId}/tables/{tableId}",
+      "params": [
+        {
+          "name": "projectId",
+          "key": "X-Appwrite-Project",
+          "in": "header",
+          "required": true,
+          "type": "string",
+          "description": "Project id",
+          "example": "6ad465aa0026dab1fac0",
+          "context": "projectId"
+        },
+        {
+          "name": "databaseId",
+          "in": "path",
+          "required": true,
+          "type": "string",
+          "description": "Database id",
+          "example": "6ad471f2900e99d2b0e4",
+          "context": "databaseId"
+        },
+        {
+          "name": "tableId",
+          "in": "path",
+          "required": true,
+          "type": "string",
+          "description": "Table id",
+          "example": "6ad4947000260c96461e"
+        }
+      ],
+      "headers": {
+        "X-Appwrite-Mode": "admin",
+        "X-Appwrite-Response-Format": "2.4.0"
+      },
+      "responseType": "json",
+      "defaultFields": [
+        "$id",
+        "name",
+        "databaseId",
+        "enabled",
+        "rowSecurity",
+        "columns",
+        "indexes",
+        "bytesUsed"
+      ],
+      "mutates": false,
+      "auth": true,
+      "example": {
+        "tableId": "6ad4947000260c96461e"
+      },
+      "source": "E26 GET https://fra.cloud.appwrite.io/v1/tablesdb/{id}/tables/{id}",
+      "verified": true,
+      "sample": "{\"$id\":\"6ad4947000260c96461e\",\"name\":\"race-gen-1\",\"databaseId\":\"6ad471f2900e99d2b0e4\",\"enabled\":true,\"rowSecurity\":false,\"columns\":[{\"key\":\"race_gen_2\",\"type\":\"string\",\"status\":\"available\",\"error\":\"\",\"required\":false,\"array\":false,\"$createdAt\":\"2026-10-18T09:42:45.568+00:00\",\"$updatedAt\":\"2026-10-18T09:42:45.797+00:00\",\"size\":255,\"default\":null,\"encrypt\":fal",
+      "resultFields": [
+        "$id",
+        "$createdAt",
+        "$updatedAt",
+        "$permissions",
+        "databaseId",
+        "name",
+        "enabled",
+        "rowSecurity",
+        "columns",
+        "indexes",
+        "bytesMax",
+        "bytesUsed"
+      ]
+    },
+    {
+      "name": "get-project",
+      "summary": "Get settings and details of a project (region, status, services, auth methods)",
+      "method": "GET",
+      "urlTemplate": "/v1/project",
+      "params": [
+        {
+          "name": "projectId",
+          "key": "X-Appwrite-Project",
+          "in": "header",
+          "required": true,
+          "type": "string",
+          "description": "Project id",
+          "example": "6ad465aa0026dab1fac0",
+          "context": "projectId"
+        }
+      ],
+      "headers": {
+        "X-Appwrite-Mode": "admin",
+        "X-Appwrite-Response-Format": "2.4.0"
+      },
+      "responseType": "json",
+      "defaultFields": [
+        "$id",
+        "name",
+        "teamId",
+        "region",
+        "status",
+        "$createdAt"
+      ],
+      "mutates": false,
+      "auth": true,
+      "example": {},
+      "source": "E29 GET https://cloud.appwrite.io/v1/project",
+      "verified": true,
+      "sample": "{\"$id\":\"6ad465aa0026dab1fac0\",\"name\":\"My first project\",\"teamId\":\"6ad465a90029cef9877f\",\"region\":\"fra\",\"status\":\"active\",\"$createdAt\":\"2026-10-18T06:22:34.947+00:00\"}",
+      "resultFields": [
+        "$id",
+        "$createdAt",
+        "$updatedAt",
+        "name",
+        "teamId",
+        "region",
+        "smtpEnabled",
+        "smtpSenderName",
+        "smtpSenderEmail",
+        "smtpReplyToName",
+        "smtpReplyToEmail",
+        "smtpHost",
+        "smtpPort",
+        "smtpUsername",
+        "smtpPassword",
+        "smtpSecure",
+        "pingCount",
+        "pingedAt",
+        "labels",
+        "status",
+        "onboarding",
+        "authMethods",
+        "services",
+        "protocols",
+        "blocks",
+        "consoleAccessedAt",
+        "wafEnabled",
+        "parentId",
+        "billingLimits",
+        "firstAccessedAt",
+        "mcpAccessedAt",
+        "oAuth2ServerEnabled",
+        "oAuth2ServerAuthorizationUrl",
+        "oAuth2ServerScopes",
+        "oAuth2ServerDefaultScopes",
+        "oAuth2ServerInstallationScopes",
+        "oAuth2ServerAuthorizationDetailsTypes",
+        "oAuth2ServerAccessTokenDuration",
+        "oAuth2ServerRefreshTokenDuration",
+        "oAuth2ServerPublicAccessTokenDuration"
+      ]
+    },
+    {
+      "name": "get-account",
+      "summary": "Get the signed-in user's account (id, name, email, current organization)",
+      "method": "GET",
+      "urlTemplate": "/v1/account",
+      "params": [],
+      "headers": {
+        "X-Appwrite-Project": "console",
+        "X-Appwrite-Response-Format": "2.4.0"
+      },
+      "responseType": "json",
+      "defaultFields": [
+        "$id",
+        "name",
+        "email",
+        "phone",
+        "emailVerification",
+        "mfa",
+        "prefs.organization",
+        "registration"
+      ],
+      "mutates": false,
+      "auth": true,
+      "source": "E7 GET https://cloud.appwrite.io/v1/account",
+      "verified": true,
+      "sample": "{\"$id\":\"6ad4659b003775182094\",\"name\":\"clify agent\",\"email\":\"clify-agent-b3d326@inkboxmail.com\",\"phone\":\"+12099641736\",\"emailVerification\":true,\"mfa\":true,\"prefs.organization\":\"6ad465a90029cef9877f\",\"registration\":\"2026-10-18T06:22:20.107+00:00\"}",
+      "resultFields": [
+        "$id",
+        "$createdAt",
+        "$updatedAt",
+        "name",
+        "registration",
+        "status",
+        "labels",
+        "passwordUpdate",
+        "email",
+        "phone",
+        "emailVerification",
+        "emailCanonical",
+        "emailIsFree",
+        "emailIsDisposable",
+        "emailIsCorporate",
+        "emailIsCanonical",
+        "passwordPwned",
+        "phoneVerification",
+        "mfa",
+        "prefs",
+        "targets",
+        "accessedAt",
+        "impersonator",
+        "impersonatorUserId",
+        "paymentMethod",
+        "paymentMethods"
+      ],
+      "example": {},
+      "aliases": [
+        "me"
+      ]
+    }
+  ],
+  "blockers": [],
+  "notes": [
+    "Hierarchy: list-organizations -> list-projects (organizationId) -> list-databases (projectId) -> list-tables (databaseId) -> list-columns (tableId).",
+    "Project-scoped commands call the Frankfurt regional endpoint (fra.cloud.appwrite.io). Projects in another region (see the region field from list-projects) may need that region's host.",
+    "IDs are Appwrite 20-character ids ($id). Columns are identified by their key."
+  ],
+  "auth": {
+    "headerNames": [],
+    "loginUrl": "https://cloud.appwrite.io/console/login"
+  },
+  "dropped": [
+    {
+      "name": "list-rows",
+      "summary": "List rows of a table, newest first (up to 100)",
+      "method": "GET",
+      "urlTemplate": "https://fra.cloud.appwrite.io/v1/tablesdb/{databaseId}/tables/{tableId}/rows?queries%5B0%5D=%7B%22method%22%3A%22orderDesc%22%2C%22attribute%22%3A%22%24createdAt%22%7D&queries%5B1%5D=%7B%22method%22%3A%22limit%22%2C%22values%22%3A%5B100%5D%7D&total=true",
+      "params": [
+        {
+          "name": "projectId",
+          "key": "X-Appwrite-Project",
+          "in": "header",
+          "required": true,
+          "type": "string",
+          "description": "Project id",
+          "example": "6ad465aa0026dab1fac0"
+        },
+        {
+          "name": "databaseId",
+          "in": "path",
+          "required": true,
+          "type": "string",
+          "description": "Database id",
+          "example": "6ad471f2900e99d2b0e4"
+        },
+        {
+          "name": "tableId",
+          "in": "path",
+          "required": true,
+          "type": "string",
+          "description": "Table id",
+          "example": "6ad4947000260c96461e"
+        }
+      ],
+      "headers": {
+        "X-Appwrite-Mode": "admin",
+        "X-Appwrite-Response-Format": "2.4.0"
+      },
+      "responseType": "json",
+      "resultPath": "rows",
+      "defaultFields": [
+        "$id",
+        "$createdAt",
+        "$updatedAt"
+      ],
+      "mutates": false,
+      "auth": true,
+      "example": {
+        "projectId": "6ad465aa0026dab1fac0",
+        "databaseId": "6ad471f2900e99d2b0e4",
+        "tableId": "6ad4947000260c96461e"
+      },
+      "source": "E40 GET https://fra.cloud.appwrite.io/v1/tablesdb/{id}/tables/{id}/rows",
+      "verified": false,
+      "verifyNote": "empty list: the example args returned nothing or the selector/resultPath is wrong"
+    },
+    {
+      "name": "list-indexes",
+      "summary": "List the indexes of a table",
+      "method": "GET",
+      "urlTemplate": "https://fra.cloud.appwrite.io/v1/tablesdb/{databaseId}/tables/{tableId}/indexes?queries%5B0%5D=%7B%22method%22%3A%22orderAsc%22%2C%22attribute%22%3A%22%24createdAt%22%7D&queries%5B1%5D=%7B%22method%22%3A%22limit%22%2C%22values%22%3A%5B100%5D%7D&total=true",
+      "params": [
+        {
+          "name": "projectId",
+          "key": "X-Appwrite-Project",
+          "in": "header",
+          "required": true,
+          "type": "string",
+          "description": "Project id",
+          "example": "6ad465aa0026dab1fac0"
+        },
+        {
+          "name": "databaseId",
+          "in": "path",
+          "required": true,
+          "type": "string",
+          "description": "Database id",
+          "example": "6ad471f2900e99d2b0e4"
+        },
+        {
+          "name": "tableId",
+          "in": "path",
+          "required": true,
+          "type": "string",
+          "description": "Table id",
+          "example": "6ad4947000260c96461e"
+        }
+      ],
+      "headers": {
+        "X-Appwrite-Mode": "admin",
+        "X-Appwrite-Response-Format": "2.4.0"
+      },
+      "responseType": "json",
+      "resultPath": "indexes",
+      "defaultFields": [
+        "key",
+        "type",
+        "status",
+        "columns",
+        "orders"
+      ],
+      "mutates": false,
+      "auth": true,
+      "example": {
+        "projectId": "6ad465aa0026dab1fac0",
+        "databaseId": "6ad471f2900e99d2b0e4",
+        "tableId": "6ad4947000260c96461e"
+      },
+      "source": "E27 GET https://fra.cloud.appwrite.io/v1/tablesdb/{id}/tables/{id}/indexes",
+      "verified": false,
+      "verifyNote": "empty list: the example args returned nothing or the selector/resultPath is wrong"
+    },
+    {
+      "name": "list-buckets",
+      "summary": "List the storage buckets in a project",
+      "method": "GET",
+      "urlTemplate": "https://fra.cloud.appwrite.io/v1/storage/buckets?queries%5B0%5D=%7B%22method%22%3A%22orderDesc%22%2C%22attribute%22%3A%22%24createdAt%22%7D&queries%5B1%5D=%7B%22method%22%3A%22limit%22%2C%22values%22%3A%5B100%5D%7D",
+      "params": [
+        {
+          "name": "projectId",
+          "key": "X-Appwrite-Project",
+          "in": "header",
+          "required": true,
+          "type": "string",
+          "description": "Project id",
+          "example": "6ad465aa0026dab1fac0"
+        }
+      ],
+      "headers": {
+        "X-Appwrite-Mode": "admin",
+        "X-Appwrite-Response-Format": "2.4.0"
+      },
+      "responseType": "json",
+      "resultPath": "buckets",
+      "defaultFields": [
+        "$id",
+        "name",
+        "enabled",
+        "maximumFileSize",
+        "$createdAt"
+      ],
+      "mutates": false,
+      "auth": true,
+      "example": {
+        "projectId": "6ad465aa0026dab1fac0"
+      },
+      "source": "E34 GET https://fra.cloud.appwrite.io/v1/storage/buckets",
+      "verified": false,
+      "verifyNote": "empty list: the example args returned nothing or the selector/resultPath is wrong"
+    }
+  ],
+  "context": {
+    "projectId": {
+      "value": "6ad465aa0026dab1fac0",
+      "from": "same value on every recorded request (list-databases, list-tables, create-table)"
+    },
+    "databaseId": {
+      "value": "6ad471f2900e99d2b0e4",
+      "from": "same value on every recorded request (list-tables, create-table, list-columns)"
+    },
+    "organizationId": {
+      "value": "6ad465a90029cef9877f",
+      "from": "the only item of list-organizations"
+    }
+  },
+  "generated": {
+    "by": "clify add",
+    "model": "claude-opus-5-5",
+    "exploredSteps": 0,
+    "recorded": 355,
+    "verifiedAt": "2026-10-18T09:46:34.115Z",
+    "seconds": 79
+  }
+}

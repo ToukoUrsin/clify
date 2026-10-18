@@ -1,0 +1,27 @@
+{
+  "name": "hnsearch",
+  "startUrl": "https://hn.algolia.com/",
+  "origin": "https://hn.algolia.com",
+  "createdAt": "2026-10-17T08:20:00Z",
+  "description": "Hacker News search. The web app calls Algolia directly (recorded: POST .../indexes/Item_dev/query and Item_dev_sort_date); this spec uses the site's documented public API with the same parameters.",
+  "notes": ["Recorded XHR carried the web app's embedded search key; not replayed. Commands use hn.algolia.com/api/v1 (public, documented)."],
+  "commands": [
+    { "name": "search", "summary": "Search stories/comments by relevance", "method": "GET", "urlTemplate": "/api/v1/search", "responseType": "json", "resultPath": "hits", "mutates": false,
+      "params": [
+        { "name": "query", "in": "query", "required": true, "type": "string" },
+        { "name": "tags", "in": "query", "required": false, "type": "string", "enum": ["story", "comment", "ask_hn", "show_hn", "poll"], "default": "story" },
+        { "name": "page", "in": "query", "required": false, "type": "number" },
+        { "name": "hitsPerPage", "in": "query", "required": false, "type": "number" } ],
+      "example": { "query": "playwright" }, "source": "POST https://uj5wyc0l7x-dsn.algolia.net/1/indexes/Item_dev/query" },
+    { "name": "search-by-date", "summary": "Newest first", "method": "GET", "urlTemplate": "/api/v1/search_by_date", "responseType": "json", "resultPath": "hits", "mutates": false,
+      "params": [
+        { "name": "query", "in": "query", "required": true, "type": "string" },
+        { "name": "tags", "in": "query", "required": false, "type": "string", "enum": ["story", "comment", "ask_hn", "show_hn", "poll"], "default": "story" },
+        { "name": "numericFilters", "in": "query", "required": false, "type": "string", "description": "e.g. created_at_i>1700000000, points>100" } ],
+      "source": "POST https://uj5wyc0l7x-dsn.algolia.net/1/indexes/Item_dev_sort_date/query" },
+    { "name": "get-item", "summary": "A story or comment with its comment tree", "method": "GET", "urlTemplate": "/api/v1/items/{id}", "responseType": "json", "mutates": false,
+      "params": [ { "name": "id", "in": "path", "required": true, "type": "number" } ] },
+    { "name": "get-user", "summary": "A user's profile", "method": "GET", "urlTemplate": "/api/v1/users/{username}", "responseType": "json", "mutates": false,
+      "params": [ { "name": "username", "in": "path", "required": true, "type": "string" } ] }
+  ]
+}

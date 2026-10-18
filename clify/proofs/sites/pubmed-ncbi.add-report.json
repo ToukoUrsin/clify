@@ -1,0 +1,43 @@
+{
+ "ok": true,
+ "site": "pubmed-ncbi",
+ "url": "https://pubmed.ncbi.nlm.nih.gov/",
+ "commands": [
+  {
+   "name": "search-articles",
+   "summary": "Search PubMed articles by keyword or field-tagged query with optional filters, sort, author ID and pagination; returns summary results (PMID, title, authors, citation, snippet)",
+   "verified": true
+  },
+  {
+   "name": "get-articles",
+   "summary": "Get full article records (title, authors, affiliations, PMID/PMCID/DOI, journal, abstract, full-text links) for a query, typically a list of PMIDs; this replaces the blocked article detail pages",
+   "verified": true
+  },
+  {
+   "name": "export-medline",
+   "summary": "Export search results as plain-text MEDLINE/PubMed records (all tagged fields: PMID, TI, AB, AU, AD, MH, DP, etc.)",
+   "verified": true
+  },
+  {
+   "name": "list-pmids",
+   "summary": "Get only the PMIDs that match a search query, as a plain list (up to 200 per page); a cheap way to collect IDs for get-articles",
+   "verified": true
+  }
+ ],
+ "verified": 4,
+ "writes": 0,
+ "dropped": [],
+ "blockers": [],
+ "loggedIn": false,
+ "seconds": 176,
+ "next": [
+  "clify pubmed-ncbi",
+  "clify pubmed-ncbi search-articles --term \"crispr\""
+ ],
+ "installed": "/home/ubuntu/clify-runs/batch2/home/bin/pubmed-ncbi",
+ "explored": {
+  "steps": 15,
+  "recorded": 30,
+  "heldWrites": 0
+ }
+}

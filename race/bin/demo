@@ -1,0 +1,13 @@
+#!/usr/bin/env bash
+# Run from your own machine. Starts a live race on the Linux machine $RACE_BOX (ssh host)
+# and forwards its dashboard here. Opens nothing: view the printed URL in your browser.
+#   race/bin/demo            live race, A (browser clicks + screenshots) vs C (clify)
+#   race/bin/demo replay     no live agents: replay of the recorded representative run
+#   race/bin/demo js         live race, B (browser + page JavaScript) vs C
+#   race/bin/demo grid       live grid: 6 browser agents vs 6 clify agents, one site each
+#   race/bin/demo grid-replay  replay of the recorded grid run
+# No network: play race/artifacts/accounts-4x.mp4 instead.
+BOX=${RACE_BOX:?set RACE_BOX to the ssh host of the Linux machine that runs the race}
+PORT=${PORT:-8790}          # on this machine
+BOX_PORT=${BOX_PORT:-8870}  # race dashboard on $RACE_BOX (repo checkout: ~/$RACE_DIR, default ~/clify)
+exec ssh -t -o ExitOnForwardFailure=yes -L "$PORT:127.0.0.1:$BOX_PORT" "$BOX" "cd ${RACE_DIR:-clify} && PORT=$BOX_PORT VIEW_PORT=$PORT $(case ${1:-live} in grid) echo race/bin/grid;; grid-replay) echo race/bin/grid replay;; *) echo race/bin/live-race ${1:-live};; esac)"

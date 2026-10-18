@@ -1,0 +1,687 @@
+{
+ "name": "semanticscholar",
+ "startUrl": "https://www.semanticscholar.org/",
+ "origin": "https://www.semanticscholar.org",
+ "createdAt": "2026-10-18T08:32:13.028Z",
+ "description": "Semantic Scholar, an AI-powered search engine for scientific literature. The CLI searches and looks up papers, authors, citations, references and recommendations through the official Semantic Scholar Academic Graph and Recommendations APIs, and also offers the web app's title autocomplete.",
+ "commands": [
+  {
+   "name": "match-paper-title",
+   "summary": "Find the single paper that best matches a given title (returns 404 if there is no good match)",
+   "method": "GET",
+   "urlTemplate": "https://api.semanticscholar.org/graph/v1/paper/search/match",
+   "params": [
+    {
+     "name": "query",
+     "in": "query",
+     "required": true,
+     "type": "string",
+     "description": "Paper title, or close to it",
+     "example": "Attention is All you Need"
+    },
+    {
+     "name": "api_fields",
+     "key": "fields",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Comma-separated paper fields to return (sent to the site as \"fields\"; clify's own --fields only shapes the output)",
+     "default": "paperId,title,year,authors,venue,citationCount,externalIds,url"
+    },
+    {
+     "name": "apiKey",
+     "key": "x-api-key",
+     "in": "header",
+     "required": false,
+     "type": "string",
+     "description": "Optional Semantic Scholar API key; reduces 429 rate limiting"
+    }
+   ],
+   "responseType": "json",
+   "resultPath": "data",
+   "defaultFields": [
+    "paperId",
+    "title",
+    "matchScore",
+    "year",
+    "authors",
+    "venue",
+    "citationCount",
+    "url"
+   ],
+   "mutates": false,
+   "example": {
+    "query": "Attention is All you Need"
+   },
+   "source": "",
+   "verified": true
+  },
+  {
+   "name": "get-paper-citations",
+   "summary": "List the papers that cite a given paper (citing papers, with context/intents)",
+   "method": "GET",
+   "urlTemplate": "https://api.semanticscholar.org/graph/v1/paper/{paper_id}/citations",
+   "params": [
+    {
+     "name": "paper_id",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "S2 paper ID or prefixed ID (DOI:, ARXIV:, CorpusId:, ...)",
+     "example": "204e3073870fae3d05bcbc2f6a8e263d9b72e776"
+    },
+    {
+     "name": "api_fields",
+     "key": "fields",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Comma-separated fields of the citing paper plus contexts,intents,isInfluential (sent to the site as \"fields\"; clify's own --fields only shapes the output)",
+     "default": "paperId,title,year,authors,venue,citationCount,isInfluential,intents"
+    },
+    {
+     "name": "offset",
+     "in": "query",
+     "required": false,
+     "type": "number",
+     "description": "Index of the first result",
+     "default": 0
+    },
+    {
+     "name": "api_limit",
+     "key": "limit",
+     "in": "query",
+     "required": false,
+     "type": "number",
+     "description": "Results per page, max 1000 (sent to the site as \"limit\"; clify's own --limit only shapes the output)",
+     "default": 20
+    },
+    {
+     "name": "apiKey",
+     "key": "x-api-key",
+     "in": "header",
+     "required": false,
+     "type": "string",
+     "description": "Optional Semantic Scholar API key; reduces 429 rate limiting"
+    }
+   ],
+   "responseType": "json",
+   "resultPath": "data",
+   "defaultFields": [
+    "citingPaper.paperId",
+    "citingPaper.title",
+    "citingPaper.year",
+    "citingPaper.venue",
+    "citingPaper.citationCount",
+    "isInfluential",
+    "intents"
+   ],
+   "pagination": {
+    "type": "offset",
+    "param": "offset",
+    "step": 20
+   },
+   "mutates": false,
+   "example": {
+    "paper_id": "204e3073870fae3d05bcbc2f6a8e263d9b72e776"
+   },
+   "source": "",
+   "verified": true
+  },
+  {
+   "name": "get-author",
+   "summary": "Get an author profile: name, affiliations, homepage, paper count, citation count, h-index",
+   "method": "GET",
+   "urlTemplate": "https://api.semanticscholar.org/graph/v1/author/{author_id}",
+   "params": [
+    {
+     "name": "author_id",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "S2 author ID (the number in /author/<slug>/<id> URLs)",
+     "example": "40348417"
+    },
+    {
+     "name": "api_fields",
+     "key": "fields",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Comma-separated author fields (sent to the site as \"fields\"; clify's own --fields only shapes the output)",
+     "default": "authorId,name,affiliations,homepage,paperCount,citationCount,hIndex,externalIds,url"
+    },
+    {
+     "name": "apiKey",
+     "key": "x-api-key",
+     "in": "header",
+     "required": false,
+     "type": "string",
+     "description": "Optional Semantic Scholar API key; reduces 429 rate limiting"
+    }
+   ],
+   "responseType": "json",
+   "defaultFields": [
+    "authorId",
+    "name",
+    "affiliations",
+    "homepage",
+    "paperCount",
+    "citationCount",
+    "hIndex",
+    "url"
+   ],
+   "mutates": false,
+   "example": {
+    "author_id": "40348417"
+   },
+   "source": "E12 GET https://www.semanticscholar.org/author/Ashish-Vaswani/{n}",
+   "verified": true
+  },
+  {
+   "name": "autocomplete-papers",
+   "summary": "Title and query suggestions for partial text, as shown in the semanticscholar.org search box",
+   "method": "GET",
+   "urlTemplate": "/api/1/completion",
+   "params": [
+    {
+     "name": "q",
+     "in": "query",
+     "required": true,
+     "type": "string",
+     "description": "Partial query text, typically the start of a paper title",
+     "example": "attention is all you"
+    }
+   ],
+   "headers": {
+    "x-s2-client": "webapp-browser"
+   },
+   "responseType": "json",
+   "resultPath": "suggestions",
+   "mutates": false,
+   "example": {
+    "q": "attention is all you"
+   },
+   "source": "E3",
+   "verified": true
+  }
+ ],
+ "blockers": [
+  "captcha"
+ ],
+ "notes": [
+  "The web app's own data endpoints are protected. POST /api/1/search (E8) always returned 202 with an empty body. Paper and author pages (E9, E11, E12) returned an AWS WAF bot challenge. /search and the api-docs page are disallowed by robots.txt. These were deliberately not turned into commands, and the CLI does not attempt the WAF challenge (E2/E4/E6). Paper, author, citation and recommendation data instead come from Semantic Scholar's official public API at api.semanticscholar.org, which is the sanctioned way to access the data programmatically.",
+  "None of the api.semanticscholar.org commands were verified in this recording. The explorer's unauthenticated calls to /graph/v1/paper/search and /graph/v1/paper/<id> returned 429 Too Many Requests, because unauthenticated traffic shares one rate-limited pool. Pass --apiKey (sent as the x-api-key header; free key from https://www.semanticscholar.org/product/api) and/or retry with backoff. Keyed access is typically limited to about 1 request per second.",
+  "Paper IDs are 40-char hex S2 IDs (the last path segment of /paper/<slug>/<id> URLs). Graph API commands also accept prefixed IDs: DOI:, ARXIV:, CorpusId:, PMID:, PMCID:, ACL:, MAG:, URL:.",
+  "Author IDs are the numeric last path segment of /author/<slug>/<id> URLs, e.g. 40348417 for Ashish Vaswani.",
+  "search-papers pagination: offset + limit must stay below 1000. If you change --limit, step --offset by the same amount. The response's 'next' field gives the next offset and 'total' gives the match count.",
+  "Use --fields to request extra data, e.g. abstract, tldr, externalIds, publicationDate, s2FieldsOfStudy, embedding. Nested author fields use dot syntax, e.g. authors.name.",
+  "autocomplete-papers (E3) is the only command that returned 200 in the recording, but its suggestions array was empty for 'transformer attention'. It depends on the internal web API (x-s2-client header) and may start being challenged like /api/1/search.",
+  "No logged-in or write capabilities were observed: the explorer was signed out, and the only writes were WAF, consent and analytics calls, which were skipped."
+ ],
+ "dropped": [
+  {
+   "name": "search-papers",
+   "summary": "Keyword search over papers (relevance ranked), with optional year, venue, field-of-study, publication-type and minimum-citation filters",
+   "method": "GET",
+   "urlTemplate": "https://api.semanticscholar.org/graph/v1/paper/search",
+   "params": [
+    {
+     "name": "query",
+     "in": "query",
+     "required": true,
+     "type": "string",
+     "description": "Plain-text search query (no special syntax)",
+     "example": "transformer attention"
+    },
+    {
+     "name": "year",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Publication year or range: '2019', '2016-2020', '2010-' (2010 or later), '-2015' (2015 or earlier)",
+     "example": "2017-2020"
+    },
+    {
+     "name": "venue",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Comma-separated venue names or ISO4 abbreviations",
+     "example": "Nature,NeurIPS"
+    },
+    {
+     "name": "fieldsOfStudy",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Comma-separated fields of study, e.g. 'Computer Science,Medicine'",
+     "example": "Computer Science"
+    },
+    {
+     "name": "publicationTypes",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Comma-separated types: Review, JournalArticle, CaseReport, ClinicalTrial, Conference, Dataset, Editorial, LettersAndComments, MetaAnalysis, News, Study, Book, BookSection",
+     "example": "JournalArticle,Conference"
+    },
+    {
+     "name": "minCitationCount",
+     "in": "query",
+     "required": false,
+     "type": "number",
+     "description": "Only return papers with at least this many citations",
+     "example": "100"
+    },
+    {
+     "name": "api_fields",
+     "key": "fields",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Comma-separated paper fields to return (e.g. paperId,title,abstract,year,authors,venue,citationCount,openAccessPdf,tldr,externalIds,url) (sent to the site as \"fields\"; clify's own --fields only shapes the output)",
+     "default": "paperId,title,year,authors,venue,citationCount,openAccessPdf,url"
+    },
+    {
+     "name": "offset",
+     "in": "query",
+     "required": false,
+     "type": "number",
+     "description": "Index of the first result (offset + limit must be < 1000)",
+     "default": 0
+    },
+    {
+     "name": "api_limit",
+     "key": "limit",
+     "in": "query",
+     "required": false,
+     "type": "number",
+     "description": "Results per page, max 100 (sent to the site as \"limit\"; clify's own --limit only shapes the output)",
+     "default": 10
+    },
+    {
+     "name": "apiKey",
+     "key": "x-api-key",
+     "in": "header",
+     "required": false,
+     "type": "string",
+     "description": "Optional Semantic Scholar API key (free, request at semanticscholar.org/product/api). Without one, requests share a heavily rate-limited pool and may get 429."
+    }
+   ],
+   "responseType": "json",
+   "resultPath": "data",
+   "defaultFields": [
+    "paperId",
+    "title",
+    "year",
+    "authors",
+    "venue",
+    "citationCount",
+    "openAccessPdf.url",
+    "url"
+   ],
+   "pagination": {
+    "type": "offset",
+    "param": "offset",
+    "step": 10
+   },
+   "mutates": false,
+   "example": {
+    "query": "transformer attention"
+   },
+   "source": "E8 POST https://www.semanticscholar.org/api/{n}/search",
+   "verified": false,
+   "verifyNote": "HTTP 429: rate limited by the site; wait a minute before retrying (HTTP 429)"
+  },
+  {
+   "name": "get-paper",
+   "summary": "Get details of one paper: title, abstract, TLDR, authors, venue, year, citation counts, open-access PDF, external IDs",
+   "method": "GET",
+   "urlTemplate": "https://api.semanticscholar.org/graph/v1/paper/{paper_id}",
+   "params": [
+    {
+     "name": "paper_id",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "S2 paper ID (40-char hex from /paper/<slug>/<id> URLs) or a prefixed ID: CorpusId:215416146, DOI:10.18653/v1/N18-3011, ARXIV:1706.03762, PMID:19872477, ACL:W12-3903, URL:https://arxiv.org/abs/1706.037",
+     "example": "204e3073870fae3d05bcbc2f6a8e263d9b72e776"
+    },
+    {
+     "name": "api_fields",
+     "key": "fields",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Comma-separated fields (e.g. paperId,title,abstract,tldr,year,venue,authors,citationCount,referenceCount,influentialCitationCount,openAccessPdf,fieldsOfStudy,publicationDate,externalIds,url) (sent to the site as \"fields\"; clify's own --fields only shapes the output)",
+     "default": "paperId,title,abstract,tldr,year,venue,publicationDate,authors,citationCount,referenceCount,influentialCitationCount,openAccessPdf,fieldsOfStudy,externalIds,url"
+    },
+    {
+     "name": "apiKey",
+     "key": "x-api-key",
+     "in": "header",
+     "required": false,
+     "type": "string",
+     "description": "Optional Semantic Scholar API key; reduces 429 rate limiting"
+    }
+   ],
+   "responseType": "json",
+   "defaultFields": [
+    "paperId",
+    "title",
+    "year",
+    "venue",
+    "authors",
+    "citationCount",
+    "tldr.text",
+    "openAccessPdf.url"
+   ],
+   "mutates": false,
+   "example": {
+    "paper_id": "204e3073870fae3d05bcbc2f6a8e263d9b72e776"
+   },
+   "source": "E9 E11 GET https://www.semanticscholar.org/paper/{id}",
+   "verified": false,
+   "verifyNote": "HTTP 429: rate limited by the site; wait a minute before retrying (HTTP 429)"
+  },
+  {
+   "name": "get-paper-references",
+   "summary": "List the papers a given paper cites (its bibliography)",
+   "method": "GET",
+   "urlTemplate": "https://api.semanticscholar.org/graph/v1/paper/{paper_id}/references",
+   "params": [
+    {
+     "name": "paper_id",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "S2 paper ID or prefixed ID (DOI:, ARXIV:, CorpusId:, ...)",
+     "example": "cb92a7f9d9dbcf9145e32fdfa0e70e2a6b828eb1"
+    },
+    {
+     "name": "api_fields",
+     "key": "fields",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Comma-separated fields of the cited paper plus contexts,intents,isInfluential (sent to the site as \"fields\"; clify's own --fields only shapes the output)",
+     "default": "paperId,title,year,authors,venue,citationCount,isInfluential,intents"
+    },
+    {
+     "name": "offset",
+     "in": "query",
+     "required": false,
+     "type": "number",
+     "description": "Index of the first result",
+     "default": 0
+    },
+    {
+     "name": "api_limit",
+     "key": "limit",
+     "in": "query",
+     "required": false,
+     "type": "number",
+     "description": "Results per page, max 1000 (sent to the site as \"limit\"; clify's own --limit only shapes the output)",
+     "default": 20
+    },
+    {
+     "name": "apiKey",
+     "key": "x-api-key",
+     "in": "header",
+     "required": false,
+     "type": "string",
+     "description": "Optional Semantic Scholar API key; reduces 429 rate limiting"
+    }
+   ],
+   "responseType": "json",
+   "resultPath": "data",
+   "defaultFields": [
+    "citedPaper.paperId",
+    "citedPaper.title",
+    "citedPaper.year",
+    "citedPaper.venue",
+    "citedPaper.citationCount",
+    "isInfluential"
+   ],
+   "pagination": {
+    "type": "offset",
+    "param": "offset",
+    "step": 20
+   },
+   "mutates": false,
+   "example": {
+    "paper_id": "cb92a7f9d9dbcf9145e32fdfa0e70e2a6b828eb1"
+   },
+   "source": "",
+   "verified": false,
+   "verifyNote": "failed on Blaxel: HTTP 429: rate limited by the site; wait a minute before retrying (HTTP 429)"
+  },
+  {
+   "name": "get-paper-recommendations",
+   "summary": "Recommend papers similar to a given paper",
+   "method": "GET",
+   "urlTemplate": "https://api.semanticscholar.org/recommendations/v1/papers/forpaper/{paper_id}",
+   "params": [
+    {
+     "name": "paper_id",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "S2 paper ID or prefixed ID",
+     "example": "204e3073870fae3d05bcbc2f6a8e263d9b72e776"
+    },
+    {
+     "name": "from",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Candidate pool: 'recent' (only recently published papers, may be empty for older or niche seeds) or 'all-cs' (all computer-science papers)",
+     "enum": [
+      "recent",
+      "all-cs"
+     ],
+     "default": "recent"
+    },
+    {
+     "name": "api_limit",
+     "key": "limit",
+     "in": "query",
+     "required": false,
+     "type": "number",
+     "description": "Number of recommendations, max 500 (sent to the site as \"limit\"; clify's own --limit only shapes the output)",
+     "default": 20
+    },
+    {
+     "name": "api_fields",
+     "key": "fields",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Comma-separated paper fields to return (sent to the site as \"fields\"; clify's own --fields only shapes the output)",
+     "default": "paperId,title,year,authors,venue,citationCount,url"
+    },
+    {
+     "name": "apiKey",
+     "key": "x-api-key",
+     "in": "header",
+     "required": false,
+     "type": "string",
+     "description": "Optional Semantic Scholar API key; reduces 429 rate limiting"
+    }
+   ],
+   "responseType": "json",
+   "resultPath": "recommendedPapers",
+   "defaultFields": [
+    "paperId",
+    "title",
+    "year",
+    "authors",
+    "venue",
+    "citationCount",
+    "url"
+   ],
+   "mutates": false,
+   "example": {
+    "paper_id": "204e3073870fae3d05bcbc2f6a8e263d9b72e776",
+    "from": "all-cs"
+   },
+   "source": "E10",
+   "verified": false,
+   "verifyNote": "failed on Blaxel: HTTP 429: rate limited by the site; wait a minute before retrying (HTTP 429)"
+  },
+  {
+   "name": "search-authors",
+   "summary": "Search authors by name",
+   "method": "GET",
+   "urlTemplate": "https://api.semanticscholar.org/graph/v1/author/search",
+   "params": [
+    {
+     "name": "query",
+     "in": "query",
+     "required": true,
+     "type": "string",
+     "description": "Author name",
+     "example": "Ashish Vaswani"
+    },
+    {
+     "name": "api_fields",
+     "key": "fields",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Comma-separated author fields (sent to the site as \"fields\"; clify's own --fields only shapes the output)",
+     "default": "authorId,name,affiliations,paperCount,citationCount,hIndex,url"
+    },
+    {
+     "name": "offset",
+     "in": "query",
+     "required": false,
+     "type": "number",
+     "description": "Index of the first result",
+     "default": 0
+    },
+    {
+     "name": "api_limit",
+     "key": "limit",
+     "in": "query",
+     "required": false,
+     "type": "number",
+     "description": "Results per page, max 1000 (sent to the site as \"limit\"; clify's own --limit only shapes the output)",
+     "default": 10
+    },
+    {
+     "name": "apiKey",
+     "key": "x-api-key",
+     "in": "header",
+     "required": false,
+     "type": "string",
+     "description": "Optional Semantic Scholar API key; reduces 429 rate limiting"
+    }
+   ],
+   "responseType": "json",
+   "resultPath": "data",
+   "defaultFields": [
+    "authorId",
+    "name",
+    "affiliations",
+    "paperCount",
+    "citationCount",
+    "hIndex",
+    "url"
+   ],
+   "pagination": {
+    "type": "offset",
+    "param": "offset",
+    "step": 10
+   },
+   "mutates": false,
+   "example": {
+    "query": "Ashish Vaswani"
+   },
+   "source": "",
+   "verified": false,
+   "verifyNote": "failed on Blaxel: HTTP 429: rate limited by the site; wait a minute before retrying (HTTP 429)"
+  },
+  {
+   "name": "list-author-papers",
+   "summary": "List the papers written by an author",
+   "method": "GET",
+   "urlTemplate": "https://api.semanticscholar.org/graph/v1/author/{author_id}/papers",
+   "params": [
+    {
+     "name": "author_id",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "S2 author ID",
+     "example": "40348417"
+    },
+    {
+     "name": "api_fields",
+     "key": "fields",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Comma-separated paper fields (sent to the site as \"fields\"; clify's own --fields only shapes the output)",
+     "default": "paperId,title,year,venue,citationCount,authors,url"
+    },
+    {
+     "name": "offset",
+     "in": "query",
+     "required": false,
+     "type": "number",
+     "description": "Index of the first result",
+     "default": 0
+    },
+    {
+     "name": "api_limit",
+     "key": "limit",
+     "in": "query",
+     "required": false,
+     "type": "number",
+     "description": "Results per page, max 1000 (sent to the site as \"limit\"; clify's own --limit only shapes the output)",
+     "default": 20
+    },
+    {
+     "name": "apiKey",
+     "key": "x-api-key",
+     "in": "header",
+     "required": false,
+     "type": "string",
+     "description": "Optional Semantic Scholar API key; reduces 429 rate limiting"
+    }
+   ],
+   "responseType": "json",
+   "resultPath": "data",
+   "defaultFields": [
+    "paperId",
+    "title",
+    "year",
+    "venue",
+    "citationCount",
+    "url"
+   ],
+   "pagination": {
+    "type": "offset",
+    "param": "offset",
+    "step": 20
+   },
+   "mutates": false,
+   "example": {
+    "author_id": "40348417"
+   },
+   "source": "",
+   "verified": false,
+   "verifyNote": "failed on Blaxel: HTTP 429: rate limited by the site; wait a minute before retrying (HTTP 429)"
+  }
+ ],
+ "generated": {
+  "by": "clify add",
+  "model": "claude-opus-5-5",
+  "exploredSteps": 15,
+  "recorded": 22,
+  "verifiedAt": "2026-10-18T08:33:58.820Z",
+  "seconds": 178
+ }
+}

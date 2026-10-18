@@ -1,0 +1,688 @@
+{
+ "name": "ssb",
+ "startUrl": "https://www.ssb.no/",
+ "origin": "https://www.ssb.no",
+ "createdAt": "2026-10-18T08:33:46.991Z",
+ "description": "Statistics Norway (SSB, ssb.no): search articles and statistics, read statistic, article and topic pages, and query Statbank (PxWebApi v2) tables, metadata and data, plus Klass classifications.",
+ "commands": [
+  {
+   "name": "search-content",
+   "summary": "Full-text search of ssb.no content (statistics, articles, analyses, fact pages), with subject/content-type filters and date sort",
+   "method": "GET",
+   "urlTemplate": "/sok/_/service/mimir/freeTextSearch",
+   "params": [
+    {
+     "name": "query",
+     "key": "sok",
+     "in": "query",
+     "required": true,
+     "type": "string",
+     "description": "Search text, e.g. befolkning",
+     "example": "befolkning"
+    },
+    {
+     "name": "start",
+     "in": "query",
+     "required": false,
+     "type": "number",
+     "description": "Result offset (0-based)",
+     "default": 0
+    },
+    {
+     "name": "count",
+     "in": "query",
+     "required": false,
+     "type": "number",
+     "description": "Number of hits per page",
+     "default": 15
+    },
+    {
+     "name": "language",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Content language",
+     "enum": [
+      "nb",
+      "en"
+     ],
+     "default": "nb"
+    },
+    {
+     "name": "subject",
+     "key": "mainsubject",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Main subject filter (title from the 'subjects' facet), e.g. Befolkning, 'Innvandring og innvandrere'. Empty means all subjects.",
+     "example": "Befolkning"
+    },
+    {
+     "name": "content_type",
+     "key": "contentType",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Content type filter (title from the 'contentTypes' facet), e.g. artikkel, statistikk, analysis. Empty means all types.",
+     "example": "artikkel"
+    },
+    {
+     "name": "sort",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Sort order: best (relevance) or publiseringsdato (newest first)",
+     "enum": [
+      "best",
+      "publiseringsdato"
+     ]
+    }
+   ],
+   "responseType": "json",
+   "resultPath": "hits",
+   "defaultFields": [
+    "title",
+    "contentType",
+    "url",
+    "mainSubject",
+    "publishDate",
+    "preface"
+   ],
+   "pagination": {
+    "type": "offset",
+    "param": "start",
+    "step": 15
+   },
+   "mutates": false,
+   "example": {
+    "query": "befolkning"
+   },
+   "source": "E1 GET https://www.ssb.no/sok/_/service/mimir/freeTextSearch",
+   "verified": true
+  },
+  {
+   "name": "get-topic",
+   "summary": "List the sub-topics (category links) on an ssb.no main topic page",
+   "method": "GET",
+   "urlTemplate": "/{topic}",
+   "params": [
+    {
+     "name": "topic",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Topic slug, e.g. sosiale-forhold-og-kriminalitet, befolkning, arbeid-og-lonn",
+     "example": "sosiale-forhold-og-kriminalitet"
+    }
+   ],
+   "responseType": "html",
+   "extract": {
+    "list": "div.row.justify-content-start > div.col-12.col-md-6",
+    "fields": {
+     "title": "span.link-title-text",
+     "description": "span.link-sub-text",
+     "url": "a.ssb-category-link@href"
+    }
+   },
+   "defaultFields": [
+    "title",
+    "description",
+    "url"
+   ],
+   "mutates": false,
+   "example": {
+    "topic": "sosiale-forhold-og-kriminalitet"
+   },
+   "source": "E13 GET https://www.ssb.no/sosiale-forhold-og-kriminalitet",
+   "verified": true
+  },
+  {
+   "name": "get-statistic",
+   "summary": "Get a statistic page's overview: title, ingress, last and next update, subjects and keywords",
+   "method": "GET",
+   "urlTemplate": "/{subject}/{area}/statistikk/{slug}",
+   "params": [
+    {
+     "name": "subject",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "First URL segment of the statistic URL from search-content (e.g. befolkning in /befolkning/folketall/statistikk/befolkning)",
+     "example": "befolkning"
+    },
+    {
+     "name": "area",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Second URL segment, e.g. folketall",
+     "example": "folketall"
+    },
+    {
+     "name": "slug",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Statistic slug after /statistikk/, e.g. befolkning",
+     "example": "befolkning"
+    }
+   ],
+   "responseType": "html",
+   "extract": {
+    "fields": {
+     "id": "div.metainfo div.id",
+     "title": "h1.ssb-title",
+     "ingress": "div.ingress p.searchabletext",
+     "updated": "div.updatedDate",
+     "nextUpdate": "div.nextUpdateDate",
+     "subjects": "div.metainfo div.hovedemner",
+     "keywords": "div.metainfo div.stikkord",
+     "published": "div.metainfo div.publiseringsdato"
+    }
+   },
+   "defaultFields": [
+    "id",
+    "title",
+    "ingress",
+    "updated",
+    "nextUpdate",
+    "subjects",
+    "keywords"
+   ],
+   "mutates": false,
+   "example": {
+    "subject": "befolkning",
+    "area": "folketall",
+    "slug": "befolkning"
+   },
+   "source": "E14 GET https://www.ssb.no/befolkning/folketall/statistikk/befolkning",
+   "verified": true
+  },
+  {
+   "name": "get-statistic-tables",
+   "summary": "Get the 'selected figures' tables shown on a statistic page (caption, header and rows as text)",
+   "method": "GET",
+   "urlTemplate": "/{subject}/{area}/statistikk/{slug}",
+   "params": [
+    {
+     "name": "subject",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "First URL segment of the statistic URL, e.g. befolkning",
+     "example": "befolkning"
+    },
+    {
+     "name": "area",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Second URL segment, e.g. folketall",
+     "example": "folketall"
+    },
+    {
+     "name": "slug",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Statistic slug after /statistikk/",
+     "example": "befolkning"
+    }
+   ],
+   "responseType": "html",
+   "extract": {
+    "list": "div.ssb-table-wrapper table.ssb-table",
+    "fields": {
+     "caption": "caption",
+     "header": "thead",
+     "rows": "tbody"
+    }
+   },
+   "defaultFields": [
+    "caption",
+    "header",
+    "rows"
+   ],
+   "mutates": false,
+   "example": {
+    "subject": "befolkning",
+    "area": "folketall",
+    "slug": "befolkning"
+   },
+   "source": "E14 GET https://www.ssb.no/befolkning/folketall/statistikk/befolkning",
+   "verified": true
+  },
+  {
+   "name": "get-article",
+   "summary": "Get an ssb.no article: title, ingress, publish date, authors and body text",
+   "method": "GET",
+   "urlTemplate": "/{subject}/{area}/artikler/{slug}",
+   "params": [
+    {
+     "name": "subject",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "First URL segment of the article URL, e.g. befolkning",
+     "example": "befolkning"
+    },
+    {
+     "name": "area",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Second URL segment, e.g. navn",
+     "example": "navn"
+    },
+    {
+     "name": "slug",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Article slug after /artikler/",
+     "example": "kjaert-navn-har-mange-barn"
+    }
+   ],
+   "responseType": "html",
+   "extract": {
+    "fields": {
+     "title": "h1.ssb-title",
+     "introTitle": "p.introTitle",
+     "ingress": "p.ingress",
+     "published": "div.snr-dates-wrapper p",
+     "authors": "div.author-wrapper p",
+     "body": "div.article-body"
+    }
+   },
+   "defaultFields": [
+    "title",
+    "ingress",
+    "published",
+    "authors",
+    "body"
+   ],
+   "mutates": false,
+   "example": {
+    "subject": "befolkning",
+    "area": "navn",
+    "slug": "kjaert-navn-har-mange-barn"
+   },
+   "source": "E15 GET https://www.ssb.no/befolkning/navn/artikler/kjaert-navn-har-mange-barn",
+   "verified": true
+  },
+  {
+   "name": "search-tables",
+   "summary": "Search or list Statbank (PxWebApi v2) tables by keyword",
+   "method": "GET",
+   "urlTemplate": "https://data.ssb.no/api/pxwebapi/v2/tables",
+   "params": [
+    {
+     "name": "query",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Search words, e.g. folkemengde. Use quotes for an exact phrase.",
+     "example": "folkemengde"
+    },
+    {
+     "name": "lang",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Language",
+     "enum": [
+      "no",
+      "en"
+     ],
+     "default": "no"
+    },
+    {
+     "name": "include_discontinued",
+     "key": "includeDiscontinued",
+     "in": "query",
+     "required": false,
+     "type": "boolean",
+     "description": "Include discontinued tables",
+     "default": true
+    },
+    {
+     "name": "page",
+     "key": "pageNumber",
+     "in": "query",
+     "required": false,
+     "type": "number",
+     "description": "Page number (1-based)",
+     "default": 1
+    },
+    {
+     "name": "page_size",
+     "key": "pageSize",
+     "in": "query",
+     "required": false,
+     "type": "number",
+     "description": "Tables per page (web app uses 10000)",
+     "default": 50
+    }
+   ],
+   "responseType": "json",
+   "resultPath": "tables",
+   "defaultFields": [
+    "id",
+    "label",
+    "firstPeriod",
+    "lastPeriod",
+    "updated",
+    "timeUnit",
+    "discontinued"
+   ],
+   "pagination": {
+    "type": "page",
+    "param": "page"
+   },
+   "mutates": false,
+   "example": {
+    "query": "folkemengde"
+   },
+   "source": "E6 GET https://data.ssb.no/api/pxwebapi/v2/tables",
+   "verified": true
+  },
+  {
+   "name": "get-table",
+   "summary": "Get Statbank table info: label, period range, variables, subject paths, update time",
+   "method": "GET",
+   "urlTemplate": "https://data.ssb.no/api/pxwebapi/v2/tables/{table_id}",
+   "params": [
+    {
+     "name": "table_id",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Statbank table id (5 digits), e.g. 01222",
+     "example": "01222"
+    },
+    {
+     "name": "lang",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Language",
+     "enum": [
+      "no",
+      "en"
+     ],
+     "default": "no"
+    }
+   ],
+   "responseType": "json",
+   "defaultFields": [
+    "id",
+    "label",
+    "firstPeriod",
+    "lastPeriod",
+    "updated",
+    "timeUnit",
+    "variableNames",
+    "subjectCode"
+   ],
+   "mutates": false,
+   "example": {
+    "table_id": "01222"
+   },
+   "source": "E7 GET https://data.ssb.no/api/pxwebapi/v2/tables/{n}",
+   "verified": true
+  },
+  {
+   "name": "get-table-metadata",
+   "summary": "Get Statbank table metadata (json-stat2): dimensions with all value codes and labels, notes, roles",
+   "method": "GET",
+   "urlTemplate": "https://data.ssb.no/api/pxwebapi/v2/tables/{table_id}/metadata",
+   "params": [
+    {
+     "name": "table_id",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Statbank table id, e.g. 01222",
+     "example": "01222"
+    },
+    {
+     "name": "lang",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Language",
+     "enum": [
+      "no",
+      "en"
+     ],
+     "default": "no"
+    },
+    {
+     "name": "default_selection",
+     "key": "defaultSelection",
+     "in": "query",
+     "required": false,
+     "type": "boolean",
+     "description": "Restrict dimensions to the default selection's codelists",
+     "default": true
+    }
+   ],
+   "responseType": "json",
+   "defaultFields": [
+    "label",
+    "updated",
+    "id",
+    "size",
+    "role",
+    "note",
+    "dimension"
+   ],
+   "mutates": false,
+   "example": {
+    "table_id": "01222"
+   },
+   "source": "E8 GET https://data.ssb.no/api/pxwebapi/v2/tables/{n}/metadata",
+   "verified": true
+  },
+  {
+   "name": "get-table-default-selection",
+   "summary": "Get the default variable/value selection and layout the Statbank uses for a table",
+   "method": "GET",
+   "urlTemplate": "https://data.ssb.no/api/pxwebapi/v2/tables/{table_id}/defaultselection",
+   "params": [
+    {
+     "name": "table_id",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Statbank table id, e.g. 01222",
+     "example": "01222"
+    },
+    {
+     "name": "lang",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Language",
+     "enum": [
+      "no",
+      "en"
+     ],
+     "default": "no"
+    }
+   ],
+   "responseType": "json",
+   "defaultFields": [
+    "selection",
+    "placement"
+   ],
+   "mutates": false,
+   "example": {
+    "table_id": "01222"
+   },
+   "source": "E9 GET https://data.ssb.no/api/pxwebapi/v2/tables/{n}/defaultselection",
+   "verified": true
+  },
+  {
+   "name": "get-table-data",
+   "summary": "Fetch Statbank table data (json-stat2). Without selections it returns the table's default selection.",
+   "method": "GET",
+   "urlTemplate": "https://data.ssb.no/api/pxwebapi/v2/tables/{table_id}/data",
+   "params": [
+    {
+     "name": "table_id",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Statbank table id, e.g. 01222",
+     "example": "01222"
+    },
+    {
+     "name": "lang",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Language",
+     "enum": [
+      "no",
+      "en"
+     ],
+     "default": "no"
+    },
+    {
+     "name": "output_format",
+     "key": "outputFormat",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Output format (json-stat2 is parsed as JSON)",
+     "enum": [
+      "json-stat2"
+     ],
+     "default": "json-stat2"
+    },
+    {
+     "name": "time",
+     "key": "valueCodes[Tid]",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Time codes for variable Tid: comma list, wildcard or expression, e.g. 2026K2, top(4), from(2020)",
+     "example": "top(4)"
+    },
+    {
+     "name": "region",
+     "key": "valueCodes[Region]",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Region codes for variable Region, e.g. 0 (whole country), K-0301, or * for all values in the codelist"
+    },
+    {
+     "name": "region_codelist",
+     "key": "codelist[Region]",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Codelist for Region, e.g. agg_KommSummer (see get-table-default-selection)"
+    },
+    {
+     "name": "contents",
+     "key": "valueCodes[ContentsCode]",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "ContentsCode (statistics variable) codes, comma list or *"
+    }
+   ],
+   "responseType": "json",
+   "defaultFields": [
+    "label",
+    "updated",
+    "id",
+    "size",
+    "dimension",
+    "value",
+    "status"
+   ],
+   "mutates": false,
+   "example": {
+    "table_id": "01222"
+   },
+   "source": "E11 POST https://data.ssb.no/api/pxwebapi/v2/tables/{n}/data",
+   "verified": true
+  },
+  {
+   "name": "search-classifications",
+   "summary": "Search Klass, SSB's statistical classifications and code lists (e.g. NACE, municipalities, occupations)",
+   "method": "GET",
+   "urlTemplate": "https://data.ssb.no/api/klass/v1/classifications/search",
+   "params": [
+    {
+     "name": "query",
+     "in": "query",
+     "required": true,
+     "type": "string",
+     "description": "Search text, e.g. kommune, n\u00e6ring",
+     "example": "kommune"
+    },
+    {
+     "name": "page",
+     "in": "query",
+     "required": false,
+     "type": "number",
+     "description": "Page number (0-based)",
+     "default": 0
+    },
+    {
+     "name": "size",
+     "in": "query",
+     "required": false,
+     "type": "number",
+     "description": "Results per page",
+     "default": 20
+    }
+   ],
+   "headers": {
+    "Accept": "application/json"
+   },
+   "responseType": "json",
+   "resultPath": "_embedded.searchResults",
+   "defaultFields": [
+    "name",
+    "snippet",
+    "searchScore",
+    "_links.self.href"
+   ],
+   "pagination": {
+    "type": "page",
+    "param": "page"
+   },
+   "mutates": false,
+   "example": {
+    "query": "kommune"
+   },
+   "source": "",
+   "verified": true
+  }
+ ],
+ "blockers": [],
+ "notes": [
+  "search-content returns hit titles and prefaces containing <strong> highlight tags. Hit 'url' is a site path such as /befolkning/folketall/statistikk/befolkning: split it into subject/area/slug for get-statistic, or into subject/area/artikler/slug for get-article.",
+  "Facet values for search-content filters come from the 'subjects' and 'contentTypes' arrays in its response.",
+  "Statbank workflow: search-tables, then get-table-metadata (variable codes and value codes), then get-table-data with valueCodes. Data and metadata are json-stat2: values are a flat array ordered by the 'id'/'size' dimensions.",
+  "get-table-data's time/region/contents params map to valueCodes[Tid], valueCodes[Region] and valueCodes[ContentsCode], which most SSB tables use. Check get-table-metadata for the real variable codes. Mandatory variables you omit may cause an error, so give all mandatory variables or none (none returns the default selection).",
+  "PxWebApi has rate and size limits (the data cell limit is about 800,000 cells). Statbank updates daily at 08:00 Norwegian time. Data is licensed CC BY 4.0.",
+  "Klass returns XML unless asked for JSON. The command sends Accept: application/json.",
+  "Not captured: the name search (navnes\u00f8k) and the CSV/xlsx table downloads on statistic pages."
+ ],
+ "dropped": [],
+ "generated": {
+  "by": "clify add",
+  "model": "claude-opus-5-5",
+  "exploredSteps": 30,
+  "recorded": 29,
+  "verifiedAt": "2026-10-18T08:35:14.999Z",
+  "seconds": 254
+ }
+}

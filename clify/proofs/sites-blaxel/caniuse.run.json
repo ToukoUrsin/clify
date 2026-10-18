@@ -1,0 +1,126 @@
+{
+ "url": "https://caniuse.com/",
+ "category": "dev",
+ "sandbox": "clify-caniuse-com",
+ "startedAt": "2026-10-18T09:07:36.095Z",
+ "region": "us-pdx-1",
+ "chrome": "Chrome/148.0.7778.96",
+ "sandboxStartMs": 2550,
+ "addSeconds": 148,
+ "addExit": 0,
+ "add": {
+  "ok": true,
+  "site": "caniuse",
+  "url": "https://caniuse.com/",
+  "commands": [
+   {
+    "name": "search-features",
+    "summary": "Search caniuse features by keyword; returns matching feature IDs (caniuse, wf-* web-features and mdn-* BCD IDs)",
+    "verified": true
+   },
+   {
+    "name": "get-feature-support",
+    "summary": "Get full support data (title, description, spec, baseline status, per-browser per-version support stats) for one or more feature IDs",
+    "verified": true
+   },
+   {
+    "name": "compare-browsers",
+    "summary": "Compare feature support between browser versions; returns the raw comparison result (IDs of features whose support differs between the given versions)",
+    "verified": true
+   },
+   {
+    "name": "get-feature-page",
+    "summary": "Get a feature's detail page summary: title, spec link and status, description and global usage percentages (works for caniuse IDs, wf-* and mdn-* IDs)",
+    "verified": true
+   },
+   {
+    "name": "list-features-index",
+    "summary": "List all features in the caniuse index (titles and links, grouped by category in page order: CSS, HTML5, ...); the feature ID is the last path segment of href (e.g. 'css-rrggbbaa')",
+    "verified": true
+   },
+   {
+    "name": "list-news",
+    "summary": "List latest caniuse news / newly added features",
+    "verified": true
+   },
+   {
+    "name": "get-usage-table",
+    "summary": "Get the browser usage-share table: per browser, the versions with their global usage percentage",
+    "verified": true
+   },
+   {
+    "name": "list-feature-suggestions",
+    "summary": "List the top suggested features not yet on caniuse, ranked by GitHub votes",
+    "verified": true
+   }
+  ],
+  "verified": 8,
+  "writes": 0,
+  "dropped": [],
+  "blockers": [],
+  "loggedIn": false,
+  "seconds": 148,
+  "next": [
+   "clify caniuse",
+   "clify caniuse search-features --query \"flexbox\""
+  ],
+  "installed": "/home/ubuntu/clify-runs/blaxel-w1/home/bin/caniuse",
+  "explored": {
+   "steps": 11,
+   "recorded": 64,
+   "heldWrites": 12
+  }
+ },
+ "check": {
+  "on": "blaxel",
+  "node": "v24.22.0",
+  "seconds": 3,
+  "reads": 8,
+  "verified": 8,
+  "failed": [],
+  "results": [
+   {
+    "name": "search-features",
+    "ok": true,
+    "ms": 351
+   },
+   {
+    "name": "get-feature-support",
+    "ok": true,
+    "ms": 50
+   },
+   {
+    "name": "compare-browsers",
+    "ok": true,
+    "ms": 39
+   },
+   {
+    "name": "get-feature-page",
+    "ok": true,
+    "ms": 55
+   },
+   {
+    "name": "list-features-index",
+    "ok": true,
+    "ms": 113
+   },
+   {
+    "name": "list-news",
+    "ok": true,
+    "ms": 37
+   },
+   {
+    "name": "get-usage-table",
+    "ok": true,
+    "ms": 48
+   },
+   {
+    "name": "list-feature-suggestions",
+    "ok": true,
+    "ms": 124
+   }
+  ]
+ },
+ "deleted": true,
+ "seconds": 154
+}

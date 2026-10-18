@@ -1,0 +1,38 @@
+{
+ "url": "https://himalayas.app/jobs",
+ "category": "jobs-market",
+ "sandbox": "clify-himalayas-app-jobs",
+ "startedAt": "2026-10-18T08:39:46.384Z",
+ "region": "us-pdx-1",
+ "chrome": "Chrome/148.0.7778.96",
+ "sandboxStartMs": 2763,
+ "addSeconds": 23,
+ "addExit": 1,
+ "add": {
+  "ok": false,
+  "site": "himalayas",
+  "url": "https://himalayas.app/jobs",
+  "commands": [],
+  "verified": 0,
+  "writes": 0,
+  "dropped": [],
+  "blockers": [
+   "bot-check at https://himalayas.app/jobs",
+   "bot-check at https://himalayas.app/api",
+   "captcha"
+  ],
+  "loggedIn": false,
+  "seconds": 23,
+  "next": [
+   "clify himalayas",
+   "clify repair himalayas --goal \"<what you need from the site>\""
+  ],
+  "explored": {
+   "steps": 2,
+   "recorded": 4,
+   "heldWrites": 0
+  }
+ },
+ "deleted": true,
+ "seconds": 26
+}

@@ -1,0 +1,44 @@
+{
+ "task": "endoflife-ubuntu-2204",
+ "site": "endoflife",
+ "mode": "browser-ui",
+ "trial": 1,
+ "tag": "ui2",
+ "ok": true,
+ "why": "all expected values present",
+ "answer": "2027-06-01",
+ "expected": {
+  "expect": [
+   "2027-06-01"
+  ],
+  "detail": {
+   "codename": "Jammy Jellyfish",
+   "lts": true,
+   "releaseDate": "2022-04-21",
+   "eol": "2027-06-01",
+   "latest": "22.04.5",
+   "latestReleaseDate": "2024-09-12",
+   "support": "2024-09-30",
+   "extendedSupport": "2032-04-21"
+  }
+ },
+ "wallMs": 12496,
+ "apiMs": 9226,
+ "turns": 7,
+ "toolCalls": 6,
+ "tokens": {
+  "input": 10,
+  "output": 707,
+  "cacheWrite": 8660,
+  "cacheRead": 58131,
+  "total": 67508
+ },
+ "costUsd": 0.0691062,
+ "models": [
+  "claude-opus-5-5"
+ ],
+ "exitCode": 0,
+ "timedOut": false,
+ "subtype": "success",
+ "startedAt": "2026-10-17T23:32:38.777Z"
+}

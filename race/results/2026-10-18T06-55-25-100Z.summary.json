@@ -1,0 +1,386 @@
+{
+  "runDir": "/home/ubuntu/race-dev/race/runs/2026-10-18T06-55-25-100Z",
+  "agent": "codex",
+  "model": "gpt-6.1-sol",
+  "startedAt": "2026-10-18T06:55:25.101Z",
+  "finishedAt": "2026-10-18T06:57:21.017Z",
+  "valid": true,
+  "tasks": [
+    {
+      "id": "books",
+      "label": "BOOKS",
+      "kind": "3 pages · aggregate",
+      "url": "https://books.toscrape.com/",
+      "match": [
+        "books.toscrape.com",
+        "clify books"
+      ],
+      "prompt": "On Books to Scrape, look at every book in the Mystery and Travel categories (all pages of both). Report the 5 cheapest of those books overall, cheapest first, with each book's full title and price."
+    },
+    {
+      "id": "quotes",
+      "label": "QUOTES",
+      "kind": "paginated tag",
+      "url": "https://quotes.toscrape.com/",
+      "match": [
+        "quotes.toscrape.com",
+        "clify quotes"
+      ],
+      "prompt": "On Quotes to Scrape, collect every quote tagged \"love\" across all result pages. Report the total number of such quotes and how many of them each author wrote."
+    },
+    {
+      "id": "hn",
+      "label": "HN",
+      "kind": "3 searches · date filter",
+      "url": "https://hn.algolia.com/",
+      "match": [
+        "hn.algolia.com",
+        "clify hnsearch"
+      ],
+      "prompt": "Using Hacker News search (hn.algolia.com), for each of the topics Rust, SQLite and Kubernetes find the story posted during calendar year 2025 (UTC) that has the most points. Give each story's title, points and number of comments."
+    },
+    {
+      "id": "oscars",
+      "label": "OSCARS",
+      "kind": "6 AJAX views",
+      "url": "https://www.scrapethissite.com/pages/ajax-javascript/",
+      "match": [
+        "scrapethissite.com",
+        "clify scrapethis"
+      ],
+      "prompt": "On Scrape This Site's \"Oscar Winning Films: AJAX and Javascript\" page, give the Best Picture winner for every year from 2010 through 2015, with its number of nominations and awards."
+    },
+    {
+      "id": "pizza",
+      "label": "FORM",
+      "kind": "form fill · write",
+      "url": "https://httpbin.org/forms/post",
+      "match": [
+        "httpbin.org",
+        "clify httpbinform"
+      ],
+      "prompt": "Order a pizza with httpbin's test order form (an echo service, so submitting is approved): customer name Race Bot, telephone 555-0100, e-mail race@example.com, size large, toppings bacon and mushroom, delivery time 19:45, comments \"ring twice\". Submit it and report the form fields httpbin echoed back."
+    },
+    {
+      "id": "rooms",
+      "label": "ADMIN",
+      "kind": "login · write",
+      "url": "https://automationintesting.online/admin",
+      "match": [
+        "automationintesting.online",
+        "clify rbp"
+      ],
+      "prompt": "Log in to the admin panel of the Restful Booker Platform demo B&B (username admin, password password; the site is built for automation practice, so creating data is approved). Create a room named RACE-<RACER_ID> of type Family, accessible, price 321, with the features WiFi and Safe. Confirm it appears in the room list and report its details."
+    }
+  ],
+  "truth": {
+    "books": {
+      "books": 43,
+      "cheapest": [
+        {
+          "title": "Tastes Like Fear (DI Marnie Rome #3)",
+          "price": 10.69
+        },
+        {
+          "title": "Hide Away (Eve Duncan #20)",
+          "price": 11.84
+        },
+        {
+          "title": "The Girl You Lost",
+          "price": 12.29
+        },
+        {
+          "title": "Playing with Fire",
+          "price": 13.71
+        },
+        {
+          "title": "That Darkness (Gardiner and Renner #1)",
+          "price": 13.92
+        }
+      ],
+      "cutoff": 13.92,
+      "tied": [
+        {
+          "title": "That Darkness (Gardiner and Renner #1)",
+          "price": 13.92
+        }
+      ]
+    },
+    "quotes": {
+      "total": 14,
+      "byAuthor": {
+        "André Gide": 1,
+        "Marilyn Monroe": 3,
+        "Bob Marley": 1,
+        "Elie Wiesel": 1,
+        "Friedrich Nietzsche": 1,
+        "Pablo Neruda": 1,
+        "James Baldwin": 1,
+        "Jane Austen": 2,
+        "C.S. Lewis": 1,
+        "Alfred Tennyson": 1,
+        "J.M. Barrie": 1
+      }
+    },
+    "hn": {
+      "Rust": {
+        "top": {
+          "title": "Rust in the kernel is no longer experimental",
+          "points": 962,
+          "comments": 800,
+          "id": "46213585"
+        },
+        "max": {
+          "title": "Rust in the kernel is no longer experimental",
+          "points": 962,
+          "comments": 800,
+          "id": "46213585"
+        }
+      },
+      "SQLite": {
+        "top": {
+          "title": "A hackable AI assistant using a single SQLite table and a handful of cron jobs",
+          "points": 800,
+          "comments": 174,
+          "id": "43681287"
+        },
+        "max": {
+          "title": "A hackable AI assistant using a single SQLite table and a handful of cron jobs",
+          "points": 800,
+          "comments": 174,
+          "id": "43681287"
+        }
+      },
+      "Kubernetes": {
+        "top": {
+          "title": "Show HN: Edka – Kubernetes clusters on your own Hetzner account",
+          "points": 437,
+          "comments": 130,
+          "id": "44915164"
+        },
+        "max": {
+          "title": "Show HN: Edka – Kubernetes clusters on your own Hetzner account",
+          "points": 437,
+          "comments": 130,
+          "id": "44915164"
+        }
+      }
+    },
+    "oscars": {
+      "2010": {
+        "title": "The King's Speech",
+        "nominations": 12,
+        "awards": 4
+      },
+      "2011": {
+        "title": "The Artist",
+        "nominations": 10,
+        "awards": 5
+      },
+      "2012": {
+        "title": "Argo",
+        "nominations": 7,
+        "awards": 3
+      },
+      "2013": {
+        "title": "12 Years a Slave",
+        "nominations": 9,
+        "awards": 3
+      },
+      "2014": {
+        "title": "Birdman",
+        "nominations": 9,
+        "awards": 4
+      },
+      "2015": {
+        "title": "Spotlight",
+        "nominations": 6,
+        "awards": 2
+      }
+    },
+    "pizza": {
+      "formOnline": true
+    },
+    "rooms": {
+      "roomsBefore": 3
+    }
+  },
+  "racers": {
+    "browser": {
+      "racer": "browser",
+      "racerId": "browser-0655",
+      "agent": "codex",
+      "model": "gpt-6.1-sol",
+      "models": [
+        "gpt-6.1-sol"
+      ],
+      "invalid": false,
+      "invalidReason": null,
+      "exitCode": 0,
+      "startedMs": 5567,
+      "finishedMs": 113979,
+      "elapsedMs": 108412,
+      "usage": {
+        "input": 67351,
+        "output": 3840,
+        "cacheRead": 589312,
+        "cacheWrite": 0,
+        "cacheWrite1h": 0
+      },
+      "freshTokens": 71191,
+      "totalTokens": 660503,
+      "costUsd": 0.23203320000000002,
+      "computedCostUsd": 0.23203320000000002,
+      "reportedCostUsd": null,
+      "modelCalls": 27,
+      "toolCalls": 25,
+      "peakRamMB": 2188,
+      "avgCpu": 14.075000000000008,
+      "success": 6,
+      "tasks": {
+        "books": {
+          "ok": true,
+          "detail": "5 cheapest of 43 correct",
+          "claimed": "PASS",
+          "startedMs": 9374,
+          "finishedMs": 26873
+        },
+        "quotes": {
+          "ok": true,
+          "detail": "14 quotes, 11 authors",
+          "claimed": "PASS",
+          "startedMs": 26873,
+          "finishedMs": 31607
+        },
+        "hn": {
+          "ok": true,
+          "detail": "3 of 3 stories",
+          "claimed": "PASS",
+          "startedMs": 31607,
+          "finishedMs": 46842
+        },
+        "oscars": {
+          "ok": true,
+          "detail": "6 of 6 years",
+          "claimed": "PASS",
+          "startedMs": 46842,
+          "finishedMs": 72124
+        },
+        "pizza": {
+          "ok": true,
+          "detail": "httpbin echoed the order",
+          "claimed": "PASS",
+          "startedMs": 72124,
+          "finishedMs": 83334
+        },
+        "rooms": {
+          "ok": true,
+          "detail": "room 41 live",
+          "room": {
+            "accessible": true,
+            "description": "Please enter a description for this room",
+            "features": [
+              "WiFi",
+              "Safe"
+            ],
+            "image": "https://www.mwtestconsultancy.co.uk/img/room1.jpg",
+            "roomName": "RACE-browser-0655",
+            "roomPrice": 321,
+            "roomid": 41,
+            "type": "Family"
+          },
+          "claimed": "PASS",
+          "startedMs": 83334,
+          "finishedMs": 107508
+        }
+      }
+    },
+    "clify": {
+      "racer": "clify",
+      "racerId": "clify-0655",
+      "agent": "codex",
+      "model": "gpt-6.1-sol",
+      "models": [
+        "gpt-6.1-sol"
+      ],
+      "invalid": false,
+      "invalidReason": null,
+      "exitCode": 0,
+      "startedMs": 5570,
+      "finishedMs": 95713,
+      "elapsedMs": 90143,
+      "usage": {
+        "input": 44037,
+        "output": 2902,
+        "cacheRead": 444800,
+        "cacheWrite": 0,
+        "cacheWrite1h": 0
+      },
+      "freshTokens": 46939,
+      "totalTokens": 491739,
+      "costUsd": 0.161574,
+      "computedCostUsd": 0.161574,
+      "reportedCostUsd": null,
+      "modelCalls": 17,
+      "toolCalls": 31,
+      "peakRamMB": 595.6,
+      "avgCpu": 4.3832402234636865,
+      "success": 6,
+      "tasks": {
+        "books": {
+          "ok": true,
+          "detail": "5 cheapest of 43 correct",
+          "claimed": "PASS",
+          "startedMs": 10546,
+          "finishedMs": 26931
+        },
+        "quotes": {
+          "ok": true,
+          "detail": "14 quotes, 11 authors",
+          "claimed": "PASS",
+          "startedMs": 26930,
+          "finishedMs": 35338
+        },
+        "hn": {
+          "ok": true,
+          "detail": "3 of 3 stories",
+          "claimed": "PASS",
+          "startedMs": 35338,
+          "finishedMs": 54351
+        },
+        "oscars": {
+          "ok": true,
+          "detail": "6 of 6 years",
+          "claimed": "PASS",
+          "startedMs": 54350,
+          "finishedMs": 61770
+        },
+        "pizza": {
+          "ok": true,
+          "detail": "httpbin echoed the order",
+          "claimed": "PASS",
+          "startedMs": 61770,
+          "finishedMs": 69665
+        },
+        "rooms": {
+          "ok": true,
+          "detail": "room 40 live",
+          "room": {
+            "accessible": true,
+            "features": [
+              "WiFi",
+              "Safe"
+            ],
+            "roomName": "RACE-clify-0655",
+            "roomPrice": 321,
+            "roomid": 40,
+            "type": "Family"
+          },
+          "claimed": "PASS",
+          "startedMs": 69665,
+          "finishedMs": 87374
+        }
+      }
+    }
+  }
+}

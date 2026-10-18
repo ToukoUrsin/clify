@@ -1,0 +1,262 @@
+{
+ "url": "https://inspirehep.net/",
+ "category": "science",
+ "sandbox": "clify-inspirehep-net",
+ "startedAt": "2026-10-18T08:57:08.953Z",
+ "region": "us-pdx-1",
+ "chrome": "Chrome/148.0.7778.96",
+ "sandboxStartMs": 1901,
+ "addSeconds": 326,
+ "addExit": 0,
+ "add": {
+  "ok": true,
+  "site": "inspirehep",
+  "url": "https://inspirehep.net/",
+  "commands": [
+   {
+    "name": "search-literature",
+    "summary": "Search HEP papers with INSPIRE query syntax, with optional filters for document type, date range, author count and subject, plus sorting and paging",
+    "verified": true
+   },
+   {
+    "name": "list-citing-papers",
+    "summary": "List the papers that cite a given literature record (by recid)",
+    "verified": true
+   },
+   {
+    "name": "get-literature-facets",
+    "summary": "Get facet counts and aggregations for a literature query: doc types, subjects, authors, collaborations, citations-by-year, citation summary",
+    "verified": true
+   },
+   {
+    "name": "get-literature",
+    "summary": "Get full metadata for one paper: title, authors, abstract, DOIs, arXiv id, publication info, citation counts",
+    "verified": true
+   },
+   {
+    "name": "list-literature-authors",
+    "summary": "List all authors of a paper with their affiliations and INSPIRE author ids",
+    "verified": true
+   },
+   {
+    "name": "list-literature-references",
+    "summary": "List the references cited by a paper, paginated",
+    "verified": true
+   },
+   {
+    "name": "export-literature",
+    "summary": "Export one paper's citation as BibTeX, LaTeX (EU/US) or CV text",
+    "verified": true
+   },
+   {
+    "name": "export-literature-search",
+    "summary": "Bulk-export every paper matching a query as BibTeX or LaTeX ('cite all')",
+    "verified": true
+   },
+   {
+    "name": "search-authors",
+    "summary": "Search author profiles by name",
+    "verified": true
+   },
+   {
+    "name": "get-author",
+    "summary": "Get an author profile: name, positions, advisors, students, ids (BAI/ORCID). The author key for list-author-publications is '{control_number}_{name.preferred_name}'",
+    "verified": true
+   },
+   {
+    "name": "list-author-publications",
+    "summary": "List the papers attributed to an author profile",
+    "verified": true
+   },
+   {
+    "name": "search-jobs",
+    "summary": "Search HEP job postings, filtered by rank, region and open/closed status",
+    "verified": true
+   },
+   {
+    "name": "get-job",
+    "summary": "Get a job posting's details: description, deadline, contacts, institution",
+    "verified": true
+   },
+   {
+    "name": "search-conferences",
+    "summary": "Search conferences, upcoming or all",
+    "verified": true
+   },
+   {
+    "name": "get-conference",
+    "summary": "Get a conference's details: dates, location, contacts, description",
+    "verified": true
+   },
+   {
+    "name": "search-seminars",
+    "summary": "Search seminars (upcoming or all), including seminars by a speaker or about a paper",
+    "verified": true
+   },
+   {
+    "name": "get-seminar",
+    "summary": "Get a seminar's details: speaker, time, timezone, abstract, join URL",
+    "verified": true
+   },
+   {
+    "name": "search-institutions",
+    "summary": "Search research institutions by name",
+    "verified": true
+   },
+   {
+    "name": "get-institution",
+    "summary": "Get an institution's details: names, addresses, ROR/GRID ids, paper count",
+    "verified": true
+   },
+   {
+    "name": "search-experiments",
+    "summary": "Search experiments and accelerators",
+    "verified": true
+   },
+   {
+    "name": "get-experiment",
+    "summary": "Get an experiment's details: accelerator, collaboration, institutions, dates, description",
+    "verified": true
+   }
+  ],
+  "verified": 21,
+  "writes": 0,
+  "dropped": [],
+  "blockers": [],
+  "loggedIn": false,
+  "seconds": 326,
+  "next": [
+   "clify inspirehep",
+   "clify inspirehep search-literature --q \"dark matter\" --sort \"mostcited\" --doc_type \"review\""
+  ],
+  "installed": "/home/ubuntu/clify-runs/blaxel-w1/home/bin/inspirehep",
+  "explored": {
+   "steps": 17,
+   "recorded": 101,
+   "heldWrites": 0
+  }
+ },
+ "check": {
+  "on": "blaxel",
+  "node": "v24.22.0",
+  "seconds": 65,
+  "reads": 21,
+  "verified": 20,
+  "failed": [
+   {
+    "name": "list-author-publications",
+    "reason": "request failed: The operation was aborted due to timeout"
+   }
+  ],
+  "results": [
+   {
+    "name": "search-literature",
+    "ok": true,
+    "ms": 19986
+   },
+   {
+    "name": "list-citing-papers",
+    "ok": true,
+    "ms": 2517
+   },
+   {
+    "name": "get-literature-facets",
+    "ok": true,
+    "ms": 207
+   },
+   {
+    "name": "get-literature",
+    "ok": true,
+    "ms": 244
+   },
+   {
+    "name": "list-literature-authors",
+    "ok": true,
+    "ms": 221
+   },
+   {
+    "name": "list-literature-references",
+    "ok": true,
+    "ms": 274
+   },
+   {
+    "name": "export-literature",
+    "ok": true,
+    "ms": 230
+   },
+   {
+    "name": "export-literature-search",
+    "ok": true,
+    "ms": 499
+   },
+   {
+    "name": "search-authors",
+    "ok": true,
+    "ms": 396
+   },
+   {
+    "name": "get-author",
+    "ok": true,
+    "ms": 198
+   },
+   {
+    "name": "list-author-publications",
+    "ok": false,
+    "reason": "request failed: The operation was aborted due to timeout",
+    "ms": 30002
+   },
+   {
+    "name": "search-jobs",
+    "ok": true,
+    "ms": 972
+   },
+   {
+    "name": "get-job",
+    "ok": true,
+    "ms": 593
+   },
+   {
+    "name": "search-conferences",
+    "ok": true,
+    "ms": 1379
+   },
+   {
+    "name": "get-conference",
+    "ok": true,
+    "ms": 594
+   },
+   {
+    "name": "search-seminars",
+    "ok": true,
+    "ms": 593
+   },
+   {
+    "name": "get-seminar",
+    "ok": true,
+    "ms": 591
+   },
+   {
+    "name": "search-institutions",
+    "ok": true,
+    "ms": 583
+   },
+   {
+    "name": "get-institution",
+    "ok": true,
+    "ms": 726
+   },
+   {
+    "name": "search-experiments",
+    "ok": true,
+    "ms": 761
+   },
+   {
+    "name": "get-experiment",
+    "ok": true,
+    "ms": 614
+   }
+  ]
+ },
+ "deleted": true,
+ "seconds": 394
+}

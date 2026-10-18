@@ -1,0 +1,438 @@
+{
+ "name": "data-europa",
+ "startUrl": "https://data.europa.eu/en",
+ "origin": "https://data.europa.eu",
+ "createdAt": "2026-10-18T07:22:33.677Z",
+ "description": "data.europa.eu (the official EU open data portal): search EU and national open datasets, catalogues and data services, read dataset and catalogue metadata, find similar datasets, and export DCAT metadata.",
+ "commands": [
+  {
+   "name": "search-datasets",
+   "summary": "Keyword search over open datasets, with optional facet filters, sorting and pagination",
+   "method": "GET",
+   "urlTemplate": "/api/hub/search/search?filter=dataset&facetOperator=AND&facetGroupOperator=AND",
+   "params": [
+    {
+     "name": "q",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Free-text search query",
+     "example": "air quality"
+    },
+    {
+     "name": "sort",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Sort as field+direction. Comma-separate several keys. Fields: relevance, modified, title.en, issued (created).",
+     "enum": [
+      "relevance+desc",
+      "modified+desc",
+      "modified+asc",
+      "title.en+asc",
+      "title.en+desc",
+      "issued+desc",
+      "issued+asc"
+     ],
+     "default": "relevance+desc"
+    },
+    {
+     "name": "facets",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "JSON object of facet filters. Keys: country, catalog, format, categories, keywords, scoring, hvdCategory. Values are arrays of ids, e.g. {\"country\":[\"nl\"],\"format\":[\"CSV\"]}",
+     "example": "{\"country\":[\"nl\"]}"
+    },
+    {
+     "name": "api_limit",
+     "key": "limit",
+     "in": "query",
+     "required": false,
+     "type": "number",
+     "description": "Results per page (max ~1000) (sent to the site as \"limit\"; clify's own --limit only shapes the output)",
+     "default": 10
+    },
+    {
+     "name": "page",
+     "in": "query",
+     "required": false,
+     "type": "number",
+     "description": "Zero-based page number",
+     "default": 0
+    }
+   ],
+   "responseType": "json",
+   "resultPath": "result.results",
+   "defaultFields": [
+    "id",
+    "title.en",
+    "description.en",
+    "catalog.id",
+    "country.id",
+    "modified",
+    "issued",
+    "distributions"
+   ],
+   "pagination": {
+    "type": "page",
+    "param": "page"
+   },
+   "mutates": false,
+   "example": {
+    "q": "air quality"
+   },
+   "source": "E2 GET https://data.europa.eu/api/hub/search/search",
+   "verified": true
+  },
+  {
+   "name": "count-results",
+   "summary": "Count matches for a query across all indexes (datasets, catalogues, data services, dataset series, editorial content)",
+   "method": "GET",
+   "urlTemplate": "/api/hub/search/search?filters=catalogue,dataset,dataservice,datasetseries,resource&resource=editorial-content&countOnly=true",
+   "params": [
+    {
+     "name": "q",
+     "in": "query",
+     "required": true,
+     "type": "string",
+     "description": "Free-text search query",
+     "example": "air quality"
+    }
+   ],
+   "responseType": "json",
+   "resultPath": "result.count",
+   "mutates": false,
+   "example": {
+    "q": "air quality"
+   },
+   "source": "E2 GET https://data.europa.eu/api/hub/search/search",
+   "verified": true
+  },
+  {
+   "name": "search-catalogues",
+   "summary": "List or search the data catalogues (national and EU portals) that publish datasets",
+   "method": "GET",
+   "urlTemplate": "/api/hub/search/search?filter=catalogue",
+   "params": [
+    {
+     "name": "q",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Optional free-text query to filter catalogues",
+     "example": "geodata"
+    },
+    {
+     "name": "sort",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Sort as field+direction, e.g. title.en+asc, modified+desc",
+     "enum": [
+      "relevance+desc",
+      "modified+desc",
+      "title.en+asc",
+      "issued+desc"
+     ]
+    },
+    {
+     "name": "api_limit",
+     "key": "limit",
+     "in": "query",
+     "required": false,
+     "type": "number",
+     "description": "Results per page (sent to the site as \"limit\"; clify's own --limit only shapes the output)",
+     "default": 10
+    },
+    {
+     "name": "page",
+     "in": "query",
+     "required": false,
+     "type": "number",
+     "description": "Zero-based page number",
+     "default": 0
+    }
+   ],
+   "responseType": "json",
+   "resultPath": "result.results",
+   "defaultFields": [
+    "id",
+    "title.en",
+    "description.en",
+    "country.id",
+    "homepage",
+    "count",
+    "modified"
+   ],
+   "pagination": {
+    "type": "page",
+    "param": "page"
+   },
+   "mutates": false,
+   "source": "E2",
+   "verified": true
+  },
+  {
+   "name": "list-countries",
+   "summary": "List the country vocabulary (ids and multilingual labels) used for the country facet",
+   "method": "GET",
+   "urlTemplate": "/api/hub/search/search?filter=vocabulary&vocabulary=country",
+   "params": [
+    {
+     "name": "api_limit",
+     "key": "limit",
+     "in": "query",
+     "required": false,
+     "type": "number",
+     "description": "Max entries to return (sent to the site as \"limit\"; clify's own --limit only shapes the output)",
+     "default": 500
+    }
+   ],
+   "responseType": "json",
+   "resultPath": "result.results",
+   "defaultFields": [
+    "id",
+    "pref_label.en",
+    "resource"
+   ],
+   "mutates": false,
+   "source": "E2 E3",
+   "verified": true
+  },
+  {
+   "name": "get-dataset",
+   "summary": "Get full metadata for one dataset: title, description, catalogue, country, keywords, distributions/download links",
+   "method": "GET",
+   "urlTemplate": "/api/hub/search/datasets/{id}",
+   "params": [
+    {
+     "name": "id",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Dataset id (UUID or slug) as returned by search-datasets",
+     "example": "4423-average-energy-prices-for-consumers"
+    }
+   ],
+   "responseType": "json",
+   "resultPath": "result",
+   "defaultFields": [
+    "id",
+    "title.en",
+    "description.en",
+    "catalog.id",
+    "country.id",
+    "keywords",
+    "distributions",
+    "modified"
+   ],
+   "mutates": false,
+   "example": {
+    "id": "4423-average-energy-prices-for-consumers"
+   },
+   "source": "E4 E6 E10 E11 E12 E13 E14 E15 E16",
+   "verified": true
+  },
+  {
+   "name": "get-catalogue",
+   "summary": "Get metadata for one catalogue (publisher portal): title, description, homepage, country",
+   "method": "GET",
+   "urlTemplate": "/api/hub/search/catalogues/{id}",
+   "params": [
+    {
+     "name": "id",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Catalogue id, e.g. geodata-se, gdi-de, dataportaal-van-de-nederlandse-overheid",
+     "example": "geodata-se"
+    }
+   ],
+   "responseType": "json",
+   "resultPath": "result",
+   "defaultFields": [
+    "id",
+    "title.en",
+    "description.en",
+    "homepage",
+    "country",
+    "issued",
+    "modified",
+    "count"
+   ],
+   "mutates": false,
+   "example": {
+    "id": "geodata-se"
+   },
+   "source": "E7 GET https://data.europa.eu/api/hub/search/catalogues/geodata-se",
+   "verified": true
+  },
+  {
+   "name": "get-similar-datasets",
+   "summary": "Find datasets similar to a given dataset (lower distance = more similar)",
+   "method": "GET",
+   "urlTemplate": "/api/mqa/similarities/similarity/{id}",
+   "params": [
+    {
+     "name": "id",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Dataset id",
+     "example": "4423-average-energy-prices-for-consumers"
+    }
+   ],
+   "responseType": "json",
+   "defaultFields": [
+    "id",
+    "distance",
+    "uri"
+   ],
+   "mutates": false,
+   "example": {
+    "id": "4423-average-energy-prices-for-consumers"
+   },
+   "source": "E9 E18 GET https://data.europa.eu/api/mqa/similarities/similarity/4423-average-energy-prices-for-consumers",
+   "verified": true
+  },
+  {
+   "name": "get-dataset-jsonld",
+   "summary": "Get a dataset's full DCAT-AP metadata as a JSON-LD graph (distributions, licences, spatial coverage, contacts)",
+   "method": "GET",
+   "urlTemplate": "/api/hub/repo/datasets/{id}.jsonld?useNormalizedId=true&locale=en",
+   "params": [
+    {
+     "name": "id",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Dataset id",
+     "example": "c11ee59a-c22e-4014-927f-eeb1d3b13d9d"
+    }
+   ],
+   "responseType": "json",
+   "resultPath": "@graph",
+   "defaultFields": [
+    "@id",
+    "@type",
+    "dct:title",
+    "dcat:accessURL",
+    "dcat:downloadURL",
+    "dct:format"
+   ],
+   "mutates": false,
+   "example": {
+    "id": "c11ee59a-c22e-4014-927f-eeb1d3b13d9d"
+   },
+   "source": "E19 GET https://data.europa.eu/api/hub/repo/datasets/{id}",
+   "verified": true
+  },
+  {
+   "name": "export-dataset-metadata",
+   "summary": "Export a dataset's DCAT-AP metadata as raw RDF text (RDF/XML, Turtle, N3 or N-Triples)",
+   "method": "GET",
+   "urlTemplate": "/api/hub/repo/datasets/{id}.{format}?useNormalizedId=true&locale=en",
+   "params": [
+    {
+     "name": "id",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Dataset id",
+     "example": "c11ee59a-c22e-4014-927f-eeb1d3b13d9d"
+    },
+    {
+     "name": "format",
+     "in": "path",
+     "required": false,
+     "type": "string",
+     "description": "RDF serialization",
+     "enum": [
+      "ttl",
+      "rdf",
+      "n3",
+      "nt"
+     ],
+     "default": "ttl"
+    }
+   ],
+   "responseType": "text",
+   "mutates": false,
+   "example": {
+    "id": "c11ee59a-c22e-4014-927f-eeb1d3b13d9d",
+    "format": "ttl"
+   },
+   "source": "E19 GET https://data.europa.eu/api/hub/repo/datasets/{id}",
+   "verified": true
+  },
+  {
+   "name": "get-dataset-feed",
+   "summary": "Get the RSS feed for a dataset, which tracks updates to its metadata and distributions",
+   "method": "GET",
+   "urlTemplate": "/api/hub/search/en/feeds/datasets/{id}.rss",
+   "params": [
+    {
+     "name": "id",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Dataset id",
+     "example": "4423-average-energy-prices-for-consumers"
+    }
+   ],
+   "responseType": "json",
+   "resultPath": "rss.channel",
+   "mutates": false,
+   "example": {
+    "id": "4423-average-energy-prices-for-consumers"
+   },
+   "source": "",
+   "verified": true
+  }
+ ],
+ "blockers": [],
+ "notes": [
+  "Pagination is zero-based: page=0 is the first page.",
+  "Titles and descriptions are multilingual objects keyed by language code (en, de, fr, ...). Use title.en for English.",
+  "search-datasets facets must be a JSON string, e.g. {\"country\":[\"de\"],\"catalog\":[\"gdi-de\"],\"format\":[\"CSV\"]}. Get country ids (lowercase ISO-2 such as nl, de, fr) from list-countries and catalogue ids from search-catalogues.",
+  "The dropdown facets (country, format, catalog) and the high-value-dataset filter were not exercised in the UI. The facet keys are inferred from the facets parameter the app sent.",
+  "Metadata-quality endpoints (/api/mqa/cache/datasets/{id}) returned 404 and the endorsement count returned 400, so neither is exposed as a command.",
+  "The POST to /auth/middleware/login/end only checks login status ({is_logged_in:false}). It is not a real write and was skipped. No authenticated features were recorded."
+ ],
+ "dropped": [
+  {
+   "name": "get-dataset-comments",
+   "summary": "List user comments on a dataset",
+   "method": "GET",
+   "urlTemplate": "/api/hub/ratings/comments/dataset/{id}",
+   "params": [
+    {
+     "name": "id",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Dataset id",
+     "example": "4423-average-energy-prices-for-consumers"
+    }
+   ],
+   "responseType": "json",
+   "resultPath": "data",
+   "mutates": false,
+   "example": {
+    "id": "4423-average-energy-prices-for-consumers"
+   },
+   "source": "E8 E17 GET https://data.europa.eu/api/hub/ratings/comments/dataset/4423-average-energy-prices-for-consumers",
+   "verified": false,
+   "verifyNote": "The endpoint works but returns total 0 for the example. No dataset with comments is known, so the command cannot be verified with a non-empty example."
+  }
+ ],
+ "generated": {
+  "by": "clify add",
+  "model": "claude-opus-5-5",
+  "exploredSteps": 30,
+  "recorded": 83,
+  "verifiedAt": "2026-10-18T07:23:40.260Z",
+  "seconds": 247
+ }
+}

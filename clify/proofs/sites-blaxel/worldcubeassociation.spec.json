@@ -1,0 +1,656 @@
+{
+ "name": "worldcubeassociation",
+ "startUrl": "https://www.worldcubeassociation.org/",
+ "origin": "https://www.worldcubeassociation.org",
+ "createdAt": "2026-10-18T08:48:49.926Z",
+ "description": "World Cube Association (speedcubing) public data: search competitions and fetch their results, scrambles, schedules (WCIF) and competitors; look up competitors' profiles, personal records and results; get current world, continental and national records and news posts. All of it comes from the WCA's public /api/v0 JSON API.",
+ "commands": [
+  {
+   "name": "search-competitions",
+   "summary": "Search WCA competitions like the /competitions page: keyword, event, country and date filters, sorted and paginated with 25 per page",
+   "method": "GET",
+   "urlTemplate": "/api/v0/competition_index",
+   "params": [
+    {
+     "name": "q",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Keyword matched against competition name or city",
+     "example": "Open"
+    },
+    {
+     "name": "event",
+     "key": "event_ids[]",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Only competitions that hold this event (WCA event id)",
+     "enum": [
+      "333",
+      "222",
+      "444",
+      "555",
+      "666",
+      "777",
+      "333bf",
+      "333fm",
+      "333oh",
+      "clock",
+      "minx",
+      "pyram",
+      "skewb",
+      "sq1",
+      "444bf",
+      "555bf",
+      "333mbf"
+     ],
+     "example": "333bf"
+    },
+    {
+     "name": "country_iso2",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Region filter as an ISO 3166-1 alpha-2 country code, e.g. ES, US",
+     "example": "ES"
+    },
+    {
+     "name": "ongoing_and_future",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "ISO date, e.g. 2026-10-18. Only competitions ongoing or upcoming as of this date; the web UI sends today's date. Omit to include past competitions.",
+     "example": "2026-10-18"
+    },
+    {
+     "name": "include_cancelled",
+     "in": "query",
+     "required": false,
+     "type": "boolean",
+     "description": "Include cancelled competitions",
+     "default": false
+    },
+    {
+     "name": "sort",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Comma-separated sort keys; prefix a key with '-' for descending, e.g. -end_date",
+     "default": "start_date,end_date,name",
+     "example": "start_date,end_date,name"
+    },
+    {
+     "name": "page",
+     "in": "query",
+     "required": false,
+     "type": "number",
+     "description": "Page number, starting at 1",
+     "default": 1
+    }
+   ],
+   "responseType": "json",
+   "defaultFields": [
+    "id",
+    "name",
+    "start_date",
+    "end_date",
+    "city",
+    "country_iso2",
+    "event_ids",
+    "competitor_limit"
+   ],
+   "pagination": {
+    "type": "page",
+    "param": "page"
+   },
+   "mutates": false,
+   "example": {
+    "q": "Open",
+    "ongoing_and_future": "2026-10-18"
+   },
+   "source": "E3 GET https://www.worldcubeassociation.org/api/v0/competition_index",
+   "verified": true
+  },
+  {
+   "name": "list-competitions",
+   "summary": "List competitions through the public API, filtered by country and a start/end date range, with sort and pagination",
+   "method": "GET",
+   "urlTemplate": "/api/v0/competitions",
+   "params": [
+    {
+     "name": "country_iso2",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "ISO 3166-1 alpha-2 country code, e.g. ES",
+     "example": "ES"
+    },
+    {
+     "name": "start",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Only competitions on or after this ISO date, e.g. 2025-01-01",
+     "example": "2025-01-01"
+    },
+    {
+     "name": "end",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Only competitions on or before this ISO date, e.g. 2025-12-31",
+     "example": "2025-12-31"
+    },
+    {
+     "name": "sort",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Sort key; prefix with '-' for descending, e.g. -start_date",
+     "example": "-start_date"
+    },
+    {
+     "name": "page",
+     "in": "query",
+     "required": false,
+     "type": "number",
+     "description": "Page number, starting at 1",
+     "default": 1
+    }
+   ],
+   "responseType": "json",
+   "defaultFields": [
+    "id",
+    "name",
+    "start_date",
+    "end_date",
+    "city",
+    "country_iso2",
+    "event_ids",
+    "results_posted_at"
+   ],
+   "pagination": {
+    "type": "page",
+    "param": "page"
+   },
+   "mutates": false,
+   "example": {
+    "country_iso2": "ES",
+    "start": "2025-01-01",
+    "end": "2025-12-31",
+    "sort": "-start_date"
+   },
+   "source": "E14 GET https://www.worldcubeassociation.org/api/v0/competitions",
+   "verified": true
+  },
+  {
+   "name": "get-competition",
+   "summary": "Get one competition's details: dates, venue, registration settings, fees and information",
+   "method": "GET",
+   "urlTemplate": "/api/v0/competitions/{competition_id}",
+   "params": [
+    {
+     "name": "competition_id",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Competition id, e.g. BasauriOpen2015",
+     "example": "BasauriOpen2015"
+    }
+   ],
+   "responseType": "json",
+   "defaultFields": [
+    "id",
+    "name",
+    "start_date",
+    "end_date",
+    "venue",
+    "city",
+    "country_iso2",
+    "url"
+   ],
+   "mutates": false,
+   "example": {
+    "competition_id": "BasauriOpen2015"
+   },
+   "source": "E4 GET https://www.worldcubeassociation.org/api/v0/competitions/BasauriOpen2015",
+   "verified": true
+  },
+  {
+   "name": "get-competition-results",
+   "summary": "Get a competition's results for one event, round by round, with each competitor's position, best, average and attempts",
+   "method": "GET",
+   "urlTemplate": "/api/v0/competitions/{competition_id}/results/{event_id}",
+   "params": [
+    {
+     "name": "competition_id",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Competition id, e.g. BasauriOpen2015",
+     "example": "BasauriOpen2015"
+    },
+    {
+     "name": "event_id",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "WCA event id, e.g. 333",
+     "enum": [
+      "333",
+      "222",
+      "444",
+      "555",
+      "666",
+      "777",
+      "333bf",
+      "333fm",
+      "333oh",
+      "clock",
+      "minx",
+      "pyram",
+      "skewb",
+      "sq1",
+      "444bf",
+      "555bf",
+      "333mbf"
+     ],
+     "example": "333"
+    }
+   ],
+   "responseType": "json",
+   "resultPath": "rounds",
+   "defaultFields": [
+    "id",
+    "roundTypeId",
+    "results"
+   ],
+   "mutates": false,
+   "example": {
+    "competition_id": "BasauriOpen2015",
+    "event_id": "333"
+   },
+   "source": "E6 GET https://www.worldcubeassociation.org/api/v0/competitions/BasauriOpen2015/results/{n}",
+   "verified": true
+  },
+  {
+   "name": "get-competition-scrambles",
+   "summary": "Get the official scrambles a competition used for one event, grouped by round",
+   "method": "GET",
+   "urlTemplate": "/api/v0/competitions/{competition_id}/scrambles/{event_id}",
+   "params": [
+    {
+     "name": "competition_id",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Competition id, e.g. BasauriOpen2015",
+     "example": "BasauriOpen2015"
+    },
+    {
+     "name": "event_id",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "WCA event id, e.g. 333",
+     "enum": [
+      "333",
+      "222",
+      "444",
+      "555",
+      "666",
+      "777",
+      "333bf",
+      "333fm",
+      "333oh",
+      "clock",
+      "minx",
+      "pyram",
+      "skewb",
+      "sq1",
+      "444bf",
+      "555bf",
+      "333mbf"
+     ],
+     "example": "333"
+    }
+   ],
+   "responseType": "json",
+   "resultPath": "rounds",
+   "defaultFields": [
+    "id",
+    "roundTypeId",
+    "scrambles"
+   ],
+   "mutates": false,
+   "example": {
+    "competition_id": "BasauriOpen2015",
+    "event_id": "333"
+   },
+   "source": "E7 GET https://www.worldcubeassociation.org/api/v0/competitions/BasauriOpen2015/scrambles/{n}",
+   "verified": true
+  },
+  {
+   "name": "get-competition-wcif",
+   "summary": "Get a competition's public WCIF: events, rounds, formats, time limits, cutoffs, schedule/venues and registered persons with their assignments",
+   "method": "GET",
+   "urlTemplate": "/api/v0/competitions/{competition_id}/wcif/public",
+   "params": [
+    {
+     "name": "competition_id",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Competition id, e.g. GranadaOpen2025",
+     "example": "GranadaOpen2025"
+    }
+   ],
+   "responseType": "json",
+   "defaultFields": [
+    "id",
+    "name",
+    "events",
+    "schedule",
+    "persons"
+   ],
+   "mutates": false,
+   "example": {
+    "competition_id": "GranadaOpen2025"
+   },
+   "source": "E15 GET https://www.worldcubeassociation.org/api/v0/competitions/GranadaOpen2025/wcif/public",
+   "verified": true
+  },
+  {
+   "name": "list-competition-competitors",
+   "summary": "List the people who competed in or are registered for a competition",
+   "method": "GET",
+   "urlTemplate": "/api/v0/competitions/{competition_id}/competitors",
+   "params": [
+    {
+     "name": "competition_id",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Competition id, e.g. GranadaOpen2025",
+     "example": "GranadaOpen2025"
+    }
+   ],
+   "responseType": "json",
+   "defaultFields": [
+    "wca_id",
+    "name",
+    "country_iso2",
+    "gender",
+    "url"
+   ],
+   "mutates": false,
+   "example": {
+    "competition_id": "GranadaOpen2025"
+   },
+   "source": "E16 GET https://www.worldcubeassociation.org/api/v0/competitions/GranadaOpen2025/competitors",
+   "verified": true
+  },
+  {
+   "name": "search-persons",
+   "summary": "Search WCA competitors by name or WCA id; each result includes competition count and personal records with ranks",
+   "method": "GET",
+   "urlTemplate": "/api/v0/persons",
+   "params": [
+    {
+     "name": "q",
+     "in": "query",
+     "required": true,
+     "type": "string",
+     "description": "Name or WCA id fragment",
+     "example": "Feliks"
+    },
+    {
+     "name": "page",
+     "in": "query",
+     "required": false,
+     "type": "number",
+     "description": "Page number, starting at 1",
+     "default": 1
+    }
+   ],
+   "responseType": "json",
+   "defaultFields": [
+    "person.wca_id",
+    "person.name",
+    "person.country_iso2",
+    "competition_count",
+    "person.url"
+   ],
+   "pagination": {
+    "type": "page",
+    "param": "page"
+   },
+   "mutates": false,
+   "example": {
+    "q": "Feliks"
+   },
+   "source": "E10 GET https://www.worldcubeassociation.org/api/v0/persons",
+   "verified": true
+  },
+  {
+   "name": "get-person",
+   "summary": "Get a competitor's profile by WCA id: country, delegate status, teams, competition count and personal records (single/average with world, continent and country ranks)",
+   "method": "GET",
+   "urlTemplate": "/api/v0/persons/{wca_id}",
+   "params": [
+    {
+     "name": "wca_id",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "WCA id, e.g. 2015SALO01",
+     "example": "2015SALO01"
+    }
+   ],
+   "responseType": "json",
+   "defaultFields": [
+    "person.wca_id",
+    "person.name",
+    "person.country_iso2",
+    "person.delegate_status",
+    "competition_count",
+    "personal_records"
+   ],
+   "mutates": false,
+   "example": {
+    "wca_id": "2015SALO01"
+   },
+   "source": "E11 GET https://www.worldcubeassociation.org/api/v0/persons/2015SALO01",
+   "verified": true
+  },
+  {
+   "name": "get-person-results",
+   "summary": "List every result a competitor has, one row per round: competition, event, round, position, best, average, attempts",
+   "method": "GET",
+   "urlTemplate": "/api/v0/persons/{wca_id}/results",
+   "params": [
+    {
+     "name": "wca_id",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "WCA id, e.g. 2015SALO01",
+     "example": "2015SALO01"
+    }
+   ],
+   "responseType": "json",
+   "defaultFields": [
+    "competition_id",
+    "event_id",
+    "round_type_id",
+    "pos",
+    "best",
+    "average",
+    "attempts",
+    "regional_single_record"
+   ],
+   "mutates": false,
+   "example": {
+    "wca_id": "2015SALO01"
+   },
+   "source": "E12 GET https://www.worldcubeassociation.org/api/v0/persons/2015SALO01/results",
+   "verified": true
+  },
+  {
+   "name": "get-person-competitions",
+   "summary": "List the competitions a competitor has attended",
+   "method": "GET",
+   "urlTemplate": "/api/v0/persons/{wca_id}/competitions",
+   "params": [
+    {
+     "name": "wca_id",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "WCA id, e.g. 2015SALO01",
+     "example": "2015SALO01"
+    }
+   ],
+   "responseType": "json",
+   "defaultFields": [
+    "id",
+    "name",
+    "start_date",
+    "end_date",
+    "city",
+    "country_iso2",
+    "url"
+   ],
+   "mutates": false,
+   "example": {
+    "wca_id": "2015SALO01"
+   },
+   "source": "E17 GET https://www.worldcubeassociation.org/api/v0/persons/2015SALO01/competitions",
+   "verified": true
+  },
+  {
+   "name": "get-records",
+   "summary": "Get current world, continental and national records (single and average) for every event",
+   "method": "GET",
+   "urlTemplate": "/api/v0/records",
+   "params": [],
+   "responseType": "json",
+   "mutates": false,
+   "source": "E13 GET https://www.worldcubeassociation.org/api/v0/records",
+   "verified": true
+  },
+  {
+   "name": "search-site",
+   "summary": "Site-wide search (the navbar omnisearch) that returns matching people and competitions",
+   "method": "GET",
+   "urlTemplate": "/api/v0/search",
+   "params": [
+    {
+     "name": "q",
+     "in": "query",
+     "required": true,
+     "type": "string",
+     "description": "Search text",
+     "example": "Feliks"
+    }
+   ],
+   "responseType": "json",
+   "resultPath": "result",
+   "defaultFields": [
+    "class",
+    "id",
+    "name",
+    "wca_id",
+    "country_iso2",
+    "url"
+   ],
+   "mutates": false,
+   "example": {
+    "q": "Feliks"
+   },
+   "source": "E5 GET https://www.worldcubeassociation.org/api/v0/search",
+   "verified": true
+  },
+  {
+   "name": "list-posts",
+   "summary": "List WCA news and announcement posts, newest first, 10 per page",
+   "method": "GET",
+   "urlTemplate": "/posts.json",
+   "params": [
+    {
+     "name": "page",
+     "in": "query",
+     "required": false,
+     "type": "number",
+     "description": "Page number, starting at 1; the response's totalPages gives the last page",
+     "default": 1
+    }
+   ],
+   "responseType": "json",
+   "resultPath": "posts",
+   "defaultFields": [
+    "id",
+    "slug",
+    "title",
+    "created_at",
+    "author_name",
+    "url",
+    "body"
+   ],
+   "pagination": {
+    "type": "page",
+    "param": "page"
+   },
+   "mutates": false,
+   "example": {
+    "page": "1"
+   },
+   "source": "E9 GET https://www.worldcubeassociation.org/posts.json",
+   "verified": true
+  }
+ ],
+ "blockers": [],
+ "notes": [
+  "Result values (best, average, attempts, record values) are integers in centiseconds: 981 = 9.81 s. For 333fm, a single is a move count and an average is moves*100. 333mbf values are encoded multi-blind scores. -1 means DNF, -2 means DNS, 0 means no attempt.",
+  "Round type ids: 1/2/3 = first/second/third round, f = final, c = combined final, d = combined first round. Format ids: a = average of 5, m = mean of 3, 1/2/3 = best of N.",
+  "Event ids: 333, 222, 444, 555, 666, 777, 333bf, 333fm, 333oh, clock, minx, pyram, skewb, sq1, 444bf, 555bf, 333mbf. Get a competition's own event list from get-competition-wcif or the event_ids field in competition listings.",
+  "search-competitions mirrors the web UI. Pass today's date as ongoing_and_future to get only upcoming/ongoing competitions; omit it to include past ones. For past competitions in a date range, list-competitions with start/end is more reliable.",
+  "The HTML pages /persons/{id}, /results/rankings and /results/records return 403 to non-browser clients; use the /api/v0 commands instead. robots.txt disallows /search and /api/v0/search/users.",
+  "Everything here is public and read-only; no login is needed. The cookie-banner acknowledgement POST was skipped on purpose."
+ ],
+ "dropped": [
+  {
+   "name": "get-competition-calendar",
+   "summary": "Download a competition as an iCalendar (.ics) event",
+   "method": "GET",
+   "urlTemplate": "/competitions/{competition_id}.ics",
+   "params": [
+    {
+     "name": "competition_id",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Competition id, e.g. BasauriOpen2015",
+     "example": "BasauriOpen2015"
+    }
+   ],
+   "responseType": "text",
+   "mutates": false,
+   "example": {
+    "competition_id": "BasauriOpen2015"
+   },
+   "source": "E19 GET https://www.worldcubeassociation.org/competitions/BasauriOpen2015",
+   "verified": false,
+   "verifyNote": "The .ics is an empty VCALENDAR with no VEVENT, so it has no competition data. The endpoint was guessed rather than recorded (source is the HTML page). get-competition already covers the dates and venue."
+  }
+ ],
+ "generated": {
+  "by": "clify add",
+  "model": "claude-opus-5-5",
+  "exploredSteps": 30,
+  "recorded": 51,
+  "verifiedAt": "2026-10-18T08:49:54.430Z",
+  "seconds": 247
+ }
+}

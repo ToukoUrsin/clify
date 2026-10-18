@@ -1,0 +1,28 @@
+{
+ "name": "metmuseum",
+ "startUrl": "https://www.metmuseum.org/art/collection/search",
+ "origin": "https://www.metmuseum.org",
+ "createdAt": "2026-10-18T07:24:39.802Z",
+ "description": "The Metropolitan Museum of Art collection search (metmuseum.org). No commands could be generated because the recording captured only a Vercel bot-check challenge and none of the site's real data requests.",
+ "commands": [],
+ "blockers": [
+  "bot-check at https://www.metmuseum.org/art/collection/search",
+  "bot-check at https://www.metmuseum.org/art/collection/search?q=sunflowers",
+  "captcha"
+ ],
+ "notes": [
+  "The only recorded endpoint (E1, POST /.well-known/vercel/security/request-challenge) belongs to Vercel's Security Checkpoint bot challenge. It is not a site capability. It carries one-time challenge tokens and solutions and was never sent, so it was left out on purpose. Replaying or automating it would mean trying to get past the bot protection.",
+  "Every page, including /art/collection/search, showed the checkpoint, so no search, object-detail, facet or pagination requests were recorded. Any command written now would be made up, not taken from the recording.",
+  "The Met publishes a documented, public Open Access API at https://collectionapi.metmuseum.org/public/collection/v1/ (e.g. /search?q=..., /objects/{objectID}, /departments). It did not appear in this recording, so no commands were built from it. To build a working CLI, explore that API host directly. It is meant for programmatic use and is not behind the Vercel checkpoint.",
+  "The explorer was not logged in. No user-specific or write capabilities were seen."
+ ],
+ "dropped": [],
+ "generated": {
+  "by": "clify add",
+  "model": "claude-opus-5-5",
+  "exploredSteps": 2,
+  "recorded": 93,
+  "verifiedAt": "2026-10-18T07:24:47.666Z",
+  "seconds": 22
+ }
+}

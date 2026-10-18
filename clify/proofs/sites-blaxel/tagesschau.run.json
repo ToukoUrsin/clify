@@ -1,0 +1,126 @@
+{
+ "url": "https://www.tagesschau.de/",
+ "category": "news",
+ "sandbox": "clify-www-tagesschau-de",
+ "startedAt": "2026-10-18T08:53:54.664Z",
+ "region": "us-pdx-1",
+ "chrome": "Chrome/148.0.7778.96",
+ "sandboxStartMs": 2500,
+ "addSeconds": 267,
+ "addExit": 0,
+ "add": {
+  "ok": true,
+  "site": "tagesschau",
+  "url": "https://www.tagesschau.de/",
+  "commands": [
+   {
+    "name": "search-news",
+    "summary": "Full-text search of tagesschau news via the public api2u API. Returns stories with title, date, teaser and detail URLs, newest first.",
+    "verified": true
+   },
+   {
+    "name": "search-site",
+    "summary": "Website search with a media-type filter (article, video, audio, image gallery). Returns per-type counts and result items, newest first.",
+    "verified": true
+   },
+   {
+    "name": "get-homepage-news",
+    "summary": "Current top news shown on the tagesschau.de homepage, as JSON.",
+    "verified": true
+   },
+   {
+    "name": "list-news",
+    "summary": "Latest news, optionally filtered by ressort (section) and German federal-state region(s).",
+    "verified": true
+   },
+   {
+    "name": "get-article",
+    "summary": "Full article as JSON (text blocks, tags, images, video), looked up by its 3-segment web path ressort/subressort/slug.",
+    "verified": true
+   },
+   {
+    "name": "list-channels",
+    "summary": "Live channels and streams (e.g. tagesschau24) with stream URLs.",
+    "verified": true
+   },
+   {
+    "name": "list-news-by-date",
+    "summary": "All news published on a given day, from the 7-day 'alle Meldungen' archive. Defaults to today.",
+    "verified": true
+   },
+   {
+    "name": "list-topic-news",
+    "summary": "Latest articles on a topic/tag page (e.g. ukraine, antarktis).",
+    "verified": true
+   }
+  ],
+  "verified": 8,
+  "writes": 0,
+  "dropped": [],
+  "blockers": [],
+  "loggedIn": false,
+  "seconds": 266,
+  "next": [
+   "clify tagesschau",
+   "clify tagesschau search-news --searchText \"Klimawandel\" --pageSize \"10\" --resultPage \"1\""
+  ],
+  "installed": "/home/ubuntu/clify-runs/blaxel-w1/home/bin/tagesschau",
+  "explored": {
+   "steps": 16,
+   "recorded": 51,
+   "heldWrites": 11
+  }
+ },
+ "check": {
+  "on": "blaxel",
+  "node": "v24.22.0",
+  "seconds": 5,
+  "reads": 8,
+  "verified": 8,
+  "failed": [],
+  "results": [
+   {
+    "name": "search-news",
+    "ok": true,
+    "ms": 815
+   },
+   {
+    "name": "search-site",
+    "ok": true,
+    "ms": 286
+   },
+   {
+    "name": "get-homepage-news",
+    "ok": true,
+    "ms": 381
+   },
+   {
+    "name": "list-news",
+    "ok": true,
+    "ms": 184
+   },
+   {
+    "name": "get-article",
+    "ok": true,
+    "ms": 156
+   },
+   {
+    "name": "list-channels",
+    "ok": true,
+    "ms": 154
+   },
+   {
+    "name": "list-news-by-date",
+    "ok": true,
+    "ms": 240
+   },
+   {
+    "name": "list-topic-news",
+    "ok": true,
+    "ms": 262
+   }
+  ]
+ },
+ "deleted": true,
+ "seconds": 274
+}

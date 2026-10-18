@@ -1,0 +1,256 @@
+{
+ "url": "https://registry.terraform.io/",
+ "category": "dev",
+ "sandbox": "clify-registry-terraform-io",
+ "startedAt": "2026-10-18T08:41:18.350Z",
+ "region": "us-pdx-1",
+ "chrome": "Chrome/148.0.7778.96",
+ "sandboxStartMs": 1776,
+ "addSeconds": 296,
+ "addExit": 0,
+ "add": {
+  "ok": true,
+  "site": "registry-terraform",
+  "url": "https://registry.terraform.io/",
+  "commands": [
+   {
+    "name": "search-registry",
+    "summary": "Full-text search over one registry index (providers, modules, provider docs, policy libraries or run tasks) using the site's Algolia search",
+    "verified": true
+   },
+   {
+    "name": "search-modules",
+    "summary": "Search modules by keyword using the public v1 registry API, optionally filtered by provider, namespace or verified status",
+    "verified": true
+   },
+   {
+    "name": "list-providers",
+    "summary": "Browse providers, filtered by tier, category or namespace, with sorting and pagination",
+    "verified": true
+   },
+   {
+    "name": "list-modules",
+    "summary": "Browse modules, filtered by provider or namespace, with latest version info, sorting and pagination",
+    "verified": true
+   },
+   {
+    "name": "get-module",
+    "summary": "Get the latest version of a module: description, source, inputs, outputs, resources, submodules and the list of all versions",
+    "verified": true
+   },
+   {
+    "name": "get-module-version",
+    "summary": "Get one specific version of a module, including its submodules (v2 API)",
+    "verified": true
+   },
+   {
+    "name": "list-module-versions",
+    "summary": "List all published versions of a module",
+    "verified": true
+   },
+   {
+    "name": "get-module-downloads",
+    "summary": "Get a module's download counts (week, month, year, total) by its numeric module id",
+    "verified": true
+   },
+   {
+    "name": "get-provider",
+    "summary": "Get provider details plus all of its provider-versions (the included versions carry the numeric provider-version ids that list-provider-docs needs)",
+    "verified": true
+   },
+   {
+    "name": "list-provider-versions",
+    "summary": "List every version of a provider with its supported protocols and OS/arch platforms (public v1 API)",
+    "verified": true
+   },
+   {
+    "name": "get-provider-downloads",
+    "summary": "Get a provider's download counts (week, month, year, total) by its numeric provider id",
+    "verified": true
+   },
+   {
+    "name": "list-provider-docs",
+    "summary": "List the documentation pages (resources, data sources, guides, functions) of one provider version",
+    "verified": true
+   },
+   {
+    "name": "find-provider-doc",
+    "summary": "Look up a provider doc page by provider-version id, category and slug (e.g. the aws_vpc resource) to get its doc id",
+    "verified": true
+   },
+   {
+    "name": "get-provider-doc",
+    "summary": "Get the full markdown content of one provider documentation page by doc id",
+    "verified": true
+   },
+   {
+    "name": "get-provider-download",
+    "summary": "Get the download URL, SHA256 sum and signing keys for a provider binary for a given version, OS and architecture",
+    "verified": true
+   },
+   {
+    "name": "list-policies",
+    "summary": "Browse Sentinel/OPA policy libraries, optionally by namespace, with pagination",
+    "verified": true
+   },
+   {
+    "name": "get-policy-library",
+    "summary": "Get a policy library's details and its versions",
+    "verified": true
+   },
+   {
+    "name": "get-policy-library-version",
+    "summary": "Get one version of a policy library together with the individual policies it contains",
+    "verified": true
+   },
+   {
+    "name": "list-run-tasks",
+    "summary": "Browse HCP Terraform run-task integrations, optionally filtered by category",
+    "verified": true
+   },
+   {
+    "name": "list-categories",
+    "summary": "List categories (id, name, slug) used to filter providers, policy libraries or run tasks",
+    "verified": true
+   },
+   {
+    "name": "get-namespace-profile",
+    "summary": "Get the GitHub profile (name, avatar, location, website, bio) behind a registry namespace",
+    "verified": true
+   }
+  ],
+  "verified": 21,
+  "writes": 0,
+  "dropped": [],
+  "blockers": [],
+  "loggedIn": false,
+  "seconds": 296,
+  "next": [
+   "clify registry-terraform",
+   "clify registry-terraform search-registry --query \"kubernetes\" --index \"providers\""
+  ],
+  "installed": "/home/ubuntu/clify-runs/blaxel-w1/home/bin/registry-terraform",
+  "explored": {
+   "steps": 29,
+   "recorded": 286,
+   "heldWrites": 11
+  }
+ },
+ "check": {
+  "on": "blaxel",
+  "node": "v24.22.0",
+  "seconds": 4,
+  "reads": 21,
+  "verified": 21,
+  "failed": [],
+  "results": [
+   {
+    "name": "search-registry",
+    "ok": true,
+    "ms": 167
+   },
+   {
+    "name": "search-modules",
+    "ok": true,
+    "ms": 220
+   },
+   {
+    "name": "list-providers",
+    "ok": true,
+    "ms": 16
+   },
+   {
+    "name": "list-modules",
+    "ok": true,
+    "ms": 182
+   },
+   {
+    "name": "get-module",
+    "ok": true,
+    "ms": 155
+   },
+   {
+    "name": "get-module-version",
+    "ok": true,
+    "ms": 194
+   },
+   {
+    "name": "list-module-versions",
+    "ok": true,
+    "ms": 16
+   },
+   {
+    "name": "get-module-downloads",
+    "ok": true,
+    "ms": 8
+   },
+   {
+    "name": "get-provider",
+    "ok": true,
+    "ms": 13
+   },
+   {
+    "name": "list-provider-versions",
+    "ok": true,
+    "ms": 17
+   },
+   {
+    "name": "get-provider-downloads",
+    "ok": true,
+    "ms": 9
+   },
+   {
+    "name": "list-provider-docs",
+    "ok": true,
+    "ms": 30
+   },
+   {
+    "name": "find-provider-doc",
+    "ok": true,
+    "ms": 82
+   },
+   {
+    "name": "get-provider-doc",
+    "ok": true,
+    "ms": 13
+   },
+   {
+    "name": "get-provider-download",
+    "ok": true,
+    "ms": 5
+   },
+   {
+    "name": "list-policies",
+    "ok": true,
+    "ms": 174
+   },
+   {
+    "name": "get-policy-library",
+    "ok": true,
+    "ms": 100
+   },
+   {
+    "name": "get-policy-library-version",
+    "ok": true,
+    "ms": 85
+   },
+   {
+    "name": "list-run-tasks",
+    "ok": true,
+    "ms": 381
+   },
+   {
+    "name": "list-categories",
+    "ok": true,
+    "ms": 87
+   },
+   {
+    "name": "get-namespace-profile",
+    "ok": true,
+    "ms": 207
+   }
+  ]
+ },
+ "deleted": true,
+ "seconds": 303
+}

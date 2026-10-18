@@ -1,0 +1,101 @@
+{
+ "url": "https://www.clevelandart.org/art/collection/search",
+ "category": "culture",
+ "sandbox": "clify-www-clevelandart-org-art-collection-sea",
+ "startedAt": "2026-10-18T08:38:35.746Z",
+ "region": "us-pdx-1",
+ "chrome": "Chrome/148.0.7778.96",
+ "sandboxStartMs": 1769,
+ "addSeconds": 284,
+ "addExit": 0,
+ "add": {
+  "ok": true,
+  "site": "clevelandart",
+  "url": "https://www.clevelandart.org/art/collection/search",
+  "commands": [
+   {
+    "name": "search-artworks",
+    "summary": "Search the CMA collection by keyword, with optional filters (type, department, artist, culture, on view, recently acquired), paged by offset",
+    "verified": true
+   },
+   {
+    "name": "get-artwork",
+    "summary": "Get full details of one artwork by accession number (title, date, artist, culture, medium, measurements, credit line, description, provenance, images)",
+    "verified": true
+   },
+   {
+    "name": "list-related-artworks",
+    "summary": "List the 'See Also' related artworks shown on an artwork's detail page",
+    "verified": true
+   },
+   {
+    "name": "list-gallery-locations",
+    "summary": "List the museum's gallery locations (values accepted by the gallery= filter of search-artworks)",
+    "verified": true
+   },
+   {
+    "name": "get-image-zoom-info",
+    "summary": "Get deep-zoom (DZI) metadata for an artwork image: full pixel width/height, tile size and format",
+    "verified": true
+   }
+  ],
+  "verified": 5,
+  "writes": 0,
+  "dropped": [
+   {
+    "name": "suggest-collection",
+    "reason": "The internal autocomplete endpoint returns 401 Unauthorized, and there is no public equivalent."
+   }
+  ],
+  "blockers": [],
+  "loggedIn": false,
+  "seconds": 284,
+  "next": [
+   "clify clevelandart",
+   "clify clevelandart search-artworks --q \"monet\" --skip \"0\" --api_limit \"100\""
+  ],
+  "installed": "/home/ubuntu/clify-runs/blaxel-w1/home/bin/clevelandart",
+  "explored": {
+   "steps": 29,
+   "recorded": 110,
+   "heldWrites": 2
+  }
+ },
+ "check": {
+  "on": "blaxel",
+  "node": "v24.22.0",
+  "seconds": 4,
+  "reads": 5,
+  "verified": 5,
+  "failed": [],
+  "results": [
+   {
+    "name": "search-artworks",
+    "ok": true,
+    "ms": 303
+   },
+   {
+    "name": "get-artwork",
+    "ok": true,
+    "ms": 141
+   },
+   {
+    "name": "list-related-artworks",
+    "ok": true,
+    "ms": 74
+   },
+   {
+    "name": "list-gallery-locations",
+    "ok": true,
+    "ms": 53
+   },
+   {
+    "name": "get-image-zoom-info",
+    "ok": true,
+    "ms": 1015
+   }
+  ]
+ },
+ "deleted": true,
+ "seconds": 290
+}

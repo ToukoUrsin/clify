@@ -1,0 +1,1050 @@
+{
+ "name": "yr",
+ "startUrl": "https://www.yr.no/",
+ "origin": "https://www.yr.no",
+ "createdAt": "2026-10-18T09:06:33.872Z",
+ "description": "yr.no (Norwegian Meteorological Institute / NRK weather service): search places and get forecasts, current weather, nowcasts, long-range, coastal/tide/water-level, air quality, aurora, sun/moon, observation history, warnings, mountain pass conditions and meteorologist posts via yr.no's public /api/v0 JSON API.",
+ "commands": [
+  {
+   "name": "search-locations",
+   "summary": "Search places worldwide by name; returns location ids (e.g. 1-92416) used by all location commands",
+   "method": "GET",
+   "urlTemplate": "/api/v0/locations/search",
+   "params": [
+    {
+     "name": "q",
+     "in": "query",
+     "required": true,
+     "type": "string",
+     "description": "Place name to search for",
+     "example": "Bergen"
+    },
+    {
+     "name": "language",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Response language",
+     "enum": [
+      "nb",
+      "nn",
+      "en",
+      "sme"
+     ],
+     "default": "nb"
+    }
+   ],
+   "responseType": "json",
+   "resultPath": "_embedded.location",
+   "defaultFields": [
+    "id",
+    "name",
+    "category.name",
+    "subregion.name",
+    "region.name",
+    "country.name",
+    "position.lat",
+    "position.lon"
+   ],
+   "mutates": false,
+   "example": {
+    "q": "Bergen"
+   },
+   "source": "E22 E21 GET https://www.yr.no/api/v0/locations/search",
+   "verified": true
+  },
+  {
+   "name": "get-location",
+   "summary": "Get details for a location id: name, coordinates, elevation, region, time zone and which data types are available (_links)",
+   "method": "GET",
+   "urlTemplate": "/api/v0/locations/{id}",
+   "params": [
+    {
+     "name": "id",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "yr location id from search-locations, e.g. 1-92416 (Bergen) or 2-2950159 (Berlin)",
+     "example": "1-92416"
+    },
+    {
+     "name": "language",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Response language",
+     "enum": [
+      "nb",
+      "nn",
+      "en",
+      "sme"
+     ],
+     "default": "nb"
+    }
+   ],
+   "responseType": "json",
+   "defaultFields": [
+    "id",
+    "name",
+    "category.name",
+    "position",
+    "elevation",
+    "timeZone",
+    "region.name",
+    "country.name"
+   ],
+   "mutates": false,
+   "example": {
+    "id": "1-92416"
+   },
+   "source": "E3 E9 GET https://www.yr.no/api/v0/locations/1-92416",
+   "verified": true
+  },
+  {
+   "name": "get-forecast",
+   "summary": "Daily weather forecast (~9-10 days) for a location: symbols, min/max temperature, precipitation, wind",
+   "method": "GET",
+   "urlTemplate": "/api/v0/locations/{id}/forecast",
+   "params": [
+    {
+     "name": "id",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "yr location id, e.g. 1-92416",
+     "example": "1-92416"
+    }
+   ],
+   "responseType": "json",
+   "resultPath": "dayIntervals",
+   "defaultFields": [
+    "start",
+    "twentyFourHourSymbol",
+    "sixHourSymbols",
+    "temperature.min",
+    "temperature.max",
+    "precipitation.value",
+    "precipitation.probability",
+    "wind.maxGust"
+   ],
+   "mutates": false,
+   "example": {
+    "id": "1-92416"
+   },
+   "source": "E2 E8 E38 E43 GET https://www.yr.no/api/v0/locations/1-92416/forecast",
+   "verified": true
+  },
+  {
+   "name": "get-current-weather",
+   "summary": "Weather for the current hour at a location: symbol, temperature, feels-like, precipitation, wind, UV index",
+   "method": "GET",
+   "urlTemplate": "/api/v0/locations/{id}/forecast/currenthour",
+   "params": [
+    {
+     "name": "id",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "yr location id, e.g. 1-92416",
+     "example": "1-92416"
+    }
+   ],
+   "responseType": "json",
+   "defaultFields": [
+    "created",
+    "symbolCode.next1Hour",
+    "temperature",
+    "precipitation",
+    "wind",
+    "uvIndex"
+   ],
+   "mutates": false,
+   "example": {
+    "id": "1-92416"
+   },
+   "source": "E12 E53 GET https://www.yr.no/api/v0/locations/1-92416/forecast/currenthour",
+   "verified": true
+  },
+  {
+   "name": "get-nowcast",
+   "summary": "Radar-based precipitation nowcast for the next 90 minutes in 5-minute steps (Nordic locations)",
+   "method": "GET",
+   "urlTemplate": "/api/v0/locations/{id}/forecast/now",
+   "params": [
+    {
+     "name": "id",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "yr location id, e.g. 1-92416",
+     "example": "1-92416"
+    },
+    {
+     "name": "language",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Response language",
+     "enum": [
+      "nb",
+      "nn",
+      "en",
+      "sme"
+     ],
+     "default": "nb"
+    }
+   ],
+   "responseType": "json",
+   "defaultFields": [
+    "created",
+    "radarIsDown",
+    "precipitationForecastDescription",
+    "points"
+   ],
+   "mutates": false,
+   "example": {
+    "id": "1-92416"
+   },
+   "source": "E11 GET https://www.yr.no/api/v0/locations/1-92416/forecast/now",
+   "verified": true
+  },
+  {
+   "name": "get-long-range-forecast",
+   "summary": "21-day (3 weeks) long-range forecast for a location with daily temperature/precipitation percentiles and weekly summaries",
+   "method": "GET",
+   "urlTemplate": "/api/v0/locations/{id}/subseasonalforecast",
+   "params": [
+    {
+     "name": "id",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "yr location id, e.g. 1-92416",
+     "example": "1-92416"
+    }
+   ],
+   "responseType": "json",
+   "resultPath": "sevenDayIntervals",
+   "defaultFields": [
+    "start",
+    "end",
+    "summary",
+    "dayIntervals"
+   ],
+   "mutates": false,
+   "example": {
+    "id": "1-92416"
+   },
+   "source": "E28 GET https://www.yr.no/api/v0/locations/1-92416/subseasonalforecast",
+   "verified": true
+  },
+  {
+   "name": "get-coast-forecast",
+   "summary": "Coastal/sea forecast for a coastal location: waves, currents, sea temperature plus wind and air temperature per day",
+   "method": "GET",
+   "urlTemplate": "/api/v0/locations/{id}/forecast/coast",
+   "params": [
+    {
+     "name": "id",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "yr location id with hasOceanForecast=true, e.g. 1-92416",
+     "example": "1-92416"
+    },
+    {
+     "name": "language",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Response language",
+     "enum": [
+      "nb",
+      "nn",
+      "en",
+      "sme"
+     ],
+     "default": "nb"
+    }
+   ],
+   "responseType": "json",
+   "resultPath": "dayIntervals",
+   "defaultFields": [
+    "start",
+    "sixHourSymbols",
+    "temperature",
+    "wind",
+    "sea.wave",
+    "sea.current",
+    "sea.temperature"
+   ],
+   "mutates": false,
+   "example": {
+    "id": "1-92416"
+   },
+   "source": "E30 GET https://www.yr.no/api/v0/locations/1-92416/forecast/coast",
+   "verified": true
+  },
+  {
+   "name": "get-tide",
+   "summary": "Upcoming high and low tide times and levels (cm) for a Norwegian coastal location",
+   "method": "GET",
+   "urlTemplate": "/api/v0/locations/{id}/tide",
+   "params": [
+    {
+     "name": "id",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "yr location id, e.g. 1-92416",
+     "example": "1-92416"
+    },
+    {
+     "name": "language",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Response language",
+     "enum": [
+      "nb",
+      "nn",
+      "en",
+      "sme"
+     ],
+     "default": "nb"
+    }
+   ],
+   "responseType": "json",
+   "resultPath": "_embedded.tides",
+   "defaultFields": [
+    "time",
+    "type",
+    "value"
+   ],
+   "mutates": false,
+   "example": {
+    "id": "1-92416"
+   },
+   "source": "E29 GET https://www.yr.no/api/v0/locations/1-92416/tide",
+   "verified": true
+  },
+  {
+   "name": "get-water-level",
+   "summary": "Hourly sea water level for ~9 days (astronomical prediction vs. weather-adjusted forecast, cm)",
+   "method": "GET",
+   "urlTemplate": "/api/v0/locations/{id}/waterlevel",
+   "params": [
+    {
+     "name": "id",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "yr location id, e.g. 1-92416",
+     "example": "1-92416"
+    },
+    {
+     "name": "language",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Response language",
+     "enum": [
+      "nb",
+      "nn",
+      "en",
+      "sme"
+     ],
+     "default": "nb"
+    }
+   ],
+   "responseType": "json",
+   "resultPath": "_embedded.hours",
+   "defaultFields": [
+    "time",
+    "prediction.value",
+    "forecast.value"
+   ],
+   "mutates": false,
+   "example": {
+    "id": "1-92416"
+   },
+   "source": "E31 GET https://www.yr.no/api/v0/locations/1-92416/waterlevel",
+   "verified": true
+  },
+  {
+   "name": "get-air-quality",
+   "summary": "Hourly air quality forecast (index, severity, health description) for a Norwegian location",
+   "method": "GET",
+   "urlTemplate": "/api/v0/locations/{id}/airqualityforecast",
+   "params": [
+    {
+     "name": "id",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "yr location id, e.g. 1-92416",
+     "example": "1-92416"
+    },
+    {
+     "name": "language",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Response language",
+     "enum": [
+      "nb",
+      "nn",
+      "en",
+      "sme"
+     ],
+     "default": "nb"
+    }
+   ],
+   "responseType": "json",
+   "resultPath": "_embedded.hours",
+   "defaultFields": [
+    "time",
+    "airQuality.index",
+    "airQuality.severity",
+    "airQuality.description"
+   ],
+   "mutates": false,
+   "example": {
+    "id": "1-92416"
+   },
+   "source": "E23 GET https://www.yr.no/api/v0/locations/1-92416/airqualityforecast",
+   "verified": true
+  },
+  {
+   "name": "get-aurora-forecast",
+   "summary": "Hourly northern lights (aurora) forecast: Kp index, aurora activity, darkness and cloud cover",
+   "method": "GET",
+   "urlTemplate": "/api/v0/locations/{id}/auroraforecast",
+   "params": [
+    {
+     "name": "id",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "yr location id, e.g. 1-92416",
+     "example": "1-92416"
+    },
+    {
+     "name": "language",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Response language",
+     "enum": [
+      "nb",
+      "nn",
+      "en",
+      "sme"
+     ],
+     "default": "nb"
+    }
+   ],
+   "responseType": "json",
+   "resultPath": "shortIntervals",
+   "defaultFields": [
+    "start",
+    "kpIndex",
+    "auroraValue",
+    "condition.text",
+    "sunlight.text",
+    "cloudCover.value"
+   ],
+   "mutates": false,
+   "example": {
+    "id": "1-92416"
+   },
+   "source": "E25 GET https://www.yr.no/api/v0/locations/1-92416/auroraforecast",
+   "verified": true
+  },
+  {
+   "name": "get-sun-moon-today",
+   "summary": "Today's sun and moon details: sunrise/sunset, day length, moon phase, illumination, next full/new moon and eclipses",
+   "method": "GET",
+   "urlTemplate": "/api/v0/locations/{id}/celestialeventssingleday",
+   "params": [
+    {
+     "name": "id",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "yr location id, e.g. 1-92416",
+     "example": "1-92416"
+    },
+    {
+     "name": "language",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Response language",
+     "enum": [
+      "nb",
+      "nn",
+      "en",
+      "sme"
+     ],
+     "default": "nb"
+    }
+   ],
+   "responseType": "json",
+   "defaultFields": [
+    "sun.lengthOfDay",
+    "sun.differenceFromYesterday",
+    "sun.events",
+    "sun.nextSolarEclipse",
+    "moon.phase.label",
+    "moon.illuminationPercentage",
+    "moon.nextFullMoon",
+    "moon.events"
+   ],
+   "mutates": false,
+   "example": {
+    "id": "1-92416"
+   },
+   "source": "E24 GET https://www.yr.no/api/v0/locations/1-92416/celestialeventssingleday",
+   "verified": true
+  },
+  {
+   "name": "get-celestial-events",
+   "summary": "Sunrise/sunset and moonrise/moonset events for each day over ~13 days",
+   "method": "GET",
+   "urlTemplate": "/api/v0/locations/{id}/celestialeventsmultipledays",
+   "params": [
+    {
+     "name": "id",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "yr location id, e.g. 1-92416",
+     "example": "1-92416"
+    }
+   ],
+   "responseType": "json",
+   "resultPath": "days",
+   "defaultFields": [
+    "date",
+    "sun.events",
+    "moon.events",
+    "moon.bodyState"
+   ],
+   "mutates": false,
+   "example": {
+    "id": "1-92416"
+   },
+   "source": "E5 E52 GET https://www.yr.no/api/v0/locations/1-92416/celestialeventsmultipledays",
+   "verified": true
+  },
+  {
+   "name": "get-water-temperatures",
+   "summary": "Latest measured water/bathing temperatures at spots nearest to a location",
+   "method": "GET",
+   "urlTemplate": "/api/v0/locations/{id}/nearestwatertemperatures",
+   "params": [
+    {
+     "name": "id",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "yr location id, e.g. 1-92416",
+     "example": "1-92416"
+    },
+    {
+     "name": "language",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Response language",
+     "enum": [
+      "nb",
+      "nn",
+      "en",
+      "sme"
+     ],
+     "default": "nb"
+    }
+   ],
+   "responseType": "json",
+   "resultPath": "_embedded.nearestLocations",
+   "defaultFields": [
+    "location.name",
+    "location.id",
+    "temperature",
+    "time",
+    "distanceFromLocation",
+    "sourceDisplayName"
+   ],
+   "mutates": false,
+   "example": {
+    "id": "1-92416"
+   },
+   "source": "E26 GET https://www.yr.no/api/v0/locations/1-92416/nearestwatertemperatures",
+   "verified": true
+  },
+  {
+   "name": "get-webcams",
+   "summary": "Webcams near a location with distance and image URLs",
+   "method": "GET",
+   "urlTemplate": "/api/v0/locations/{id}/cameras",
+   "params": [
+    {
+     "name": "id",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "yr location id, e.g. 1-92416",
+     "example": "1-92416"
+    },
+    {
+     "name": "language",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Response language",
+     "enum": [
+      "nb",
+      "nn",
+      "en",
+      "sme"
+     ],
+     "default": "nb"
+    }
+   ],
+   "responseType": "json",
+   "resultPath": "cameras",
+   "defaultFields": [
+    "name",
+    "distance",
+    "elevation",
+    "source",
+    "views",
+    "suspended"
+   ],
+   "mutates": false,
+   "example": {
+    "id": "1-92416"
+   },
+   "source": "E27 GET https://www.yr.no/api/v0/locations/1-92416/cameras",
+   "verified": true
+  },
+  {
+   "name": "list-observation-stations",
+   "summary": "Weather stations near a location with their last 24h observed temperature, precipitation and wind",
+   "method": "GET",
+   "urlTemplate": "/api/v0/locations/{id}/observations",
+   "params": [
+    {
+     "name": "id",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "yr location id, e.g. 1-92416",
+     "example": "1-92416"
+    }
+   ],
+   "responseType": "json",
+   "resultPath": "_embedded.stations",
+   "defaultFields": [
+    "name",
+    "stationId",
+    "location.id",
+    "distance",
+    "observations.temperature.max",
+    "observations.temperature.min",
+    "observations.precipitation.total",
+    "observations.wind.maxGust"
+   ],
+   "mutates": false,
+   "example": {
+    "id": "1-92416"
+   },
+   "source": "E13 GET https://www.yr.no/api/v0/locations/1-92416/observations",
+   "verified": true
+  },
+  {
+   "name": "get-observation-history",
+   "summary": "Observed weather history from the nearest station: last year, last 30 days, last 25 hours, or a specific date",
+   "method": "GET",
+   "urlTemplate": "/api/v0/locations/{id}/observations/{period}",
+   "params": [
+    {
+     "name": "id",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "yr location id, e.g. 1-92416",
+     "example": "1-92416"
+    },
+    {
+     "name": "period",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "'year' (last 12 months), 'month' (last 30 days), 'day' (last 25 hours) or a date YYYY-MM-DD for that day's hourly observations",
+     "example": "month"
+    }
+   ],
+   "responseType": "json",
+   "defaultFields": [
+    "name",
+    "stationId",
+    "distance",
+    "historical.name",
+    "historical.units",
+    "historical.summary",
+    "historical.days",
+    "historical.months"
+   ],
+   "mutates": false,
+   "example": {
+    "id": "1-92416",
+    "period": "month"
+   },
+   "source": "E32 E33 E34 E35 GET https://www.yr.no/api/v0/locations/1-92416/observations/year",
+   "verified": true
+  },
+  {
+   "name": "get-location-warnings",
+   "summary": "Active and upcoming weather warnings (farevarsler) affecting a location; an empty list means no warnings",
+   "method": "GET",
+   "urlTemplate": "/api/v0/locations/{id}/warnings",
+   "params": [
+    {
+     "name": "id",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "yr location id from search-locations, e.g. 1-305409 (Troms\u00f8) or 1-92416 (Bergen)",
+     "example": "1-305409"
+    },
+    {
+     "name": "language",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Response language",
+     "enum": [
+      "nb",
+      "nn",
+      "en",
+      "sme"
+     ],
+     "default": "nb"
+    }
+   ],
+   "responseType": "json",
+   "resultPath": "warnings",
+   "defaultFields": [
+    "meta.id",
+    "meta.longTitle",
+    "meta.severity",
+    "meta.eventType",
+    "meta.eventStatus",
+    "meta.onset",
+    "meta.expires",
+    "meta.areas"
+   ],
+   "mutates": false,
+   "example": {
+    "id": "1-305409"
+   },
+   "source": "E6 E10 E15 E19 E47",
+   "verified": true
+  },
+  {
+   "name": "list-warnings",
+   "summary": "All active weather warnings in Norway (land and marine): title, severity, event type, areas, validity",
+   "method": "GET",
+   "urlTemplate": "/api/v0/warnings",
+   "params": [
+    {
+     "name": "language",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Response language",
+     "enum": [
+      "nb",
+      "nn",
+      "en",
+      "sme"
+     ],
+     "default": "nb"
+    }
+   ],
+   "responseType": "json",
+   "resultPath": "warnings",
+   "defaultFields": [
+    "meta.id",
+    "meta.longTitle",
+    "meta.severity",
+    "meta.eventType",
+    "meta.eventStatus",
+    "meta.onset",
+    "meta.expires",
+    "meta.areas"
+   ],
+   "mutates": false,
+   "source": "E36 GET https://www.yr.no/api/v0/warnings",
+   "verified": true
+  },
+  {
+   "name": "list-regions",
+   "summary": "List the counties/regions of a country (used to filter warnings by county)",
+   "method": "GET",
+   "urlTemplate": "/api/v0/regions/{country}",
+   "params": [
+    {
+     "name": "country",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Country code, e.g. NO",
+     "example": "NO"
+    },
+    {
+     "name": "language",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Response language",
+     "enum": [
+      "nb",
+      "nn",
+      "en",
+      "sme"
+     ],
+     "default": "nb"
+    }
+   ],
+   "responseType": "json",
+   "resultPath": "regions",
+   "defaultFields": [
+    "id",
+    "name",
+    "urlPath"
+   ],
+   "mutates": false,
+   "example": {
+    "country": "NO"
+   },
+   "source": "E7 GET https://www.yr.no/api/v0/regions/NO",
+   "verified": true
+  },
+  {
+   "name": "list-mountain-passes",
+   "summary": "All Norwegian mountain passes with open/closed/convoy status, road number and message count (collection fjell-sor = south, fjell-nord = north)",
+   "method": "GET",
+   "urlTemplate": "/api/v0/routeforecast/mountainpass",
+   "params": [
+    {
+     "name": "language",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Response language",
+     "enum": [
+      "nb",
+      "nn",
+      "en",
+      "sme"
+     ],
+     "default": "nb"
+    }
+   ],
+   "responseType": "json",
+   "resultPath": "routes",
+   "defaultFields": [
+    "id",
+    "name",
+    "collection",
+    "openClosed.label",
+    "openClosed.mode",
+    "road.number",
+    "lengthKm",
+    "messageCount"
+   ],
+   "mutates": false,
+   "source": "E14 GET https://www.yr.no/api/v0/routeforecast/mountainpass",
+   "verified": true
+  },
+  {
+   "name": "get-mountain-pass",
+   "summary": "Mountain pass detail: open/closed status, road messages (closures, roadworks), road cameras and forecast location ids along the route",
+   "method": "GET",
+   "urlTemplate": "/api/v0/routeforecast/mountainpass/{id}",
+   "params": [
+    {
+     "name": "id",
+     "in": "path",
+     "required": true,
+     "type": "number",
+     "description": "Mountain pass id from list-mountain-passes, e.g. 1 (E6 Dovrefjell)",
+     "example": "1"
+    },
+    {
+     "name": "language",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Response language",
+     "enum": [
+      "nb",
+      "nn",
+      "en",
+      "sme"
+     ],
+     "default": "nb"
+    }
+   ],
+   "responseType": "json",
+   "defaultFields": [
+    "route.name",
+    "route.openClosed",
+    "route.road",
+    "locations",
+    "roadMessages",
+    "roadCameras"
+   ],
+   "mutates": false,
+   "example": {
+    "id": "1"
+   },
+   "source": "E37 GET https://www.yr.no/api/v0/routeforecast/mountainpass/{n}",
+   "verified": true
+  },
+  {
+   "name": "search-meteorologist-posts",
+   "summary": "Latest posts from yr's duty meteorologists (Meteorologene), optionally filtered by a keyword in the text, newest first",
+   "method": "GET",
+   "urlTemplate": "/api/meteorologene/v2025-01-22/data/query/production/?query=*%5B_type%20in%20%5B'post'%2C%20'threadPost'%5D%20%26%26%20pt%3A%3Atext(body)%20match%20%24queryString%5D%20%7C%20order(publishedAt%20desc)%20%5B0...%24count%5D%20%7B...%2C%20%22text%22%3A%20pt%3A%3Atext(body)%2C%20%22images%22%3A%20images%5B%5D%7B%22id%22%3A%20asset._ref%2C%20altText%7D%7D&%24queryString=%22*{q}*%22&%24count={count}",
+   "params": [
+    {
+     "name": "q",
+     "in": "path",
+     "required": false,
+     "type": "string",
+     "description": "Keyword to match in post text (Norwegian, e.g. sn\u00f8, storm). Empty = all posts",
+     "example": "sn\u00f8"
+    },
+    {
+     "name": "count",
+     "in": "path",
+     "required": false,
+     "type": "number",
+     "description": "Number of posts to return",
+     "default": 10
+    }
+   ],
+   "responseType": "json",
+   "resultPath": "result",
+   "defaultFields": [
+    "_id",
+    "_type",
+    "publishedAt",
+    "text",
+    "images"
+   ],
+   "mutates": false,
+   "example": {
+    "q": "sn\u00f8"
+   },
+   "source": "E20 GET https://www.yr.no/api/meteorologene/v2025-01-22/data/query/production/",
+   "verified": true
+  },
+  {
+   "name": "get-meteorologist-post",
+   "summary": "Get one meteorologist post by its _id (full text, images, thread replies)",
+   "method": "GET",
+   "urlTemplate": "/api/meteorologene/v2025-01-22/data/query/production/?query=*%5B_id%20%3D%3D%20%24id%5D%5B0%5D%7B...%2C%20%22text%22%3A%20pt%3A%3Atext(body)%2C%20%22images%22%3A%20images%5B%5D%7B%22id%22%3A%20asset._ref%2C%20altText%7D%7D&%24id=%22{id}%22",
+   "params": [
+    {
+     "name": "id",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Post _id from search-meteorologist-posts",
+     "example": "3d267b39-0372-4d29-b283-d06019d16904"
+    }
+   ],
+   "responseType": "json",
+   "resultPath": "result",
+   "defaultFields": [
+    "_id",
+    "_type",
+    "publishedAt",
+    "text",
+    "images",
+    "thread"
+   ],
+   "mutates": false,
+   "example": {
+    "id": "3d267b39-0372-4d29-b283-d06019d16904"
+   },
+   "source": "E20 E73 GET https://www.yr.no/api/meteorologene/v2025-01-22/data/query/production/",
+   "verified": true
+  }
+ ],
+ "blockers": [],
+ "notes": [
+  "All weather data is keyed by yr location id (e.g. 1-92416 Bergen, 2-2950159 Berlin). Use search-locations first; get-location's _links shows which data types (coast, tide, airquality, aurora, watertemperatures, subseasonalforecast...) exist for that place \u2014 non-Norwegian places lack many of them.",
+  "Times are ISO 8601 in the location's local time zone; temperatures \u00b0C, wind m/s, precipitation mm, tide/water level cm.",
+  "get-forecast returns daily intervals; the raw forecast response also contains finer-grained interval arrays (hourly) if you need them.",
+  "Warning results include large GeoJSON polygons (areasFeatureCollection); filter by county client-side using meta.areas / region names from list-regions.",
+  "Mountain pass list has 61 routes; filter by the 'collection' field (fjell-sor = southern Norway, fjell-nord = northern Norway). Location ids in get-mountain-pass can be passed to get-forecast.",
+  "Meteorologist posts come from a Sanity GROQ API; the keyword match uses wildcards around q. Text is Norwegian.",
+  "Saving locations to 'Mine steder' requires an NRK login and is not exposed. Service announcements (/api/v0/serviceannouncements/web) usually return {message:null} and are omitted. Raw data for heavy use should come from the official api.met.no (see developer.yr.no)."
+ ],
+ "dropped": [
+  {
+   "name": "get-location-extreme-warnings",
+   "summary": "Extreme weather events (named storms, red warnings) affecting a location",
+   "method": "GET",
+   "urlTemplate": "/api/v0/locations/{id}/warnings/extreme",
+   "params": [
+    {
+     "name": "id",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "yr location id, e.g. 1-92416",
+     "example": "1-92416"
+    },
+    {
+     "name": "language",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Response language",
+     "enum": [
+      "nb",
+      "nn",
+      "en",
+      "sme"
+     ],
+     "default": "nb"
+    }
+   ],
+   "responseType": "json",
+   "resultPath": "extremeWarnings",
+   "mutates": false,
+   "example": {
+    "id": "1-92416"
+   },
+   "source": "E4 E51 GET https://www.yr.no/api/v0/locations/1-92416/warnings/extreme",
+   "verified": false,
+   "verifyNote": "empty list: the example args returned nothing or the selector/resultPath is wrong"
+  }
+ ],
+ "generated": {
+  "by": "clify add",
+  "model": "claude-opus-5-5",
+  "exploredSteps": 30,
+  "recorded": 198,
+  "verifiedAt": "2026-10-18T09:08:30.786Z",
+  "seconds": 263
+ }
+}

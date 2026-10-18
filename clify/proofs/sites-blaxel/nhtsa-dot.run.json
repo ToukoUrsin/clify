@@ -1,0 +1,176 @@
+{
+ "url": "https://vpic.nhtsa.dot.gov/",
+ "category": "gov-us",
+ "sandbox": "clify-vpic-nhtsa-dot-gov",
+ "startedAt": "2026-10-18T08:36:31.654Z",
+ "region": "us-pdx-1",
+ "chrome": "Chrome/148.0.7778.96",
+ "sandboxStartMs": 1779,
+ "addSeconds": 279,
+ "addExit": 0,
+ "add": {
+  "ok": true,
+  "site": "nhtsa-dot",
+  "url": "https://vpic.nhtsa.dot.gov/",
+  "commands": [
+   {
+    "name": "decode-vin",
+    "summary": "Decode a full or partial VIN (use * as a wildcard) into a flat record with make, model, year, body, engine, safety equipment, plant and more",
+    "verified": true
+   },
+   {
+    "name": "decode-wmi",
+    "summary": "Decode a World Manufacturer Identifier (the first 3 or 6 VIN characters) into its manufacturer, make and vehicle type",
+    "verified": true
+   },
+   {
+    "name": "list-models-for-make-year",
+    "summary": "List the models a make offers in a given model year",
+    "verified": true
+   },
+   {
+    "name": "list-models-for-make-id",
+    "summary": "List all models for a make, identified by its numeric vPIC Make_ID",
+    "verified": true
+   },
+   {
+    "name": "list-all-makes",
+    "summary": "List every make in vPIC with its Make_ID (a large list, roughly 10k entries)",
+    "verified": true
+   },
+   {
+    "name": "get-manufacturer-details",
+    "summary": "Look up manufacturers by full or partial name (or numeric manufacturer ID) and get address, country and vehicle types",
+    "verified": true
+   },
+   {
+    "name": "list-wmis-for-manufacturer",
+    "summary": "List the WMI codes assigned to a manufacturer, matched by full or partial name or ID",
+    "verified": true
+   },
+   {
+    "name": "list-canadian-spec-makes",
+    "summary": "List the makes that have Canadian Vehicle Specifications data for a model year",
+    "verified": true
+   },
+   {
+    "name": "list-canadian-spec-models",
+    "summary": "List the Canadian Vehicle Specifications model names for a year, optionally limited to one make",
+    "verified": true
+   },
+   {
+    "name": "get-canadian-specs",
+    "summary": "Get Canadian Vehicle Specifications dimensions (length, width, height, wheelbase, curb weight, track, weight distribution) for a year and make, optionally one model",
+    "verified": true
+   },
+   {
+    "name": "list-replica-manufacturers",
+    "summary": "List NHTSA-approved low-volume replica vehicle manufacturers with their approved vehicles and status, paginated and searchable",
+    "verified": true
+   },
+   {
+    "name": "get-mid-manufacturer",
+    "summary": "Get a manufacturer's MID profile by manufacturer ID: contacts, address, makes and models, WMIs, manufacturer types and Part 565/566 filings",
+    "verified": true
+   },
+   {
+    "name": "get-modifier",
+    "summary": "Get a registered adapted-vehicle modifier's details (DBAs, address, phone, contact) by modifier ID",
+    "verified": true
+   }
+  ],
+  "verified": 13,
+  "writes": 0,
+  "dropped": [],
+  "blockers": [],
+  "loggedIn": false,
+  "seconds": 278,
+  "next": [
+   "clify nhtsa-dot",
+   "clify nhtsa-dot decode-vin --vin \"1HGCM82633A004352\""
+  ],
+  "installed": "/home/ubuntu/clify-runs/blaxel-w1/home/bin/nhtsa-dot",
+  "explored": {
+   "steps": 28,
+   "recorded": 34,
+   "heldWrites": 0
+  }
+ },
+ "check": {
+  "on": "blaxel",
+  "node": "v24.22.0",
+  "seconds": 6,
+  "reads": 13,
+  "verified": 13,
+  "failed": [],
+  "results": [
+   {
+    "name": "decode-vin",
+    "ok": true,
+    "ms": 216
+   },
+   {
+    "name": "decode-wmi",
+    "ok": true,
+    "ms": 172
+   },
+   {
+    "name": "list-models-for-make-year",
+    "ok": true,
+    "ms": 281
+   },
+   {
+    "name": "list-models-for-make-id",
+    "ok": true,
+    "ms": 313
+   },
+   {
+    "name": "list-all-makes",
+    "ok": true,
+    "ms": 686
+   },
+   {
+    "name": "get-manufacturer-details",
+    "ok": true,
+    "ms": 233
+   },
+   {
+    "name": "list-wmis-for-manufacturer",
+    "ok": true,
+    "ms": 152
+   },
+   {
+    "name": "list-canadian-spec-makes",
+    "ok": true,
+    "ms": 158
+   },
+   {
+    "name": "list-canadian-spec-models",
+    "ok": true,
+    "ms": 130
+   },
+   {
+    "name": "get-canadian-specs",
+    "ok": true,
+    "ms": 188
+   },
+   {
+    "name": "list-replica-manufacturers",
+    "ok": true,
+    "ms": 214
+   },
+   {
+    "name": "get-mid-manufacturer",
+    "ok": true,
+    "ms": 707
+   },
+   {
+    "name": "get-modifier",
+    "ok": true,
+    "ms": 189
+   }
+  ]
+ },
+ "deleted": true,
+ "seconds": 287
+}

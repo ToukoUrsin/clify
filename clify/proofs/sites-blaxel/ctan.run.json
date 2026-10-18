@@ -1,0 +1,251 @@
+{
+ "url": "https://ctan.org/",
+ "category": "dev",
+ "sandbox": "clify-ctan-org",
+ "startedAt": "2026-10-18T09:17:18.041Z",
+ "region": "us-pdx-1",
+ "chrome": "Chrome/148.0.7778.96",
+ "sandboxStartMs": 1606,
+ "addSeconds": 293,
+ "addExit": 0,
+ "add": {
+  "ok": true,
+  "site": "ctan",
+  "url": "https://ctan.org/",
+  "commands": [
+   {
+    "name": "list-packages",
+    "summary": "List CTAN packages whose name starts with a given letter (package slug and URL)",
+    "verified": true
+   },
+   {
+    "name": "get-package",
+    "summary": "Get a package's detail page: title and catalogue entry table (version, license, home page, etc.)",
+    "verified": true
+   },
+   {
+    "name": "get-package-history",
+    "summary": "Get a package's release timeline as [year, month, version] tuples",
+    "verified": true
+   },
+   {
+    "name": "get-package-rating",
+    "summary": "Get a package's rating breakdown: the number of votes for each star level",
+    "verified": true
+   },
+   {
+    "name": "list-package-comments",
+    "summary": "List user comments on a package (commenter, profile link, date), paginated",
+    "verified": true
+   },
+   {
+    "name": "list-topics",
+    "summary": "List all topics with slug, URL and a tooltip containing the description and package count",
+    "verified": true
+   },
+   {
+    "name": "list-topics-by-count",
+    "summary": "List topics ranked by number of packages",
+    "verified": true
+   },
+   {
+    "name": "list-topic-packages",
+    "summary": "List the packages in a topic",
+    "verified": true
+   },
+   {
+    "name": "list-top-contributors",
+    "summary": "List top contributors with their package counts",
+    "verified": true
+   },
+   {
+    "name": "list-contributors",
+    "summary": "List contributors whose surname starts with a given letter",
+    "verified": true
+   },
+   {
+    "name": "get-contributor",
+    "summary": "List the packages maintained by a contributor",
+    "verified": true
+   },
+   {
+    "name": "list-announcements",
+    "summary": "List the latest CTAN-ann announcements (package uploads and updates)",
+    "verified": true
+   },
+   {
+    "name": "get-announcement",
+    "summary": "Get the full text of an announcement and the package it concerns",
+    "verified": true
+   },
+   {
+    "name": "list-package-announcements",
+    "summary": "List all announcements for one package",
+    "verified": true
+   },
+   {
+    "name": "browse-archive",
+    "summary": "List subdirectories and files (size, date, download URL) in a CTAN archive directory",
+    "verified": true
+   },
+   {
+    "name": "list-licenses",
+    "summary": "List the license keys used in the TeX Catalogue (free and non-free)",
+    "verified": true
+   },
+   {
+    "name": "get-license",
+    "summary": "Get a license's name, text and reference link",
+    "verified": true
+   },
+   {
+    "name": "get-license-stats",
+    "summary": "Get how many packages use a license, out of the total package count",
+    "verified": true
+   },
+   {
+    "name": "get-upload-stats",
+    "summary": "Get monthly CTAN upload counts as [year, month, count] tuples",
+    "verified": true
+   },
+   {
+    "name": "get-random-package",
+    "summary": "Get a random featured package (key, name, caption, description)",
+    "verified": true
+   }
+  ],
+  "verified": 20,
+  "writes": 0,
+  "dropped": [
+   {
+    "name": "get-archive-directory",
+    "reason": "The path param's slashes get URL-encoded to %2F, so the server returns 404. The template cannot hold a path of variable depth. browse-archive already lists directory contents and get-package returns the catalogue entry."
+   }
+  ],
+  "blockers": [],
+  "loggedIn": false,
+  "seconds": 292,
+  "next": [
+   "clify ctan",
+   "clify ctan list-packages --letter \"T\""
+  ],
+  "installed": "/home/ubuntu/clify-runs/blaxel-w2/home/bin/ctan",
+  "explored": {
+   "steps": 25,
+   "recorded": 36,
+   "heldWrites": 0
+  }
+ },
+ "check": {
+  "on": "blaxel",
+  "node": "v24.22.0",
+  "seconds": 12,
+  "reads": 20,
+  "verified": 20,
+  "failed": [],
+  "results": [
+   {
+    "name": "list-packages",
+    "ok": true,
+    "ms": 855
+   },
+   {
+    "name": "get-package",
+    "ok": true,
+    "ms": 218
+   },
+   {
+    "name": "get-package-history",
+    "ok": true,
+    "ms": 162
+   },
+   {
+    "name": "get-package-rating",
+    "ok": true,
+    "ms": 165
+   },
+   {
+    "name": "list-package-comments",
+    "ok": true,
+    "ms": 169
+   },
+   {
+    "name": "list-topics",
+    "ok": true,
+    "ms": 234
+   },
+   {
+    "name": "list-topics-by-count",
+    "ok": true,
+    "ms": 279
+   },
+   {
+    "name": "list-topic-packages",
+    "ok": true,
+    "ms": 173
+   },
+   {
+    "name": "list-top-contributors",
+    "ok": true,
+    "ms": 213
+   },
+   {
+    "name": "list-contributors",
+    "ok": true,
+    "ms": 203
+   },
+   {
+    "name": "get-contributor",
+    "ok": true,
+    "ms": 177
+   },
+   {
+    "name": "list-announcements",
+    "ok": true,
+    "ms": 169
+   },
+   {
+    "name": "get-announcement",
+    "ok": true,
+    "ms": 177
+   },
+   {
+    "name": "list-package-announcements",
+    "ok": true,
+    "ms": 179
+   },
+   {
+    "name": "browse-archive",
+    "ok": true,
+    "ms": 166
+   },
+   {
+    "name": "list-licenses",
+    "ok": true,
+    "ms": 177
+   },
+   {
+    "name": "get-license",
+    "ok": true,
+    "ms": 170
+   },
+   {
+    "name": "get-license-stats",
+    "ok": true,
+    "ms": 6193
+   },
+   {
+    "name": "get-upload-stats",
+    "ok": true,
+    "ms": 519
+   },
+   {
+    "name": "get-random-package",
+    "ok": true,
+    "ms": 171
+   }
+  ]
+ },
+ "deleted": true,
+ "seconds": 307
+}

@@ -1,0 +1,673 @@
+{
+ "name": "dev",
+ "startUrl": "https://dev.to/",
+ "origin": "https://dev.to",
+ "createdAt": "2026-10-18T07:33:41.011Z",
+ "description": "DEV Community (dev.to) is a developer blogging platform. This CLI reads its public JSON API: articles (filtered, latest, top, rising, series), article details, comment threads, users, organizations, tags, podcast episodes and videos.",
+ "commands": [
+  {
+   "name": "list-articles",
+   "summary": "List published articles. Filter by one tag, any of several tags, excluded tags, author or organization username, feed state (fresh/rising), top articles of the last N days, or series (collection_id).",
+   "method": "GET",
+   "urlTemplate": "/api/articles",
+   "params": [
+    {
+     "name": "tag",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Only articles with this single tag (no #), e.g. react",
+     "example": "react"
+    },
+    {
+     "name": "tags",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Comma-separated tags; matches articles having any of these tags, e.g. react,javascript",
+     "example": "react,javascript"
+    },
+    {
+     "name": "tags_exclude",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Comma-separated tags to exclude, e.g. ai",
+     "example": "ai"
+    },
+    {
+     "name": "username",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Only articles by this user or organization username",
+     "example": "sylwia-lask"
+    },
+    {
+     "name": "state",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Feed state: 'fresh' for new articles, 'rising' for trending new articles",
+     "enum": [
+      "fresh",
+      "rising"
+     ]
+    },
+    {
+     "name": "top",
+     "in": "query",
+     "required": false,
+     "type": "number",
+     "description": "Most popular articles from the last N days, e.g. 7",
+     "example": "7"
+    },
+    {
+     "name": "collection_id",
+     "in": "query",
+     "required": false,
+     "type": "number",
+     "description": "Only articles in this series/collection (the collection_id field of an article)",
+     "example": "43742"
+    },
+    {
+     "name": "page",
+     "in": "query",
+     "required": false,
+     "type": "number",
+     "description": "Page number, starting at 1",
+     "default": 1
+    },
+    {
+     "name": "per_page",
+     "in": "query",
+     "required": false,
+     "type": "number",
+     "description": "Results per page (API default 30, max 1000)",
+     "example": "10"
+    }
+   ],
+   "responseType": "json",
+   "defaultFields": [
+    "id",
+    "title",
+    "url",
+    "user.username",
+    "published_at",
+    "public_reactions_count",
+    "comments_count",
+    "tag_list"
+   ],
+   "pagination": {
+    "type": "page",
+    "param": "page"
+   },
+   "mutates": false,
+   "example": {
+    "tag": "react",
+    "per_page": "10"
+   },
+   "source": "E5",
+   "verified": true
+  },
+  {
+   "name": "list-latest-articles",
+   "summary": "List the newest published articles, newest first.",
+   "method": "GET",
+   "urlTemplate": "/api/articles/latest",
+   "params": [
+    {
+     "name": "page",
+     "in": "query",
+     "required": false,
+     "type": "number",
+     "description": "Page number, starting at 1",
+     "default": 1
+    },
+    {
+     "name": "per_page",
+     "in": "query",
+     "required": false,
+     "type": "number",
+     "description": "Results per page",
+     "example": "10"
+    }
+   ],
+   "responseType": "json",
+   "defaultFields": [
+    "id",
+    "title",
+    "url",
+    "user.username",
+    "published_at",
+    "public_reactions_count",
+    "comments_count",
+    "tag_list"
+   ],
+   "pagination": {
+    "type": "page",
+    "param": "page"
+   },
+   "mutates": false,
+   "example": {
+    "per_page": "10"
+   },
+   "source": "E10 GET https://dev.to/api/articles/latest",
+   "verified": true
+  },
+  {
+   "name": "get-article",
+   "summary": "Get one article by numeric id, with metadata, tags, author and full body (body_html/body_markdown).",
+   "method": "GET",
+   "urlTemplate": "/api/articles/{id}",
+   "params": [
+    {
+     "name": "id",
+     "in": "path",
+     "required": true,
+     "type": "number",
+     "description": "Numeric article id (the id field from article lists)",
+     "example": "4867404"
+    }
+   ],
+   "responseType": "json",
+   "defaultFields": [
+    "id",
+    "title",
+    "url",
+    "user.username",
+    "published_at",
+    "tags",
+    "public_reactions_count",
+    "comments_count"
+   ],
+   "mutates": false,
+   "example": {
+    "id": "4867404"
+   },
+   "source": "E6 GET https://dev.to/api/articles/{n}",
+   "verified": true
+  },
+  {
+   "name": "get-article-by-path",
+   "summary": "Get one article by author username and slug (the two parts of its dev.to URL path).",
+   "method": "GET",
+   "urlTemplate": "/api/articles/{username}/{slug}",
+   "params": [
+    {
+     "name": "username",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Author or organization username (first URL path segment)",
+     "example": "sylwia-lask"
+    },
+    {
+     "name": "slug",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Article slug (second URL path segment)",
+     "example": "your-browser-can-do-what-5-ai-features-that-actually-work-1blb"
+    }
+   ],
+   "responseType": "json",
+   "defaultFields": [
+    "id",
+    "title",
+    "url",
+    "user.username",
+    "published_at",
+    "tags",
+    "public_reactions_count",
+    "comments_count"
+   ],
+   "mutates": false,
+   "example": {
+    "username": "sylwia-lask",
+    "slug": "your-browser-can-do-what-5-ai-features-that-actually-work-1blb"
+   },
+   "source": "E7 GET https://dev.to/api/articles/sylwia-lask/your-browser-can-do-what-5-ai-features-that-actually-work-1blb",
+   "verified": true
+  },
+  {
+   "name": "list-comments",
+   "summary": "List all comment threads on an article. Each comment has nested replies in children.",
+   "method": "GET",
+   "urlTemplate": "/api/comments",
+   "params": [
+    {
+     "name": "article_id",
+     "key": "a_id",
+     "in": "query",
+     "required": true,
+     "type": "number",
+     "description": "Numeric article id",
+     "example": "4846656"
+    }
+   ],
+   "responseType": "json",
+   "defaultFields": [
+    "id_code",
+    "user.username",
+    "created_at",
+    "body_html",
+    "children"
+   ],
+   "mutates": false,
+   "example": {
+    "article_id": "4846656"
+   },
+   "source": "E8 GET https://dev.to/api/comments",
+   "verified": true
+  },
+  {
+   "name": "get-comment",
+   "summary": "Get one comment and all of its nested replies by comment id_code.",
+   "method": "GET",
+   "urlTemplate": "/api/comments/{id_code}",
+   "params": [
+    {
+     "name": "id_code",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Comment id_code (short alphanumeric code, e.g. 3hm8l)",
+     "example": "3hm8l"
+    }
+   ],
+   "responseType": "json",
+   "defaultFields": [
+    "id_code",
+    "user.username",
+    "created_at",
+    "body_html",
+    "children"
+   ],
+   "mutates": false,
+   "example": {
+    "id_code": "3hm8l"
+   },
+   "source": "E12 GET https://dev.to/api/comments/3hm8l",
+   "verified": true
+  },
+  {
+   "name": "get-comment-reaction-counts",
+   "summary": "Get public reaction counts for the comments of an article, as a list of {id: numeric comment id, count}.",
+   "method": "GET",
+   "urlTemplate": "/reactions?commentable_type=Article",
+   "params": [
+    {
+     "name": "article_id",
+     "key": "commentable_id",
+     "in": "query",
+     "required": true,
+     "type": "number",
+     "description": "Numeric article id",
+     "example": "4846656"
+    }
+   ],
+   "responseType": "json",
+   "resultPath": "public_reaction_counts",
+   "defaultFields": [
+    "id",
+    "count"
+   ],
+   "mutates": false,
+   "example": {
+    "article_id": "4846656"
+   },
+   "source": "E3 GET https://dev.to/reactions",
+   "verified": true
+  },
+  {
+   "name": "get-user-by-username",
+   "summary": "Get a user's public profile by username.",
+   "method": "GET",
+   "urlTemplate": "/api/users/by_username",
+   "params": [
+    {
+     "name": "username",
+     "key": "url",
+     "in": "query",
+     "required": true,
+     "type": "string",
+     "description": "DEV username",
+     "example": "sylwia-lask"
+    }
+   ],
+   "responseType": "json",
+   "defaultFields": [
+    "id",
+    "username",
+    "name",
+    "summary",
+    "location",
+    "joined_at",
+    "github_username",
+    "website_url"
+   ],
+   "mutates": false,
+   "example": {
+    "username": "sylwia-lask"
+   },
+   "source": "E9 GET https://dev.to/api/users/by_username",
+   "verified": true
+  },
+  {
+   "name": "get-user",
+   "summary": "Get a user's public profile by numeric user id.",
+   "method": "GET",
+   "urlTemplate": "/api/users/{id}",
+   "params": [
+    {
+     "name": "id",
+     "in": "path",
+     "required": true,
+     "type": "number",
+     "description": "Numeric user id (user.user_id in articles/comments)",
+     "example": "3535771"
+    }
+   ],
+   "responseType": "json",
+   "defaultFields": [
+    "id",
+    "username",
+    "name",
+    "summary",
+    "location",
+    "joined_at",
+    "github_username",
+    "website_url"
+   ],
+   "mutates": false,
+   "example": {
+    "id": "3535771"
+   },
+   "source": "E15 GET https://dev.to/api/users/{n}",
+   "verified": true
+  },
+  {
+   "name": "get-organization",
+   "summary": "Get an organization's profile by its username.",
+   "method": "GET",
+   "urlTemplate": "/api/organizations/{username}",
+   "params": [
+    {
+     "name": "username",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Organization username, e.g. devteam",
+     "example": "devteam"
+    }
+   ],
+   "responseType": "json",
+   "defaultFields": [
+    "id",
+    "username",
+    "name",
+    "summary",
+    "url",
+    "location",
+    "tech_stack",
+    "joined_at"
+   ],
+   "mutates": false,
+   "example": {
+    "username": "devteam"
+   },
+   "source": "E13 GET https://dev.to/api/organizations/devteam",
+   "verified": true
+  },
+  {
+   "name": "list-organization-articles",
+   "summary": "List articles published under an organization.",
+   "method": "GET",
+   "urlTemplate": "/api/organizations/{username}/articles",
+   "params": [
+    {
+     "name": "username",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Organization username",
+     "example": "devteam"
+    },
+    {
+     "name": "page",
+     "in": "query",
+     "required": false,
+     "type": "number",
+     "description": "Page number, starting at 1",
+     "default": 1
+    },
+    {
+     "name": "per_page",
+     "in": "query",
+     "required": false,
+     "type": "number",
+     "description": "Results per page",
+     "example": "5"
+    }
+   ],
+   "responseType": "json",
+   "defaultFields": [
+    "id",
+    "title",
+    "url",
+    "user.username",
+    "published_at",
+    "public_reactions_count",
+    "comments_count",
+    "tag_list"
+   ],
+   "pagination": {
+    "type": "page",
+    "param": "page"
+   },
+   "mutates": false,
+   "example": {
+    "username": "devteam",
+    "per_page": "5"
+   },
+   "source": "E14 GET https://dev.to/api/organizations/devteam/articles",
+   "verified": true
+  },
+  {
+   "name": "list-organization-users",
+   "summary": "List the members of an organization.",
+   "method": "GET",
+   "urlTemplate": "/api/organizations/{username}/users",
+   "params": [
+    {
+     "name": "username",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Organization username",
+     "example": "devteam"
+    },
+    {
+     "name": "page",
+     "in": "query",
+     "required": false,
+     "type": "number",
+     "description": "Page number, starting at 1",
+     "default": 1
+    },
+    {
+     "name": "per_page",
+     "in": "query",
+     "required": false,
+     "type": "number",
+     "description": "Results per page",
+     "example": "5"
+    }
+   ],
+   "responseType": "json",
+   "defaultFields": [
+    "id",
+    "username",
+    "name",
+    "summary",
+    "location",
+    "joined_at"
+   ],
+   "pagination": {
+    "type": "page",
+    "param": "page"
+   },
+   "mutates": false,
+   "example": {
+    "username": "devteam",
+    "per_page": "5"
+   },
+   "source": "E18 GET https://dev.to/api/organizations/devteam/users",
+   "verified": true
+  },
+  {
+   "name": "list-tags",
+   "summary": "List tags, most popular first.",
+   "method": "GET",
+   "urlTemplate": "/api/tags",
+   "params": [
+    {
+     "name": "page",
+     "in": "query",
+     "required": false,
+     "type": "number",
+     "description": "Page number, starting at 1",
+     "default": 1
+    },
+    {
+     "name": "per_page",
+     "in": "query",
+     "required": false,
+     "type": "number",
+     "description": "Results per page",
+     "example": "20"
+    }
+   ],
+   "responseType": "json",
+   "defaultFields": [
+    "id",
+    "name",
+    "short_summary"
+   ],
+   "pagination": {
+    "type": "page",
+    "param": "page"
+   },
+   "mutates": false,
+   "example": {
+    "per_page": "20"
+   },
+   "source": "E11 GET https://dev.to/api/tags",
+   "verified": true
+  },
+  {
+   "name": "list-podcast-episodes",
+   "summary": "List recent podcast episodes hosted on DEV.",
+   "method": "GET",
+   "urlTemplate": "/api/podcast_episodes",
+   "params": [
+    {
+     "name": "page",
+     "in": "query",
+     "required": false,
+     "type": "number",
+     "description": "Page number, starting at 1",
+     "default": 1
+    },
+    {
+     "name": "per_page",
+     "in": "query",
+     "required": false,
+     "type": "number",
+     "description": "Results per page",
+     "example": "5"
+    }
+   ],
+   "responseType": "json",
+   "defaultFields": [
+    "id",
+    "title",
+    "path",
+    "podcast.title",
+    "podcast.slug"
+   ],
+   "pagination": {
+    "type": "page",
+    "param": "page"
+   },
+   "mutates": false,
+   "example": {
+    "per_page": "5"
+   },
+   "source": "E16 GET https://dev.to/api/podcast_episodes",
+   "verified": true
+  },
+  {
+   "name": "list-videos",
+   "summary": "List recent articles that contain a video.",
+   "method": "GET",
+   "urlTemplate": "/api/videos",
+   "params": [
+    {
+     "name": "page",
+     "in": "query",
+     "required": false,
+     "type": "number",
+     "description": "Page number, starting at 1",
+     "default": 1
+    },
+    {
+     "name": "per_page",
+     "in": "query",
+     "required": false,
+     "type": "number",
+     "description": "Results per page",
+     "example": "5"
+    }
+   ],
+   "responseType": "json",
+   "defaultFields": [
+    "id",
+    "title",
+    "path",
+    "video_source_url",
+    "user.name",
+    "video_duration_in_minutes"
+   ],
+   "pagination": {
+    "type": "page",
+    "param": "page"
+   },
+   "mutates": false,
+   "example": {
+    "per_page": "5"
+   },
+   "source": "E17 GET https://dev.to/api/videos",
+   "verified": true
+  }
+ ],
+ "blockers": [],
+ "notes": [
+  "There is no keyword search command. /search/feed_content is blocked by robots.txt. To find articles, filter list-articles by tag, tags, username, top or state instead.",
+  "Article ids are numeric (id). Comment ids are short strings (id_code). get-comment-reaction-counts returns numeric comment ids, which are not id_codes.",
+  "In list responses, tag_list is an array. In single-article responses (get-article, get-article-by-path), tag_list is a comma-separated string.",
+  "Comment and article bodies are HTML in body_html. Replies are nested recursively in children.",
+  "list-articles filters can be combined. For example, tags + tags_exclude + state=rising + per_page.",
+  "Only public, signed-out reads are covered. Writes (reactions, bookmarks, follows, comments) were not captured because the explorer was not logged in."
+ ],
+ "dropped": [],
+ "generated": {
+  "by": "clify add",
+  "model": "claude-opus-5-5",
+  "exploredSteps": 20,
+  "recorded": 51,
+  "verifiedAt": "2026-10-18T07:34:52.240Z",
+  "seconds": 185
+ }
+}

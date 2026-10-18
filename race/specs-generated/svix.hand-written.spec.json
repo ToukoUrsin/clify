@@ -1,0 +1,17 @@
+{
+  "name": "svix",
+  "startUrl": "https://dashboard.svix.com/applications",
+  "origin": "https://dashboard.svix.com",
+  "createdAt": "2026-10-18T07:20:00Z",
+  "description": "Svix webhooks dashboard (Development environment), signed in as the clify agent (saved session). Consumer applications and their endpoints.",
+  "auth": { "headerNames": ["authorization"] },
+  "commands": [
+    { "name": "list-apps", "summary": "Consumer applications, newest first", "method": "GET", "urlTemplate": "/api/eu/api/v1/app/?order=descending", "responseType": "json", "resultPath": "data", "mutates": false, "auth": true, "params": [], "source": "GET https://dashboard.svix.com/api/eu/api/v1/app" },
+    { "name": "create-app", "summary": "Create a consumer application", "method": "POST", "urlTemplate": "/api/eu/api/v1/app/", "responseType": "json", "bodyEncoding": "json", "mutates": true, "auth": true,
+      "params": [ { "name": "name", "in": "body", "required": true, "type": "string" } ], "source": "POST https://dashboard.svix.com/api/eu/api/v1/app/" },
+    { "name": "create-endpoint", "summary": "Add an endpoint to an application", "method": "POST", "urlTemplate": "/api/eu/api/v1/app/{app}/endpoint/", "responseType": "json", "bodyEncoding": "json", "mutates": true, "auth": true,
+      "params": [ { "name": "app", "in": "path", "required": true, "type": "string", "description": "application id (app_...)" }, { "name": "url", "in": "body", "required": true, "type": "string" }, { "name": "description", "in": "body", "required": false, "type": "string" } ], "source": "POST https://dashboard.svix.com/api/eu/api/v1/app/<app>/endpoint/" },
+    { "name": "list-endpoints", "summary": "An application's endpoints", "method": "GET", "urlTemplate": "/api/eu/api/v1/app/{app}/endpoint/", "responseType": "json", "resultPath": "data", "mutates": false, "auth": true,
+      "params": [ { "name": "app", "in": "path", "required": true, "type": "string", "description": "application id (app_...)" } ], "source": "GET https://dashboard.svix.com/api/eu/api/v1/app/<app>/endpoint/" }
+  ]
+}

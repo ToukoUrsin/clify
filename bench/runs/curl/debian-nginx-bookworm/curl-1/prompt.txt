@@ -1,0 +1,6 @@
+On packages.debian.org, what version of the nginx package is in Debian bookworm?
+
+Start from https://packages.debian.org/. Work it out using only the tools you have, then end your reply with one final line exactly in the form:
+ANSWER: <short answer>
+
+You have a shell with curl, jq and python3, plus WebFetch and WebSearch. Use them to find the answer from the website (its pages or any public API). There is no browser.

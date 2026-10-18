@@ -1,0 +1,1033 @@
+{
+ "name": "anilist",
+ "startUrl": "https://anilist.co/",
+ "origin": "https://anilist.co",
+ "createdAt": "2026-10-18T09:35:14.918Z",
+ "description": "AniList (anilist.co) is an anime and manga database and tracker. This CLI sends read-only queries to AniList's public GraphQL API (https://graphql.anilist.co), the same API the web app uses. It covers searching and filtering anime and manga, media details, characters, staff, relations, reviews, recommendations, stats, character, staff and studio lookups, and the genre and tag lists.",
+ "commands": [
+  {
+   "name": "search-media",
+   "summary": "Search or browse anime/manga by keyword, with filters for type, format, status, season, year, genre and tag, plus sorting. Covers trending, popular, this-season and top-100 lists via sort and season.",
+   "method": "POST",
+   "urlTemplate": "https://graphql.anilist.co",
+   "params": [
+    {
+     "name": "search",
+     "in": "body",
+     "required": false,
+     "type": "string",
+     "description": "Keyword matched against titles and synonyms",
+     "example": "naruto"
+    },
+    {
+     "name": "type",
+     "in": "body",
+     "required": false,
+     "type": "string",
+     "description": "Media type. Leave it out to get both anime and manga.",
+     "enum": [
+      "ANIME",
+      "MANGA"
+     ],
+     "example": "ANIME"
+    },
+    {
+     "name": "format",
+     "in": "body",
+     "required": false,
+     "type": "string",
+     "description": "Media format",
+     "enum": [
+      "TV",
+      "TV_SHORT",
+      "MOVIE",
+      "SPECIAL",
+      "OVA",
+      "ONA",
+      "MUSIC",
+      "MANGA",
+      "NOVEL",
+      "ONE_SHOT"
+     ]
+    },
+    {
+     "name": "status",
+     "in": "body",
+     "required": false,
+     "type": "string",
+     "description": "Release status",
+     "enum": [
+      "FINISHED",
+      "RELEASING",
+      "NOT_YET_RELEASED",
+      "CANCELLED",
+      "HIATUS"
+     ]
+    },
+    {
+     "name": "season",
+     "in": "body",
+     "required": false,
+     "type": "string",
+     "description": "Anime airing season. Use it together with seasonYear.",
+     "enum": [
+      "WINTER",
+      "SPRING",
+      "SUMMER",
+      "FALL"
+     ]
+    },
+    {
+     "name": "seasonYear",
+     "in": "body",
+     "required": false,
+     "type": "number",
+     "description": "Year the anime season started airing, e.g. 2006. Anime only.",
+     "example": "2006"
+    },
+    {
+     "name": "genre",
+     "in": "body",
+     "required": false,
+     "type": "string",
+     "description": "Genre name, exact case, e.g. Thriller, Action, Romance. list-genres returns the valid values.",
+     "example": "Thriller"
+    },
+    {
+     "name": "tag",
+     "in": "body",
+     "required": false,
+     "type": "string",
+     "description": "Tag name, e.g. Pirates, Time Skip. list-tags returns the valid values.",
+     "example": "Pirates"
+    },
+    {
+     "name": "isAdult",
+     "in": "body",
+     "required": false,
+     "type": "boolean",
+     "description": "true returns only adult (18+) titles, false excludes them. Leave it out for no filter."
+    },
+    {
+     "name": "sort",
+     "in": "body",
+     "required": false,
+     "type": "string",
+     "description": "Sort order. SEARCH_MATCH ranks by relevance to the search keyword. SCORE_DESC gives the top-rated list, TRENDING_DESC trending, POPULARITY_DESC all-time popular.",
+     "enum": [
+      "POPULARITY_DESC",
+      "SCORE_DESC",
+      "TRENDING_DESC",
+      "SEARCH_MATCH",
+      "FAVOURITES_DESC",
+      "START_DATE_DESC",
+      "START_DATE",
+      "UPDATED_AT_DESC",
+      "TITLE_ROMAJI",
+      "TITLE_ENGLISH",
+      "EPISODES_DESC",
+      "ID_DESC"
+     ],
+     "default": "POPULARITY_DESC"
+    },
+    {
+     "name": "page",
+     "in": "body",
+     "required": false,
+     "type": "number",
+     "description": "Page number, starting at 1",
+     "default": 1
+    },
+    {
+     "name": "perPage",
+     "in": "body",
+     "required": false,
+     "type": "number",
+     "description": "Results per page, maximum 50",
+     "default": 20
+    }
+   ],
+   "bodyTemplate": {
+    "operationName": "SearchMedia",
+    "query": "query SearchMedia($page: Int, $perPage: Int, $search: String, $type: MediaType, $format: MediaFormat, $status: MediaStatus, $season: MediaSeason, $seasonYear: Int, $genre: String, $tag: String, $isAdult: Boolean, $sort: [MediaSort]) { Page(page: $page, perPage: $perPage) { pageInfo { total currentPage lastPage hasNextPage perPage } media(search: $search, type: $type, format: $format, status: $status, season: $season, seasonYear: $seasonYear, genre: $genre, tag: $tag, isAdult: $isAdult, sort: $sort) { id idMal type format status(version: 2) title { romaji english native } season seasonYear startDate { year month day } episodes chapters volumes averageScore popularity genres siteUrl } } }",
+    "variables": {
+     "search": "{search}",
+     "type": "{type}",
+     "format": "{format}",
+     "status": "{status}",
+     "season": "{season}",
+     "seasonYear": "{seasonYear}",
+     "genre": "{genre}",
+     "tag": "{tag}",
+     "isAdult": "{isAdult}",
+     "sort": "{sort}",
+     "page": "{page}",
+     "perPage": "{perPage}"
+    }
+   },
+   "bodyEncoding": "json",
+   "responseType": "json",
+   "resultPath": "data.Page.media",
+   "defaultFields": [
+    "id",
+    "type",
+    "title.romaji",
+    "title.english",
+    "format",
+    "status",
+    "startDate.year",
+    "averageScore"
+   ],
+   "pagination": {
+    "type": "page",
+    "param": "page"
+   },
+   "mutates": false,
+   "example": {
+    "search": "naruto",
+    "type": "ANIME"
+   },
+   "source": "E27 E32 GET https://anilist.co/search/anime",
+   "verified": true
+  },
+  {
+   "name": "get-media",
+   "summary": "Get full details of one anime or manga by AniList id, or the best match for a title: titles, synopsis, dates, episodes/chapters, genres, tags, scores, studios, next airing episode, links.",
+   "method": "POST",
+   "urlTemplate": "https://graphql.anilist.co",
+   "params": [
+    {
+     "name": "id",
+     "in": "body",
+     "required": false,
+     "type": "number",
+     "description": "AniList media id, the number in /anime/{id}/ or /manga/{id}/ URLs",
+     "example": "1535"
+    },
+    {
+     "name": "search",
+     "in": "body",
+     "required": false,
+     "type": "string",
+     "description": "Title to look up when the id is unknown. Returns the best match."
+    },
+    {
+     "name": "type",
+     "in": "body",
+     "required": false,
+     "type": "string",
+     "description": "Restricts the lookup to anime or manga",
+     "enum": [
+      "ANIME",
+      "MANGA"
+     ]
+    }
+   ],
+   "bodyTemplate": {
+    "operationName": "GetMedia",
+    "query": "query GetMedia($id: Int, $search: String, $type: MediaType) { Media(id: $id, search: $search, type: $type) { id idMal type format status(version: 2) title { romaji english native } synonyms description(asHtml: false) season seasonYear startDate { year month day } endDate { year month day } episodes duration chapters volumes source(version: 3) countryOfOrigin isAdult genres tags { name rank isMediaSpoiler } averageScore meanScore popularity favourites studios(isMain: true) { nodes { id name } } nextAiringEpisode { airingAt episode timeUntilAiring } coverImage { large } bannerImage trailer { site id } externalLinks { site url } siteUrl } }",
+    "variables": {
+     "id": "{id}",
+     "search": "{search}",
+     "type": "{type}"
+    }
+   },
+   "bodyEncoding": "json",
+   "responseType": "json",
+   "resultPath": "data.Media",
+   "defaultFields": [
+    "id",
+    "title.romaji",
+    "title.english",
+    "format",
+    "status",
+    "episodes",
+    "chapters",
+    "averageScore"
+   ],
+   "mutates": false,
+   "example": {
+    "id": "1535"
+   },
+   "source": "E28 E31 GET https://anilist.co/anime/{n}/DEATH-NOTE/",
+   "verified": true
+  },
+  {
+   "name": "list-media-characters",
+   "summary": "List the characters of an anime or manga (the Characters tab), with role (MAIN/SUPPORTING/BACKGROUND) and voice actors in the chosen language.",
+   "method": "POST",
+   "urlTemplate": "https://graphql.anilist.co",
+   "params": [
+    {
+     "name": "id",
+     "in": "body",
+     "required": true,
+     "type": "number",
+     "description": "AniList media id",
+     "example": "1535"
+    },
+    {
+     "name": "language",
+     "in": "body",
+     "required": false,
+     "type": "string",
+     "description": "Language of the voice actors returned",
+     "enum": [
+      "JAPANESE",
+      "ENGLISH",
+      "KOREAN",
+      "ITALIAN",
+      "SPANISH",
+      "PORTUGUESE",
+      "FRENCH",
+      "GERMAN",
+      "HEBREW",
+      "HUNGARIAN"
+     ],
+     "default": "JAPANESE"
+    },
+    {
+     "name": "page",
+     "in": "body",
+     "required": false,
+     "type": "number",
+     "description": "Page number, starting at 1",
+     "default": 1
+    },
+    {
+     "name": "perPage",
+     "in": "body",
+     "required": false,
+     "type": "number",
+     "description": "Characters per page, maximum 50",
+     "default": 25
+    }
+   ],
+   "bodyTemplate": {
+    "operationName": "MediaCharacters",
+    "query": "query MediaCharacters($id: Int, $page: Int, $perPage: Int, $language: StaffLanguage) { Media(id: $id) { id title { romaji } characters(page: $page, perPage: $perPage, sort: [ROLE, RELEVANCE, ID]) { pageInfo { total currentPage lastPage hasNextPage } edges { role node { id name { full native } siteUrl } voiceActors(language: $language, sort: [RELEVANCE, ID]) { id name { full native } languageV2 siteUrl } } } } }",
+    "variables": {
+     "id": "{id}",
+     "language": "{language}",
+     "page": "{page}",
+     "perPage": "{perPage}"
+    }
+   },
+   "bodyEncoding": "json",
+   "responseType": "json",
+   "resultPath": "data.Media.characters.edges",
+   "defaultFields": [
+    "node.id",
+    "node.name.full",
+    "node.name.native",
+    "role",
+    "voiceActors"
+   ],
+   "pagination": {
+    "type": "page",
+    "param": "page"
+   },
+   "mutates": false,
+   "example": {
+    "id": "1535"
+   },
+   "source": "E29 GET https://anilist.co/anime/{n}/DEATH-NOTE/characters",
+   "verified": true
+  },
+  {
+   "name": "list-media-staff",
+   "summary": "List the staff of an anime or manga (the Staff tab) with their roles, e.g. Original Story, Director.",
+   "method": "POST",
+   "urlTemplate": "https://graphql.anilist.co",
+   "params": [
+    {
+     "name": "id",
+     "in": "body",
+     "required": true,
+     "type": "number",
+     "description": "AniList media id",
+     "example": "1535"
+    },
+    {
+     "name": "page",
+     "in": "body",
+     "required": false,
+     "type": "number",
+     "description": "Page number, starting at 1",
+     "default": 1
+    },
+    {
+     "name": "perPage",
+     "in": "body",
+     "required": false,
+     "type": "number",
+     "description": "Staff per page, maximum 50",
+     "default": 25
+    }
+   ],
+   "bodyTemplate": {
+    "operationName": "MediaStaff",
+    "query": "query MediaStaff($id: Int, $page: Int, $perPage: Int) { Media(id: $id) { id title { romaji } staff(page: $page, perPage: $perPage, sort: [RELEVANCE, ID]) { pageInfo { total currentPage lastPage hasNextPage } edges { role node { id name { full native } primaryOccupations siteUrl } } } } }",
+    "variables": {
+     "id": "{id}",
+     "page": "{page}",
+     "perPage": "{perPage}"
+    }
+   },
+   "bodyEncoding": "json",
+   "responseType": "json",
+   "resultPath": "data.Media.staff.edges",
+   "defaultFields": [
+    "node.id",
+    "node.name.full",
+    "role",
+    "node.primaryOccupations"
+   ],
+   "pagination": {
+    "type": "page",
+    "param": "page"
+   },
+   "mutates": false,
+   "example": {
+    "id": "1535"
+   },
+   "source": "E28 E31 GET https://anilist.co/anime/{n}/DEATH-NOTE/",
+   "verified": true
+  },
+  {
+   "name": "get-media-relations",
+   "summary": "List the media related to an anime or manga (adaptations, sequels, prequels, side stories, spin-offs) with the relation type.",
+   "method": "POST",
+   "urlTemplate": "https://graphql.anilist.co",
+   "params": [
+    {
+     "name": "id",
+     "in": "body",
+     "required": true,
+     "type": "number",
+     "description": "AniList media id",
+     "example": "30013"
+    }
+   ],
+   "bodyTemplate": {
+    "operationName": "MediaRelations",
+    "query": "query MediaRelations($id: Int) { Media(id: $id) { id title { romaji } relations { edges { relationType(version: 2) node { id type format status(version: 2) title { romaji english } startDate { year } siteUrl } } } } }",
+    "variables": {
+     "id": "{id}"
+    }
+   },
+   "bodyEncoding": "json",
+   "responseType": "json",
+   "resultPath": "data.Media.relations.edges",
+   "defaultFields": [
+    "relationType",
+    "node.id",
+    "node.type",
+    "node.format",
+    "node.title.romaji",
+    "node.status",
+    "node.startDate.year"
+   ],
+   "mutates": false,
+   "example": {
+    "id": "30013"
+   },
+   "source": "E31 GET https://anilist.co/manga/{n}/One-Piece/",
+   "verified": true
+  },
+  {
+   "name": "list-media-recommendations",
+   "summary": "List the titles users recommend for a given anime or manga, ranked by recommendation rating.",
+   "method": "POST",
+   "urlTemplate": "https://graphql.anilist.co",
+   "params": [
+    {
+     "name": "id",
+     "in": "body",
+     "required": true,
+     "type": "number",
+     "description": "AniList media id",
+     "example": "1535"
+    },
+    {
+     "name": "page",
+     "in": "body",
+     "required": false,
+     "type": "number",
+     "description": "Page number, starting at 1",
+     "default": 1
+    },
+    {
+     "name": "perPage",
+     "in": "body",
+     "required": false,
+     "type": "number",
+     "description": "Results per page, maximum 50",
+     "default": 20
+    }
+   ],
+   "bodyTemplate": {
+    "operationName": "MediaRecommendations",
+    "query": "query MediaRecommendations($id: Int, $page: Int, $perPage: Int) { Media(id: $id) { id title { romaji } recommendations(page: $page, perPage: $perPage, sort: [RATING_DESC, ID]) { pageInfo { total currentPage lastPage hasNextPage } nodes { rating mediaRecommendation { id type format title { romaji english } averageScore siteUrl } } } } }",
+    "variables": {
+     "id": "{id}",
+     "page": "{page}",
+     "perPage": "{perPage}"
+    }
+   },
+   "bodyEncoding": "json",
+   "responseType": "json",
+   "resultPath": "data.Media.recommendations.nodes",
+   "defaultFields": [
+    "rating",
+    "mediaRecommendation.id",
+    "mediaRecommendation.title.romaji",
+    "mediaRecommendation.title.english",
+    "mediaRecommendation.format",
+    "mediaRecommendation.averageScore"
+   ],
+   "pagination": {
+    "type": "page",
+    "param": "page"
+   },
+   "mutates": false,
+   "example": {
+    "id": "1535"
+   },
+   "source": "E28 GET https://anilist.co/anime/{n}/DEATH-NOTE/",
+   "verified": true
+  },
+  {
+   "name": "list-media-reviews",
+   "summary": "List user reviews of an anime or manga (the Reviews tab): summary, the reviewer's score and how many users found it helpful.",
+   "method": "POST",
+   "urlTemplate": "https://graphql.anilist.co",
+   "params": [
+    {
+     "name": "id",
+     "key": "mediaId",
+     "in": "body",
+     "required": true,
+     "type": "number",
+     "description": "AniList media id",
+     "example": "1535"
+    },
+    {
+     "name": "sort",
+     "in": "body",
+     "required": false,
+     "type": "string",
+     "description": "Sort order. RATING_DESC puts the most helpful reviews first.",
+     "enum": [
+      "RATING_DESC",
+      "SCORE_DESC",
+      "SCORE",
+      "CREATED_AT_DESC",
+      "CREATED_AT",
+      "UPDATED_AT_DESC",
+      "ID_DESC"
+     ],
+     "default": "RATING_DESC"
+    },
+    {
+     "name": "page",
+     "in": "body",
+     "required": false,
+     "type": "number",
+     "description": "Page number, starting at 1",
+     "default": 1
+    },
+    {
+     "name": "perPage",
+     "in": "body",
+     "required": false,
+     "type": "number",
+     "description": "Reviews per page, maximum 50",
+     "default": 10
+    }
+   ],
+   "bodyTemplate": {
+    "operationName": "MediaReviews",
+    "query": "query MediaReviews($mediaId: Int, $page: Int, $perPage: Int, $sort: [ReviewSort]) { Page(page: $page, perPage: $perPage) { pageInfo { total currentPage lastPage hasNextPage } reviews(mediaId: $mediaId, sort: $sort) { id summary score rating ratingAmount createdAt user { id name } siteUrl } } }",
+    "variables": {
+     "mediaId": "{id}",
+     "sort": "{sort}",
+     "page": "{page}",
+     "perPage": "{perPage}"
+    }
+   },
+   "bodyEncoding": "json",
+   "responseType": "json",
+   "resultPath": "data.Page.reviews",
+   "defaultFields": [
+    "id",
+    "summary",
+    "score",
+    "rating",
+    "ratingAmount",
+    "user.name",
+    "siteUrl"
+   ],
+   "pagination": {
+    "type": "page",
+    "param": "page"
+   },
+   "mutates": false,
+   "example": {
+    "id": "1535"
+   },
+   "source": "E28 E31 GET https://anilist.co/anime/{n}/DEATH-NOTE/",
+   "verified": true
+  },
+  {
+   "name": "get-media-stats",
+   "summary": "Get statistics for an anime or manga (the Stats tab): rankings, score distribution, distribution of user list statuses (completed, planning, etc.), popularity and favourites.",
+   "method": "POST",
+   "urlTemplate": "https://graphql.anilist.co",
+   "params": [
+    {
+     "name": "id",
+     "in": "body",
+     "required": true,
+     "type": "number",
+     "description": "AniList media id",
+     "example": "1535"
+    }
+   ],
+   "bodyTemplate": {
+    "operationName": "MediaStats",
+    "query": "query MediaStats($id: Int) { Media(id: $id) { id title { romaji } averageScore meanScore popularity favourites trending rankings { rank type context format year season allTime } stats { scoreDistribution { score amount } statusDistribution { status amount } } } }",
+    "variables": {
+     "id": "{id}"
+    }
+   },
+   "bodyEncoding": "json",
+   "responseType": "json",
+   "resultPath": "data.Media",
+   "defaultFields": [
+    "id",
+    "title.romaji",
+    "averageScore",
+    "popularity",
+    "favourites",
+    "rankings",
+    "stats.statusDistribution",
+    "stats.scoreDistribution"
+   ],
+   "mutates": false,
+   "example": {
+    "id": "1535"
+   },
+   "source": "E28 GET https://anilist.co/anime/{n}/DEATH-NOTE/",
+   "verified": true
+  },
+  {
+   "name": "get-character",
+   "summary": "Get a character by id, or the best match for a name: name, description, age, birthday, favourites, and the anime/manga they appear in with Japanese voice actors.",
+   "method": "POST",
+   "urlTemplate": "https://graphql.anilist.co",
+   "params": [
+    {
+     "name": "id",
+     "in": "body",
+     "required": false,
+     "type": "number",
+     "description": "AniList character id, the number in /character/{id}/ URLs",
+     "example": "71"
+    },
+    {
+     "name": "search",
+     "in": "body",
+     "required": false,
+     "type": "string",
+     "description": "Character name to look up when the id is unknown"
+    },
+    {
+     "name": "page",
+     "in": "body",
+     "required": false,
+     "type": "number",
+     "description": "Page of the character's media appearances",
+     "default": 1
+    },
+    {
+     "name": "perPage",
+     "in": "body",
+     "required": false,
+     "type": "number",
+     "description": "Media appearances per page, maximum 50",
+     "default": 25
+    }
+   ],
+   "bodyTemplate": {
+    "operationName": "GetCharacter",
+    "query": "query GetCharacter($id: Int, $search: String, $page: Int, $perPage: Int) { Character(id: $id, search: $search) { id name { full native alternative } image { large } description(asHtml: false) gender dateOfBirth { year month day } age bloodType favourites siteUrl media(page: $page, perPage: $perPage, sort: [POPULARITY_DESC]) { pageInfo { total currentPage hasNextPage } edges { characterRole node { id type format title { romaji english } siteUrl } voiceActors(language: JAPANESE, sort: [RELEVANCE, ID]) { id name { full } } } } } }",
+    "variables": {
+     "id": "{id}",
+     "search": "{search}",
+     "page": "{page}",
+     "perPage": "{perPage}"
+    }
+   },
+   "bodyEncoding": "json",
+   "responseType": "json",
+   "resultPath": "data.Character",
+   "defaultFields": [
+    "id",
+    "name.full",
+    "name.native",
+    "gender",
+    "age",
+    "favourites",
+    "description",
+    "siteUrl"
+   ],
+   "mutates": false,
+   "example": {
+    "id": "71"
+   },
+   "source": "E30 GET https://anilist.co/character/{n}/L-Lawliet",
+   "verified": true
+  },
+  {
+   "name": "search-characters",
+   "summary": "Search characters by name and return ids, names, favourites and their most popular media.",
+   "method": "POST",
+   "urlTemplate": "https://graphql.anilist.co",
+   "params": [
+    {
+     "name": "search",
+     "in": "body",
+     "required": true,
+     "type": "string",
+     "description": "Character name or part of it",
+     "example": "Lawliet"
+    },
+    {
+     "name": "sort",
+     "in": "body",
+     "required": false,
+     "type": "string",
+     "description": "Sort order",
+     "enum": [
+      "SEARCH_MATCH",
+      "FAVOURITES_DESC",
+      "ID",
+      "ROLE"
+     ],
+     "default": "SEARCH_MATCH"
+    },
+    {
+     "name": "page",
+     "in": "body",
+     "required": false,
+     "type": "number",
+     "description": "Page number, starting at 1",
+     "default": 1
+    },
+    {
+     "name": "perPage",
+     "in": "body",
+     "required": false,
+     "type": "number",
+     "description": "Results per page, maximum 50",
+     "default": 20
+    }
+   ],
+   "bodyTemplate": {
+    "operationName": "SearchCharacters",
+    "query": "query SearchCharacters($search: String, $sort: [CharacterSort], $page: Int, $perPage: Int) { Page(page: $page, perPage: $perPage) { pageInfo { total currentPage lastPage hasNextPage } characters(search: $search, sort: $sort) { id name { full native } favourites siteUrl media(perPage: 1, sort: [POPULARITY_DESC]) { nodes { id type title { romaji } } } } } }",
+    "variables": {
+     "search": "{search}",
+     "sort": "{sort}",
+     "page": "{page}",
+     "perPage": "{perPage}"
+    }
+   },
+   "bodyEncoding": "json",
+   "responseType": "json",
+   "resultPath": "data.Page.characters",
+   "defaultFields": [
+    "id",
+    "name.full",
+    "name.native",
+    "favourites",
+    "media.nodes",
+    "siteUrl"
+   ],
+   "pagination": {
+    "type": "page",
+    "param": "page"
+   },
+   "mutates": false,
+   "example": {
+    "search": "Lawliet"
+   },
+   "source": "",
+   "verified": true
+  },
+  {
+   "name": "search-staff",
+   "summary": "Search staff and voice actors by name and return ids, occupations and language.",
+   "method": "POST",
+   "urlTemplate": "https://graphql.anilist.co",
+   "params": [
+    {
+     "name": "search",
+     "in": "body",
+     "required": true,
+     "type": "string",
+     "description": "Staff or voice actor name",
+     "example": "Kappei Yamaguchi"
+    },
+    {
+     "name": "page",
+     "in": "body",
+     "required": false,
+     "type": "number",
+     "description": "Page number, starting at 1",
+     "default": 1
+    },
+    {
+     "name": "perPage",
+     "in": "body",
+     "required": false,
+     "type": "number",
+     "description": "Results per page, maximum 50",
+     "default": 20
+    }
+   ],
+   "bodyTemplate": {
+    "operationName": "SearchStaff",
+    "query": "query SearchStaff($search: String, $page: Int, $perPage: Int) { Page(page: $page, perPage: $perPage) { pageInfo { total currentPage lastPage hasNextPage } staff(search: $search, sort: [SEARCH_MATCH]) { id name { full native } primaryOccupations languageV2 favourites siteUrl } } }",
+    "variables": {
+     "search": "{search}",
+     "page": "{page}",
+     "perPage": "{perPage}"
+    }
+   },
+   "bodyEncoding": "json",
+   "responseType": "json",
+   "resultPath": "data.Page.staff",
+   "defaultFields": [
+    "id",
+    "name.full",
+    "name.native",
+    "primaryOccupations",
+    "languageV2",
+    "favourites",
+    "siteUrl"
+   ],
+   "pagination": {
+    "type": "page",
+    "param": "page"
+   },
+   "mutates": false,
+   "example": {
+    "search": "Kappei Yamaguchi"
+   },
+   "source": "E28 GET https://anilist.co/anime/{n}/DEATH-NOTE/",
+   "verified": true
+  },
+  {
+   "name": "get-staff",
+   "summary": "Get a staff member or voice actor by id, or the best match for a name: bio, occupations, birthday, the media they worked on with roles, and characters voiced.",
+   "method": "POST",
+   "urlTemplate": "https://graphql.anilist.co",
+   "params": [
+    {
+     "name": "id",
+     "in": "body",
+     "required": false,
+     "type": "number",
+     "description": "AniList staff id, the number in /staff/{id}/ URLs"
+    },
+    {
+     "name": "search",
+     "in": "body",
+     "required": false,
+     "type": "string",
+     "description": "Name to look up when the id is unknown",
+     "example": "Kappei Yamaguchi"
+    },
+    {
+     "name": "page",
+     "in": "body",
+     "required": false,
+     "type": "number",
+     "description": "Page of the staff's media and characters lists",
+     "default": 1
+    },
+    {
+     "name": "perPage",
+     "in": "body",
+     "required": false,
+     "type": "number",
+     "description": "Items per page in each list, maximum 50",
+     "default": 25
+    }
+   ],
+   "bodyTemplate": {
+    "operationName": "GetStaff",
+    "query": "query GetStaff($id: Int, $search: String, $page: Int, $perPage: Int) { Staff(id: $id, search: $search) { id name { full native alternative } languageV2 primaryOccupations gender dateOfBirth { year month day } age yearsActive homeTown description(asHtml: false) favourites siteUrl staffMedia(page: $page, perPage: $perPage, sort: [POPULARITY_DESC]) { pageInfo { total hasNextPage } edges { staffRole node { id type format title { romaji english } siteUrl } } } characters(page: $page, perPage: $perPage, sort: [FAVOURITES_DESC]) { pageInfo { total hasNextPage } nodes { id name { full } siteUrl } } } }",
+    "variables": {
+     "id": "{id}",
+     "search": "{search}",
+     "page": "{page}",
+     "perPage": "{perPage}"
+    }
+   },
+   "bodyEncoding": "json",
+   "responseType": "json",
+   "resultPath": "data.Staff",
+   "defaultFields": [
+    "id",
+    "name.full",
+    "name.native",
+    "primaryOccupations",
+    "languageV2",
+    "yearsActive",
+    "favourites",
+    "siteUrl"
+   ],
+   "mutates": false,
+   "example": {
+    "search": "Kappei Yamaguchi"
+   },
+   "source": "E28 GET https://anilist.co/anime/{n}/DEATH-NOTE/",
+   "verified": true
+  },
+  {
+   "name": "get-studio",
+   "summary": "Get an animation studio or producer by id or name, with the media it produced, newest first.",
+   "method": "POST",
+   "urlTemplate": "https://graphql.anilist.co",
+   "params": [
+    {
+     "name": "id",
+     "in": "body",
+     "required": false,
+     "type": "number",
+     "description": "AniList studio id, the number in /studio/{id}/ URLs, e.g. 11 for MADHOUSE",
+     "example": "11"
+    },
+    {
+     "name": "search",
+     "in": "body",
+     "required": false,
+     "type": "string",
+     "description": "Studio name to look up when the id is unknown"
+    },
+    {
+     "name": "page",
+     "in": "body",
+     "required": false,
+     "type": "number",
+     "description": "Page of the studio's media list",
+     "default": 1
+    },
+    {
+     "name": "perPage",
+     "in": "body",
+     "required": false,
+     "type": "number",
+     "description": "Media per page, maximum 50",
+     "default": 25
+    }
+   ],
+   "bodyTemplate": {
+    "operationName": "GetStudio",
+    "query": "query GetStudio($id: Int, $search: String, $page: Int, $perPage: Int) { Studio(id: $id, search: $search) { id name isAnimationStudio favourites siteUrl media(page: $page, perPage: $perPage, sort: [START_DATE_DESC], isMain: true) { pageInfo { total currentPage lastPage hasNextPage } nodes { id type format title { romaji english } seasonYear averageScore siteUrl } } } }",
+    "variables": {
+     "id": "{id}",
+     "search": "{search}",
+     "page": "{page}",
+     "perPage": "{perPage}"
+    }
+   },
+   "bodyEncoding": "json",
+   "responseType": "json",
+   "resultPath": "data.Studio",
+   "defaultFields": [
+    "id",
+    "name",
+    "isAnimationStudio",
+    "favourites",
+    "media.nodes",
+    "siteUrl"
+   ],
+   "mutates": false,
+   "example": {
+    "id": "11"
+   },
+   "source": "E28 GET https://anilist.co/anime/{n}/DEATH-NOTE/",
+   "verified": true
+  },
+  {
+   "name": "list-genres",
+   "summary": "List all genre names accepted by the search-media --genre filter.",
+   "method": "POST",
+   "urlTemplate": "https://graphql.anilist.co",
+   "params": [],
+   "bodyTemplate": {
+    "operationName": "Genres",
+    "query": "query Genres { GenreCollection }",
+    "variables": {}
+   },
+   "bodyEncoding": "json",
+   "responseType": "json",
+   "resultPath": "data.GenreCollection",
+   "mutates": false,
+   "source": "E27 GET https://anilist.co/search/anime",
+   "verified": true
+  },
+  {
+   "name": "list-tags",
+   "summary": "List all media tags (name, category, description, adult flag) accepted by the search-media --tag filter.",
+   "method": "POST",
+   "urlTemplate": "https://graphql.anilist.co",
+   "params": [],
+   "bodyTemplate": {
+    "operationName": "Tags",
+    "query": "query Tags { MediaTagCollection { id name category description isAdult } }",
+    "variables": {}
+   },
+   "bodyEncoding": "json",
+   "responseType": "json",
+   "resultPath": "data.MediaTagCollection",
+   "defaultFields": [
+    "id",
+    "name",
+    "category",
+    "isAdult"
+   ],
+   "mutates": false,
+   "source": "E27 E31 GET https://anilist.co/search/anime",
+   "verified": true
+  }
+ ],
+ "blockers": [],
+ "notes": [
+  "All commands are anonymous, read-only GraphQL POSTs to https://graphql.anilist.co (JSON body {operationName, query, variables}). No login or cookies are needed.",
+  "The explorer held the site's GraphQL calls (39 held), so no GraphQL request or response was ever recorded. The queries above are written from the public schema at docs.anilist.co, not copied from traffic, and no response shape was observed. If a command returns an 'errors' array, check the field and argument names against docs.anilist.co/reference.",
+  "The commands depend on omitted optional params being dropped from 'variables' or sent as null. AniList ignores null arguments. An empty string or a literal '{param}' placeholder would break filters.",
+  "The API is rate limited: about 90 requests per minute normally, sometimes lowered to 30. A 429 response includes a Retry-After header.",
+  "Errors come back as HTTP 400 or 404 with an 'errors' array, for example a nonexistent id or an invalid enum value. Enum values are uppercase (ANIME, TV, SCORE_DESC, FALL).",
+  "Ids appear in site URLs: /anime/{id}/{slug}, /manga/{id}/{slug}, /character/{id}/{slug}, /staff/{id}/{slug}, /studio/{id}/{slug}. Anime and manga share one id space, so get-media takes either kind.",
+  "Site list pages map to search-media sorts: /search/anime/trending is TRENDING_DESC, /popular is POPULARITY_DESC, /top-100 is SCORE_DESC, /this-season is season plus seasonYear with POPULARITY_DESC.",
+  "The site's year=YYYY URL filter maps to --seasonYear, which only applies to anime. Site tags are passed through the 'genres' URL parameter, but the API separates them: use --genre for genres and --tag for tags.",
+  "Combining --type ANIME with a manga format such as MANGA, NOVEL or ONE_SHOT returns nothing.",
+  "Descriptions may contain light HTML or markdown, e.g. <br>, <i> and ~!spoiler!~ markers.",
+  "Dates are fuzzy {year, month, day} objects whose parts can be null. nextAiringEpisode.airingAt is a Unix timestamp.",
+  "Server-rendered HTML pages (/anime/{id}/{slug}/, /manga/{id}/{slug}/, /search/anime/top-100) also embed schema.org JSON-LD. The GraphQL API gives the same data more completely."
+ ],
+ "dropped": [],
+ "generated": {
+  "by": "clify add",
+  "model": "claude-opus-5-5",
+  "exploredSteps": 14,
+  "recorded": 108,
+  "verifiedAt": "2026-10-18T09:37:58.154Z",
+  "seconds": 299
+ }
+}

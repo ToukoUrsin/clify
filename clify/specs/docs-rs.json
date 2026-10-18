@@ -1,0 +1,730 @@
+{
+ "name": "docs-rs",
+ "startUrl": "https://docs.rs/",
+ "origin": "https://docs.rs",
+ "createdAt": "2026-10-18T07:14:18.313Z",
+ "description": "docs.rs is the documentation host for Rust crates. This CLI searches crates, resolves the best match, reads crate pages (build status, builds, features, versions, source files), reads rustdoc pages and item lists, and browses release listings, failures, the build queue and the Atom feed.",
+ "commands": [
+  {
+   "name": "search-crates",
+   "summary": "Search Rust crates on docs.rs by keyword, optionally sorted by downloads or recency",
+   "method": "GET",
+   "urlTemplate": "/releases/search",
+   "params": [
+    {
+     "name": "query",
+     "in": "query",
+     "required": true,
+     "type": "string",
+     "description": "Search keywords, e.g. a crate name or topic",
+     "example": "serde"
+    },
+    {
+     "name": "sort",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Sort order. relevance=Relevance, downloads=All-Time Downloads, recent-downloads=Recent Downloads, recent-updates=Recent Updates, new=Newly Added",
+     "enum": [
+      "relevance",
+      "downloads",
+      "recent-downloads",
+      "recent-updates",
+      "new"
+     ],
+     "example": "downloads"
+    },
+    {
+     "name": "paginate",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Opaque base64 page token taken from the page's 'Next Page' link (/releases/search?paginate=...). When set, it replaces query and sort."
+    }
+   ],
+   "responseType": "html",
+   "extract": {
+    "list": "a.release",
+    "fields": {
+     "name_version": "div.pure-u-sm-6-24",
+     "description": "div.pure-u-sm-14-24@title",
+     "released": "div.pure-u-sm-4-24@title",
+     "url": "@href"
+    }
+   },
+   "defaultFields": [
+    "name_version",
+    "description",
+    "released",
+    "url"
+   ],
+   "mutates": false,
+   "example": {
+    "query": "serde"
+   },
+   "source": "E9 GET https://docs.rs/releases/search",
+   "verified": true
+  },
+  {
+   "name": "resolve-crate",
+   "summary": "I'm Feeling Lucky: jump to the best-matching crate for a query and return its exact name and latest version",
+   "method": "GET",
+   "urlTemplate": "/releases/search?i-am-feeling-lucky=1",
+   "params": [
+    {
+     "name": "query",
+     "in": "query",
+     "required": true,
+     "type": "string",
+     "description": "Crate name or keywords",
+     "example": "reqwest"
+    }
+   ],
+   "responseType": "html",
+   "extract": {
+    "jsonScript": "script#crate-metadata"
+   },
+   "defaultFields": [
+    "name",
+    "version"
+   ],
+   "mutates": false,
+   "example": {
+    "query": "reqwest"
+   },
+   "source": "E9 E11 GET https://docs.rs/releases/search",
+   "verified": true
+  },
+  {
+   "name": "get-crate",
+   "summary": "Get a crate's docs.rs overview page: title, description, documentation link and coverage",
+   "method": "GET",
+   "urlTemplate": "/crate/{name}/{version}",
+   "params": [
+    {
+     "name": "name",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Crate name as published on crates.io",
+     "example": "serde"
+    },
+    {
+     "name": "version",
+     "in": "path",
+     "required": false,
+     "type": "string",
+     "description": "Exact version (e.g. 1.0.229), a semver requirement, or 'latest'",
+     "default": "latest"
+    }
+   ],
+   "responseType": "html",
+   "extract": {
+    "fields": {
+     "title": "h1#crate-title",
+     "description": "div.description",
+     "docs_url": "a.doc-link@href",
+     "coverage": "li.pure-menu-item.text-center",
+     "source_url": "a.pure-menu-link[href$=\"/source/\"]@href"
+    }
+   },
+   "defaultFields": [
+    "title",
+    "description",
+    "docs_url",
+    "coverage"
+   ],
+   "mutates": false,
+   "example": {
+    "name": "serde"
+   },
+   "source": "E12 GET https://docs.rs/crate/serde/latest",
+   "verified": true
+  },
+  {
+   "name": "get-crate-status",
+   "summary": "Check whether docs built successfully for a crate version (JSON: doc_status, resolved version)",
+   "method": "GET",
+   "urlTemplate": "/crate/{name}/{version}/status.json",
+   "params": [
+    {
+     "name": "name",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Crate name",
+     "example": "tokio"
+    },
+    {
+     "name": "version",
+     "in": "path",
+     "required": false,
+     "type": "string",
+     "description": "Exact version, semver requirement, or 'latest'",
+     "default": "latest"
+    }
+   ],
+   "responseType": "json",
+   "defaultFields": [
+    "doc_status",
+    "version"
+   ],
+   "mutates": false,
+   "example": {
+    "name": "tokio"
+   },
+   "source": "E2 GET https://docs.rs/crate/tokio/latest/status.json",
+   "verified": true
+  },
+  {
+   "name": "list-crate-builds",
+   "summary": "List the docs build history of a crate version: rustc version, date, duration, memory, result",
+   "method": "GET",
+   "urlTemplate": "/crate/{name}/{version}/builds",
+   "params": [
+    {
+     "name": "name",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Crate name",
+     "example": "serde"
+    },
+    {
+     "name": "version",
+     "in": "path",
+     "required": false,
+     "type": "string",
+     "description": "Exact version or 'latest'",
+     "default": "latest"
+    }
+   ],
+   "responseType": "html",
+   "extract": {
+    "list": "a.release",
+    "fields": {
+     "status": "@title",
+     "rustc": "div.pure-u-sm-7-24",
+     "docsrs": "div.pure-u-sm-6-24",
+     "date": "div.pure-u-sm-3-24",
+     "duration": "div.pure-u-sm-4-24",
+     "peak_memory": "div[title=\"Peak memory usage\"]",
+     "url": "@href"
+    }
+   },
+   "defaultFields": [
+    "status",
+    "rustc",
+    "date",
+    "duration",
+    "peak_memory",
+    "url"
+   ],
+   "mutates": false,
+   "example": {
+    "name": "serde"
+   },
+   "source": "E13 GET https://docs.rs/crate/serde/latest/builds",
+   "verified": true
+  },
+  {
+   "name": "list-crate-features",
+   "summary": "List the Cargo feature flags of a crate version",
+   "method": "GET",
+   "urlTemplate": "/crate/{name}/{version}/features",
+   "params": [
+    {
+     "name": "name",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Crate name",
+     "example": "tokio"
+    },
+    {
+     "name": "version",
+     "in": "path",
+     "required": false,
+     "type": "string",
+     "description": "Exact version or 'latest'",
+     "default": "latest"
+    }
+   ],
+   "responseType": "html",
+   "extract": {
+    "list": "div#main h3",
+    "fields": {
+     "feature": "",
+     "anchor": "@id"
+    }
+   },
+   "defaultFields": [
+    "feature"
+   ],
+   "mutates": false,
+   "example": {
+    "name": "tokio"
+   },
+   "source": "E14 GET https://docs.rs/crate/tokio/latest/features",
+   "verified": true
+  },
+  {
+   "name": "list-crate-versions",
+   "summary": "List all published versions of a crate with their release dates",
+   "method": "GET",
+   "urlTemplate": "/crate/{name}/{version}/menus/releases/{target}/{name}/",
+   "params": [
+    {
+     "name": "name",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Crate name",
+     "example": "serde"
+    },
+    {
+     "name": "version",
+     "in": "path",
+     "required": false,
+     "type": "string",
+     "description": "Reference version, normally 'latest'",
+     "default": "latest"
+    },
+    {
+     "name": "target",
+     "in": "path",
+     "required": false,
+     "type": "string",
+     "description": "Platform target triple",
+     "default": "x86_64-unknown-linux-gnu"
+    }
+   ],
+   "responseType": "html",
+   "extract": {
+    "list": "li.pure-menu-item > a.pure-menu-link",
+    "fields": {
+     "version": "b",
+     "label": "",
+     "url": "@href"
+    }
+   },
+   "defaultFields": [
+    "version",
+    "label",
+    "url"
+   ],
+   "mutates": false,
+   "example": {
+    "name": "serde"
+   },
+   "source": "E21 GET https://docs.rs/crate/serde/latest/menus/releases/x86_64-unknown-linux-gnu/serde/",
+   "verified": true
+  },
+  {
+   "name": "list-source-files",
+   "summary": "List the files and folders in a crate's published source package (root or a subfolder)",
+   "method": "GET",
+   "urlTemplate": "/crate/{name}/{version}/source/{dir}",
+   "params": [
+    {
+     "name": "name",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Crate name",
+     "example": "tokio"
+    },
+    {
+     "name": "version",
+     "in": "path",
+     "required": false,
+     "type": "string",
+     "description": "Exact version or 'latest'",
+     "default": "latest"
+    },
+    {
+     "name": "dir",
+     "in": "path",
+     "required": false,
+     "type": "string",
+     "description": "Folder path ending with '/', e.g. 'src/'. Empty means the package root."
+    }
+   ],
+   "responseType": "html",
+   "extract": {
+    "list": "div#side-menu li.pure-menu-item > a.pure-menu-link",
+    "fields": {
+     "name": "span.text",
+     "url": "@href"
+    }
+   },
+   "defaultFields": [
+    "name",
+    "url"
+   ],
+   "mutates": false,
+   "example": {
+    "name": "tokio"
+   },
+   "source": "E15 GET https://docs.rs/crate/tokio/latest/source/",
+   "verified": true
+  },
+  {
+   "name": "get-source-file",
+   "summary": "Read the contents of one file in a crate's source package, e.g. Cargo.toml or src/lib.rs",
+   "method": "GET",
+   "urlTemplate": "/crate/{name}/{version}/source/{path}",
+   "params": [
+    {
+     "name": "name",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Crate name",
+     "example": "tokio"
+    },
+    {
+     "name": "version",
+     "in": "path",
+     "required": false,
+     "type": "string",
+     "description": "Exact version or 'latest'",
+     "default": "latest"
+    },
+    {
+     "name": "path",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "File path inside the package, e.g. Cargo.toml or src/lib.rs",
+     "example": "Cargo.toml"
+    }
+   ],
+   "responseType": "html",
+   "extract": {
+    "fields": {
+     "crate": "h1#crate-title",
+     "content": "div#source-code"
+    }
+   },
+   "defaultFields": [
+    "crate",
+    "content"
+   ],
+   "mutates": false,
+   "example": {
+    "name": "tokio",
+    "path": "Cargo.toml"
+   },
+   "source": "E16",
+   "verified": true
+  },
+  {
+   "name": "get-crate-docs",
+   "summary": "Read a crate's rustdoc landing page: crate docs text, version, permalink",
+   "method": "GET",
+   "urlTemplate": "/{name}/{version}/{crate}/",
+   "params": [
+    {
+     "name": "name",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Crate (package) name",
+     "example": "tokio"
+    },
+    {
+     "name": "version",
+     "in": "path",
+     "required": false,
+     "type": "string",
+     "description": "Exact version or 'latest'",
+     "default": "latest"
+    },
+    {
+     "name": "crate",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Library name as used in Rust code (dashes become underscores), usually the same as the package name",
+     "example": "tokio"
+    }
+   ],
+   "responseType": "html",
+   "extract": {
+    "fields": {
+     "crate": "li#crate-title",
+     "summary": "a.crate-name@title",
+     "permalink": "a#permalink@href",
+     "docs": "div.docblock"
+    }
+   },
+   "defaultFields": [
+    "crate",
+    "summary",
+    "permalink",
+    "docs"
+   ],
+   "mutates": false,
+   "example": {
+    "name": "tokio",
+    "crate": "tokio"
+   },
+   "source": "E22 E11 GET https://docs.rs/tokio/latest/tokio/",
+   "verified": true
+  },
+  {
+   "name": "list-crate-items",
+   "summary": "List every public item (structs, enums, traits, functions, types, constants) of a crate, with links to their doc pages",
+   "method": "GET",
+   "urlTemplate": "/{name}/{version}/{crate}/all.html",
+   "params": [
+    {
+     "name": "name",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Crate (package) name",
+     "example": "reqwest"
+    },
+    {
+     "name": "version",
+     "in": "path",
+     "required": false,
+     "type": "string",
+     "description": "Exact version or 'latest'",
+     "default": "latest"
+    },
+    {
+     "name": "crate",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Library name (dashes become underscores)",
+     "example": "reqwest"
+    }
+   ],
+   "responseType": "html",
+   "extract": {
+    "list": "ul.all-items > li > a",
+    "fields": {
+     "item": "",
+     "href": "@href"
+    }
+   },
+   "defaultFields": [
+    "item",
+    "href"
+   ],
+   "mutates": false,
+   "example": {
+    "name": "reqwest",
+    "crate": "reqwest"
+   },
+   "source": "E27 GET https://docs.rs/reqwest/latest/reqwest/all.html",
+   "verified": true
+  },
+  {
+   "name": "get-doc-item",
+   "summary": "Read the rustdoc page of one item (struct, trait, fn...) inside a crate",
+   "method": "GET",
+   "urlTemplate": "/{name}/{version}/{crate}/{item_path}",
+   "params": [
+    {
+     "name": "name",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Crate (package) name",
+     "example": "tokio"
+    },
+    {
+     "name": "version",
+     "in": "path",
+     "required": false,
+     "type": "string",
+     "description": "Exact version or 'latest'",
+     "default": "latest"
+    },
+    {
+     "name": "crate",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Library name (dashes become underscores)",
+     "example": "tokio"
+    },
+    {
+     "name": "item_path",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Item page path relative to the crate root, as given by list-crate-items href, e.g. task/struct.JoinHandle.html",
+     "example": "task/struct.JoinHandle.html"
+    }
+   ],
+   "responseType": "html",
+   "extract": {
+    "fields": {
+     "title": "title",
+     "permalink": "a#permalink@href",
+     "docs": "div.docblock",
+     "methods": "div.impl-items"
+    }
+   },
+   "defaultFields": [
+    "title",
+    "permalink",
+    "docs",
+    "methods"
+   ],
+   "mutates": false,
+   "example": {
+    "name": "tokio",
+    "crate": "tokio",
+    "item_path": "task/struct.JoinHandle.html"
+   },
+   "source": "E23 GET https://docs.rs/tokio/latest/tokio/task/struct.JoinHandle.html",
+   "verified": true
+  },
+  {
+   "name": "list-releases",
+   "summary": "Browse docs.rs release listings: recent releases, top crates by GitHub stars, recent build failures, or failures sorted by stars",
+   "method": "GET",
+   "urlTemplate": "/releases/{kind}/{page}",
+   "params": [
+    {
+     "name": "kind",
+     "in": "path",
+     "required": false,
+     "type": "string",
+     "description": "Listing type: recent=newest releases, stars=crates with most stars, recent-failures=latest failed builds, failures=most-starred crates that failed to build",
+     "enum": [
+      "recent",
+      "stars",
+      "recent-failures",
+      "failures"
+     ],
+     "default": "recent",
+     "example": "stars"
+    },
+    {
+     "name": "page",
+     "in": "path",
+     "required": false,
+     "type": "number",
+     "description": "Page number starting at 1 (30 items per page)",
+     "default": 1
+    }
+   ],
+   "responseType": "html",
+   "extract": {
+    "list": "a.release",
+    "fields": {
+     "name_version": "div.pure-u-sm-6-24",
+     "description": "div.pure-u-sm-14-24@title",
+     "released": "div.pure-u-sm-4-24@title",
+     "url": "@href"
+    }
+   },
+   "defaultFields": [
+    "name_version",
+    "description",
+    "released",
+    "url"
+   ],
+   "pagination": {
+    "type": "page",
+    "param": "page"
+   },
+   "mutates": false,
+   "example": {
+    "kind": "stars"
+   },
+   "source": "E17 E18 E19 E29 E10 GET https://docs.rs/releases/stars",
+   "verified": true
+  },
+  {
+   "name": "get-releases-feed",
+   "summary": "Get the Atom feed of the most recently built crate releases (structured JSON)",
+   "method": "GET",
+   "urlTemplate": "/releases/feed",
+   "params": [],
+   "responseType": "json",
+   "resultPath": "feed.entry",
+   "defaultFields": [
+    "title",
+    "summary",
+    "updated",
+    "link.@href"
+   ],
+   "mutates": false,
+   "source": "E25 GET https://docs.rs/releases/feed",
+   "verified": true
+  },
+  {
+   "name": "list-build-queue",
+   "summary": "List the crate releases waiting in the docs.rs build queue",
+   "method": "GET",
+   "urlTemplate": "/releases/queue",
+   "params": [],
+   "responseType": "html",
+   "extract": {
+    "list": "ol.queue-list > li > a",
+    "fields": {
+     "release": "",
+     "url": "@href"
+    }
+   },
+   "defaultFields": [
+    "release",
+    "url"
+   ],
+   "mutates": false,
+   "source": "E20 GET https://docs.rs/releases/queue",
+   "verified": true
+  },
+  {
+   "name": "list-builds-in-progress",
+   "summary": "List the crate docs builds currently running and how long they have been running",
+   "method": "GET",
+   "urlTemplate": "/releases/queue",
+   "params": [],
+   "responseType": "html",
+   "extract": {
+    "list": "table.in-progress-builds tbody tr",
+    "fields": {
+     "release": "td > a",
+     "builds_url": "td > a@href",
+     "row": ""
+    }
+   },
+   "defaultFields": [
+    "release",
+    "row",
+    "builds_url"
+   ],
+   "mutates": false,
+   "source": "E20",
+   "verified": true
+  }
+ ],
+ "blockers": [],
+ "notes": [
+  "docs.rs is public and server-rendered. No login is needed and every command is read-only.",
+  "Crate package names can contain dashes (e.g. serde-saphyr). The rustdoc path segment {crate} is the library name with underscores (serde_saphyr). Use resolve-crate or get-crate's docs_url to find it.",
+  "version accepts 'latest', an exact version, or a semver requirement such as ^1.2.",
+  "search-crates pagination uses an opaque 'paginate' token from the HTML 'Next Page' link. Without it, only the first 30 results are returned; narrow the query or change sort instead.",
+  "In-docs search (?search=) and per-platform docs (target-redirect) run client-side or redirect. They are not exposed. Use list-crate-items to find items.",
+  "get-source-file returns the file text with line numbers prefixed; list-source-files with dir='' lists the package root, and subfolders need a trailing slash (e.g. src/)."
+ ],
+ "dropped": [],
+ "generated": {
+  "by": "clify add",
+  "model": "claude-opus-5-5",
+  "exploredSteps": 30,
+  "recorded": 93,
+  "verifiedAt": "2026-10-18T07:16:01.239Z",
+  "seconds": 230
+ }
+}

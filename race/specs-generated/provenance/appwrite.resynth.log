@@ -1,0 +1,19 @@
+09:45:15 🧠 synthesizing from 42 endpoints (76k chars)
+09:46:22 🔎 verify round 0: list-projects, list-databases, list-tables, create-table, list-columns, create-string-column, list-organizations, get-database, get-table, list-rows, list-indexes, get-project, get-account, list-buckets
+09:46:23   ✓ list-projects (272 ms)
+09:46:23   ✓ list-databases (264 ms)
+09:46:23   ✓ list-tables (272 ms)
+09:46:23   ✓ create-table: write: dry-run preview only, not sent
+09:46:23   ✓ list-columns (241 ms)
+09:46:23   ✓ create-string-column: write: dry-run preview only, not sent
+09:46:23   ✓ list-organizations (242 ms)
+09:46:23   ✓ get-database (172 ms)
+09:46:23   ✓ get-table (173 ms)
+09:46:23   ✗ list-rows: empty list: the example args returned nothing or the selector/resultPath is wrong (211 ms)
+09:46:23   ✗ list-indexes: empty list: the example args returned nothing or the selector/resultPath is wrong (179 ms)
+09:46:23   ✓ get-project (194 ms)
+09:46:23   ✓ get-account (224 ms)
+09:46:23   ✗ list-buckets: empty list: the example args returned nothing or the selector/resultPath is wrong (176 ms)
+09:46:34   ⚑ context projectId = 6ad465aa0026dab1fac0 (same value on every recorded request (list-databases, list-tables, create-table))
+09:46:34   ⚑ context databaseId = 6ad471f2900e99d2b0e4 (same value on every recorded request (list-tables, create-table, list-columns))
+09:46:34   ⚑ context organizationId = 6ad465a90029cef9877f (the only item of list-organizations)

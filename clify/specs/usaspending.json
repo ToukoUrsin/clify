@@ -1,0 +1,2128 @@
+{
+ "name": "usaspending",
+ "startUrl": "https://www.usaspending.gov/",
+ "origin": "https://www.usaspending.gov",
+ "createdAt": "2026-10-18T07:20:03.732Z",
+ "description": "USAspending.gov is the official U.S. federal spending database. This CLI calls its public API (api.usaspending.gov, no auth needed) to search awards and transactions, open award, recipient, agency, state and federal-account profiles, break spending down by category, and request bulk downloads.",
+ "commands": [
+  {
+   "name": "search-transactions",
+   "summary": "Keyword search of contract transactions (award types A/B/C/D), with sorting and paging",
+   "method": "POST",
+   "urlTemplate": "https://api.usaspending.gov/api/v2/search/spending_by_transaction/",
+   "params": [
+    {
+     "name": "keyword",
+     "in": "body",
+     "required": true,
+     "type": "string",
+     "description": "Free-text keyword to match in transaction and award text",
+     "example": "cybersecurity"
+    },
+    {
+     "name": "sort",
+     "in": "body",
+     "required": false,
+     "type": "string",
+     "description": "Column to sort by",
+     "enum": [
+      "Transaction Amount",
+      "Action Date",
+      "Award ID",
+      "Mod",
+      "Recipient Name",
+      "Awarding Agency",
+      "Awarding Sub Agency",
+      "Award Type"
+     ],
+     "default": "Transaction Amount"
+    },
+    {
+     "name": "order",
+     "in": "body",
+     "required": false,
+     "type": "string",
+     "description": "Sort direction",
+     "enum": [
+      "desc",
+      "asc"
+     ],
+     "default": "desc"
+    },
+    {
+     "name": "page",
+     "in": "body",
+     "required": false,
+     "type": "number",
+     "description": "Page number, starting at 1",
+     "default": 1
+    },
+    {
+     "name": "api_limit",
+     "key": "limit",
+     "in": "body",
+     "required": false,
+     "type": "number",
+     "description": "Results per page (max 100) (sent to the site as \"limit\"; clify's own --limit only shapes the output)",
+     "default": 35
+    }
+   ],
+   "bodyTemplate": {
+    "filters": {
+     "keyword": "{keyword}",
+     "award_type_codes": [
+      "A",
+      "B",
+      "C",
+      "D"
+     ]
+    },
+    "fields": [
+     "Award ID",
+     "Mod",
+     "Recipient Name",
+     "Action Date",
+     "Transaction Amount",
+     "Awarding Agency",
+     "Awarding Sub Agency",
+     "Award Type"
+    ],
+    "page": "{page}",
+    "limit": "{api_limit}",
+    "sort": "{sort}",
+    "order": "{order}"
+   },
+   "bodyEncoding": "json",
+   "responseType": "json",
+   "resultPath": "results",
+   "defaultFields": [
+    "Award ID",
+    "Mod",
+    "Recipient Name",
+    "Action Date",
+    "Transaction Amount",
+    "Awarding Agency",
+    "Award Type",
+    "generated_internal_id"
+   ],
+   "pagination": {
+    "type": "page",
+    "param": "page"
+   },
+   "mutates": false,
+   "example": {
+    "keyword": "cybersecurity",
+    "sort": "Action Date",
+    "order": "desc"
+   },
+   "source": "E9 POST https://api.usaspending.gov/api/v2/search/spending_by_transaction/",
+   "verified": true
+  },
+  {
+   "name": "count-keyword-transactions",
+   "summary": "Count transactions matching a keyword, broken out by award group (contracts, grants, idvs, loans, direct_payments, other)",
+   "method": "POST",
+   "urlTemplate": "https://api.usaspending.gov/api/v2/search/spending_by_transaction_count/",
+   "params": [
+    {
+     "name": "keyword",
+     "in": "body",
+     "required": true,
+     "type": "string",
+     "description": "Free-text keyword",
+     "example": "cybersecurity"
+    }
+   ],
+   "bodyTemplate": {
+    "filters": {
+     "keyword": "{keyword}"
+    }
+   },
+   "bodyEncoding": "json",
+   "responseType": "json",
+   "resultPath": "results",
+   "mutates": false,
+   "example": {
+    "keyword": "cybersecurity"
+   },
+   "source": "E8 POST https://api.usaspending.gov/api/v2/search/spending_by_transaction_count/",
+   "verified": true
+  },
+  {
+   "name": "summarize-keyword-spending",
+   "summary": "Total prime award count and obligated amount for a keyword search",
+   "method": "POST",
+   "urlTemplate": "https://api.usaspending.gov/api/v2/search/transaction_spending_summary/",
+   "params": [
+    {
+     "name": "keyword",
+     "in": "body",
+     "required": true,
+     "type": "string",
+     "description": "Free-text keyword",
+     "example": "cybersecurity"
+    }
+   ],
+   "bodyTemplate": {
+    "filters": {
+     "keyword": "{keyword}"
+    }
+   },
+   "bodyEncoding": "json",
+   "responseType": "json",
+   "resultPath": "results",
+   "mutates": false,
+   "example": {
+    "keyword": "cybersecurity"
+   },
+   "source": "E20 POST https://api.usaspending.gov/api/v2/search/transaction_spending_summary/",
+   "verified": true
+  },
+  {
+   "name": "search-state-awards",
+   "summary": "Top contract awards performed in a U.S. state within a date range, sorted by award amount",
+   "method": "POST",
+   "urlTemplate": "https://api.usaspending.gov/api/v2/search/spending_by_award/",
+   "params": [
+    {
+     "name": "state",
+     "in": "body",
+     "required": true,
+     "type": "string",
+     "description": "Two-letter state code of the place of performance",
+     "example": "CA"
+    },
+    {
+     "name": "start_date",
+     "in": "body",
+     "required": false,
+     "type": "string",
+     "description": "Start of the action-date range, YYYY-MM-DD (not earlier than 2007-10-01)",
+     "default": "2025-10-01"
+    },
+    {
+     "name": "end_date",
+     "in": "body",
+     "required": false,
+     "type": "string",
+     "description": "End of the action-date range, YYYY-MM-DD",
+     "default": "2026-09-30"
+    },
+    {
+     "name": "order",
+     "in": "body",
+     "required": false,
+     "type": "string",
+     "description": "Sort direction on Award Amount",
+     "enum": [
+      "desc",
+      "asc"
+     ],
+     "default": "desc"
+    },
+    {
+     "name": "page",
+     "in": "body",
+     "required": false,
+     "type": "number",
+     "description": "Page number",
+     "default": 1
+    },
+    {
+     "name": "api_limit",
+     "key": "limit",
+     "in": "body",
+     "required": false,
+     "type": "number",
+     "description": "Results per page (max 100) (sent to the site as \"limit\"; clify's own --limit only shapes the output)",
+     "default": 10
+    }
+   ],
+   "bodyTemplate": {
+    "filters": {
+     "place_of_performance_scope": "domestic",
+     "place_of_performance_locations": [
+      {
+       "country": "USA",
+       "state": "{state}"
+      }
+     ],
+     "time_period": [
+      {
+       "start_date": "{start_date}",
+       "end_date": "{end_date}"
+      }
+     ],
+     "award_type_codes": [
+      "A",
+      "B",
+      "C",
+      "D"
+     ]
+    },
+    "category": "awards",
+    "limit": "{api_limit}",
+    "page": "{page}",
+    "fields": [
+     "Award ID",
+     "Recipient Name",
+     "Award Amount",
+     "Description",
+     "Awarding Agency",
+     "Start Date",
+     "End Date",
+     "generated_internal_id"
+    ],
+    "order": "{order}",
+    "sort": "Award Amount",
+    "spending_level": "awards"
+   },
+   "bodyEncoding": "json",
+   "responseType": "json",
+   "resultPath": "results",
+   "defaultFields": [
+    "Award ID",
+    "Recipient Name",
+    "Award Amount",
+    "Description",
+    "Awarding Agency",
+    "Start Date",
+    "generated_internal_id"
+   ],
+   "pagination": {
+    "type": "page",
+    "param": "page"
+   },
+   "mutates": false,
+   "example": {
+    "state": "CA",
+    "start_date": "2025-10-18",
+    "end_date": "2026-10-18"
+   },
+   "source": "E7 POST https://api.usaspending.gov/api/v2/search/spending_by_award/",
+   "verified": true
+  },
+  {
+   "name": "list-federal-account-awards",
+   "summary": "Contract awards funded by a federal account (agency id + main account code), sorted by award amount",
+   "method": "POST",
+   "urlTemplate": "https://api.usaspending.gov/api/v2/search/spending_by_award/",
+   "params": [
+    {
+     "name": "aid",
+     "in": "body",
+     "required": true,
+     "type": "string",
+     "description": "Agency identifier: the first part of the federal account number, e.g. 017 in 017-1804",
+     "example": "017"
+    },
+    {
+     "name": "main",
+     "in": "body",
+     "required": true,
+     "type": "string",
+     "description": "Main account code: the second part of the federal account number, e.g. 1804",
+     "example": "1804"
+    },
+    {
+     "name": "order",
+     "in": "body",
+     "required": false,
+     "type": "string",
+     "description": "Sort direction on Award Amount",
+     "enum": [
+      "desc",
+      "asc"
+     ],
+     "default": "desc"
+    },
+    {
+     "name": "page",
+     "in": "body",
+     "required": false,
+     "type": "number",
+     "description": "Page number",
+     "default": 1
+    },
+    {
+     "name": "api_limit",
+     "key": "limit",
+     "in": "body",
+     "required": false,
+     "type": "number",
+     "description": "Results per page (max 100) (sent to the site as \"limit\"; clify's own --limit only shapes the output)",
+     "default": 10
+    }
+   ],
+   "bodyTemplate": {
+    "filters": {
+     "tas_codes": [
+      {
+       "aid": "{aid}",
+       "main": "{main}"
+      }
+     ],
+     "award_type_codes": [
+      "A",
+      "B",
+      "C",
+      "D"
+     ]
+    },
+    "spending_level": "awards",
+    "fields": [
+     "Award ID",
+     "Recipient Name",
+     "Award Amount",
+     "Total Outlays",
+     "Description",
+     "Contract Award Type",
+     "Recipient UEI",
+     "Awarding Agency",
+     "Awarding Sub Agency",
+     "Start Date",
+     "End Date",
+     "NAICS",
+     "PSC",
+     "recipient_id"
+    ],
+    "limit": "{api_limit}",
+    "order": "{order}",
+    "page": "{page}",
+    "sort": "Award Amount"
+   },
+   "bodyEncoding": "json",
+   "responseType": "json",
+   "resultPath": "results",
+   "defaultFields": [
+    "Award ID",
+    "Recipient Name",
+    "Award Amount",
+    "Total Outlays",
+    "Description",
+    "Awarding Sub Agency",
+    "Start Date",
+    "generated_internal_id"
+   ],
+   "pagination": {
+    "type": "page",
+    "param": "page"
+   },
+   "mutates": false,
+   "example": {
+    "aid": "017",
+    "main": "1804"
+   },
+   "source": "E7 POST https://api.usaspending.gov/api/v2/search/spending_by_award/",
+   "verified": true
+  },
+  {
+   "name": "get-award",
+   "summary": "Full details of one award: amounts, dates, parent IDV, recipient, place of performance, contract data",
+   "method": "GET",
+   "urlTemplate": "https://api.usaspending.gov/api/v2/awards/{award_id}/",
+   "params": [
+    {
+     "name": "award_id",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Generated unique award id (generated_internal_id from search results), e.g. CONT_AWD_..._...",
+     "example": "CONT_AWD_47QFRA24F0012_4732_47QTCK18D0047_4732"
+    }
+   ],
+   "responseType": "json",
+   "defaultFields": [
+    "generated_unique_award_id",
+    "piid",
+    "type_description",
+    "description",
+    "total_obligation",
+    "date_signed",
+    "recipient",
+    "subaward_count"
+   ],
+   "mutates": false,
+   "example": {
+    "award_id": "CONT_AWD_47QFRA24F0012_4732_47QTCK18D0047_4732"
+   },
+   "source": "E22 E27 GET https://api.usaspending.gov/api/v2/awards/{id}/",
+   "verified": true
+  },
+  {
+   "name": "count-award-children",
+   "summary": "Count an award's transactions, subawards, or funding federal accounts",
+   "method": "GET",
+   "urlTemplate": "https://api.usaspending.gov/api/v2/awards/count/{kind}/{award_id}/",
+   "params": [
+    {
+     "name": "kind",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "What to count",
+     "enum": [
+      "transaction",
+      "subaward",
+      "federal_account"
+     ],
+     "example": "transaction"
+    },
+    {
+     "name": "award_id",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Generated unique award id",
+     "example": "CONT_AWD_W52P1J22C0023_9700_-NONE-_-NONE-"
+    }
+   ],
+   "responseType": "json",
+   "mutates": false,
+   "example": {
+    "kind": "subaward",
+    "award_id": "CONT_AWD_W52P1J22C0023_9700_-NONE-_-NONE-"
+   },
+   "source": "E23 E24 E25 E28 E29 E30 E10 GET https://api.usaspending.gov/api/v2/awards/count/transaction/{id}/",
+   "verified": true
+  },
+  {
+   "name": "list-award-transactions",
+   "summary": "List the transactions (modifications) of an award, paged",
+   "method": "POST",
+   "urlTemplate": "https://api.usaspending.gov/api/v2/transactions/",
+   "params": [
+    {
+     "name": "award_id",
+     "in": "body",
+     "required": true,
+     "type": "string",
+     "description": "Generated unique award id",
+     "example": "CONT_AWD_47QFRA24F0012_4732_47QTCK18D0047_4732"
+    },
+    {
+     "name": "sort",
+     "in": "body",
+     "required": false,
+     "type": "string",
+     "description": "Sort field",
+     "enum": [
+      "modification_number",
+      "action_date",
+      "federal_action_obligation",
+      "action_type_description",
+      "description"
+     ],
+     "default": "modification_number"
+    },
+    {
+     "name": "order",
+     "in": "body",
+     "required": false,
+     "type": "string",
+     "description": "Sort direction",
+     "enum": [
+      "asc",
+      "desc"
+     ],
+     "default": "asc"
+    },
+    {
+     "name": "page",
+     "in": "body",
+     "required": false,
+     "type": "number",
+     "description": "Page number",
+     "default": 1
+    },
+    {
+     "name": "api_limit",
+     "key": "limit",
+     "in": "body",
+     "required": false,
+     "type": "number",
+     "description": "Results per page (max 5000) (sent to the site as \"limit\"; clify's own --limit only shapes the output)",
+     "default": 10
+    }
+   ],
+   "bodyTemplate": {
+    "award_id": "{award_id}",
+    "page": "{page}",
+    "sort": "{sort}",
+    "order": "{order}",
+    "limit": "{api_limit}"
+   },
+   "bodyEncoding": "json",
+   "responseType": "json",
+   "resultPath": "results",
+   "defaultFields": [
+    "modification_number",
+    "action_date",
+    "federal_action_obligation",
+    "action_type_description",
+    "description"
+   ],
+   "pagination": {
+    "type": "page",
+    "param": "page"
+   },
+   "mutates": true,
+   "example": {
+    "award_id": "CONT_AWD_47QFRA24F0012_4732_47QTCK18D0047_4732",
+    "page": "2"
+   },
+   "source": "E59 POST https://api.usaspending.gov/api/v2/transactions/",
+   "verified": false,
+   "verifyNote": "write: dry-run preview only, not sent"
+  },
+  {
+   "name": "list-award-federal-accounts",
+   "summary": "Federal accounts that funded an award, with obligated amounts and funding agency",
+   "method": "POST",
+   "urlTemplate": "https://api.usaspending.gov/api/v2/awards/accounts/",
+   "params": [
+    {
+     "name": "award_id",
+     "in": "body",
+     "required": true,
+     "type": "string",
+     "description": "Generated unique award id",
+     "example": "CONT_AWD_47QFRA24F0012_4732_47QTCK18D0047_4732"
+    },
+    {
+     "name": "page",
+     "in": "body",
+     "required": false,
+     "type": "number",
+     "description": "Page number",
+     "default": 1
+    },
+    {
+     "name": "api_limit",
+     "key": "limit",
+     "in": "body",
+     "required": false,
+     "type": "number",
+     "description": "Results per page (sent to the site as \"limit\"; clify's own --limit only shapes the output)",
+     "default": 100
+    }
+   ],
+   "bodyTemplate": {
+    "limit": "{api_limit}",
+    "page": "{page}",
+    "sort": "total_transaction_obligated_amount",
+    "order": "desc",
+    "award_id": "{award_id}"
+   },
+   "bodyEncoding": "json",
+   "responseType": "json",
+   "resultPath": "results",
+   "defaultFields": [
+    "federal_account",
+    "account_title",
+    "total_transaction_obligated_amount",
+    "funding_agency_name",
+    "funding_agency_abbreviation"
+   ],
+   "pagination": {
+    "type": "page",
+    "param": "page"
+   },
+   "mutates": false,
+   "example": {
+    "award_id": "CONT_AWD_47QFRA24F0012_4732_47QTCK18D0047_4732"
+   },
+   "source": "E26 POST https://api.usaspending.gov/api/v2/awards/accounts/",
+   "verified": true
+  },
+  {
+   "name": "get-award-funding-rollup",
+   "summary": "Rollup of an award's funding: total obligation, number of awarding/funding agencies and federal accounts",
+   "method": "POST",
+   "urlTemplate": "https://api.usaspending.gov/api/v2/awards/funding_rollup/",
+   "params": [
+    {
+     "name": "award_id",
+     "in": "body",
+     "required": true,
+     "type": "string",
+     "description": "Generated unique award id",
+     "example": "CONT_AWD_47QFRA24F0012_4732_47QTCK18D0047_4732"
+    }
+   ],
+   "bodyTemplate": {
+    "award_id": "{award_id}"
+   },
+   "bodyEncoding": "json",
+   "responseType": "json",
+   "mutates": true,
+   "example": {
+    "award_id": "CONT_AWD_47QFRA24F0012_4732_47QTCK18D0047_4732"
+   },
+   "source": "E61 POST https://api.usaspending.gov/api/v2/awards/funding_rollup/",
+   "verified": false,
+   "verifyNote": "write: dry-run preview only, not sent"
+  },
+  {
+   "name": "search-recipients",
+   "summary": "List or search award recipients by name, UEI or DUNS, sorted by total amount",
+   "method": "POST",
+   "urlTemplate": "https://api.usaspending.gov/api/v2/recipient/",
+   "params": [
+    {
+     "name": "keyword",
+     "in": "body",
+     "required": false,
+     "type": "string",
+     "description": "Recipient name, UEI or DUNS to search for",
+     "example": "General Dynamics"
+    },
+    {
+     "name": "award_type",
+     "in": "body",
+     "required": false,
+     "type": "string",
+     "description": "Award group to total",
+     "enum": [
+      "all",
+      "contracts",
+      "grants",
+      "loans",
+      "direct_payments",
+      "other_financial_assistance"
+     ],
+     "default": "all"
+    },
+    {
+     "name": "sort",
+     "in": "body",
+     "required": false,
+     "type": "string",
+     "description": "Sort field",
+     "enum": [
+      "amount",
+      "name",
+      "duns"
+     ],
+     "default": "amount"
+    },
+    {
+     "name": "order",
+     "in": "body",
+     "required": false,
+     "type": "string",
+     "description": "Sort direction",
+     "enum": [
+      "desc",
+      "asc"
+     ],
+     "default": "desc"
+    },
+    {
+     "name": "page",
+     "in": "body",
+     "required": false,
+     "type": "number",
+     "description": "Page number",
+     "default": 1
+    },
+    {
+     "name": "api_limit",
+     "key": "limit",
+     "in": "body",
+     "required": false,
+     "type": "number",
+     "description": "Results per page (sent to the site as \"limit\"; clify's own --limit only shapes the output)",
+     "default": 50
+    }
+   ],
+   "bodyTemplate": {
+    "order": "{order}",
+    "sort": "{sort}",
+    "page": "{page}",
+    "limit": "{api_limit}",
+    "award_type": "{award_type}",
+    "keyword": "{keyword}"
+   },
+   "bodyEncoding": "json",
+   "responseType": "json",
+   "resultPath": "results",
+   "defaultFields": [
+    "id",
+    "name",
+    "uei",
+    "duns",
+    "recipient_level",
+    "amount"
+   ],
+   "pagination": {
+    "type": "page",
+    "param": "page"
+   },
+   "mutates": true,
+   "example": {
+    "keyword": "General Dynamics"
+   },
+   "source": "E62 POST https://api.usaspending.gov/api/v2/recipient/",
+   "verified": false,
+   "verifyNote": "write: dry-run preview only, not sent"
+  },
+  {
+   "name": "get-recipient",
+   "summary": "Recipient profile: name, UEI/DUNS, parents, business types, location, and transaction totals for a year",
+   "method": "GET",
+   "urlTemplate": "https://api.usaspending.gov/api/v2/recipient/{recipient_id}/",
+   "params": [
+    {
+     "name": "recipient_id",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Recipient hash id with level suffix (-C child, -P parent, -R recipient), e.g. fefa9485-...-C",
+     "example": "fefa9485-36e4-9820-72ad-356e6028032e-C"
+    },
+    {
+     "name": "year",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Fiscal year (e.g. 2026), 'latest' (trailing 12 months) or 'all'",
+     "default": "latest"
+    }
+   ],
+   "responseType": "json",
+   "defaultFields": [
+    "name",
+    "uei",
+    "duns",
+    "recipient_id",
+    "parent_name",
+    "location",
+    "total_transaction_amount",
+    "total_transactions"
+   ],
+   "mutates": false,
+   "example": {
+    "recipient_id": "fefa9485-36e4-9820-72ad-356e6028032e-C"
+   },
+   "source": "E6 GET https://api.usaspending.gov/api/v2/recipient/{id}/",
+   "verified": true
+  },
+  {
+   "name": "recipient-spending-by-category",
+   "summary": "Top breakdown of a recipient's obligations by agency, sub-agency, NAICS, PSC, CFDA, federal account, country or state",
+   "method": "POST",
+   "urlTemplate": "https://api.usaspending.gov/api/v2/search/spending_by_category/{category}",
+   "params": [
+    {
+     "name": "category",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Dimension to group by",
+     "enum": [
+      "awarding_agency",
+      "awarding_subagency",
+      "naics",
+      "psc",
+      "cfda",
+      "federal_account",
+      "country",
+      "state_territory"
+     ],
+     "example": "awarding_agency"
+    },
+    {
+     "name": "recipient_id",
+     "in": "body",
+     "required": true,
+     "type": "string",
+     "description": "Recipient hash id with level suffix",
+     "example": "fefa9485-36e4-9820-72ad-356e6028032e-C"
+    },
+    {
+     "name": "start_date",
+     "in": "body",
+     "required": false,
+     "type": "string",
+     "description": "Start date, YYYY-MM-DD",
+     "default": "2025-10-18"
+    },
+    {
+     "name": "end_date",
+     "in": "body",
+     "required": false,
+     "type": "string",
+     "description": "End date, YYYY-MM-DD",
+     "default": "2026-10-18"
+    },
+    {
+     "name": "page",
+     "in": "body",
+     "required": false,
+     "type": "number",
+     "description": "Page number",
+     "default": 1
+    },
+    {
+     "name": "api_limit",
+     "key": "limit",
+     "in": "body",
+     "required": false,
+     "type": "number",
+     "description": "Results per page (sent to the site as \"limit\"; clify's own --limit only shapes the output)",
+     "default": 5
+    }
+   ],
+   "bodyTemplate": {
+    "filters": {
+     "recipient_id": "{recipient_id}",
+     "time_period": [
+      {
+       "start_date": "{start_date}",
+       "end_date": "{end_date}"
+      }
+     ]
+    },
+    "category": "{category}",
+    "limit": "{api_limit}",
+    "page": "{page}"
+   },
+   "bodyEncoding": "json",
+   "responseType": "json",
+   "resultPath": "results",
+   "defaultFields": [
+    "code",
+    "name",
+    "amount",
+    "id"
+   ],
+   "pagination": {
+    "type": "page",
+    "param": "page"
+   },
+   "mutates": false,
+   "example": {
+    "category": "awarding_agency",
+    "recipient_id": "fefa9485-36e4-9820-72ad-356e6028032e-C"
+   },
+   "source": "E13 E14 E15 E32 E33 E34 E35 E36 POST https://api.usaspending.gov/api/v2/search/spending_by_category/awarding_agency",
+   "verified": true
+  },
+  {
+   "name": "recipient-spending-over-time",
+   "summary": "A recipient's obligations per fiscal year, quarter or month, split by award type",
+   "method": "POST",
+   "urlTemplate": "https://api.usaspending.gov/api/v2/search/spending_over_time/",
+   "params": [
+    {
+     "name": "recipient_id",
+     "in": "body",
+     "required": true,
+     "type": "string",
+     "description": "Recipient hash id with level suffix",
+     "example": "fefa9485-36e4-9820-72ad-356e6028032e-C"
+    },
+    {
+     "name": "group",
+     "in": "body",
+     "required": false,
+     "type": "string",
+     "description": "Time bucket",
+     "enum": [
+      "fiscal_year",
+      "quarter",
+      "month"
+     ],
+     "default": "fiscal_year"
+    },
+    {
+     "name": "start_date",
+     "in": "body",
+     "required": false,
+     "type": "string",
+     "description": "Start date, YYYY-MM-DD (not earlier than 2007-10-01)",
+     "default": "2007-10-01"
+    },
+    {
+     "name": "end_date",
+     "in": "body",
+     "required": false,
+     "type": "string",
+     "description": "End date, YYYY-MM-DD",
+     "default": "2027-09-30"
+    }
+   ],
+   "bodyTemplate": {
+    "group": "{group}",
+    "filters": {
+     "recipient_id": "{recipient_id}",
+     "time_period": [
+      {
+       "start_date": "{start_date}",
+       "end_date": "{end_date}"
+      }
+     ]
+    }
+   },
+   "bodyEncoding": "json",
+   "responseType": "json",
+   "resultPath": "results",
+   "defaultFields": [
+    "time_period",
+    "aggregated_amount",
+    "Contract_Obligations",
+    "Grant_Obligations",
+    "Loan_Obligations"
+   ],
+   "mutates": false,
+   "example": {
+    "recipient_id": "fefa9485-36e4-9820-72ad-356e6028032e-C"
+   },
+   "source": "E12 POST https://api.usaspending.gov/api/v2/search/spending_over_time/",
+   "verified": true
+  },
+  {
+   "name": "recipient-new-awards-over-time",
+   "summary": "Count of new awards to a recipient per fiscal year, quarter or month",
+   "method": "POST",
+   "urlTemplate": "https://api.usaspending.gov/api/v2/search/new_awards_over_time/",
+   "params": [
+    {
+     "name": "recipient_id",
+     "in": "body",
+     "required": true,
+     "type": "string",
+     "description": "Recipient hash id with level suffix",
+     "example": "fefa9485-36e4-9820-72ad-356e6028032e-C"
+    },
+    {
+     "name": "group",
+     "in": "body",
+     "required": false,
+     "type": "string",
+     "description": "Time bucket",
+     "enum": [
+      "fiscal_year",
+      "quarter",
+      "month"
+     ],
+     "default": "fiscal_year"
+    },
+    {
+     "name": "start_date",
+     "in": "body",
+     "required": false,
+     "type": "string",
+     "description": "Start date, YYYY-MM-DD",
+     "default": "2007-10-01"
+    },
+    {
+     "name": "end_date",
+     "in": "body",
+     "required": false,
+     "type": "string",
+     "description": "End date, YYYY-MM-DD",
+     "default": "2027-09-30"
+    }
+   ],
+   "bodyTemplate": {
+    "group": "{group}",
+    "filters": {
+     "recipient_id": "{recipient_id}",
+     "time_period": [
+      {
+       "start_date": "{start_date}",
+       "end_date": "{end_date}"
+      }
+     ]
+    }
+   },
+   "bodyEncoding": "json",
+   "responseType": "json",
+   "resultPath": "results",
+   "defaultFields": [
+    "time_period",
+    "new_award_count_in_period"
+   ],
+   "mutates": false,
+   "example": {
+    "recipient_id": "fefa9485-36e4-9820-72ad-356e6028032e-C"
+   },
+   "source": "E31 POST https://api.usaspending.gov/api/v2/search/new_awards_over_time/",
+   "verified": true
+  },
+  {
+   "name": "get-state-profile",
+   "summary": "State spending profile: population, income, total prime award amount and count, per-capita amount",
+   "method": "GET",
+   "urlTemplate": "https://api.usaspending.gov/api/v2/recipient/state/{fips}/",
+   "params": [
+    {
+     "name": "fips",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Two-digit state FIPS code (see list-states), e.g. 06 for California",
+     "example": "06"
+    },
+    {
+     "name": "year",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Fiscal year (e.g. 2026), 'latest' or 'all'",
+     "default": "latest"
+    }
+   ],
+   "responseType": "json",
+   "mutates": false,
+   "example": {
+    "fips": "06",
+    "year": "2026"
+   },
+   "source": "E17 GET https://api.usaspending.gov/api/v2/recipient/state/{n}/",
+   "verified": true
+  },
+  {
+   "name": "get-state-awards-by-type",
+   "summary": "A state's prime award amounts and counts by award type (contracts, grants, loans, direct payments, other)",
+   "method": "GET",
+   "urlTemplate": "https://api.usaspending.gov/api/v2/recipient/state/awards/{fips}/",
+   "params": [
+    {
+     "name": "fips",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Two-digit state FIPS code",
+     "example": "06"
+    },
+    {
+     "name": "year",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Fiscal year, 'latest' or 'all'",
+     "default": "latest"
+    }
+   ],
+   "responseType": "json",
+   "mutates": false,
+   "example": {
+    "fips": "06"
+   },
+   "source": "E44 GET https://api.usaspending.gov/api/v2/recipient/state/awards/{n}/",
+   "verified": true
+  },
+  {
+   "name": "state-spending-by-category",
+   "summary": "Top breakdown of spending performed in a state by recipient, county, congressional district, agency, NAICS, PSC or CFDA",
+   "method": "POST",
+   "urlTemplate": "https://api.usaspending.gov/api/v2/search/spending_by_category/{category}",
+   "params": [
+    {
+     "name": "category",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Dimension to group by",
+     "enum": [
+      "recipient",
+      "county",
+      "district",
+      "awarding_agency",
+      "awarding_subagency",
+      "naics",
+      "psc",
+      "cfda"
+     ],
+     "example": "recipient"
+    },
+    {
+     "name": "state",
+     "in": "body",
+     "required": true,
+     "type": "string",
+     "description": "Two-letter state code of the place of performance",
+     "example": "CA"
+    },
+    {
+     "name": "start_date",
+     "in": "body",
+     "required": false,
+     "type": "string",
+     "description": "Start date, YYYY-MM-DD",
+     "default": "2025-10-18"
+    },
+    {
+     "name": "end_date",
+     "in": "body",
+     "required": false,
+     "type": "string",
+     "description": "End date, YYYY-MM-DD",
+     "default": "2026-10-18"
+    },
+    {
+     "name": "page",
+     "in": "body",
+     "required": false,
+     "type": "number",
+     "description": "Page number",
+     "default": 1
+    },
+    {
+     "name": "api_limit",
+     "key": "limit",
+     "in": "body",
+     "required": false,
+     "type": "number",
+     "description": "Results per page (sent to the site as \"limit\"; clify's own --limit only shapes the output)",
+     "default": 5
+    }
+   ],
+   "bodyTemplate": {
+    "filters": {
+     "place_of_performance_scope": "domestic",
+     "place_of_performance_locations": [
+      {
+       "country": "USA",
+       "state": "{state}"
+      }
+     ],
+     "time_period": [
+      {
+       "start_date": "{start_date}",
+       "end_date": "{end_date}"
+      }
+     ]
+    },
+    "category": "{category}",
+    "limit": "{api_limit}",
+    "page": "{page}"
+   },
+   "bodyEncoding": "json",
+   "responseType": "json",
+   "resultPath": "results",
+   "defaultFields": [
+    "code",
+    "name",
+    "amount",
+    "recipient_id",
+    "uei"
+   ],
+   "pagination": {
+    "type": "page",
+    "param": "page"
+   },
+   "mutates": false,
+   "example": {
+    "category": "county",
+    "state": "CA"
+   },
+   "source": "E48 E50 E51 E13 E14 E15 POST https://api.usaspending.gov/api/v2/search/spending_by_category/recipient",
+   "verified": true
+  },
+  {
+   "name": "state-spending-over-time",
+   "summary": "Transaction obligations performed in a state per fiscal year, quarter or month",
+   "method": "POST",
+   "urlTemplate": "https://api.usaspending.gov/api/v2/search/spending_over_time/",
+   "params": [
+    {
+     "name": "state",
+     "in": "body",
+     "required": true,
+     "type": "string",
+     "description": "Two-letter state code",
+     "example": "CA"
+    },
+    {
+     "name": "group",
+     "in": "body",
+     "required": false,
+     "type": "string",
+     "description": "Time bucket",
+     "enum": [
+      "fiscal_year",
+      "quarter",
+      "month"
+     ],
+     "default": "fiscal_year"
+    },
+    {
+     "name": "start_date",
+     "in": "body",
+     "required": false,
+     "type": "string",
+     "description": "Start date, YYYY-MM-DD",
+     "default": "2007-10-01"
+    },
+    {
+     "name": "end_date",
+     "in": "body",
+     "required": false,
+     "type": "string",
+     "description": "End date, YYYY-MM-DD",
+     "default": "2027-09-30"
+    }
+   ],
+   "bodyTemplate": {
+    "group": "{group}",
+    "filters": {
+     "place_of_performance_locations": [
+      {
+       "country": "USA",
+       "state": "{state}"
+      }
+     ],
+     "time_period": [
+      {
+       "start_date": "{start_date}",
+       "end_date": "{end_date}"
+      }
+     ]
+    },
+    "spending_level": "transactions"
+   },
+   "bodyEncoding": "json",
+   "responseType": "json",
+   "resultPath": "results",
+   "defaultFields": [
+    "time_period",
+    "aggregated_amount",
+    "Contract_Obligations",
+    "Grant_Obligations",
+    "Direct_Obligations",
+    "Loan_Obligations"
+   ],
+   "mutates": false,
+   "example": {
+    "state": "CA"
+   },
+   "source": "E12 POST https://api.usaspending.gov/api/v2/search/spending_over_time/",
+   "verified": true
+  },
+  {
+   "name": "state-spending-by-geography",
+   "summary": "Map data: spending in a state per county or congressional district, with population and per-capita amount",
+   "method": "POST",
+   "urlTemplate": "https://api.usaspending.gov/api/v2/search/spending_by_geography/",
+   "params": [
+    {
+     "name": "state",
+     "in": "body",
+     "required": true,
+     "type": "string",
+     "description": "Two-letter state code",
+     "example": "CA"
+    },
+    {
+     "name": "geo_layer",
+     "in": "body",
+     "required": false,
+     "type": "string",
+     "description": "Geographic unit to aggregate by",
+     "enum": [
+      "county",
+      "district"
+     ],
+     "default": "county"
+    },
+    {
+     "name": "scope",
+     "in": "body",
+     "required": false,
+     "type": "string",
+     "description": "Location type to aggregate on",
+     "enum": [
+      "place_of_performance",
+      "recipient_location"
+     ],
+     "default": "place_of_performance"
+    },
+    {
+     "name": "start_date",
+     "in": "body",
+     "required": false,
+     "type": "string",
+     "description": "Start date, YYYY-MM-DD",
+     "default": "2025-10-18"
+    },
+    {
+     "name": "end_date",
+     "in": "body",
+     "required": false,
+     "type": "string",
+     "description": "End date, YYYY-MM-DD",
+     "default": "2026-10-18"
+    }
+   ],
+   "bodyTemplate": {
+    "scope": "{scope}",
+    "geo_layer": "{geo_layer}",
+    "filters": {
+     "place_of_performance_locations": [
+      {
+       "country": "USA",
+       "state": "{state}"
+      }
+     ],
+     "time_period": [
+      {
+       "start_date": "{start_date}",
+       "end_date": "{end_date}"
+      }
+     ]
+    }
+   },
+   "bodyEncoding": "json",
+   "responseType": "json",
+   "resultPath": "results",
+   "defaultFields": [
+    "shape_code",
+    "display_name",
+    "aggregated_amount",
+    "population",
+    "per_capita"
+   ],
+   "mutates": false,
+   "example": {
+    "state": "CA"
+   },
+   "source": "E18 POST https://api.usaspending.gov/api/v2/search/spending_by_geography/",
+   "verified": true
+  },
+  {
+   "name": "list-agencies",
+   "summary": "All top-tier federal agencies with toptier_code, slug, budget authority, obligations and outlays",
+   "method": "GET",
+   "urlTemplate": "https://api.usaspending.gov/api/v2/references/toptier_agencies/",
+   "params": [
+    {
+     "name": "sort",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Sort field",
+     "enum": [
+      "percentage_of_total_budget_authority",
+      "agency_name",
+      "budget_authority_amount",
+      "obligated_amount",
+      "outlay_amount",
+      "active_fy"
+     ],
+     "default": "percentage_of_total_budget_authority"
+    },
+    {
+     "name": "order",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Sort direction",
+     "enum": [
+      "desc",
+      "asc"
+     ],
+     "default": "desc"
+    }
+   ],
+   "responseType": "json",
+   "resultPath": "results",
+   "defaultFields": [
+    "toptier_code",
+    "abbreviation",
+    "agency_name",
+    "agency_slug",
+    "budget_authority_amount",
+    "obligated_amount",
+    "outlay_amount",
+    "percentage_of_total_budget_authority"
+   ],
+   "mutates": false,
+   "example": {
+    "sort": "agency_name",
+    "order": "asc"
+   },
+   "source": "E4 GET https://api.usaspending.gov/api/v2/references/toptier_agencies/",
+   "verified": true
+  },
+  {
+   "name": "get-agency",
+   "summary": "Agency overview for a fiscal year: name, mission, website, sub-tier count, disaster codes",
+   "method": "GET",
+   "urlTemplate": "https://api.usaspending.gov/api/v2/agency/{toptier_code}/",
+   "params": [
+    {
+     "name": "toptier_code",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "3- or 4-digit agency toptier code (see list-agencies), e.g. 097 for DOD",
+     "example": "097"
+    },
+    {
+     "name": "fiscal_year",
+     "in": "query",
+     "required": false,
+     "type": "number",
+     "description": "Fiscal year (Oct-Sep)",
+     "default": 2026
+    }
+   ],
+   "responseType": "json",
+   "defaultFields": [
+    "toptier_code",
+    "name",
+    "abbreviation",
+    "mission",
+    "website",
+    "subtier_agency_count"
+   ],
+   "mutates": false,
+   "example": {
+    "toptier_code": "097",
+    "fiscal_year": "2026"
+   },
+   "source": "E37 GET https://api.usaspending.gov/api/v2/agency/{n}/",
+   "verified": true
+  },
+  {
+   "name": "get-agency-award-summary",
+   "summary": "An agency's award transaction count, total obligations and latest action date for a fiscal year",
+   "method": "GET",
+   "urlTemplate": "https://api.usaspending.gov/api/v2/agency/{toptier_code}/awards/",
+   "params": [
+    {
+     "name": "toptier_code",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Agency toptier code",
+     "example": "097"
+    },
+    {
+     "name": "fiscal_year",
+     "in": "query",
+     "required": false,
+     "type": "number",
+     "description": "Fiscal year",
+     "default": 2026
+    }
+   ],
+   "responseType": "json",
+   "mutates": false,
+   "example": {
+    "toptier_code": "097",
+    "fiscal_year": "2026"
+   },
+   "source": "E42 GET https://api.usaspending.gov/api/v2/agency/{n}/awards/",
+   "verified": true
+  },
+  {
+   "name": "get-agency-new-award-count",
+   "summary": "Number of new awards an agency made in a fiscal year",
+   "method": "GET",
+   "urlTemplate": "https://api.usaspending.gov/api/v2/agency/{toptier_code}/awards/new/count/",
+   "params": [
+    {
+     "name": "toptier_code",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Agency toptier code",
+     "example": "097"
+    },
+    {
+     "name": "fiscal_year",
+     "in": "query",
+     "required": false,
+     "type": "number",
+     "description": "Fiscal year",
+     "default": 2026
+    }
+   ],
+   "responseType": "json",
+   "mutates": false,
+   "example": {
+    "toptier_code": "097",
+    "fiscal_year": "2026"
+   },
+   "source": "E38 GET https://api.usaspending.gov/api/v2/agency/{n}/awards/new/count/",
+   "verified": true
+  },
+  {
+   "name": "get-agency-obligations-by-category",
+   "summary": "An agency's award obligations for a fiscal year split by category (contracts, grants, loans, ...)",
+   "method": "GET",
+   "urlTemplate": "https://api.usaspending.gov/api/v2/agency/{toptier_code}/obligations_by_award_category/",
+   "params": [
+    {
+     "name": "toptier_code",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Agency toptier code",
+     "example": "097"
+    },
+    {
+     "name": "fiscal_year",
+     "in": "query",
+     "required": false,
+     "type": "number",
+     "description": "Fiscal year",
+     "default": 2026
+    }
+   ],
+   "responseType": "json",
+   "mutates": false,
+   "example": {
+    "toptier_code": "097",
+    "fiscal_year": "2026"
+   },
+   "source": "E39 GET https://api.usaspending.gov/api/v2/agency/{n}/obligations_by_award_category/",
+   "verified": true
+  },
+  {
+   "name": "list-agency-sub-agencies",
+   "summary": "An agency's sub-agencies and their offices, with obligations, transaction counts and new award counts",
+   "method": "GET",
+   "urlTemplate": "https://api.usaspending.gov/api/v2/agency/{toptier_code}/sub_agency/",
+   "params": [
+    {
+     "name": "toptier_code",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Agency toptier code",
+     "example": "097"
+    },
+    {
+     "name": "fiscal_year",
+     "in": "query",
+     "required": false,
+     "type": "number",
+     "description": "Fiscal year",
+     "default": 2026
+    },
+    {
+     "name": "sort",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Sort field",
+     "enum": [
+      "total_obligations",
+      "name",
+      "transaction_count",
+      "new_award_count"
+     ],
+     "default": "total_obligations"
+    },
+    {
+     "name": "order",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Sort direction",
+     "enum": [
+      "desc",
+      "asc"
+     ],
+     "default": "desc"
+    },
+    {
+     "name": "page",
+     "in": "query",
+     "required": false,
+     "type": "number",
+     "description": "Page number",
+     "default": 1
+    },
+    {
+     "name": "api_limit",
+     "key": "limit",
+     "in": "query",
+     "required": false,
+     "type": "number",
+     "description": "Results per page (sent to the site as \"limit\"; clify's own --limit only shapes the output)",
+     "default": 10
+    }
+   ],
+   "responseType": "json",
+   "resultPath": "results",
+   "defaultFields": [
+    "abbreviation",
+    "name",
+    "total_obligations",
+    "transaction_count",
+    "new_award_count"
+   ],
+   "pagination": {
+    "type": "page",
+    "param": "page"
+   },
+   "mutates": false,
+   "example": {
+    "toptier_code": "097",
+    "fiscal_year": "2026"
+   },
+   "source": "E43 GET https://api.usaspending.gov/api/v2/agency/{n}/sub_agency/",
+   "verified": true
+  },
+  {
+   "name": "list-agency-sub-components",
+   "summary": "An agency's budgetary sub-components (bureaus) with obligations, outlays and budgetary resources",
+   "method": "GET",
+   "urlTemplate": "https://api.usaspending.gov/api/v2/agency/{toptier_code}/sub_components/",
+   "params": [
+    {
+     "name": "toptier_code",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Agency toptier code",
+     "example": "097"
+    },
+    {
+     "name": "fiscal_year",
+     "in": "query",
+     "required": false,
+     "type": "number",
+     "description": "Fiscal year",
+     "default": 2026
+    },
+    {
+     "name": "page",
+     "in": "query",
+     "required": false,
+     "type": "number",
+     "description": "Page number",
+     "default": 1
+    }
+   ],
+   "responseType": "json",
+   "resultPath": "results",
+   "defaultFields": [
+    "id",
+    "name",
+    "total_obligations",
+    "total_outlays",
+    "total_budgetary_resources"
+   ],
+   "pagination": {
+    "type": "page",
+    "param": "page"
+   },
+   "mutates": false,
+   "example": {
+    "toptier_code": "097",
+    "fiscal_year": "2026"
+   },
+   "source": "E40 GET https://api.usaspending.gov/api/v2/agency/{n}/sub_components/",
+   "verified": true
+  },
+  {
+   "name": "get-agency-budgetary-resources",
+   "summary": "An agency's budgetary resources, obligations and outlays per fiscal year, with obligations by period",
+   "method": "GET",
+   "urlTemplate": "https://api.usaspending.gov/api/v2/agency/{toptier_code}/budgetary_resources/",
+   "params": [
+    {
+     "name": "toptier_code",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Agency toptier code",
+     "example": "097"
+    }
+   ],
+   "responseType": "json",
+   "resultPath": "agency_data_by_year",
+   "defaultFields": [
+    "fiscal_year",
+    "agency_budgetary_resources",
+    "agency_total_obligated",
+    "agency_total_outlayed"
+   ],
+   "mutates": false,
+   "example": {
+    "toptier_code": "097"
+   },
+   "source": "E41 E67 GET https://api.usaspending.gov/api/v2/agency/{n}/budgetary_resources/",
+   "verified": true
+  },
+  {
+   "name": "list-federal-accounts",
+   "summary": "List or keyword-search federal (Treasury) accounts for a fiscal year, sorted by budgetary resources",
+   "method": "POST",
+   "urlTemplate": "https://api.usaspending.gov/api/v2/federal_accounts/",
+   "params": [
+    {
+     "name": "keyword",
+     "in": "body",
+     "required": false,
+     "type": "string",
+     "description": "Text to match in account name, number or agency",
+     "example": "Navy"
+    },
+    {
+     "name": "fy",
+     "in": "body",
+     "required": false,
+     "type": "string",
+     "description": "Fiscal year",
+     "default": "2026"
+    },
+    {
+     "name": "sort",
+     "key": "sort.field",
+     "in": "body",
+     "required": false,
+     "type": "string",
+     "description": "Sort field",
+     "enum": [
+      "budgetary_resources",
+      "account_name",
+      "account_number",
+      "managing_agency"
+     ],
+     "default": "budgetary_resources"
+    },
+    {
+     "name": "direction",
+     "key": "sort.direction",
+     "in": "body",
+     "required": false,
+     "type": "string",
+     "description": "Sort direction",
+     "enum": [
+      "desc",
+      "asc"
+     ],
+     "default": "desc"
+    },
+    {
+     "name": "page",
+     "in": "body",
+     "required": false,
+     "type": "number",
+     "description": "Page number",
+     "default": 1
+    },
+    {
+     "name": "api_limit",
+     "key": "limit",
+     "in": "body",
+     "required": false,
+     "type": "number",
+     "description": "Results per page (sent to the site as \"limit\"; clify's own --limit only shapes the output)",
+     "default": 50
+    }
+   ],
+   "bodyTemplate": {
+    "sort": {
+     "field": "{sort}",
+     "direction": "{direction}"
+    },
+    "page": "{page}",
+    "limit": "{api_limit}",
+    "filters": {
+     "fy": "{fy}"
+    },
+    "keyword": "{keyword}"
+   },
+   "bodyEncoding": "json",
+   "responseType": "json",
+   "resultPath": "results",
+   "defaultFields": [
+    "account_id",
+    "account_number",
+    "account_name",
+    "budgetary_resources",
+    "managing_agency_acronym"
+   ],
+   "pagination": {
+    "type": "page",
+    "param": "page"
+   },
+   "mutates": false,
+   "example": {
+    "keyword": "Navy"
+   },
+   "source": "E19 POST https://api.usaspending.gov/api/v2/federal_accounts/",
+   "verified": true
+  },
+  {
+   "name": "get-federal-account",
+   "summary": "Federal account details by account number (agency-main, e.g. 017-1804): title, parent agency, bureau, totals and child Treasury accounts for a fiscal year",
+   "method": "GET",
+   "urlTemplate": "https://api.usaspending.gov/api/v2/federal_accounts/{account_number}/",
+   "params": [
+    {
+     "name": "account_number",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Federal account number in AAA-MMMM form",
+     "example": "017-1804"
+    },
+    {
+     "name": "fiscal_year",
+     "in": "query",
+     "required": false,
+     "type": "number",
+     "description": "Fiscal year (Oct-Sep) for totals and children; without it the API uses the latest year, which may still be empty",
+     "default": 2026
+    }
+   ],
+   "responseType": "json",
+   "defaultFields": [
+    "id",
+    "federal_account_code",
+    "account_title",
+    "parent_agency_name",
+    "bureau_name",
+    "total_obligated_amount",
+    "total_gross_outlay_amount",
+    "total_budgetary_resources"
+   ],
+   "mutates": false,
+   "example": {
+    "account_number": "017-1804",
+    "fiscal_year": "2026"
+   },
+   "source": "E54",
+   "verified": true
+  },
+  {
+   "name": "get-federal-account-fy-snapshot",
+   "summary": "A federal account's budgetary resources, obligations, outlays and balances for one fiscal year",
+   "method": "GET",
+   "urlTemplate": "https://api.usaspending.gov/api/v2/federal_accounts/{account_id}/fiscal_year_snapshot/{fiscal_year}",
+   "params": [
+    {
+     "name": "account_id",
+     "in": "path",
+     "required": true,
+     "type": "number",
+     "description": "Numeric federal account id (account_id from list-federal-accounts)",
+     "example": "4175"
+    },
+    {
+     "name": "fiscal_year",
+     "in": "path",
+     "required": true,
+     "type": "number",
+     "description": "Fiscal year",
+     "example": "2026"
+    }
+   ],
+   "responseType": "json",
+   "resultPath": "results",
+   "mutates": false,
+   "example": {
+    "account_id": "4175",
+    "fiscal_year": "2026"
+   },
+   "source": "E55 GET https://api.usaspending.gov/api/v2/federal_accounts/{n}/fiscal_year_snapshot/{n}",
+   "verified": true
+  },
+  {
+   "name": "request-award-download",
+   "summary": "Start a bulk CSV download job of prime award transactions matching a keyword; returns file_name for get-download-status",
+   "method": "POST",
+   "urlTemplate": "https://api.usaspending.gov/api/v2/bulk_download/awards/",
+   "params": [
+    {
+     "name": "keyword",
+     "in": "body",
+     "required": true,
+     "type": "string",
+     "description": "Free-text keyword",
+     "example": "cybersecurity"
+    }
+   ],
+   "bodyTemplate": {
+    "award_levels": [
+     "prime_awards"
+    ],
+    "filters": {
+     "keyword": "{keyword}"
+    }
+   },
+   "bodyEncoding": "json",
+   "responseType": "json",
+   "defaultFields": [
+    "file_name",
+    "file_url",
+    "status_url"
+   ],
+   "mutates": false,
+   "example": {
+    "keyword": "cybersecurity"
+   },
+   "source": "E21 POST https://api.usaspending.gov/api/v2/bulk_download/awards/",
+   "verified": true
+  },
+  {
+   "name": "get-download-status",
+   "summary": "Check a bulk download job; when status is 'ready', file_url points to the zip",
+   "method": "GET",
+   "urlTemplate": "https://api.usaspending.gov/api/v2/bulk_download/status/",
+   "params": [
+    {
+     "name": "file_name",
+     "in": "query",
+     "required": true,
+     "type": "string",
+     "description": "file_name returned by request-award-download",
+     "example": "PrimeTransactions_2026-10-18_H07M18S08454046.zip"
+    }
+   ],
+   "responseType": "json",
+   "defaultFields": [
+    "status",
+    "file_name",
+    "file_url",
+    "total_rows",
+    "message"
+   ],
+   "mutates": false,
+   "example": {
+    "file_name": "PrimeTransactions_2026-10-18_H07M18S08454046.zip"
+   },
+   "source": "E2 GET https://api.usaspending.gov/api/v2/bulk_download/status/",
+   "verified": true
+  },
+  {
+   "name": "autocomplete-awarding-agency",
+   "summary": "Find awarding agencies and sub-agencies by partial name",
+   "method": "POST",
+   "urlTemplate": "https://api.usaspending.gov/api/v2/autocomplete/awarding_agency/",
+   "params": [
+    {
+     "name": "search_text",
+     "in": "body",
+     "required": true,
+     "type": "string",
+     "description": "Partial agency name",
+     "example": "Energy"
+    },
+    {
+     "name": "api_limit",
+     "key": "limit",
+     "in": "body",
+     "required": false,
+     "type": "number",
+     "description": "Max results (sent to the site as \"limit\"; clify's own --limit only shapes the output)",
+     "default": 20
+    }
+   ],
+   "bodyTemplate": {
+    "search_text": "{search_text}",
+    "limit": "{api_limit}"
+   },
+   "bodyEncoding": "json",
+   "responseType": "json",
+   "resultPath": "results",
+   "defaultFields": [
+    "id",
+    "toptier_flag",
+    "toptier_agency.toptier_code",
+    "toptier_agency.name",
+    "subtier_agency.name"
+   ],
+   "mutates": false,
+   "example": {
+    "search_text": "Energy"
+   },
+   "source": "E53 POST https://api.usaspending.gov/api/v2/autocomplete/awarding_agency/",
+   "verified": true
+  },
+  {
+   "name": "list-states",
+   "summary": "States and territories with FIPS code, postal code and name (FIPS is used by the state profile commands)",
+   "method": "GET",
+   "urlTemplate": "https://api.usaspending.gov/api/v2/references/states/",
+   "params": [],
+   "responseType": "json",
+   "resultPath": "results",
+   "defaultFields": [
+    "fips",
+    "code",
+    "name"
+   ],
+   "mutates": false,
+   "source": "E11 GET https://api.usaspending.gov/api/v2/references/states/",
+   "verified": true
+  },
+  {
+   "name": "list-def-codes",
+   "summary": "Disaster Emergency Fund (DEFC) codes with public law, title and disaster type",
+   "method": "GET",
+   "urlTemplate": "https://api.usaspending.gov/api/v2/references/def_codes/",
+   "params": [],
+   "responseType": "json",
+   "resultPath": "codes",
+   "defaultFields": [
+    "code",
+    "public_law",
+    "title",
+    "disaster"
+   ],
+   "mutates": false,
+   "source": "E5 GET https://api.usaspending.gov/api/v2/references/def_codes/",
+   "verified": true
+  },
+  {
+   "name": "list-glossary",
+   "summary": "USAspending glossary of spending terms with plain-language and official definitions",
+   "method": "GET",
+   "urlTemplate": "https://api.usaspending.gov/api/v2/references/glossary/",
+   "params": [
+    {
+     "name": "api_limit",
+     "key": "limit",
+     "in": "query",
+     "required": false,
+     "type": "number",
+     "description": "Max terms to return (sent to the site as \"limit\"; clify's own --limit only shapes the output)",
+     "default": 500
+    }
+   ],
+   "responseType": "json",
+   "resultPath": "results",
+   "defaultFields": [
+    "term",
+    "slug",
+    "plain"
+   ],
+   "mutates": false,
+   "source": "E1 GET https://api.usaspending.gov/api/v2/references/glossary/",
+   "verified": true
+  }
+ ],
+ "blockers": [],
+ "notes": [
+  "Public API, no auth. All commands hit https://api.usaspending.gov.",
+  "Amounts are USD. Fiscal years run Oct 1 to Sep 30 (FY2026 = 2025-10-01..2026-09-30). Search date ranges cannot start before 2007-10-01.",
+  "Award ids are the generated ids like CONT_AWD_<PIID>_<agency>_<parent PIID or -NONE->_<agency or -NONE->. Search results return them as generated_internal_id.",
+  "Recipient ids are hashes with a level suffix: -C child, -P parent, -R recipient. Get them from search-recipients or from the recipient_id field of category results.",
+  "Agencies are addressed by toptier_code (e.g. 097 DOD, 089 DOE; see list-agencies). States are addressed by FIPS in get-state-profile and get-state-awards-by-type, and by two-letter code in the search commands.",
+  "search-transactions and the award searches are fixed to contract award types A/B/C/D, which is what the web app sends by default.",
+  "Responses often include a 'messages' array with API warnings (deprecations, ignored filters). These are informational.",
+  "list-award-transactions and search-recipients were held or failed during recording, so their request shapes come from the public API docs and were not verified live.",
+  "request-award-download only starts a server-side file generation job and changes no data. Poll get-download-status until status is 'ready', then fetch file_url."
+ ],
+ "dropped": [],
+ "generated": {
+  "by": "clify add",
+  "model": "claude-opus-5-5",
+  "exploredSteps": 28,
+  "recorded": 141,
+  "verifiedAt": "2026-10-18T07:22:58.979Z",
+  "seconds": 334
+ }
+}

@@ -1,0 +1,118 @@
+{
+ "ok": true,
+ "site": "musicbrainz",
+ "url": "https://musicbrainz.org/",
+ "commands": [
+  {
+   "name": "list-genres",
+   "summary": "List all genres in MusicBrainz, with each genre's name and detail URL (the MBID is in the URL)",
+   "verified": true
+  },
+  {
+   "name": "get-genre",
+   "summary": "Get one genre: name, primary tag, relationships (parent genres, subgenres, fusions/influences) and its Wikipedia summary",
+   "verified": true
+  },
+  {
+   "name": "get-wikipedia-extract",
+   "summary": "Get the cached Wikipedia summary (HTML) for a genre, instrument, artist or release group; wikipediaExtract is null when none is linked",
+   "verified": true
+  },
+  {
+   "name": "list-instruments",
+   "summary": "List all instruments, each with its name, short description and detail URL (the MBID is in the URL)",
+   "verified": true
+  },
+  {
+   "name": "get-instrument",
+   "summary": "Get one instrument: name, type, description, relationships (subtypes, parent type, related instruments) and Wikidata link",
+   "verified": true
+  },
+  {
+   "name": "list-instrument-artists",
+   "summary": "List artists credited with playing an instrument, with artist type, gender, area and credit (paginated)",
+   "verified": true
+  },
+  {
+   "name": "list-instrument-releases",
+   "summary": "List releases featuring an instrument, with artist, format, tracks, country, date, label and catalog number (paginated)",
+   "verified": true
+  },
+  {
+   "name": "list-instrument-recordings",
+   "summary": "List recordings featuring an instrument, with artist and length (paginated)",
+   "verified": true
+  },
+  {
+   "name": "list-entity-tags",
+   "summary": "List the user-applied tags (with vote counts and any linked genre) on an instrument, artist or release group",
+   "verified": true
+  },
+  {
+   "name": "get-artist",
+   "summary": "Get an artist's details: name, type, country, begin/end dates, area, genres and external links (relations: Discogs, Wikidata, etc.)",
+   "verified": true
+  },
+  {
+   "name": "get-release-group",
+   "summary": "Get a release group (album/single): title, artist credit, type, first release date, genres, external links and its list of release versions",
+   "verified": true
+  },
+  {
+   "name": "list-release-group-releases",
+   "summary": "List every release version of a release group, with date, country, status, barcode, labels/catalog numbers and media formats",
+   "verified": true
+  },
+  {
+   "name": "get-statistics",
+   "summary": "Get the database statistics overview: counts of artists, releases, recordings, labels, works, disc IDs, editors, etc.",
+   "verified": true
+  },
+  {
+   "name": "get-country-statistics",
+   "summary": "Get per-country counts of artists, releases, labels, events and places, ranked",
+   "verified": true
+  },
+  {
+   "name": "get-statistic-timeline",
+   "summary": "Get the historical time series for one statistic as a map of date -> value (e.g. artist or release count over time)",
+   "verified": true
+  },
+  {
+   "name": "list-history-events",
+   "summary": "List MusicBrainz project milestones (date, title, description, blog link) shown on the statistics timeline",
+   "verified": true
+  },
+  {
+   "name": "list-relationship-type-pairs",
+   "summary": "List the entity-type pairs that have relationship types (e.g. Artist-Instrument), each with a link to its relationship types",
+   "verified": true
+  },
+  {
+   "name": "list-relationship-types",
+   "summary": "List the relationship types between two entity types (e.g. artist-instrument), with link phrases, description and documentation link",
+   "verified": true
+  }
+ ],
+ "verified": 18,
+ "writes": 0,
+ "dropped": [
+  {
+   "name": "list-artist-release-groups",
+   "reason": "request failed: fetch failed"
+  }
+ ],
+ "blockers": [],
+ "loggedIn": false,
+ "seconds": 364,
+ "next": [
+  "clify musicbrainz",
+  "clify musicbrainz list-genres"
+ ],
+ "installed": "/home/ubuntu/clify-runs/batch2/home/bin/musicbrainz",
+ "explored": {
+  "steps": 29,
+  "recorded": 34,
+  "heldWrites": 3
+ }
+}

@@ -1,0 +1,647 @@
+{
+ "name": "ec-europa",
+ "startUrl": "https://ec.europa.eu/eurostat/databrowser/",
+ "origin": "https://ec.europa.eu",
+ "createdAt": "2026-10-18T08:12:13.976Z",
+ "description": "Eurostat Data Browser (ec.europa.eu/eurostat/databrowser): search and browse EU statistical datasets, inspect dataset metadata, dimensions, codelists and related tables, and fetch data through the public JSON-stat dissemination API.",
+ "commands": [
+  {
+   "name": "search-datasets",
+   "summary": "Search Eurostat datasets by keyword (autocomplete suggestions). Returns dataset codes with highlighted titles.",
+   "method": "GET",
+   "urlTemplate": "/eurostat/search-api/generic/languages/{lang}/_autocomplete?collection=dataset",
+   "params": [
+    {
+     "name": "text",
+     "in": "query",
+     "required": true,
+     "type": "string",
+     "description": "Search text, e.g. 'unemployment'",
+     "example": "unemployment"
+    },
+    {
+     "name": "lang",
+     "in": "path",
+     "required": false,
+     "type": "string",
+     "description": "Language of titles",
+     "enum": [
+      "en",
+      "fr",
+      "de"
+     ],
+     "default": "en"
+    }
+   ],
+   "responseType": "json",
+   "defaultFields": [
+    "code",
+    "type",
+    "suggest.highlightPhrase",
+    "suggest.highLightLocation"
+   ],
+   "mutates": false,
+   "example": {
+    "text": "unemployment"
+   },
+   "source": "E30 GET https://ec.europa.eu/eurostat/search-api/generic/languages/en/_autocomplete",
+   "verified": true
+  },
+  {
+   "name": "list-all-datasets",
+   "summary": "List every Eurostat dataflow (code, title, last data/structure update). Set comext=true for the Comext (international trade) database. Large response.",
+   "method": "GET",
+   "urlTemplate": "/eurostat/databrowser-backend/api/collection/LIVE/all_dataflows/{lang}",
+   "params": [
+    {
+     "name": "comext",
+     "key": "isComext",
+     "in": "query",
+     "required": false,
+     "type": "boolean",
+     "description": "true = Comext trade datasets, false = main Eurostat database",
+     "default": false
+    },
+    {
+     "name": "lang",
+     "in": "path",
+     "required": false,
+     "type": "string",
+     "description": "Language of titles",
+     "enum": [
+      "en",
+      "fr",
+      "de"
+     ],
+     "default": "en"
+    }
+   ],
+   "responseType": "json",
+   "defaultFields": [
+    "code",
+    "title",
+    "type",
+    "sourceDataset",
+    "lastDataUpdate",
+    "lastStructureUpdate"
+   ],
+   "mutates": false,
+   "example": {
+    "comext": "false"
+   },
+   "source": "E29 GET https://ec.europa.eu/eurostat/databrowser-backend/api/collection/LIVE/all_dataflows/en",
+   "verified": true
+  },
+  {
+   "name": "list-themes",
+   "summary": "List top-level statistical themes (navigation tree roots). crossCutting=true returns the cross-cutting / EU-policy themes instead.",
+   "method": "GET",
+   "urlTemplate": "/eurostat/databrowser-backend/api/selection/1.0/LIVE/json/{lang}/theme-list/{crossCutting}",
+   "params": [
+    {
+     "name": "crossCutting",
+     "in": "path",
+     "required": false,
+     "type": "string",
+     "description": "false = statistical themes (popul, economy, ...); true = EU policies and cross-cutting topics",
+     "enum": [
+      "false",
+      "true"
+     ],
+     "default": "false"
+    },
+    {
+     "name": "lang",
+     "in": "path",
+     "required": false,
+     "type": "string",
+     "description": "Language of labels",
+     "enum": [
+      "en",
+      "fr",
+      "de"
+     ],
+     "default": "en"
+    }
+   ],
+   "responseType": "json",
+   "defaultFields": [
+    "id",
+    "code",
+    "name",
+    "color"
+   ],
+   "mutates": false,
+   "example": {
+    "crossCutting": "false"
+   },
+   "source": "E17 E18 GET https://ec.europa.eu/eurostat/databrowser-backend/api/selection/1.0/LIVE/json/en/theme-list/false",
+   "verified": true
+  },
+  {
+   "name": "get-theme-navtree",
+   "summary": "Get the category navigation tree under a theme (e.g. popul = Population and social conditions).",
+   "method": "GET",
+   "urlTemplate": "/eurostat/databrowser-backend/api/selection/1.0/LIVE/json/{lang}/navtree/{theme}",
+   "params": [
+    {
+     "name": "theme",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Theme id from list-themes, e.g. popul, economy, general",
+     "example": "popul"
+    },
+    {
+     "name": "lang",
+     "in": "path",
+     "required": false,
+     "type": "string",
+     "description": "Language of labels",
+     "enum": [
+      "en",
+      "fr",
+      "de"
+     ],
+     "default": "en"
+    }
+   ],
+   "responseType": "json",
+   "mutates": false,
+   "example": {
+    "theme": "popul"
+   },
+   "source": "E37 GET https://ec.europa.eu/eurostat/databrowser-backend/api/selection/1.0/LIVE/json/en/navtree/popul",
+   "verified": true
+  },
+  {
+   "name": "get-full-tree",
+   "summary": "Get the full Eurostat navigation tree (categories and datasets), optionally only the branch under one category code.",
+   "method": "GET",
+   "urlTemplate": "/eurostat/databrowser-backend/api/public/navtree/{lang}/getFullTree?showProduct=all",
+   "params": [
+    {
+     "name": "node",
+     "key": "node_code",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Category code to restrict the tree to, e.g. une"
+    },
+    {
+     "name": "lang",
+     "in": "path",
+     "required": false,
+     "type": "string",
+     "description": "Language of labels",
+     "enum": [
+      "en",
+      "fr",
+      "de"
+     ],
+     "default": "en"
+    }
+   ],
+   "responseType": "json",
+   "mutates": false,
+   "example": {
+    "node": "une"
+   },
+   "source": "E10 GET https://ec.europa.eu/eurostat/databrowser-backend/api/public/navtree/en/getFullTree",
+   "verified": true
+  },
+  {
+   "name": "list-category-datasets",
+   "summary": "List the datasets in a navigation-tree category (e.g. scheme popul, category une = unemployment), with titles, update dates and links.",
+   "method": "GET",
+   "urlTemplate": "/eurostat/databrowser-backend/api/public/navtree/{lang}/getProductPositionForCategory/{scheme}/{category}?notFullId=true&showProduct=all",
+   "params": [
+    {
+     "name": "scheme",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Theme/scheme id, e.g. popul",
+     "example": "popul"
+    },
+    {
+     "name": "category",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Leaf category code holding datasets, e.g. une, lfsi",
+     "example": "une"
+    },
+    {
+     "name": "lang",
+     "in": "path",
+     "required": false,
+     "type": "string",
+     "description": "Language of labels",
+     "enum": [
+      "en",
+      "fr",
+      "de"
+     ],
+     "default": "en"
+    }
+   ],
+   "responseType": "json",
+   "defaultFields": [
+    "dataProduct.code",
+    "dataProduct.labelCurrentLang",
+    "dataProduct.lastUpdate",
+    "dataProduct.dataBrowserLink",
+    "dataProduct.downloadLink",
+    "dataProduct.esmsHtml.href"
+   ],
+   "mutates": false,
+   "example": {
+    "scheme": "popul",
+    "category": "une"
+   },
+   "source": "E13 GET https://ec.europa.eu/eurostat/databrowser-backend/api/public/navtree/en/getProductPositionForCategory/popul/une",
+   "verified": true
+  },
+  {
+   "name": "get-dataset-info",
+   "summary": "Get dataset metadata: title, description, observation count, time coverage, last data/structure update, DOI, source dataset, metadata links.",
+   "method": "GET",
+   "urlTemplate": "/eurostat/databrowser-backend/api/card/1.0/LIVE/{lang}/{code}/flow",
+   "params": [
+    {
+     "name": "code",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Dataset code, e.g. tps00203, une_rt_m",
+     "example": "tps00203"
+    },
+    {
+     "name": "lang",
+     "in": "path",
+     "required": false,
+     "type": "string",
+     "description": "Language",
+     "enum": [
+      "en",
+      "fr",
+      "de"
+     ],
+     "default": "en"
+    }
+   ],
+   "responseType": "json",
+   "defaultFields": [
+    "id",
+    "label",
+    "obsCount",
+    "obsPeriodOverallOldest",
+    "obsPeriodOverallLatest",
+    "updateData",
+    "doi.label",
+    "esmsHtmlAnnotation.uri"
+   ],
+   "mutates": false,
+   "example": {
+    "code": "tps00203"
+   },
+   "source": "E28 E32 GET https://ec.europa.eu/eurostat/databrowser-backend/api/card/1.0/LIVE/en/tps00203/flow",
+   "verified": true
+  },
+  {
+   "name": "get-dataset-status",
+   "summary": "Check that a dataset code exists and has data; returns its canonical id, default view id and last data/structure update timestamps (ms).",
+   "method": "GET",
+   "urlTemplate": "/eurostat/databrowser-backend/api/extraction/1.0/LIVE/false/getValidId/{code}",
+   "params": [
+    {
+     "name": "code",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Dataset code, e.g. une_rt_m",
+     "example": "une_rt_m"
+    }
+   ],
+   "responseType": "json",
+   "defaultFields": [
+    "validId",
+    "found",
+    "hasData",
+    "defaultViewId",
+    "eurobaseLastDataUpdate",
+    "eurobaseLastStructureUpdate"
+   ],
+   "mutates": false,
+   "example": {
+    "code": "une_rt_m"
+   },
+   "source": "E19 E22 GET https://ec.europa.eu/eurostat/databrowser-backend/api/extraction/1.0/LIVE/false/getValidId/une_rt_m",
+   "verified": true
+  },
+  {
+   "name": "get-dataset-dimensions",
+   "summary": "List a dataset's dimensions (freq, geo, sex, age, unit, ...) with all available codes and labels. Use these codes as filters in get-data.",
+   "method": "GET",
+   "urlTemplate": "/eurostat/databrowser-backend/api/card/1.0/LIVE/json/{lang}/{code}/dimensions?stub=false&filtered=true",
+   "params": [
+    {
+     "name": "code",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Dataset code, e.g. une_rt_m",
+     "example": "une_rt_m"
+    },
+    {
+     "name": "lang",
+     "in": "path",
+     "required": false,
+     "type": "string",
+     "description": "Language of labels",
+     "enum": [
+      "en",
+      "fr",
+      "de"
+     ],
+     "default": "en"
+    }
+   ],
+   "responseType": "json",
+   "resultPath": "link.item",
+   "defaultFields": [
+    "extension.id",
+    "label",
+    "extension.count",
+    "category.label"
+   ],
+   "mutates": false,
+   "example": {
+    "code": "une_rt_m"
+   },
+   "source": "E25 E23 GET https://ec.europa.eu/eurostat/databrowser-backend/api/card/1.0/LIVE/json/en/une_rt_m/dimensions",
+   "verified": true
+  },
+  {
+   "name": "get-dataset-categories",
+   "summary": "Get where a dataset sits in the navigation tree (theme and category breadcrumbs).",
+   "method": "GET",
+   "urlTemplate": "/eurostat/databrowser-backend/api/card/1.0/LIVE/json/{lang}/{code}/categories",
+   "params": [
+    {
+     "name": "code",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Dataset code",
+     "example": "une_rt_m"
+    },
+    {
+     "name": "lang",
+     "in": "path",
+     "required": false,
+     "type": "string",
+     "description": "Language of labels",
+     "enum": [
+      "en",
+      "fr",
+      "de"
+     ],
+     "default": "en"
+    }
+   ],
+   "responseType": "json",
+   "defaultFields": [
+    "scheme.id",
+    "scheme.name",
+    "breadcrumbs"
+   ],
+   "mutates": false,
+   "example": {
+    "code": "une_rt_m"
+   },
+   "source": "E14 E15 GET https://ec.europa.eu/eurostat/databrowser-backend/api/card/1.0/LIVE/json/en/une_rt_m/categories",
+   "verified": true
+  },
+  {
+   "name": "get-dataset-relations",
+   "summary": "List datasets derived from this dataset and the source dataset(s) it is derived from (code -> title).",
+   "method": "GET",
+   "urlTemplate": "/eurostat/api/dissemination/catalogue/relations/ESTAT/{code}/1.0",
+   "params": [
+    {
+     "name": "code",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Dataset code",
+     "example": "une_rt_m"
+    },
+    {
+     "name": "lang",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Language of titles",
+     "enum": [
+      "en",
+      "fr",
+      "de"
+     ],
+     "default": "en"
+    }
+   ],
+   "responseType": "json",
+   "mutates": false,
+   "example": {
+    "code": "une_rt_m"
+   },
+   "source": "E34 E42 GET https://ec.europa.eu/eurostat/api/dissemination/catalogue/relations/ESTAT/une_rt_m/1.0",
+   "verified": true
+  },
+  {
+   "name": "get-data",
+   "summary": "Fetch dataset values as JSON-stat from the public statistics API, filtered by dimension codes (geo, sex, age, unit, s_adj, na_item, ...) and time range.",
+   "method": "GET",
+   "urlTemplate": "/eurostat/api/dissemination/statistics/1.0/data/{dataset}?format=JSON",
+   "params": [
+    {
+     "name": "dataset",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Dataset code, e.g. une_rt_m, tps00203, nama_10_gdp",
+     "example": "une_rt_m"
+    },
+    {
+     "name": "geo",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Geo code, e.g. DE, FR, EU27_2020 (see get-dataset-dimensions / get-codelist geo)",
+     "example": "DE"
+    },
+    {
+     "name": "sex",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Sex code: T (total), M, F",
+     "example": "T"
+    },
+    {
+     "name": "age",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Age class code, e.g. TOTAL, Y_LT25, Y25-74, Y15-74",
+     "example": "TOTAL"
+    },
+    {
+     "name": "unit",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Unit code, e.g. PC_ACT, THS_PER, CP_MEUR",
+     "example": "PC_ACT"
+    },
+    {
+     "name": "s_adj",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Seasonal adjustment: NSA, SA, TC",
+     "example": "SA"
+    },
+    {
+     "name": "na_item",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "National accounts item, e.g. B1GQ (GDP) for nama_10_gdp"
+    },
+    {
+     "name": "freq",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Frequency code: A, Q, M"
+    },
+    {
+     "name": "sinceTimePeriod",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Only periods from this one on, e.g. 2020, 2024-01, 2023-Q1"
+    },
+    {
+     "name": "untilTimePeriod",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Only periods up to this one, e.g. 2025"
+    },
+    {
+     "name": "lastTimePeriod",
+     "in": "query",
+     "required": false,
+     "type": "number",
+     "description": "Return only the N most recent periods",
+     "example": "3"
+    },
+    {
+     "name": "lang",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Language of labels",
+     "enum": [
+      "en",
+      "fr",
+      "de"
+     ],
+     "default": "en"
+    }
+   ],
+   "responseType": "json",
+   "defaultFields": [
+    "label",
+    "updated",
+    "id",
+    "size",
+    "value",
+    "status",
+    "dimension.time.category.index",
+    "dimension.geo.category.label"
+   ],
+   "mutates": false,
+   "example": {
+    "dataset": "une_rt_m",
+    "geo": "DE",
+    "sex": "T",
+    "age": "TOTAL",
+    "unit": "PC_ACT",
+    "s_adj": "SA",
+    "lastTimePeriod": "3"
+   },
+   "source": "E50 E51 E52 GET https://ec.europa.eu/eurostat/api/dissemination/statistics/1.0/data/tps00203",
+   "verified": true
+  },
+  {
+   "name": "get-codelist",
+   "summary": "Get all codes and labels of a Eurostat codelist (e.g. geo = countries/regions/aggregates).",
+   "method": "GET",
+   "urlTemplate": "/eurostat/databrowser-backend/api/codelist/LIVE/{codelist}/getCodeListJson/*/ESTAT/{lang}/false",
+   "params": [
+    {
+     "name": "codelist",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Codelist id (lowercase dimension id), e.g. geo, unit, sex, age, na_item",
+     "example": "geo"
+    },
+    {
+     "name": "lang",
+     "in": "path",
+     "required": false,
+     "type": "string",
+     "description": "Language of labels",
+     "enum": [
+      "en",
+      "fr",
+      "de"
+     ],
+     "default": "en"
+    }
+   ],
+   "responseType": "json",
+   "resultPath": "category.label",
+   "mutates": false,
+   "example": {
+    "codelist": "geo"
+   },
+   "source": "E45 GET https://ec.europa.eu/eurostat/databrowser-backend/api/codelist/LIVE/geo/getCodeListJson/*/ESTAT/en/false",
+   "verified": true
+  }
+ ],
+ "blockers": [],
+ "notes": [
+  "Typical flow: search-datasets (or list-category-datasets) -> get-dataset-dimensions to learn valid codes -> get-data with those codes as filters.",
+  "get-data returns JSON-stat 2.0: 'value' is an object keyed by flat index computed from 'id' / 'size' and each dimension's category.index. Filter narrowly (geo, lastTimePeriod), because unfiltered requests on large datasets can be huge or rejected.",
+  "Filter params on get-data are dataset-specific. Only dimensions that exist in the dataset are valid. The API also accepts repeated keys (e.g. geo=DE&geo=FR) for several values.",
+  "Timestamps such as lastUpdate, lastDataUpdate and eurobaseLastDataUpdate are Unix epoch milliseconds.",
+  "Bulk file downloads (not wrapped as commands): /eurostat/api/dissemination/sdmx/2.1/data/{code}?format=TSV (also SDMX-CSV), plus the ESMS metadata page at /eurostat/cache/metadata/en/{code}_esms.htm.",
+  "Dataset view in the browser: https://ec.europa.eu/eurostat/databrowser/view/{code}/default/table"
+ ],
+ "dropped": [],
+ "generated": {
+  "by": "clify add",
+  "model": "claude-opus-5-5",
+  "exploredSteps": 21,
+  "recorded": 225,
+  "verifiedAt": "2026-10-18T08:13:34.654Z",
+  "seconds": 226
+ }
+}

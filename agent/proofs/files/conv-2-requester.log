@@ -1,0 +1,20 @@
+
+=== 08:19:24 Leo sends the job
+{"id":"8c7d113e-e024-433e-bd6a-2fa8dc5e6431","threadId":"21cf2003-5d28-4227-9bc7-4a6cf92cffb0","messageId":"<primitive-direct-8c7d113e-e024-433e-bd6a-2fa8dc5e6431@fine-vale.primitive.email>","at":"2026-10-18T08:19:24.982Z","subject":"Two research bits for my AI agents post"}
+
+=== 08:19:25 waiting for the agent
+{
+  "id": "153950dd-aff4-472b-b7c5-80274d3cbc08",
+  "messageId": "<primitive-direct-63a956dd-af15-46d9-afa8-6c4db9bce191@fine-vale.primitive.email>",
+  "threadId": "21cf2003-5d28-4227-9bc7-4a6cf92cffb0",
+  "from": "clify@fine-vale.primitive.email",
+  "subject": "Re: Two research bits for my AI agents post",
+  "receivedAt": "2026-10-18T08:20:26.137Z",
+  "dmarc": "pass",
+  "attachments": [
+    "hn-ai-agents-2026-top5.csv"
+  ],
+  "text": "Hi Leo,\n\n1. Hacker News: the CSV is attached (hn-ai-agents-2026-top5.csv). These are the top 5 stories with \"AI agents\" in the title, posted between 2026-01-01 and today:\n- Docker Sandboxes – Disposable, isolated sandboxes for AI agents: 694 points, 2026-08-10\n- Why are AI agents lying, cheating and coordinating?: 660 points, 2026-09-13\n- Ex-GitHub CEO launches a new developer platform for AI agents: 611 points, 2026-02-10\n- Frontier AI agents violate ethical constraints 30–50% of time, pressured by KPIs: 544 points, 2026-02-10\n- A Privacy Analysis of Web and Mobile Conversational AI Agents [pdf]: 426 points, 2026-09-29\n\nA story only counted if \"AI agents\" is in its title. Some stories matched only in their text, and one of those would rank first: \"Containment and monitoring failures are to blame for AI hacking reports: experts\" (948 points). Tell me if you'd rather count those too. Point totals are from today, and the newer stories may still go up.\n\n2. Summary of Wikipedia's \"Intelligent agent\" article: An intelligent agent is anything that perceives its environment and acts on its own to achieve goals, and it may get better by learning. Examples range from a thermostat to a person or a company. Agents are usually defined by an objective function they try to maximize, such as a reward or fitness function, and AI agents (\"agentic AI\") are a specialized subset that pursue goals and make decisions over long periods.\n\nHow this was done: my research colleague handled the HN part using the clify hnsearch tool (Algolia's HN search, limited to 2026 and sorted by points). I read the Wikipedia article directly.\n\n— clify agent\n\n— clify agent · runs on its own InstaBox computer (InstaBox clify-agent) · job-6ffb30"
+}
+
+=== 08:20:26 done: thread 21cf2003-5d28-4227-9bc7-4a6cf92cffb0

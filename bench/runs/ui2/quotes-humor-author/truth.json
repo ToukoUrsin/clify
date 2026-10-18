@@ -1,0 +1,11 @@
+{
+ "expect": [
+  "Jane Austen",
+  "December 16 1775"
+ ],
+ "detail": {
+  "author": "Jane Austen",
+  "born": "December 16, 1775"
+ },
+ "at": "2026-10-17T23:31:09.676Z"
+}

@@ -1,0 +1,405 @@
+{
+ "name": "endoflife",
+ "startUrl": "https://endoflife.date/",
+ "origin": "https://endoflife.date",
+ "createdAt": "2026-10-18T09:06:43.494Z",
+ "description": "endoflife.date is a public catalog of end-of-life dates and support lifecycles for software products. This CLI wraps its public JSON API v1 and Atom feeds to list products, categories, tags and identifiers, and to look up release cycles and EOL dates.",
+ "commands": [
+  {
+   "name": "list-products",
+   "summary": "List all tracked products (slug, label, category, tags, aliases)",
+   "method": "GET",
+   "urlTemplate": "/api/v1/products/",
+   "params": [],
+   "responseType": "json",
+   "resultPath": "result",
+   "defaultFields": [
+    "name",
+    "label",
+    "category",
+    "tags",
+    "aliases",
+    "uri"
+   ],
+   "mutates": false,
+   "source": "E3 GET https://endoflife.date/api/v1/products/",
+   "verified": true
+  },
+  {
+   "name": "export-products-full",
+   "summary": "Dump all products with full details including every release cycle (large response)",
+   "method": "GET",
+   "urlTemplate": "/api/v1/products/full",
+   "params": [],
+   "responseType": "json",
+   "resultPath": "result",
+   "defaultFields": [
+    "name",
+    "label",
+    "category",
+    "tags",
+    "links.html",
+    "releases"
+   ],
+   "mutates": false,
+   "source": "E13 GET https://endoflife.date/api/v1/products/full",
+   "verified": true
+  },
+  {
+   "name": "get-product",
+   "summary": "Get a product's metadata: label, category, tags, aliases, identifiers, version command, links",
+   "method": "GET",
+   "urlTemplate": "/api/v1/products/{product}",
+   "params": [
+    {
+     "name": "product",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Product slug as returned by list-products 'name', e.g. python, nodejs, alpine-linux",
+     "example": "python"
+    }
+   ],
+   "responseType": "json",
+   "resultPath": "result",
+   "defaultFields": [
+    "name",
+    "label",
+    "category",
+    "tags",
+    "aliases",
+    "versionCommand",
+    "links.html",
+    "links.releasePolicy"
+   ],
+   "mutates": false,
+   "example": {
+    "product": "python"
+   },
+   "source": "E14 E2 GET https://endoflife.date/api/v1/products/python",
+   "verified": true
+  },
+  {
+   "name": "list-releases",
+   "summary": "List all release cycles of a product with release, LTS, end-of-active-support and EOL dates",
+   "method": "GET",
+   "urlTemplate": "/api/v1/products/{product}",
+   "params": [
+    {
+     "name": "product",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Product slug, e.g. python, nodejs",
+     "example": "python"
+    }
+   ],
+   "responseType": "json",
+   "resultPath": "result.releases",
+   "defaultFields": [
+    "name",
+    "label",
+    "releaseDate",
+    "isLts",
+    "eoasFrom",
+    "eolFrom",
+    "isMaintained",
+    "latest.name"
+   ],
+   "mutates": false,
+   "example": {
+    "product": "python"
+   },
+   "source": "E14 GET https://endoflife.date/api/v1/products/python",
+   "verified": true
+  },
+  {
+   "name": "get-latest-release",
+   "summary": "Get the latest release cycle of a product with its support and EOL dates",
+   "method": "GET",
+   "urlTemplate": "/api/v1/products/{product}/releases/latest",
+   "params": [
+    {
+     "name": "product",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Product slug, e.g. nodejs, python",
+     "example": "nodejs"
+    }
+   ],
+   "responseType": "json",
+   "resultPath": "result",
+   "defaultFields": [
+    "name",
+    "label",
+    "releaseDate",
+    "isLts",
+    "ltsFrom",
+    "eoasFrom",
+    "eolFrom",
+    "isMaintained",
+    "latest"
+   ],
+   "mutates": false,
+   "example": {
+    "product": "nodejs"
+   },
+   "source": "E4 GET https://endoflife.date/api/v1/products/nodejs/releases/latest",
+   "verified": true
+  },
+  {
+   "name": "get-release",
+   "summary": "Get one release cycle of a product (e.g. python 3.12) with its support and EOL status and dates",
+   "method": "GET",
+   "urlTemplate": "/api/v1/products/{product}/releases/{release}",
+   "params": [
+    {
+     "name": "product",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Product slug, e.g. python",
+     "example": "python"
+    },
+    {
+     "name": "release",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Release cycle name as in list-releases 'name', e.g. 3.12 for python or 22 for nodejs",
+     "example": "3.12"
+    }
+   ],
+   "responseType": "json",
+   "resultPath": "result",
+   "defaultFields": [
+    "name",
+    "label",
+    "releaseDate",
+    "isLts",
+    "eoasFrom",
+    "isEol",
+    "eolFrom",
+    "isMaintained",
+    "latest"
+   ],
+   "mutates": false,
+   "example": {
+    "product": "python",
+    "release": "3.12"
+   },
+   "source": "E5 GET https://endoflife.date/api/v1/products/python/releases/3.12",
+   "verified": true
+  },
+  {
+   "name": "list-categories",
+   "summary": "List product categories (e.g. framework, server-app, database, lang, os, service)",
+   "method": "GET",
+   "urlTemplate": "/api/v1/categories/",
+   "params": [],
+   "responseType": "json",
+   "resultPath": "result",
+   "defaultFields": [
+    "name",
+    "uri"
+   ],
+   "mutates": false,
+   "source": "E6 GET https://endoflife.date/api/v1/categories/",
+   "verified": true
+  },
+  {
+   "name": "list-products-by-category",
+   "summary": "List products in a category",
+   "method": "GET",
+   "urlTemplate": "/api/v1/categories/{category}",
+   "params": [
+    {
+     "name": "category",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Category name from list-categories, e.g. database, lang, os, framework, server-app, service",
+     "example": "database"
+    }
+   ],
+   "responseType": "json",
+   "resultPath": "result",
+   "defaultFields": [
+    "name",
+    "label",
+    "category",
+    "tags",
+    "aliases",
+    "uri"
+   ],
+   "mutates": false,
+   "example": {
+    "category": "database"
+   },
+   "source": "E7 GET https://endoflife.date/api/v1/categories/database",
+   "verified": true
+  },
+  {
+   "name": "list-tags",
+   "summary": "List all product tags (e.g. amazon, linux-distribution, java-distribution)",
+   "method": "GET",
+   "urlTemplate": "/api/v1/tags/",
+   "params": [],
+   "responseType": "json",
+   "resultPath": "result",
+   "defaultFields": [
+    "name",
+    "uri"
+   ],
+   "mutates": false,
+   "source": "E8 GET https://endoflife.date/api/v1/tags/",
+   "verified": true
+  },
+  {
+   "name": "list-products-by-tag",
+   "summary": "List products that have a given tag",
+   "method": "GET",
+   "urlTemplate": "/api/v1/tags/{tag}",
+   "params": [
+    {
+     "name": "tag",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Tag name from list-tags, e.g. amazon, database, linux-distribution",
+     "example": "amazon"
+    }
+   ],
+   "responseType": "json",
+   "resultPath": "result",
+   "defaultFields": [
+    "name",
+    "label",
+    "category",
+    "tags",
+    "aliases",
+    "uri"
+   ],
+   "mutates": false,
+   "example": {
+    "tag": "amazon"
+   },
+   "source": "E9 GET https://endoflife.date/api/v1/tags/amazon",
+   "verified": true
+  },
+  {
+   "name": "list-identifier-types",
+   "summary": "List supported product identifier types (purl, cpe, ...)",
+   "method": "GET",
+   "urlTemplate": "/api/v1/identifiers/",
+   "params": [],
+   "responseType": "json",
+   "resultPath": "result",
+   "defaultFields": [
+    "name",
+    "uri"
+   ],
+   "mutates": false,
+   "source": "E10 GET https://endoflife.date/api/v1/identifiers/",
+   "verified": true
+  },
+  {
+   "name": "list-identifiers",
+   "summary": "List all identifiers of a given type (e.g. CPE or purl strings) mapped to product slugs; use it to resolve a CPE/purl to a product",
+   "method": "GET",
+   "urlTemplate": "/api/v1/identifiers/{type}",
+   "params": [
+    {
+     "name": "type",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Identifier type from list-identifier-types, e.g. cpe or purl",
+     "example": "cpe"
+    }
+   ],
+   "responseType": "json",
+   "resultPath": "result",
+   "defaultFields": [
+    "identifier",
+    "product.name",
+    "product.uri"
+   ],
+   "mutates": false,
+   "example": {
+    "type": "cpe"
+   },
+   "source": "E11 GET https://endoflife.date/api/v1/identifiers/cpe",
+   "verified": true
+  },
+  {
+   "name": "list-new-products",
+   "summary": "Recently added products, newest first (Atom feed)",
+   "method": "GET",
+   "urlTemplate": "/new-products.atom",
+   "params": [],
+   "responseType": "json",
+   "resultPath": "feed.entry",
+   "defaultFields": [
+    "title",
+    "updated",
+    "link.@href",
+    "summary"
+   ],
+   "mutates": false,
+   "source": "E20 GET https://endoflife.date/new-products.atom",
+   "verified": true
+  },
+  {
+   "name": "list-product-events",
+   "summary": "Timeline of a product's release and end-of-life events (Atom feed)",
+   "method": "GET",
+   "urlTemplate": "/{product}.atom",
+   "params": [
+    {
+     "name": "product",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Product slug, e.g. python",
+     "example": "python"
+    }
+   ],
+   "responseType": "json",
+   "resultPath": "feed.entry",
+   "defaultFields": [
+    "title",
+    "updated",
+    "id",
+    "summary"
+   ],
+   "mutates": false,
+   "example": {
+    "product": "python"
+   },
+   "source": "E21 GET https://endoflife.date/python.atom",
+   "verified": true
+  }
+ ],
+ "blockers": [],
+ "notes": [
+  "The site is public and read-only. No login is needed and no command changes data.",
+  "Product slugs are the 'name' field from list-products (e.g. python, nodejs, alpine-linux). Aliases such as 'alma' or 'adonis' are listed there but may not resolve as API paths, so use the canonical name.",
+  "Dates are ISO YYYY-MM-DD strings. Fields such as eolFrom, eoasFrom and ltsFrom can be null when a date is unknown or does not apply. isEol, isEoas and isMaintained are computed as of the API's generated_at time.",
+  "eoas means end of active support and eoes means end of extended support. The product 'labels' object (shown by get-product) gives the product-specific names for these phases.",
+  "Release cycle names are product-specific strings, e.g. '3.12' for python or '22' for nodejs. Use list-releases to find valid values for get-release.",
+  "The API has no server-side search or pagination. To find a product by name, filter the output of list-products by name, label or aliases. export-products-full returns every product with every release, so the response is large.",
+  "Site search runs in the browser over the static index /assets/js/search-data.json, which has no query support. It is not exposed as a command.",
+  "Each product has an iCalendar file at /calendar/{product}.ics. It was observed only as a file download, not as a recorded request, so no command covers it."
+ ],
+ "dropped": [],
+ "generated": {
+  "by": "clify add",
+  "model": "claude-opus-5-5",
+  "exploredSteps": 9,
+  "recorded": 26,
+  "verifiedAt": "2026-10-18T09:07:30.108Z",
+  "seconds": 146
+ }
+}

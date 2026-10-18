@@ -1,0 +1,146 @@
+{
+ "url": "https://data.cdc.gov/",
+ "category": "gov-us",
+ "sandbox": "clify-data-cdc-gov",
+ "startedAt": "2026-10-18T08:14:52.527Z",
+ "region": "us-pdx-1",
+ "chrome": "Chrome/148.0.7778.96",
+ "sandboxStartMs": 3037,
+ "addSeconds": 243,
+ "addExit": 0,
+ "add": {
+  "ok": true,
+  "site": "data-cdc",
+  "url": "https://data.cdc.gov/",
+  "commands": [
+   {
+    "name": "search-datasets",
+    "summary": "Search the data.cdc.gov catalog by keyword, with optional category/tag/type filters, sort order and paging",
+    "verified": true
+   },
+   {
+    "name": "list-categories",
+    "summary": "List all dataset categories on data.cdc.gov with their dataset counts",
+    "verified": true
+   },
+   {
+    "name": "list-tags",
+    "summary": "List the most-used dataset tags on data.cdc.gov with their counts",
+    "verified": true
+   },
+   {
+    "name": "autocomplete-datasets",
+    "summary": "Suggest dataset titles that match a partial search term",
+    "verified": true
+   },
+   {
+    "name": "get-dataset",
+    "summary": "Get full metadata for one dataset by its 4x4 id, including columns, field names, data types and stats",
+    "verified": true
+   },
+   {
+    "name": "get-dataset-metadata",
+    "summary": "Get a dataset's catalog metadata: tags, contact info, custom fields, ISO update dates and API/web URIs",
+    "verified": true
+   },
+   {
+    "name": "query-rows",
+    "summary": "Query a dataset's rows with SoQL (SODA API): filter, full-text search, select/aggregate, group, sort and page",
+    "verified": true
+   },
+   {
+    "name": "run-soql-query",
+    "summary": "Run a full SoQL query string against a dataset through the v3 query API, e.g. 'select jurisdiction, sum(influenza_deaths) group by jurisdiction limit 10'",
+    "verified": true
+   },
+   {
+    "name": "export-rows",
+    "summary": "Download a dataset export in JSON: view metadata under meta, rows as positional arrays under data",
+    "verified": true
+   },
+   {
+    "name": "get-data-catalog",
+    "summary": "Get the full DCAT (Project Open Data) catalog of every public dataset on data.cdc.gov",
+    "verified": true
+   }
+  ],
+  "verified": 10,
+  "writes": 0,
+  "dropped": [],
+  "blockers": [],
+  "loggedIn": false,
+  "seconds": 243,
+  "next": [
+   "clify data-cdc",
+   "clify data-cdc search-datasets --q \"influenza\" --only \"dataset\" --order \"updatedAt\""
+  ],
+  "installed": "/home/ubuntu/clify-runs/blaxel-w1/home/bin/data-cdc",
+  "explored": {
+   "steps": 12,
+   "recorded": 50,
+   "heldWrites": 0
+  }
+ },
+ "check": {
+  "on": "blaxel",
+  "node": "v24.22.0",
+  "seconds": 7,
+  "reads": 10,
+  "verified": 10,
+  "failed": [],
+  "results": [
+   {
+    "name": "search-datasets",
+    "ok": true,
+    "ms": 541
+   },
+   {
+    "name": "list-categories",
+    "ok": true,
+    "ms": 119
+   },
+   {
+    "name": "list-tags",
+    "ok": true,
+    "ms": 136
+   },
+   {
+    "name": "autocomplete-datasets",
+    "ok": true,
+    "ms": 150
+   },
+   {
+    "name": "get-dataset",
+    "ok": true,
+    "ms": 122
+   },
+   {
+    "name": "get-dataset-metadata",
+    "ok": true,
+    "ms": 106
+   },
+   {
+    "name": "query-rows",
+    "ok": true,
+    "ms": 145
+   },
+   {
+    "name": "run-soql-query",
+    "ok": true,
+    "ms": 155
+   },
+   {
+    "name": "export-rows",
+    "ok": true,
+    "ms": 200
+   },
+   {
+    "name": "get-data-catalog",
+    "ok": true,
+    "ms": 2301
+   }
+  ]
+ },
+ "deleted": true,
+ "seconds": 253
+}

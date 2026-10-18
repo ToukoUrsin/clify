@@ -1,0 +1,348 @@
+{
+ "name": "bundlephobia",
+ "startUrl": "https://bundlephobia.com/",
+ "origin": "https://bundlephobia.com",
+ "createdAt": "2026-10-18T09:40:07.424Z",
+ "description": "Bundlephobia shows the bundle-size cost of npm packages. This CLI searches packages and looks up minified/gzipped size, dependency composition, version history, similar packages, exports, recent searches and download/star trends. It can also fetch a GitHub repo's package.json to scan its dependencies.",
+ "commands": [
+  {
+   "name": "search-packages",
+   "summary": "Autocomplete/search npm package names (npms.io suggestions used by the Bundlephobia search box)",
+   "method": "GET",
+   "urlTemplate": "https://api.npms.io/v2/search/suggestions",
+   "params": [
+    {
+     "name": "q",
+     "in": "query",
+     "required": true,
+     "type": "string",
+     "description": "Search text or package-name prefix; scopes allowed, e.g. '@grida'",
+     "example": "react"
+    }
+   ],
+   "headers": {
+    "accept": "application/json"
+   },
+   "responseType": "json",
+   "defaultFields": [
+    "package.name",
+    "package.version",
+    "package.description",
+    "package.links.npm",
+    "package.links.repository",
+    "score.final"
+   ],
+   "mutates": false,
+   "example": {
+    "q": "react"
+   },
+   "source": "E6 GET https://api.npms.io/v2/search/suggestions",
+   "verified": true
+  },
+  {
+   "name": "get-package-size",
+   "summary": "Get minified and gzipped bundle size, dependency count and module flags for an npm package (optionally a specific version)",
+   "method": "GET",
+   "urlTemplate": "/api/size?record=true",
+   "params": [
+    {
+     "name": "package",
+     "in": "query",
+     "required": true,
+     "type": "string",
+     "description": "Package name, optionally with a version: 'react', 'react@19.3.1', '@mui/material'",
+     "example": "react"
+    }
+   ],
+   "headers": {
+    "accept": "application/json",
+    "x-bundlephobia-user": "bundlephobia website"
+   },
+   "responseType": "json",
+   "defaultFields": [
+    "name",
+    "version",
+    "size",
+    "gzip",
+    "dependencyCount",
+    "hasJSModule",
+    "hasSideEffects",
+    "description"
+   ],
+   "mutates": false,
+   "example": {
+    "package": "react"
+   },
+   "source": "E4 GET https://bundlephobia.com/api/size",
+   "verified": true
+  },
+  {
+   "name": "get-package-history",
+   "summary": "List a package's recent versions with their bundle sizes and publish dates, plus major/minor release markers",
+   "method": "GET",
+   "urlTemplate": "/api/package-history",
+   "params": [
+    {
+     "name": "package",
+     "in": "query",
+     "required": true,
+     "type": "string",
+     "description": "Package name (no version), e.g. 'react' or '@grida/transparency-grid'",
+     "example": "@grida/transparency-grid"
+    },
+    {
+     "name": "api_limit",
+     "key": "limit",
+     "in": "query",
+     "required": false,
+     "type": "number",
+     "description": "Maximum number of versions to return (sent to the site as \"limit\"; clify's own --limit only shapes the output)",
+     "default": 15
+    }
+   ],
+   "headers": {
+    "accept": "application/json",
+    "x-bundlephobia-user": "bundlephobia website"
+   },
+   "responseType": "json",
+   "defaultFields": [
+    "name",
+    "repository",
+    "versions",
+    "releases"
+   ],
+   "mutates": false,
+   "example": {
+    "package": "@grida/transparency-grid"
+   },
+   "source": "E11 GET https://bundlephobia.com/api/package-history",
+   "verified": true
+  },
+  {
+   "name": "get-similar-packages",
+   "summary": "Find alternative or similar packages in the same category as a given package",
+   "method": "GET",
+   "urlTemplate": "/api/similar-packages",
+   "params": [
+    {
+     "name": "package",
+     "in": "query",
+     "required": true,
+     "type": "string",
+     "description": "Package name, e.g. 'antd' or '@mui/material'",
+     "example": "react"
+    }
+   ],
+   "headers": {
+    "accept": "application/json",
+    "x-bundlephobia-user": "bundlephobia website"
+   },
+   "responseType": "json",
+   "defaultFields": [
+    "name",
+    "category.label",
+    "category.similar",
+    "category.tags"
+   ],
+   "mutates": false,
+   "example": {
+    "package": "react"
+   },
+   "source": "E5 GET https://bundlephobia.com/api/similar-packages",
+   "verified": true
+  },
+  {
+   "name": "list-recent-searches",
+   "summary": "List packages recently searched on Bundlephobia by all users, keyed by package name",
+   "method": "GET",
+   "urlTemplate": "/api/recent",
+   "params": [
+    {
+     "name": "api_limit",
+     "key": "limit",
+     "in": "query",
+     "required": false,
+     "type": "number",
+     "description": "Number of recent packages to return (sent to the site as \"limit\"; clify's own --limit only shapes the output)",
+     "default": 5
+    }
+   ],
+   "headers": {
+    "accept": "application/json",
+    "x-bundlephobia-user": "bundlephobia website"
+   },
+   "responseType": "json",
+   "mutates": false,
+   "example": {
+    "api_limit": "5"
+   },
+   "source": "E2 GET https://bundlephobia.com/api/recent",
+   "verified": true
+  },
+  {
+   "name": "compare-trends",
+   "summary": "Compare download, star and size trends over time for several packages (the data behind the /trends page)",
+   "method": "GET",
+   "urlTemplate": "/api/trends",
+   "params": [
+    {
+     "name": "packages",
+     "in": "query",
+     "required": true,
+     "type": "string",
+     "description": "Comma-separated package names, e.g. 'react,preact'",
+     "example": "react,preact"
+    },
+    {
+     "name": "range",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Time range",
+     "enum": [
+      "last-year",
+      "last-3-years"
+     ],
+     "default": "last-year"
+    }
+   ],
+   "headers": {
+    "accept": "application/json",
+    "x-bundlephobia-user": "bundlephobia website"
+   },
+   "responseType": "json",
+   "mutates": false,
+   "example": {
+    "packages": "react,preact",
+    "range": "last-year"
+   },
+   "source": "E14 GET https://bundlephobia.com/trends",
+   "verified": true
+  },
+  {
+   "name": "get-github-package-json",
+   "summary": "Fetch the package.json of a GitHub repo (default branch) to list its dependencies for scanning with get-package-size",
+   "method": "GET",
+   "urlTemplate": "https://raw.githubusercontent.com/{owner}/{repo}/HEAD/package.json",
+   "params": [
+    {
+     "name": "owner",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "GitHub user or org, e.g. 'pastelsky'",
+     "example": "pastelsky"
+    },
+    {
+     "name": "repo",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Repository name, e.g. 'bundlephobia'",
+     "example": "bundlephobia"
+    }
+   ],
+   "responseType": "json",
+   "defaultFields": [
+    "name",
+    "version",
+    "dependencies",
+    "devDependencies",
+    "peerDependencies"
+   ],
+   "mutates": false,
+   "example": {
+    "owner": "pastelsky",
+    "repo": "bundlephobia"
+   },
+   "source": "E12 GET https://raw.githubusercontent.com/pastelsky/bundlephobia/HEAD/package.json",
+   "verified": true
+  }
+ ],
+ "blockers": [],
+ "notes": [
+  "The Bundlephobia API rate-limits aggressively (HTTP 429), especially trends, history, exports and similar-packages. Space out calls and retry with backoff; do not bulk-scan many packages quickly.",
+  "Package arguments accept 'name', 'name@version' and scoped names like '@scope/name'. Without a version, the latest version is used.",
+  "get-package-size records the lookup in the public 'recent searches' list (record=true), the same as the website does.",
+  "get-package-details reads __NEXT_DATA__ from the package page. On first load of a package not yet built, initialResult may be null; if so, call get-package-size instead.",
+  "The response shapes of get-package-exports and compare-trends were only partly captured because of rate limiting. The trends UI also offers metric=downloads|stars|size and groupBy=day|week|month, but those are client-side display options.",
+  "Scan workflow: run get-github-package-json, then call get-package-size for each dependency name.",
+  "Bundlephobia also exposes an MCP endpoint at https://bundlephobia.com/api/mcp."
+ ],
+ "dropped": [
+  {
+   "name": "get-package-details",
+   "summary": "Get the full package result as server-rendered on the package page, including per-dependency size composition (dependencySizes) and peerDependencies",
+   "method": "GET",
+   "urlTemplate": "/package/{package}",
+   "params": [
+    {
+     "name": "package",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Package name with optional version, e.g. 'preact@10.19.3' or '@grida/transparency-grid'",
+     "example": "preact@10.19.3"
+    }
+   ],
+   "responseType": "html",
+   "resultPath": "props.pageProps.initialResult",
+   "extract": {
+    "jsonScript": "script#__NEXT_DATA__"
+   },
+   "defaultFields": [
+    "name",
+    "version",
+    "size",
+    "gzip",
+    "dependencyCount",
+    "dependencySizes",
+    "peerDependencies",
+    "hasJSModule"
+   ],
+   "mutates": false,
+   "example": {
+    "package": "preact@10.19.3"
+   },
+   "source": "E15 E17 GET https://bundlephobia.com/package/@grida/transparency-grid",
+   "verified": false,
+   "verifyNote": "The server-rendered __NEXT_DATA__ returns initialResult: null for a valid package, so the page does not reliably embed the result. get-package-size covers the same data from /api/size."
+  },
+  {
+   "name": "get-package-exports",
+   "summary": "Analyze the named exports of an ES-module package, for tree-shaking and per-export cost",
+   "method": "GET",
+   "urlTemplate": "/api/exports",
+   "params": [
+    {
+     "name": "package",
+     "in": "query",
+     "required": true,
+     "type": "string",
+     "description": "Package with version, e.g. 'preact@10.19.3'. Only works for packages that ship ES modules; large packages may take long to analyze.",
+     "example": "preact@10.19.3"
+    }
+   ],
+   "headers": {
+    "accept": "application/json",
+    "x-bundlephobia-user": "bundlephobia website"
+   },
+   "responseType": "json",
+   "mutates": false,
+   "example": {
+    "package": "preact@10.19.3"
+   },
+   "source": "",
+   "verified": false,
+   "verifyNote": "HTTP 503 (HTTP 503)"
+  }
+ ],
+ "generated": {
+  "by": "clify add",
+  "model": "claude-opus-5-5",
+  "exploredSteps": 14,
+  "recorded": 64,
+  "verifiedAt": "2026-10-18T09:41:43.019Z",
+  "seconds": 157
+ }
+}

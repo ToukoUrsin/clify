@@ -1,0 +1,131 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=1920,initial-scale=1">
+<title>clify · 6 browser agents vs 6 clify agents</title>
+<style>
+:root { --b: #5fd3ff; --c: #ffb35c; --ok: #3ddc84; --bad: #ff5c6c; --mono: ui-monospace, 'SF Mono', Menlo, 'DejaVu Sans Mono', monospace; }
+* { box-sizing: border-box; }
+html { overflow: hidden; height: 100%; background: #000; } body { margin: 0; width: 1920px; height: 1080px; overflow: hidden; background: #000; color: #e8e8e8; font-family: -apple-system, 'Helvetica Neue', 'DejaVu Sans', sans-serif; }
+header { height: 92px; display: grid; grid-template-columns: 1fr auto 1fr; align-items: center; padding: 0 16px; }
+header h2 { margin: 0; font-size: 30px; font-weight: 600; letter-spacing: -.02em; }
+header h2 small { display: block; margin-top: 4px; font: 15px var(--mono); color: #777; letter-spacing: 0; }
+header .r { text-align: right; }
+.b h2, h2.b { color: var(--b); } h2.c { color: var(--c); }
+#clock { font: 500 46px var(--mono); letter-spacing: -.02em; }
+main { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; padding: 0 16px; }
+.half { display: grid; grid-template-columns: 1fr 1fr; grid-template-rows: repeat(3, 284px); gap: 10px; }
+.tile { position: relative; overflow: hidden; background: #0a0a0a; border: 2px solid #1c1c1c; border-radius: 4px; }
+.tile.run.br { border-color: #1d4a5c; } .tile.run.cl { border-color: #5c4420; }
+.tile.ok { border-color: var(--ok) !important; } .tile.bad { border-color: var(--bad) !important; }
+.tile img { width: 100%; height: 100%; object-fit: cover; object-position: top; display: block; }
+.tile img:not([src]) { visibility: hidden; }
+.name { position: absolute; left: 0; top: 0; z-index: 2; padding: 4px 9px; font: 600 13px var(--mono); letter-spacing: .06em; background: #000c; color: #bbb; border-bottom-right-radius: 4px; }
+.t { position: absolute; right: 0; top: 0; z-index: 2; padding: 4px 10px; font: 600 15px var(--mono); background: #000c; color: #999; border-bottom-left-radius: 4px; }
+.ok .t { background: var(--ok); color: #000; } .bad .t { background: var(--bad); color: #000; }
+.cap { position: absolute; left: 0; right: 0; bottom: 0; z-index: 2; padding: 3px 9px; font: 12px var(--mono); color: #cfe; background: #000d; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.cap:empty { display: none; }
+.term { position: absolute; inset: 28px 0 0; overflow: hidden; padding: 0 10px 8px; font: 12px/1.4 var(--mono); color: #c8c8c8; display: flex; flex-direction: column; justify-content: flex-end; }
+.term div { white-space: pre-wrap; word-break: break-all; flex-shrink: 0; max-height: 50px; overflow: hidden; }
+.term .tool b { color: var(--ok); font-weight: 400; } .term .tool i { font-style: normal; color: #fff; }
+.term .out { color: #777; padding-left: 14px; max-height: 34px; }
+.term .say b { color: #fff; font-weight: 400; }
+.wait { position: absolute; inset: 0; display: grid; place-items: center; font: 13px var(--mono); color: #333; }
+footer { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; padding: 12px 16px 0; }
+.sum { display: grid; grid-template-columns: repeat(4, 1fr); border-top: 2px solid #1c1c1c; padding-top: 10px; }
+.sum span { display: block; font: 13px var(--mono); color: #777; letter-spacing: .08em; }
+.sum strong { display: block; margin-top: 2px; font: 500 40px var(--mono); letter-spacing: -.02em; }
+.b .sum strong { color: var(--b); } .c .sum strong { color: var(--c); }
+</style>
+</head>
+<body>
+<header>
+  <h2 class="b">WITHOUT CLIFY<small>6 Claude Code agents in a browser, one site each</small></h2>
+  <div id="clock">0:00.0</div>
+  <h2 class="c r">WITH CLIFY<small>6 Claude Code agents with clify, same sites, same tasks</small></h2>
+</header>
+<main><div class="half" id="browser"></div><div class="half" id="clify"></div></main>
+<footer>
+  <div class="b"><div class="sum"><div><span>ALL DONE AT</span><strong id="browser-all">—</strong></div><div><span>VERIFIED</span><strong id="browser-done">0/6</strong></div><div><span>TOKENS</span><strong id="browser-tok">0</strong></div><div><span>COST</span><strong id="browser-cost">$0.00</strong></div></div></div>
+  <div class="c"><div class="sum"><div><span>ALL DONE AT</span><strong id="clify-all">—</strong></div><div><span>VERIFIED</span><strong id="clify-done">0/6</strong></div><div><span>TOKENS</span><strong id="clify-tok">0</strong></div><div><span>COST</span><strong id="clify-cost">$0.00</strong></div></div></div>
+</footer>
+<script>
+// Live (or replayed) grid: one tile per site and racer. Events come from race/grid-server.mjs.
+const $ = id => document.getElementById(id);
+const R = ['browser', 'clify'];
+let sites = [], clock = 0, clockAt = performance.now(), running = false;
+const T = {}; // `${racer}:${site}` -> {start, finish, ok, fresh, cost}
+const fmtTok = n => n >= 1e6 ? (n / 1e6).toFixed(2) + 'M' : n >= 1e3 ? (n / 1e3).toFixed(1) + 'k' : String(Math.round(n));
+const fmtClock = ms => { const s = Math.max(0, ms) / 1000; return `${Math.floor(s / 60)}:${(s % 60).toFixed(1).padStart(4, '0')}`; };
+const esc = s => String(s).replace(/[&<>]/g, c => ({'&': '&amp;', '<': '&lt;', '>': '&gt;'}[c]));
+const mask = t => String(t).replace(/(authenticity_token|csrfmiddlewaretoken)(["'=:\s]+)([\w+\/=-]{6})[\w+\/=-]{10,}/g, '$1$2$3…').replace(/\b([\w-]{6})[\w-]{50,}\b/g, '$1…');
+const now = () => clock + (running ? performance.now() - clockAt : 0);
+
+function build(labels) {
+  for (const r of R) $(r).innerHTML = sites.map(s => `<div class="tile ${r === 'browser' ? 'br' : 'cl'}" id="${r}-${s}"><div class="name">${esc(labels[s] || s)}</div><div class="t"></div>${r === 'browser' ? '<img><div class="cap"></div>' : '<div class="term"></div>'}<div class="wait">waiting</div></div>`).join('');
+}
+function line(site, cls, html) {
+  const box = document.querySelector(`#clify-${site} .term`); if (!box) return;
+  const d = document.createElement('div'); d.className = cls; d.innerHTML = html; box.appendChild(d);
+  while (box.children.length > 16) box.removeChild(box.firstChild);
+}
+function handle(e) {
+  if (e.kind === 'hello') { sites = e.sites; build(e.labels); return; }
+  if (e.kind === 'clock') { clock = e.ms; clockAt = performance.now(); running = !e.done && Object.values(T).some(t => t.start != null); return; }
+  const tile = e.site && e.racer ? $(`${e.racer}-${e.site}`) : null;
+  if (e.kind === 'browser_frame') { const img = document.querySelector(`#browser-${e.site} img`); if (img) { img.src = `/frames/${e.site}/${e.file}`; img.parentNode.querySelector('.wait')?.remove(); } return; }
+  if (!tile || !R.includes(e.racer)) return;
+  const t = T[`${e.racer}:${e.site}`] ||= {start: null, finish: null, ok: null, fresh: 0, cost: 0};
+  switch (e.kind) {
+    case 'racer_start': t.start = clock; tile.classList.add('run'); tile.querySelector('.wait')?.remove(); break;
+    case 'usage': t.fresh = e.fresh; t.cost = e.cost ?? 0; break;
+    case 'tool': {
+      let a = {}; try { a = JSON.parse(e.args); } catch {}
+      if (e.racer === 'clify') line(e.site, 'tool', `<b>⏺</b> <i>${esc(e.name)}</i>(${esc(mask(a.command || '').slice(0, 220))})`);
+      else tile.querySelector('.cap').textContent = `${e.name.replace(/^mcp__\w+__/, '')} ${a.url || a.element || a.text || ''}`.slice(0, 90);
+      break;
+    }
+    case 'tool_result': if (e.racer === 'clify') line(e.site, 'out', `⎿  ${esc(mask(e.text || '').replace(/\s+/g, ' ').slice(0, 160))}`); break;
+    case 'text': if (e.racer === 'clify') { const s = (e.text || '').replace(/RACE_(TASK_START|RESULT):[^\n]*\n?/g, '').trim(); if (s) line(e.site, 'say', `<b>⏺</b> ${esc(s.replace(/\s+/g, ' ').slice(0, 160))}`); } break;
+    case 'verify': t.ok = e.ok; break;
+    case 'racer_finish':
+      t.finish = clock; t.elapsed = e.elapsedMs; t.fresh = e.freshTokens; t.cost = e.costUsd; t.ok ??= e.success > 0;
+      if (e.racer === 'browser') tile.querySelector('.cap').textContent = '';
+      break;
+  }
+}
+function frame() {
+  const ms = now();
+  // The clock stops when the last of the twelve agents finishes.
+  const ts = Object.values(T), end = sites.length && ts.length === 2 * sites.length && ts.every(t => t.finish != null) ? Math.max(...ts.map(t => t.start + (t.elapsed ?? t.finish - t.start))) : null;
+  $('clock').textContent = fmtClock(end ?? ms);
+  for (const r of R) {
+    let done = 0, tok = 0, cost = 0, last = 0, fin = 0;
+    for (const s of sites) {
+      const t = T[`${r}:${s}`], tile = $(`${r}-${s}`); if (!t || !tile) continue;
+      tok += t.fresh; cost += t.cost;
+      if (t.finish != null) { fin++; last = Math.max(last, t.start + (t.elapsed ?? t.finish - t.start)); }
+      if (t.finish != null) { if (t.ok) done++; tile.classList.toggle('ok', !!t.ok); tile.classList.toggle('bad', !t.ok); }
+      const el = t.start == null ? null : t.finish != null ? (t.elapsed ?? t.finish - t.start) : ms - t.start;
+      tile.querySelector('.t').textContent = el == null ? '' : `${t.finish != null ? (t.ok ? '✓ ' : '✗ ') : ''}${(el / 1000).toFixed(1)}s`;
+    }
+    $(`${r}-all`).textContent = sites.length && fin === sites.length ? fmtClock(last) : '—';
+    $(`${r}-done`).textContent = `${done}/${sites.length || 6}`;
+    $(`${r}-tok`).textContent = fmtTok(tok);
+    $(`${r}-cost`).textContent = '$' + cost.toFixed(2);
+  }
+  requestAnimationFrame(frame);
+}
+// Space or Enter starts a live grid (the server tells bin/grid); ← goes back to the explainer.
+addEventListener('keydown', e => { if (e.key === ' ' || e.key === 'Enter') fetch('/start', {method: 'POST'}); if (e.key === 'ArrowLeft') location.href = '/explainer.html'; });
+new EventSource('/events').onmessage = m => { try { handle(JSON.parse(m.data)); } catch (err) { console.error(err); } };
+requestAnimationFrame(frame);
+</script>
+<script>
+// Fit the 1920×1080 stage to any window (laptop screen, projector).
+const fitStage = () => { const s = Math.min(innerWidth / 1920, innerHeight / 1080); document.body.style.transformOrigin = '0 0'; document.body.style.transform = `scale(${s})`; };
+addEventListener('resize', fitStage); fitStage();
+</script>
+</body>
+</html>

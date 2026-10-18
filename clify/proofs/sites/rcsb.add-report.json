@@ -1,0 +1,108 @@
+{
+ "ok": true,
+ "site": "rcsb",
+ "url": "https://www.rcsb.org/",
+ "commands": [
+  {
+   "name": "search-structures",
+   "summary": "Full-text keyword search of PDB entries (e.g. 'hemoglobin'), with sorting and offset pagination; returns PDB IDs, titles, methods, organisms and ligands",
+   "verified": true
+  },
+  {
+   "name": "search-structures-filtered",
+   "summary": "Keyword search of PDB entries refined by one facet filter (source organism, experimental method, etc.), with sorting and pagination",
+   "verified": true
+  },
+  {
+   "name": "search-by-attribute",
+   "summary": "Search PDB entries by a structured attribute such as author name, source organism, gene name or experimental method",
+   "verified": true
+  },
+  {
+   "name": "search-similar-assemblies",
+   "summary": "3D shape similarity search: find biological assemblies structurally similar to a given entry's assembly",
+   "verified": true
+  },
+  {
+   "name": "suggest-search-terms",
+   "summary": "Autocomplete: suggested search terms (molecule names, keywords, organisms...) for a partial query, grouped by attribute",
+   "verified": true
+  },
+  {
+   "name": "get-structure-chains",
+   "summary": "List the assemblies and polymer chains (entity id, name, label/auth asym ids) of a PDB entry",
+   "verified": true
+  },
+  {
+   "name": "get-entry-instances",
+   "summary": "Get all polymer chains of a PDB entry, with molecule names, organisms, sequence lengths, method, resolution and assembly composition (Data API GraphQL)",
+   "verified": true
+  },
+  {
+   "name": "get-entity-instances",
+   "summary": "Get the chain instances of one polymer entity (e.g. 4HHB_2), with molecule name, organism, length, method and resolution (Data API GraphQL)",
+   "verified": true
+  },
+  {
+   "name": "get-sequence-alignment",
+   "summary": "Align a PDB entity or chain sequence to its UniProt reference sequence, with coverage and aligned regions (Sequence Coordinates API)",
+   "verified": true
+  },
+  {
+   "name": "get-sequence-annotations",
+   "summary": "Get positional sequence annotations (Pfam domains, disorder, secondary structure, binding sites, unobserved residues, UniProt features) for a PDB chain or entity",
+   "verified": true
+  },
+  {
+   "name": "get-structure-summary",
+   "summary": "Get the title and IDs of a PDB entry from its structure summary page",
+   "verified": true
+  },
+  {
+   "name": "get-structure-annotations",
+   "summary": "List the domain classification rows (SCOP/SCOPe, CATH, ECOD, etc.) for a PDB entry",
+   "verified": true
+  },
+  {
+   "name": "get-experimental-method",
+   "summary": "Get the experimental method (X-ray, EM, NMR...) and experiment page title for a PDB entry",
+   "verified": true
+  },
+  {
+   "name": "list-entry-versions",
+   "summary": "List the revision history of a PDB entry (version number, date, change type), with links to versioned files",
+   "verified": true
+  },
+  {
+   "name": "get-entry-fasta",
+   "summary": "Download the FASTA sequences of all polymer entities in a PDB entry as text",
+   "verified": true
+  },
+  {
+   "name": "get-entry-file",
+   "summary": "Fetch a PDB entry's coordinate file (mmCIF or legacy PDB) as text, either full or header-only",
+   "verified": true
+  },
+  {
+   "name": "get-ligand-definition",
+   "summary": "Get the chemical component definition (name, formula, synonyms, atoms, bonds) of a ligand as mmCIF text, e.g. HEM",
+   "verified": true
+  }
+ ],
+ "verified": 17,
+ "writes": 0,
+ "dropped": [],
+ "blockers": [],
+ "loggedIn": false,
+ "seconds": 253,
+ "next": [
+  "clify rcsb",
+  "clify rcsb search-structures --query \"hemoglobin\""
+ ],
+ "installed": "/home/ubuntu/clify-runs/batch2/home/bin/rcsb",
+ "explored": {
+  "steps": 25,
+  "recorded": 61,
+  "heldWrites": 0
+ }
+}

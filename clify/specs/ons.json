@@ -1,0 +1,851 @@
+{
+ "name": "ons",
+ "startUrl": "https://www.ons.gov.uk/",
+ "origin": "https://www.ons.gov.uk",
+ "createdAt": "2026-10-18T08:40:47.542Z",
+ "description": "Office for National Statistics (ons.gov.uk), the UK's official statistics site. This CLI searches publications and data, reads time series values and metadata, bulletins, datasets and the release calendar, and downloads CSV data. It is read-only and needs no login.",
+ "commands": [
+  {
+   "name": "search",
+   "summary": "Site-wide keyword search over ONS publications, bulletins, time series and datasets, with content-type and census topic filters, sorting and paging",
+   "method": "GET",
+   "urlTemplate": "/search",
+   "params": [
+    {
+     "name": "q",
+     "in": "query",
+     "required": true,
+     "type": "string",
+     "description": "Search keywords",
+     "example": "inflation"
+    },
+    {
+     "name": "filter",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Content type filter. Examples: publications, bulletin, time_series, datasets, user_requested_data. The UI repeats this param when several are chosen.",
+     "example": "time_series"
+    },
+    {
+     "name": "topics",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Comma-separated census topic ids, e.g. 7779 (Census), 9731 (Ageing), 6646 (Demography)"
+    },
+    {
+     "name": "sort",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Sort order",
+     "enum": [
+      "relevance",
+      "release_date",
+      "title"
+     ],
+     "default": "relevance"
+    },
+    {
+     "name": "page",
+     "in": "query",
+     "required": false,
+     "type": "number",
+     "description": "Results page number (10 per page)",
+     "default": 1
+    }
+   ],
+   "responseType": "html",
+   "extract": {
+    "list": "ul.flush--padding > li.search__results__item",
+    "fields": {
+     "title": "h3 a || a",
+     "url": "h3 a@href || a@href",
+     "meta": "ul.ons-document-list__item-metadata",
+     "text": ""
+    }
+   },
+   "defaultFields": [
+    "title",
+    "url",
+    "meta"
+   ],
+   "pagination": {
+    "type": "page",
+    "param": "page"
+   },
+   "mutates": false,
+   "example": {
+    "q": "inflation"
+   },
+   "source": "E9 GET https://www.ons.gov.uk/search",
+   "verified": true
+  },
+  {
+   "name": "search-timeseries",
+   "summary": "Search the time series explorer (58k+ series) by keyword and/or topic path; each result shows the series ID (CDID) and dataset ID",
+   "method": "GET",
+   "urlTemplate": "/timeseriestool",
+   "params": [
+    {
+     "name": "q",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Search keywords",
+     "example": "unemployment"
+    },
+    {
+     "name": "topic",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Restrict to a topic's time series, e.g. /economy/inflationandpriceindices/timeseries"
+    },
+    {
+     "name": "sort",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Sort order",
+     "enum": [
+      "relevance",
+      "release_date",
+      "title"
+     ]
+    },
+    {
+     "name": "page",
+     "in": "query",
+     "required": false,
+     "type": "number",
+     "description": "Results page number",
+     "default": 1
+    }
+   ],
+   "responseType": "html",
+   "extract": {
+    "list": "ul.flush--padding > li.border-bottom.search__results__item",
+    "fields": {
+     "title": "h3 a || a",
+     "url": "h3 a@href || a@href",
+     "text": ""
+    }
+   },
+   "defaultFields": [
+    "title",
+    "url",
+    "text"
+   ],
+   "pagination": {
+    "type": "page",
+    "param": "page"
+   },
+   "mutates": false,
+   "example": {
+    "q": "unemployment"
+   },
+   "source": "E11 GET https://www.ons.gov.uk/timeseriestool",
+   "verified": true
+  },
+  {
+   "name": "get-timeseries",
+   "summary": "Get time series metadata and its latest value (title, CDID, unit, latest period and value, release dates, source dataset) from the ONS content API",
+   "method": "GET",
+   "urlTemplate": "https://api.beta.ons.gov.uk/v1/data?uri=/{topic}/timeseries/{series_id}/{dataset}",
+   "params": [
+    {
+     "name": "topic",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Topic path without leading/trailing slash, e.g. economy/inflationandpriceindices or employmentandlabourmarket/peoplenotinwork/unemployment. Take it from a search-timeseries result URL.",
+     "example": "economy/inflationandpriceindices"
+    },
+    {
+     "name": "series_id",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Series ID (CDID), lowercase, e.g. l55o, d7g7, mgsx",
+     "example": "d7g7"
+    },
+    {
+     "name": "dataset",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Source dataset ID, lowercase, e.g. mm23, lms",
+     "example": "mm23"
+    }
+   ],
+   "responseType": "json",
+   "resultPath": "description",
+   "defaultFields": [
+    "title",
+    "cdid",
+    "datasetId",
+    "date",
+    "number",
+    "unit",
+    "releaseDate",
+    "nextRelease"
+   ],
+   "mutates": false,
+   "example": {
+    "topic": "economy/inflationandpriceindices",
+    "series_id": "d7g7",
+    "dataset": "mm23"
+   },
+   "source": "E3 E4 E5 E6 E7",
+   "verified": true
+  },
+  {
+   "name": "get-timeseries-data",
+   "summary": "Get the monthly observations of a time series as a list of {date, value} (for quarterly or annual-only series use download-timeseries-csv)",
+   "method": "GET",
+   "urlTemplate": "https://api.beta.ons.gov.uk/v1/data?uri=/{topic}/timeseries/{series_id}/{dataset}",
+   "params": [
+    {
+     "name": "topic",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Topic path without leading/trailing slash, e.g. economy/inflationandpriceindices",
+     "example": "economy/inflationandpriceindices"
+    },
+    {
+     "name": "series_id",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Series ID (CDID), lowercase",
+     "example": "l55o"
+    },
+    {
+     "name": "dataset",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Source dataset ID, lowercase",
+     "example": "mm23"
+    }
+   ],
+   "responseType": "json",
+   "resultPath": "months",
+   "defaultFields": [
+    "date",
+    "value",
+    "updateDate"
+   ],
+   "mutates": false,
+   "example": {
+    "topic": "economy/inflationandpriceindices",
+    "series_id": "l55o",
+    "dataset": "mm23"
+   },
+   "source": "E2 E4 E8",
+   "verified": true
+  },
+  {
+   "name": "download-timeseries-csv",
+   "summary": "Download a time series as CSV with all frequencies (annual, quarterly, monthly) plus metadata rows; also works for a previous version",
+   "method": "GET",
+   "urlTemplate": "/generator?format=csv",
+   "params": [
+    {
+     "name": "uri",
+     "in": "query",
+     "required": true,
+     "type": "string",
+     "description": "Time series URI path, e.g. /economy/inflationandpriceindices/timeseries/l55o/mm23. Append /previous/vN for a superseded version.",
+     "example": "/economy/inflationandpriceindices/timeseries/l55o/mm23"
+    }
+   ],
+   "responseType": "text",
+   "mutates": false,
+   "example": {
+    "uri": "/economy/inflationandpriceindices/timeseries/l55o/mm23"
+   },
+   "source": "E13 E21 GET https://www.ons.gov.uk/economy/inflationandpriceindices/timeseries/l55o/mm23",
+   "verified": true
+  },
+  {
+   "name": "list-timeseries-versions",
+   "summary": "List previous (superseded) versions of a time series with update date, label/reason and version uri (pass uri to download-timeseries-csv)",
+   "method": "GET",
+   "urlTemplate": "https://api.beta.ons.gov.uk/v1/data?uri=/{topic}/timeseries/{series_id}/{dataset}",
+   "params": [
+    {
+     "name": "topic",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Topic path without leading/trailing slash",
+     "example": "economy/inflationandpriceindices"
+    },
+    {
+     "name": "series_id",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Series ID (CDID), lowercase",
+     "example": "l55o"
+    },
+    {
+     "name": "dataset",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Source dataset ID, lowercase",
+     "example": "mm23"
+    }
+   ],
+   "responseType": "json",
+   "resultPath": "versions",
+   "defaultFields": [
+    "uri",
+    "updateDate",
+    "label",
+    "correctionNotice"
+   ],
+   "mutates": false,
+   "example": {
+    "topic": "economy/inflationandpriceindices",
+    "series_id": "l55o",
+    "dataset": "mm23"
+   },
+   "source": "E21",
+   "verified": true
+  },
+  {
+   "name": "get-bulletin",
+   "summary": "Get a statistical bulletin edition: title, summary, release and next-release dates, and its sections",
+   "method": "GET",
+   "urlTemplate": "https://api.beta.ons.gov.uk/v1/data?uri=/{topic}/bulletins/{series}/{edition}",
+   "params": [
+    {
+     "name": "topic",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Topic path without leading/trailing slash",
+     "example": "economy/inflationandpriceindices"
+    },
+    {
+     "name": "series",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Bulletin series slug, e.g. consumerpriceinflation",
+     "example": "consumerpriceinflation"
+    },
+    {
+     "name": "edition",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Edition slug, e.g. august2026 (take it from list-bulletin-releases)",
+     "example": "august2026"
+    }
+   ],
+   "responseType": "json",
+   "defaultFields": [
+    "description.title",
+    "description.summary",
+    "description.edition",
+    "description.releaseDate",
+    "description.nextRelease",
+    "sections"
+   ],
+   "mutates": false,
+   "example": {
+    "topic": "economy/inflationandpriceindices",
+    "series": "consumerpriceinflation",
+    "edition": "august2026"
+   },
+   "source": "E14",
+   "verified": true
+  },
+  {
+   "name": "list-bulletin-releases",
+   "summary": "List all past editions of a bulletin series, newest first",
+   "method": "GET",
+   "urlTemplate": "/{topic}/bulletins/{series}/previousreleases",
+   "params": [
+    {
+     "name": "topic",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Topic path without leading/trailing slash",
+     "example": "economy/inflationandpriceindices"
+    },
+    {
+     "name": "series",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Bulletin series slug",
+     "example": "consumerpriceinflation"
+    },
+    {
+     "name": "page",
+     "in": "query",
+     "required": false,
+     "type": "number",
+     "description": "Page number (10 per page)",
+     "default": 1
+    }
+   ],
+   "responseType": "html",
+   "extract": {
+    "list": "ul.ons-document-list > li.ons-document-list__item",
+    "fields": {
+     "title": "h2 a",
+     "url": "h2 a@href",
+     "released": "time@datetime"
+    }
+   },
+   "defaultFields": [
+    "title",
+    "url",
+    "released"
+   ],
+   "pagination": {
+    "type": "page",
+    "param": "page"
+   },
+   "mutates": false,
+   "example": {
+    "topic": "economy/inflationandpriceindices",
+    "series": "consumerpriceinflation"
+   },
+   "source": "E18 GET https://www.ons.gov.uk/economy/inflationandpriceindices/bulletins/consumerpriceinflation/previousreleases",
+   "verified": true
+  },
+  {
+   "name": "list-bulletin-related-data",
+   "summary": "List the datasets and data related to a bulletin edition",
+   "method": "GET",
+   "urlTemplate": "/{topic}/bulletins/{series}/{edition}/relateddata",
+   "params": [
+    {
+     "name": "topic",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Topic path without leading/trailing slash",
+     "example": "economy/inflationandpriceindices"
+    },
+    {
+     "name": "series",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Bulletin series slug",
+     "example": "consumerpriceinflation"
+    },
+    {
+     "name": "edition",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Edition slug, e.g. august2026",
+     "example": "august2026"
+    }
+   ],
+   "responseType": "html",
+   "extract": {
+    "list": "ul.ons-document-list > li.ons-document-list__item",
+    "fields": {
+     "title": "h2 a",
+     "url": "h2 a@href",
+     "released": "time@datetime",
+     "description": "p.ons-document-list__item-description"
+    }
+   },
+   "defaultFields": [
+    "title",
+    "url",
+    "released",
+    "description"
+   ],
+   "mutates": false,
+   "example": {
+    "topic": "economy/inflationandpriceindices",
+    "series": "consumerpriceinflation",
+    "edition": "august2026"
+   },
+   "source": "E20 GET https://www.ons.gov.uk/economy/inflationandpriceindices/bulletins/consumerpriceinflation/august2026/relateddata",
+   "verified": true
+  },
+  {
+   "name": "get-dataset",
+   "summary": "Get a dataset page: title, description, release info, any correction notice and the current edition's file download link",
+   "method": "GET",
+   "urlTemplate": "/{topic}/datasets/{dataset}",
+   "params": [
+    {
+     "name": "topic",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Topic path without leading/trailing slash",
+     "example": "economy/inflationandpriceindices"
+    },
+    {
+     "name": "dataset",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Dataset slug, e.g. consumerpriceinflation, consumerpriceindices",
+     "example": "consumerpriceinflation"
+    }
+   ],
+   "responseType": "html",
+   "extract": {
+    "fields": {
+     "title": "h1.page-intro__title",
+     "about": "div.col.col--lg-two-thirds > section",
+     "meta": "ul.meta__list",
+     "correction": "div.alert--warning__content",
+     "download_url": "a.btn.btn--primary@href",
+     "contact": "address"
+    }
+   },
+   "defaultFields": [
+    "title",
+    "about",
+    "meta",
+    "download_url",
+    "correction"
+   ],
+   "mutates": false,
+   "example": {
+    "topic": "economy/inflationandpriceindices",
+    "dataset": "consumerpriceinflation"
+   },
+   "source": "E19 GET https://www.ons.gov.uk/economy/inflationandpriceindices/datasets/consumerpriceinflation",
+   "verified": true
+  },
+  {
+   "name": "list-topic-data",
+   "summary": "List all published data (time series, datasets, user-requested data) for a topic, with keyword filter, sorting and paging",
+   "method": "GET",
+   "urlTemplate": "/{topic}/datalist",
+   "params": [
+    {
+     "name": "topic",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Topic path without leading/trailing slash",
+     "example": "economy/inflationandpriceindices"
+    },
+    {
+     "name": "filter",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Data type filter",
+     "enum": [
+      "time_series",
+      "datasets",
+      "user_requested_data"
+     ],
+     "example": "datasets"
+    },
+    {
+     "name": "q",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Keyword filter"
+    },
+    {
+     "name": "sort",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Sort order",
+     "enum": [
+      "relevance",
+      "release_date",
+      "title"
+     ]
+    },
+    {
+     "name": "page",
+     "in": "query",
+     "required": false,
+     "type": "number",
+     "description": "Page number (10 per page)",
+     "default": 1
+    }
+   ],
+   "responseType": "html",
+   "extract": {
+    "list": "ul.flush--padding > li.search__results__item",
+    "fields": {
+     "title": "h3 a || a",
+     "url": "h3 a@href || a@href",
+     "meta": "ul.ons-document-list__item-metadata",
+     "text": ""
+    }
+   },
+   "defaultFields": [
+    "title",
+    "url",
+    "meta"
+   ],
+   "pagination": {
+    "type": "page",
+    "param": "page"
+   },
+   "mutates": false,
+   "example": {
+    "topic": "economy/inflationandpriceindices",
+    "filter": "datasets",
+    "sort": "release_date"
+   },
+   "source": "E12 GET https://www.ons.gov.uk/economy/inflationandpriceindices/datalist",
+   "verified": true
+  },
+  {
+   "name": "list-topic-publications",
+   "summary": "List all publications (bulletins, articles and so on) for a topic, with keyword filter, sorting and paging",
+   "method": "GET",
+   "urlTemplate": "/{topic}/publications",
+   "params": [
+    {
+     "name": "topic",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Topic path without leading/trailing slash",
+     "example": "economy/inflationandpriceindices"
+    },
+    {
+     "name": "q",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Keyword filter"
+    },
+    {
+     "name": "sort",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Sort order",
+     "enum": [
+      "relevance",
+      "release_date",
+      "title"
+     ]
+    },
+    {
+     "name": "page",
+     "in": "query",
+     "required": false,
+     "type": "number",
+     "description": "Page number (10 per page)",
+     "default": 1
+    }
+   ],
+   "responseType": "html",
+   "extract": {
+    "list": "ul.flush--padding > li.search__results__item",
+    "fields": {
+     "title": "h3 a",
+     "url": "h3 a@href",
+     "meta": "ul.ons-document-list__item-metadata",
+     "text": ""
+    }
+   },
+   "defaultFields": [
+    "title",
+    "url",
+    "meta"
+   ],
+   "pagination": {
+    "type": "page",
+    "param": "page"
+   },
+   "mutates": false,
+   "example": {
+    "topic": "economy/inflationandpriceindices"
+   },
+   "source": "E17 GET https://www.ons.gov.uk/economy/inflationandpriceindices/publications",
+   "verified": true
+  },
+  {
+   "name": "list-topic-headline-series",
+   "summary": "List a topic page's headline (spotlight) time series uris, e.g. CPIH/CPI/RPI for inflation",
+   "method": "GET",
+   "urlTemplate": "https://api.beta.ons.gov.uk/v1/data?uri=/{topic}",
+   "params": [
+    {
+     "name": "topic",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Topic path without leading/trailing slash",
+     "example": "economy/inflationandpriceindices"
+    }
+   ],
+   "responseType": "json",
+   "resultPath": "items",
+   "defaultFields": [
+    "uri"
+   ],
+   "mutates": false,
+   "example": {
+    "topic": "economy/inflationandpriceindices"
+   },
+   "source": "E16",
+   "verified": true
+  },
+  {
+   "name": "list-releases",
+   "summary": "List the release calendar (published, upcoming or cancelled releases) with keyword search, sorting and paging, read from the RSS feed",
+   "method": "GET",
+   "urlTemplate": "/releasecalendar?rss",
+   "params": [
+    {
+     "name": "keywords",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Keyword search, e.g. gdp",
+     "example": "gdp"
+    },
+    {
+     "name": "release_type",
+     "key": "release-type",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Release status",
+     "enum": [
+      "type-published",
+      "type-upcoming",
+      "type-cancelled"
+     ],
+     "default": "type-published",
+     "example": "type-upcoming"
+    },
+    {
+     "name": "sort",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Sort order",
+     "enum": [
+      "date-newest",
+      "date-oldest",
+      "alphabetical-az",
+      "alphabetical-za",
+      "relevance"
+     ],
+     "default": "date-newest"
+    },
+    {
+     "name": "api_limit",
+     "key": "limit",
+     "in": "query",
+     "required": false,
+     "type": "number",
+     "description": "Results per page (sent to the site as \"limit\"; clify's own --limit only shapes the output)",
+     "default": 10
+    },
+    {
+     "name": "page",
+     "in": "query",
+     "required": false,
+     "type": "number",
+     "description": "Page number",
+     "default": 1
+    }
+   ],
+   "responseType": "json",
+   "resultPath": "rss.channel.item",
+   "defaultFields": [
+    "title",
+    "link",
+    "pubDate",
+    "description"
+   ],
+   "pagination": {
+    "type": "page",
+    "param": "page"
+   },
+   "mutates": false,
+   "example": {
+    "keywords": "gdp",
+    "release_type": "type-upcoming",
+    "sort": "date-oldest"
+   },
+   "source": "E10 GET https://www.ons.gov.uk/releasecalendar",
+   "verified": true
+  },
+  {
+   "name": "get-release",
+   "summary": "Get a release calendar entry: title, release date and time, publication status and summary",
+   "method": "GET",
+   "urlTemplate": "/releases/{slug}",
+   "params": [
+    {
+     "name": "slug",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Release slug, i.e. the last path segment of a release calendar link",
+     "example": "gdpmonthlyestimateukaugust2027"
+    }
+   ],
+   "responseType": "html",
+   "extract": {
+    "fields": {
+     "title": "h1 span",
+     "release_date": "span.ons-u-nowrap",
+     "status": "div.ons-panel__body",
+     "summary": "section#summary",
+     "about": "section#aboutthedata h2"
+    }
+   },
+   "defaultFields": [
+    "title",
+    "release_date",
+    "status",
+    "summary"
+   ],
+   "mutates": false,
+   "example": {
+    "slug": "gdpmonthlyestimateukaugust2027"
+   },
+   "source": "E15 GET https://www.ons.gov.uk/releases/{id}",
+   "verified": true
+  }
+ ],
+ "blockers": [],
+ "notes": [
+  "No login or API key is needed, and every command is read-only.",
+  "ONS content lives under a topic path, e.g. economy/inflationandpriceindices or employmentandlabourmarket/peoplenotinwork/unemployment. Pass it as the 'topic' arg without leading or trailing slashes. The slashes must stay literal in the URL. Search results return full URLs from which you can read the topic, series ID and dataset.",
+  "Time series are identified by a lowercase CDID (series_id, e.g. l55o = CPIH annual rate, d7g7 = CPI annual rate, chaw = RPI index, mgsx = unemployment rate) plus a source dataset ID (e.g. mm23, lms).",
+  "get-timeseries-data returns only the series' default frequency. For annual, quarterly and monthly values together, use download-timeseries-csv. The CSV starts with metadata rows (Title, CDID, Unit, Release date, ...) followed by period,value rows.",
+  "The bulletin edition slug can be 'latest'. The legacy bulletin /data JSON was retired on 02/02/2026, so bulletins are read from HTML.",
+  "A public JSON API also exists at https://api.beta.ons.gov.uk/v1 (search, /search/releases, datasets, filters, code-lists, topics). It is documented at developer.ons.gov.uk but was not exercised in this recording."
+ ],
+ "dropped": [],
+ "generated": {
+  "by": "clify add",
+  "model": "claude-opus-5-5",
+  "exploredSteps": 30,
+  "recorded": 46,
+  "verifiedAt": "2026-10-18T08:43:22.258Z",
+  "seconds": 380
+ }
+}

@@ -1,0 +1,15 @@
+{
+ "expect": [
+  "Patience",
+  "10.16"
+ ],
+ "detail": {
+  "title": "Patience",
+  "price": "£10.16",
+  "stock": "In stock",
+  "rating": "star-rating Three",
+  "url": "https://books.toscrape.com/catalogue/patience_916/index.html",
+  "n": 100
+ },
+ "at": "2026-10-17T23:32:02.655Z"
+}

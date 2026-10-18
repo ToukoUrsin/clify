@@ -1,0 +1,58 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=1920,initial-scale=1">
+<title>clify · how it works</title>
+<style>
+:root { --ink: #111; --mute: #8a8a8a; --line: #e6e6e6; --acc: #ff7a00; --mono: ui-monospace, 'SF Mono', Menlo, 'DejaVu Sans Mono', monospace; }
+* { box-sizing: border-box; }
+html { overflow: hidden; height: 100%; } body { margin: 0; width: 1920px; height: 1080px; overflow: hidden; background: #fff; color: var(--ink); font-family: -apple-system, 'Helvetica Neue', Helvetica, 'DejaVu Sans', sans-serif; }
+.page { padding: 110px 120px 0; }
+.brand { font: 600 22px var(--mono); letter-spacing: -.01em; }
+.brand b { color: var(--acc); font-weight: 600; }
+h1 { margin: 30px 0 0; font-size: 66px; line-height: 1.02; letter-spacing: -.045em; font-weight: 700; }
+h1 span { color: var(--mute); font-weight: 500; }
+.steps { display: grid; grid-template-columns: repeat(4, 1fr); gap: 0; margin-top: 90px; border-top: 2px solid var(--ink); }
+.step { padding: 26px 40px 0 0; }
+.step .n { font: 500 18px var(--mono); color: var(--acc); }
+.step h3 { margin: 12px 0 10px; font-size: 32px; letter-spacing: -.025em; font-weight: 650; }
+.step p { margin: 0; font-size: 21px; line-height: 1.4; color: #555; }
+.step code { display: block; margin-top: 22px; font: 17px/1.45 var(--mono); color: var(--ink); background: #f5f5f5; border-radius: 6px; padding: 12px 14px; white-space: pre; overflow: hidden; }
+.race { margin-top: 100px; }
+.race .cap { font-size: 20px; color: var(--mute); margin-bottom: 22px; }
+.row { display: grid; grid-template-columns: 250px 1fr; align-items: center; gap: 24px; margin-top: 16px; }
+.row .who { font-size: 24px; font-weight: 600; letter-spacing: -.01em; }
+.bar { position: relative; height: 54px; }
+.bar i { position: absolute; left: 0; top: 0; bottom: 0; background: #d9d9d9; border-radius: 3px; }
+.bar.c i { background: var(--acc); }
+.bar span { position: absolute; top: 50%; transform: translateY(-50%); font: 500 24px var(--mono); white-space: nowrap; }
+</style>
+</head>
+<body>
+<div class="page">
+  <div class="brand"><b>$</b> clify</div>
+  <h1>Agents waste their time clicking through websites.<br><span>clify turns any website into a command line they can call.</span></h1>
+
+  <div class="steps">
+    <div class="step"><div class="n">01</div><h3>Give it a URL</h3><p>The agent names a site and what it wants to do there.</p><code>clify add updown.io</code></div>
+    <div class="step"><div class="n">02</div><h3>It explores once</h3><p>A headless browser signs up with the agent's own email and phone, reads the code, and records the API behind every button.</p></div>
+    <div class="step"><div class="n">03</div><h3>Keeps what works</h3><p>Every command is tested on the live site. Only verified ones are kept. CAPTCHAs are never solved: it emails its human.</p></div>
+    <div class="step"><div class="n">04</div><h3>One command</h3><p>From then on, a task is one call that returns JSON, instead of thirty clicks.</p><code>clify updown add-check \
+  --url example.com</code></div>
+  </div>
+
+  <div class="race">
+    <div class="cap">6 real tasks on 6 live, signed-in websites · same model (Claude Opus 5.5), same prompt</div>
+    <div class="row"><div class="who">Browser agent</div><div class="bar"><i style="width:100%"></i><span style="left:calc(100% - 330px);">1:44 · $2.06</span></div></div>
+    <div class="row"><div class="who">Agent + clify</div><div class="bar c"><i style="width:26.6%"></i><span style="left:calc(26.6% + 20px);">0:28 · $0.64</span></div></div>
+  </div>
+</div>
+<script>
+// Fit the 1920×1080 stage to any window (laptop screen, projector).
+const fitStage = () => { const s = Math.min(innerWidth / 1920, innerHeight / 1080); document.body.style.transformOrigin = '0 0'; document.body.style.transform = `scale(${s})`; };
+addEventListener('resize', fitStage); fitStage();
+</script>
+<script>addEventListener('keydown', e => { if (['ArrowRight', ' ', 'Enter'].includes(e.key)) location.href = '/'; });</script>
+</body>
+</html>

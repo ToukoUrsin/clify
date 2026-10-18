@@ -1,0 +1,875 @@
+{
+ "name": "jsdelivr",
+ "startUrl": "https://www.jsdelivr.com/",
+ "origin": "https://www.jsdelivr.com",
+ "createdAt": "2026-10-18T07:11:18.211Z",
+ "description": "jsDelivr is a free open-source CDN for npm and GitHub. This CLI searches npm packages, lists package versions, files, entrypoints and readmes, and reads CDN usage statistics (per package, version and file, top packages, network, countries, browsers, platforms and proxies) through jsDelivr's public data API and its Algolia search index.",
+ "commands": [
+  {
+   "name": "search-packages",
+   "summary": "Full-text search of npm packages hosted on jsDelivr (Algolia index), with optional facet filters such as module type, style type or author",
+   "method": "POST",
+   "urlTemplate": "https://ofcncog2cu-dsn.algolia.net/1/indexes/npm-search/query?x-algolia-agent=Algolia%20for%20JavaScript%20(3.35.1)%3B%20Browser%20(lite)&x-algolia-application-id=OFCNCOG2CU&x-algolia-api-key=f54e21fa3a2a0160595bb058179bfb1e",
+   "params": [
+    {
+     "name": "query",
+     "in": "body",
+     "required": true,
+     "type": "string",
+     "description": "Search keywords (URL-encode spaces and special characters, e.g. 'date%20picker')",
+     "example": "react"
+    },
+    {
+     "name": "page",
+     "in": "body",
+     "required": false,
+     "type": "number",
+     "description": "Zero-based result page",
+     "default": 0
+    },
+    {
+     "name": "hitsPerPage",
+     "in": "body",
+     "required": false,
+     "type": "number",
+     "description": "Results per page",
+     "default": 10
+    },
+    {
+     "name": "filters",
+     "in": "body",
+     "required": false,
+     "type": "string",
+     "description": "Optional Algolia filter expression, URL-encoded. Examples: 'moduleTypes%3Aesm' (ESM only), 'NOT%20styleTypes%3Anone' (CSS/style packages), 'owner.name%3Areact' (by author/owner). Leave empty for no fi"
+    }
+   ],
+   "bodyTemplate": {
+    "params": "query={query}&page={page}&hitsPerPage={hitsPerPage}&attributesToHighlight=%5B%5D&attributesToRetrieve=%5B%22deprecated%22%2C%22description%22%2C%22githubRepo%22%2C%22homepage%22%2C%22keywords%22%2C%22license%22%2C%22name%22%2C%22owner%22%2C%22version%22%2C%22popular%22%2C%22moduleTypes%22%2C%22styleTypes%22%2C%22jsDelivrHits%22%5D&analyticsTags=%5B%22jsdelivr%22%5D&filters={filters}"
+   },
+   "bodyEncoding": "json",
+   "responseType": "json",
+   "resultPath": "hits",
+   "defaultFields": [
+    "name",
+    "version",
+    "description",
+    "jsDelivrHits",
+    "license",
+    "owner.name",
+    "moduleTypes",
+    "deprecated"
+   ],
+   "pagination": {
+    "type": "page",
+    "param": "page"
+   },
+   "mutates": false,
+   "example": {
+    "query": "react"
+   },
+   "source": "E2 POST https://ofcncog2cu-dsn.algolia.net/{n}/indexes/npm-search/query",
+   "verified": true
+  },
+  {
+   "name": "get-npm-package-info",
+   "summary": "Get full npm metadata for a package from the search index: description, latest version, version release dates, npm downloads, jsDelivr hits, repo and owner",
+   "method": "POST",
+   "urlTemplate": "https://ofcncog2cu-dsn.algolia.net/1/indexes/*/objects?x-algolia-agent=Algolia%20for%20JavaScript%20(3.35.1)%3B%20Browser%20(lite)&x-algolia-application-id=OFCNCOG2CU&x-algolia-api-key=f54e21fa3a2a0160595bb058179bfb1e",
+   "params": [
+    {
+     "name": "name",
+     "in": "body",
+     "required": true,
+     "type": "string",
+     "description": "Exact npm package name",
+     "example": "react-router-dom"
+    }
+   ],
+   "bodyTemplate": {
+    "requests": [
+     {
+      "indexName": "npm-search",
+      "objectID": "{name}"
+     }
+    ]
+   },
+   "bodyEncoding": "json",
+   "responseType": "json",
+   "resultPath": "results.0",
+   "defaultFields": [
+    "name",
+    "version",
+    "description",
+    "downloadsLast30Days",
+    "jsDelivrHits",
+    "license",
+    "homepage",
+    "repository"
+   ],
+   "mutates": false,
+   "example": {
+    "name": "react-router-dom"
+   },
+   "source": "E25 POST https://ofcncog2cu-dsn.algolia.net/{n}/indexes/*/objects",
+   "verified": true
+  },
+  {
+   "name": "list-package-versions",
+   "summary": "List all versions and dist-tags of an npm package or GitHub repo hosted on jsDelivr",
+   "method": "GET",
+   "urlTemplate": "https://data.jsdelivr.com/v1/packages/{type}/{name}",
+   "params": [
+    {
+     "name": "type",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Package source: npm or gh (GitHub)",
+     "enum": [
+      "npm",
+      "gh"
+     ],
+     "example": "npm"
+    },
+    {
+     "name": "name",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "npm package name, or 'user/repo' for GitHub",
+     "example": "react-router-dom"
+    }
+   ],
+   "responseType": "json",
+   "defaultFields": [
+    "type",
+    "name",
+    "tags",
+    "versions"
+   ],
+   "mutates": false,
+   "example": {
+    "type": "npm",
+    "name": "react-router-dom"
+   },
+   "source": "E26 E18 GET https://data.jsdelivr.com/v1/packages/npm/react-router-dom",
+   "verified": true
+  },
+  {
+   "name": "list-package-files",
+   "summary": "Get the file tree (names, sizes, SHA-256 hashes) and default file of a specific package version",
+   "method": "GET",
+   "urlTemplate": "https://data.jsdelivr.com/v1/packages/{type}/{name}@{version}",
+   "params": [
+    {
+     "name": "type",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Package source: npm or gh",
+     "enum": [
+      "npm",
+      "gh"
+     ],
+     "example": "npm"
+    },
+    {
+     "name": "name",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "npm package name, or 'user/repo' for GitHub",
+     "example": "react-router-dom"
+    },
+    {
+     "name": "version",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Exact version (from list-package-versions)",
+     "example": "7.18.4"
+    }
+   ],
+   "responseType": "json",
+   "defaultFields": [
+    "name",
+    "version",
+    "default",
+    "files"
+   ],
+   "mutates": false,
+   "example": {
+    "type": "npm",
+    "name": "react-router-dom",
+    "version": "7.18.4"
+   },
+   "source": "E28 E34 GET https://data.jsdelivr.com/v1/packages/npm/react-router-dom@7.18.4",
+   "verified": true
+  },
+  {
+   "name": "get-package-entrypoints",
+   "summary": "Get the resolved JS/CSS entrypoint files of an npm package version (the file served by the short CDN URL)",
+   "method": "GET",
+   "urlTemplate": "https://data.jsdelivr.com/v1/packages/npm/{name}@{version}/entrypoints",
+   "params": [
+    {
+     "name": "name",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "npm package name",
+     "example": "react-router-dom"
+    },
+    {
+     "name": "version",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Exact version",
+     "example": "7.18.4"
+    }
+   ],
+   "responseType": "json",
+   "resultPath": "entrypoints",
+   "mutates": false,
+   "example": {
+    "name": "react-router-dom",
+    "version": "7.18.4"
+   },
+   "source": "E27 GET https://data.jsdelivr.com/v1/packages/npm/react-router-dom@7.18.4/entrypoints",
+   "verified": true
+  },
+  {
+   "name": "get-package-readme",
+   "summary": "Get the rendered README (HTML) of an npm package or GitHub repo",
+   "method": "GET",
+   "urlTemplate": "/readme/{type}/{name}",
+   "params": [
+    {
+     "name": "type",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Package source: npm or gh",
+     "enum": [
+      "npm",
+      "gh"
+     ],
+     "example": "npm"
+    },
+    {
+     "name": "name",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "npm package name, or 'user/repo' for GitHub",
+     "example": "react-router-dom"
+    }
+   ],
+   "responseType": "text",
+   "mutates": false,
+   "example": {
+    "type": "npm",
+    "name": "react-router-dom"
+   },
+   "source": "E39 E40 GET https://www.jsdelivr.com/readme/npm/react-router-dom",
+   "verified": true
+  },
+  {
+   "name": "get-package-stats",
+   "summary": "Get CDN hits and bandwidth for a package over a period, with daily breakdown, rank and previous-period comparison",
+   "method": "GET",
+   "urlTemplate": "https://data.jsdelivr.com/v1/stats/packages/{type}/{name}",
+   "params": [
+    {
+     "name": "type",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Package source: npm or gh",
+     "enum": [
+      "npm",
+      "gh"
+     ],
+     "example": "npm"
+    },
+    {
+     "name": "name",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "npm package name, or 'user/repo' for GitHub",
+     "example": "react-router-dom"
+    },
+    {
+     "name": "period",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Time period: day, week, month, quarter or year (rolling), s-month/s-quarter/s-year (last calendar period), or a specific period such as 2026-09 or 2026-Q3",
+     "default": "month"
+    }
+   ],
+   "responseType": "json",
+   "defaultFields": [
+    "hits.total",
+    "hits.rank",
+    "hits.typeRank",
+    "hits.prev.total",
+    "bandwidth.total",
+    "bandwidth.rank",
+    "bandwidth.prev.total"
+   ],
+   "mutates": false,
+   "example": {
+    "type": "npm",
+    "name": "react-router-dom",
+    "period": "month"
+   },
+   "source": "E15 E17 GET https://data.jsdelivr.com/v1/stats/packages/npm/react-router-dom",
+   "verified": true
+  },
+  {
+   "name": "get-package-version-stats",
+   "summary": "List a package's versions ranked by CDN hits or bandwidth over a period",
+   "method": "GET",
+   "urlTemplate": "https://data.jsdelivr.com/v1/stats/packages/{type}/{name}/versions",
+   "params": [
+    {
+     "name": "type",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Package source: npm or gh",
+     "enum": [
+      "npm",
+      "gh"
+     ],
+     "example": "npm"
+    },
+    {
+     "name": "name",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "npm package name, or 'user/repo' for GitHub",
+     "example": "react-router-dom"
+    },
+    {
+     "name": "period",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Time period: day, week, month, quarter, year, s-month, s-quarter, s-year, or e.g. 2026-09",
+     "default": "month"
+    },
+    {
+     "name": "by",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Ranking metric",
+     "enum": [
+      "hits",
+      "bandwidth"
+     ],
+     "default": "hits"
+    },
+    {
+     "name": "api_limit",
+     "key": "limit",
+     "in": "query",
+     "required": false,
+     "type": "number",
+     "description": "Results per page (sent to the site as \"limit\"; clify's own --limit only shapes the output)",
+     "default": 10
+    },
+    {
+     "name": "page",
+     "in": "query",
+     "required": false,
+     "type": "number",
+     "description": "1-based page number",
+     "default": 1
+    }
+   ],
+   "responseType": "json",
+   "defaultFields": [
+    "version",
+    "hits.total",
+    "bandwidth.total"
+   ],
+   "pagination": {
+    "type": "page",
+    "param": "page"
+   },
+   "mutates": false,
+   "example": {
+    "type": "npm",
+    "name": "react-router-dom",
+    "period": "month"
+   },
+   "source": "E4 E16 GET https://data.jsdelivr.com/v1/stats/packages/npm/react-router-dom/versions",
+   "verified": true
+  },
+  {
+   "name": "get-package-file-stats",
+   "summary": "List the files of a specific package version ranked by CDN hits or bandwidth over a period",
+   "method": "GET",
+   "urlTemplate": "https://data.jsdelivr.com/v1/stats/packages/{type}/{name}@{version}/files",
+   "params": [
+    {
+     "name": "type",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Package source: npm or gh",
+     "enum": [
+      "npm",
+      "gh"
+     ],
+     "example": "npm"
+    },
+    {
+     "name": "name",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "npm package name, or 'user/repo' for GitHub",
+     "example": "react-router-dom"
+    },
+    {
+     "name": "version",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Exact version",
+     "example": "5.2.0"
+    },
+    {
+     "name": "period",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Time period: day, week, month, quarter, year, s-month, s-quarter, s-year, or e.g. 2026-09",
+     "default": "month"
+    },
+    {
+     "name": "by",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Ranking metric",
+     "enum": [
+      "hits",
+      "bandwidth"
+     ],
+     "default": "hits"
+    },
+    {
+     "name": "api_limit",
+     "key": "limit",
+     "in": "query",
+     "required": false,
+     "type": "number",
+     "description": "Results per page (sent to the site as \"limit\"; clify's own --limit only shapes the output)",
+     "default": 10
+    },
+    {
+     "name": "page",
+     "in": "query",
+     "required": false,
+     "type": "number",
+     "description": "1-based page number",
+     "default": 1
+    }
+   ],
+   "responseType": "json",
+   "defaultFields": [
+    "name",
+    "hits.total",
+    "bandwidth.total"
+   ],
+   "pagination": {
+    "type": "page",
+    "param": "page"
+   },
+   "mutates": false,
+   "example": {
+    "type": "npm",
+    "name": "react-router-dom",
+    "version": "5.2.0",
+    "period": "quarter"
+   },
+   "source": "E30 E31 E32 E33 GET https://data.jsdelivr.com/v1/stats/packages/npm/react-router-dom@7.18.4/files",
+   "verified": true
+  },
+  {
+   "name": "list-top-packages",
+   "summary": "List the most-used packages on jsDelivr, ranked by hits or bandwidth, optionally restricted to npm or GitHub",
+   "method": "GET",
+   "urlTemplate": "https://data.jsdelivr.com/v1/stats/packages",
+   "params": [
+    {
+     "name": "type",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Restrict to npm or gh packages (omit for both)",
+     "enum": [
+      "npm",
+      "gh"
+     ]
+    },
+    {
+     "name": "period",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Time period: day, week, month, quarter, year, s-month, s-quarter, s-year, or e.g. 2026-09",
+     "default": "month"
+    },
+    {
+     "name": "by",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Ranking metric",
+     "enum": [
+      "hits",
+      "bandwidth"
+     ],
+     "default": "hits"
+    },
+    {
+     "name": "api_limit",
+     "key": "limit",
+     "in": "query",
+     "required": false,
+     "type": "number",
+     "description": "Results per page (sent to the site as \"limit\"; clify's own --limit only shapes the output)",
+     "default": 10
+    },
+    {
+     "name": "page",
+     "in": "query",
+     "required": false,
+     "type": "number",
+     "description": "1-based page number",
+     "default": 1
+    }
+   ],
+   "responseType": "json",
+   "defaultFields": [
+    "type",
+    "name",
+    "hits",
+    "bandwidth",
+    "prev.hits",
+    "prev.bandwidth"
+   ],
+   "pagination": {
+    "type": "page",
+    "param": "page"
+   },
+   "mutates": false,
+   "example": {
+    "period": "month",
+    "by": "hits"
+   },
+   "source": "E3 GET https://data.jsdelivr.com/v1/stats/packages",
+   "verified": true
+  },
+  {
+   "name": "get-network-stats",
+   "summary": "Get total jsDelivr network hits and bandwidth per CDN provider (Cloudflare, Fastly) over a period, optionally for one country",
+   "method": "GET",
+   "urlTemplate": "https://data.jsdelivr.com/v1/stats/network",
+   "params": [
+    {
+     "name": "period",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Time period: day, week, month, quarter, year, s-month, s-quarter, s-year, or e.g. 2026-09",
+     "default": "month"
+    },
+    {
+     "name": "country",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "ISO 3166-1 alpha-2 country code, e.g. DE",
+     "example": "DE"
+    }
+   ],
+   "responseType": "json",
+   "defaultFields": [
+    "hits.total",
+    "hits.prev.total",
+    "bandwidth.total",
+    "bandwidth.prev.total",
+    "hits.providers"
+   ],
+   "mutates": false,
+   "example": {
+    "period": "month"
+   },
+   "source": "E19 GET https://data.jsdelivr.com/v1/stats/network",
+   "verified": true
+  },
+  {
+   "name": "get-network-content-stats",
+   "summary": "Get network hits and bandwidth split by content type (packages vs. proxies) with a daily breakdown",
+   "method": "GET",
+   "urlTemplate": "https://data.jsdelivr.com/v1/stats/network/content",
+   "params": [
+    {
+     "name": "period",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Time period: day, week, month, quarter, year, s-month, s-quarter, s-year, or e.g. 2026-09",
+     "default": "month"
+    }
+   ],
+   "responseType": "json",
+   "defaultFields": [
+    "hits.total",
+    "hits.packages.total",
+    "hits.proxies.total",
+    "bandwidth.total",
+    "bandwidth.packages.total",
+    "bandwidth.proxies.total"
+   ],
+   "mutates": false,
+   "example": {
+    "period": "month"
+   },
+   "source": "E10 GET https://data.jsdelivr.com/v1/stats/network/content",
+   "verified": true
+  },
+  {
+   "name": "list-network-countries",
+   "summary": "Get jsDelivr network hits broken down by country (country code, name, total hits, previous-period hits)",
+   "method": "GET",
+   "urlTemplate": "https://data.jsdelivr.com/v1/stats/network/countries",
+   "params": [
+    {
+     "name": "period",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Time period: day, week, month, quarter, year, s-month, s-quarter, s-year, or e.g. 2026-09",
+     "default": "month"
+    }
+   ],
+   "responseType": "json",
+   "resultPath": "hits.countries",
+   "defaultFields": [
+    "code",
+    "name",
+    "total",
+    "prev.total"
+   ],
+   "mutates": false,
+   "example": {
+    "period": "month"
+   },
+   "source": "E35",
+   "verified": true
+  },
+  {
+   "name": "list-top-browsers",
+   "summary": "List browsers by share of jsDelivr traffic, optionally for one country",
+   "method": "GET",
+   "urlTemplate": "https://data.jsdelivr.com/v1/stats/browsers",
+   "params": [
+    {
+     "name": "period",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Period: s-month, s-quarter, s-year, or a specific period such as 2026-09 or 2026-Q3",
+     "default": "s-month"
+    },
+    {
+     "name": "country",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "ISO 3166-1 alpha-2 country code, e.g. DE"
+    },
+    {
+     "name": "api_limit",
+     "key": "limit",
+     "in": "query",
+     "required": false,
+     "type": "number",
+     "description": "Results per page (sent to the site as \"limit\"; clify's own --limit only shapes the output)",
+     "default": 10
+    },
+    {
+     "name": "page",
+     "in": "query",
+     "required": false,
+     "type": "number",
+     "description": "1-based page number",
+     "default": 1
+    }
+   ],
+   "responseType": "json",
+   "defaultFields": [
+    "name",
+    "share",
+    "prev.share"
+   ],
+   "pagination": {
+    "type": "page",
+    "param": "page"
+   },
+   "mutates": false,
+   "example": {
+    "period": "s-month"
+   },
+   "source": "E6 GET https://data.jsdelivr.com/v1/stats/browsers",
+   "verified": true
+  },
+  {
+   "name": "list-top-platforms",
+   "summary": "List operating systems/platforms by share of jsDelivr traffic, optionally for one country",
+   "method": "GET",
+   "urlTemplate": "https://data.jsdelivr.com/v1/stats/platforms",
+   "params": [
+    {
+     "name": "period",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Period: s-month, s-quarter, s-year, or a specific period such as 2026-09 or 2026-Q3",
+     "default": "s-month"
+    },
+    {
+     "name": "country",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "ISO 3166-1 alpha-2 country code, e.g. DE"
+    },
+    {
+     "name": "api_limit",
+     "key": "limit",
+     "in": "query",
+     "required": false,
+     "type": "number",
+     "description": "Results per page (sent to the site as \"limit\"; clify's own --limit only shapes the output)",
+     "default": 10
+    },
+    {
+     "name": "page",
+     "in": "query",
+     "required": false,
+     "type": "number",
+     "description": "1-based page number",
+     "default": 1
+    }
+   ],
+   "responseType": "json",
+   "defaultFields": [
+    "name",
+    "share",
+    "prev.share"
+   ],
+   "pagination": {
+    "type": "page",
+    "param": "page"
+   },
+   "mutates": false,
+   "example": {
+    "period": "s-month"
+   },
+   "source": "E5 GET https://data.jsdelivr.com/v1/stats/platforms",
+   "verified": true
+  },
+  {
+   "name": "get-proxy-stats",
+   "summary": "Get CDN hits and bandwidth for one of jsDelivr's proxy endpoints (e.g. pyodide, fontsource, ghost) over a period",
+   "method": "GET",
+   "urlTemplate": "https://data.jsdelivr.com/v1/stats/proxies/{name}",
+   "params": [
+    {
+     "name": "name",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Proxy name",
+     "enum": [
+      "atlas",
+      "cocoa",
+      "fontsource",
+      "ghost",
+      "musescore",
+      "pyodide",
+      "yocto-sstate"
+     ],
+     "example": "pyodide"
+    },
+    {
+     "name": "period",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Time period: day, week, month, quarter, year, s-month, s-quarter, s-year, or e.g. 2026-09",
+     "default": "month"
+    }
+   ],
+   "responseType": "json",
+   "defaultFields": [
+    "hits.total",
+    "hits.prev.total",
+    "bandwidth.total",
+    "bandwidth.prev.total"
+   ],
+   "mutates": false,
+   "example": {
+    "name": "pyodide",
+    "period": "month"
+   },
+   "source": "E7 E8 E9 E11 E12 E13 E14 GET https://data.jsdelivr.com/v1/stats/proxies/ghost",
+   "verified": true
+  },
+  {
+   "name": "list-stats-periods",
+   "summary": "List the fixed statistics periods available (calendar months/quarters/years such as 2026-09 or 2026-Q3) with links to their stats",
+   "method": "GET",
+   "urlTemplate": "https://data.jsdelivr.com/v1/stats/periods",
+   "params": [],
+   "responseType": "json",
+   "defaultFields": [
+    "period",
+    "periodType"
+   ],
+   "mutates": false,
+   "source": "E1 GET https://data.jsdelivr.com/v1/stats/periods",
+   "verified": true
+  }
+ ],
+ "blockers": [],
+ "notes": [
+  "No login is needed. All data comes from jsDelivr's public data API (data.jsdelivr.com/v1, OpenAPI spec at /v1/spec.yaml) and a public Algolia search key.",
+  "The 'name' param for gh packages is 'user/repo' (e.g. twbs/bootstrap). Scoped npm packages look like '@scope/pkg'. The slash must reach the server unencoded.",
+  "search-packages builds an Algolia 'params' query string, so query and filters values must be URL-encoded. The search page param is 0-based; the data.jsdelivr.com page params are 1-based.",
+  "Period values: day, week, month, quarter or year (rolling windows ending yesterday); s-month, s-quarter or s-year (last complete calendar period); or explicit periods such as 2026-09 or 2026-Q3 (see list-stats-periods). Browser and platform stats need s-* or explicit periods.",
+  "Stats responses include large per-day 'dates' maps. Use defaultFields totals unless you need the daily breakdown.",
+  "Workflow: search-packages \u2192 list-package-versions (get a version) \u2192 list-package-files / get-package-entrypoints / get-package-file-stats. The CDN file URL is https://cdn.jsdelivr.net/{type}/{name}@{version}/{file}."
+ ],
+ "dropped": [],
+ "generated": {
+  "by": "clify add",
+  "model": "claude-opus-5-5",
+  "exploredSteps": 19,
+  "recorded": 90,
+  "verifiedAt": "2026-10-18T07:12:54.147Z",
+  "seconds": 173
+ }
+}

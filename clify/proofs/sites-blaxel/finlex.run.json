@@ -1,0 +1,129 @@
+{
+ "url": "https://www.finlex.fi/",
+ "category": "gov-nordic",
+ "sandbox": "clify-www-finlex-fi",
+ "startedAt": "2026-10-18T08:09:45.355Z",
+ "region": "us-pdx-1",
+ "chrome": "Chrome/148.0.7778.96",
+ "sandboxStartMs": 3367,
+ "addSeconds": 251,
+ "addExit": 0,
+ "add": {
+  "ok": true,
+  "site": "finlex",
+  "url": "https://www.finlex.fi/",
+  "commands": [
+   {
+    "name": "search",
+    "summary": "Keyword search across all Finlex data (legislation, government proposals, treaties, case law, officials). Returns hit count, category counts and hits as a Next.js server-action text stream.",
+    "verified": true
+   },
+   {
+    "name": "list-latest-statutes",
+    "summary": "List the latest statutes published in the Statute Book, as shown on the Finlex home page.",
+    "verified": true
+   },
+   {
+    "name": "get-statute",
+    "summary": "Get a statute by number and year, e.g. 55/2001 (Employment Contracts Act). Returns the title and statute text.",
+    "verified": true
+   },
+   {
+    "name": "get-statute-translation",
+    "summary": "Get the English translation page of a statute by year and number, including the translation PDF link.",
+    "verified": true
+   },
+   {
+    "name": "list-supreme-court-collections",
+    "summary": "List the Supreme Court material collections (precedents, rulings other than precedents, etc.) with last-update dates.",
+    "verified": true
+   },
+   {
+    "name": "list-latest-precedents",
+    "summary": "List the latest Supreme Court precedents (KKO).",
+    "verified": true
+   },
+   {
+    "name": "get-precedent",
+    "summary": "Get the full text of a Supreme Court precedent by year and number, e.g. KKO 2026:74.",
+    "verified": true
+   }
+  ],
+  "verified": 7,
+  "writes": 0,
+  "dropped": [
+   {
+    "name": "download-translation-pdf",
+    "reason": "Returns raw binary PDF bytes as text, which an agent can't use in JSON output. get-statute-translation now exposes the PDF URL instead."
+   },
+   {
+    "name": "list-statutes-by-year",
+    "reason": "The statute list is not in the server HTML. The page renders it client-side or streams it as an RSC payload. section#content holds only the 'Statutes 2025' heading, and the only matching links are the year-navigation chips, so no static selector reliably returns the entries. The search and detail commands cover statutes."
+   },
+   {
+    "name": "list-precedents-by-year",
+    "reason": "Same problem as the statutes page: the precedent list is client-rendered or streamed. section#content holds only the 'Precedents 2025' heading, and the only repeated items are menu, footer and year chips, with no precedent entries to extract. The search and get-precedent commands cover precedents."
+   }
+  ],
+  "blockers": [],
+  "loggedIn": false,
+  "seconds": 250,
+  "next": [
+   "clify finlex",
+   "clify finlex search --search \"employment contract\" --page \"1\" --api_limit \"20\""
+  ],
+  "installed": "/home/ubuntu/clify-runs/blaxel-w1/home/bin/finlex",
+  "explored": {
+   "steps": 22,
+   "recorded": 14,
+   "heldWrites": 0
+  }
+ },
+ "check": {
+  "on": "blaxel",
+  "node": "v24.22.0",
+  "seconds": 4,
+  "reads": 7,
+  "verified": 7,
+  "failed": [],
+  "results": [
+   {
+    "name": "search",
+    "ok": true,
+    "ms": 968
+   },
+   {
+    "name": "list-latest-statutes",
+    "ok": true,
+    "ms": 28
+   },
+   {
+    "name": "get-statute",
+    "ok": true,
+    "ms": 43
+   },
+   {
+    "name": "get-statute-translation",
+    "ok": true,
+    "ms": 833
+   },
+   {
+    "name": "list-supreme-court-collections",
+    "ok": true,
+    "ms": 18
+   },
+   {
+    "name": "list-latest-precedents",
+    "ok": true,
+    "ms": 25
+   },
+   {
+    "name": "get-precedent",
+    "ok": true,
+    "ms": 19
+   }
+  ]
+ },
+ "deleted": true,
+ "seconds": 258
+}

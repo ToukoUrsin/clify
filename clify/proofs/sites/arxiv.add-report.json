@@ -1,0 +1,73 @@
+{
+ "ok": true,
+ "site": "arxiv",
+ "url": "https://arxiv.org/",
+ "commands": [
+  {
+   "name": "list-recent",
+   "summary": "List papers from the last 5 announcement days in an arXiv category or archive (e.g. cs.LG, math.NT, cs), paged. Results alternate: an {id,url} item, then that paper's {title,authors,subjects,comments}",
+   "verified": true
+  },
+  {
+   "name": "list-new",
+   "summary": "List the latest announcement (new submissions, cross-lists, replacements) in a category, with abstracts. Results alternate: an {id,url} item, then that paper's {title,authors,subjects,abstract} item.",
+   "verified": true
+  },
+  {
+   "name": "list-month",
+   "summary": "List all papers in a category or archive for a given month (YYYY-MM) or year (YYYY), paged. Results alternate: an {id,url} item, then that paper's {title,authors,subjects,comments} item.",
+   "verified": true
+  },
+  {
+   "name": "catchup",
+   "summary": "Show everything announced in an archive on a given day (new, cross-lists, replacements). Use for catching up since a date. Results alternate: an {id,url} item, then that paper's {title,authors,subject",
+   "verified": true
+  },
+  {
+   "name": "get-paper",
+   "summary": "Get a paper's abstract page: title, authors, abstract, comments, subjects, submission history and PDF/HTML links",
+   "verified": true
+  },
+  {
+   "name": "get-bibtex",
+   "summary": "Export the BibTeX citation for a paper",
+   "verified": true
+  },
+  {
+   "name": "get-rss-feed",
+   "summary": "Get the raw RSS 2.0 XML feed of the latest announcement in a category: items with title, link, description, dc:creator, category and arxiv:announce_type. Empty on weekends and holidays.",
+   "verified": true
+  },
+  {
+   "name": "get-archive",
+   "summary": "Get an archive overview (e.g. cs, math, physics): its subject categories with descriptions and browse links",
+   "verified": true
+  },
+  {
+   "name": "get-year-stats",
+   "summary": "Get monthly article counts for an archive in a given year",
+   "verified": true
+  },
+  {
+   "name": "list-categories",
+   "summary": "List the full arXiv category taxonomy (category ids, names and descriptions across all groups)",
+   "verified": true
+  }
+ ],
+ "verified": 10,
+ "writes": 0,
+ "dropped": [],
+ "blockers": [],
+ "loggedIn": false,
+ "seconds": 220,
+ "next": [
+  "clify arxiv",
+  "clify arxiv list-recent --category \"cs.LG\""
+ ],
+ "installed": "/home/ubuntu/clify-runs/batch2/home/bin/arxiv",
+ "explored": {
+  "steps": 22,
+  "recorded": 22,
+  "heldWrites": 0
+ }
+}

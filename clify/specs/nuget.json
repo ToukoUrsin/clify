@@ -1,0 +1,680 @@
+{
+ "name": "nuget",
+ "startUrl": "https://www.nuget.org/",
+ "origin": "https://www.nuget.org",
+ "createdAt": "2026-10-18T07:11:20.406Z",
+ "description": "nuget.org, the public .NET package gallery. This CLI searches packages, reads package and version metadata, licenses, owner profiles, and download statistics, and lists NuGet client tool downloads, all without logging in.",
+ "commands": [
+  {
+   "name": "search-packages",
+   "summary": "Search the NuGet gallery by keyword or tag (q=Tags:\"bson\"), with sort, framework, package-type and prerelease filters, 20 results per page",
+   "method": "GET",
+   "urlTemplate": "/packages",
+   "params": [
+    {
+     "name": "q",
+     "in": "query",
+     "required": true,
+     "type": "string",
+     "description": "Search text. Supports field syntax such as Tags:\"bson\", id:Newtonsoft, owner:jamesnk",
+     "example": "json"
+    },
+    {
+     "name": "sortby",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Sort order. 'relevance' is the default ranking",
+     "enum": [
+      "relevance",
+      "totalDownloads-desc",
+      "created-desc"
+     ]
+    },
+    {
+     "name": "frameworks",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Comma-separated framework generations to filter by, e.g. net, netcoreapp, netstandard, netframework",
+     "example": "netstandard"
+    },
+    {
+     "name": "tfms",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Comma-separated specific target framework monikers, e.g. net8.0,netstandard2.0"
+    },
+    {
+     "name": "frameworkFilterMode",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Whether packages must match ALL or ANY of the selected frameworks",
+     "enum": [
+      "all",
+      "any"
+     ]
+    },
+    {
+     "name": "includeComputedFrameworks",
+     "in": "query",
+     "required": false,
+     "type": "boolean",
+     "description": "Also match frameworks that are computed as compatible, not only frameworks targeted explicitly",
+     "default": true
+    },
+    {
+     "name": "packagetype",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Restrict results to one package type",
+     "enum": [
+      "dependency",
+      "dotnettool",
+      "template"
+     ]
+    },
+    {
+     "name": "prerel",
+     "in": "query",
+     "required": false,
+     "type": "boolean",
+     "description": "Include prerelease versions",
+     "default": true
+    },
+    {
+     "name": "page",
+     "in": "query",
+     "required": false,
+     "type": "number",
+     "description": "Result page number, starting at 1",
+     "example": "2"
+    }
+   ],
+   "responseType": "html",
+   "extract": {
+    "list": "li.package",
+    "fields": {
+     "id": "a.package-title",
+     "url": "a.package-title@href",
+     "owners": "span.package-by",
+     "totalDownloads": "li > span.icon-text",
+     "lastUpdated": "li > span.icon-text > span",
+     "tags": "li.package-tags",
+     "description": "div.package-details",
+     "frameworks": "div.framework-badges"
+    }
+   },
+   "defaultFields": [
+    "id",
+    "url",
+    "owners",
+    "totalDownloads",
+    "lastUpdated",
+    "description",
+    "tags"
+   ],
+   "pagination": {
+    "type": "page",
+    "param": "page"
+   },
+   "mutates": false,
+   "example": {
+    "q": "json"
+   },
+   "source": "E5 GET https://www.nuget.org/packages",
+   "verified": true
+  },
+  {
+   "name": "search-packages-v2",
+   "summary": "Search packages through the OData v2 API, which returns structured metadata (id, version, downloads, description) with offset paging",
+   "method": "GET",
+   "urlTemplate": "/api/v2/Search()?searchTerm='{query}'&targetFramework=''",
+   "params": [
+    {
+     "name": "query",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Search term, placed inside single quotes in the OData URL",
+     "example": "json"
+    },
+    {
+     "name": "includePrerelease",
+     "in": "query",
+     "required": false,
+     "type": "boolean",
+     "description": "Include prerelease versions",
+     "default": false
+    },
+    {
+     "name": "top",
+     "key": "$top",
+     "in": "query",
+     "required": false,
+     "type": "number",
+     "description": "Number of results to return",
+     "default": 10
+    },
+    {
+     "name": "skip",
+     "key": "$skip",
+     "in": "query",
+     "required": false,
+     "type": "number",
+     "description": "Number of results to skip, for paging"
+    }
+   ],
+   "responseType": "json",
+   "resultPath": "feed.entry",
+   "defaultFields": [
+    "m:properties.d:Id",
+    "m:properties.d:Version",
+    "m:properties.d:Authors",
+    "m:properties.d:Description",
+    "m:properties.d:DownloadCount.#text",
+    "m:properties.d:Tags",
+    "m:properties.d:GalleryDetailsUrl"
+   ],
+   "pagination": {
+    "type": "offset",
+    "param": "skip",
+    "step": 10
+   },
+   "mutates": false,
+   "example": {
+    "query": "json"
+   },
+   "source": "E15 GET https://www.nuget.org/api/v2/Search()",
+   "verified": true
+  },
+  {
+   "name": "get-package",
+   "summary": "Get the gallery page for the latest version of a package: title, version, target frameworks, install command and README text",
+   "method": "GET",
+   "urlTemplate": "/packages/{id}",
+   "params": [
+    {
+     "name": "id",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Package id (case-insensitive)",
+     "example": "JsonSchema.Net"
+    }
+   ],
+   "responseType": "html",
+   "extract": {
+    "fields": {
+     "title": "div.package-title span.title",
+     "version": "span.version-title",
+     "frameworks": "div.package-header div.framework-badges",
+     "notice": "div.package-header div.icon-text.alert",
+     "dotnetCli": "#dotnet-cli pre.install-script span.install-command-row",
+     "packageManager": "#package-manager pre.install-script span.install-command-row",
+     "readme": "#readme-tab"
+    }
+   },
+   "defaultFields": [
+    "title",
+    "version",
+    "frameworks",
+    "dotnetCli",
+    "readme"
+   ],
+   "mutates": false,
+   "example": {
+    "id": "JsonSchema.Net"
+   },
+   "source": "E6 E7 E13",
+   "verified": true
+  },
+  {
+   "name": "get-package-version",
+   "summary": "Get metadata for one package version through the OData v2 API: dependencies, downloads, hash, size, dates, project URL",
+   "method": "GET",
+   "urlTemplate": "/api/v2/Packages(Id='{id}',Version='{version}')",
+   "params": [
+    {
+     "name": "id",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Package id",
+     "example": "Newtonsoft.Json"
+    },
+    {
+     "name": "version",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Exact package version, e.g. 13.0.3",
+     "example": "13.0.3"
+    }
+   ],
+   "responseType": "json",
+   "resultPath": "entry.m:properties",
+   "defaultFields": [
+    "d:Id",
+    "d:Version",
+    "d:Description",
+    "d:Dependencies",
+    "d:VersionDownloadCount.#text",
+    "d:Published.#text",
+    "d:ProjectUrl",
+    "d:IsPrerelease.#text"
+   ],
+   "mutates": false,
+   "example": {
+    "id": "Newtonsoft.Json",
+    "version": "13.0.3"
+   },
+   "source": "E17 GET https://www.nuget.org/api/v2/Packages(Id='Newtonsoft.Json',Version='13.0.3')",
+   "verified": true
+  },
+  {
+   "name": "list-package-versions",
+   "summary": "List all versions of a package with their per-version download counts and publish dates (OData v2 FindPackagesById)",
+   "method": "GET",
+   "urlTemplate": "/api/v2/FindPackagesById()?id='{id}'",
+   "params": [
+    {
+     "name": "id",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Package id, placed inside single quotes in the OData URL",
+     "example": "Newtonsoft.Json"
+    },
+    {
+     "name": "skip",
+     "key": "$skip",
+     "in": "query",
+     "required": false,
+     "type": "number",
+     "description": "Number of versions to skip, for paging (the server returns at most 100 per page)"
+    }
+   ],
+   "responseType": "json",
+   "resultPath": "feed.entry",
+   "defaultFields": [
+    "m:properties.d:Version",
+    "m:properties.d:VersionDownloadCount.#text",
+    "m:properties.d:Published.#text",
+    "m:properties.d:IsPrerelease.#text",
+    "m:properties.d:IsLatestVersion.#text",
+    "content.@src"
+   ],
+   "pagination": {
+    "type": "offset",
+    "param": "skip",
+    "step": 100
+   },
+   "mutates": false,
+   "example": {
+    "id": "Newtonsoft.Json"
+   },
+   "source": "E16 GET https://www.nuget.org/api/v2/FindPackagesById()",
+   "verified": true
+  },
+  {
+   "name": "get-package-feed",
+   "summary": "Get the Atom feed of a package's versions, newest first, with update times and links",
+   "method": "GET",
+   "urlTemplate": "/packages/{id}/atom.xml",
+   "params": [
+    {
+     "name": "id",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Package id",
+     "example": "JsonSchema.Net"
+    }
+   ],
+   "responseType": "json",
+   "resultPath": "feed.entry",
+   "defaultFields": [
+    "title.#text",
+    "updated",
+    "link.@href",
+    "summary"
+   ],
+   "mutates": false,
+   "example": {
+    "id": "JsonSchema.Net"
+   },
+   "source": "",
+   "verified": true
+  },
+  {
+   "name": "get-package-license",
+   "summary": "Get the license text of a specific package version",
+   "method": "GET",
+   "urlTemplate": "/packages/{id}/{version}/License",
+   "params": [
+    {
+     "name": "id",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Package id",
+     "example": "JsonSchema.Net"
+    },
+    {
+     "name": "version",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Exact package version",
+     "example": "9.4.1"
+    }
+   ],
+   "responseType": "html",
+   "extract": {
+    "fields": {
+     "package": "h1.breadcrumb-title span.ms-noWrap",
+     "version": "div.package-title small",
+     "licenseType": "label",
+     "license": "pre.license-file-contents || div.common-licenses"
+    }
+   },
+   "defaultFields": [
+    "package",
+    "version",
+    "licenseType",
+    "license"
+   ],
+   "mutates": false,
+   "example": {
+    "id": "JsonSchema.Net",
+    "version": "9.4.1"
+   },
+   "source": "E18 GET https://www.nuget.org/packages/JsonSchema.Net/9.4.1/License",
+   "verified": true
+  },
+  {
+   "name": "get-package-download-stats",
+   "summary": "Get download counts for a package, broken down by version, client name or client version",
+   "method": "GET",
+   "urlTemplate": "/stats/reports/packages/{id}",
+   "params": [
+    {
+     "name": "id",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Package id",
+     "example": "JsonSchema.Net"
+    },
+    {
+     "name": "groupby",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Dimension to group download counts by",
+     "enum": [
+      "Version",
+      "ClientName",
+      "ClientVersion"
+     ],
+     "default": "Version"
+    }
+   ],
+   "headers": {
+    "X-Requested-With": "XMLHttpRequest",
+    "Accept": "application/json, text/javascript, */*; q=0.01"
+   },
+   "responseType": "json",
+   "resultPath": "Facts",
+   "defaultFields": [
+    "Dimensions.Version",
+    "Dimensions.ClientName",
+    "Dimensions.ClientVersion",
+    "Amount"
+   ],
+   "mutates": false,
+   "example": {
+    "id": "JsonSchema.Net",
+    "groupby": "Version"
+   },
+   "source": "E1 E8 GET https://www.nuget.org/stats/reports/packages/JsonSchema.Net",
+   "verified": true
+  },
+  {
+   "name": "get-package-version-download-stats",
+   "summary": "Get download counts for one package version, broken down by client name or client version",
+   "method": "GET",
+   "urlTemplate": "/stats/reports/packages/{id}/{version}",
+   "params": [
+    {
+     "name": "id",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Package id",
+     "example": "newtonsoft.json"
+    },
+    {
+     "name": "version",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Exact package version",
+     "example": "13.0.3"
+    },
+    {
+     "name": "groupby",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Dimension to group download counts by",
+     "enum": [
+      "ClientName",
+      "ClientVersion"
+     ],
+     "default": "ClientName"
+    }
+   ],
+   "headers": {
+    "X-Requested-With": "XMLHttpRequest",
+    "Accept": "application/json, text/javascript, */*; q=0.01"
+   },
+   "responseType": "json",
+   "resultPath": "Facts",
+   "defaultFields": [
+    "Dimensions.Version",
+    "Dimensions.ClientName",
+    "Dimensions.ClientVersion",
+    "Amount"
+   ],
+   "mutates": false,
+   "example": {
+    "id": "newtonsoft.json",
+    "version": "13.0.3",
+    "groupby": "ClientName"
+   },
+   "source": "E2 E12 GET https://www.nuget.org/stats/reports/packages/newtonsoft.json/13.0.3",
+   "verified": true
+  },
+  {
+   "name": "get-gallery-totals",
+   "summary": "Get gallery-wide totals: total downloads, unique packages, total package versions, last update time",
+   "method": "GET",
+   "urlTemplate": "/stats/totals",
+   "params": [],
+   "headers": {
+    "X-Requested-With": "XMLHttpRequest"
+   },
+   "responseType": "json",
+   "defaultFields": [
+    "Downloads",
+    "UniquePackages",
+    "TotalPackages",
+    "LastUpdatedDateUtc"
+   ],
+   "mutates": false,
+   "source": "E4 GET https://www.nuget.org/stats/totals",
+   "verified": true
+  },
+  {
+   "name": "get-stats-overview",
+   "summary": "Get the statistics overview: top 10 packages, top 10 package versions, and NuGet client usage over the last 6 weeks",
+   "method": "GET",
+   "urlTemplate": "/stats",
+   "params": [],
+   "responseType": "html",
+   "extract": {
+    "list": "tbody > tr",
+    "fields": {
+     "name": "td.text-left",
+     "version": "td.text-center",
+     "downloads": "td.text-right",
+     "url": "a@href"
+    }
+   },
+   "defaultFields": [
+    "name",
+    "version",
+    "downloads",
+    "url"
+   ],
+   "mutates": false,
+   "source": "E9 GET https://www.nuget.org/stats",
+   "verified": true
+  },
+  {
+   "name": "list-top-packages",
+   "summary": "List the top 100 most downloaded packages over the last 6 weeks (all packages, followed by community-only rows)",
+   "method": "GET",
+   "urlTemplate": "/stats/packages",
+   "params": [],
+   "responseType": "html",
+   "extract": {
+    "list": "tbody > tr",
+    "fields": {
+     "rank": "td",
+     "package": "a",
+     "url": "a@href",
+     "row": ""
+    }
+   },
+   "defaultFields": [
+    "rank",
+    "package",
+    "url",
+    "row"
+   ],
+   "mutates": false,
+   "source": "E10 GET https://www.nuget.org/stats/packages",
+   "verified": true
+  },
+  {
+   "name": "list-top-package-versions",
+   "summary": "List the most downloaded package versions over the last 6 weeks",
+   "method": "GET",
+   "urlTemplate": "/stats/packageversions",
+   "params": [],
+   "responseType": "html",
+   "extract": {
+    "list": "tbody > tr",
+    "fields": {
+     "rank": "td",
+     "package": "a",
+     "url": "a@href",
+     "row": ""
+    }
+   },
+   "defaultFields": [
+    "rank",
+    "package",
+    "url",
+    "row"
+   ],
+   "mutates": false,
+   "source": "E11",
+   "verified": true
+  },
+  {
+   "name": "get-owner-profile",
+   "summary": "Get a NuGet user or organization profile: package count, total downloads, and the packages they own",
+   "method": "GET",
+   "urlTemplate": "/profiles/{user}",
+   "params": [
+    {
+     "name": "user",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Profile username",
+     "example": "jamesnk"
+    }
+   ],
+   "responseType": "html",
+   "extract": {
+    "list": "ul.list-packages > li.package",
+    "fields": {
+     "id": "a.package-title",
+     "url": "a.package-title@href",
+     "owners": "span.package-by",
+     "totalDownloads": "li > span.icon-text",
+     "lastUpdated": "li > span.icon-text > span",
+     "tags": "li.package-tags",
+     "description": "div.package-details"
+    }
+   },
+   "defaultFields": [
+    "id",
+    "url",
+    "totalDownloads",
+    "lastUpdated",
+    "description"
+   ],
+   "mutates": false,
+   "example": {
+    "user": "jamesnk"
+   },
+   "source": "E14 GET https://www.nuget.org/profiles/jamesnk",
+   "verified": true
+  },
+  {
+   "name": "list-client-downloads",
+   "summary": "List downloadable NuGet client tools (nuget.exe, VS VSIX, and others) with their versions, URLs and release dates",
+   "method": "GET",
+   "urlTemplate": "https://dist.nuget.org/index.json",
+   "params": [],
+   "responseType": "json",
+   "resultPath": "artifacts",
+   "defaultFields": [
+    "name",
+    "displayName",
+    "versions"
+   ],
+   "mutates": false,
+   "source": "E3 E19 GET https://dist.nuget.org/index.json",
+   "verified": true
+  }
+ ],
+ "blockers": [],
+ "notes": [
+  "All commands are public reads. Signing in is only needed for uploading and managing packages, which this CLI does not cover.",
+  "Raw .nupkg files can be downloaded directly from https://www.nuget.org/api/v2/package/{id}/{version}. The response is a binary zip, so there is no command for it. The URL also appears in content.@src of the OData results.",
+  "OData v2 commands (search-packages-v2, list-package-versions, get-package-version) return Atom XML converted to JSON. Property keys are prefixed 'd:', and typed values live under '#text'. For example, m:properties.d:VersionDownloadCount.#text holds the download count.",
+  "d:DownloadCount is capped at 2147483647 (Int32 max) for very popular packages. Use d:VersionDownloadCount, or get-package-download-stats, for real numbers.",
+  "In the gallery search, use q=Tags:\"name\" to search by tag. Package ids in gallery HTML output can contain stray spaces after dots because of <wbr> line-break hints. Remove them before passing an id to other commands.",
+  "The stats report endpoints accept repeated groupby values in the web app. This CLI sends a single groupby dimension.",
+  "list-top-packages returns the 'all packages' table followed by the community-only table. The 'row' field contains rank, name and downloads together."
+ ],
+ "dropped": [],
+ "generated": {
+  "by": "clify add",
+  "model": "claude-opus-5-5",
+  "exploredSteps": 23,
+  "recorded": 27,
+  "verifiedAt": "2026-10-18T07:12:57.760Z",
+  "seconds": 219
+ }
+}

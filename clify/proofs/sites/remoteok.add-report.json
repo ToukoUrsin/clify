@@ -1,0 +1,59 @@
+{
+ "ok": true,
+ "site": "remoteok",
+ "url": "https://remoteok.com/",
+ "commands": [
+  {
+   "name": "search-jobs",
+   "summary": "Search and filter remote job listings by keyword, tags, location, minimum salary, benefit and company, with sorting",
+   "verified": true
+  },
+  {
+   "name": "list-jobs-api",
+   "summary": "List the latest remote jobs as clean JSON from RemoteOK's public API, optionally filtered by one tag (includes salary, location, description and apply URL)",
+   "verified": true
+  },
+  {
+   "name": "get-job",
+   "summary": "Get the details of one remote job (position, company, location, tags, full description, apply link) by its slug",
+   "verified": true
+  },
+  {
+   "name": "list-related-jobs",
+   "summary": "List jobs related to a given job (same tag), excluding that job",
+   "verified": true
+  },
+  {
+   "name": "list-tags",
+   "summary": "List every job tag key with its display label (use the keys for the tags/tag params)",
+   "verified": true
+  }
+ ],
+ "verified": 5,
+ "writes": 0,
+ "dropped": [
+  {
+   "name": "list-company-jobs",
+   "reason": "The /company/{slug} page is a JS shell. It ships only tr.placeholder.job rows and loads real jobs through the action=get_jobs infinity-scroll call, so the static HTML never has job data. search-jobs already covers this with its company param."
+  },
+  {
+   "name": "list-country-jobs",
+   "reason": "The /remote-jobs-in-{country} page is the same JS shell, with placeholder rows only and jobs loaded later by JS. search-jobs already covers this with its location param (country code)."
+  }
+ ],
+ "blockers": [
+  "bot-check at https://www.toptal.com/"
+ ],
+ "loggedIn": false,
+ "seconds": 187,
+ "next": [
+  "clify remoteok",
+  "clify remoteok search-jobs --search \"python\""
+ ],
+ "installed": "/home/ubuntu/clify-runs/batch2/home/bin/remoteok",
+ "explored": {
+  "steps": 19,
+  "recorded": 49,
+  "heldWrites": 0
+ }
+}

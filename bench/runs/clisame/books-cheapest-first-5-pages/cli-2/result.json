@@ -1,0 +1,35 @@
+{
+ "task": "books-cheapest-first-5-pages",
+ "site": "books",
+ "mode": "cli",
+ "trial": 2,
+ "tag": "clisame",
+ "ok": true,
+ "why": "all expected values present",
+ "answer": "Patience — £10.16",
+ "expected": {
+  "expect": [
+   "Patience",
+   "10.16"
+  ]
+ },
+ "wallMs": 11214,
+ "apiMs": 8026,
+ "turns": 4,
+ "toolCalls": 3,
+ "tokens": {
+  "input": 8,
+  "output": 414,
+  "cacheWrite": 3964,
+  "cacheRead": 14588,
+  "total": 18974
+ },
+ "costUsd": 0.031049600000000004,
+ "models": [
+  "claude-opus-5-5"
+ ],
+ "exitCode": 0,
+ "timedOut": false,
+ "subtype": "success",
+ "startedAt": "2026-10-18T12:54:14.158Z"
+}

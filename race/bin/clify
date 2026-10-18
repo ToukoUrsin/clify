@@ -1,0 +1,6 @@
+#!/bin/sh
+# The runner installs CLIFY_HOME per run; this wrapper runs the repo's own
+# clify/ next to race/ (RACE_CLIFY_DIR overrides it). Account commands go
+# through clify itself: clify login|session|whoami <site>.
+here=$(dirname "$(readlink -f "$0")")
+exec "${RACE_CLIFY_DIR:-$here/../../clify}/bin/clify" "$@"

@@ -1,0 +1,27 @@
+{
+ "name": "printables",
+ "startUrl": "https://www.printables.com/",
+ "origin": "https://www.printables.com",
+ "createdAt": "2026-10-18T09:21:39.810Z",
+ "description": "Printables (printables.com) is Prusa's 3D-model sharing site. This CLI is meant to search and fetch 3D printable models, but no usable endpoints were captured because Cloudflare blocked the explorer.",
+ "commands": [],
+ "blockers": [
+  "bot-check at https://www.printables.com/",
+  "bot-check at https://www.printables.com/search/models?q=phone%20stand",
+  "captcha"
+ ],
+ "notes": [
+  "Exploration was blocked by Cloudflare's 'Performing security verification' challenge. The homepage request (E1) returned only a 307 redirect into the challenge, and /search/models?q=phone stand never loaded, so no data endpoints were recorded.",
+  "No commands were generated. A specification based on the single recorded request would only replay the Cloudflare redirect, and inventing endpoints that were not observed would not pass verification.",
+  "The Printables web app is believed to load its data from a GraphQL API (likely https://api.printables.com/graphql/), but that was not observed in this recording. Re-run exploration with a browser profile that passes Cloudflare (headed mode, real user agent, or a valid cf_clearance cookie) to capture the search, model detail, user profile, collection and comment operations, then regenerate the specification."
+ ],
+ "dropped": [],
+ "generated": {
+  "by": "clify add",
+  "model": "claude-opus-5-5",
+  "exploredSteps": 2,
+  "recorded": 4,
+  "verifiedAt": "2026-10-18T09:21:46.823Z",
+  "seconds": 20
+ }
+}

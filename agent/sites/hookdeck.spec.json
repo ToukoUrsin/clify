@@ -1,0 +1,18 @@
+{
+  "name": "hookdeck",
+  "startUrl": "https://dashboard.hookdeck.com/",
+  "origin": "https://api.hookdeck.com",
+  "createdAt": "2026-10-18T07:20:00Z",
+  "description": "Hookdeck Event Gateway dashboard, signed in as the clify agent (saved session). --x-hookdeck-team-id defaults to the current project (see projects).",
+  "auth": { "headerNames": [] },
+  "commands": [
+    { "name": "projects", "summary": "Your projects (id = team id)", "method": "GET", "urlTemplate": "/2026-09-01/projects", "headers": { "origin": "https://dashboard.hookdeck.com" }, "responseType": "json", "mutates": false, "auth": true, "params": [], "source": "GET https://api.hookdeck.com/2026-09-01/projects" },
+    { "name": "list-connections", "summary": "Connections (source -> destination)", "method": "GET", "urlTemplate": "/2026-09-01/connections", "headers": { "origin": "https://dashboard.hookdeck.com" }, "responseType": "json", "resultPath": "models", "mutates": false, "auth": true,
+      "params": [ { "name": "x-hookdeck-team-id", "in": "header", "required": false, "type": "string", "default": "tm_FW0ek6XKAZBc" }, { "name": "name", "in": "query", "required": false, "type": "string" } ], "source": "GET https://api.hookdeck.com/2026-09-01/connections" },
+    { "name": "list-sources", "summary": "Sources (each has its webhook URL)", "method": "GET", "urlTemplate": "/2026-09-01/sources", "headers": { "origin": "https://dashboard.hookdeck.com" }, "responseType": "json", "resultPath": "models", "mutates": false, "auth": true,
+      "params": [ { "name": "x-hookdeck-team-id", "in": "header", "required": false, "type": "string", "default": "tm_FW0ek6XKAZBc" }, { "name": "name", "in": "query", "required": false, "type": "string" } ], "source": "GET https://api.hookdeck.com/2026-09-01/sources" },
+    { "name": "create-connection", "summary": "Create a connection with a new source and a new HTTP destination", "method": "POST", "urlTemplate": "/2026-09-01/connections", "headers": { "origin": "https://dashboard.hookdeck.com" }, "responseType": "json", "bodyEncoding": "json", "mutates": true, "auth": true,
+      "bodyTemplate": { "name": "{name}", "source": { "name": "{source}" }, "destination": { "name": "{destination}", "type": "HTTP", "config": { "url": "{url}" } } },
+      "params": [ { "name": "x-hookdeck-team-id", "in": "header", "required": false, "type": "string", "default": "tm_FW0ek6XKAZBc" }, { "name": "name", "in": "body", "required": true, "type": "string", "description": "connection name" }, { "name": "source", "in": "body", "required": true, "type": "string", "description": "new source name" }, { "name": "destination", "in": "body", "required": true, "type": "string", "description": "new destination name" }, { "name": "url", "in": "body", "required": true, "type": "string", "description": "destination URL" } ], "source": "POST https://api.hookdeck.com/2026-09-01/connections" }
+  ]
+}

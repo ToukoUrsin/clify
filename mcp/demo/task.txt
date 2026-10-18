@@ -1,0 +1,4 @@
+Use only the clify MCP tools (no shell, no browser, no web search). Do both:
+1. The latest version of the serde crate on crates.io.
+2. The current National Weather Service forecast for San Francisco: the next two periods (name, temperature, short forecast).
+Answer in a short list with the exact values the tools returned.

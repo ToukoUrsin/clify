@@ -1,0 +1,186 @@
+{
+ "url": "https://artifacthub.io/",
+ "category": "dev",
+ "sandbox": "clify-artifacthub-io",
+ "startedAt": "2026-10-18T08:46:20.895Z",
+ "region": "us-pdx-1",
+ "chrome": "Chrome/148.0.7778.96",
+ "sandboxStartMs": 2410,
+ "addSeconds": 243,
+ "addExit": 0,
+ "add": {
+  "ok": true,
+  "site": "artifacthub",
+  "url": "https://artifacthub.io/",
+  "commands": [
+   {
+    "name": "search-packages",
+    "summary": "Search Artifact Hub packages by keyword, with filters for kind, category, publisher, repo, org and license, plus sorting and offset paging.",
+    "verified": true
+   },
+   {
+    "name": "get-package",
+    "summary": "Get full details of a package's latest version: readme, available versions, repository, keywords, links and data.",
+    "verified": true
+   },
+   {
+    "name": "get-package-version",
+    "summary": "Get details of a specific version of a package.",
+    "verified": true
+   },
+   {
+    "name": "get-package-values",
+    "summary": "Get the default values.yaml of a Helm chart version as raw YAML text.",
+    "verified": true
+   },
+   {
+    "name": "get-package-templates",
+    "summary": "Get the template files of a Helm chart version. Each file's data field is base64-encoded.",
+    "verified": true
+   },
+   {
+    "name": "get-package-changelog",
+    "summary": "Get a package's changelog: changes per version, with timestamps and security-update flags.",
+    "verified": true
+   },
+   {
+    "name": "get-security-report",
+    "summary": "Get the Trivy vulnerability scan report for each container image of a package version.",
+    "verified": true
+   },
+   {
+    "name": "get-package-views",
+    "summary": "Get daily view counts for a package over roughly the last 30 days, grouped by version.",
+    "verified": true
+   },
+   {
+    "name": "get-package-stars",
+    "summary": "Get the number of stars a package has.",
+    "verified": true
+   },
+   {
+    "name": "get-package-feed",
+    "summary": "Get a package's release feed (RSS): versions with links and publish dates.",
+    "verified": true
+   },
+   {
+    "name": "random-packages",
+    "summary": "Get a random selection of packages, as shown on the home page.",
+    "verified": true
+   },
+   {
+    "name": "get-package-totals",
+    "summary": "Get the total number of packages and releases on Artifact Hub.",
+    "verified": true
+   },
+   {
+    "name": "get-site-stats",
+    "summary": "Get site-wide statistics: package, release, repository and organization totals and their growth over time.",
+    "verified": true
+   },
+   {
+    "name": "get-openapi-spec",
+    "summary": "Get Artifact Hub's public OpenAPI 3 specification (YAML text) describing the full /api/v1 API.",
+    "verified": true
+   }
+  ],
+  "verified": 14,
+  "writes": 0,
+  "dropped": [],
+  "blockers": [],
+  "loggedIn": false,
+  "seconds": 242,
+  "next": [
+   "clify artifacthub",
+   "clify artifacthub search-packages --query \"nginx\""
+  ],
+  "installed": "/home/ubuntu/clify-runs/blaxel-w1/home/bin/artifacthub",
+  "explored": {
+   "steps": 26,
+   "recorded": 78,
+   "heldWrites": 5
+  }
+ },
+ "check": {
+  "on": "blaxel",
+  "node": "v24.22.0",
+  "seconds": 3,
+  "reads": 14,
+  "verified": 14,
+  "failed": [],
+  "results": [
+   {
+    "name": "search-packages",
+    "ok": true,
+    "ms": 106
+   },
+   {
+    "name": "get-package",
+    "ok": true,
+    "ms": 19
+   },
+   {
+    "name": "get-package-version",
+    "ok": true,
+    "ms": 19
+   },
+   {
+    "name": "get-package-values",
+    "ok": true,
+    "ms": 23
+   },
+   {
+    "name": "get-package-templates",
+    "ok": true,
+    "ms": 55
+   },
+   {
+    "name": "get-package-changelog",
+    "ok": true,
+    "ms": 17
+   },
+   {
+    "name": "get-security-report",
+    "ok": true,
+    "ms": 49
+   },
+   {
+    "name": "get-package-views",
+    "ok": true,
+    "ms": 21
+   },
+   {
+    "name": "get-package-stars",
+    "ok": true,
+    "ms": 84
+   },
+   {
+    "name": "get-package-feed",
+    "ok": true,
+    "ms": 24
+   },
+   {
+    "name": "random-packages",
+    "ok": true,
+    "ms": 16
+   },
+   {
+    "name": "get-package-totals",
+    "ok": true,
+    "ms": 15
+   },
+   {
+    "name": "get-site-stats",
+    "ok": true,
+    "ms": 23
+   },
+   {
+    "name": "get-openapi-spec",
+    "ok": true,
+    "ms": 17
+   }
+  ]
+ },
+ "deleted": true,
+ "seconds": 248
+}

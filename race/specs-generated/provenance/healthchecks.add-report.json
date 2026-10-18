@@ -1,0 +1,110 @@
+{
+  "ok": true,
+  "site": "healthchecks",
+  "url": "https://healthchecks.io/",
+  "commands": [
+    {
+      "name": "list-checks",
+      "summary": "List the checks in a project, with name, status icon and details URL. Optionally filter by tag and sort.",
+      "verified": true,
+      "needsLogin": true
+    },
+    {
+      "name": "add-check",
+      "summary": "Create a new simple (period-based) check in a project with name, tags, period and grace time. Returns the project's check list.",
+      "verified": false,
+      "writes": true,
+      "needsLogin": true
+    },
+    {
+      "name": "get-checks-status",
+      "summary": "Get the live status of every check in a project as JSON: check UUID, status, last ping and started flag.",
+      "verified": true,
+      "needsLogin": true
+    },
+    {
+      "name": "get-check",
+      "summary": "Get one check's details page: name, tags, description and ping URLs.",
+      "verified": true,
+      "needsLogin": true
+    },
+    {
+      "name": "get-check-status",
+      "summary": "Get one check's live status as JSON: status, started flag and page title. The text, event and downtime fields are HTML fragments.",
+      "verified": true,
+      "needsLogin": true
+    },
+    {
+      "name": "update-check-name",
+      "summary": "Change a check's name, slug, tags and description. This replaces all four fields.",
+      "verified": false,
+      "writes": true,
+      "needsLogin": true
+    },
+    {
+      "name": "update-check-schedule",
+      "summary": "Change a check's period and grace time (simple schedule).",
+      "verified": false,
+      "writes": true,
+      "needsLogin": true
+    },
+    {
+      "name": "ping-check",
+      "summary": "Send a success ping to a check's ping URL, marking the job as having just run. No login is needed.",
+      "verified": false,
+      "writes": true
+    },
+    {
+      "name": "pause-check",
+      "summary": "Pause monitoring for a check. It stays paused until its next ping.",
+      "verified": false,
+      "writes": true,
+      "needsLogin": true
+    },
+    {
+      "name": "delete-check",
+      "summary": "Permanently delete a check.",
+      "verified": false,
+      "writes": true,
+      "needsLogin": true
+    },
+    {
+      "name": "list-projects",
+      "summary": "List the signed-in user's projects with their check URLs. The project UUID is in the URL.",
+      "verified": true,
+      "needsLogin": true
+    },
+    {
+      "name": "list-integrations",
+      "summary": "List a project's notification integrations (email, SMS, …) and how many checks each is assigned to.",
+      "verified": true,
+      "needsLogin": true
+    },
+    {
+      "name": "preview-cron",
+      "summary": "Preview the next expected ping dates for a cron expression in a timezone. Read-only.",
+      "verified": true
+    },
+    {
+      "name": "preview-oncalendar",
+      "summary": "Preview the next expected ping dates for a systemd OnCalendar expression. Read-only.",
+      "verified": true
+    }
+  ],
+  "verified": 8,
+  "writes": 6,
+  "dropped": [],
+  "blockers": [],
+  "loggedIn": true,
+  "seconds": 123,
+  "next": [
+    "clify healthchecks",
+    "clify healthchecks list-checks"
+  ],
+  "installed": "/home/ubuntu/race-gen5/home/bin/healthchecks",
+  "explored": {
+    "steps": 0,
+    "recorded": 54,
+    "heldWrites": 0
+  }
+}

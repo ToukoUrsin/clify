@@ -1,0 +1,522 @@
+{
+ "name": "theguardian",
+ "startUrl": "https://www.theguardian.com/international",
+ "origin": "https://www.theguardian.com",
+ "createdAt": "2026-10-18T07:34:56.289Z",
+ "description": "The Guardian (theguardian.com) news site. The CLI reads articles, edition and section fronts, tag and topic listings, writer pages, most-read lists, daily section archives, topic and contributor indexes, and reader comments as JSON. It uses the site's own `.json?dcr` page data, RSS feeds and the public discussion API.",
+ "commands": [
+  {
+   "name": "get-article",
+   "summary": "Get one full article (headline, standfirst, byline, date, body blocks, tags) as JSON from its URL parts",
+   "method": "GET",
+   "urlTemplate": "/{section}/{year}/{month}/{day}/{slug}.json?dcr",
+   "params": [
+    {
+     "name": "section",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "First path segment of the article URL, e.g. world, us-news, sport, commentisfree",
+     "example": "world"
+    },
+    {
+     "name": "year",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "4-digit year from the article URL",
+     "example": "2026"
+    },
+    {
+     "name": "month",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "3-letter lowercase month from the article URL",
+     "enum": [
+      "jan",
+      "feb",
+      "mar",
+      "apr",
+      "may",
+      "jun",
+      "jul",
+      "aug",
+      "sep",
+      "oct",
+      "nov",
+      "dec"
+     ],
+     "example": "oct"
+    },
+    {
+     "name": "day",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "2-digit day from the article URL",
+     "example": "18"
+    },
+    {
+     "name": "slug",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Article slug, the last URL segment",
+     "example": "bolotana-sardinian-village-women-centenarians-longevity-long-life"
+    }
+   ],
+   "responseType": "json",
+   "defaultFields": [
+    "headline",
+    "standfirst",
+    "byline",
+    "webPublicationDate",
+    "webURL",
+    "config.shortUrlId",
+    "sectionLabel",
+    "pageId"
+   ],
+   "mutates": false,
+   "example": {
+    "section": "world",
+    "year": "2026",
+    "month": "oct",
+    "day": "18",
+    "slug": "bolotana-sardinian-village-women-centenarians-longevity-long-life"
+   },
+   "source": "E61 E65 E77",
+   "verified": true
+  },
+  {
+   "name": "get-front",
+   "summary": "Get an edition or section front page (e.g. international, uk, us, sport) as its list of curated story collections",
+   "method": "GET",
+   "urlTemplate": "/{front}.json?dcr",
+   "params": [
+    {
+     "name": "front",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Front path: an edition (international, uk, us, au) or a section (sport, culture, world, business). Section fronts may redirect to an edition-specific version (sport -> us/sport).",
+     "example": "international"
+    }
+   ],
+   "responseType": "json",
+   "resultPath": "pressedPage.collections",
+   "defaultFields": [
+    "displayName",
+    "id",
+    "curated",
+    "backfill"
+   ],
+   "mutates": false,
+   "example": {
+    "front": "international"
+   },
+   "source": "E63 E82 E83 E85 GET https://www.theguardian.com/international.json",
+   "verified": true
+  },
+  {
+   "name": "get-tag-feed",
+   "summary": "Get the RSS feed of the latest articles for a tag or topic, with title, link, date, byline and categories",
+   "method": "GET",
+   "urlTemplate": "/{section}/{tag}/rss",
+   "params": [
+    {
+     "name": "section",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Part of the tag id before the slash, e.g. world, society, science",
+     "example": "world"
+    },
+    {
+     "name": "tag",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Part of the tag id after the slash, e.g. italy",
+     "example": "italy"
+    }
+   ],
+   "responseType": "json",
+   "resultPath": "rss.channel.item",
+   "defaultFields": [
+    "title",
+    "link",
+    "pubDate",
+    "dc:creator",
+    "description",
+    "category"
+   ],
+   "mutates": false,
+   "example": {
+    "section": "world",
+    "tag": "italy"
+   },
+   "source": "E79 GET https://www.theguardian.com/world/italy/rss",
+   "verified": true
+  },
+  {
+   "name": "list-contributor-articles",
+   "summary": "Get the RSS feed of a Guardian writer's latest articles (e.g. angela-giuffrida), with title, link, date, byline and categories",
+   "method": "GET",
+   "urlTemplate": "/profile/{slug}/rss",
+   "params": [
+    {
+     "name": "slug",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Contributor profile slug, e.g. angela-giuffrida (the profile/<slug> tag id)",
+     "example": "angela-giuffrida"
+    }
+   ],
+   "responseType": "json",
+   "resultPath": "rss.channel.item",
+   "defaultFields": [
+    "title",
+    "link",
+    "pubDate",
+    "dc:creator",
+    "description"
+   ],
+   "mutates": false,
+   "example": {
+    "slug": "angela-giuffrida"
+   },
+   "source": "E64",
+   "verified": true
+  },
+  {
+   "name": "get-most-read",
+   "summary": "Get the site-wide most-viewed and deeply-read article lists with headline, url, byline and shortUrl",
+   "method": "GET",
+   "urlTemplate": "https://api.nextgen.guardianapps.co.uk/most-read-with-deeply-read.json",
+   "params": [],
+   "responseType": "json",
+   "resultPath": "tabs",
+   "defaultFields": [
+    "heading",
+    "trails"
+   ],
+   "mutates": false,
+   "source": "E18 E66 GET https://api.nextgen.guardianapps.co.uk/most-read-with-deeply-read.json",
+   "verified": true
+  },
+  {
+   "name": "list-section-day",
+   "summary": "List all articles published in a section on one date (daily archive, e.g. world on 2026/oct/17)",
+   "method": "GET",
+   "urlTemplate": "/{section}/{year}/{month}/{day}/all",
+   "params": [
+    {
+     "name": "section",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Section id, e.g. world, us-news, sport, business",
+     "example": "world"
+    },
+    {
+     "name": "year",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "4-digit year",
+     "example": "2026"
+    },
+    {
+     "name": "month",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "3-letter lowercase month",
+     "enum": [
+      "jan",
+      "feb",
+      "mar",
+      "apr",
+      "may",
+      "jun",
+      "jul",
+      "aug",
+      "sep",
+      "oct",
+      "nov",
+      "dec"
+     ],
+     "example": "oct"
+    },
+    {
+     "name": "day",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "2-digit day",
+     "example": "17"
+    }
+   ],
+   "responseType": "html",
+   "extract": {
+    "list": "a.fc-item__link",
+    "fields": {
+     "headline": ".js-headline-text",
+     "url": "@href"
+    }
+   },
+   "defaultFields": [
+    "headline",
+    "url"
+   ],
+   "mutates": false,
+   "example": {
+    "section": "world",
+    "year": "2026",
+    "month": "oct",
+    "day": "17"
+   },
+   "source": "E80",
+   "verified": true
+  },
+  {
+   "name": "list-subjects",
+   "summary": "Browse the A-Z index of Guardian topics/subjects for one letter; links give tag ids",
+   "method": "GET",
+   "urlTemplate": "/index/subjects/{letter}",
+   "params": [
+    {
+     "name": "letter",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Single lowercase letter a-z",
+     "example": "a"
+    }
+   ],
+   "responseType": "html",
+   "extract": {
+    "list": "li a",
+    "fields": {
+     "name": "",
+     "url": "@href"
+    }
+   },
+   "defaultFields": [
+    "name",
+    "url"
+   ],
+   "mutates": false,
+   "example": {
+    "letter": "a"
+   },
+   "source": "E81 GET https://www.theguardian.com/index/subjects/a",
+   "verified": true
+  },
+  {
+   "name": "list-contributors",
+   "summary": "Browse the A-Z index of Guardian writers/contributors for one letter; links give profile slugs",
+   "method": "GET",
+   "urlTemplate": "/index/contributors/{letter}",
+   "params": [
+    {
+     "name": "letter",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Single lowercase letter a-z (surname initial)",
+     "example": "a"
+    }
+   ],
+   "responseType": "html",
+   "extract": {
+    "list": "li a",
+    "fields": {
+     "name": "",
+     "url": "@href"
+    }
+   },
+   "defaultFields": [
+    "name",
+    "url"
+   ],
+   "mutates": false,
+   "example": {
+    "letter": "a"
+   },
+   "source": "E84 GET https://www.theguardian.com/index/contributors",
+   "verified": true
+  },
+  {
+   "name": "list-comments",
+   "summary": "List reader comments on an article by its short id (e.g. x67fk6), sorted and paged",
+   "method": "GET",
+   "urlTemplate": "https://discussion.theguardian.com/discussion-api/discussion/p/{shortId}",
+   "params": [
+    {
+     "name": "shortId",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Article short id without the /p/ prefix, e.g. x67fk6 (from get-article shortUrlId or a shortUrl like theguardian.com/p/x67fk6)",
+     "example": "x67fk6"
+    },
+    {
+     "name": "orderBy",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Sort order",
+     "enum": [
+      "newest",
+      "oldest",
+      "recommendations"
+     ],
+     "default": "newest"
+    },
+    {
+     "name": "page",
+     "in": "query",
+     "required": false,
+     "type": "number",
+     "description": "Page number, 1-based",
+     "default": 1
+    },
+    {
+     "name": "pageSize",
+     "in": "query",
+     "required": false,
+     "type": "number",
+     "description": "Comments per page",
+     "enum": [
+      "20",
+      "50",
+      "100"
+     ],
+     "default": 20
+    }
+   ],
+   "responseType": "json",
+   "resultPath": "discussion.comments",
+   "defaultFields": [
+    "id",
+    "userProfile.displayName",
+    "isoDateTime",
+    "body",
+    "numRecommends",
+    "webUrl"
+   ],
+   "pagination": {
+    "type": "page",
+    "param": "page"
+   },
+   "mutates": false,
+   "example": {
+    "shortId": "x67fk6"
+   },
+   "source": "E21 GET https://api.nextgen.guardianapps.co.uk/discussion/comment-counts.json",
+   "verified": true
+  },
+  {
+   "name": "get-comment-counts",
+   "summary": "Get comment counts for one or more articles by short URL (/p/xxxxx), comma-separated",
+   "method": "GET",
+   "urlTemplate": "https://discussion.theguardian.com/discussion-api/getCommentCounts",
+   "params": [
+    {
+     "name": "shortUrls",
+     "key": "short-urls",
+     "in": "query",
+     "required": true,
+     "type": "string",
+     "description": "Comma-separated short URLs, each like /p/x46an8",
+     "example": "/p/x46an8,/p/x65353,/p/x67fk6"
+    }
+   ],
+   "responseType": "json",
+   "mutates": false,
+   "example": {
+    "shortUrls": "/p/x46an8,/p/x65353,/p/x67fk6"
+   },
+   "source": "E22 E21 GET https://discussion.theguardian.com/discussion-api/getCommentCounts",
+   "verified": true
+  }
+ ],
+ "blockers": [],
+ "notes": [
+  "The site has no keyword search of its own (its Search link goes to Google). To discover content, use get-front, list-tag-articles, get-tag-feed, list-section-day, list-subjects or list-contributors.",
+  "Article URLs look like /{section}/{year}/{month}/{day}/{slug}. Split them into the get-article params; month is a 3-letter lowercase name such as oct.",
+  "A tag id such as world/italy maps to section=world and tag=italy. A writer's tag profile/<slug> maps to list-contributor-articles slug=<slug>.",
+  "To read comments, take shortUrlId from get-article (e.g. /p/x67fk6) or a shortUrl, and pass the part after /p/ as shortId to list-comments.",
+  "Section fronts can redirect to an edition-specific path, e.g. sport -> us/sport, depending on the requester's country.",
+  "get-most-read calls api.nextgen.guardianapps.co.uk, a separate Guardian host. One call there worked during exploration and a later one was refused, so it may be unreliable. www.theguardian.com/most-read.json is an alternative that returns HTML plus JSON-LD.",
+  "Unconfirmed against the recording:\n  - the JSON result paths for list-tag-articles, list-contributor-articles and list-section-day (\"contents\");\n  - the all.json?dcr variant of the daily archive (only the HTML page was recorded);\n  - whether ?page= works on the .json?dcr tag URLs (paging was only seen on the HTML tag page);\n  - the generic HTML selectors for the A-Z indexes (they will also catch some navigation links).",
+  "All commands are anonymous public reads; no login is needed."
+ ],
+ "dropped": [
+  {
+   "name": "list-tag-articles",
+   "summary": "List articles for a tag or topic (e.g. world/italy) as JSON, paged",
+   "method": "GET",
+   "urlTemplate": "/{section}/{tag}.json?dcr",
+   "params": [
+    {
+     "name": "section",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Part of the tag id before the slash, e.g. world, society, science, environment",
+     "example": "world"
+    },
+    {
+     "name": "tag",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Part of the tag id after the slash, e.g. italy, life-expectancy, ageing",
+     "example": "italy"
+    },
+    {
+     "name": "page",
+     "in": "query",
+     "required": false,
+     "type": "number",
+     "description": "Page number of the tag listing, 1-based",
+     "default": 1,
+     "example": "2"
+    }
+   ],
+   "responseType": "json",
+   "resultPath": "contents",
+   "defaultFields": [
+    "header.headline",
+    "header.url",
+    "properties.byline",
+    "card.webPublicationDateOption",
+    "card.trailText"
+   ],
+   "pagination": {
+    "type": "page",
+    "param": "page"
+   },
+   "mutates": false,
+   "example": {
+    "section": "world",
+    "tag": "italy"
+   },
+   "source": "E62 E78 GET https://www.theguardian.com/world/italy.json",
+   "verified": false,
+   "verifyNote": "The tag page .json?dcr response has no 'contents' array and its real shape is unknown from the evidence. get-tag-feed already lists a tag's latest articles via RSS."
+  }
+ ],
+ "generated": {
+  "by": "clify add",
+  "model": "claude-opus-5-5",
+  "exploredSteps": 15,
+  "recorded": 421,
+  "verifiedAt": "2026-10-18T07:37:24.811Z",
+  "seconds": 255
+ }
+}

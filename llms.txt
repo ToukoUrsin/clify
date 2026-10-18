@@ -1,0 +1,21 @@
+# clify
+
+> clify turns most websites into a JSON CLI and MCP tools for AI agents: so far 133 of 160 public sites tried (open data and government, developer registries, science, maps and weather, culture, news, sports, jobs). It explores the site once in a headless browser, records the requests behind what it clicks, writes typed commands, verifies each one live, and installs the CLI. Agents then call the site's own endpoints directly. The agent can sign itself up with its own email and phone, or use your logins; CAPTCHAs are never solved, they stop the flow and clify asks a human.
+
+## Use it
+
+- Hosted MCP, no install: `claude mcp add --transport http clify https://bold-cloud-h4u6s.run.mcp-use.com/mcp` (3 core tools `clify_sites`, `clify_help`, `clify_run` (+4 shortcuts), 2.5k tokens for the whole tool list; 135 sites and 1,619 live-verified commands)
+- clify is not on npm (`npm i clify` is an unrelated package): clone the repo. Local CLI: `cd clify && npm install && npx playwright install chromium`, `export PATH="$PWD/bin:$HOME/.clify/bin:$PATH"`, then `clify guide`, `clify list --query <words>`, `clify <site>`, `clify <site> <command> --param v`
+- New site: `clify add <url> [--goal "..."]` (needs `ANTHROPIC_API_KEY`); fix: `clify repair <site>`; re-test: `clify check <site>`
+- Output is one JSON object; errors include `next`. Writes return a preview until `--yes` / `confirm: true`.
+
+## Docs
+
+- [README.md](README.md): overview, numbers, evidence, responsible-use rules
+- [AGENTS.md](AGENTS.md): short agent guide
+- [clify/AGENTS.md](clify/AGENTS.md): full agent guide, troubleshooting
+- [clify/llms.txt](clify/llms.txt): CLI reference
+- [clify/ACCOUNTS.md](clify/ACCOUNTS.md): agent identity, logins, sessions, ask-a-human
+- [mcp/README.md](mcp/README.md): hosted MCP server
+- [clify/proofs/](clify/proofs/): `clify add` on 160 unseen sites (133 of 160 sites with 3+ verified commands, 1,634 verified commands), agent handoff, cold start
+- [race/README.md](race/README.md), [bench/README.md](bench/README.md): browser agent vs clify agent

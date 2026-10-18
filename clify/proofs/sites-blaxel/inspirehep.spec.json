@@ -1,0 +1,1277 @@
+{
+ "name": "inspirehep",
+ "startUrl": "https://inspirehep.net/",
+ "origin": "https://inspirehep.net",
+ "createdAt": "2026-10-18T09:00:21.317Z",
+ "description": "INSPIRE-HEP is the high-energy physics literature database. This CLI searches and fetches papers, citations, references, BibTeX/LaTeX exports, authors, jobs, conferences, seminars, institutions and experiments through INSPIRE's public JSON API.",
+ "commands": [
+  {
+   "name": "search-literature",
+   "summary": "Search HEP papers with INSPIRE query syntax, with optional filters for document type, date range, author count and subject, plus sorting and paging",
+   "method": "GET",
+   "urlTemplate": "/api/literature",
+   "params": [
+    {
+     "name": "q",
+     "in": "query",
+     "required": true,
+     "type": "string",
+     "description": "INSPIRE search query: free text ('dark matter'), 'a G.Bertone.1' (author identifier), 't higgs' (title), 'refersto:recid:648746' (papers citing a record), 'affid 902725' (institution), 'accelerator_ex",
+     "example": "dark matter"
+    },
+    {
+     "name": "sort",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Sort order",
+     "enum": [
+      "mostrecent",
+      "mostcited"
+     ],
+     "default": "mostrecent"
+    },
+    {
+     "name": "doc_type",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Document type facet value, e.g. article, published, review, conference paper, thesis, book, proceedings, lectures, note, report",
+     "example": "review"
+    },
+    {
+     "name": "earliest_date",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Year range 'YYYY--YYYY'",
+     "example": "2020--2026"
+    },
+    {
+     "name": "author_count",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Number-of-authors facet value, e.g. 'Single author' or '10 authors or less'",
+     "example": "10 authors or less"
+    },
+    {
+     "name": "subject",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Subject facet value, e.g. Astrophysics, Phenomenology-HEP, Theory-HEP, Experiment-HEP",
+     "example": "Astrophysics"
+    },
+    {
+     "name": "size",
+     "in": "query",
+     "required": false,
+     "type": "number",
+     "description": "Results per page",
+     "default": 25
+    },
+    {
+     "name": "page",
+     "in": "query",
+     "required": false,
+     "type": "number",
+     "description": "Page number, starting at 1",
+     "default": 1
+    }
+   ],
+   "headers": {
+    "Accept": "application/vnd+inspire.record.ui+json"
+   },
+   "responseType": "json",
+   "resultPath": "hits.hits",
+   "defaultFields": [
+    "id",
+    "metadata.titles.0.title",
+    "metadata.authors.0.full_name",
+    "metadata.number_of_authors",
+    "metadata.date",
+    "metadata.citation_count",
+    "metadata.arxiv_eprints.0.value",
+    "metadata.dois.0.value"
+   ],
+   "pagination": {
+    "type": "page",
+    "param": "page"
+   },
+   "mutates": false,
+   "example": {
+    "q": "dark matter",
+    "sort": "mostcited",
+    "doc_type": "review"
+   },
+   "source": "E2 E25 GET https://inspirehep.net/api/literature",
+   "verified": true
+  },
+  {
+   "name": "list-citing-papers",
+   "summary": "List the papers that cite a given literature record (by recid)",
+   "method": "GET",
+   "urlTemplate": "/api/literature?q=refersto%3Arecid%3A{recid}",
+   "params": [
+    {
+     "name": "recid",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Literature record id (control number) of the cited paper",
+     "example": "648746"
+    },
+    {
+     "name": "sort",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Sort order",
+     "enum": [
+      "mostrecent",
+      "mostcited"
+     ],
+     "default": "mostrecent"
+    },
+    {
+     "name": "size",
+     "in": "query",
+     "required": false,
+     "type": "number",
+     "description": "Results per page",
+     "default": 25
+    },
+    {
+     "name": "page",
+     "in": "query",
+     "required": false,
+     "type": "number",
+     "description": "Page number, starting at 1",
+     "default": 1
+    }
+   ],
+   "headers": {
+    "Accept": "application/vnd+inspire.record.ui+json"
+   },
+   "responseType": "json",
+   "resultPath": "hits.hits",
+   "defaultFields": [
+    "id",
+    "metadata.titles.0.title",
+    "metadata.authors.0.full_name",
+    "metadata.number_of_authors",
+    "metadata.date",
+    "metadata.citation_count",
+    "metadata.arxiv_eprints.0.value"
+   ],
+   "pagination": {
+    "type": "page",
+    "param": "page"
+   },
+   "mutates": false,
+   "example": {
+    "recid": "648746",
+    "page": "2"
+   },
+   "source": "E2 GET https://inspirehep.net/api/literature",
+   "verified": true
+  },
+  {
+   "name": "get-literature-facets",
+   "summary": "Get facet counts and aggregations for a literature query: doc types, subjects, authors, collaborations, citations-by-year, citation summary",
+   "method": "GET",
+   "urlTemplate": "/api/literature/facets",
+   "params": [
+    {
+     "name": "q",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "INSPIRE search query, e.g. 'dark matter' or 'recid:648746'",
+     "example": "recid:648746"
+    },
+    {
+     "name": "facet_name",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Special facet set to compute. Omit for the standard search facets.",
+     "enum": [
+      "citations-by-year",
+      "citation-summary",
+      "hep-author-publication"
+     ],
+     "example": "citations-by-year"
+    },
+    {
+     "name": "search_type",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Set to hep-author-publication together with author to get facets for one author's papers",
+     "enum": [
+      "hep-author-publication"
+     ]
+    },
+    {
+     "name": "author",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Author facet key 'RECID_Full Name' (facet_author_name from get-author)",
+     "example": "1019524_Gianfranco Bertone"
+    },
+    {
+     "name": "doc_type",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Document type filter, e.g. review, article, published"
+    }
+   ],
+   "responseType": "json",
+   "resultPath": "aggregations",
+   "mutates": false,
+   "example": {
+    "q": "recid:648746",
+    "facet_name": "citations-by-year"
+   },
+   "source": "E1 GET https://inspirehep.net/api/literature/facets",
+   "verified": true
+  },
+  {
+   "name": "get-literature",
+   "summary": "Get full metadata for one paper: title, authors, abstract, DOIs, arXiv id, publication info, citation counts",
+   "method": "GET",
+   "urlTemplate": "/api/literature/{id}",
+   "params": [
+    {
+     "name": "id",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Literature record id (control number)",
+     "example": "648746"
+    }
+   ],
+   "headers": {
+    "Accept": "application/vnd+inspire.record.ui+json"
+   },
+   "responseType": "json",
+   "resultPath": "metadata",
+   "defaultFields": [
+    "control_number",
+    "titles",
+    "authors",
+    "abstracts",
+    "dois",
+    "arxiv_eprints",
+    "publication_info",
+    "citation_count"
+   ],
+   "mutates": false,
+   "example": {
+    "id": "648746"
+   },
+   "source": "E4 E26 GET https://inspirehep.net/api/literature/{n}",
+   "verified": true
+  },
+  {
+   "name": "list-literature-authors",
+   "summary": "List all authors of a paper with their affiliations and INSPIRE author ids",
+   "method": "GET",
+   "urlTemplate": "/api/literature/{id}/authors",
+   "params": [
+    {
+     "name": "id",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Literature record id",
+     "example": "648746"
+    }
+   ],
+   "responseType": "json",
+   "resultPath": "metadata.authors",
+   "defaultFields": [
+    "full_name",
+    "recid",
+    "affiliations.0.value",
+    "ids.0.value"
+   ],
+   "mutates": false,
+   "example": {
+    "id": "648746"
+   },
+   "source": "E5 GET https://inspirehep.net/api/literature/{n}/authors",
+   "verified": true
+  },
+  {
+   "name": "list-literature-references",
+   "summary": "List the references cited by a paper, paginated",
+   "method": "GET",
+   "urlTemplate": "/api/literature/{id}/references",
+   "params": [
+    {
+     "name": "id",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Literature record id",
+     "example": "648746"
+    },
+    {
+     "name": "size",
+     "in": "query",
+     "required": false,
+     "type": "number",
+     "description": "References per page",
+     "default": 25
+    },
+    {
+     "name": "page",
+     "in": "query",
+     "required": false,
+     "type": "number",
+     "description": "Page number, starting at 1",
+     "default": 1
+    }
+   ],
+   "responseType": "json",
+   "resultPath": "metadata.references",
+   "defaultFields": [
+    "control_number",
+    "titles.0.title",
+    "authors.0.full_name",
+    "publication_info.0.journal_title",
+    "publication_info.0.year",
+    "dois.0.value",
+    "arxiv_eprints.0.value"
+   ],
+   "pagination": {
+    "type": "page",
+    "param": "page"
+   },
+   "mutates": false,
+   "example": {
+    "id": "648746"
+   },
+   "source": "E6 GET https://inspirehep.net/api/literature/{n}/references",
+   "verified": true
+  },
+  {
+   "name": "export-literature",
+   "summary": "Export one paper's citation as BibTeX, LaTeX (EU/US) or CV text",
+   "method": "GET",
+   "urlTemplate": "/api/literature/{id}",
+   "params": [
+    {
+     "name": "id",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Literature record id",
+     "example": "648746"
+    },
+    {
+     "name": "format",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Export format",
+     "enum": [
+      "bibtex",
+      "latex-eu",
+      "latex-us",
+      "cv"
+     ],
+     "default": "bibtex"
+    }
+   ],
+   "responseType": "text",
+   "mutates": false,
+   "example": {
+    "id": "648746",
+    "format": "bibtex"
+   },
+   "source": "E4 GET https://inspirehep.net/api/literature/{n}",
+   "verified": true
+  },
+  {
+   "name": "export-literature-search",
+   "summary": "Bulk-export every paper matching a query as BibTeX or LaTeX ('cite all')",
+   "method": "GET",
+   "urlTemplate": "/api/literature",
+   "params": [
+    {
+     "name": "q",
+     "in": "query",
+     "required": true,
+     "type": "string",
+     "description": "INSPIRE search query",
+     "example": "a G.Bertone.1"
+    },
+    {
+     "name": "format",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Export format",
+     "enum": [
+      "bibtex",
+      "latex-eu",
+      "latex-us",
+      "cv"
+     ],
+     "default": "bibtex"
+    },
+    {
+     "name": "sort",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Sort order",
+     "enum": [
+      "mostrecent",
+      "mostcited"
+     ],
+     "default": "mostrecent"
+    },
+    {
+     "name": "size",
+     "in": "query",
+     "required": false,
+     "type": "number",
+     "description": "Maximum records to export (the UI uses up to 1000)",
+     "default": 25
+    },
+    {
+     "name": "page",
+     "in": "query",
+     "required": false,
+     "type": "number",
+     "description": "Page number",
+     "default": 1
+    }
+   ],
+   "responseType": "text",
+   "mutates": false,
+   "example": {
+    "q": "a G.Bertone.1",
+    "format": "bibtex",
+    "size": "10"
+   },
+   "source": "E2 GET https://inspirehep.net/api/literature",
+   "verified": true
+  },
+  {
+   "name": "search-authors",
+   "summary": "Search author profiles by name",
+   "method": "GET",
+   "urlTemplate": "/api/authors",
+   "params": [
+    {
+     "name": "q",
+     "in": "query",
+     "required": true,
+     "type": "string",
+     "description": "Author name or query",
+     "example": "witten"
+    },
+    {
+     "name": "sort",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Sort order",
+     "default": "bestmatch"
+    },
+    {
+     "name": "size",
+     "in": "query",
+     "required": false,
+     "type": "number",
+     "description": "Results per page",
+     "default": 25
+    },
+    {
+     "name": "page",
+     "in": "query",
+     "required": false,
+     "type": "number",
+     "description": "Page number",
+     "default": 1
+    }
+   ],
+   "headers": {
+    "Accept": "application/vnd+inspire.record.ui+json"
+   },
+   "responseType": "json",
+   "resultPath": "hits.hits",
+   "defaultFields": [
+    "id",
+    "metadata.name.value",
+    "metadata.name.preferred_name",
+    "metadata.positions.0.institution",
+    "metadata.positions.0.rank",
+    "metadata.ids.0.value"
+   ],
+   "pagination": {
+    "type": "page",
+    "param": "page"
+   },
+   "mutates": false,
+   "example": {
+    "q": "witten"
+   },
+   "source": "E12",
+   "verified": true
+  },
+  {
+   "name": "get-author",
+   "summary": "Get an author profile: name, positions, advisors, students, ids (BAI/ORCID). The author key for list-author-publications is '{control_number}_{name.preferred_name}'",
+   "method": "GET",
+   "urlTemplate": "/api/authors/{id}",
+   "params": [
+    {
+     "name": "id",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Author record id",
+     "example": "1019524"
+    }
+   ],
+   "headers": {
+    "Accept": "application/vnd+inspire.record.ui+json"
+   },
+   "responseType": "json",
+   "resultPath": "metadata",
+   "defaultFields": [
+    "control_number",
+    "name",
+    "ids",
+    "positions",
+    "advisors",
+    "students"
+   ],
+   "mutates": false,
+   "example": {
+    "id": "1019524"
+   },
+   "source": "E9 E28",
+   "verified": true
+  },
+  {
+   "name": "search-jobs",
+   "summary": "Search HEP job postings, filtered by rank, region and open/closed status",
+   "method": "GET",
+   "urlTemplate": "/api/jobs",
+   "params": [
+    {
+     "name": "q",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Free-text query",
+     "example": "postdoc"
+    },
+    {
+     "name": "status",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Posting status",
+     "enum": [
+      "open",
+      "closed"
+     ],
+     "default": "open"
+    },
+    {
+     "name": "rank",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Position rank",
+     "enum": [
+      "SENIOR",
+      "JUNIOR",
+      "STAFF",
+      "VISITOR",
+      "POSTDOC",
+      "PHD",
+      "MASTER",
+      "UNDERGRADUATE",
+      "OTHER"
+     ]
+    },
+    {
+     "name": "region",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Region",
+     "enum": [
+      "Africa",
+      "Asia",
+      "Australasia",
+      "Europe",
+      "Middle East",
+      "North America",
+      "South America"
+     ]
+    },
+    {
+     "name": "field_of_interest",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "arXiv field, e.g. hep-ex, hep-ph, hep-th, astro-ph"
+    },
+    {
+     "name": "sort",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Sort order",
+     "enum": [
+      "mostrecent",
+      "deadline"
+     ],
+     "default": "mostrecent"
+    },
+    {
+     "name": "size",
+     "in": "query",
+     "required": false,
+     "type": "number",
+     "description": "Results per page",
+     "default": 25
+    },
+    {
+     "name": "page",
+     "in": "query",
+     "required": false,
+     "type": "number",
+     "description": "Page number",
+     "default": 1
+    }
+   ],
+   "headers": {
+    "Accept": "application/vnd+inspire.record.ui+json"
+   },
+   "responseType": "json",
+   "resultPath": "hits.hits",
+   "defaultFields": [
+    "id",
+    "metadata.position",
+    "metadata.institutions.0.value",
+    "metadata.ranks",
+    "metadata.regions",
+    "metadata.deadline_date",
+    "metadata.status",
+    "metadata.urls.0.value"
+   ],
+   "pagination": {
+    "type": "page",
+    "param": "page"
+   },
+   "mutates": false,
+   "example": {
+    "q": "postdoc",
+    "status": "open",
+    "rank": "POSTDOC",
+    "region": "Europe"
+   },
+   "source": "E14 E13 E29 GET https://inspirehep.net/api/jobs",
+   "verified": true
+  },
+  {
+   "name": "get-job",
+   "summary": "Get a job posting's details: description, deadline, contacts, institution",
+   "method": "GET",
+   "urlTemplate": "/api/jobs/{id}",
+   "params": [
+    {
+     "name": "id",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Job record id",
+     "example": "3215686"
+    }
+   ],
+   "headers": {
+    "Accept": "application/vnd+inspire.record.ui+json"
+   },
+   "responseType": "json",
+   "resultPath": "metadata",
+   "defaultFields": [
+    "control_number",
+    "position",
+    "institutions",
+    "ranks",
+    "regions",
+    "deadline_date",
+    "contact_details",
+    "description"
+   ],
+   "mutates": false,
+   "example": {
+    "id": "3215686"
+   },
+   "source": "E17 E32 GET https://inspirehep.net/api/jobs/{n}",
+   "verified": true
+  },
+  {
+   "name": "search-conferences",
+   "summary": "Search conferences, upcoming or all",
+   "method": "GET",
+   "urlTemplate": "/api/conferences",
+   "params": [
+    {
+     "name": "q",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Free-text query",
+     "example": "neutrino"
+    },
+    {
+     "name": "start_date",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Time window",
+     "enum": [
+      "upcoming",
+      "all"
+     ],
+     "default": "upcoming"
+    },
+    {
+     "name": "sort",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Sort order",
+     "enum": [
+      "dateasc",
+      "datedesc",
+      "bestmatch"
+     ],
+     "default": "dateasc"
+    },
+    {
+     "name": "size",
+     "in": "query",
+     "required": false,
+     "type": "number",
+     "description": "Results per page",
+     "default": 25
+    },
+    {
+     "name": "page",
+     "in": "query",
+     "required": false,
+     "type": "number",
+     "description": "Page number",
+     "default": 1
+    }
+   ],
+   "headers": {
+    "Accept": "application/vnd+inspire.record.ui+json"
+   },
+   "responseType": "json",
+   "resultPath": "hits.hits",
+   "defaultFields": [
+    "id",
+    "metadata.titles.0.title",
+    "metadata.acronyms",
+    "metadata.opening_date",
+    "metadata.closing_date",
+    "metadata.addresses.0.cities",
+    "metadata.addresses.0.country",
+    "metadata.urls.0.value"
+   ],
+   "pagination": {
+    "type": "page",
+    "param": "page"
+   },
+   "mutates": false,
+   "example": {
+    "q": "neutrino",
+    "start_date": "upcoming"
+   },
+   "source": "E16 E15 E30 GET https://inspirehep.net/api/conferences",
+   "verified": true
+  },
+  {
+   "name": "get-conference",
+   "summary": "Get a conference's details: dates, location, contacts, description",
+   "method": "GET",
+   "urlTemplate": "/api/conferences/{id}",
+   "params": [
+    {
+     "name": "id",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Conference record id",
+     "example": "3178676"
+    }
+   ],
+   "headers": {
+    "Accept": "application/vnd+inspire.record.ui+json"
+   },
+   "responseType": "json",
+   "resultPath": "metadata",
+   "defaultFields": [
+    "control_number",
+    "titles",
+    "acronyms",
+    "cnum",
+    "opening_date",
+    "closing_date",
+    "addresses",
+    "urls"
+   ],
+   "mutates": false,
+   "example": {
+    "id": "3178676"
+   },
+   "source": "E18 E33 GET https://inspirehep.net/api/conferences/{n}",
+   "verified": true
+  },
+  {
+   "name": "search-seminars",
+   "summary": "Search seminars (upcoming or all), including seminars by a speaker or about a paper",
+   "method": "GET",
+   "urlTemplate": "/api/seminars",
+   "params": [
+    {
+     "name": "q",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Free text, or 'speakers.record.$ref:AUTHOR_ID', or 'literature_records.record.$ref:LIT_ID'",
+     "example": "dark matter"
+    },
+    {
+     "name": "start_date",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Time window",
+     "enum": [
+      "upcoming",
+      "all"
+     ],
+     "default": "upcoming"
+    },
+    {
+     "name": "sort",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Sort order",
+     "enum": [
+      "dateasc",
+      "datedesc"
+     ],
+     "default": "dateasc"
+    },
+    {
+     "name": "size",
+     "in": "query",
+     "required": false,
+     "type": "number",
+     "description": "Results per page",
+     "default": 25
+    },
+    {
+     "name": "page",
+     "in": "query",
+     "required": false,
+     "type": "number",
+     "description": "Page number",
+     "default": 1
+    }
+   ],
+   "headers": {
+    "Accept": "application/vnd+inspire.record.ui+json"
+   },
+   "responseType": "json",
+   "resultPath": "hits.hits",
+   "defaultFields": [
+    "id",
+    "metadata.title.title",
+    "metadata.speakers.0.name",
+    "metadata.start_datetime",
+    "metadata.timezone",
+    "metadata.series.0.name",
+    "metadata.join_urls.0.value"
+   ],
+   "pagination": {
+    "type": "page",
+    "param": "page"
+   },
+   "mutates": false,
+   "example": {
+    "q": "dark matter",
+    "start_date": "upcoming"
+   },
+   "source": "E3 E7 E31 GET https://inspirehep.net/api/seminars",
+   "verified": true
+  },
+  {
+   "name": "get-seminar",
+   "summary": "Get a seminar's details: speaker, time, timezone, abstract, join URL",
+   "method": "GET",
+   "urlTemplate": "/api/seminars/{id}",
+   "params": [
+    {
+     "name": "id",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Seminar record id",
+     "example": "3209409"
+    }
+   ],
+   "headers": {
+    "Accept": "application/vnd+inspire.record.ui+json"
+   },
+   "responseType": "json",
+   "resultPath": "metadata",
+   "defaultFields": [
+    "control_number",
+    "title",
+    "speakers",
+    "start_datetime",
+    "end_datetime",
+    "timezone",
+    "abstract",
+    "join_urls"
+   ],
+   "mutates": false,
+   "example": {
+    "id": "3209409"
+   },
+   "source": "E23 E38 GET https://inspirehep.net/api/seminars/{n}",
+   "verified": true
+  },
+  {
+   "name": "search-institutions",
+   "summary": "Search research institutions by name",
+   "method": "GET",
+   "urlTemplate": "/api/institutions",
+   "params": [
+    {
+     "name": "q",
+     "in": "query",
+     "required": true,
+     "type": "string",
+     "description": "Institution name or query",
+     "example": "CERN"
+    },
+    {
+     "name": "sort",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Sort order",
+     "default": "mostrecent"
+    },
+    {
+     "name": "size",
+     "in": "query",
+     "required": false,
+     "type": "number",
+     "description": "Results per page",
+     "default": 25
+    },
+    {
+     "name": "page",
+     "in": "query",
+     "required": false,
+     "type": "number",
+     "description": "Page number",
+     "default": 1
+    }
+   ],
+   "headers": {
+    "Accept": "application/vnd+inspire.record.ui+json"
+   },
+   "responseType": "json",
+   "resultPath": "hits.hits",
+   "defaultFields": [
+    "id",
+    "metadata.legacy_ICN",
+    "metadata.ICN",
+    "metadata.institution_hierarchy.0.name",
+    "metadata.addresses.0.country",
+    "metadata.number_of_papers",
+    "metadata.institution_type"
+   ],
+   "pagination": {
+    "type": "page",
+    "param": "page"
+   },
+   "mutates": false,
+   "example": {
+    "q": "CERN"
+   },
+   "source": "E19 E34 GET https://inspirehep.net/api/institutions",
+   "verified": true
+  },
+  {
+   "name": "get-institution",
+   "summary": "Get an institution's details: names, addresses, ROR/GRID ids, paper count",
+   "method": "GET",
+   "urlTemplate": "/api/institutions/{id}",
+   "params": [
+    {
+     "name": "id",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Institution record id",
+     "example": "902725"
+    }
+   ],
+   "headers": {
+    "Accept": "application/vnd+inspire.record.ui+json"
+   },
+   "responseType": "json",
+   "resultPath": "metadata",
+   "defaultFields": [
+    "control_number",
+    "legacy_ICN",
+    "institution_hierarchy",
+    "addresses",
+    "ror",
+    "number_of_papers",
+    "institution_type",
+    "urls"
+   ],
+   "mutates": false,
+   "example": {
+    "id": "902725"
+   },
+   "source": "E8 E36 GET https://inspirehep.net/api/institutions/{n}",
+   "verified": true
+  },
+  {
+   "name": "search-experiments",
+   "summary": "Search experiments and accelerators",
+   "method": "GET",
+   "urlTemplate": "/api/experiments",
+   "params": [
+    {
+     "name": "q",
+     "in": "query",
+     "required": true,
+     "type": "string",
+     "description": "Experiment name or query",
+     "example": "ATLAS"
+    },
+    {
+     "name": "sort",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Sort order",
+     "enum": [
+      "mostrecent",
+      "bestmatch"
+     ],
+     "default": "mostrecent"
+    },
+    {
+     "name": "size",
+     "in": "query",
+     "required": false,
+     "type": "number",
+     "description": "Results per page",
+     "default": 25
+    },
+    {
+     "name": "page",
+     "in": "query",
+     "required": false,
+     "type": "number",
+     "description": "Page number",
+     "default": 1
+    }
+   ],
+   "headers": {
+    "Accept": "application/vnd+inspire.record.ui+json"
+   },
+   "responseType": "json",
+   "resultPath": "hits.hits",
+   "defaultFields": [
+    "id",
+    "metadata.legacy_name",
+    "metadata.long_name",
+    "metadata.accelerator.value",
+    "metadata.project_type",
+    "metadata.number_of_papers",
+    "metadata.date_started"
+   ],
+   "pagination": {
+    "type": "page",
+    "param": "page"
+   },
+   "mutates": false,
+   "example": {
+    "q": "ATLAS"
+   },
+   "source": "E21 E20 E35 GET https://inspirehep.net/api/experiments",
+   "verified": true
+  },
+  {
+   "name": "get-experiment",
+   "summary": "Get an experiment's details: accelerator, collaboration, institutions, dates, description",
+   "method": "GET",
+   "urlTemplate": "/api/experiments/{id}",
+   "params": [
+    {
+     "name": "id",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Experiment record id",
+     "example": "1108541"
+    }
+   ],
+   "headers": {
+    "Accept": "application/vnd+inspire.record.ui+json"
+   },
+   "responseType": "json",
+   "resultPath": "metadata",
+   "defaultFields": [
+    "control_number",
+    "legacy_name",
+    "long_name",
+    "accelerator",
+    "collaboration",
+    "institutions",
+    "number_of_papers",
+    "description"
+   ],
+   "mutates": false,
+   "example": {
+    "id": "1108541"
+   },
+   "source": "E22 E37 GET https://inspirehep.net/api/experiments/{n}",
+   "verified": true
+  }
+ ],
+ "blockers": [],
+ "notes": [
+  "Record ids (recid / control_number) are shared across commands. Literature ids from search-literature feed get-literature, list-literature-references, list-literature-authors, export-literature and list-citing-papers.",
+  "Author ids appear in literature author entries as 'recid'. list-author-publications needs the author's facet_author_name ('RECID_Full Name'), which get-author returns.",
+  "Use search-literature's q to find related papers. Institution papers: q='affid 902725'. Experiment papers: q='accelerator_experiments.record.$ref:1108541'. Conference contributions: q='publication_info.conference_record.$ref:3178676' with doc_type='conference paper'.",
+  "To find seminars by a speaker, use search-seminars with q='speakers.record.$ref:AUTHOR_ID' and start_date=all. For seminars about a paper, use q='literature_records.record.$ref:LIT_ID'.",
+  "The citation summary for an author comes from get-literature-facets with facet_name=citation-summary, search_type=hep-author-publication and author=facet_author_name.",
+  "Exports return plain text (BibTeX/LaTeX). export-literature-search accepts size up to 1000.",
+  "Some combined filters (date range plus author count plus subject on later pages) returned a server error page in the recording. Retry with fewer filters if a request fails.",
+  "No login is required. All commands are public reads."
+ ],
+ "dropped": [
+  {
+   "name": "list-author-publications",
+   "summary": "List the papers attributed to an author profile",
+   "method": "GET",
+   "urlTemplate": "/api/literature?search_type=hep-author-publication",
+   "params": [
+    {
+     "name": "author",
+     "in": "query",
+     "required": true,
+     "type": "string",
+     "description": "Author key 'RECID_Preferred Name', built from get-author as '{control_number}_{name.preferred_name}'",
+     "example": "1019524_Gianfranco Bertone"
+    },
+    {
+     "name": "q",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Optional extra query to narrow the author's papers"
+    },
+    {
+     "name": "sort",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Sort order",
+     "enum": [
+      "mostrecent",
+      "mostcited"
+     ],
+     "default": "mostrecent"
+    },
+    {
+     "name": "doc_type",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Document type filter, e.g. article, review, published"
+    },
+    {
+     "name": "size",
+     "in": "query",
+     "required": false,
+     "type": "number",
+     "description": "Results per page",
+     "default": 25
+    },
+    {
+     "name": "page",
+     "in": "query",
+     "required": false,
+     "type": "number",
+     "description": "Page number",
+     "default": 1
+    }
+   ],
+   "headers": {
+    "Accept": "application/vnd+inspire.record.ui+json"
+   },
+   "responseType": "json",
+   "resultPath": "hits.hits",
+   "defaultFields": [
+    "id",
+    "metadata.titles.0.title",
+    "metadata.authors.0.full_name",
+    "metadata.number_of_authors",
+    "metadata.date",
+    "metadata.citation_count",
+    "metadata.arxiv_eprints.0.value"
+   ],
+   "pagination": {
+    "type": "page",
+    "param": "page"
+   },
+   "mutates": false,
+   "example": {
+    "author": "1019524_Gianfranco Bertone"
+   },
+   "source": "E2",
+   "verified": false,
+   "verifyNote": "failed on Blaxel: request failed: The operation was aborted due to timeout"
+  }
+ ],
+ "generated": {
+  "by": "clify add",
+  "model": "claude-opus-5-5",
+  "exploredSteps": 17,
+  "recorded": 101,
+  "verifiedAt": "2026-10-18T09:02:37.339Z",
+  "seconds": 326
+ }
+}

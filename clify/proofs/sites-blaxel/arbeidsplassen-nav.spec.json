@@ -1,0 +1,265 @@
+{
+ "name": "arbeidsplassen-nav",
+ "startUrl": "https://arbeidsplassen.nav.no/",
+ "origin": "https://arbeidsplassen.nav.no",
+ "createdAt": "2026-10-18T09:01:22.664Z",
+ "description": "arbeidsplassen.nav.no is NAV's Norwegian public job board. This CLI searches job ads with filters, sorting and paging, opens individual ads, and reads a few informational pages. The site is server-rendered, so most commands parse HTML.",
+ "commands": [
+  {
+   "name": "search-jobs",
+   "summary": "Search job ads (ledige stillinger) by keyword, with filters for county, publish date, category, extent, remote work, sector, experience and under-18, plus sorting and paging (25 results per page)",
+   "method": "GET",
+   "urlTemplate": "/stillinger?v=6",
+   "params": [
+    {
+     "name": "q",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Free-text keyword (place, occupation or search term), e.g. 'utvikler'",
+     "example": "utvikler"
+    },
+    {
+     "name": "county",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "County (fylke) in upper case, e.g. OSLO, ROGALAND, VESTLAND. Only one value per call has been tested.",
+     "example": "OSLO"
+    },
+    {
+     "name": "published",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Publish-date window: 'now/d' = published today, 'now-7d' = last 7 days",
+     "enum": [
+      "now/d",
+      "now-7d"
+     ]
+    },
+    {
+     "name": "occupationLevel1",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Top-level job category, e.g. 'IT'",
+     "example": "IT"
+    },
+    {
+     "name": "extent",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Working hours: full-time or part-time",
+     "enum": [
+      "Heltid",
+      "Deltid"
+     ]
+    },
+    {
+     "name": "remote",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Remote-work option, e.g. 'Hybridkontor' (seen in a recorded URL) or 'Hjemmekontor'",
+     "example": "Hybridkontor"
+    },
+    {
+     "name": "sector",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Employer sector: public or private",
+     "enum": [
+      "Offentlig",
+      "Privat"
+     ]
+    },
+    {
+     "name": "experience",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Experience requirement, e.g. 'ingen krav til arbeidserfaring' (no experience required)",
+     "example": "ingen krav til arbeidserfaring"
+    },
+    {
+     "name": "under18",
+     "in": "query",
+     "required": false,
+     "type": "boolean",
+     "description": "Set true to show only jobs open to applicants under 18"
+    },
+    {
+     "name": "sort",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Sort order. Omit for most relevant; 'published' = newest first; 'expires' = soonest application deadline first",
+     "enum": [
+      "published",
+      "expires"
+     ]
+    },
+    {
+     "name": "from",
+     "in": "query",
+     "required": false,
+     "type": "number",
+     "description": "Result offset, in steps of 25 (0 = page 1, 25 = page 2, ...)",
+     "default": 0
+    }
+   ],
+   "responseType": "html",
+   "extract": {
+    "list": "article",
+    "fields": {
+     "title": "h2 || h3 || a",
+     "url": "a@href",
+     "text": ""
+    }
+   },
+   "defaultFields": [
+    "title",
+    "url",
+    "text"
+   ],
+   "pagination": {
+    "type": "offset",
+    "param": "from",
+    "step": 25
+   },
+   "mutates": false,
+   "example": {
+    "q": "utvikler",
+    "county": "OSLO",
+    "sort": "published"
+   },
+   "source": "E4 GET https://arbeidsplassen.nav.no/stillinger",
+   "verified": true
+  },
+  {
+   "name": "get-job",
+   "summary": "Get one job ad by its UUID: title, employer, location, employment details, application deadline, apply link and full description",
+   "method": "GET",
+   "urlTemplate": "/stillinger/stilling/{id}",
+   "params": [
+    {
+     "name": "id",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Job ad UUID (the last path segment of the url returned by search-jobs)",
+     "example": "ef5ee155-d2f6-493b-84bc-8c925761d94e"
+    }
+   ],
+   "responseType": "html",
+   "extract": {
+    "fields": {
+     "title": "h1",
+     "employer": "main#main-content section div.aksel-stack.mb-2 p",
+     "details": "dl#employment-details-dl-list",
+     "deadline": "div.aksel-r-p.aksel-box p",
+     "apply_url": "div.aksel-r-p.aksel-box a.aksel-button@href",
+     "description": "div.arb-rich-text.job-posting-text"
+    }
+   },
+   "defaultFields": [
+    "title",
+    "employer",
+    "details",
+    "deadline",
+    "apply_url",
+    "description"
+   ],
+   "mutates": false,
+   "example": {
+    "id": "ef5ee155-d2f6-493b-84bc-8c925761d94e"
+   },
+   "source": "E7 GET https://arbeidsplassen.nav.no/stillinger/stilling/{id}",
+   "verified": true
+  },
+  {
+   "name": "get-auth-status",
+   "summary": "Check whether the current session is logged in to arbeidsplassen.no (returns ok and isAuthenticated)",
+   "method": "GET",
+   "urlTemplate": "/api/auth/status",
+   "params": [],
+   "responseType": "json",
+   "defaultFields": [
+    "ok",
+    "isAuthenticated"
+   ],
+   "mutates": false,
+   "source": "E1 GET https://arbeidsplassen.nav.no/api/auth/status",
+   "verified": true
+  },
+  {
+   "name": "list-youth-shortcuts",
+   "summary": "List the youth landing-page shortcuts (/ung), such as jobs for under-18s and jobs that need no experience, with their search URLs",
+   "method": "GET",
+   "urlTemplate": "/ung",
+   "params": [],
+   "responseType": "html",
+   "extract": {
+    "list": "div.aksel-link-card",
+    "fields": {
+     "label": "span.aksel-link-card__title",
+     "link": "a.aksel-link-anchor@href",
+     "blurb": "div.aksel-link-card__description p"
+    }
+   },
+   "defaultFields": [
+    "label",
+    "link",
+    "blurb"
+   ],
+   "mutates": false,
+   "source": "E6",
+   "verified": true
+  },
+  {
+   "name": "get-import-api-info",
+   "summary": "Read NAV's info page about the job-ad import API (how employers and vendors can publish ads to arbeidsplassen.no)",
+   "method": "GET",
+   "urlTemplate": "/overforing-av-stillingsannonser",
+   "params": [],
+   "responseType": "html",
+   "extract": {
+    "fields": {
+     "title": "h1",
+     "intro": "p.aksel-body-long--large",
+     "content": "article.aksel-pageblock--text"
+    }
+   },
+   "defaultFields": [
+    "title",
+    "intro",
+    "content"
+   ],
+   "mutates": false,
+   "source": "E8",
+   "verified": true
+  }
+ ],
+ "blockers": [],
+ "notes": [
+  "There is no JSON search API. search-jobs and get-job parse server-rendered HTML.",
+  "The job ad id is the UUID at the end of each search result's url (/stillinger/stilling/<uuid>). Pass it to get-job.",
+  "Pages hold 25 results. Use --from 25, 50, ... for later pages. A larger page size (100) exists in the UI but no URL parameter for it was tested.",
+  "Filter values are Norwegian and case-sensitive (county=OSLO, extent=Heltid, sector=Offentlig). Only one value per filter was tested, although the UI allows combining counties.",
+  "Some filters exist only in the UI, with no known URL parameter: sub-level job category, education, driving licence, work language, summer job, Superrask s\u00f8knad and employment type.",
+  "Saving favourite ads and saved searches needs a logged-in NAV session. They were not recorded, so no command covers them.",
+  "The search-result card selector ('article') is inferred from the related-ad cards on the detail page. If it returns nothing, use the raw HTML."
+ ],
+ "dropped": [],
+ "generated": {
+  "by": "clify add",
+  "model": "claude-opus-5-5",
+  "exploredSteps": 30,
+  "recorded": 67,
+  "verifiedAt": "2026-10-18T09:02:16.906Z",
+  "seconds": 225
+ }
+}

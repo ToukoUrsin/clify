@@ -1,0 +1,39 @@
+{
+ "url": "https://www.biodiversitylibrary.org/",
+ "category": "culture",
+ "sandbox": "clify-www-biodiversitylibrary-org",
+ "startedAt": "2026-10-18T08:57:15.199Z",
+ "region": "us-pdx-1",
+ "chrome": "Chrome/148.0.7778.96",
+ "sandboxStartMs": 1901,
+ "addSeconds": 29,
+ "addExit": 1,
+ "add": {
+  "ok": false,
+  "site": "biodiversitylibrary",
+  "url": "https://www.biodiversitylibrary.org/",
+  "commands": [],
+  "verified": 0,
+  "writes": 0,
+  "dropped": [],
+  "blockers": [
+   "bot-check at https://www.biodiversitylibrary.org/",
+   "bot-check at https://www.biodiversitylibrary.org/browse/collections",
+   "bot-check at https://www.biodiversitylibrary.org/docs/api3.html",
+   "captcha"
+  ],
+  "loggedIn": false,
+  "seconds": 28,
+  "next": [
+   "clify biodiversitylibrary",
+   "clify repair biodiversitylibrary --goal \"<what you need from the site>\""
+  ],
+  "explored": {
+   "steps": 4,
+   "recorded": 5,
+   "heldWrites": 0
+  }
+ },
+ "deleted": true,
+ "seconds": 31
+}

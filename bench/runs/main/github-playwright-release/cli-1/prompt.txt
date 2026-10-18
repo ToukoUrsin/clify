@@ -1,0 +1,6 @@
+On GitHub, what is the latest release of the microsoft/playwright repository (its tag), and on what date was it published? Give the date as YYYY-MM-DD.
+
+Start from https://github.com/. Work it out using only the tools you have, then end your reply with one final line exactly in the form:
+ANSWER: <short answer>
+
+The website is available as a command-line tool: run `clify github` to see its commands (JSON help), then call them. Use clify only; do not use curl, wget, Python HTTP or other network tools.

@@ -1,0 +1,32 @@
+{
+ "task": "scrapethis-hockey-detroit-1995",
+ "site": "scrapethis",
+ "mode": "curl",
+ "trial": 2,
+ "tag": "curl",
+ "ok": true,
+ "why": "all expected values present",
+ "answer": "62",
+ "expected": {
+  "number": 62
+ },
+ "wallMs": 6389,
+ "apiMs": 5634,
+ "turns": 2,
+ "toolCalls": 1,
+ "tokens": {
+  "input": 4,
+  "output": 357,
+  "cacheWrite": 4038,
+  "cacheRead": 6727,
+  "total": 11126
+ },
+ "costUsd": 0.0286914,
+ "models": [
+  "claude-opus-5-5"
+ ],
+ "exitCode": 0,
+ "timedOut": false,
+ "subtype": "success",
+ "startedAt": "2026-10-18T12:43:01.252Z"
+}

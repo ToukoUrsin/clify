@@ -1,0 +1,67 @@
+{
+  "ok": true,
+  "site": "updown",
+  "url": "https://updown.io/checks",
+  "commands": [
+    {
+      "name": "list-checks",
+      "summary": "List your monitoring checks with alias, target URL, status and check interval. Optionally search and sort.",
+      "verified": true,
+      "needsLogin": true
+    },
+    {
+      "name": "add-check",
+      "summary": "Create a new monitoring check (HTTPS by default) with a target URL, check period and alias. Returns the updated checks list.",
+      "verified": false,
+      "writes": true,
+      "needsLogin": true
+    },
+    {
+      "name": "get-check",
+      "summary": "Show a check's detail page: alias, latest result, next scheduled check, yearly SLA and downtime summary.",
+      "verified": true,
+      "needsLogin": true
+    },
+    {
+      "name": "get-check-settings",
+      "summary": "Read a check's editable settings (alias, enabled flag, string match, period, form action). The target URL is in list-checks.",
+      "verified": true,
+      "needsLogin": true
+    },
+    {
+      "name": "update-check",
+      "summary": "Update an existing check's URL, type, alias, check period, apdex, string match or enabled state.",
+      "verified": false,
+      "writes": true,
+      "needsLogin": true
+    },
+    {
+      "name": "list-status-pages",
+      "summary": "List your public status pages with their name, public URL, visibility info and edit link.",
+      "verified": true,
+      "needsLogin": true
+    },
+    {
+      "name": "list-downtimes",
+      "summary": "Show the downtimes page for your checks (optionally filtered by check token).",
+      "verified": true,
+      "needsLogin": true
+    }
+  ],
+  "verified": 5,
+  "writes": 2,
+  "dropped": [],
+  "blockers": [],
+  "loggedIn": true,
+  "seconds": 119,
+  "next": [
+    "clify updown",
+    "clify updown list-checks"
+  ],
+  "installed": "/home/ubuntu/race-gen5/home/bin/updown",
+  "explored": {
+    "steps": 0,
+    "recorded": 16,
+    "heldWrites": 0
+  }
+}

@@ -1,0 +1,38 @@
+{
+ "url": "https://apnews.com/",
+ "category": "news",
+ "sandbox": "clify-apnews-com",
+ "startedAt": "2026-10-18T09:17:16.101Z",
+ "region": "us-pdx-1",
+ "chrome": "Chrome/148.0.7778.96",
+ "sandboxStartMs": 1698,
+ "addSeconds": 21,
+ "addExit": 1,
+ "add": {
+  "ok": false,
+  "site": "apnews",
+  "url": "https://apnews.com/",
+  "commands": [],
+  "verified": 0,
+  "writes": 0,
+  "dropped": [],
+  "blockers": [
+   "bot-check at https://apnews.com/",
+   "bot-check at https://apnews.com/hub/politics",
+   "captcha"
+  ],
+  "loggedIn": false,
+  "seconds": 20,
+  "next": [
+   "clify apnews",
+   "clify repair apnews --goal \"<what you need from the site>\""
+  ],
+  "explored": {
+   "steps": 3,
+   "recorded": 4,
+   "heldWrites": 0
+  }
+ },
+ "deleted": true,
+ "seconds": 22
+}

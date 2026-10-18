@@ -1,0 +1,47 @@
+07:04:52 🔭 exploring https://crates.io/
+07:04:52 🌐 https://crates.io/
+07:04:56 → type {"i":1,"text":"http client","intent":"search crates by keyword","submit":true}
+07:04:59 → click {"i":5,"intent":"open sort menu"}
+07:05:02 → click {"i":9,"intent":"sort search results by all-time downloads"}
+07:05:05 → click {"i":56,"intent":"next page of search results"}
+07:05:07 → goto {"url":"https://crates.io/crates/reqwest","intent":"open crate detail page"}
+07:05:12 → click {"i":10,"intent":"list crate versions"}
+07:05:15 → click {"i":11,"intent":"list crate dependencies"}
+07:05:18 → click {"i":12,"intent":"list reverse dependencies (dependents)"}
+07:05:20 → click {"i":13,"intent":"view crate security advisories"}
+07:05:24 → goto {"url":"https://crates.io/crates/hyper/1.12.0","intent":"open specific crate version detail"}
+07:05:28 → click {"i":35,"intent":"open user profile"}
+07:05:31 → goto {"url":"https://crates.io/teams/github:hyperium:core","intent":"open team profile"}
+07:05:35 → goto {"url":"https://crates.io/categories","intent":"list all categories"}
+07:05:39 → click {"i":11,"intent":"list crates in a category"}
+07:05:42 → goto {"url":"https://crates.io/keywords","intent":"list all keywords"}
+07:05:46 → click {"i":10,"intent":"list crates with a keyword"}
+07:05:49 → goto {"url":"https://crates.io/crates?sort=new","intent":"list newest crates"}
+07:05:53 → goto {"url":"https://crates.io/crates/hyper/1.12.0/code","intent":"browse crate source code files"}
+07:05:58 → click {"i":25,"intent":"open data access / API docs"}
+07:06:00 → click {"i":25,"intent":"open OpenAPI spec"}
+07:06:05 → goto {"url":"https://crates.io/search?q=json&sort=recent-updates&all_keywords=serde","intent":"search crates filtered by keywords and sorted by r
+07:06:10 → goto {"url":"https://crates.io/crates?letter=S","intent":"browse crates alphabetically by first letter"}
+07:06:17 → done {"summary":"Covered crates.io's public read API (all via /api/v1): keyword search (crates?q=) with sort options (relevance, downloads, recen
+07:06:18 📼 recorded 84 calls, 0 held writes
+07:06:18 🧠 synthesizing from 38 endpoints (60k chars)
+07:07:23 🔎 verify round 0: search-crates, get-crate, list-versions, get-version, list-dependencies, list-reverse-dependencies, get-crate-downloads, get-version-downloads, list-owners, get-readme, list-source-files, get-advisories, get-docs-status, get-user, get-team, list-categories, get-category, list-keywords, get-summary
+07:07:23   ✓ search-crates (135 ms)
+07:07:23   ✓ get-crate (104 ms)
+07:07:23   ✓ list-versions (177 ms)
+07:07:23   ✓ get-version (103 ms)
+07:07:23   ✓ list-dependencies (268 ms)
+07:07:23   ✓ list-reverse-dependencies (84 ms)
+07:07:23   ✓ get-crate-downloads (119 ms)
+07:07:23   ✓ get-version-downloads (78 ms)
+07:07:23   ✓ list-owners (259 ms)
+07:07:23   ✓ get-readme (44 ms)
+07:07:23   ✓ list-source-files (127 ms)
+07:07:23   ✓ get-advisories (112 ms)
+07:07:23   ✓ get-docs-status (126 ms)
+07:07:23   ✓ get-user (253 ms)
+07:07:23   ✓ get-team (78 ms)
+07:07:23   ✓ list-categories (84 ms)
+07:07:23   ✓ get-category (76 ms)
+07:07:23   ✓ list-keywords (94 ms)
+07:07:23   ✓ get-summary (356 ms)

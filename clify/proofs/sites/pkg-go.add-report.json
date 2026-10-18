@@ -1,0 +1,78 @@
+{
+ "ok": true,
+ "site": "pkg-go",
+ "url": "https://pkg.go.dev/",
+ "commands": [
+  {
+   "name": "search-packages",
+   "summary": "Search Go packages by keyword, with an optional filter expression (e.g. on import counts) and cursor paging",
+   "verified": true
+  },
+  {
+   "name": "get-package",
+   "summary": "Get metadata for a Go package (module, version, name, synopsis, latest flag, std flag), optionally at a specific version",
+   "verified": true
+  },
+  {
+   "name": "get-module",
+   "summary": "Get metadata for a Go module (latest or given version, commit time, repo URL, go.mod presence)",
+   "verified": true
+  },
+  {
+   "name": "list-module-packages",
+   "summary": "List the packages contained in a Go module, with an optional filter (e.g. name == \"main\")",
+   "verified": true
+  },
+  {
+   "name": "list-versions",
+   "summary": "List all versions of a Go module, with commit time, deprecation and retraction status",
+   "verified": true
+  },
+  {
+   "name": "list-symbols",
+   "summary": "List exported symbols (types, funcs, methods, fields, consts, vars) of a Go package, optionally for a GOOS/GOARCH build context and filter",
+   "verified": true
+  },
+  {
+   "name": "list-importers",
+   "summary": "List import paths of packages that import a given Go package (excluding packages in the same module), paged by cursor",
+   "verified": true
+  },
+  {
+   "name": "list-vulns",
+   "summary": "List known Go vulnerabilities (from the Go vuln DB) affecting a module at a given version (latest by default)",
+   "verified": true
+  },
+  {
+   "name": "get-package-doc",
+   "summary": "Fetch the rendered documentation page of a package (README, doc text, repo link), optionally at a version (path@version) and GOOS",
+   "verified": true
+  },
+  {
+   "name": "list-std-packages",
+   "summary": "List the Go standard library packages with links and synopses",
+   "verified": true
+  },
+  {
+   "name": "list-subrepos",
+   "summary": "List the official Go sub-repositories (golang.org/x/...) with short descriptions",
+   "verified": true
+  }
+ ],
+ "verified": 11,
+ "writes": 0,
+ "dropped": [],
+ "blockers": [],
+ "loggedIn": false,
+ "seconds": 217,
+ "next": [
+  "clify pkg-go",
+  "clify pkg-go search-packages --q \"http router\" --limit_value \"10\""
+ ],
+ "installed": "/home/ubuntu/clify-runs/batch2/home/bin/pkg-go",
+ "explored": {
+  "steps": 30,
+  "recorded": 30,
+  "heldWrites": 0
+ }
+}

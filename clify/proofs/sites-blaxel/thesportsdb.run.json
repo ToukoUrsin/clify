@@ -1,0 +1,226 @@
+{
+ "url": "https://www.thesportsdb.com/",
+ "category": "sports-ent",
+ "sandbox": "clify-www-thesportsdb-com",
+ "startedAt": "2026-10-18T08:13:46.725Z",
+ "region": "us-pdx-1",
+ "chrome": "Chrome/148.0.7778.96",
+ "sandboxStartMs": 2722,
+ "addSeconds": 290,
+ "addExit": 0,
+ "add": {
+  "ok": true,
+  "site": "thesportsdb",
+  "url": "https://www.thesportsdb.com/",
+  "commands": [
+   {
+    "name": "search-teams",
+    "summary": "Search teams by name via the JSON API (full team record: ids, leagues, stadium, socials, descriptions)",
+    "verified": true
+   },
+   {
+    "name": "search-players",
+    "summary": "Search players by name via the JSON API (team, nationality, position, birth date)",
+    "verified": true
+   },
+   {
+    "name": "get-event",
+    "summary": "Get one event/match by its event id (teams, scores, date/time, venue, round, season)",
+    "verified": true
+   },
+   {
+    "name": "get-league-table",
+    "summary": "Get the league standings table for a league id and season (rank, points, W/D/L, goals, form)",
+    "verified": true
+   },
+   {
+    "name": "list-next-league-events",
+    "summary": "List the next upcoming events (fixtures) of a league by league id",
+    "verified": true
+   },
+   {
+    "name": "list-team-last-events",
+    "summary": "List a team's most recent results by team id",
+    "verified": true
+   },
+   {
+    "name": "list-events-by-day",
+    "summary": "List all events on a given date, optionally filtered by sport",
+    "verified": true
+   },
+   {
+    "name": "list-team-players",
+    "summary": "List the players and staff of a team by team id",
+    "verified": true
+   },
+   {
+    "name": "list-leagues",
+    "summary": "List leagues with their ids and sport",
+    "verified": true
+   },
+   {
+    "name": "search-site",
+    "summary": "Keyword search across teams, players, leagues, venues and events on the website, optionally filtered by sport; returns names and links",
+    "verified": true
+   },
+   {
+    "name": "get-team",
+    "summary": "Get a team profile page: name, profile info, next event, manager, stadium, leagues, upcoming fixtures and recent results",
+    "verified": true
+   },
+   {
+    "name": "get-player",
+    "summary": "Get a player profile page: name, bio facts (born, position, team), description, team and league links",
+    "verified": true
+   },
+   {
+    "name": "get-league",
+    "summary": "Get a league profile page: name, facts, current season and round, upcoming fixtures and recent results",
+    "verified": true
+   },
+   {
+    "name": "list-season-events",
+    "summary": "List all fixtures/results of a league season (optionally for one team or one round)",
+    "verified": true
+   },
+   {
+    "name": "list-tv-channels",
+    "summary": "List TV channels for a country, optionally searching channels by name",
+    "verified": true
+   },
+   {
+    "name": "list-tv-events-today",
+    "summary": "List today's televised sports events for a country, with time (UTC) and channels",
+    "verified": true
+   },
+   {
+    "name": "get-channel-schedule",
+    "summary": "Get a TV channel's sports schedule for the next 7 days (events with UTC times)",
+    "verified": true
+   },
+   {
+    "name": "list-sport-leagues",
+    "summary": "List the featured leagues of a sport from its overview page",
+    "verified": true
+   }
+  ],
+  "verified": 18,
+  "writes": 0,
+  "dropped": [],
+  "blockers": [],
+  "loggedIn": false,
+  "seconds": 289,
+  "next": [
+   "clify thesportsdb",
+   "clify thesportsdb search-teams --team \"Arsenal\""
+  ],
+  "installed": "/home/ubuntu/clify-runs/blaxel-w1/home/bin/thesportsdb",
+  "explored": {
+   "steps": 19,
+   "recorded": 25,
+   "heldWrites": 0
+  }
+ },
+ "check": {
+  "on": "blaxel",
+  "node": "v24.22.0",
+  "seconds": 5,
+  "reads": 18,
+  "verified": 18,
+  "failed": [],
+  "results": [
+   {
+    "name": "search-teams",
+    "ok": true,
+    "ms": 81
+   },
+   {
+    "name": "search-players",
+    "ok": true,
+    "ms": 22
+   },
+   {
+    "name": "get-event",
+    "ok": true,
+    "ms": 198
+   },
+   {
+    "name": "get-league-table",
+    "ok": true,
+    "ms": 177
+   },
+   {
+    "name": "list-next-league-events",
+    "ok": true,
+    "ms": 189
+   },
+   {
+    "name": "list-team-last-events",
+    "ok": true,
+    "ms": 167
+   },
+   {
+    "name": "list-events-by-day",
+    "ok": true,
+    "ms": 16
+   },
+   {
+    "name": "list-team-players",
+    "ok": true,
+    "ms": 193
+   },
+   {
+    "name": "list-leagues",
+    "ok": true,
+    "ms": 19
+   },
+   {
+    "name": "search-site",
+    "ok": true,
+    "ms": 234
+   },
+   {
+    "name": "get-team",
+    "ok": true,
+    "ms": 217
+   },
+   {
+    "name": "get-player",
+    "ok": true,
+    "ms": 192
+   },
+   {
+    "name": "get-league",
+    "ok": true,
+    "ms": 198
+   },
+   {
+    "name": "list-season-events",
+    "ok": true,
+    "ms": 277
+   },
+   {
+    "name": "list-tv-channels",
+    "ok": true,
+    "ms": 196
+   },
+   {
+    "name": "list-tv-events-today",
+    "ok": true,
+    "ms": 209
+   },
+   {
+    "name": "get-channel-schedule",
+    "ok": true,
+    "ms": 200
+   },
+   {
+    "name": "list-sport-leagues",
+    "ok": true,
+    "ms": 229
+   }
+  ]
+ },
+ "deleted": true,
+ "seconds": 298
+}

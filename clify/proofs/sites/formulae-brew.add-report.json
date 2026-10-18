@@ -1,0 +1,58 @@
+{
+ "ok": true,
+ "site": "formulae-brew",
+ "url": "https://formulae.brew.sh/",
+ "commands": [
+  {
+   "name": "search-packages",
+   "summary": "Keyword search across Homebrew formulae and casks (Algolia index used by the site's search box); returns matching package page URLs and names",
+   "verified": true
+  },
+  {
+   "name": "get-formula",
+   "summary": "Get full metadata for one homebrew-core formula by name: description, versions, license, dependencies, bottles, caveats and install analytics",
+   "verified": true
+  },
+  {
+   "name": "get-cask",
+   "summary": "Get full metadata for one homebrew-cask cask (macOS app or font) by token: name, version, download URL, artifacts, dependencies, conflicts and analytics",
+   "verified": true
+  },
+  {
+   "name": "list-formulae",
+   "summary": "List every homebrew-core formula with full metadata (very large response, several thousand items)",
+   "verified": true
+  },
+  {
+   "name": "list-casks",
+   "summary": "List every homebrew-cask cask (apps and fonts) with full metadata (very large response, several thousand items)",
+   "verified": true
+  },
+  {
+   "name": "list-cask-fonts",
+   "summary": "List all font casks (token and detail URL) from the cask-font index page; much smaller than list-casks",
+   "verified": true
+  },
+  {
+   "name": "get-analytics",
+   "summary": "Get Homebrew's ranked install analytics (top formulae installs, installs-on-request, cask installs, build errors, or macOS versions) for a 30/90/365-day period",
+   "verified": true
+  }
+ ],
+ "verified": 7,
+ "writes": 0,
+ "dropped": [],
+ "blockers": [],
+ "loggedIn": false,
+ "seconds": 135,
+ "next": [
+  "clify formulae-brew",
+  "clify formulae-brew search-packages --query \"python\""
+ ],
+ "installed": "/home/ubuntu/clify-runs/batch2/home/bin/formulae-brew",
+ "explored": {
+  "steps": 19,
+  "recorded": 10,
+  "heldWrites": 0
+ }
+}

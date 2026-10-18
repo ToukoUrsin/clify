@@ -1,0 +1,621 @@
+{
+ "name": "fred-stlouisfed",
+ "startUrl": "https://fred.stlouisfed.org/",
+ "origin": "https://fred.stlouisfed.org",
+ "createdAt": "2026-10-18T08:44:43.637Z",
+ "description": "FRED (Federal Reserve Economic Data, St. Louis Fed): search economic time series and read their metadata and latest observations, and browse categories, tags, releases, release tables, the release calendar and data sources.",
+ "commands": [
+  {
+   "name": "search-series",
+   "summary": "Search FRED series by keyword (the header autocomplete); returns series IDs, titles, frequency, units and date coverage",
+   "method": "GET",
+   "urlTemplate": "/graph/api/series/sitesearch/{q}?q={q}",
+   "params": [
+    {
+     "name": "q",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Search keywords, e.g. 'gdp', 'unemployment rate'",
+     "example": "gdp"
+    }
+   ],
+   "headers": {
+    "x-requested-with": "XMLHttpRequest"
+   },
+   "responseType": "json",
+   "resultPath": "items",
+   "defaultFields": [
+    "series_id",
+    "title",
+    "frequency",
+    "units",
+    "season",
+    "start",
+    "end"
+   ],
+   "mutates": false,
+   "example": {
+    "q": "gdp"
+   },
+   "source": "E5 GET https://fred.stlouisfed.org/graph/api/series/sitesearch/gdp",
+   "verified": true
+  },
+  {
+   "name": "get-series",
+   "summary": "Get chart metadata for a series by ID: title, frequency, observation date range, units, seasonal adjustment and available transformations",
+   "method": "GET",
+   "urlTemplate": "/graph/api/series/?id={id}&width=1140",
+   "params": [
+    {
+     "name": "id",
+     "in": "query",
+     "required": true,
+     "type": "string",
+     "description": "FRED series ID, e.g. GDPC1, UNRATE, CPIAUCSL",
+     "example": "GDPC1"
+    }
+   ],
+   "responseType": "json",
+   "resultPath": "chart_series",
+   "defaultFields": [
+    "title",
+    "frequency",
+    "min_date",
+    "max_date",
+    "decimal_places",
+    "series_objects.a.series_id",
+    "series_objects.a.units",
+    "series_objects.a.season"
+   ],
+   "mutates": false,
+   "example": {
+    "id": "GDPC1"
+   },
+   "source": "E1 GET https://fred.stlouisfed.org/graph/api/series/",
+   "verified": true
+  },
+  {
+   "name": "get-series-recent-observations",
+   "summary": "Get the most recent observations (date and value) shown on a series page",
+   "method": "GET",
+   "urlTemplate": "/series/{id}",
+   "params": [
+    {
+     "name": "id",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "FRED series ID, e.g. GDPC1",
+     "example": "GDPC1"
+    }
+   ],
+   "responseType": "html",
+   "extract": {
+    "list": "table#recent-obs tr",
+    "fields": {
+     "date": "td",
+     "value": "td.series-obs"
+    }
+   },
+   "defaultFields": [
+    "date",
+    "value"
+   ],
+   "mutates": false,
+   "example": {
+    "id": "GDPC1"
+   },
+   "source": "E20 E21 E26 GET https://fred.stlouisfed.org/series/GDPC1",
+   "verified": true
+  },
+  {
+   "name": "list-categories",
+   "summary": "List the top-level FRED data categories and their main subcategories, with category IDs (in the url) and series counts",
+   "method": "GET",
+   "urlTemplate": "/categories",
+   "params": [],
+   "responseType": "html",
+   "extract": {
+    "list": "p.fred-categories-parent, span.fred-categories-child",
+    "fields": {
+     "name": "a",
+     "url": "a@href",
+     "count": "span.category-count"
+    }
+   },
+   "defaultFields": [
+    "name",
+    "url",
+    "count"
+   ],
+   "mutates": false,
+   "source": "E19 GET https://fred.stlouisfed.org/categories",
+   "verified": true
+  },
+  {
+   "name": "list-category-series",
+   "summary": "List series in a category (by category ID), with optional tag filter, sorting and paging",
+   "method": "GET",
+   "urlTemplate": "/categories/{id}",
+   "params": [
+    {
+     "name": "id",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Numeric category ID (from list-categories urls), e.g. 32447 = Unemployment Rate",
+     "example": "32447"
+    },
+    {
+     "name": "t",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Tag(s) to filter by, using tag slugs (e.g. 'females'); separate multiple tags with ';'"
+    },
+    {
+     "name": "ob",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Sort key: 'pv' = popularity, 'lu' = last updated (the UI offers a few more)",
+     "default": "pv"
+    },
+    {
+     "name": "od",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Sort direction",
+     "enum": [
+      "desc",
+      "asc"
+     ],
+     "default": "desc"
+    },
+    {
+     "name": "pageID",
+     "in": "query",
+     "required": false,
+     "type": "number",
+     "description": "Results page number, starting at 1"
+    }
+   ],
+   "responseType": "html",
+   "extract": {
+    "list": "tr.series-pager-title",
+    "fields": {
+     "title": "a",
+     "url": "a@href"
+    }
+   },
+   "defaultFields": [
+    "title",
+    "url"
+   ],
+   "pagination": {
+    "type": "page",
+    "param": "pageID"
+   },
+   "mutates": false,
+   "example": {
+    "id": "32447",
+    "ob": "lu"
+   },
+   "source": "E14 GET https://fred.stlouisfed.org/categories/{n}",
+   "verified": true
+  },
+  {
+   "name": "list-series-by-tag",
+   "summary": "List all series or series matching tags (e.g. 'inflation'), sorted by popularity or last update; with no tag and ob=pv this lists the most popular series",
+   "method": "GET",
+   "urlTemplate": "/tags/series",
+   "params": [
+    {
+     "name": "t",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Tag slug(s), e.g. 'inflation', 'usa', 'nsa'; separate multiple tags with ';'. Leave empty for all series",
+     "example": "inflation"
+    },
+    {
+     "name": "ob",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Sort key: 'pv' = popularity, 'lu' = last updated",
+     "default": "pv"
+    },
+    {
+     "name": "od",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Sort direction",
+     "enum": [
+      "desc",
+      "asc"
+     ],
+     "default": "desc"
+    },
+    {
+     "name": "pageID",
+     "in": "query",
+     "required": false,
+     "type": "number",
+     "description": "Results page number, starting at 1"
+    }
+   ],
+   "responseType": "html",
+   "extract": {
+    "list": "tr.series-pager-title",
+    "fields": {
+     "title": "a",
+     "url": "a@href"
+    }
+   },
+   "defaultFields": [
+    "title",
+    "url"
+   ],
+   "pagination": {
+    "type": "page",
+    "param": "pageID"
+   },
+   "mutates": false,
+   "example": {
+    "t": "inflation",
+    "ob": "lu"
+   },
+   "source": "E15 GET https://fred.stlouisfed.org/tags/series",
+   "verified": true
+  },
+  {
+   "name": "search-tags",
+   "summary": "List or search FRED tags (concepts, geographies, frequencies, sources, ...) with series counts; tag slugs feed list-series-by-tag",
+   "method": "GET",
+   "urlTemplate": "/tags",
+   "params": [
+    {
+     "name": "st",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Tag search text, e.g. 'inflation'. Empty lists all tags",
+     "example": "inflation"
+    },
+    {
+     "name": "tg",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Tag group: all, gen (concepts), geo (geographies), geot (geography types), freq (frequencies), seas (seasonal adjustment), rls (releases), src (sources)",
+     "enum": [
+      "all",
+      "gen",
+      "geo",
+      "geot",
+      "freq",
+      "seas",
+      "rls",
+      "src"
+     ],
+     "default": "all"
+    },
+    {
+     "name": "pageID",
+     "in": "query",
+     "required": false,
+     "type": "number",
+     "description": "Results page number (50 tags per page)"
+    }
+   ],
+   "responseType": "html",
+   "extract": {
+    "list": "table#tags-pager p",
+    "fields": {
+     "name": "span.tag a",
+     "url": "span.tag a@href",
+     "count": "span.tag-count"
+    }
+   },
+   "defaultFields": [
+    "name",
+    "url",
+    "count"
+   ],
+   "pagination": {
+    "type": "page",
+    "param": "pageID"
+   },
+   "mutates": false,
+   "example": {
+    "st": "inflation"
+   },
+   "source": "E17 GET https://fred.stlouisfed.org/tags",
+   "verified": true
+  },
+  {
+   "name": "list-releases",
+   "summary": "List FRED data releases alphabetically (50 per page) with release IDs (rid in the url)",
+   "method": "GET",
+   "urlTemplate": "/releases",
+   "params": [
+    {
+     "name": "pageID",
+     "in": "query",
+     "required": false,
+     "type": "number",
+     "description": "Page number, starting at 1"
+    }
+   ],
+   "responseType": "html",
+   "extract": {
+    "list": "a.fred-releases-item-link",
+    "fields": {
+     "name": "",
+     "url": "@href"
+    }
+   },
+   "defaultFields": [
+    "name",
+    "url"
+   ],
+   "pagination": {
+    "type": "page",
+    "param": "pageID"
+   },
+   "mutates": false,
+   "source": "E22 GET https://fred.stlouisfed.org/releases",
+   "verified": true
+  },
+  {
+   "name": "list-release-series",
+   "summary": "List series in a data release (by release ID), with optional tag filter, sorting and paging",
+   "method": "GET",
+   "urlTemplate": "/release",
+   "params": [
+    {
+     "name": "rid",
+     "in": "query",
+     "required": true,
+     "type": "string",
+     "description": "Release ID, e.g. 194 = ADP National Employment Report, 53 = GDP, 50 = Employment Situation",
+     "example": "194"
+    },
+    {
+     "name": "t",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Tag slug(s) to filter by; separate multiple tags with ';'"
+    },
+    {
+     "name": "ob",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Sort key: 'pv' = popularity, 'lu' = last updated",
+     "default": "pv"
+    },
+    {
+     "name": "od",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Sort direction",
+     "enum": [
+      "desc",
+      "asc"
+     ],
+     "default": "desc"
+    },
+    {
+     "name": "pageID",
+     "in": "query",
+     "required": false,
+     "type": "number",
+     "description": "Results page number, starting at 1"
+    }
+   ],
+   "responseType": "html",
+   "extract": {
+    "list": "tr.series-pager-title",
+    "fields": {
+     "title": "a",
+     "url": "a@href"
+    }
+   },
+   "defaultFields": [
+    "title",
+    "url"
+   ],
+   "pagination": {
+    "type": "page",
+    "param": "pageID"
+   },
+   "mutates": false,
+   "example": {
+    "rid": "194"
+   },
+   "source": "E18 GET https://fred.stlouisfed.org/release",
+   "verified": true
+  },
+  {
+   "name": "list-release-tables",
+   "summary": "Browse a release's table tree: list the table sections/elements under a release (or under a given element ID) with element IDs (eid in the url) and series counts",
+   "method": "GET",
+   "urlTemplate": "/release/tables",
+   "params": [
+    {
+     "name": "rid",
+     "in": "query",
+     "required": true,
+     "type": "string",
+     "description": "Release ID, e.g. 194",
+     "example": "194"
+    },
+    {
+     "name": "eid",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Release table element ID to drill into, e.g. 1232736 (from the release page or a previous call)",
+     "example": "1232736"
+    }
+   ],
+   "responseType": "html",
+   "extract": {
+    "list": "td.fred-release-element",
+    "fields": {
+     "name": "a",
+     "url": "a@href",
+     "text": ""
+    }
+   },
+   "defaultFields": [
+    "name",
+    "url",
+    "text"
+   ],
+   "mutates": false,
+   "example": {
+    "rid": "194",
+    "eid": "1232736"
+   },
+   "source": "E23 GET https://fred.stlouisfed.org/release/tables",
+   "verified": true
+  },
+  {
+   "name": "get-release-calendar",
+   "summary": "Get the release calendar for a date range (all releases or one release ID) as per-day events, e.g. '33 releases' on 2026-10-19",
+   "method": "GET",
+   "urlTemplate": "/releases/calendar?rdc=1",
+   "params": [
+    {
+     "name": "vs",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Start date of the view, ISO date (a Sunday for week view), e.g. 2026-10-18. Defaults to the current week",
+     "example": "2026-10-18"
+    },
+    {
+     "name": "ve",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "End date of the view, ISO date, e.g. 2026-10-24",
+     "example": "2026-10-24"
+    },
+    {
+     "name": "rid",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Restrict to one release ID (empty = all releases)"
+    }
+   ],
+   "responseType": "json",
+   "resultPath": "events",
+   "defaultFields": [
+    "title",
+    "start"
+   ],
+   "mutates": false,
+   "example": {
+    "vs": "2026-10-18",
+    "ve": "2026-10-24"
+   },
+   "source": "E16",
+   "verified": true
+  },
+  {
+   "name": "list-sources",
+   "summary": "List the data sources (agencies and organizations) that FRED series come from, with source IDs (soid in the url)",
+   "method": "GET",
+   "urlTemplate": "/sources",
+   "params": [
+    {
+     "name": "pageID",
+     "in": "query",
+     "required": false,
+     "type": "number",
+     "description": "Page number, starting at 1"
+    }
+   ],
+   "responseType": "html",
+   "extract": {
+    "list": "a[href^='/source?soid=']",
+    "fields": {
+     "name": "",
+     "url": "@href"
+    }
+   },
+   "defaultFields": [
+    "name",
+    "url"
+   ],
+   "pagination": {
+    "type": "page",
+    "param": "pageID"
+   },
+   "mutates": false,
+   "source": "E24 GET https://fred.stlouisfed.org/sources",
+   "verified": true
+  },
+  {
+   "name": "list-source-releases",
+   "summary": "List the releases published by a data source (by source ID)",
+   "method": "GET",
+   "urlTemplate": "/source",
+   "params": [
+    {
+     "name": "soid",
+     "in": "query",
+     "required": true,
+     "type": "string",
+     "description": "Source ID, e.g. 42 = Automatic Data Processing, Inc.",
+     "example": "42"
+    }
+   ],
+   "responseType": "html",
+   "extract": {
+    "list": "a[href^='/release?rid=']",
+    "fields": {
+     "name": "",
+     "url": "@href"
+    }
+   },
+   "defaultFields": [
+    "name",
+    "url"
+   ],
+   "mutates": false,
+   "example": {
+    "soid": "42"
+   },
+   "source": "E25 GET https://fred.stlouisfed.org/source",
+   "verified": true
+  }
+ ],
+ "blockers": [],
+ "notes": [
+  "Series IDs (GDPC1, UNRATE, CPIAUCSL, ...) come from search-series or from the /series/{ID} urls returned by the listing commands. Category IDs, release IDs (rid), element IDs (eid) and source IDs (soid) are found in the returned urls.",
+  "No full observation history or CSV export is available here. The page's Download/fredgraph.csv flow failed during exploration, and the full observations POST (/graph/api/series/?obs=true) needs a large chart-state body that was never sent. For full history, use the official FRED API (https://api.stlouisfed.org/fred/series/observations), which requires a free api_key.",
+  "Keyword search on /searchresults returned nothing during exploration. Use search-series (autocomplete) for keyword lookup, and list-series-by-tag or search-tags for broader discovery.",
+  "Listing pages are server-rendered HTML with about 10-25 series per page. Use pageID for more. Sort keys seen: pv (popularity), lu (last updated).",
+  "No logged-in features (favorites, data lists, saved graphs) were explored."
+ ],
+ "dropped": [],
+ "generated": {
+  "by": "clify add",
+  "model": "claude-opus-5-5",
+  "exploredSteps": 28,
+  "recorded": 165,
+  "verifiedAt": "2026-10-18T08:46:13.519Z",
+  "seconds": 281
+ }
+}

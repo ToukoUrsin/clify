@@ -1,0 +1,19 @@
+{
+  "mask": { "<human>": "touko@… (human)" },
+  "scenes": [
+    { "kind": "card", "dur": 4.5, "html": "<h1>clify agent</h1><h2>An AI agent with its own cloud computer, email address and accounts.<br>Email it a job: it asks when unsure, does it on the web with clify,<br>and replies in the same thread.</h2><div class='row'><div class='chip'>InstaBox: its computer</div><div class='chip'>Primitive: its inbox</div><div class='chip'>Inkbox: its identity + peer agent</div><div class='chip'>clify: the web as CLIs</div><div class='chip'>Claude Opus 5.5</div></div>" },
+    { "kind": "thread", "jobs": ["job-f49761.json"], "journal": "journal.json", "from": "2026-10-18T08:14:34Z", "until": "2026-10-18T08:16:24Z",
+      "meta": "Maya (test requester) ⇄ clify agent · 6 emails · one thread",
+      "names": { "maya@fine-vale.primitive.email": "Maya" },
+      "captions": { "0": "A job arrives by email", "1": "Ambiguous → one question, in the same thread", "2": "Her answer continues the same job", "3": "clify on the InstaBox → CSV attached", "4": "A follow-up in the same thread", "5": "Uptime check + public status page, made on its own updown account" } },
+    { "kind": "thread", "jobs": ["job-6ffb30.json"], "journal": "journal.json", "from": "2026-10-18T08:19:24Z", "until": "2026-10-18T08:20:28Z",
+      "meta": "Leo (test requester) ⇄ clify agent ⇄ peer agent (Inkbox) · forward = delegation",
+      "names": { "leo@fine-vale.primitive.email": "Leo" },
+      "captions": { "0": "A two-part job", "1": "Forward = delegation: the thread goes to the peer agent", "2": "The peer answers in the forwarded thread, CSV attached", "3": "One merged answer back to Leo" } },
+    { "kind": "thread", "jobs": ["job-cb6652.json"], "journal": "journal.json", "from": "2026-10-18T08:21:22Z", "until": "2026-10-18T08:22:16Z", "human": "<human>",
+      "meta": "Sam (test requester) ⇄ clify agent · blocked → ask the human, cc the peer",
+      "names": { "sam@fine-vale.primitive.email": "Sam" },
+      "captions": { "0": "\"Sign up with your own identity\"", "1": "CAPTCHA → it emails its human, cc the peer. It never solves one.", "2": "…and still answers from public pages" } },
+    { "kind": "card", "dur": 7, "html": "<h1>Always on</h1><h2>Two agents as systemd services on the InstaBox, each with its own vault.<br>Full stop/start: back in 5 s, next job handled.</h2><pre>$ instabox stop clify-agent &amp;&amp; instabox start clify-agent\nclify-agent  Running  agent-browser\n$ instabox exec clify-agent -- uptime\n 08:21:16 up 0 min\nclify-agent@main  active   6 jobs reloaded\nclify-agent@peer  active   2 jobs reloaded\nbridge  reconnected 08:21:10  ·  92/92 answers claude-opus-5-5</pre>" }
+  ]
+}

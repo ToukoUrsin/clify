@@ -1,0 +1,35 @@
+{
+ "task": "webscraper-laptop-max",
+ "site": "webscraper",
+ "mode": "cli",
+ "trial": 1,
+ "tag": "clisame",
+ "ok": true,
+ "why": "all expected values present",
+ "answer": "Asus ROG Strix SCAR Edition GL503VM-ED115T — $1799",
+ "expected": {
+  "expect": [
+   "Asus ROG Strix SCAR Edition GL503VM-ED115T",
+   "1799"
+  ]
+ },
+ "wallMs": 13152,
+ "apiMs": 12451,
+ "turns": 4,
+ "toolCalls": 3,
+ "tokens": {
+  "input": 8,
+  "output": 531,
+  "cacheWrite": 3838,
+  "cacheRead": 14361,
+  "total": 18738
+ },
+ "costUsd": 0.0327142,
+ "models": [
+  "claude-opus-5-5"
+ ],
+ "exitCode": 0,
+ "timedOut": false,
+ "subtype": "success",
+ "startedAt": "2026-10-18T12:50:24.730Z"
+}

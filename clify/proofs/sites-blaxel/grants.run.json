@@ -1,0 +1,128 @@
+{
+ "url": "https://www.grants.gov/",
+ "category": "gov-us",
+ "sandbox": "clify-www-grants-gov",
+ "startedAt": "2026-10-18T09:13:39.388Z",
+ "region": "us-pdx-1",
+ "chrome": "Chrome/148.0.7778.96",
+ "sandboxStartMs": 3012,
+ "addSeconds": 236,
+ "addExit": 0,
+ "add": {
+  "ok": true,
+  "site": "grants",
+  "url": "https://www.grants.gov/",
+  "commands": [
+   {
+    "name": "search-opportunities",
+    "summary": "Search federal funding opportunities on simpler.grants.gov by keyword, with status, funding-instrument, eligibility and category filters, sort and paging. Returns the raw Next.js RSC text payload, whi",
+    "verified": true
+   },
+   {
+    "name": "export-opportunities-csv",
+    "summary": "Export opportunity search results as CSV. Takes the same keyword, filter and sort params as search-opportunities.",
+    "verified": true
+   },
+   {
+    "name": "get-opportunity-details",
+    "summary": "Get full details of an opportunity from the classic Grants.gov web service, by numeric opportunity ID. Includes synopsis, forecast, eligibility, attachments and version history.",
+    "verified": false,
+    "writes": true
+   },
+   {
+    "name": "search-agencies",
+    "summary": "Search funding agencies by name, for use as the agency filter in opportunity search.",
+    "verified": false,
+    "writes": true
+   },
+   {
+    "name": "search-site-content",
+    "summary": "Search Grants.gov website content (help articles, forms, learning pages) through the Search.gov API.",
+    "verified": true
+   },
+   {
+    "name": "get-content-page",
+    "summary": "Get a published Grants.gov CMS page (Storyblok story) by slug.",
+    "verified": true
+   },
+   {
+    "name": "list-xml-extracts",
+    "summary": "List the daily Grants.gov XML database extract files (GrantsDBExtractYYYYMMDDv2.zip), with download URL, size and date.",
+    "verified": true
+   },
+   {
+    "name": "list-rss-feeds",
+    "summary": "List the Grants.gov RSS feed links for new and modified opportunities, by agency and by category.",
+    "verified": true
+   }
+  ],
+  "verified": 6,
+  "writes": 2,
+  "dropped": [],
+  "blockers": [],
+  "loggedIn": false,
+  "seconds": 235,
+  "next": [
+   "clify grants",
+   "clify grants search-opportunities --query \"climate resilience\""
+  ],
+  "installed": "/home/ubuntu/clify-runs/blaxel-w2/home/bin/grants",
+  "explored": {
+   "steps": 30,
+   "recorded": 37,
+   "heldWrites": 2
+  }
+ },
+ "check": {
+  "on": "blaxel",
+  "node": "v24.22.0",
+  "seconds": 5,
+  "reads": 6,
+  "verified": 6,
+  "failed": [],
+  "results": [
+   {
+    "name": "search-opportunities",
+    "ok": true,
+    "ms": 908
+   },
+   {
+    "name": "export-opportunities-csv",
+    "ok": true,
+    "ms": 997
+   },
+   {
+    "name": "get-opportunity-details",
+    "ok": true,
+    "reason": "write: dry-run preview only, not sent"
+   },
+   {
+    "name": "search-agencies",
+    "ok": true,
+    "reason": "write: dry-run preview only, not sent"
+   },
+   {
+    "name": "search-site-content",
+    "ok": true,
+    "ms": 222
+   },
+   {
+    "name": "get-content-page",
+    "ok": true,
+    "ms": 201
+   },
+   {
+    "name": "list-xml-extracts",
+    "ok": true,
+    "ms": 278
+   },
+   {
+    "name": "list-rss-feeds",
+    "ok": true,
+    "ms": 28
+   }
+  ]
+ },
+ "deleted": true,
+ "seconds": 244
+}

@@ -1,0 +1,98 @@
+{
+ "ok": true,
+ "site": "openstreetmap",
+ "url": "https://www.openstreetmap.org/",
+ "commands": [
+  {
+   "name": "search-places",
+   "summary": "Geocode a place name or address with Nominatim, the search engine openstreetmap.org uses. Returns OSM type/id, coordinates and display name.",
+   "verified": true
+  },
+  {
+   "name": "get-element",
+   "summary": "Get the detail page of an OSM node, way or relation: name, current version, last editor, changeset, edit comment and tags (as text).",
+   "verified": true
+  },
+  {
+   "name": "get-element-history",
+   "summary": "List every version of an OSM node, way or relation, with version number, editor, timestamp, changeset and comment.",
+   "verified": true
+  },
+  {
+   "name": "get-element-full",
+   "summary": "Get raw OSM data as JSON for a way or relation together with all its member nodes (coordinates, tags, versions, editors).",
+   "verified": true
+  },
+  {
+   "name": "export-map-data",
+   "summary": "Download all raw OSM data (nodes, ways, relations) in a small bounding box as JSON. This is what the Export button returns.",
+   "verified": true
+  },
+  {
+   "name": "get-route",
+   "summary": "Get turn-by-turn directions between two coordinates with the OSRM engine (FOSSGIS) for car, bike or foot. Returns distance in meters and duration in seconds.",
+   "verified": true
+  },
+  {
+   "name": "get-route-valhalla",
+   "summary": "Get directions with the Valhalla engine (FOSSGIS). Returns human-readable maneuvers, length and time.",
+   "verified": true
+  },
+  {
+   "name": "list-area-changesets",
+   "summary": "List recent changesets (edit sessions) in a bounding box, newest first. Use --before for older ones.",
+   "verified": true
+  },
+  {
+   "name": "list-user-changesets",
+   "summary": "List a user's changesets (edits), newest first. Use --before for older ones.",
+   "verified": true
+  },
+  {
+   "name": "get-user",
+   "summary": "Get a mapper's public profile: edit count, mapper-since date, last edit date and description.",
+   "verified": true
+  },
+  {
+   "name": "get-user-contributions",
+   "summary": "Get a user's contribution count for the last year (from the activity heatmap).",
+   "verified": true
+  },
+  {
+   "name": "list-diary-entries",
+   "summary": "List the latest user diary entries from all languages, newest first. Use --before for older ones.",
+   "verified": true
+  },
+  {
+   "name": "list-diary-entries-by-language",
+   "summary": "List the latest diary entries written in one language (e.g. en, de, fr), newest first.",
+   "verified": true
+  },
+  {
+   "name": "get-diary-entry",
+   "summary": "Read one diary entry: title, author, date, full text, location and the comment discussion.",
+   "verified": true
+  },
+  {
+   "name": "list-communities",
+   "summary": "List the official OpenStreetMap Local Chapters (country or regional organisations) with their websites.",
+   "verified": true
+  }
+ ],
+ "verified": 15,
+ "writes": 0,
+ "dropped": [],
+ "blockers": [],
+ "loggedIn": false,
+ "seconds": 230,
+ "next": [
+  "clify openstreetmap",
+  "clify openstreetmap search-places --q \"Central Park, New York\" --api_limit \"5\""
+ ],
+ "installed": "/home/ubuntu/clify-runs/batch2/home/bin/openstreetmap",
+ "explored": {
+  "steps": 29,
+  "recorded": 30,
+  "heldWrites": 0
+ }
+}

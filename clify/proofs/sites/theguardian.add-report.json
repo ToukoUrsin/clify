@@ -1,0 +1,78 @@
+{
+ "ok": true,
+ "site": "theguardian",
+ "url": "https://www.theguardian.com/international",
+ "commands": [
+  {
+   "name": "get-article",
+   "summary": "Get one full article (headline, standfirst, byline, date, body blocks, tags) as JSON from its URL parts",
+   "verified": true
+  },
+  {
+   "name": "get-front",
+   "summary": "Get an edition or section front page (e.g. international, uk, us, sport) as its list of curated story collections",
+   "verified": true
+  },
+  {
+   "name": "get-tag-feed",
+   "summary": "Get the RSS feed of the latest articles for a tag or topic, with title, link, date, byline and categories",
+   "verified": true
+  },
+  {
+   "name": "list-contributor-articles",
+   "summary": "Get the RSS feed of a Guardian writer's latest articles (e.g. angela-giuffrida), with title, link, date, byline and categories",
+   "verified": true
+  },
+  {
+   "name": "get-most-read",
+   "summary": "Get the site-wide most-viewed and deeply-read article lists with headline, url, byline and shortUrl",
+   "verified": true
+  },
+  {
+   "name": "list-section-day",
+   "summary": "List all articles published in a section on one date (daily archive, e.g. world on 2026/oct/17)",
+   "verified": true
+  },
+  {
+   "name": "list-subjects",
+   "summary": "Browse the A-Z index of Guardian topics/subjects for one letter; links give tag ids",
+   "verified": true
+  },
+  {
+   "name": "list-contributors",
+   "summary": "Browse the A-Z index of Guardian writers/contributors for one letter; links give profile slugs",
+   "verified": true
+  },
+  {
+   "name": "list-comments",
+   "summary": "List reader comments on an article by its short id (e.g. x67fk6), sorted and paged",
+   "verified": true
+  },
+  {
+   "name": "get-comment-counts",
+   "summary": "Get comment counts for one or more articles by short URL (/p/xxxxx), comma-separated",
+   "verified": true
+  }
+ ],
+ "verified": 10,
+ "writes": 0,
+ "dropped": [
+  {
+   "name": "list-tag-articles",
+   "reason": "The tag page .json?dcr response has no 'contents' array and its real shape is unknown from the evidence. get-tag-feed already lists a tag's latest articles via RSS."
+  }
+ ],
+ "blockers": [],
+ "loggedIn": false,
+ "seconds": 255,
+ "next": [
+  "clify theguardian",
+  "clify theguardian get-article --section \"world\" --year \"2026\" --month \"oct\" --day \"18\" --slug \"bolotana-sardinian-village-women-centenarians-longevity-long-life\""
+ ],
+ "installed": "/home/ubuntu/clify-runs/batch2/home/bin/theguardian",
+ "explored": {
+  "steps": 15,
+  "recorded": 421,
+  "heldWrites": 154
+ }
+}

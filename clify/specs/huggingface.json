@@ -1,0 +1,797 @@
+{
+ "name": "huggingface",
+ "startUrl": "https://huggingface.co/models",
+ "origin": "https://huggingface.co",
+ "createdAt": "2026-10-18T07:13:43.470Z",
+ "description": "Hugging Face Hub (huggingface.co): search and inspect public models, datasets, Spaces and organizations, read model/dataset metadata, file listings, security scans and dataset statistics, without logging in.",
+ "commands": [
+  {
+   "name": "search-models",
+   "summary": "Search and filter Hub models by keyword, task, library, app, parameter count, inference provider or license, with sorting and pages",
+   "method": "GET",
+   "urlTemplate": "/models-json?withCount=true",
+   "params": [
+    {
+     "name": "search",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Keyword matched against model ids",
+     "example": "llama"
+    },
+    {
+     "name": "pipeline_tag",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Task filter, e.g. text-generation, image-text-to-text, text-to-image, any-to-any, text-to-speech",
+     "example": "text-generation"
+    },
+    {
+     "name": "library",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Library or format filter, e.g. transformers, pytorch, tf, safetensors, gguf",
+     "example": "gguf"
+    },
+    {
+     "name": "apps",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Compatible local app, e.g. llama.cpp, vllm",
+     "example": "llama.cpp"
+    },
+    {
+     "name": "num_parameters",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Parameter-count range as min:X,max:Y with B/M suffixes, e.g. min:0,max:6B",
+     "example": "min:0,max:6B"
+    },
+    {
+     "name": "inference_provider",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Only models served by this inference provider, e.g. novita, nscale"
+    },
+    {
+     "name": "license",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "License tag id in the form license:<name>, e.g. license:apache-2.0 (see list-model-tags)"
+    },
+    {
+     "name": "sort",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Sort order",
+     "enum": [
+      "trending",
+      "likes",
+      "downloads",
+      "created",
+      "modified"
+     ],
+     "default": "trending"
+    },
+    {
+     "name": "p",
+     "in": "query",
+     "required": false,
+     "type": "number",
+     "description": "0-based page index, 30 results per page"
+    }
+   ],
+   "responseType": "json",
+   "resultPath": "models",
+   "defaultFields": [
+    "id",
+    "pipeline_tag",
+    "downloads",
+    "likes",
+    "numParameters",
+    "lastModified",
+    "gated",
+    "author"
+   ],
+   "pagination": {
+    "type": "page",
+    "param": "p"
+   },
+   "mutates": false,
+   "example": {
+    "search": "llama",
+    "pipeline_tag": "text-generation",
+    "sort": "downloads"
+   },
+   "source": "E2 GET https://huggingface.co/models-json",
+   "verified": true
+  },
+  {
+   "name": "quick-search",
+   "summary": "Autocomplete-style quick search that returns matching models, datasets, Spaces, orgs and users together",
+   "method": "GET",
+   "urlTemplate": "/api/quicksearch?type=model&type=dataset&type=space&type=org&type=user",
+   "params": [
+    {
+     "name": "q",
+     "in": "query",
+     "required": true,
+     "type": "string",
+     "description": "Search text",
+     "example": "llama"
+    }
+   ],
+   "responseType": "json",
+   "defaultFields": [
+    "models",
+    "datasets",
+    "spaces",
+    "orgs",
+    "users"
+   ],
+   "mutates": false,
+   "example": {
+    "q": "llama"
+   },
+   "source": "E3 GET https://huggingface.co/api/quicksearch",
+   "verified": true
+  },
+  {
+   "name": "full-text-search",
+   "summary": "Full-text search inside model, dataset or Space cards (README content), with highlighted matches",
+   "method": "GET",
+   "urlTemplate": "/api/search/full-text",
+   "params": [
+    {
+     "name": "q",
+     "in": "query",
+     "required": true,
+     "type": "string",
+     "description": "Text to search for in repository cards",
+     "example": "quantization"
+    },
+    {
+     "name": "type",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Repository type to search",
+     "enum": [
+      "model",
+      "dataset",
+      "space"
+     ],
+     "default": "model"
+    },
+    {
+     "name": "api_limit",
+     "key": "limit",
+     "in": "query",
+     "required": false,
+     "type": "number",
+     "description": "Results per page (sent to the site as \"limit\"; clify's own --limit only shapes the output)",
+     "default": 20
+    },
+    {
+     "name": "skip",
+     "in": "query",
+     "required": false,
+     "type": "number",
+     "description": "Number of results to skip (offset)",
+     "default": 0
+    }
+   ],
+   "responseType": "json",
+   "resultPath": "hits",
+   "defaultFields": [
+    "name",
+    "type",
+    "repoOwner",
+    "repoName",
+    "likes",
+    "fileName",
+    "tags",
+    "updatedAt"
+   ],
+   "pagination": {
+    "type": "offset",
+    "param": "skip",
+    "step": 20
+   },
+   "mutates": false,
+   "example": {
+    "q": "quantization",
+    "type": "model"
+   },
+   "source": "E6 GET https://huggingface.co/api/search/full-text",
+   "verified": true
+  },
+  {
+   "name": "list-model-tags",
+   "summary": "List all model license tag ids (e.g. license:apache-2.0) usable in search-models --license",
+   "method": "GET",
+   "urlTemplate": "/api/models-tags-by-type?type=license",
+   "params": [],
+   "responseType": "json",
+   "resultPath": "license",
+   "defaultFields": [
+    "id",
+    "label",
+    "type"
+   ],
+   "mutates": false,
+   "source": "E5",
+   "verified": true
+  },
+  {
+   "name": "get-model",
+   "summary": "Get full public metadata for a model: tags, downloads, likes, config, card data, file list (siblings), parameter counts, gating",
+   "method": "GET",
+   "urlTemplate": "/api/models/{owner}/{name}",
+   "params": [
+    {
+     "name": "owner",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Model owner (user or org), the part of the model id before '/'",
+     "example": "meta-llama"
+    },
+    {
+     "name": "name",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Model repo name, the part of the model id after '/'",
+     "example": "Llama-3.1-8B-Instruct"
+    }
+   ],
+   "responseType": "json",
+   "defaultFields": [
+    "id",
+    "pipeline_tag",
+    "library_name",
+    "downloads",
+    "likes",
+    "gated",
+    "lastModified",
+    "cardData.license"
+   ],
+   "mutates": false,
+   "example": {
+    "owner": "meta-llama",
+    "name": "Llama-3.1-8B-Instruct"
+   },
+   "source": "E15 GET https://huggingface.co/api/models/meta-llama/Llama-3.1-8B-Instruct",
+   "verified": true
+  },
+  {
+   "name": "get-model-scan",
+   "summary": "Get the security (malware/pickle) scan status of a model repository's files",
+   "method": "GET",
+   "urlTemplate": "/api/models/{owner}/{name}/scan",
+   "params": [
+    {
+     "name": "owner",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Model owner (user or org)",
+     "example": "NousResearch"
+    },
+    {
+     "name": "name",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Model repo name",
+     "example": "Hermes-3-Llama-3.1-8B"
+    }
+   ],
+   "responseType": "json",
+   "defaultFields": [
+    "scansDone",
+    "filesWithIssues"
+   ],
+   "mutates": false,
+   "example": {
+    "owner": "NousResearch",
+    "name": "Hermes-3-Llama-3.1-8B"
+   },
+   "source": "E7 GET https://huggingface.co/api/models/NousResearch/Hermes-3-Llama-3.1-8B/scan",
+   "verified": true
+  },
+  {
+   "name": "list-model-files",
+   "summary": "List files on a model repository's main branch with sizes, last commit message, date and download links",
+   "method": "GET",
+   "urlTemplate": "/{owner}/{name}/tree/main",
+   "params": [
+    {
+     "name": "owner",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Model owner (user or org)",
+     "example": "NousResearch"
+    },
+    {
+     "name": "name",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Model repo name",
+     "example": "Hermes-3-Llama-3.1-8B"
+    }
+   ],
+   "responseType": "html",
+   "extract": {
+    "list": "li.grid-cols-24",
+    "fields": {
+     "file": "div.col-span-15 span.truncate",
+     "url": "div.col-span-15 a@href",
+     "size": "a.col-span-9 span",
+     "download_url": "a.col-span-9@href",
+     "last_commit": "a.col-span-8 span",
+     "updated": "time@datetime"
+    }
+   },
+   "defaultFields": [
+    "file",
+    "size",
+    "download_url",
+    "last_commit",
+    "updated"
+   ],
+   "mutates": false,
+   "example": {
+    "owner": "NousResearch",
+    "name": "Hermes-3-Llama-3.1-8B"
+   },
+   "source": "E19 GET https://huggingface.co/NousResearch/Hermes-3-Llama-3.1-8B/tree/main",
+   "verified": true
+  },
+  {
+   "name": "get-model-file",
+   "summary": "Download the raw text of a file from a model repository's main branch, e.g. README.md or config.json",
+   "method": "GET",
+   "urlTemplate": "/{owner}/{name}/resolve/main/{file}",
+   "params": [
+    {
+     "name": "owner",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Model owner (user or org)",
+     "example": "NousResearch"
+    },
+    {
+     "name": "name",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Model repo name",
+     "example": "Hermes-3-Llama-3.1-8B"
+    },
+    {
+     "name": "file",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "File name in the repo root, as listed by list-model-files, e.g. README.md, config.json",
+     "example": "README.md"
+    }
+   ],
+   "responseType": "text",
+   "mutates": false,
+   "example": {
+    "owner": "NousResearch",
+    "name": "Hermes-3-Llama-3.1-8B",
+    "file": "README.md"
+   },
+   "source": "E19 GET https://huggingface.co/NousResearch/Hermes-3-Llama-3.1-8B/tree/main",
+   "verified": true
+  },
+  {
+   "name": "search-datasets",
+   "summary": "Search and filter Hub datasets by keyword, modality and format, with sorting and pages",
+   "method": "GET",
+   "urlTemplate": "/datasets-json?withCount=true",
+   "params": [
+    {
+     "name": "search",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Keyword matched against dataset ids",
+     "example": "wikipedia"
+    },
+    {
+     "name": "modality",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Modality filter in the form modality:<x>, e.g. modality:text, modality:image, modality:audio, modality:tabular, modality:video, modality:3d",
+     "example": "modality:text"
+    },
+    {
+     "name": "format",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "File format filter in the form format:<x>, e.g. format:json, format:csv, format:parquet"
+    },
+    {
+     "name": "sort",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Sort order",
+     "enum": [
+      "trending",
+      "likes",
+      "downloads",
+      "created",
+      "modified"
+     ],
+     "default": "trending"
+    },
+    {
+     "name": "p",
+     "in": "query",
+     "required": false,
+     "type": "number",
+     "description": "0-based page index, 30 results per page"
+    }
+   ],
+   "responseType": "json",
+   "resultPath": "datasets",
+   "defaultFields": [
+    "id",
+    "downloads",
+    "likes",
+    "lastModified",
+    "gated",
+    "datasetsServerInfo.numRows",
+    "datasetsServerInfo.modalities",
+    "datasetsServerInfo.formats"
+   ],
+   "pagination": {
+    "type": "page",
+    "param": "p"
+   },
+   "mutates": false,
+   "example": {
+    "search": "wikipedia",
+    "modality": "modality:text",
+    "sort": "downloads"
+   },
+   "source": "E4 GET https://huggingface.co/datasets-json",
+   "verified": true
+  },
+  {
+   "name": "get-dataset",
+   "summary": "Get a dataset's Croissant metadata (name, description, license, splits, fields, file distribution) from its page",
+   "method": "GET",
+   "urlTemplate": "/datasets/{owner}/{name}",
+   "params": [
+    {
+     "name": "owner",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Dataset owner (user or org)",
+     "example": "HuggingFaceFW"
+    },
+    {
+     "name": "name",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Dataset repo name",
+     "example": "clean-wikipedia"
+    }
+   ],
+   "responseType": "html",
+   "extract": {
+    "jsonScript": "script[type=\"application/ld+json\"]"
+   },
+   "defaultFields": [
+    "name",
+    "description",
+    "url",
+    "license",
+    "keywords",
+    "creator",
+    "distribution",
+    "recordSet"
+   ],
+   "mutates": false,
+   "example": {
+    "owner": "HuggingFaceFW",
+    "name": "clean-wikipedia"
+   },
+   "source": "E21 GET https://huggingface.co/datasets/HuggingFaceFW/clean-wikipedia",
+   "verified": true
+  },
+  {
+   "name": "get-dataset-scan",
+   "summary": "Get the security scan status of a dataset repository's files",
+   "method": "GET",
+   "urlTemplate": "/api/datasets/{owner}/{name}/scan",
+   "params": [
+    {
+     "name": "owner",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Dataset owner (user or org)",
+     "example": "HuggingFaceFW"
+    },
+    {
+     "name": "name",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Dataset repo name",
+     "example": "clean-wikipedia"
+    }
+   ],
+   "responseType": "json",
+   "defaultFields": [
+    "scansDone",
+    "filesWithIssues"
+   ],
+   "mutates": false,
+   "example": {
+    "owner": "HuggingFaceFW",
+    "name": "clean-wikipedia"
+   },
+   "source": "E8 GET https://huggingface.co/api/datasets/HuggingFaceFW/clean-wikipedia/scan",
+   "verified": true
+  },
+  {
+   "name": "check-dataset-viewer",
+   "summary": "Check which dataset-viewer features (viewer, preview, search, filter, statistics) are available for a dataset split",
+   "method": "GET",
+   "urlTemplate": "https://datasets-server.huggingface.co/is-valid",
+   "params": [
+    {
+     "name": "dataset",
+     "in": "query",
+     "required": true,
+     "type": "string",
+     "description": "Full dataset id owner/name",
+     "example": "HuggingFaceFW/clean-wikipedia"
+    },
+    {
+     "name": "config",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Subset/config name",
+     "default": "default"
+    },
+    {
+     "name": "split",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Split name, e.g. train, test, validation",
+     "default": "train"
+    }
+   ],
+   "responseType": "json",
+   "defaultFields": [
+    "viewer",
+    "preview",
+    "search",
+    "filter",
+    "statistics"
+   ],
+   "mutates": false,
+   "example": {
+    "dataset": "HuggingFaceFW/clean-wikipedia",
+    "config": "default",
+    "split": "train"
+   },
+   "source": "E9 GET https://datasets-server.huggingface.co/is-valid",
+   "verified": true
+  },
+  {
+   "name": "get-dataset-statistics",
+   "summary": "Get per-column statistics (types, null counts, unique values, label frequencies, length histograms) for a dataset split",
+   "method": "GET",
+   "urlTemplate": "https://datasets-server.huggingface.co/statistics",
+   "params": [
+    {
+     "name": "dataset",
+     "in": "query",
+     "required": true,
+     "type": "string",
+     "description": "Full dataset id owner/name",
+     "example": "HuggingFaceFW/clean-wikipedia"
+    },
+    {
+     "name": "config",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Subset/config name",
+     "default": "default"
+    },
+    {
+     "name": "split",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Split name, e.g. train",
+     "default": "train"
+    }
+   ],
+   "responseType": "json",
+   "resultPath": "statistics",
+   "defaultFields": [
+    "column_name",
+    "column_type",
+    "column_statistics"
+   ],
+   "mutates": false,
+   "example": {
+    "dataset": "HuggingFaceFW/clean-wikipedia",
+    "config": "default",
+    "split": "train"
+   },
+   "source": "E10 GET https://datasets-server.huggingface.co/statistics",
+   "verified": true
+  },
+  {
+   "name": "search-spaces",
+   "summary": "Search Hugging Face Spaces (AI demo apps) by keyword, with sorting",
+   "method": "GET",
+   "urlTemplate": "/spaces",
+   "params": [
+    {
+     "name": "search",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Keyword to search Spaces",
+     "example": "chatbot"
+    },
+    {
+     "name": "sort",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Sort order",
+     "enum": [
+      "trending",
+      "likes",
+      "created",
+      "modified"
+     ],
+     "default": "trending"
+    }
+   ],
+   "responseType": "html",
+   "extract": {
+    "list": "article.relative",
+    "fields": {
+     "url": "a@href",
+     "title": "h4@title",
+     "description": "p",
+     "emoji": "div.leading-none"
+    }
+   },
+   "defaultFields": [
+    "url",
+    "title",
+    "description",
+    "emoji"
+   ],
+   "mutates": false,
+   "example": {
+    "search": "chatbot",
+    "sort": "likes"
+   },
+   "source": "E23 GET https://huggingface.co/spaces",
+   "verified": true
+  },
+  {
+   "name": "get-organization",
+   "summary": "List the repositories shown in an organization's or user's profile collections (models and datasets with stats)",
+   "method": "GET",
+   "urlTemplate": "/{org}",
+   "params": [
+    {
+     "name": "org",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Organization or user name",
+     "example": "NousResearch"
+    }
+   ],
+   "responseType": "html",
+   "extract": {
+    "list": "li.collection-item",
+    "fields": {
+     "url": "a@href",
+     "stats": "div.mr-1.flex",
+     "updated": "time@datetime"
+    }
+   },
+   "defaultFields": [
+    "url",
+    "stats",
+    "updated"
+   ],
+   "mutates": false,
+   "example": {
+    "org": "NousResearch"
+   },
+   "source": "E24 GET https://huggingface.co/NousResearch",
+   "verified": true
+  }
+ ],
+ "blockers": [],
+ "notes": [
+  "Repo ids look like owner/name. Commands that take path params need them split into --owner and --name, e.g. meta-llama/Llama-3.1-8B-Instruct becomes --owner meta-llama --name Llama-3.1-8B-Instruct. The datasets-server commands take the full id in --dataset.",
+  "search-models and search-datasets use a 0-based page index p, with 30 items per page. numTotalItems in the raw response gives the total count.",
+  "Filter values carry prefixes: license:apache-2.0, modality:text, format:json. num_parameters uses the form min:0,max:6B.",
+  "Gated models (gated: 'manual'/'auto') return metadata publicly, but their file downloads need an authenticated account that has accepted the terms. get-model-file only works for public, non-gated files.",
+  "semantic-search-spaces returned an empty array during exploration, so it may return no results.",
+  "Dataset-viewer row search did not load during exploration and is not included. Use check-dataset-viewer and get-dataset-statistics instead.",
+  "Writes such as Like and Follow need a logged-in session and were not captured."
+ ],
+ "dropped": [
+  {
+   "name": "semantic-search-spaces",
+   "summary": "Natural-language semantic search for Spaces by describing a task (e.g. 'remove background from image')",
+   "method": "GET",
+   "urlTemplate": "/api/spaces/semantic-search?includeNonRunning=true",
+   "params": [
+    {
+     "name": "q",
+     "in": "query",
+     "required": true,
+     "type": "string",
+     "description": "Task description in plain language",
+     "example": "remove background from image"
+    }
+   ],
+   "responseType": "json",
+   "defaultFields": [
+    "id",
+    "title",
+    "shortDescription",
+    "emoji",
+    "likes",
+    "sdk"
+   ],
+   "mutates": false,
+   "example": {
+    "q": "remove background from image"
+   },
+   "source": "E11 GET https://huggingface.co/api/spaces/semantic-search",
+   "verified": false,
+   "verifyNote": "Returned an empty array for a common query. The required wire params are unknown and can't be confirmed, and search-spaces already covers Space search."
+  }
+ ],
+ "generated": {
+  "by": "clify add",
+  "model": "claude-opus-5-5",
+  "exploredSteps": 30,
+  "recorded": 70,
+  "verifiedAt": "2026-10-18T07:15:11.969Z",
+  "seconds": 262
+ }
+}

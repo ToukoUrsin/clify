@@ -1,0 +1,12 @@
+{
+  "name": "clify-mcp-demo",
+  "private": true,
+  "type": "module",
+  "description": "Multi-client demo against the deployed clify MCP server (not part of the deployed server)",
+  "dependencies": {
+    "@mcp-use/agent": "2.0.24",
+    "@mcp-use/client": "2.4.4",
+    "mcp-use": "2.10.1",
+    "playwright": "1.64.1"
+  }
+}

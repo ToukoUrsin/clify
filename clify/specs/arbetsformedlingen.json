@@ -1,0 +1,347 @@
+{
+ "name": "arbetsformedlingen",
+ "startUrl": "https://arbetsformedlingen.se/platsbanken/",
+ "origin": "https://arbetsformedlingen.se",
+ "createdAt": "2026-10-18T08:56:13.196Z",
+ "description": "Platsbanken (Arbetsf\u00f6rmedlingen, the Swedish Public Employment Service job board): search job ads by keyword and municipality, read full ad details, list popular occupations, look up location and occupation taxonomy IDs, and get search suggestions.",
+ "commands": [
+  {
+   "name": "search-jobs",
+   "summary": "Free-text search of Platsbanken job ads (title, employer, occupation, workplace, dates), sorted by relevance or date",
+   "method": "POST",
+   "urlTemplate": "https://platsbanken-api.arbetsformedlingen.se/jobs/v1/search",
+   "params": [
+    {
+     "name": "q",
+     "in": "body",
+     "required": true,
+     "type": "string",
+     "description": "Free-text query: occupation, skill, employer or place, e.g. 'systemutvecklare stockholm'",
+     "example": "systemutvecklare stockholm"
+    },
+    {
+     "name": "order",
+     "in": "body",
+     "required": false,
+     "type": "string",
+     "description": "Sort order: relevance, or date (newest first)",
+     "enum": [
+      "relevance",
+      "date"
+     ],
+     "default": "relevance"
+    },
+    {
+     "name": "source",
+     "in": "body",
+     "required": false,
+     "type": "string",
+     "description": "Ad source: pb = ads published in Platsbanken, joblinks = ads collected from external job sites",
+     "enum": [
+      "pb",
+      "joblinks"
+     ],
+     "default": "pb"
+    },
+    {
+     "name": "maxRecords",
+     "in": "body",
+     "required": false,
+     "type": "number",
+     "description": "Number of ads per page",
+     "default": 25
+    },
+    {
+     "name": "startIndex",
+     "in": "body",
+     "required": false,
+     "type": "number",
+     "description": "Zero-based offset of the first ad to return. The API caps offsets at 2000 (offsetLimit).",
+     "default": 0
+    }
+   ],
+   "bodyTemplate": {
+    "filters": [
+     {
+      "type": "freetext",
+      "value": "{q}"
+     }
+    ],
+    "fromDate": null,
+    "order": "{order}",
+    "maxRecords": "{maxRecords}",
+    "startIndex": "{startIndex}",
+    "toDate": null,
+    "source": "{source}"
+   },
+   "bodyEncoding": "json",
+   "responseType": "json",
+   "resultPath": "ads",
+   "defaultFields": [
+    "id",
+    "title",
+    "employerName",
+    "occupation",
+    "workplace",
+    "publishedDate",
+    "lastApplicationDate",
+    "positions"
+   ],
+   "pagination": {
+    "type": "offset",
+    "param": "startIndex",
+    "step": 25
+   },
+   "mutates": false,
+   "example": {
+    "q": "systemutvecklare stockholm"
+   },
+   "source": "E1 POST https://platsbanken-api.arbetsformedlingen.se/jobs/v1/search",
+   "verified": true
+  },
+  {
+   "name": "search-jobs-in-municipality",
+   "summary": "Free-text job search limited to one Swedish municipality (municipality ID from get-taxonomy-tree --type LOCATION)",
+   "method": "POST",
+   "urlTemplate": "https://platsbanken-api.arbetsformedlingen.se/jobs/v1/search",
+   "params": [
+    {
+     "name": "q",
+     "in": "body",
+     "required": true,
+     "type": "string",
+     "description": "Free-text query, e.g. 'systemutvecklare'",
+     "example": "systemutvecklare"
+    },
+    {
+     "name": "municipality",
+     "in": "body",
+     "required": true,
+     "type": "string",
+     "description": "Municipality taxonomy ID, e.g. AvNB_uwa_6n6 = Stockholm. Look IDs up with get-taxonomy-tree --type LOCATION.",
+     "example": "AvNB_uwa_6n6"
+    },
+    {
+     "name": "order",
+     "in": "body",
+     "required": false,
+     "type": "string",
+     "description": "Sort order: relevance, or date (newest first)",
+     "enum": [
+      "relevance",
+      "date"
+     ],
+     "default": "relevance"
+    },
+    {
+     "name": "source",
+     "in": "body",
+     "required": false,
+     "type": "string",
+     "description": "Ad source: pb = Platsbanken ads, joblinks = ads from external sites",
+     "enum": [
+      "pb",
+      "joblinks"
+     ],
+     "default": "pb"
+    },
+    {
+     "name": "maxRecords",
+     "in": "body",
+     "required": false,
+     "type": "number",
+     "description": "Number of ads per page",
+     "default": 25
+    },
+    {
+     "name": "startIndex",
+     "in": "body",
+     "required": false,
+     "type": "number",
+     "description": "Zero-based offset of the first ad to return (maximum 2000)",
+     "default": 0
+    }
+   ],
+   "bodyTemplate": {
+    "filters": [
+     {
+      "type": "freetext",
+      "value": "{q}"
+     },
+     {
+      "type": "municipality",
+      "value": "{municipality}"
+     }
+    ],
+    "fromDate": null,
+    "order": "{order}",
+    "maxRecords": "{maxRecords}",
+    "startIndex": "{startIndex}",
+    "toDate": null,
+    "source": "{source}"
+   },
+   "bodyEncoding": "json",
+   "responseType": "json",
+   "resultPath": "ads",
+   "defaultFields": [
+    "id",
+    "title",
+    "employerName",
+    "occupation",
+    "workplace",
+    "publishedDate",
+    "lastApplicationDate",
+    "positions"
+   ],
+   "pagination": {
+    "type": "offset",
+    "param": "startIndex",
+    "step": 25
+   },
+   "mutates": false,
+   "example": {
+    "q": "systemutvecklare",
+    "municipality": "AvNB_uwa_6n6"
+   },
+   "source": "E1 E11 POST https://platsbanken-api.arbetsformedlingen.se/jobs/v1/search",
+   "verified": true
+  },
+  {
+   "name": "get-job",
+   "summary": "Full details of one job ad: HTML description, employer, workplace address, employment type, working hours, salary type, how to apply",
+   "method": "GET",
+   "urlTemplate": "https://platsbanken-api.arbetsformedlingen.se/jobs/v1/job/{id}",
+   "params": [
+    {
+     "name": "id",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Job ad ID (the id field from search-jobs), e.g. 31590660",
+     "example": "31590660"
+    }
+   ],
+   "responseType": "json",
+   "defaultFields": [
+    "id",
+    "title",
+    "company.name",
+    "occupation",
+    "workplace.municipality",
+    "employmentType",
+    "workTimeExtent",
+    "lastApplicationDate"
+   ],
+   "mutates": false,
+   "example": {
+    "id": "31590660"
+   },
+   "source": "E9 GET https://platsbanken-api.arbetsformedlingen.se/jobs/v1/job/{n}",
+   "verified": true
+  },
+  {
+   "name": "suggest-search-terms",
+   "summary": "Typeahead suggestions (completions) for a partial job-search query",
+   "method": "GET",
+   "urlTemplate": "https://platsbanken-api.arbetsformedlingen.se/jobs/v1/typeahead/suggestions",
+   "params": [
+    {
+     "name": "q",
+     "in": "query",
+     "required": true,
+     "type": "string",
+     "description": "Partial search text (word prefix), e.g. 'sjuksk' or 'utveckl'",
+     "example": "sjuksk"
+    }
+   ],
+   "responseType": "json",
+   "resultPath": "result",
+   "mutates": false,
+   "example": {
+    "q": "sjuksk"
+   },
+   "source": "E8",
+   "verified": true
+  },
+  {
+   "name": "list-popular-occupations",
+   "summary": "Occupations with the most open job ads right now, with ad counts",
+   "method": "GET",
+   "urlTemplate": "https://platsbanken-api.arbetsformedlingen.se/jobs/v1/statistics?type=occupation",
+   "params": [
+    {
+     "name": "api_limit",
+     "key": "limit",
+     "in": "query",
+     "required": false,
+     "type": "number",
+     "description": "Maximum number of occupations to return (sent to the site as \"limit\"; clify's own --limit only shapes the output)",
+     "default": 20
+    }
+   ],
+   "responseType": "json",
+   "defaultFields": [
+    "name",
+    "occurrences"
+   ],
+   "mutates": false,
+   "example": {
+    "api_limit": "20"
+   },
+   "source": "E12 GET https://platsbanken-api.arbetsformedlingen.se/jobs/v1/statistics",
+   "verified": true
+  },
+  {
+   "name": "get-taxonomy-tree",
+   "summary": "Taxonomy tree with IDs used for search filters: LOCATION = regions (l\u00e4n) and their municipalities, OCCUPATION = occupation fields and groups",
+   "method": "GET",
+   "urlTemplate": "https://platsbanken-api.arbetsformedlingen.se/v2/taxonomy/trees",
+   "params": [
+    {
+     "name": "type",
+     "in": "query",
+     "required": true,
+     "type": "string",
+     "description": "Which tree to return",
+     "enum": [
+      "LOCATION",
+      "OCCUPATION"
+     ],
+     "example": "LOCATION"
+    }
+   ],
+   "responseType": "json",
+   "defaultFields": [
+    "id",
+    "name",
+    "type",
+    "items"
+   ],
+   "mutates": false,
+   "example": {
+    "type": "LOCATION"
+   },
+   "source": "E2 GET https://platsbanken-api.arbetsformedlingen.se/v2/taxonomy/trees",
+   "verified": true
+  }
+ ],
+ "blockers": [],
+ "notes": [
+  "Every command calls the public Platsbanken API at platsbanken-api.arbetsformedlingen.se. No login is needed.",
+  "Search returns numberOfAds (total matches) and offsetLimit (2000) next to the ads array. Results cannot be paged past startIndex 2000, so narrow the query to see more.",
+  "Find municipality IDs (type 'municipality', e.g. Stockholm = AvNB_uwa_6n6) in get-taxonomy-tree --type LOCATION. The web UI writes them in its URL as l=3:<id>.",
+  "Other filter IDs seen in the UI: employmentType kpPX_CNN_gDU = permanent (tillsvidare), workExtent 6YE1_gAC_R2G = full-time (heltid), workplaceModel Vbpe_rGe_vCW = hybrid. The UI sends these as extra {type, value} entries in the search filters array, and a 'published last N days' filter as fromDate. The commands here do not expose them.",
+  "The human-readable ad page is https://arbetsformedlingen.se/platsbanken/annonser/<id>.",
+  "Ad descriptions from get-job are HTML strings.",
+  "Typeahead suggestions returned an empty list for the recorded queries, so the result may be empty for full words."
+ ],
+ "dropped": [],
+ "generated": {
+  "by": "clify add",
+  "model": "claude-opus-5-5",
+  "exploredSteps": 29,
+  "recorded": 102,
+  "verifiedAt": "2026-10-18T08:57:08.925Z",
+  "seconds": 270
+ }
+}

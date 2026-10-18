@@ -1,0 +1,6 @@
+On hex.pm, what is the latest stable version of the phoenix package, and which license does it list?
+
+Start from https://hex.pm/. Work it out using only the tools you have, then end your reply with one final line exactly in the form:
+ANSWER: <short answer>
+
+You have a web browser (Playwright tools). Use it to find the answer on the website.

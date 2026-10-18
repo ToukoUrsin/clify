@@ -1,0 +1,33 @@
+{
+  "model": "claude-opus-5-5",
+  "measuredAt": "2026-10-18T10:30:05.324Z",
+  "method": "count_tokens(messages+tools) - count_tokens(messages)",
+  "rows": [
+    {
+      "label": "deployed v0.3.0 (3 core + 4 direct)",
+      "tools": 7,
+      "jsonChars": 6216,
+      "claudeTokens": 2538
+    },
+    {
+      "label": "core only (CLIFY_TOOLS=core)",
+      "tools": 3,
+      "jsonChars": 2987,
+      "claudeTokens": 1360
+    },
+    {
+      "label": "every command as a tool (CLIFY_TOOLS=all, 135 sites)",
+      "tools": 1622,
+      "jsonChars": 1518648,
+      "claudeTokens": 568912
+    },
+    {
+      "label": "round1-deployed (v0.2.0: 16 per-command tools over 6 sandbox sites + clify_sites/clify_help)",
+      "tools": 18,
+      "jsonChars": 12607,
+      "claudeTokens": 4969,
+      "measuredAt": "2026-10-18T08:07:42Z"
+    }
+  ],
+  "note": "claudeTokens = Anthropic count_tokens(model, messages+tools) minus count_tokens(messages): what the tool list costs on every request before the agent does anything. Includes Anthropic tool-use overhead."
+}

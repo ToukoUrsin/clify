@@ -1,0 +1,17 @@
+{
+  "name": "wikipedia",
+  "startUrl": "https://en.wikipedia.org/wiki/Main_Page",
+  "origin": "https://en.wikipedia.org",
+  "createdAt": "2026-10-17T08:35:00Z",
+  "description": "English Wikipedia: article summaries and article text. Uses /wiki/ pages and the public REST API (both allowed by robots.txt).",
+  "commands": [
+    { "name": "summary", "summary": "Short summary of an article (title, description, extract, url)", "method": "GET", "urlTemplate": "/api/rest_v1/page/summary/{title}", "responseType": "json", "mutates": false,
+      "params": [ { "name": "title", "in": "path", "required": true, "type": "string", "description": "article title, spaces as underscores, e.g. Y_Combinator" } ],
+      "example": { "title": "Y_Combinator" }, "source": "GET https://en.wikipedia.org/api/rest_v1/page/summary/Y_Combinator" },
+    { "name": "article", "summary": "Article headings and lead paragraphs", "method": "GET", "urlTemplate": "/wiki/{title}", "responseType": "html", "mutates": false,
+      "params": [ { "name": "title", "in": "path", "required": true, "type": "string", "description": "e.g. Hacker_News" } ],
+      "extract": { "fields": { "title": "h1#firstHeading", "lead": "#mw-content-text p:not(.mw-empty-elt)" } },
+      "example": { "title": "Hacker_News" }, "source": "GET https://en.wikipedia.org/wiki/Hacker_News" },
+    { "name": "random", "summary": "Summary of a random article", "method": "GET", "urlTemplate": "/api/rest_v1/page/random/summary", "responseType": "json", "mutates": false, "params": [] }
+  ]
+}

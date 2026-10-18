@@ -1,0 +1,152 @@
+{
+ "url": "https://doaj.org/",
+ "category": "science",
+ "sandbox": "clify-doaj-org",
+ "startedAt": "2026-10-18T09:02:35.123Z",
+ "region": "us-pdx-1",
+ "chrome": "Chrome/148.0.7778.96",
+ "sandboxStartMs": 2470,
+ "addSeconds": 191,
+ "addExit": 0,
+ "add": {
+  "ok": true,
+  "site": "doaj",
+  "url": "https://doaj.org/",
+  "commands": [
+   {
+    "name": "search-journals",
+    "summary": "Search DOAJ journals by keyword or Elasticsearch/Lucene query, e.g. bibjson.publisher.country:IR AND bibjson.apc.has_apc:false",
+    "verified": true
+   },
+   {
+    "name": "get-journal-by-issn",
+    "summary": "Look up a DOAJ journal by its print or electronic ISSN",
+    "verified": true
+   },
+   {
+    "name": "get-journal",
+    "summary": "Get the full metadata of a DOAJ journal (APC, license, editorial policy, subjects, links) by its DOAJ id",
+    "verified": true
+   },
+   {
+    "name": "search-articles",
+    "summary": "Search DOAJ articles by keyword or Lucene query, e.g. bibjson.year:2021 AND herring",
+    "verified": true
+   },
+   {
+    "name": "get-article-by-doi",
+    "summary": "Look up a DOAJ article by its DOI",
+    "verified": true
+   },
+   {
+    "name": "get-article",
+    "summary": "Get the full metadata of a DOAJ article (authors, abstract, journal, links) by its DOAJ id",
+    "verified": true
+   },
+   {
+    "name": "list-recent-journals",
+    "summary": "List journals recently added to DOAJ (Atom feed)",
+    "verified": true
+   },
+   {
+    "name": "list-subject-sets",
+    "summary": "List the LCC subject sets available in DOAJ's OAI-PMH endpoint (setSpec feeds list-journals-in-subject)",
+    "verified": true
+   },
+   {
+    "name": "list-journals-in-subject",
+    "summary": "List journal records (Dublin Core) in one LCC subject set via OAI-PMH",
+    "verified": true
+   },
+   {
+    "name": "get-api-spec",
+    "summary": "Get the DOAJ v4 API Swagger spec (all routes and parameters)",
+    "verified": true
+   }
+  ],
+  "verified": 10,
+  "writes": 0,
+  "dropped": [],
+  "blockers": [
+   "bot-check at https://doaj.org/",
+   "bot-check at https://doaj.org/toc/2538-4449",
+   "bot-check at https://doaj.org/article/000004687a3a411cb466625281f2ceb0",
+   "bot-check at https://doaj.org/toc/2965-0569?rss",
+   "captcha"
+  ],
+  "loggedIn": false,
+  "seconds": 190,
+  "next": [
+   "clify doaj",
+   "clify doaj search-journals --query \"medicine\""
+  ],
+  "installed": "/home/ubuntu/clify-runs/blaxel-w1/home/bin/doaj",
+  "explored": {
+   "steps": 8,
+   "recorded": 24,
+   "heldWrites": 0
+  }
+ },
+ "check": {
+  "on": "blaxel",
+  "node": "v24.22.0",
+  "seconds": 9,
+  "reads": 10,
+  "verified": 10,
+  "failed": [],
+  "results": [
+   {
+    "name": "search-journals",
+    "ok": true,
+    "ms": 555
+   },
+   {
+    "name": "get-journal-by-issn",
+    "ok": true,
+    "ms": 173
+   },
+   {
+    "name": "get-journal",
+    "ok": true,
+    "ms": 206
+   },
+   {
+    "name": "search-articles",
+    "ok": true,
+    "ms": 443
+   },
+   {
+    "name": "get-article-by-doi",
+    "ok": true,
+    "ms": 180
+   },
+   {
+    "name": "get-article",
+    "ok": true,
+    "ms": 179
+   },
+   {
+    "name": "list-recent-journals",
+    "ok": true,
+    "ms": 493
+   },
+   {
+    "name": "list-subject-sets",
+    "ok": true,
+    "ms": 271
+   },
+   {
+    "name": "list-journals-in-subject",
+    "ok": true,
+    "ms": 4340
+   },
+   {
+    "name": "get-api-spec",
+    "ok": true,
+    "ms": 175
+   }
+  ]
+ },
+ "deleted": true,
+ "seconds": 203
+}

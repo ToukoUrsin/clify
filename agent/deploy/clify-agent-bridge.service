@@ -1,0 +1,16 @@
+# On the box that can reach the model pool (systemd --user). Holds the stdio
+# LLM bridge into the InstaBox and wakes the sandbox if it paused itself.
+[Unit]
+Description=clify agent LLM bridge into InstaBox clify-agent (model endpoint over instabox ssh stdio)
+After=network-online.target
+
+[Service]
+ExecStart=/usr/bin/env node %h/clify-agent-bridge/box-end.mjs
+Environment=INSTABOX_BOX=clify-agent
+# POOL_URL, POOL_KEY_CMD or ANTHROPIC_API_KEY
+EnvironmentFile=-%h/clify-agent-bridge/bridge.env
+Restart=always
+RestartSec=5
+
+[Install]
+WantedBy=default.target

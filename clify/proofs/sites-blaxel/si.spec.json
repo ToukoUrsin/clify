@@ -1,0 +1,29 @@
+{
+ "name": "si",
+ "startUrl": "https://www.si.edu/search",
+ "origin": "https://www.si.edu",
+ "createdAt": "2026-10-18T09:23:35.936Z",
+ "description": "Smithsonian Institution (si.edu) site search. No commands could be built: every recorded request hit a bot-verification wall, so no usable endpoint was captured.",
+ "commands": [],
+ "blockers": [
+  "bot-check at https://www.si.edu/search",
+  "bot-check at https://www.si.edu/collections",
+  "captcha"
+ ],
+ "notes": [
+  "The only recorded request (E1, GET https://www.si.edu/search) returned a 307 redirect to a 'Request verification / Just a moment...' bot challenge, not search results. No response body, HTML outline or JSON was captured, so there are no selectors or fields to build a replayable command from.",
+  "https://www.si.edu/collections hit the same bot challenge. collections.si.edu/search/results.htm is disallowed by robots.txt and was not explored.",
+  "No search, listing, detail, filter or pagination endpoint was observed, so writing commands would mean inventing URLs and selectors that the verifier could not confirm.",
+  "Possible alternative, not seen in this recording: the Smithsonian publishes a documented Open Access API at https://api.si.edu/openaccess/api/v1.0/ (for example /search?q=...&api_key=...). It needs a free api.data.gov key. To support this site, re-explore against that API with a key and build commands from the recorded JSON responses.",
+  "A second pass with a browser session that clears the challenge could also capture the www.si.edu/search results page. Its HTML structure would then need to be recorded before any extract selectors can be written."
+ ],
+ "dropped": [],
+ "generated": {
+  "by": "clify add",
+  "model": "claude-opus-5-5",
+  "exploredSteps": 3,
+  "recorded": 4,
+  "verifiedAt": "2026-10-18T09:23:45.138Z",
+  "seconds": 22
+ }
+}

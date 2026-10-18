@@ -1,0 +1,598 @@
+{
+ "name": "federalregister",
+ "startUrl": "https://www.federalregister.gov/",
+ "origin": "https://www.federalregister.gov",
+ "createdAt": "2026-10-18T07:16:16.567Z",
+ "description": "Federal Register (federalregister.gov): search and read U.S. federal rules, proposed rules, notices and presidential documents, agencies, public inspection filings and topic searches through the official public JSON API.",
+ "commands": [
+  {
+   "name": "search-documents",
+   "summary": "Search published Federal Register documents by keyword, with optional filters for type, agency, publication date and significance, plus sort and paging",
+   "method": "GET",
+   "urlTemplate": "/api/v1/documents.json",
+   "params": [
+    {
+     "name": "term",
+     "key": "conditions[term]",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Full-text search query. Supports quoted phrases and | for OR.",
+     "example": "climate"
+    },
+    {
+     "name": "type",
+     "key": "conditions[type][]",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Document type code: RULE=Rule, PRORULE=Proposed Rule, NOTICE=Notice, PRESDOCU=Presidential Document",
+     "enum": [
+      "RULE",
+      "PRORULE",
+      "NOTICE",
+      "PRESDOCU"
+     ],
+     "example": "RULE"
+    },
+    {
+     "name": "agency",
+     "key": "conditions[agencies][]",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Agency slug, e.g. environmental-protection-agency. Get slugs from list-agencies.",
+     "example": "environmental-protection-agency"
+    },
+    {
+     "name": "published_since",
+     "key": "conditions[publication_date][gte]",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Only documents published on or after this ISO date (YYYY-MM-DD)",
+     "example": "2026-10-01"
+    },
+    {
+     "name": "published_before",
+     "key": "conditions[publication_date][lte]",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Only documents published on or before this ISO date (YYYY-MM-DD)"
+    },
+    {
+     "name": "significant",
+     "key": "conditions[significant]",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "1 = only documents deemed significant under EO 12866; 0 = only non-significant documents",
+     "enum": [
+      "1",
+      "0"
+     ]
+    },
+    {
+     "name": "order",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Sort order",
+     "enum": [
+      "relevance",
+      "newest",
+      "oldest"
+     ]
+    },
+    {
+     "name": "per_page",
+     "in": "query",
+     "required": false,
+     "type": "number",
+     "description": "Results per page (default 20, max 1000)",
+     "default": 20
+    },
+    {
+     "name": "page",
+     "in": "query",
+     "required": false,
+     "type": "number",
+     "description": "Page number, starting at 1",
+     "default": 1
+    }
+   ],
+   "responseType": "json",
+   "resultPath": "results",
+   "defaultFields": [
+    "document_number",
+    "title",
+    "type",
+    "publication_date",
+    "agencies",
+    "abstract",
+    "html_url",
+    "pdf_url"
+   ],
+   "pagination": {
+    "type": "page",
+    "param": "page"
+   },
+   "mutates": false,
+   "example": {
+    "term": "climate"
+   },
+   "source": "E2 GET https://www.federalregister.gov/api/v1/documents.json",
+   "verified": true
+  },
+  {
+   "name": "get-document",
+   "summary": "Get full metadata for one Federal Register document by its document number: abstract, action, dates, CFR references, dockets and full-text links",
+   "method": "GET",
+   "urlTemplate": "/api/v1/documents/{document_number}.json",
+   "params": [
+    {
+     "name": "document_number",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Federal Register document number, e.g. 2026-11091",
+     "example": "2026-11091"
+    }
+   ],
+   "responseType": "json",
+   "defaultFields": [
+    "document_number",
+    "title",
+    "type",
+    "action",
+    "publication_date",
+    "citation",
+    "comments_close_on",
+    "abstract"
+   ],
+   "mutates": false,
+   "example": {
+    "document_number": "2026-11091"
+   },
+   "source": "E3 GET https://www.federalregister.gov/api/v1/documents/2026-11091.json",
+   "verified": true
+  },
+  {
+   "name": "get-documents",
+   "summary": "Get metadata for several Federal Register documents at once, given a comma-separated list of document numbers",
+   "method": "GET",
+   "urlTemplate": "/api/v1/documents/{document_numbers}.json",
+   "params": [
+    {
+     "name": "document_numbers",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Comma-separated document numbers, e.g. 2026-05314,2025-20213",
+     "example": "2026-05314,2025-20213"
+    }
+   ],
+   "responseType": "json",
+   "resultPath": "results",
+   "defaultFields": [
+    "document_number",
+    "title",
+    "type",
+    "action",
+    "publication_date",
+    "citation",
+    "agencies",
+    "html_url"
+   ],
+   "mutates": false,
+   "example": {
+    "document_numbers": "2026-05314,2025-20213"
+   },
+   "source": "E4 GET https://www.federalregister.gov/api/v1/documents/2026-05314,2025-20213.json",
+   "verified": true
+  },
+  {
+   "name": "count-documents-by-facet",
+   "summary": "Count documents matching a search, grouped by agency, document type, topic, section or publication period (facet counts)",
+   "method": "GET",
+   "urlTemplate": "/api/v1/documents/facets/{facet}",
+   "params": [
+    {
+     "name": "facet",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Field to group counts by",
+     "enum": [
+      "agency",
+      "type",
+      "topic",
+      "section",
+      "daily",
+      "weekly",
+      "monthly",
+      "quarterly",
+      "yearly"
+     ],
+     "example": "agency"
+    },
+    {
+     "name": "term",
+     "key": "conditions[term]",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Full-text search query",
+     "example": "climate"
+    },
+    {
+     "name": "type",
+     "key": "conditions[type][]",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Document type code to restrict counts to",
+     "enum": [
+      "RULE",
+      "PRORULE",
+      "NOTICE",
+      "PRESDOCU"
+     ]
+    },
+    {
+     "name": "agency",
+     "key": "conditions[agencies][]",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Agency slug to restrict counts to"
+    },
+    {
+     "name": "published_since",
+     "key": "conditions[publication_date][gte]",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "ISO date (YYYY-MM-DD) lower bound on publication date"
+    },
+    {
+     "name": "published_before",
+     "key": "conditions[publication_date][lte]",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "ISO date (YYYY-MM-DD) upper bound on publication date"
+    }
+   ],
+   "responseType": "json",
+   "mutates": false,
+   "example": {
+    "facet": "agency",
+    "term": "climate"
+   },
+   "source": "E8 E13 GET https://www.federalregister.gov/api/v1/documents/facets/agency",
+   "verified": true
+  },
+  {
+   "name": "export-documents-csv",
+   "summary": "Export documents matching a search as CSV text (document number, title, type, date, agencies, citation, URLs)",
+   "method": "GET",
+   "urlTemplate": "/api/v1/documents.csv?fields[]=document_number&fields[]=title&fields[]=type&fields[]=publication_date&fields[]=agency_names&fields[]=citation&fields[]=html_url&fields[]=pdf_url",
+   "params": [
+    {
+     "name": "term",
+     "key": "conditions[term]",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Full-text search query",
+     "example": "climate"
+    },
+    {
+     "name": "type",
+     "key": "conditions[type][]",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Document type code",
+     "enum": [
+      "RULE",
+      "PRORULE",
+      "NOTICE",
+      "PRESDOCU"
+     ]
+    },
+    {
+     "name": "agency",
+     "key": "conditions[agencies][]",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Agency slug"
+    },
+    {
+     "name": "published_since",
+     "key": "conditions[publication_date][gte]",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "ISO date (YYYY-MM-DD) lower bound on publication date"
+    },
+    {
+     "name": "published_before",
+     "key": "conditions[publication_date][lte]",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "ISO date (YYYY-MM-DD) upper bound on publication date"
+    },
+    {
+     "name": "order",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Sort order",
+     "enum": [
+      "relevance",
+      "newest",
+      "oldest"
+     ]
+    },
+    {
+     "name": "per_page",
+     "in": "query",
+     "required": false,
+     "type": "number",
+     "description": "Rows per page (max 1000)"
+    },
+    {
+     "name": "page",
+     "in": "query",
+     "required": false,
+     "type": "number",
+     "description": "Page number"
+    }
+   ],
+   "responseType": "text",
+   "pagination": {
+    "type": "page",
+    "param": "page"
+   },
+   "mutates": false,
+   "example": {
+    "term": "climate"
+   },
+   "source": "E2 GET https://www.federalregister.gov/api/v1/documents.json",
+   "verified": true
+  },
+  {
+   "name": "list-agencies",
+   "summary": "List all Federal Register agencies with id, slug, short name, parent and child agencies",
+   "method": "GET",
+   "urlTemplate": "/api/v1/agencies",
+   "params": [],
+   "responseType": "json",
+   "defaultFields": [
+    "id",
+    "slug",
+    "name",
+    "short_name",
+    "parent_id",
+    "child_slugs",
+    "url"
+   ],
+   "mutates": false,
+   "source": "E5",
+   "verified": true
+  },
+  {
+   "name": "get-agency",
+   "summary": "Get one agency's details (description, short name, logo, parent/child agencies, recent-documents link) by slug or numeric id",
+   "method": "GET",
+   "urlTemplate": "/api/v1/agencies/{slug}",
+   "params": [
+    {
+     "name": "slug",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Agency slug (e.g. securities-and-exchange-commission) or numeric agency id",
+     "example": "securities-and-exchange-commission"
+    }
+   ],
+   "responseType": "json",
+   "defaultFields": [
+    "id",
+    "slug",
+    "name",
+    "short_name",
+    "description",
+    "parent_id",
+    "child_slugs",
+    "recent_articles_url"
+   ],
+   "mutates": false,
+   "example": {
+    "slug": "securities-and-exchange-commission"
+   },
+   "source": "E6 GET https://www.federalregister.gov/api/v1/agencies/securities-and-exchange-commission",
+   "verified": true
+  },
+  {
+   "name": "list-current-public-inspection",
+   "summary": "List documents currently on public inspection, which are filed but not yet published in the Federal Register",
+   "method": "GET",
+   "urlTemplate": "/api/v1/public-inspection-documents/current.json",
+   "params": [],
+   "responseType": "json",
+   "resultPath": "results",
+   "defaultFields": [
+    "document_number",
+    "title",
+    "type",
+    "agency_names",
+    "filing_type",
+    "publication_date",
+    "pdf_url",
+    "editorial_note"
+   ],
+   "mutates": false,
+   "source": "E7",
+   "verified": true
+  },
+  {
+   "name": "list-public-inspection-by-date",
+   "summary": "List the documents that were on public inspection on a given date",
+   "method": "GET",
+   "urlTemplate": "/api/v1/public-inspection-documents.json",
+   "params": [
+    {
+     "name": "date",
+     "key": "conditions[available_on]",
+     "in": "query",
+     "required": true,
+     "type": "string",
+     "description": "ISO date (YYYY-MM-DD) the documents were available for inspection",
+     "example": "2026-10-16"
+    }
+   ],
+   "responseType": "json",
+   "resultPath": "results",
+   "defaultFields": [
+    "document_number",
+    "title",
+    "type",
+    "agency_names",
+    "filing_type",
+    "publication_date",
+    "pdf_url",
+    "editorial_note"
+   ],
+   "mutates": false,
+   "example": {
+    "date": "2026-10-16"
+   },
+   "source": "E10 GET https://www.federalregister.gov/api/v1/public-inspection-documents.json",
+   "verified": true
+  },
+  {
+   "name": "get-public-inspection-document",
+   "summary": "Get one public inspection document by document number: filing time, scheduled publication date, PDF and raw-text links",
+   "method": "GET",
+   "urlTemplate": "/api/v1/public-inspection-documents/{document_number}.json",
+   "params": [
+    {
+     "name": "document_number",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Document number, e.g. 2026-21259",
+     "example": "2026-21259"
+    }
+   ],
+   "responseType": "json",
+   "defaultFields": [
+    "document_number",
+    "title",
+    "type",
+    "agency_names",
+    "filed_at",
+    "publication_date",
+    "pdf_url",
+    "raw_text_url"
+   ],
+   "mutates": false,
+   "example": {
+    "document_number": "2026-21259"
+   },
+   "source": "E11 GET https://www.federalregister.gov/api/v1/public-inspection-documents/2026-21259.json",
+   "verified": true
+  },
+  {
+   "name": "list-suggested-searches",
+   "summary": "List curated topic searches (e.g. Dodd-Frank, stock trading), grouped by section, with saved search conditions and recent document counts",
+   "method": "GET",
+   "urlTemplate": "/api/v1/suggested_searches",
+   "params": [],
+   "responseType": "json",
+   "mutates": false,
+   "source": "E9",
+   "verified": true
+  },
+  {
+   "name": "get-suggested-search",
+   "summary": "Get one curated topic search by slug, including its description and the search conditions to reuse with search-documents",
+   "method": "GET",
+   "urlTemplate": "/api/v1/suggested_searches/{slug}",
+   "params": [
+    {
+     "name": "slug",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Suggested search slug from list-suggested-searches",
+     "example": "dodd-frank-wall-steet-reform"
+    }
+   ],
+   "responseType": "json",
+   "defaultFields": [
+    "slug",
+    "title",
+    "section",
+    "search_conditions",
+    "description"
+   ],
+   "mutates": false,
+   "example": {
+    "slug": "dodd-frank-wall-steet-reform"
+   },
+   "source": "E12 GET https://www.federalregister.gov/api/v1/suggested_searches/dodd-frank-wall-steet-reform",
+   "verified": true
+  },
+  {
+   "name": "get-image",
+   "summary": "Get metadata and download URLs (large, medium, original size) for an image embedded in a Federal Register document",
+   "method": "GET",
+   "urlTemplate": "/api/v1/images/{identifier}",
+   "params": [
+    {
+     "name": "identifier",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Image identifier from a document's 'images' map, e.g. EP03JN26.006",
+     "example": "EP03JN26.006"
+    }
+   ],
+   "responseType": "json",
+   "mutates": false,
+   "example": {
+    "identifier": "EP03JN26.006"
+   },
+   "source": "E14 GET https://www.federalregister.gov/api/v1/images/EP03JN26.006",
+   "verified": true
+  }
+ ],
+ "blockers": [
+  "captcha at https://unblock.federalregister.gov/"
+ ],
+ "notes": [
+  "The HTML website is behind a CAPTCHA. All commands use the public, unauthenticated JSON API under /api/v1, which needs no login or key.",
+  "Document type codes: RULE (Rule), PRORULE (Proposed Rule), NOTICE (Notice), PRESDOCU (Presidential Document). Agency filters take slugs from list-agencies, e.g. environmental-protection-agency.",
+  "Search results are capped: 'count' tops out at 10000 and only a limited number of pages can be retrieved. Narrow results with filters or date ranges instead of paging deep.",
+  "count-documents-by-facet returns an object keyed by facet value (agency slug, type code, etc.), each with {count, name}.",
+  "list-suggested-searches returns an object keyed by section (e.g. 'money'). Each topic's search_conditions.term can be passed to search-documents --term.",
+  "Public inspection documents are filed but not yet published. Their publication_date is the scheduled date and may be null for special filings. Check editorial_note for withdrawals.",
+  "export-documents-csv returns raw CSV text. Use per_page (max 1000) and page to get larger exports."
+ ],
+ "dropped": [],
+ "generated": {
+  "by": "clify add",
+  "model": "claude-opus-5-5",
+  "exploredSteps": 5,
+  "recorded": 17,
+  "verifiedAt": "2026-10-18T07:17:24.177Z",
+  "seconds": 132
+ }
+}

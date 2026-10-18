@@ -1,0 +1,6496 @@
+{
+ "generatedAt": "2026-10-17T23:41:26.650Z",
+ "tags": [
+  "main",
+  "hard",
+  "ui",
+  "ui2"
+ ],
+ "model": [
+  "claude-opus-5-5"
+ ],
+ "setup": {
+  "browser": "Claude Code -p, Playwright MCP 0.0.83 (default tools) over CDP to headless Chromium; built-in tools disabled",
+  "browserUi": "same as browser, with browser_evaluate and browser_run_code_unsafe disabled (no page JavaScript)",
+  "cli": "Claude Code -p, Bash only, clify on PATH; told to use clify, no curl/WebFetch",
+  "grading": "every expected value must appear in the final ANSWER line; ground truth recomputed with clify right before each task"
+ },
+ "nTasks": 20,
+ "nSites": 11,
+ "browser": {
+  "n": 40,
+  "ok": 40,
+  "rate": 1,
+  "medianSec": 12.748999999999999,
+  "meanSec": 13.447424999999999,
+  "medianTokens": 50446,
+  "medianToolCalls": 3,
+  "medianTurns": 4,
+  "totalCostUsd": 2.2945217999999996,
+  "medianCostUsd": 0.0542947
+ },
+ "browserUi": {
+  "n": 40,
+  "ok": 40,
+  "rate": 1,
+  "medianSec": 16.08,
+  "meanSec": 17.475625,
+  "medianTokens": 79363.5,
+  "medianToolCalls": 5,
+  "medianTurns": 6,
+  "totalCostUsd": 4.1213078,
+  "medianCostUsd": 0.083643
+ },
+ "cli": {
+  "n": 40,
+  "ok": 40,
+  "rate": 1,
+  "medianSec": 9.0475,
+  "meanSec": 9.906025000000001,
+  "medianTokens": 16464,
+  "medianToolCalls": 2,
+  "medianTurns": 3,
+  "totalCostUsd": 1.2771044,
+  "medianCostUsd": 0.030197300000000003
+ },
+ "perTask": [
+  {
+   "task": "books-mystery-max",
+   "site": "books",
+   "browser": {
+    "n": 2,
+    "ok": 2,
+    "rate": 1,
+    "medianSec": 14.002,
+    "meanSec": 14.002,
+    "medianTokens": 50726.5,
+    "medianToolCalls": 3.5,
+    "medianTurns": 4.5,
+    "totalCostUsd": 0.113403,
+    "medianCostUsd": 0.0567015
+   },
+   "browserUi": {
+    "n": 2,
+    "ok": 2,
+    "rate": 1,
+    "medianSec": 13.283,
+    "meanSec": 13.283,
+    "medianTokens": 90994.5,
+    "medianToolCalls": 5,
+    "medianTurns": 6,
+    "totalCostUsd": 0.2794702,
+    "medianCostUsd": 0.1397351
+   },
+   "cli": {
+    "n": 2,
+    "ok": 2,
+    "rate": 1,
+    "medianSec": 9.8765,
+    "meanSec": 9.8765,
+    "medianTokens": 25410.5,
+    "medianToolCalls": 3,
+    "medianTurns": 4,
+    "totalCostUsd": 0.08866539999999999,
+    "medianCostUsd": 0.044332699999999996
+   }
+  },
+  {
+   "task": "books-travel-over-40",
+   "site": "books",
+   "browser": {
+    "n": 2,
+    "ok": 2,
+    "rate": 1,
+    "medianSec": 13.584,
+    "meanSec": 13.584,
+    "medianTokens": 50691,
+    "medianToolCalls": 4,
+    "medianTurns": 5,
+    "totalCostUsd": 0.10828940000000001,
+    "medianCostUsd": 0.054144700000000004
+   },
+   "browserUi": {
+    "n": 2,
+    "ok": 2,
+    "rate": 1,
+    "medianSec": 11.0365,
+    "meanSec": 11.0365,
+    "medianTokens": 57383.5,
+    "medianToolCalls": 3,
+    "medianTurns": 4,
+    "totalCostUsd": 0.1716144,
+    "medianCostUsd": 0.0858072
+   },
+   "cli": {
+    "n": 2,
+    "ok": 2,
+    "rate": 1,
+    "medianSec": 6.6165,
+    "meanSec": 6.6165,
+    "medianTokens": 15249,
+    "medianToolCalls": 2,
+    "medianTurns": 3,
+    "totalCostUsd": 0.0575196,
+    "medianCostUsd": 0.0287598
+   }
+  },
+  {
+   "task": "crates-tokio",
+   "site": "crates",
+   "browser": {
+    "n": 2,
+    "ok": 2,
+    "rate": 1,
+    "medianSec": 12.710999999999999,
+    "meanSec": 12.710999999999999,
+    "medianTokens": 44446.5,
+    "medianToolCalls": 3.5,
+    "medianTurns": 4.5,
+    "totalCostUsd": 0.10213900000000001,
+    "medianCostUsd": 0.051069500000000004
+   },
+   "browserUi": {
+    "n": 2,
+    "ok": 2,
+    "rate": 1,
+    "medianSec": 15.1905,
+    "meanSec": 15.1905,
+    "medianTokens": 92829,
+    "medianToolCalls": 5.5,
+    "medianTurns": 6.5,
+    "totalCostUsd": 0.22444879999999998,
+    "medianCostUsd": 0.11222439999999999
+   },
+   "cli": {
+    "n": 2,
+    "ok": 2,
+    "rate": 1,
+    "medianSec": 13.839,
+    "meanSec": 13.839,
+    "medianTokens": 33195.5,
+    "medianToolCalls": 5,
+    "medianTurns": 6,
+    "totalCostUsd": 0.0878252,
+    "medianCostUsd": 0.0439126
+   }
+  },
+  {
+   "task": "debian-nginx-bookworm",
+   "site": "debian",
+   "browser": {
+    "n": 2,
+    "ok": 2,
+    "rate": 1,
+    "medianSec": 16.1675,
+    "meanSec": 16.1675,
+    "medianTokens": 79485,
+    "medianToolCalls": 5,
+    "medianTurns": 6,
+    "totalCostUsd": 0.15882480000000004,
+    "medianCostUsd": 0.07941240000000002
+   },
+   "browserUi": {
+    "n": 2,
+    "ok": 2,
+    "rate": 1,
+    "medianSec": 18.536499999999997,
+    "meanSec": 18.536499999999997,
+    "medianTokens": 79363.5,
+    "medianToolCalls": 5,
+    "medianTurns": 6,
+    "totalCostUsd": 0.1593198,
+    "medianCostUsd": 0.0796599
+   },
+   "cli": {
+    "n": 2,
+    "ok": 2,
+    "rate": 1,
+    "medianSec": 10.7365,
+    "meanSec": 10.7365,
+    "medianTokens": 19476.5,
+    "medianToolCalls": 3,
+    "medianTurns": 4,
+    "totalCostUsd": 0.058393,
+    "medianCostUsd": 0.0291965
+   }
+  },
+  {
+   "task": "endoflife-ubuntu-2204",
+   "site": "endoflife",
+   "browser": {
+    "n": 2,
+    "ok": 2,
+    "rate": 1,
+    "medianSec": 13.6465,
+    "meanSec": 13.6465,
+    "medianTokens": 65285,
+    "medianToolCalls": 4.5,
+    "medianTurns": 5.5,
+    "totalCostUsd": 0.1270428,
+    "medianCostUsd": 0.0635214
+   },
+   "browserUi": {
+    "n": 2,
+    "ok": 2,
+    "rate": 1,
+    "medianSec": 14.181000000000001,
+    "meanSec": 14.181000000000001,
+    "medianTokens": 60011.5,
+    "medianToolCalls": 5,
+    "medianTurns": 6,
+    "totalCostUsd": 0.12859720000000002,
+    "medianCostUsd": 0.06429860000000001
+   },
+   "cli": {
+    "n": 2,
+    "ok": 2,
+    "rate": 1,
+    "medianSec": 9.396999999999998,
+    "meanSec": 9.396999999999998,
+    "medianTokens": 14003,
+    "medianToolCalls": 2,
+    "medianTurns": 3,
+    "totalCostUsd": 0.055502,
+    "medianCostUsd": 0.027751
+   }
+  },
+  {
+   "task": "github-playwright-release",
+   "site": "github",
+   "browser": {
+    "n": 2,
+    "ok": 2,
+    "rate": 1,
+    "medianSec": 13.858500000000001,
+    "meanSec": 13.858500000000001,
+    "medianTokens": 44096.5,
+    "medianToolCalls": 3.5,
+    "medianTurns": 4.5,
+    "totalCostUsd": 0.100289,
+    "medianCostUsd": 0.0501445
+   },
+   "browserUi": {
+    "n": 2,
+    "ok": 2,
+    "rate": 1,
+    "medianSec": 18.461,
+    "meanSec": 18.461,
+    "medianTokens": 82935.5,
+    "medianToolCalls": 5.5,
+    "medianTurns": 6.5,
+    "totalCostUsd": 0.1525586,
+    "medianCostUsd": 0.0762793
+   },
+   "cli": {
+    "n": 2,
+    "ok": 2,
+    "rate": 1,
+    "medianSec": 8.173,
+    "meanSec": 8.173,
+    "medianTokens": 17995.5,
+    "medianToolCalls": 2.5,
+    "medianTurns": 3.5,
+    "totalCostUsd": 0.06321760000000001,
+    "medianCostUsd": 0.031608800000000006
+   }
+  },
+  {
+   "task": "hex-phoenix",
+   "site": "hex",
+   "browser": {
+    "n": 2,
+    "ok": 2,
+    "rate": 1,
+    "medianSec": 12.3525,
+    "meanSec": 12.3525,
+    "medianTokens": 56949.5,
+    "medianToolCalls": 3,
+    "medianTurns": 4,
+    "totalCostUsd": 0.1681564,
+    "medianCostUsd": 0.0840782
+   },
+   "browserUi": {
+    "n": 2,
+    "ok": 2,
+    "rate": 1,
+    "medianSec": 15.8575,
+    "meanSec": 15.8575,
+    "medianTokens": 55668,
+    "medianToolCalls": 3.5,
+    "medianTurns": 4.5,
+    "totalCostUsd": 0.1553504,
+    "medianCostUsd": 0.0776752
+   },
+   "cli": {
+    "n": 2,
+    "ok": 2,
+    "rate": 1,
+    "medianSec": 6.4045,
+    "meanSec": 6.4045,
+    "medianTokens": 13646.5,
+    "medianToolCalls": 2,
+    "medianTurns": 3,
+    "totalCostUsd": 0.0434896,
+    "medianCostUsd": 0.0217448
+   }
+  },
+  {
+   "task": "homebrew-ffmpeg",
+   "site": "homebrew",
+   "browser": {
+    "n": 2,
+    "ok": 2,
+    "rate": 1,
+    "medianSec": 10.311,
+    "meanSec": 10.311,
+    "medianTokens": 53203.5,
+    "medianToolCalls": 3,
+    "medianTurns": 4,
+    "totalCostUsd": 0.1250288,
+    "medianCostUsd": 0.0625144
+   },
+   "browserUi": {
+    "n": 2,
+    "ok": 2,
+    "rate": 1,
+    "medianSec": 9.7325,
+    "meanSec": 9.7325,
+    "medianTokens": 52928.5,
+    "medianToolCalls": 3,
+    "medianTurns": 4,
+    "totalCostUsd": 0.1212498,
+    "medianCostUsd": 0.0606249
+   },
+   "cli": {
+    "n": 2,
+    "ok": 2,
+    "rate": 1,
+    "medianSec": 7.6515,
+    "meanSec": 7.6515,
+    "medianTokens": 13487,
+    "medianToolCalls": 2,
+    "medianTurns": 3,
+    "totalCostUsd": 0.04322720000000001,
+    "medianCostUsd": 0.021613600000000004
+   }
+  },
+  {
+   "task": "nodejs-latest-lts",
+   "site": "nodejs",
+   "browser": {
+    "n": 2,
+    "ok": 2,
+    "rate": 1,
+    "medianSec": 14.967500000000001,
+    "meanSec": 14.967500000000001,
+    "medianTokens": 52555,
+    "medianToolCalls": 4,
+    "medianTurns": 5,
+    "totalCostUsd": 0.1211712,
+    "medianCostUsd": 0.0605856
+   },
+   "browserUi": {
+    "n": 2,
+    "ok": 2,
+    "rate": 1,
+    "medianSec": 12.689499999999999,
+    "meanSec": 12.689499999999999,
+    "medianTokens": 54653,
+    "medianToolCalls": 3,
+    "medianTurns": 4,
+    "totalCostUsd": 0.1483072,
+    "medianCostUsd": 0.0741536
+   },
+   "cli": {
+    "n": 2,
+    "ok": 2,
+    "rate": 1,
+    "medianSec": 10.736,
+    "meanSec": 10.736,
+    "medianTokens": 22596.5,
+    "medianToolCalls": 3.5,
+    "medianTurns": 4.5,
+    "totalCostUsd": 0.0661088,
+    "medianCostUsd": 0.0330544
+   }
+  },
+  {
+   "task": "quotes-humor-author",
+   "site": "quotes",
+   "browser": {
+    "n": 2,
+    "ok": 2,
+    "rate": 1,
+    "medianSec": 12.6865,
+    "meanSec": 12.6865,
+    "medianTokens": 50965,
+    "medianToolCalls": 5,
+    "medianTurns": 6,
+    "totalCostUsd": 0.11121900000000001,
+    "medianCostUsd": 0.055609500000000006
+   },
+   "browserUi": {
+    "n": 2,
+    "ok": 2,
+    "rate": 1,
+    "medianSec": 16.268,
+    "meanSec": 16.268,
+    "medianTokens": 90198,
+    "medianToolCalls": 5.5,
+    "medianTurns": 6.5,
+    "totalCostUsd": 0.1521418,
+    "medianCostUsd": 0.0760709
+   },
+   "cli": {
+    "n": 2,
+    "ok": 2,
+    "rate": 1,
+    "medianSec": 8.434999999999999,
+    "meanSec": 8.434999999999999,
+    "medianTokens": 19480,
+    "medianToolCalls": 3,
+    "medianTurns": 4,
+    "totalCostUsd": 0.054288,
+    "medianCostUsd": 0.027144
+   }
+  },
+  {
+   "task": "quotes-love-count",
+   "site": "quotes",
+   "browser": {
+    "n": 2,
+    "ok": 2,
+    "rate": 1,
+    "medianSec": 15.942,
+    "meanSec": 15.942,
+    "medianTokens": 43625.5,
+    "medianToolCalls": 3,
+    "medianTurns": 4,
+    "totalCostUsd": 0.0971912,
+    "medianCostUsd": 0.0485956
+   },
+   "browserUi": {
+    "n": 2,
+    "ok": 2,
+    "rate": 1,
+    "medianSec": 19.2665,
+    "meanSec": 19.2665,
+    "medianTokens": 79826,
+    "medianToolCalls": 5.5,
+    "medianTurns": 6.5,
+    "totalCostUsd": 0.1685656,
+    "medianCostUsd": 0.0842828
+   },
+   "cli": {
+    "n": 2,
+    "ok": 2,
+    "rate": 1,
+    "medianSec": 9.715499999999999,
+    "meanSec": 9.715499999999999,
+    "medianTokens": 14466,
+    "medianToolCalls": 2,
+    "medianTurns": 3,
+    "totalCostUsd": 0.053202000000000006,
+    "medianCostUsd": 0.026601000000000003
+   }
+  },
+  {
+   "task": "scrapethis-hockey-detroit-1995",
+   "site": "scrapethis",
+   "browser": {
+    "n": 2,
+    "ok": 2,
+    "rate": 1,
+    "medianSec": 10.271999999999998,
+    "meanSec": 10.271999999999998,
+    "medianTokens": 43787,
+    "medianToolCalls": 3,
+    "medianTurns": 4,
+    "totalCostUsd": 0.09350519999999998,
+    "medianCostUsd": 0.04675259999999999
+   },
+   "browserUi": {
+    "n": 2,
+    "ok": 2,
+    "rate": 1,
+    "medianSec": 13.349499999999999,
+    "meanSec": 13.349499999999999,
+    "medianTokens": 53558.5,
+    "medianToolCalls": 4.5,
+    "medianTurns": 5.5,
+    "totalCostUsd": 0.127062,
+    "medianCostUsd": 0.063531
+   },
+   "cli": {
+    "n": 2,
+    "ok": 2,
+    "rate": 1,
+    "medianSec": 6.5075,
+    "meanSec": 6.5075,
+    "medianTokens": 15000.5,
+    "medianToolCalls": 2,
+    "medianTurns": 3,
+    "totalCostUsd": 0.0543176,
+    "medianCostUsd": 0.0271588
+   }
+  },
+  {
+   "task": "scrapethis-oscar-2012",
+   "site": "scrapethis",
+   "browser": {
+    "n": 2,
+    "ok": 2,
+    "rate": 1,
+    "medianSec": 11.259,
+    "meanSec": 11.259,
+    "medianTokens": 44301.5,
+    "medianToolCalls": 3,
+    "medianTurns": 4,
+    "totalCostUsd": 0.10020240000000001,
+    "medianCostUsd": 0.050101200000000005
+   },
+   "browserUi": {
+    "n": 2,
+    "ok": 2,
+    "rate": 1,
+    "medianSec": 17.506999999999998,
+    "meanSec": 17.506999999999998,
+    "medianTokens": 91714,
+    "medianToolCalls": 7,
+    "medianTurns": 8,
+    "totalCostUsd": 0.1547786,
+    "medianCostUsd": 0.0773893
+   },
+   "cli": {
+    "n": 2,
+    "ok": 2,
+    "rate": 1,
+    "medianSec": 7.5649999999999995,
+    "meanSec": 7.5649999999999995,
+    "medianTokens": 14715.5,
+    "medianToolCalls": 2,
+    "medianTurns": 3,
+    "totalCostUsd": 0.0523988,
+    "medianCostUsd": 0.0261994
+   }
+  },
+  {
+   "task": "webscraper-laptop-max",
+   "site": "webscraper",
+   "browser": {
+    "n": 2,
+    "ok": 2,
+    "rate": 1,
+    "medianSec": 12.687000000000001,
+    "meanSec": 12.687000000000001,
+    "medianTokens": 50221,
+    "medianToolCalls": 3,
+    "medianTurns": 4,
+    "totalCostUsd": 0.10339799999999999,
+    "medianCostUsd": 0.051698999999999995
+   },
+   "browserUi": {
+    "n": 2,
+    "ok": 2,
+    "rate": 1,
+    "medianSec": 21.2955,
+    "meanSec": 21.2955,
+    "medianTokens": 94105.5,
+    "medianToolCalls": 6.5,
+    "medianTurns": 7.5,
+    "totalCostUsd": 0.15227839999999998,
+    "medianCostUsd": 0.07613919999999999
+   },
+   "cli": {
+    "n": 2,
+    "ok": 2,
+    "rate": 1,
+    "medianSec": 12.15,
+    "meanSec": 12.15,
+    "medianTokens": 20058,
+    "medianToolCalls": 3,
+    "medianTurns": 4,
+    "totalCostUsd": 0.06880820000000001,
+    "medianCostUsd": 0.03440410000000001
+   }
+  },
+  {
+   "task": "books-cheapest-first-5-pages",
+   "site": "books",
+   "browser": {
+    "n": 2,
+    "ok": 2,
+    "rate": 1,
+    "medianSec": 11.522,
+    "meanSec": 11.522,
+    "medianTokens": 37742.5,
+    "medianToolCalls": 3,
+    "medianTurns": 4,
+    "totalCostUsd": 0.0978952,
+    "medianCostUsd": 0.0489476
+   },
+   "browserUi": {
+    "n": 2,
+    "ok": 2,
+    "rate": 1,
+    "medianSec": 22.64,
+    "meanSec": 22.64,
+    "medianTokens": 142979,
+    "medianToolCalls": 11.5,
+    "medianTurns": 12.5,
+    "totalCostUsd": 0.2920018,
+    "medianCostUsd": 0.1460009
+   },
+   "cli": {
+    "n": 2,
+    "ok": 2,
+    "rate": 1,
+    "medianSec": 11.5755,
+    "meanSec": 11.5755,
+    "medianTokens": 20971,
+    "medianToolCalls": 3,
+    "medianTurns": 4,
+    "totalCostUsd": 0.06473519999999999,
+    "medianCostUsd": 0.032367599999999996
+   }
+  },
+  {
+   "task": "crates-serde-vs-tokio",
+   "site": "crates",
+   "browser": {
+    "n": 2,
+    "ok": 2,
+    "rate": 1,
+    "medianSec": 10.339,
+    "meanSec": 10.339,
+    "medianTokens": 37030.5,
+    "medianToolCalls": 3,
+    "medianTurns": 4,
+    "totalCostUsd": 0.08634119999999998,
+    "medianCostUsd": 0.04317059999999999
+   },
+   "browserUi": {
+    "n": 2,
+    "ok": 2,
+    "rate": 1,
+    "medianSec": 12.711,
+    "meanSec": 12.711,
+    "medianTokens": 91503,
+    "medianToolCalls": 6,
+    "medianTurns": 7,
+    "totalCostUsd": 0.23268319999999998,
+    "medianCostUsd": 0.11634159999999999
+   },
+   "cli": {
+    "n": 2,
+    "ok": 2,
+    "rate": 1,
+    "medianSec": 7.6525,
+    "meanSec": 7.6525,
+    "medianTokens": 13925.5,
+    "medianToolCalls": 2,
+    "medianTurns": 3,
+    "totalCostUsd": 0.045606999999999995,
+    "medianCostUsd": 0.022803499999999997
+   }
+  },
+  {
+   "task": "github-playwright-releases-2026",
+   "site": "github",
+   "browser": {
+    "n": 2,
+    "ok": 2,
+    "rate": 1,
+    "medianSec": 18.7345,
+    "meanSec": 18.7345,
+    "medianTokens": 52594.5,
+    "medianToolCalls": 6,
+    "medianTurns": 7,
+    "totalCostUsd": 0.13125560000000003,
+    "medianCostUsd": 0.06562780000000001
+   },
+   "browserUi": {
+    "n": 2,
+    "ok": 2,
+    "rate": 1,
+    "medianSec": 23.9925,
+    "meanSec": 23.9925,
+    "medianTokens": 137047,
+    "medianToolCalls": 9,
+    "medianTurns": 10,
+    "totalCostUsd": 0.3446772,
+    "medianCostUsd": 0.1723386
+   },
+   "cli": {
+    "n": 2,
+    "ok": 2,
+    "rate": 1,
+    "medianSec": 7.135,
+    "meanSec": 7.135,
+    "medianTokens": 15579,
+    "medianToolCalls": 2,
+    "medianTurns": 3,
+    "totalCostUsd": 0.0622752,
+    "medianCostUsd": 0.0311376
+   }
+  },
+  {
+   "task": "hockey-best-1990",
+   "site": "scrapethis",
+   "browser": {
+    "n": 2,
+    "ok": 2,
+    "rate": 1,
+    "medianSec": 18.6715,
+    "meanSec": 18.6715,
+    "medianTokens": 50639.5,
+    "medianToolCalls": 3,
+    "medianTurns": 4,
+    "totalCostUsd": 0.110481,
+    "medianCostUsd": 0.0552405
+   },
+   "browserUi": {
+    "n": 2,
+    "ok": 2,
+    "rate": 1,
+    "medianSec": 17.347,
+    "meanSec": 17.347,
+    "medianTokens": 77288.5,
+    "medianToolCalls": 5.5,
+    "medianTurns": 6.5,
+    "totalCostUsd": 0.18157859999999998,
+    "medianCostUsd": 0.09078929999999999
+   },
+   "cli": {
+    "n": 2,
+    "ok": 2,
+    "rate": 1,
+    "medianSec": 14.218,
+    "meanSec": 14.218,
+    "medianTokens": 29702,
+    "medianToolCalls": 4.5,
+    "medianTurns": 5.5,
+    "totalCostUsd": 0.08141380000000001,
+    "medianCostUsd": 0.040706900000000004
+   }
+  },
+  {
+   "task": "quotes-top-author",
+   "site": "quotes",
+   "browser": {
+    "n": 2,
+    "ok": 2,
+    "rate": 1,
+    "medianSec": 12.789000000000001,
+    "meanSec": 12.789000000000001,
+    "medianTokens": 43944.5,
+    "medianToolCalls": 3,
+    "medianTurns": 4,
+    "totalCostUsd": 0.10238520000000001,
+    "medianCostUsd": 0.051192600000000005
+   },
+   "browserUi": {
+    "n": 2,
+    "ok": 2,
+    "rate": 1,
+    "medianSec": 42.483999999999995,
+    "meanSec": 42.483999999999995,
+    "medianTokens": 361921,
+    "medianToolCalls": 23,
+    "medianTurns": 24,
+    "totalCostUsd": 0.5673786000000001,
+    "medianCostUsd": 0.28368930000000003
+   },
+   "cli": {
+    "n": 2,
+    "ok": 2,
+    "rate": 1,
+    "medianSec": 17.485,
+    "meanSec": 17.485,
+    "medianTokens": 20886,
+    "medianToolCalls": 3,
+    "medianTurns": 4,
+    "totalCostUsd": 0.0685772,
+    "medianCostUsd": 0.0342886
+   }
+  },
+  {
+   "task": "ubuntu-lts-supported",
+   "site": "endoflife",
+   "browser": {
+    "n": 2,
+    "ok": 2,
+    "rate": 1,
+    "medianSec": 12.4455,
+    "meanSec": 12.4455,
+    "medianTokens": 40943,
+    "medianToolCalls": 3,
+    "medianTurns": 4,
+    "totalCostUsd": 0.1363034,
+    "medianCostUsd": 0.0681517
+   },
+   "browserUi": {
+    "n": 2,
+    "ok": 2,
+    "rate": 1,
+    "medianSec": 13.683499999999999,
+    "meanSec": 13.683499999999999,
+    "medianTokens": 74486.5,
+    "medianToolCalls": 4,
+    "medianTurns": 5,
+    "totalCostUsd": 0.2072456,
+    "medianCostUsd": 0.1036228
+   },
+   "cli": {
+    "n": 2,
+    "ok": 2,
+    "rate": 1,
+    "medianSec": 12.251,
+    "meanSec": 12.251,
+    "medianTokens": 18391,
+    "medianToolCalls": 2,
+    "medianTurns": 3,
+    "totalCostUsd": 0.10753299999999999,
+    "medianCostUsd": 0.053766499999999995
+   }
+  }
+ ],
+ "runs": [
+  {
+   "task": "books-mystery-max",
+   "site": "books",
+   "mode": "browser",
+   "trial": 1,
+   "tag": "main",
+   "ok": true,
+   "why": "all expected values present",
+   "answer": "Boar Island (Anna Pigeon #19) — £59.48",
+   "expected": {
+    "expect": [
+     "Boar Island",
+     "59.48"
+    ],
+    "detail": {
+     "title": "Boar Island (Anna Pigeon #19)",
+     "price": "£59.48",
+     "url": "https://books.toscrape.com/catalogue/boar-island-anna-pigeon-19_613/index.html",
+     "n": 32
+    }
+   },
+   "wallMs": 14287,
+   "apiMs": 10568,
+   "turns": 5,
+   "toolCalls": 4,
+   "tokens": {
+    "input": 8,
+    "output": 805,
+    "cacheWrite": 6759,
+    "cacheRead": 43525,
+    "total": 51097
+   },
+   "costUsd": 0.058632000000000004,
+   "models": [
+    "claude-opus-5-5"
+   ],
+   "exitCode": 0,
+   "timedOut": false,
+   "subtype": "success",
+   "startedAt": "2026-10-17T23:20:44.384Z",
+   "dir": "runs/main/books-mystery-max/browser-1"
+  },
+  {
+   "task": "books-mystery-max",
+   "site": "books",
+   "mode": "browser",
+   "trial": 2,
+   "tag": "main",
+   "ok": true,
+   "why": "all expected values present",
+   "answer": "Boar Island (Anna Pigeon #19) — £59.48",
+   "expected": {
+    "expect": [
+     "Boar Island",
+     "59.48"
+    ],
+    "detail": {
+     "title": "Boar Island (Anna Pigeon #19)",
+     "price": "£59.48",
+     "url": "https://books.toscrape.com/catalogue/boar-island-anna-pigeon-19_613/index.html",
+     "n": 32
+    }
+   },
+   "wallMs": 13717,
+   "apiMs": 10013,
+   "turns": 4,
+   "toolCalls": 3,
+   "tokens": {
+    "input": 8,
+    "output": 697,
+    "cacheWrite": 6431,
+    "cacheRead": 43220,
+    "total": 50356
+   },
+   "costUsd": 0.05477100000000001,
+   "models": [
+    "claude-opus-5-5"
+   ],
+   "exitCode": 0,
+   "timedOut": false,
+   "subtype": "success",
+   "startedAt": "2026-10-17T23:20:44.385Z",
+   "dir": "runs/main/books-mystery-max/browser-2"
+  },
+  {
+   "task": "books-mystery-max",
+   "site": "books",
+   "mode": "cli",
+   "trial": 1,
+   "tag": "main",
+   "ok": true,
+   "why": "all expected values present",
+   "answer": "Boar Island (Anna Pigeon #19) — £59.48",
+   "expected": {
+    "expect": [
+     "Boar Island",
+     "59.48"
+    ],
+    "detail": {
+     "title": "Boar Island (Anna Pigeon #19)",
+     "price": "£59.48",
+     "url": "https://books.toscrape.com/catalogue/boar-island-anna-pigeon-19_613/index.html",
+     "n": 32
+    }
+   },
+   "wallMs": 9676,
+   "apiMs": 7764,
+   "turns": 4,
+   "toolCalls": 3,
+   "tokens": {
+    "input": 8,
+    "output": 407,
+    "cacheWrite": 6347,
+    "cacheRead": 18605,
+    "total": 25367
+   },
+   "costUsd": 0.043628,
+   "models": [
+    "claude-opus-5-5"
+   ],
+   "exitCode": 0,
+   "timedOut": false,
+   "subtype": "success",
+   "startedAt": "2026-10-17T23:20:43.631Z",
+   "dir": "runs/main/books-mystery-max/cli-1"
+  },
+  {
+   "task": "books-mystery-max",
+   "site": "books",
+   "mode": "cli",
+   "trial": 2,
+   "tag": "main",
+   "ok": true,
+   "why": "all expected values present",
+   "answer": "Boar Island (Anna Pigeon #19) — £59.48",
+   "expected": {
+    "expect": [
+     "Boar Island",
+     "59.48"
+    ],
+    "detail": {
+     "title": "Boar Island (Anna Pigeon #19)",
+     "price": "£59.48",
+     "url": "https://books.toscrape.com/catalogue/boar-island-anna-pigeon-19_613/index.html",
+     "n": 32
+    }
+   },
+   "wallMs": 10077,
+   "apiMs": 8085,
+   "turns": 4,
+   "toolCalls": 3,
+   "tokens": {
+    "input": 8,
+    "output": 471,
+    "cacheWrite": 6373,
+    "cacheRead": 18602,
+    "total": 25454
+   },
+   "costUsd": 0.04503739999999999,
+   "models": [
+    "claude-opus-5-5"
+   ],
+   "exitCode": 0,
+   "timedOut": false,
+   "subtype": "success",
+   "startedAt": "2026-10-17T23:20:43.634Z",
+   "dir": "runs/main/books-mystery-max/cli-2"
+  },
+  {
+   "task": "books-travel-over-40",
+   "site": "books",
+   "mode": "browser",
+   "trial": 1,
+   "tag": "main",
+   "ok": true,
+   "why": "all expected values present",
+   "answer": "5",
+   "expected": {
+    "number": 5,
+    "detail": {
+     "n": 11
+    }
+   },
+   "wallMs": 15463,
+   "apiMs": 12518,
+   "turns": 6,
+   "toolCalls": 5,
+   "tokens": {
+    "input": 8,
+    "output": 659,
+    "cacheWrite": 7005,
+    "cacheRead": 43514,
+    "total": 51186
+   },
+   "costUsd": 0.05693980000000001,
+   "models": [
+    "claude-opus-5-5"
+   ],
+   "exitCode": 0,
+   "timedOut": false,
+   "subtype": "success",
+   "startedAt": "2026-10-17T23:20:54.064Z",
+   "dir": "runs/main/books-travel-over-40/browser-1"
+  },
+  {
+   "task": "books-travel-over-40",
+   "site": "books",
+   "mode": "browser",
+   "trial": 2,
+   "tag": "main",
+   "ok": true,
+   "why": "all expected values present",
+   "answer": "5",
+   "expected": {
+    "number": 5,
+    "detail": {
+     "n": 11
+    }
+   },
+   "wallMs": 11705,
+   "apiMs": 8658,
+   "turns": 4,
+   "toolCalls": 3,
+   "tokens": {
+    "input": 8,
+    "output": 536,
+    "cacheWrite": 6389,
+    "cacheRead": 43263,
+    "total": 50196
+   },
+   "costUsd": 0.0513496,
+   "models": [
+    "claude-opus-5-5"
+   ],
+   "exitCode": 0,
+   "timedOut": false,
+   "subtype": "success",
+   "startedAt": "2026-10-17T23:20:58.856Z",
+   "dir": "runs/main/books-travel-over-40/browser-2"
+  },
+  {
+   "task": "books-travel-over-40",
+   "site": "books",
+   "mode": "cli",
+   "trial": 1,
+   "tag": "main",
+   "ok": true,
+   "why": "all expected values present",
+   "answer": "5",
+   "expected": {
+    "number": 5,
+    "detail": {
+     "n": 11
+    }
+   },
+   "wallMs": 6442,
+   "apiMs": 5380,
+   "turns": 3,
+   "toolCalls": 2,
+   "tokens": {
+    "input": 6,
+    "output": 249,
+    "cacheWrite": 4279,
+    "cacheRead": 10704,
+    "total": 15238
+   },
+   "costUsd": 0.028539799999999997,
+   "models": [
+    "claude-opus-5-5"
+   ],
+   "exitCode": 0,
+   "timedOut": false,
+   "subtype": "success",
+   "startedAt": "2026-10-17T23:20:53.713Z",
+   "dir": "runs/main/books-travel-over-40/cli-1"
+  },
+  {
+   "task": "books-travel-over-40",
+   "site": "books",
+   "mode": "cli",
+   "trial": 2,
+   "tag": "main",
+   "ok": true,
+   "why": "all expected values present",
+   "answer": "5",
+   "expected": {
+    "number": 5,
+    "detail": {
+     "n": 11
+    }
+   },
+   "wallMs": 6791,
+   "apiMs": 5703,
+   "turns": 3,
+   "toolCalls": 2,
+   "tokens": {
+    "input": 6,
+    "output": 271,
+    "cacheWrite": 4279,
+    "cacheRead": 10704,
+    "total": 15260
+   },
+   "costUsd": 0.0289798,
+   "models": [
+    "claude-opus-5-5"
+   ],
+   "exitCode": 0,
+   "timedOut": false,
+   "subtype": "success",
+   "startedAt": "2026-10-17T23:20:58.672Z",
+   "dir": "runs/main/books-travel-over-40/cli-2"
+  },
+  {
+   "task": "crates-tokio",
+   "site": "crates",
+   "mode": "browser",
+   "trial": 1,
+   "tag": "main",
+   "ok": true,
+   "why": "all expected values present",
+   "answer": "tokio 1.53.3, licensed MIT",
+   "expected": {
+    "expect": [
+     "1.53.3",
+     "MIT"
+    ],
+    "detail": {
+     "v": "1.53.3",
+     "l": "MIT"
+    }
+   },
+   "wallMs": 10414,
+   "apiMs": 7531,
+   "turns": 4,
+   "toolCalls": 3,
+   "tokens": {
+    "input": 6,
+    "output": 515,
+    "cacheWrite": 6011,
+    "cacheRead": 30710,
+    "total": 37242
+   },
+   "costUsd": 0.04652100000000001,
+   "models": [
+    "claude-opus-5-5"
+   ],
+   "exitCode": 0,
+   "timedOut": false,
+   "subtype": "success",
+   "startedAt": "2026-10-17T23:22:20.698Z",
+   "dir": "runs/main/crates-tokio/browser-1"
+  },
+  {
+   "task": "crates-tokio",
+   "site": "crates",
+   "mode": "browser",
+   "trial": 2,
+   "tag": "main",
+   "ok": true,
+   "why": "all expected values present",
+   "answer": "1.53.3, MIT license",
+   "expected": {
+    "expect": [
+     "1.53.3",
+     "MIT"
+    ],
+    "detail": {
+     "v": "1.53.3",
+     "l": "MIT"
+    }
+   },
+   "wallMs": 15008,
+   "apiMs": 11418,
+   "turns": 5,
+   "toolCalls": 4,
+   "tokens": {
+    "input": 8,
+    "output": 621,
+    "cacheWrite": 6867,
+    "cacheRead": 44155,
+    "total": 51651
+   },
+   "costUsd": 0.055618,
+   "models": [
+    "claude-opus-5-5"
+   ],
+   "exitCode": 0,
+   "timedOut": false,
+   "subtype": "success",
+   "startedAt": "2026-10-17T23:22:23.926Z",
+   "dir": "runs/main/crates-tokio/browser-2"
+  },
+  {
+   "task": "crates-tokio",
+   "site": "crates",
+   "mode": "cli",
+   "trial": 1,
+   "tag": "main",
+   "ok": true,
+   "why": "all expected values present",
+   "answer": "1.53.3, MIT",
+   "expected": {
+    "expect": [
+     "1.53.3",
+     "MIT"
+    ],
+    "detail": {
+     "v": "1.53.3",
+     "l": "MIT"
+    }
+   },
+   "wallMs": 13582,
+   "apiMs": 11419,
+   "turns": 6,
+   "toolCalls": 5,
+   "tokens": {
+    "input": 12,
+    "output": 538,
+    "cacheWrite": 5948,
+    "cacheRead": 26858,
+    "total": 33356
+   },
+   "costUsd": 0.045919600000000005,
+   "models": [
+    "claude-opus-5-5"
+   ],
+   "exitCode": 0,
+   "timedOut": false,
+   "subtype": "success",
+   "startedAt": "2026-10-17T23:22:22.995Z",
+   "dir": "runs/main/crates-tokio/cli-1"
+  },
+  {
+   "task": "crates-tokio",
+   "site": "crates",
+   "mode": "cli",
+   "trial": 2,
+   "tag": "main",
+   "ok": true,
+   "why": "all expected values present",
+   "answer": "tokio 1.53.3, licensed MIT",
+   "expected": {
+    "expect": [
+     "1.53.3",
+     "MIT"
+    ],
+    "detail": {
+     "v": "1.53.3",
+     "l": "MIT"
+    }
+   },
+   "wallMs": 14096,
+   "apiMs": 12044,
+   "turns": 6,
+   "toolCalls": 5,
+   "tokens": {
+    "input": 12,
+    "output": 611,
+    "cacheWrite": 4824,
+    "cacheRead": 27588,
+    "total": 33035
+   },
+   "costUsd": 0.0419056,
+   "models": [
+    "claude-opus-5-5"
+   ],
+   "exitCode": 0,
+   "timedOut": false,
+   "subtype": "success",
+   "startedAt": "2026-10-17T23:22:26.626Z",
+   "dir": "runs/main/crates-tokio/cli-2"
+  },
+  {
+   "task": "debian-nginx-bookworm",
+   "site": "debian",
+   "mode": "browser",
+   "trial": 1,
+   "tag": "main",
+   "ok": true,
+   "why": "all expected values present",
+   "answer": "1.22.1-9+deb12u10",
+   "expected": {
+    "expect": [
+     "1.22.1-9+deb12u10"
+    ],
+    "detail": {
+     "h": "Package: nginx (1.22.1-9+deb12u10 and others) [security]"
+    }
+   },
+   "wallMs": 16230,
+   "apiMs": 13062,
+   "turns": 6,
+   "toolCalls": 5,
+   "tokens": {
+    "input": 12,
+    "output": 685,
+    "cacheWrite": 10459,
+    "cacheRead": 68347,
+    "total": 79503
+   },
+   "costUsd": 0.07971240000000002,
+   "models": [
+    "claude-opus-5-5"
+   ],
+   "exitCode": 0,
+   "timedOut": false,
+   "subtype": "success",
+   "startedAt": "2026-10-17T23:22:43.823Z",
+   "dir": "runs/main/debian-nginx-bookworm/browser-1"
+  },
+  {
+   "task": "debian-nginx-bookworm",
+   "site": "debian",
+   "mode": "browser",
+   "trial": 2,
+   "tag": "main",
+   "ok": true,
+   "why": "all expected values present",
+   "answer": "1.22.1-9+deb12u10",
+   "expected": {
+    "expect": [
+     "1.22.1-9+deb12u10"
+    ],
+    "detail": {
+     "h": "Package: nginx (1.22.1-9+deb12u10 and others) [security]"
+    }
+   },
+   "wallMs": 16105,
+   "apiMs": 12946,
+   "turns": 6,
+   "toolCalls": 5,
+   "tokens": {
+    "input": 12,
+    "output": 657,
+    "cacheWrite": 10451,
+    "cacheRead": 68347,
+    "total": 79467
+   },
+   "costUsd": 0.07911240000000001,
+   "models": [
+    "claude-opus-5-5"
+   ],
+   "exitCode": 0,
+   "timedOut": false,
+   "subtype": "success",
+   "startedAt": "2026-10-17T23:22:47.796Z",
+   "dir": "runs/main/debian-nginx-bookworm/browser-2"
+  },
+  {
+   "task": "debian-nginx-bookworm",
+   "site": "debian",
+   "mode": "cli",
+   "trial": 1,
+   "tag": "main",
+   "ok": true,
+   "why": "all expected values present",
+   "answer": "1.22.1-9+deb12u10",
+   "expected": {
+    "expect": [
+     "1.22.1-9+deb12u10"
+    ],
+    "detail": {
+     "h": "Package: nginx (1.22.1-9+deb12u10 and others) [security]"
+    }
+   },
+   "wallMs": 9689,
+   "apiMs": 7764,
+   "turns": 4,
+   "toolCalls": 3,
+   "tokens": {
+    "input": 8,
+    "output": 342,
+    "cacheWrite": 3735,
+    "cacheRead": 15360,
+    "total": 19445
+   },
+   "costUsd": 0.028619,
+   "models": [
+    "claude-opus-5-5"
+   ],
+   "exitCode": 0,
+   "timedOut": false,
+   "subtype": "success",
+   "startedAt": "2026-10-17T23:22:43.774Z",
+   "dir": "runs/main/debian-nginx-bookworm/cli-1"
+  },
+  {
+   "task": "debian-nginx-bookworm",
+   "site": "debian",
+   "mode": "cli",
+   "trial": 2,
+   "tag": "main",
+   "ok": true,
+   "why": "all expected values present",
+   "answer": "1.22.1-9+deb12u10",
+   "expected": {
+    "expect": [
+     "1.22.1-9+deb12u10"
+    ],
+    "detail": {
+     "h": "Package: nginx (1.22.1-9+deb12u10 and others) [security]"
+    }
+   },
+   "wallMs": 11784,
+   "apiMs": 10230,
+   "turns": 4,
+   "toolCalls": 3,
+   "tokens": {
+    "input": 8,
+    "output": 398,
+    "cacheWrite": 3742,
+    "cacheRead": 15360,
+    "total": 19508
+   },
+   "costUsd": 0.029774,
+   "models": [
+    "claude-opus-5-5"
+   ],
+   "exitCode": 0,
+   "timedOut": false,
+   "subtype": "success",
+   "startedAt": "2026-10-17T23:22:52.488Z",
+   "dir": "runs/main/debian-nginx-bookworm/cli-2"
+  },
+  {
+   "task": "endoflife-ubuntu-2204",
+   "site": "endoflife",
+   "mode": "browser",
+   "trial": 1,
+   "tag": "main",
+   "ok": true,
+   "why": "all expected values present",
+   "answer": "2027-06-01",
+   "expected": {
+    "expect": [
+     "2027-06-01"
+    ],
+    "detail": {
+     "codename": "Jammy Jellyfish",
+     "lts": true,
+     "releaseDate": "2022-04-21",
+     "eol": "2027-06-01",
+     "latest": "22.04.5",
+     "latestReleaseDate": "2024-09-12",
+     "support": "2024-09-30",
+     "extendedSupport": "2032-04-21"
+    }
+   },
+   "wallMs": 15848,
+   "apiMs": 12191,
+   "turns": 5,
+   "toolCalls": 4,
+   "tokens": {
+    "input": 10,
+    "output": 789,
+    "cacheWrite": 7314,
+    "cacheRead": 57157,
+    "total": 65270
+   },
+   "costUsd": 0.0638214,
+   "models": [
+    "claude-opus-5-5"
+   ],
+   "exitCode": 0,
+   "timedOut": false,
+   "subtype": "success",
+   "startedAt": "2026-10-17T23:21:59.555Z",
+   "dir": "runs/main/endoflife-ubuntu-2204/browser-1"
+  },
+  {
+   "task": "endoflife-ubuntu-2204",
+   "site": "endoflife",
+   "mode": "browser",
+   "trial": 2,
+   "tag": "main",
+   "ok": true,
+   "why": "all expected values present",
+   "answer": "2027-06-01",
+   "expected": {
+    "expect": [
+     "2027-06-01"
+    ],
+    "detail": {
+     "codename": "Jammy Jellyfish",
+     "lts": true,
+     "releaseDate": "2022-04-21",
+     "eol": "2027-06-01",
+     "latest": "22.04.5",
+     "latestReleaseDate": "2024-09-12",
+     "support": "2024-09-30",
+     "extendedSupport": "2032-04-21"
+    }
+   },
+   "wallMs": 11445,
+   "apiMs": 8811,
+   "turns": 6,
+   "toolCalls": 5,
+   "tokens": {
+    "input": 10,
+    "output": 643,
+    "cacheWrite": 7790,
+    "cacheRead": 56857,
+    "total": 65300
+   },
+   "costUsd": 0.06322140000000001,
+   "models": [
+    "claude-opus-5-5"
+   ],
+   "exitCode": 0,
+   "timedOut": false,
+   "subtype": "success",
+   "startedAt": "2026-10-17T23:22:02.798Z",
+   "dir": "runs/main/endoflife-ubuntu-2204/browser-2"
+  },
+  {
+   "task": "endoflife-ubuntu-2204",
+   "site": "endoflife",
+   "mode": "cli",
+   "trial": 1,
+   "tag": "main",
+   "ok": true,
+   "why": "all expected values present",
+   "answer": "2027-06-01",
+   "expected": {
+    "expect": [
+     "2027-06-01"
+    ],
+    "detail": {
+     "codename": "Jammy Jellyfish",
+     "lts": true,
+     "releaseDate": "2022-04-21",
+     "eol": "2027-06-01",
+     "latest": "22.04.5",
+     "latestReleaseDate": "2024-09-12",
+     "support": "2024-09-30",
+     "extendedSupport": "2032-04-21"
+    }
+   },
+   "wallMs": 8870,
+   "apiMs": 7809,
+   "turns": 3,
+   "toolCalls": 2,
+   "tokens": {
+    "input": 6,
+    "output": 474,
+    "cacheWrite": 3073,
+    "cacheRead": 10410,
+    "total": 13963
+   },
+   "costUsd": 0.026951000000000003,
+   "models": [
+    "claude-opus-5-5"
+   ],
+   "exitCode": 0,
+   "timedOut": false,
+   "subtype": "success",
+   "startedAt": "2026-10-17T23:22:00.165Z",
+   "dir": "runs/main/endoflife-ubuntu-2204/cli-1"
+  },
+  {
+   "task": "endoflife-ubuntu-2204",
+   "site": "endoflife",
+   "mode": "cli",
+   "trial": 2,
+   "tag": "main",
+   "ok": true,
+   "why": "all expected values present",
+   "answer": "2027-06-01",
+   "expected": {
+    "expect": [
+     "2027-06-01"
+    ],
+    "detail": {
+     "codename": "Jammy Jellyfish",
+     "lts": true,
+     "releaseDate": "2022-04-21",
+     "eol": "2027-06-01",
+     "latest": "22.04.5",
+     "latestReleaseDate": "2024-09-12",
+     "support": "2024-09-30",
+     "extendedSupport": "2032-04-21"
+    }
+   },
+   "wallMs": 9924,
+   "apiMs": 8894,
+   "turns": 3,
+   "toolCalls": 2,
+   "tokens": {
+    "input": 6,
+    "output": 554,
+    "cacheWrite": 3073,
+    "cacheRead": 10410,
+    "total": 14043
+   },
+   "costUsd": 0.028551,
+   "models": [
+    "claude-opus-5-5"
+   ],
+   "exitCode": 0,
+   "timedOut": false,
+   "subtype": "success",
+   "startedAt": "2026-10-17T23:22:06.694Z",
+   "dir": "runs/main/endoflife-ubuntu-2204/cli-2"
+  },
+  {
+   "task": "github-playwright-release",
+   "site": "github",
+   "mode": "browser",
+   "trial": 1,
+   "tag": "main",
+   "ok": true,
+   "why": "all expected values present",
+   "answer": "v1.64.1, published 2026-10-14",
+   "expected": {
+    "expect": [
+     "1.64.1",
+     "2026-10-14"
+    ],
+    "detail": {
+     "tag_name": "v1.64.1",
+     "published_at": "2026-10-14T11:51:33Z"
+    }
+   },
+   "wallMs": 10521,
+   "apiMs": 7121,
+   "turns": 4,
+   "toolCalls": 3,
+   "tokens": {
+    "input": 6,
+    "output": 500,
+    "cacheWrite": 6059,
+    "cacheRead": 30758,
+    "total": 37323
+   },
+   "costUsd": 0.0464706,
+   "models": [
+    "claude-opus-5-5"
+   ],
+   "exitCode": 0,
+   "timedOut": false,
+   "subtype": "success",
+   "startedAt": "2026-10-17T23:22:54.216Z",
+   "dir": "runs/main/github-playwright-release/browser-1"
+  },
+  {
+   "task": "github-playwright-release",
+   "site": "github",
+   "mode": "browser",
+   "trial": 2,
+   "tag": "main",
+   "ok": true,
+   "why": "all expected values present",
+   "answer": "v1.64.1, published 2026-10-14",
+   "expected": {
+    "expect": [
+     "1.64.1",
+     "2026-10-14"
+    ],
+    "detail": {
+     "tag_name": "v1.64.1",
+     "published_at": "2026-10-14T11:51:33Z"
+    }
+   },
+   "wallMs": 17196,
+   "apiMs": 14437,
+   "turns": 5,
+   "toolCalls": 4,
+   "tokens": {
+    "input": 8,
+    "output": 634,
+    "cacheWrite": 6471,
+    "cacheRead": 43757,
+    "total": 50870
+   },
+   "costUsd": 0.0538184,
+   "models": [
+    "claude-opus-5-5"
+   ],
+   "exitCode": 0,
+   "timedOut": false,
+   "subtype": "success",
+   "startedAt": "2026-10-17T23:23:04.657Z",
+   "dir": "runs/main/github-playwright-release/browser-2"
+  },
+  {
+   "task": "github-playwright-release",
+   "site": "github",
+   "mode": "cli",
+   "trial": 1,
+   "tag": "main",
+   "ok": true,
+   "why": "all expected values present",
+   "answer": "v1.64.1, published 2026-10-14",
+   "expected": {
+    "expect": [
+     "1.64.1",
+     "2026-10-14"
+    ],
+    "detail": {
+     "tag_name": "v1.64.1",
+     "published_at": "2026-10-14T11:51:33Z"
+    }
+   },
+   "wallMs": 7833,
+   "apiMs": 6319,
+   "turns": 3,
+   "toolCalls": 2,
+   "tokens": {
+    "input": 6,
+    "output": 348,
+    "cacheWrite": 4850,
+    "cacheRead": 10733,
+    "total": 15937
+   },
+   "costUsd": 0.0333806,
+   "models": [
+    "claude-opus-5-5"
+   ],
+   "exitCode": 0,
+   "timedOut": false,
+   "subtype": "success",
+   "startedAt": "2026-10-17T23:23:00.053Z",
+   "dir": "runs/main/github-playwright-release/cli-1"
+  },
+  {
+   "task": "github-playwright-release",
+   "site": "github",
+   "mode": "cli",
+   "trial": 2,
+   "tag": "main",
+   "ok": true,
+   "why": "all expected values present",
+   "answer": "v1.64.1, published 2026-10-14",
+   "expected": {
+    "expect": [
+     "1.64.1",
+     "2026-10-14"
+    ],
+    "detail": {
+     "tag_name": "v1.64.1",
+     "published_at": "2026-10-14T11:51:33Z"
+    }
+   },
+   "wallMs": 8513,
+   "apiMs": 7341,
+   "turns": 4,
+   "toolCalls": 3,
+   "tokens": {
+    "input": 8,
+    "output": 377,
+    "cacheWrite": 3819,
+    "cacheRead": 15850,
+    "total": 20054
+   },
+   "costUsd": 0.029837000000000002,
+   "models": [
+    "claude-opus-5-5"
+   ],
+   "exitCode": 0,
+   "timedOut": false,
+   "subtype": "success",
+   "startedAt": "2026-10-17T23:23:04.273Z",
+   "dir": "runs/main/github-playwright-release/cli-2"
+  },
+  {
+   "task": "hex-phoenix",
+   "site": "hex",
+   "mode": "browser",
+   "trial": 1,
+   "tag": "main",
+   "ok": true,
+   "why": "all expected values present",
+   "answer": "1.8.15, MIT",
+   "expected": {
+    "expect": [
+     "1.8.15",
+     "MIT"
+    ],
+    "detail": {
+     "latest_stable_version": "1.8.15",
+     "meta.licenses": [
+      "MIT"
+     ]
+    }
+   },
+   "wallMs": 11906,
+   "apiMs": 8632,
+   "turns": 4,
+   "toolCalls": 3,
+   "tokens": {
+    "input": 8,
+    "output": 449,
+    "cacheWrite": 13221,
+    "cacheRead": 43256,
+    "total": 56934
+   },
+   "costUsd": 0.08376820000000001,
+   "models": [
+    "claude-opus-5-5"
+   ],
+   "exitCode": 0,
+   "timedOut": false,
+   "subtype": "success",
+   "startedAt": "2026-10-17T23:22:31.867Z",
+   "dir": "runs/main/hex-phoenix/browser-1"
+  },
+  {
+   "task": "hex-phoenix",
+   "site": "hex",
+   "mode": "browser",
+   "trial": 2,
+   "tag": "main",
+   "ok": true,
+   "why": "all expected values present",
+   "answer": "1.8.15, MIT license",
+   "expected": {
+    "expect": [
+     "1.8.15",
+     "MIT"
+    ],
+    "detail": {
+     "latest_stable_version": "1.8.15",
+     "meta.licenses": [
+      "MIT"
+     ]
+    }
+   },
+   "wallMs": 12799,
+   "apiMs": 9977,
+   "turns": 4,
+   "toolCalls": 3,
+   "tokens": {
+    "input": 8,
+    "output": 480,
+    "cacheWrite": 13221,
+    "cacheRead": 43256,
+    "total": 56965
+   },
+   "costUsd": 0.0843882,
+   "models": [
+    "claude-opus-5-5"
+   ],
+   "exitCode": 0,
+   "timedOut": false,
+   "subtype": "success",
+   "startedAt": "2026-10-17T23:22:39.689Z",
+   "dir": "runs/main/hex-phoenix/browser-2"
+  },
+  {
+   "task": "hex-phoenix",
+   "site": "hex",
+   "mode": "cli",
+   "trial": 1,
+   "tag": "main",
+   "ok": true,
+   "why": "all expected values present",
+   "answer": "1.8.15, MIT license",
+   "expected": {
+    "expect": [
+     "1.8.15",
+     "MIT"
+    ],
+    "detail": {
+     "latest_stable_version": "1.8.15",
+     "meta.licenses": [
+      "MIT"
+     ]
+    }
+   },
+   "wallMs": 6491,
+   "apiMs": 5489,
+   "turns": 3,
+   "toolCalls": 2,
+   "tokens": {
+    "input": 6,
+    "output": 221,
+    "cacheWrite": 3039,
+    "cacheRead": 10379,
+    "total": 13645
+   },
+   "costUsd": 0.0217148,
+   "models": [
+    "claude-opus-5-5"
+   ],
+   "exitCode": 0,
+   "timedOut": false,
+   "subtype": "success",
+   "startedAt": "2026-10-17T23:22:36.578Z",
+   "dir": "runs/main/hex-phoenix/cli-1"
+  },
+  {
+   "task": "hex-phoenix",
+   "site": "hex",
+   "mode": "cli",
+   "trial": 2,
+   "tag": "main",
+   "ok": true,
+   "why": "all expected values present",
+   "answer": "1.8.15, MIT",
+   "expected": {
+    "expect": [
+     "1.8.15",
+     "MIT"
+    ],
+    "detail": {
+     "latest_stable_version": "1.8.15",
+     "meta.licenses": [
+      "MIT"
+     ]
+    }
+   },
+   "wallMs": 6318,
+   "apiMs": 5247,
+   "turns": 3,
+   "toolCalls": 2,
+   "tokens": {
+    "input": 6,
+    "output": 224,
+    "cacheWrite": 3039,
+    "cacheRead": 10379,
+    "total": 13648
+   },
+   "costUsd": 0.0217748,
+   "models": [
+    "claude-opus-5-5"
+   ],
+   "exitCode": 0,
+   "timedOut": false,
+   "subtype": "success",
+   "startedAt": "2026-10-17T23:22:40.723Z",
+   "dir": "runs/main/hex-phoenix/cli-2"
+  },
+  {
+   "task": "homebrew-ffmpeg",
+   "site": "homebrew",
+   "mode": "browser",
+   "trial": 1,
+   "tag": "main",
+   "ok": true,
+   "why": "all expected values present",
+   "answer": "9.0.2, GPL-3.0-or-later",
+   "expected": {
+    "expect": [
+     "9.0.2",
+     "GPL-3.0-or-later"
+    ],
+    "detail": {
+     "versions.stable": "9.0.2",
+     "license": "GPL-3.0-or-later"
+    }
+   },
+   "wallMs": 10155,
+   "apiMs": 7836,
+   "turns": 4,
+   "toolCalls": 3,
+   "tokens": {
+    "input": 8,
+    "output": 361,
+    "cacheWrite": 11502,
+    "cacheRead": 43285,
+    "total": 55156
+   },
+   "costUsd": 0.073419,
+   "models": [
+    "claude-opus-5-5"
+   ],
+   "exitCode": 0,
+   "timedOut": false,
+   "subtype": "success",
+   "startedAt": "2026-10-17T23:22:09.789Z",
+   "dir": "runs/main/homebrew-ffmpeg/browser-1"
+  },
+  {
+   "task": "homebrew-ffmpeg",
+   "site": "homebrew",
+   "mode": "browser",
+   "trial": 2,
+   "tag": "main",
+   "ok": true,
+   "why": "all expected values present",
+   "answer": "9.0.2, GPL-3.0-or-later",
+   "expected": {
+    "expect": [
+     "9.0.2",
+     "GPL-3.0-or-later"
+    ],
+    "detail": {
+     "versions.stable": "9.0.2",
+     "license": "GPL-3.0-or-later"
+    }
+   },
+   "wallMs": 10467,
+   "apiMs": 7781,
+   "turns": 4,
+   "toolCalls": 3,
+   "tokens": {
+    "input": 8,
+    "output": 402,
+    "cacheWrite": 6952,
+    "cacheRead": 43889,
+    "total": 51251
+   },
+   "costUsd": 0.0516098,
+   "models": [
+    "claude-opus-5-5"
+   ],
+   "exitCode": 0,
+   "timedOut": false,
+   "subtype": "success",
+   "startedAt": "2026-10-17T23:22:16.158Z",
+   "dir": "runs/main/homebrew-ffmpeg/browser-2"
+  },
+  {
+   "task": "homebrew-ffmpeg",
+   "site": "homebrew",
+   "mode": "cli",
+   "trial": 1,
+   "tag": "main",
+   "ok": true,
+   "why": "all expected values present",
+   "answer": "9.0.2, GPL-3.0-or-later",
+   "expected": {
+    "expect": [
+     "9.0.2",
+     "GPL-3.0-or-later"
+    ],
+    "detail": {
+     "versions.stable": "9.0.2",
+     "license": "GPL-3.0-or-later"
+    }
+   },
+   "wallMs": 8927,
+   "apiMs": 8028,
+   "turns": 3,
+   "toolCalls": 2,
+   "tokens": {
+    "input": 6,
+    "output": 237,
+    "cacheWrite": 2942,
+    "cacheRead": 10298,
+    "total": 13483
+   },
+   "costUsd": 0.021533600000000003,
+   "models": [
+    "claude-opus-5-5"
+   ],
+   "exitCode": 0,
+   "timedOut": false,
+   "subtype": "success",
+   "startedAt": "2026-10-17T23:22:14.243Z",
+   "dir": "runs/main/homebrew-ffmpeg/cli-1"
+  },
+  {
+   "task": "homebrew-ffmpeg",
+   "site": "homebrew",
+   "mode": "cli",
+   "trial": 2,
+   "tag": "main",
+   "ok": true,
+   "why": "all expected values present",
+   "answer": "9.0.2, GPL-3.0-or-later",
+   "expected": {
+    "expect": [
+     "9.0.2",
+     "GPL-3.0-or-later"
+    ],
+    "detail": {
+     "versions.stable": "9.0.2",
+     "license": "GPL-3.0-or-later"
+    }
+   },
+   "wallMs": 6376,
+   "apiMs": 5448,
+   "turns": 3,
+   "toolCalls": 2,
+   "tokens": {
+    "input": 6,
+    "output": 245,
+    "cacheWrite": 2942,
+    "cacheRead": 10298,
+    "total": 13491
+   },
+   "costUsd": 0.021693600000000004,
+   "models": [
+    "claude-opus-5-5"
+   ],
+   "exitCode": 0,
+   "timedOut": false,
+   "subtype": "success",
+   "startedAt": "2026-10-17T23:22:16.619Z",
+   "dir": "runs/main/homebrew-ffmpeg/cli-2"
+  },
+  {
+   "task": "nodejs-latest-lts",
+   "site": "nodejs",
+   "mode": "browser",
+   "trial": 1,
+   "tag": "main",
+   "ok": true,
+   "why": "all expected values present",
+   "answer": "v24.22.0 (Krypton)",
+   "expected": {
+    "expect": [
+     "24.22.0",
+     "Krypton"
+    ],
+    "detail": {
+     "version": "v24.22.0",
+     "lts": "Krypton"
+    }
+   },
+   "wallMs": 13071,
+   "apiMs": 9614,
+   "turns": 4,
+   "toolCalls": 3,
+   "tokens": {
+    "input": 8,
+    "output": 557,
+    "cacheWrite": 6588,
+    "cacheRead": 43174,
+    "total": 50327
+   },
+   "costUsd": 0.0527468,
+   "models": [
+    "claude-opus-5-5"
+   ],
+   "exitCode": 0,
+   "timedOut": false,
+   "subtype": "success",
+   "startedAt": "2026-10-17T23:23:05.494Z",
+   "dir": "runs/main/nodejs-latest-lts/browser-1"
+  },
+  {
+   "task": "nodejs-latest-lts",
+   "site": "nodejs",
+   "mode": "browser",
+   "trial": 2,
+   "tag": "main",
+   "ok": true,
+   "why": "all expected values present",
+   "answer": "v24.22.0 (Krypton)",
+   "expected": {
+    "expect": [
+     "24.22.0",
+     "Krypton"
+    ],
+    "detail": {
+     "version": "v24.22.0",
+     "lts": "Krypton"
+    }
+   },
+   "wallMs": 16864,
+   "apiMs": 12687,
+   "turns": 6,
+   "toolCalls": 5,
+   "tokens": {
+    "input": 8,
+    "output": 745,
+    "cacheWrite": 8893,
+    "cacheRead": 45137,
+    "total": 54783
+   },
+   "costUsd": 0.0684244,
+   "models": [
+    "claude-opus-5-5"
+   ],
+   "exitCode": 0,
+   "timedOut": false,
+   "subtype": "success",
+   "startedAt": "2026-10-17T23:23:13.540Z",
+   "dir": "runs/main/nodejs-latest-lts/browser-2"
+  },
+  {
+   "task": "nodejs-latest-lts",
+   "site": "nodejs",
+   "mode": "cli",
+   "trial": 1,
+   "tag": "main",
+   "ok": true,
+   "why": "all expected values present",
+   "answer": "v24.22.0 (Krypton)",
+   "expected": {
+    "expect": [
+     "24.22.0",
+     "Krypton"
+    ],
+    "detail": {
+     "version": "v24.22.0",
+     "lts": "Krypton"
+    }
+   },
+   "wallMs": 9168,
+   "apiMs": 8130,
+   "turns": 4,
+   "toolCalls": 3,
+   "tokens": {
+    "input": 8,
+    "output": 428,
+    "cacheWrite": 3919,
+    "cacheRead": 15476,
+    "total": 19831
+   },
+   "costUsd": 0.031282199999999996,
+   "models": [
+    "claude-opus-5-5"
+   ],
+   "exitCode": 0,
+   "timedOut": false,
+   "subtype": "success",
+   "startedAt": "2026-10-17T23:23:07.887Z",
+   "dir": "runs/main/nodejs-latest-lts/cli-1"
+  },
+  {
+   "task": "nodejs-latest-lts",
+   "site": "nodejs",
+   "mode": "cli",
+   "trial": 2,
+   "tag": "main",
+   "ok": true,
+   "why": "all expected values present",
+   "answer": "v24.22.0 (Krypton)",
+   "expected": {
+    "expect": [
+     "24.22.0",
+     "Krypton"
+    ],
+    "detail": {
+     "version": "v24.22.0",
+     "lts": "Krypton"
+    }
+   },
+   "wallMs": 12304,
+   "apiMs": 11075,
+   "turns": 5,
+   "toolCalls": 4,
+   "tokens": {
+    "input": 10,
+    "output": 543,
+    "cacheWrite": 3951,
+    "cacheRead": 20858,
+    "total": 25362
+   },
+   "costUsd": 0.0348266,
+   "models": [
+    "claude-opus-5-5"
+   ],
+   "exitCode": 0,
+   "timedOut": false,
+   "subtype": "success",
+   "startedAt": "2026-10-17T23:23:17.055Z",
+   "dir": "runs/main/nodejs-latest-lts/cli-2"
+  },
+  {
+   "task": "quotes-humor-author",
+   "site": "quotes",
+   "mode": "browser",
+   "trial": 1,
+   "tag": "main",
+   "ok": true,
+   "why": "all expected values present",
+   "answer": "Jane Austen, born December 16, 1775",
+   "expected": {
+    "expect": [
+     "Jane Austen",
+     "December 16 1775"
+    ],
+    "detail": {
+     "author": "Jane Austen",
+     "born": "December 16, 1775"
+    }
+   },
+   "wallMs": 12852,
+   "apiMs": 9983,
+   "turns": 6,
+   "toolCalls": 5,
+   "tokens": {
+    "input": 8,
+    "output": 698,
+    "cacheWrite": 6602,
+    "cacheRead": 43656,
+    "total": 50964
+   },
+   "costUsd": 0.05573320000000001,
+   "models": [
+    "claude-opus-5-5"
+   ],
+   "exitCode": 0,
+   "timedOut": false,
+   "subtype": "success",
+   "startedAt": "2026-10-17T23:21:00.909Z",
+   "dir": "runs/main/quotes-humor-author/browser-1"
+  },
+  {
+   "task": "quotes-humor-author",
+   "site": "quotes",
+   "mode": "browser",
+   "trial": 2,
+   "tag": "main",
+   "ok": true,
+   "why": "all expected values present",
+   "answer": "Jane Austen, born December 16, 1775",
+   "expected": {
+    "expect": [
+     "Jane Austen",
+     "December 16 1775"
+    ],
+    "detail": {
+     "author": "Jane Austen",
+     "born": "December 16, 1775"
+    }
+   },
+   "wallMs": 12521,
+   "apiMs": 9698,
+   "turns": 6,
+   "toolCalls": 5,
+   "tokens": {
+    "input": 8,
+    "output": 693,
+    "cacheWrite": 6571,
+    "cacheRead": 43694,
+    "total": 50966
+   },
+   "costUsd": 0.0554858,
+   "models": [
+    "claude-opus-5-5"
+   ],
+   "exitCode": 0,
+   "timedOut": false,
+   "subtype": "success",
+   "startedAt": "2026-10-17T23:21:10.281Z",
+   "dir": "runs/main/quotes-humor-author/browser-2"
+  },
+  {
+   "task": "quotes-humor-author",
+   "site": "quotes",
+   "mode": "cli",
+   "trial": 1,
+   "tag": "main",
+   "ok": true,
+   "why": "all expected values present",
+   "answer": "Jane Austen, born December 16, 1775",
+   "expected": {
+    "expect": [
+     "Jane Austen",
+     "December 16 1775"
+    ],
+    "detail": {
+     "author": "Jane Austen",
+     "born": "December 16, 1775"
+    }
+   },
+   "wallMs": 8507,
+   "apiMs": 7076,
+   "turns": 4,
+   "toolCalls": 3,
+   "tokens": {
+    "input": 8,
+    "output": 313,
+    "cacheWrite": 3583,
+    "cacheRead": 15585,
+    "total": 19489
+   },
+   "costUsd": 0.027324,
+   "models": [
+    "claude-opus-5-5"
+   ],
+   "exitCode": 0,
+   "timedOut": false,
+   "subtype": "success",
+   "startedAt": "2026-10-17T23:21:05.463Z",
+   "dir": "runs/main/quotes-humor-author/cli-1"
+  },
+  {
+   "task": "quotes-humor-author",
+   "site": "quotes",
+   "mode": "cli",
+   "trial": 2,
+   "tag": "main",
+   "ok": true,
+   "why": "all expected values present",
+   "answer": "Jane Austen, born December 16, 1775",
+   "expected": {
+    "expect": [
+     "Jane Austen",
+     "December 16 1775"
+    ],
+    "detail": {
+     "author": "Jane Austen",
+     "born": "December 16, 1775"
+    }
+   },
+   "wallMs": 8363,
+   "apiMs": 6911,
+   "turns": 4,
+   "toolCalls": 3,
+   "tokens": {
+    "input": 8,
+    "output": 295,
+    "cacheWrite": 3583,
+    "cacheRead": 15585,
+    "total": 19471
+   },
+   "costUsd": 0.026964000000000002,
+   "models": [
+    "claude-opus-5-5"
+   ],
+   "exitCode": 0,
+   "timedOut": false,
+   "subtype": "success",
+   "startedAt": "2026-10-17T23:21:10.561Z",
+   "dir": "runs/main/quotes-humor-author/cli-2"
+  },
+  {
+   "task": "quotes-love-count",
+   "site": "quotes",
+   "mode": "browser",
+   "trial": 1,
+   "tag": "main",
+   "ok": true,
+   "why": "all expected values present",
+   "answer": "14",
+   "expected": {
+    "number": 14
+   },
+   "wallMs": 9718,
+   "apiMs": 6866,
+   "turns": 4,
+   "toolCalls": 3,
+   "tokens": {
+    "input": 6,
+    "output": 475,
+    "cacheWrite": 6113,
+    "cacheRead": 30762,
+    "total": 37356
+   },
+   "costUsd": 0.0462414,
+   "models": [
+    "claude-opus-5-5"
+   ],
+   "exitCode": 0,
+   "timedOut": false,
+   "subtype": "success",
+   "startedAt": "2026-10-17T23:21:14.515Z",
+   "dir": "runs/main/quotes-love-count/browser-1"
+  },
+  {
+   "task": "quotes-love-count",
+   "site": "quotes",
+   "mode": "browser",
+   "trial": 2,
+   "tag": "main",
+   "ok": true,
+   "why": "all expected values present",
+   "answer": "14",
+   "expected": {
+    "number": 14
+   },
+   "wallMs": 22166,
+   "apiMs": 18698,
+   "turns": 4,
+   "toolCalls": 3,
+   "tokens": {
+    "input": 8,
+    "output": 586,
+    "cacheWrite": 6112,
+    "cacheRead": 43189,
+    "total": 49895
+   },
+   "costUsd": 0.0509498,
+   "models": [
+    "claude-opus-5-5"
+   ],
+   "exitCode": 0,
+   "timedOut": false,
+   "subtype": "success",
+   "startedAt": "2026-10-17T23:21:19.679Z",
+   "dir": "runs/main/quotes-love-count/browser-2"
+  },
+  {
+   "task": "quotes-love-count",
+   "site": "quotes",
+   "mode": "cli",
+   "trial": 1,
+   "tag": "main",
+   "ok": true,
+   "why": "all expected values present",
+   "answer": "14",
+   "expected": {
+    "number": 14
+   },
+   "wallMs": 8430,
+   "apiMs": 5945,
+   "turns": 3,
+   "toolCalls": 2,
+   "tokens": {
+    "input": 6,
+    "output": 270,
+    "cacheWrite": 3651,
+    "cacheRead": 10535,
+    "total": 14462
+   },
+   "costUsd": 0.025786000000000003,
+   "models": [
+    "claude-opus-5-5"
+   ],
+   "exitCode": 0,
+   "timedOut": false,
+   "subtype": "success",
+   "startedAt": "2026-10-17T23:21:13.971Z",
+   "dir": "runs/main/quotes-love-count/cli-1"
+  },
+  {
+   "task": "quotes-love-count",
+   "site": "quotes",
+   "mode": "cli",
+   "trial": 2,
+   "tag": "main",
+   "ok": true,
+   "why": "all expected values present",
+   "answer": "14",
+   "expected": {
+    "number": 14
+   },
+   "wallMs": 11001,
+   "apiMs": 6595,
+   "turns": 3,
+   "toolCalls": 2,
+   "tokens": {
+    "input": 6,
+    "output": 376,
+    "cacheWrite": 3553,
+    "cacheRead": 10535,
+    "total": 14470
+   },
+   "costUsd": 0.027416000000000003,
+   "models": [
+    "claude-opus-5-5"
+   ],
+   "exitCode": 0,
+   "timedOut": false,
+   "subtype": "success",
+   "startedAt": "2026-10-17T23:21:22.402Z",
+   "dir": "runs/main/quotes-love-count/cli-2"
+  },
+  {
+   "task": "scrapethis-hockey-detroit-1995",
+   "site": "scrapethis",
+   "mode": "browser",
+   "trial": 1,
+   "tag": "main",
+   "ok": true,
+   "why": "all expected values present",
+   "answer": "62",
+   "expected": {
+    "number": 62,
+    "detail": {
+     "name": "Detroit Red Wings",
+     "year": "1995",
+     "wins": "62",
+     "losses": "13",
+     "winPct": "0.756",
+     "goalsFor": "325",
+     "goalsAgainst": "181"
+    }
+   },
+   "wallMs": 10399,
+   "apiMs": 7151,
+   "turns": 4,
+   "toolCalls": 3,
+   "tokens": {
+    "input": 8,
+    "output": 430,
+    "cacheWrite": 5935,
+    "cacheRead": 43432,
+    "total": 49805
+   },
+   "costUsd": 0.04699339999999999,
+   "models": [
+    "claude-opus-5-5"
+   ],
+   "exitCode": 0,
+   "timedOut": false,
+   "subtype": "success",
+   "startedAt": "2026-10-17T23:21:36.313Z",
+   "dir": "runs/main/scrapethis-hockey-detroit-1995/browser-1"
+  },
+  {
+   "task": "scrapethis-hockey-detroit-1995",
+   "site": "scrapethis",
+   "mode": "browser",
+   "trial": 2,
+   "tag": "main",
+   "ok": true,
+   "why": "all expected values present",
+   "answer": "62",
+   "expected": {
+    "number": 62,
+    "detail": {
+     "name": "Detroit Red Wings",
+     "year": "1995",
+     "wins": "62",
+     "losses": "13",
+     "winPct": "0.756",
+     "goalsFor": "325",
+     "goalsAgainst": "181"
+    }
+   },
+   "wallMs": 10145,
+   "apiMs": 7501,
+   "turns": 4,
+   "toolCalls": 3,
+   "tokens": {
+    "input": 6,
+    "output": 388,
+    "cacheWrite": 6511,
+    "cacheRead": 30864,
+    "total": 37769
+   },
+   "costUsd": 0.0465118,
+   "models": [
+    "claude-opus-5-5"
+   ],
+   "exitCode": 0,
+   "timedOut": false,
+   "subtype": "success",
+   "startedAt": "2026-10-17T23:21:42.602Z",
+   "dir": "runs/main/scrapethis-hockey-detroit-1995/browser-2"
+  },
+  {
+   "task": "scrapethis-hockey-detroit-1995",
+   "site": "scrapethis",
+   "mode": "cli",
+   "trial": 1,
+   "tag": "main",
+   "ok": true,
+   "why": "all expected values present",
+   "answer": "62",
+   "expected": {
+    "number": 62,
+    "detail": {
+     "name": "Detroit Red Wings",
+     "year": "1995",
+     "wins": "62",
+     "losses": "13",
+     "winPct": "0.756",
+     "goalsFor": "325",
+     "goalsAgainst": "181"
+    }
+   },
+   "wallMs": 6799,
+   "apiMs": 5769,
+   "turns": 3,
+   "toolCalls": 2,
+   "tokens": {
+    "input": 6,
+    "output": 243,
+    "cacheWrite": 4989,
+    "cacheRead": 10649,
+    "total": 15887
+   },
+   "costUsd": 0.0319588,
+   "models": [
+    "claude-opus-5-5"
+   ],
+   "exitCode": 0,
+   "timedOut": false,
+   "subtype": "success",
+   "startedAt": "2026-10-17T23:21:41.642Z",
+   "dir": "runs/main/scrapethis-hockey-detroit-1995/cli-1"
+  },
+  {
+   "task": "scrapethis-hockey-detroit-1995",
+   "site": "scrapethis",
+   "mode": "cli",
+   "trial": 2,
+   "tag": "main",
+   "ok": true,
+   "why": "all expected values present",
+   "answer": "62",
+   "expected": {
+    "number": 62,
+    "detail": {
+     "name": "Detroit Red Wings",
+     "year": "1995",
+     "wins": "62",
+     "losses": "13",
+     "winPct": "0.756",
+     "goalsFor": "325",
+     "goalsAgainst": "181"
+    }
+   },
+   "wallMs": 6216,
+   "apiMs": 5202,
+   "turns": 3,
+   "toolCalls": 2,
+   "tokens": {
+    "input": 6,
+    "output": 194,
+    "cacheWrite": 3265,
+    "cacheRead": 10649,
+    "total": 14114
+   },
+   "costUsd": 0.022358799999999998,
+   "models": [
+    "claude-opus-5-5"
+   ],
+   "exitCode": 0,
+   "timedOut": false,
+   "subtype": "success",
+   "startedAt": "2026-10-17T23:21:42.400Z",
+   "dir": "runs/main/scrapethis-hockey-detroit-1995/cli-2"
+  },
+  {
+   "task": "scrapethis-oscar-2012",
+   "site": "scrapethis",
+   "mode": "browser",
+   "trial": 1,
+   "tag": "main",
+   "ok": true,
+   "why": "all expected values present",
+   "answer": "Argo — 3 awards",
+   "expected": {
+    "expect": [
+     "Argo"
+    ],
+    "number": 3,
+    "detail": {
+     "title": "Argo",
+     "year": 2012,
+     "awards": 3,
+     "nominations": 7,
+     "best_picture": true
+    }
+   },
+   "wallMs": 12001,
+   "apiMs": 8423,
+   "turns": 4,
+   "toolCalls": 3,
+   "tokens": {
+    "input": 8,
+    "output": 448,
+    "cacheWrite": 6740,
+    "cacheRead": 43340,
+    "total": 50536
+   },
+   "costUsd": 0.05136,
+   "models": [
+    "claude-opus-5-5"
+   ],
+   "exitCode": 0,
+   "timedOut": false,
+   "subtype": "success",
+   "startedAt": "2026-10-17T23:21:23.557Z",
+   "dir": "runs/main/scrapethis-oscar-2012/browser-1"
+  },
+  {
+   "task": "scrapethis-oscar-2012",
+   "site": "scrapethis",
+   "mode": "browser",
+   "trial": 2,
+   "tag": "main",
+   "ok": true,
+   "why": "all expected values present",
+   "answer": "Argo — 3 awards",
+   "expected": {
+    "expect": [
+     "Argo"
+    ],
+    "number": 3,
+    "detail": {
+     "title": "Argo",
+     "year": 2012,
+     "awards": 3,
+     "nominations": 7,
+     "best_picture": true
+    }
+   },
+   "wallMs": 10517,
+   "apiMs": 7171,
+   "turns": 4,
+   "toolCalls": 3,
+   "tokens": {
+    "input": 6,
+    "output": 437,
+    "cacheWrite": 6782,
+    "cacheRead": 30842,
+    "total": 38067
+   },
+   "costUsd": 0.04884240000000001,
+   "models": [
+    "claude-opus-5-5"
+   ],
+   "exitCode": 0,
+   "timedOut": false,
+   "subtype": "success",
+   "startedAt": "2026-10-17T23:21:31.882Z",
+   "dir": "runs/main/scrapethis-oscar-2012/browser-2"
+  },
+  {
+   "task": "scrapethis-oscar-2012",
+   "site": "scrapethis",
+   "mode": "cli",
+   "trial": 1,
+   "tag": "main",
+   "ok": true,
+   "why": "all expected values present",
+   "answer": "Argo, 3 awards",
+   "expected": {
+    "expect": [
+     "Argo"
+    ],
+    "number": 3,
+    "detail": {
+     "title": "Argo",
+     "year": 2012,
+     "awards": 3,
+     "nominations": 7,
+     "best_picture": true
+    }
+   },
+   "wallMs": 6892,
+   "apiMs": 5897,
+   "turns": 3,
+   "toolCalls": 2,
+   "tokens": {
+    "input": 6,
+    "output": 226,
+    "cacheWrite": 3840,
+    "cacheRead": 10627,
+    "total": 14699
+   },
+   "costUsd": 0.0258694,
+   "models": [
+    "claude-opus-5-5"
+   ],
+   "exitCode": 0,
+   "timedOut": false,
+   "subtype": "success",
+   "startedAt": "2026-10-17T23:21:24.234Z",
+   "dir": "runs/main/scrapethis-oscar-2012/cli-1"
+  },
+  {
+   "task": "scrapethis-oscar-2012",
+   "site": "scrapethis",
+   "mode": "cli",
+   "trial": 2,
+   "tag": "main",
+   "ok": true,
+   "why": "all expected values present",
+   "answer": "Argo, 3 awards",
+   "expected": {
+    "expect": [
+     "Argo"
+    ],
+    "number": 3,
+    "detail": {
+     "title": "Argo",
+     "year": 2012,
+     "awards": 3,
+     "nominations": 7,
+     "best_picture": true
+    }
+   },
+   "wallMs": 8238,
+   "apiMs": 7314,
+   "turns": 3,
+   "toolCalls": 2,
+   "tokens": {
+    "input": 6,
+    "output": 259,
+    "cacheWrite": 3840,
+    "cacheRead": 10627,
+    "total": 14732
+   },
+   "costUsd": 0.0265294,
+   "models": [
+    "claude-opus-5-5"
+   ],
+   "exitCode": 0,
+   "timedOut": false,
+   "subtype": "success",
+   "startedAt": "2026-10-17T23:21:33.403Z",
+   "dir": "runs/main/scrapethis-oscar-2012/cli-2"
+  },
+  {
+   "task": "webscraper-laptop-max",
+   "site": "webscraper",
+   "mode": "browser",
+   "trial": 1,
+   "tag": "main",
+   "ok": true,
+   "why": "all expected values present",
+   "answer": "Asus ROG Strix SCAR Edition GL503VM-ED115T — $1799.00",
+   "expected": {
+    "expect": [
+     "Asus ROG Strix SCAR Edition GL503VM-ED115T",
+     "1799"
+    ],
+    "detail": {
+     "title": "Asus ROG Strix SCAR Edition GL503VM-ED115T",
+     "price": "$1799",
+     "description": "Asus ROG Strix SCAR Edition GL503VM-ED115T, 15.6\" FHD 120Hz, Core i7-7700HQ, 16GB, 256GB SSD + 1TB SSHD, GeForce GTX 1060 6GB, Windows 10 Home",
+     "reviews": "8 reviews",
+     "url": "https://webscraper.io/test-sites/e-commerce/allinone/product/59",
+     "n": 117
+    }
+   },
+   "wallMs": 12699,
+   "apiMs": 9489,
+   "turns": 4,
+   "toolCalls": 3,
+   "tokens": {
+    "input": 8,
+    "output": 594,
+    "cacheWrite": 6194,
+    "cacheRead": 43385,
+    "total": 50181
+   },
+   "costUsd": 0.051558999999999994,
+   "models": [
+    "claude-opus-5-5"
+   ],
+   "exitCode": 0,
+   "timedOut": false,
+   "subtype": "success",
+   "startedAt": "2026-10-17T23:21:47.465Z",
+   "dir": "runs/main/webscraper-laptop-max/browser-1"
+  },
+  {
+   "task": "webscraper-laptop-max",
+   "site": "webscraper",
+   "mode": "browser",
+   "trial": 2,
+   "tag": "main",
+   "ok": true,
+   "why": "all expected values present",
+   "answer": "Asus ROG Strix SCAR Edition GL503VM-ED115T — $1799",
+   "expected": {
+    "expect": [
+     "Asus ROG Strix SCAR Edition GL503VM-ED115T",
+     "1799"
+    ],
+    "detail": {
+     "title": "Asus ROG Strix SCAR Edition GL503VM-ED115T",
+     "price": "$1799",
+     "description": "Asus ROG Strix SCAR Edition GL503VM-ED115T, 15.6\" FHD 120Hz, Core i7-7700HQ, 16GB, 256GB SSD + 1TB SSHD, GeForce GTX 1060 6GB, Windows 10 Home",
+     "reviews": "8 reviews",
+     "url": "https://webscraper.io/test-sites/e-commerce/allinone/product/59",
+     "n": 117
+    }
+   },
+   "wallMs": 12675,
+   "apiMs": 9404,
+   "turns": 4,
+   "toolCalls": 3,
+   "tokens": {
+    "input": 8,
+    "output": 586,
+    "cacheWrite": 6282,
+    "cacheRead": 43385,
+    "total": 50261
+   },
+   "costUsd": 0.051838999999999996,
+   "models": [
+    "claude-opus-5-5"
+   ],
+   "exitCode": 0,
+   "timedOut": false,
+   "subtype": "success",
+   "startedAt": "2026-10-17T23:21:49.370Z",
+   "dir": "runs/main/webscraper-laptop-max/browser-2"
+  },
+  {
+   "task": "webscraper-laptop-max",
+   "site": "webscraper",
+   "mode": "cli",
+   "trial": 1,
+   "tag": "main",
+   "ok": true,
+   "why": "all expected values present",
+   "answer": "Asus ROG Strix SCAR Edition GL503VM-ED115T — $1799",
+   "expected": {
+    "expect": [
+     "Asus ROG Strix SCAR Edition GL503VM-ED115T",
+     "1799"
+    ],
+    "detail": {
+     "title": "Asus ROG Strix SCAR Edition GL503VM-ED115T",
+     "price": "$1799",
+     "description": "Asus ROG Strix SCAR Edition GL503VM-ED115T, 15.6\" FHD 120Hz, Core i7-7700HQ, 16GB, 256GB SSD + 1TB SSHD, GeForce GTX 1060 6GB, Windows 10 Home",
+     "reviews": "8 reviews",
+     "url": "https://webscraper.io/test-sites/e-commerce/allinone/product/59",
+     "n": 117
+    }
+   },
+   "wallMs": 10358,
+   "apiMs": 9491,
+   "turns": 4,
+   "toolCalls": 3,
+   "tokens": {
+    "input": 8,
+    "output": 596,
+    "cacheWrite": 3970,
+    "cacheRead": 15544,
+    "total": 20118
+   },
+   "costUsd": 0.034910800000000006,
+   "models": [
+    "claude-opus-5-5"
+   ],
+   "exitCode": 0,
+   "timedOut": false,
+   "subtype": "success",
+   "startedAt": "2026-10-17T23:21:48.441Z",
+   "dir": "runs/main/webscraper-laptop-max/cli-1"
+  },
+  {
+   "task": "webscraper-laptop-max",
+   "site": "webscraper",
+   "mode": "cli",
+   "trial": 2,
+   "tag": "main",
+   "ok": true,
+   "why": "all expected values present",
+   "answer": "Asus ROG Strix SCAR Edition GL503VM-ED115T — $1,799",
+   "expected": {
+    "expect": [
+     "Asus ROG Strix SCAR Edition GL503VM-ED115T",
+     "1799"
+    ],
+    "detail": {
+     "title": "Asus ROG Strix SCAR Edition GL503VM-ED115T",
+     "price": "$1799",
+     "description": "Asus ROG Strix SCAR Edition GL503VM-ED115T, 15.6\" FHD 120Hz, Core i7-7700HQ, 16GB, 256GB SSD + 1TB SSHD, GeForce GTX 1060 6GB, Windows 10 Home",
+     "reviews": "8 reviews",
+     "url": "https://webscraper.io/test-sites/e-commerce/allinone/product/59",
+     "n": 117
+    }
+   },
+   "wallMs": 13942,
+   "apiMs": 13041,
+   "turns": 4,
+   "toolCalls": 3,
+   "tokens": {
+    "input": 8,
+    "output": 571,
+    "cacheWrite": 3867,
+    "cacheRead": 15552,
+    "total": 19998
+   },
+   "costUsd": 0.0338974,
+   "models": [
+    "claude-opus-5-5"
+   ],
+   "exitCode": 0,
+   "timedOut": false,
+   "subtype": "success",
+   "startedAt": "2026-10-17T23:21:52.748Z",
+   "dir": "runs/main/webscraper-laptop-max/cli-2"
+  },
+  {
+   "task": "books-cheapest-first-5-pages",
+   "site": "books",
+   "mode": "browser",
+   "trial": 1,
+   "tag": "hard",
+   "ok": true,
+   "why": "all expected values present",
+   "answer": "Patience — £10.16",
+   "expected": {
+    "expect": [
+     "Patience",
+     "10.16"
+    ],
+    "detail": {
+     "title": "Patience",
+     "price": "£10.16",
+     "stock": "In stock",
+     "rating": "star-rating Three",
+     "url": "https://books.toscrape.com/catalogue/patience_916/index.html",
+     "n": 100
+    }
+   },
+   "wallMs": 9932,
+   "apiMs": 6756,
+   "turns": 4,
+   "toolCalls": 3,
+   "tokens": {
+    "input": 6,
+    "output": 534,
+    "cacheWrite": 6377,
+    "cacheRead": 30818,
+    "total": 37735
+   },
+   "costUsd": 0.0487526,
+   "models": [
+    "claude-opus-5-5"
+   ],
+   "exitCode": 0,
+   "timedOut": false,
+   "subtype": "success",
+   "startedAt": "2026-10-17T23:25:08.971Z",
+   "dir": "runs/hard/books-cheapest-first-5-pages/browser-1"
+  },
+  {
+   "task": "books-cheapest-first-5-pages",
+   "site": "books",
+   "mode": "browser",
+   "trial": 2,
+   "tag": "hard",
+   "ok": true,
+   "why": "all expected values present",
+   "answer": "Patience — £10.16",
+   "expected": {
+    "expect": [
+     "Patience",
+     "10.16"
+    ],
+    "detail": {
+     "title": "Patience",
+     "price": "£10.16",
+     "stock": "In stock",
+     "rating": "star-rating Three",
+     "url": "https://books.toscrape.com/catalogue/patience_916/index.html",
+     "n": 100
+    }
+   },
+   "wallMs": 13112,
+   "apiMs": 9973,
+   "turns": 4,
+   "toolCalls": 3,
+   "tokens": {
+    "input": 6,
+    "output": 555,
+    "cacheWrite": 6371,
+    "cacheRead": 30818,
+    "total": 37750
+   },
+   "costUsd": 0.0491426,
+   "models": [
+    "claude-opus-5-5"
+   ],
+   "exitCode": 0,
+   "timedOut": false,
+   "subtype": "success",
+   "startedAt": "2026-10-17T23:25:14.317Z",
+   "dir": "runs/hard/books-cheapest-first-5-pages/browser-2"
+  },
+  {
+   "task": "books-cheapest-first-5-pages",
+   "site": "books",
+   "mode": "cli",
+   "trial": 1,
+   "tag": "hard",
+   "ok": true,
+   "why": "all expected values present",
+   "answer": "Patience — £10.16",
+   "expected": {
+    "expect": [
+     "Patience",
+     "10.16"
+    ],
+    "detail": {
+     "title": "Patience",
+     "price": "£10.16",
+     "stock": "In stock",
+     "rating": "star-rating Three",
+     "url": "https://books.toscrape.com/catalogue/patience_916/index.html",
+     "n": 100
+    }
+   },
+   "wallMs": 11435,
+   "apiMs": 7880,
+   "turns": 4,
+   "toolCalls": 3,
+   "tokens": {
+    "input": 8,
+    "output": 410,
+    "cacheWrite": 4336,
+    "cacheRead": 16510,
+    "total": 21264
+   },
+   "costUsd": 0.033214,
+   "models": [
+    "claude-opus-5-5"
+   ],
+   "exitCode": 0,
+   "timedOut": false,
+   "subtype": "success",
+   "startedAt": "2026-10-17T23:25:08.314Z",
+   "dir": "runs/hard/books-cheapest-first-5-pages/cli-1"
+  },
+  {
+   "task": "books-cheapest-first-5-pages",
+   "site": "books",
+   "mode": "cli",
+   "trial": 2,
+   "tag": "hard",
+   "ok": true,
+   "why": "all expected values present",
+   "answer": "Patience — £10.16",
+   "expected": {
+    "expect": [
+     "Patience",
+     "10.16"
+    ],
+    "detail": {
+     "title": "Patience",
+     "price": "£10.16",
+     "stock": "In stock",
+     "rating": "star-rating Three",
+     "url": "https://books.toscrape.com/catalogue/patience_916/index.html",
+     "n": 100
+    }
+   },
+   "wallMs": 11716,
+   "apiMs": 8257,
+   "turns": 4,
+   "toolCalls": 3,
+   "tokens": {
+    "input": 8,
+    "output": 408,
+    "cacheWrite": 4016,
+    "cacheRead": 16246,
+    "total": 20678
+   },
+   "costUsd": 0.0315212,
+   "models": [
+    "claude-opus-5-5"
+   ],
+   "exitCode": 0,
+   "timedOut": false,
+   "subtype": "success",
+   "startedAt": "2026-10-17T23:25:16.220Z",
+   "dir": "runs/hard/books-cheapest-first-5-pages/cli-2"
+  },
+  {
+   "task": "crates-serde-vs-tokio",
+   "site": "crates",
+   "mode": "browser",
+   "trial": 1,
+   "tag": "hard",
+   "ok": true,
+   "why": "all expected values present",
+   "answer": "serde",
+   "expected": {
+    "expect": [
+     "serde"
+    ],
+    "detail": {
+     "serde": 1545402289,
+     "tokio": 1075593975
+    }
+   },
+   "wallMs": 8676,
+   "apiMs": 5261,
+   "turns": 4,
+   "toolCalls": 3,
+   "tokens": {
+    "input": 6,
+    "output": 377,
+    "cacheWrite": 5889,
+    "cacheRead": 30758,
+    "total": 37030
+   },
+   "costUsd": 0.04316059999999999,
+   "models": [
+    "claude-opus-5-5"
+   ],
+   "exitCode": 0,
+   "timedOut": false,
+   "subtype": "success",
+   "startedAt": "2026-10-17T23:25:44.950Z",
+   "dir": "runs/hard/crates-serde-vs-tokio/browser-1"
+  },
+  {
+   "task": "crates-serde-vs-tokio",
+   "site": "crates",
+   "mode": "browser",
+   "trial": 2,
+   "tag": "hard",
+   "ok": true,
+   "why": "all expected values present",
+   "answer": "serde",
+   "expected": {
+    "expect": [
+     "serde"
+    ],
+    "detail": {
+     "serde": 1545402289,
+     "tokio": 1075593975
+    }
+   },
+   "wallMs": 12002,
+   "apiMs": 8532,
+   "turns": 4,
+   "toolCalls": 3,
+   "tokens": {
+    "input": 6,
+    "output": 378,
+    "cacheWrite": 5889,
+    "cacheRead": 30758,
+    "total": 37031
+   },
+   "costUsd": 0.04318059999999999,
+   "models": [
+    "claude-opus-5-5"
+   ],
+   "exitCode": 0,
+   "timedOut": false,
+   "subtype": "success",
+   "startedAt": "2026-10-17T23:25:52.790Z",
+   "dir": "runs/hard/crates-serde-vs-tokio/browser-2"
+  },
+  {
+   "task": "crates-serde-vs-tokio",
+   "site": "crates",
+   "mode": "cli",
+   "trial": 1,
+   "tag": "hard",
+   "ok": true,
+   "why": "all expected values present",
+   "answer": "serde",
+   "expected": {
+    "expect": [
+     "serde"
+    ],
+    "detail": {
+     "serde": 1545402289,
+     "tokio": 1075593975
+    }
+   },
+   "wallMs": 8204,
+   "apiMs": 6777,
+   "turns": 3,
+   "toolCalls": 2,
+   "tokens": {
+    "input": 6,
+    "output": 250,
+    "cacheWrite": 3151,
+    "cacheRead": 10510,
+    "total": 13917
+   },
+   "costUsd": 0.022881,
+   "models": [
+    "claude-opus-5-5"
+   ],
+   "exitCode": 0,
+   "timedOut": false,
+   "subtype": "success",
+   "startedAt": "2026-10-17T23:25:48.548Z",
+   "dir": "runs/hard/crates-serde-vs-tokio/cli-1"
+  },
+  {
+   "task": "crates-serde-vs-tokio",
+   "site": "crates",
+   "mode": "cli",
+   "trial": 2,
+   "tag": "hard",
+   "ok": true,
+   "why": "all expected values present",
+   "answer": "serde",
+   "expected": {
+    "expect": [
+     "serde"
+    ],
+    "detail": {
+     "serde": 1545402289,
+     "tokio": 1075593975
+    }
+   },
+   "wallMs": 7101,
+   "apiMs": 5498,
+   "turns": 3,
+   "toolCalls": 2,
+   "tokens": {
+    "input": 6,
+    "output": 234,
+    "cacheWrite": 3184,
+    "cacheRead": 10510,
+    "total": 13934
+   },
+   "costUsd": 0.022726,
+   "models": [
+    "claude-opus-5-5"
+   ],
+   "exitCode": 0,
+   "timedOut": false,
+   "subtype": "success",
+   "startedAt": "2026-10-17T23:25:53.397Z",
+   "dir": "runs/hard/crates-serde-vs-tokio/cli-2"
+  },
+  {
+   "task": "github-playwright-releases-2026",
+   "site": "github",
+   "mode": "browser",
+   "trial": 1,
+   "tag": "hard",
+   "ok": true,
+   "why": "all expected values present",
+   "answer": "13",
+   "expected": {
+    "number": 13,
+    "detail": [
+     {
+      "tag_name": "v1.64.1",
+      "published_at": "2026-10-14T11:51:33Z"
+     },
+     {
+      "tag_name": "v1.64.0",
+      "published_at": "2026-10-07T20:40:43Z"
+     },
+     {
+      "tag_name": "v1.63.0",
+      "published_at": "2026-09-04T22:40:31Z"
+     },
+     {
+      "tag_name": "v1.62.1",
+      "published_at": "2026-07-30T16:35:55Z"
+     },
+     {
+      "tag_name": "v1.62.0",
+      "published_at": "2026-07-24T21:55:03Z"
+     },
+     {
+      "tag_name": "v1.61.1",
+      "published_at": "2026-06-23T19:47:55Z"
+     },
+     {
+      "tag_name": "v1.61.0",
+      "published_at": "2026-06-15T10:05:19Z"
+     },
+     {
+      "tag_name": "v1.60.0",
+      "published_at": "2026-05-11T19:08:18Z"
+     },
+     {
+      "tag_name": "v1.59.1",
+      "published_at": "2026-04-01T17:55:35Z"
+     },
+     {
+      "tag_name": "v1.59.0",
+      "published_at": "2026-04-01T00:27:06Z"
+     },
+     {
+      "tag_name": "v1.58.2",
+      "published_at": "2026-02-06T16:41:43Z"
+     },
+     {
+      "tag_name": "v1.58.1",
+      "published_at": "2026-01-30T18:23:42Z"
+     },
+     {
+      "tag_name": "v1.58.0",
+      "published_at": "2026-01-23T11:53:47Z"
+     },
+     {
+      "tag_name": "v1.57.0",
+      "published_at": "2025-11-25T11:16:13Z"
+     },
+     {
+      "tag_name": "v1.56.1",
+      "published_at": "2025-10-17T00:50:36Z"
+     },
+     {
+      "tag_name": "v1.56.0",
+      "published_at": "2025-10-06T14:53:30Z"
+     },
+     {
+      "tag_name": "v1.55.1",
+      "published_at": "2025-09-23T09:56:01Z"
+     },
+     {
+      "tag_name": "v1.55.0",
+      "published_at": "2025-08-20T10:26:40Z"
+     },
+     {
+      "tag_name": "v1.54.2",
+      "published_at": "2025-08-01T07:01:13Z"
+     },
+     {
+      "tag_name": "v1.54.1",
+      "published_at": "2025-07-11T14:06:28Z"
+     }
+    ]
+   },
+   "wallMs": 21065,
+   "apiMs": 10904,
+   "turns": 7,
+   "toolCalls": 6,
+   "tokens": {
+    "input": 8,
+    "output": 923,
+    "cacheWrite": 7426,
+    "cacheRead": 44179,
+    "total": 52536
+   },
+   "costUsd": 0.06445780000000001,
+   "models": [
+    "claude-opus-5-5"
+   ],
+   "exitCode": 0,
+   "timedOut": false,
+   "subtype": "success",
+   "startedAt": "2026-10-17T23:25:19.659Z",
+   "dir": "runs/hard/github-playwright-releases-2026/browser-1"
+  },
+  {
+   "task": "github-playwright-releases-2026",
+   "site": "github",
+   "mode": "browser",
+   "trial": 2,
+   "tag": "hard",
+   "ok": true,
+   "why": "all expected values present",
+   "answer": "13",
+   "expected": {
+    "number": 13,
+    "detail": [
+     {
+      "tag_name": "v1.64.1",
+      "published_at": "2026-10-14T11:51:33Z"
+     },
+     {
+      "tag_name": "v1.64.0",
+      "published_at": "2026-10-07T20:40:43Z"
+     },
+     {
+      "tag_name": "v1.63.0",
+      "published_at": "2026-09-04T22:40:31Z"
+     },
+     {
+      "tag_name": "v1.62.1",
+      "published_at": "2026-07-30T16:35:55Z"
+     },
+     {
+      "tag_name": "v1.62.0",
+      "published_at": "2026-07-24T21:55:03Z"
+     },
+     {
+      "tag_name": "v1.61.1",
+      "published_at": "2026-06-23T19:47:55Z"
+     },
+     {
+      "tag_name": "v1.61.0",
+      "published_at": "2026-06-15T10:05:19Z"
+     },
+     {
+      "tag_name": "v1.60.0",
+      "published_at": "2026-05-11T19:08:18Z"
+     },
+     {
+      "tag_name": "v1.59.1",
+      "published_at": "2026-04-01T17:55:35Z"
+     },
+     {
+      "tag_name": "v1.59.0",
+      "published_at": "2026-04-01T00:27:06Z"
+     },
+     {
+      "tag_name": "v1.58.2",
+      "published_at": "2026-02-06T16:41:43Z"
+     },
+     {
+      "tag_name": "v1.58.1",
+      "published_at": "2026-01-30T18:23:42Z"
+     },
+     {
+      "tag_name": "v1.58.0",
+      "published_at": "2026-01-23T11:53:47Z"
+     },
+     {
+      "tag_name": "v1.57.0",
+      "published_at": "2025-11-25T11:16:13Z"
+     },
+     {
+      "tag_name": "v1.56.1",
+      "published_at": "2025-10-17T00:50:36Z"
+     },
+     {
+      "tag_name": "v1.56.0",
+      "published_at": "2025-10-06T14:53:30Z"
+     },
+     {
+      "tag_name": "v1.55.1",
+      "published_at": "2025-09-23T09:56:01Z"
+     },
+     {
+      "tag_name": "v1.55.0",
+      "published_at": "2025-08-20T10:26:40Z"
+     },
+     {
+      "tag_name": "v1.54.2",
+      "published_at": "2025-08-01T07:01:13Z"
+     },
+     {
+      "tag_name": "v1.54.1",
+      "published_at": "2025-07-11T14:06:28Z"
+     }
+    ]
+   },
+   "wallMs": 16404,
+   "apiMs": 12336,
+   "turns": 7,
+   "toolCalls": 6,
+   "tokens": {
+    "input": 8,
+    "output": 1040,
+    "cacheWrite": 7426,
+    "cacheRead": 44179,
+    "total": 52653
+   },
+   "costUsd": 0.0667978,
+   "models": [
+    "claude-opus-5-5"
+   ],
+   "exitCode": 0,
+   "timedOut": false,
+   "subtype": "success",
+   "startedAt": "2026-10-17T23:25:27.791Z",
+   "dir": "runs/hard/github-playwright-releases-2026/browser-2"
+  },
+  {
+   "task": "github-playwright-releases-2026",
+   "site": "github",
+   "mode": "cli",
+   "trial": 1,
+   "tag": "hard",
+   "ok": true,
+   "why": "all expected values present",
+   "answer": "13",
+   "expected": {
+    "number": 13,
+    "detail": [
+     {
+      "tag_name": "v1.64.1",
+      "published_at": "2026-10-14T11:51:33Z"
+     },
+     {
+      "tag_name": "v1.64.0",
+      "published_at": "2026-10-07T20:40:43Z"
+     },
+     {
+      "tag_name": "v1.63.0",
+      "published_at": "2026-09-04T22:40:31Z"
+     },
+     {
+      "tag_name": "v1.62.1",
+      "published_at": "2026-07-30T16:35:55Z"
+     },
+     {
+      "tag_name": "v1.62.0",
+      "published_at": "2026-07-24T21:55:03Z"
+     },
+     {
+      "tag_name": "v1.61.1",
+      "published_at": "2026-06-23T19:47:55Z"
+     },
+     {
+      "tag_name": "v1.61.0",
+      "published_at": "2026-06-15T10:05:19Z"
+     },
+     {
+      "tag_name": "v1.60.0",
+      "published_at": "2026-05-11T19:08:18Z"
+     },
+     {
+      "tag_name": "v1.59.1",
+      "published_at": "2026-04-01T17:55:35Z"
+     },
+     {
+      "tag_name": "v1.59.0",
+      "published_at": "2026-04-01T00:27:06Z"
+     },
+     {
+      "tag_name": "v1.58.2",
+      "published_at": "2026-02-06T16:41:43Z"
+     },
+     {
+      "tag_name": "v1.58.1",
+      "published_at": "2026-01-30T18:23:42Z"
+     },
+     {
+      "tag_name": "v1.58.0",
+      "published_at": "2026-01-23T11:53:47Z"
+     },
+     {
+      "tag_name": "v1.57.0",
+      "published_at": "2025-11-25T11:16:13Z"
+     },
+     {
+      "tag_name": "v1.56.1",
+      "published_at": "2025-10-17T00:50:36Z"
+     },
+     {
+      "tag_name": "v1.56.0",
+      "published_at": "2025-10-06T14:53:30Z"
+     },
+     {
+      "tag_name": "v1.55.1",
+      "published_at": "2025-09-23T09:56:01Z"
+     },
+     {
+      "tag_name": "v1.55.0",
+      "published_at": "2025-08-20T10:26:40Z"
+     },
+     {
+      "tag_name": "v1.54.2",
+      "published_at": "2025-08-01T07:01:13Z"
+     },
+     {
+      "tag_name": "v1.54.1",
+      "published_at": "2025-07-11T14:06:28Z"
+     }
+    ]
+   },
+   "wallMs": 7286,
+   "apiMs": 6267,
+   "turns": 3,
+   "toolCalls": 2,
+   "tokens": {
+    "input": 6,
+    "output": 284,
+    "cacheWrite": 4542,
+    "cacheRead": 10718,
+    "total": 15550
+   },
+   "costUsd": 0.0305576,
+   "models": [
+    "claude-opus-5-5"
+   ],
+   "exitCode": 0,
+   "timedOut": false,
+   "subtype": "success",
+   "startedAt": "2026-10-17T23:25:19.750Z",
+   "dir": "runs/hard/github-playwright-releases-2026/cli-1"
+  },
+  {
+   "task": "github-playwright-releases-2026",
+   "site": "github",
+   "mode": "cli",
+   "trial": 2,
+   "tag": "hard",
+   "ok": true,
+   "why": "all expected values present",
+   "answer": "13",
+   "expected": {
+    "number": 13,
+    "detail": [
+     {
+      "tag_name": "v1.64.1",
+      "published_at": "2026-10-14T11:51:33Z"
+     },
+     {
+      "tag_name": "v1.64.0",
+      "published_at": "2026-10-07T20:40:43Z"
+     },
+     {
+      "tag_name": "v1.63.0",
+      "published_at": "2026-09-04T22:40:31Z"
+     },
+     {
+      "tag_name": "v1.62.1",
+      "published_at": "2026-07-30T16:35:55Z"
+     },
+     {
+      "tag_name": "v1.62.0",
+      "published_at": "2026-07-24T21:55:03Z"
+     },
+     {
+      "tag_name": "v1.61.1",
+      "published_at": "2026-06-23T19:47:55Z"
+     },
+     {
+      "tag_name": "v1.61.0",
+      "published_at": "2026-06-15T10:05:19Z"
+     },
+     {
+      "tag_name": "v1.60.0",
+      "published_at": "2026-05-11T19:08:18Z"
+     },
+     {
+      "tag_name": "v1.59.1",
+      "published_at": "2026-04-01T17:55:35Z"
+     },
+     {
+      "tag_name": "v1.59.0",
+      "published_at": "2026-04-01T00:27:06Z"
+     },
+     {
+      "tag_name": "v1.58.2",
+      "published_at": "2026-02-06T16:41:43Z"
+     },
+     {
+      "tag_name": "v1.58.1",
+      "published_at": "2026-01-30T18:23:42Z"
+     },
+     {
+      "tag_name": "v1.58.0",
+      "published_at": "2026-01-23T11:53:47Z"
+     },
+     {
+      "tag_name": "v1.57.0",
+      "published_at": "2025-11-25T11:16:13Z"
+     },
+     {
+      "tag_name": "v1.56.1",
+      "published_at": "2025-10-17T00:50:36Z"
+     },
+     {
+      "tag_name": "v1.56.0",
+      "published_at": "2025-10-06T14:53:30Z"
+     },
+     {
+      "tag_name": "v1.55.1",
+      "published_at": "2025-09-23T09:56:01Z"
+     },
+     {
+      "tag_name": "v1.55.0",
+      "published_at": "2025-08-20T10:26:40Z"
+     },
+     {
+      "tag_name": "v1.54.2",
+      "published_at": "2025-08-01T07:01:13Z"
+     },
+     {
+      "tag_name": "v1.54.1",
+      "published_at": "2025-07-11T14:06:28Z"
+     }
+    ]
+   },
+   "wallMs": 6984,
+   "apiMs": 6089,
+   "turns": 3,
+   "toolCalls": 2,
+   "tokens": {
+    "input": 6,
+    "output": 342,
+    "cacheWrite": 4542,
+    "cacheRead": 10718,
+    "total": 15608
+   },
+   "costUsd": 0.0317176,
+   "models": [
+    "claude-opus-5-5"
+   ],
+   "exitCode": 0,
+   "timedOut": false,
+   "subtype": "success",
+   "startedAt": "2026-10-17T23:25:27.431Z",
+   "dir": "runs/hard/github-playwright-releases-2026/cli-2"
+  },
+  {
+   "task": "hockey-best-1990",
+   "site": "scrapethis",
+   "mode": "browser",
+   "trial": 1,
+   "tag": "hard",
+   "ok": true,
+   "why": "all expected values present",
+   "answer": "Chicago Blackhawks, 49 wins",
+   "expected": {
+    "expect": [
+     "Chicago Blackhawks"
+    ],
+    "number": 49,
+    "detail": {
+     "name": "Chicago Blackhawks",
+     "year": "1990",
+     "wins": "49",
+     "losses": "23",
+     "winPct": "0.613",
+     "goalsFor": "284",
+     "goalsAgainst": "211",
+     "rows": 582
+    }
+   },
+   "wallMs": 15573,
+   "apiMs": 10835,
+   "turns": 4,
+   "toolCalls": 3,
+   "tokens": {
+    "input": 8,
+    "output": 712,
+    "cacheWrite": 6507,
+    "cacheRead": 43319,
+    "total": 50546
+   },
+   "costUsd": 0.05547079999999999,
+   "models": [
+    "claude-opus-5-5"
+   ],
+   "exitCode": 0,
+   "timedOut": false,
+   "subtype": "success",
+   "startedAt": "2026-10-17T23:24:52.643Z",
+   "dir": "runs/hard/hockey-best-1990/browser-1"
+  },
+  {
+   "task": "hockey-best-1990",
+   "site": "scrapethis",
+   "mode": "browser",
+   "trial": 2,
+   "tag": "hard",
+   "ok": true,
+   "why": "all expected values present",
+   "answer": "Chicago Blackhawks, 49 wins",
+   "expected": {
+    "expect": [
+     "Chicago Blackhawks"
+    ],
+    "number": 49,
+    "detail": {
+     "name": "Chicago Blackhawks",
+     "year": "1990",
+     "wins": "49",
+     "losses": "23",
+     "winPct": "0.613",
+     "goalsFor": "284",
+     "goalsAgainst": "211",
+     "rows": 582
+    }
+   },
+   "wallMs": 21770,
+   "apiMs": 17035,
+   "turns": 4,
+   "toolCalls": 3,
+   "tokens": {
+    "input": 8,
+    "output": 634,
+    "cacheWrite": 6725,
+    "cacheRead": 43366,
+    "total": 50733
+   },
+   "costUsd": 0.0550102,
+   "models": [
+    "claude-opus-5-5"
+   ],
+   "exitCode": 0,
+   "timedOut": false,
+   "subtype": "success",
+   "startedAt": "2026-10-17T23:24:54.449Z",
+   "dir": "runs/hard/hockey-best-1990/browser-2"
+  },
+  {
+   "task": "hockey-best-1990",
+   "site": "scrapethis",
+   "mode": "cli",
+   "trial": 1,
+   "tag": "hard",
+   "ok": true,
+   "why": "all expected values present",
+   "answer": "Chicago Blackhawks, 49 wins",
+   "expected": {
+    "expect": [
+     "Chicago Blackhawks"
+    ],
+    "number": 49,
+    "detail": {
+     "name": "Chicago Blackhawks",
+     "year": "1990",
+     "wins": "49",
+     "losses": "23",
+     "winPct": "0.613",
+     "goalsFor": "284",
+     "goalsAgainst": "211",
+     "rows": 582
+    }
+   },
+   "wallMs": 14636,
+   "apiMs": 12349,
+   "turns": 6,
+   "toolCalls": 5,
+   "tokens": {
+    "input": 12,
+    "output": 739,
+    "cacheWrite": 4232,
+    "cacheRead": 27250,
+    "total": 32233
+   },
+   "costUsd": 0.041438,
+   "models": [
+    "claude-opus-5-5"
+   ],
+   "exitCode": 0,
+   "timedOut": false,
+   "subtype": "success",
+   "startedAt": "2026-10-17T23:24:53.677Z",
+   "dir": "runs/hard/hockey-best-1990/cli-1"
+  },
+  {
+   "task": "hockey-best-1990",
+   "site": "scrapethis",
+   "mode": "cli",
+   "trial": 2,
+   "tag": "hard",
+   "ok": true,
+   "why": "all expected values present",
+   "answer": "Chicago Blackhawks, 49 wins",
+   "expected": {
+    "expect": [
+     "Chicago Blackhawks"
+    ],
+    "number": 49,
+    "detail": {
+     "name": "Chicago Blackhawks",
+     "year": "1990",
+     "wins": "49",
+     "losses": "23",
+     "winPct": "0.613",
+     "goalsFor": "284",
+     "goalsAgainst": "211",
+     "rows": 582
+    }
+   },
+   "wallMs": 13800,
+   "apiMs": 11543,
+   "turns": 5,
+   "toolCalls": 4,
+   "tokens": {
+    "input": 10,
+    "output": 666,
+    "cacheWrite": 4441,
+    "cacheRead": 22054,
+    "total": 27171
+   },
+   "costUsd": 0.0399758,
+   "models": [
+    "claude-opus-5-5"
+   ],
+   "exitCode": 0,
+   "timedOut": false,
+   "subtype": "success",
+   "startedAt": "2026-10-17T23:24:59.761Z",
+   "dir": "runs/hard/hockey-best-1990/cli-2"
+  },
+  {
+   "task": "quotes-top-author",
+   "site": "quotes",
+   "mode": "browser",
+   "trial": 1,
+   "tag": "hard",
+   "ok": true,
+   "why": "all expected values present",
+   "answer": "Albert Einstein, 10 quotes",
+   "expected": {
+    "expect": [
+     "Albert Einstein"
+    ],
+    "number": 10,
+    "detail": {
+     "Albert Einstein": 10,
+     "J.K. Rowling": 9,
+     "Jane Austen": 5,
+     "Marilyn Monroe": 7,
+     "André Gide": 1,
+     "Thomas A. Edison": 1,
+     "Eleanor Roosevelt": 2,
+     "Steve Martin": 1,
+     "Bob Marley": 3,
+     "Dr. Seuss": 6,
+     "Douglas Adams": 1,
+     "Elie Wiesel": 1,
+     "Friedrich Nietzsche": 1,
+     "Mark Twain": 6,
+     "Allen Saunders": 1,
+     "Pablo Neruda": 1,
+     "Ralph Waldo Emerson": 2,
+     "Mother Teresa": 2,
+     "Garrison Keillor": 1,
+     "Jim Henson": 1,
+     "Charles M. Schulz": 1,
+     "William Nicholson": 1,
+     "Jorge Luis Borges": 1,
+     "George Eliot": 1,
+     "George R.R. Martin": 2,
+     "C.S. Lewis": 5,
+     "Martin Luther King Jr.": 1,
+     "James Baldwin": 1,
+     "Haruki Murakami": 1,
+     "Alexandre Dumas fils": 1,
+     "Stephenie Meyer": 1,
+     "Ernest Hemingway": 2,
+     "Helen Keller": 1,
+     "George Bernard Shaw": 1,
+     "Charles Bukowski": 2,
+     "Suzanne Collins": 2,
+     "J.R.R. Tolkien": 1,
+     "Alfred Tennyson": 1,
+     "Terry Pratchett": 1,
+     "J.D. Salinger": 1,
+     "George Carlin": 1,
+     "John Lennon": 1,
+     "W.C. Fields": 1,
+     "Ayn Rand": 1,
+     "Jimi Hendrix": 1,
+     "J.M. Barrie": 1,
+     "E.E. Cummings": 1,
+     "Khaled Hosseini": 1,
+     "Harper Lee": 1,
+     "Madeleine L'Engle": 1
+    }
+   },
+   "wallMs": 13685,
+   "apiMs": 9456,
+   "turns": 4,
+   "toolCalls": 3,
+   "tokens": {
+    "input": 8,
+    "output": 567,
+    "cacheWrite": 6316,
+    "cacheRead": 43201,
+    "total": 50092
+   },
+   "costUsd": 0.0515922,
+   "models": [
+    "claude-opus-5-5"
+   ],
+   "exitCode": 0,
+   "timedOut": false,
+   "subtype": "success",
+   "startedAt": "2026-10-17T23:24:39.990Z",
+   "dir": "runs/hard/quotes-top-author/browser-1"
+  },
+  {
+   "task": "quotes-top-author",
+   "site": "quotes",
+   "mode": "browser",
+   "trial": 2,
+   "tag": "hard",
+   "ok": true,
+   "why": "all expected values present",
+   "answer": "Albert Einstein, 10 quotes",
+   "expected": {
+    "expect": [
+     "Albert Einstein"
+    ],
+    "number": 10,
+    "detail": {
+     "Albert Einstein": 10,
+     "J.K. Rowling": 9,
+     "Jane Austen": 5,
+     "Marilyn Monroe": 7,
+     "André Gide": 1,
+     "Thomas A. Edison": 1,
+     "Eleanor Roosevelt": 2,
+     "Steve Martin": 1,
+     "Bob Marley": 3,
+     "Dr. Seuss": 6,
+     "Douglas Adams": 1,
+     "Elie Wiesel": 1,
+     "Friedrich Nietzsche": 1,
+     "Mark Twain": 6,
+     "Allen Saunders": 1,
+     "Pablo Neruda": 1,
+     "Ralph Waldo Emerson": 2,
+     "Mother Teresa": 2,
+     "Garrison Keillor": 1,
+     "Jim Henson": 1,
+     "Charles M. Schulz": 1,
+     "William Nicholson": 1,
+     "Jorge Luis Borges": 1,
+     "George Eliot": 1,
+     "George R.R. Martin": 2,
+     "C.S. Lewis": 5,
+     "Martin Luther King Jr.": 1,
+     "James Baldwin": 1,
+     "Haruki Murakami": 1,
+     "Alexandre Dumas fils": 1,
+     "Stephenie Meyer": 1,
+     "Ernest Hemingway": 2,
+     "Helen Keller": 1,
+     "George Bernard Shaw": 1,
+     "Charles Bukowski": 2,
+     "Suzanne Collins": 2,
+     "J.R.R. Tolkien": 1,
+     "Alfred Tennyson": 1,
+     "Terry Pratchett": 1,
+     "J.D. Salinger": 1,
+     "George Carlin": 1,
+     "John Lennon": 1,
+     "W.C. Fields": 1,
+     "Ayn Rand": 1,
+     "Jimi Hendrix": 1,
+     "J.M. Barrie": 1,
+     "E.E. Cummings": 1,
+     "Khaled Hosseini": 1,
+     "Harper Lee": 1,
+     "Madeleine L'Engle": 1
+    }
+   },
+   "wallMs": 11893,
+   "apiMs": 8249,
+   "turns": 4,
+   "toolCalls": 3,
+   "tokens": {
+    "input": 6,
+    "output": 634,
+    "cacheWrite": 6387,
+    "cacheRead": 30770,
+    "total": 37797
+   },
+   "costUsd": 0.050793000000000005,
+   "models": [
+    "claude-opus-5-5"
+   ],
+   "exitCode": 0,
+   "timedOut": false,
+   "subtype": "success",
+   "startedAt": "2026-10-17T23:24:39.992Z",
+   "dir": "runs/hard/quotes-top-author/browser-2"
+  },
+  {
+   "task": "quotes-top-author",
+   "site": "quotes",
+   "mode": "cli",
+   "trial": 1,
+   "tag": "hard",
+   "ok": true,
+   "why": "all expected values present",
+   "answer": "Albert Einstein, 10 quotes",
+   "expected": {
+    "expect": [
+     "Albert Einstein"
+    ],
+    "number": 10,
+    "detail": {
+     "Albert Einstein": 10,
+     "J.K. Rowling": 9,
+     "Jane Austen": 5,
+     "Marilyn Monroe": 7,
+     "André Gide": 1,
+     "Thomas A. Edison": 1,
+     "Eleanor Roosevelt": 2,
+     "Steve Martin": 1,
+     "Bob Marley": 3,
+     "Dr. Seuss": 6,
+     "Douglas Adams": 1,
+     "Elie Wiesel": 1,
+     "Friedrich Nietzsche": 1,
+     "Mark Twain": 6,
+     "Allen Saunders": 1,
+     "Pablo Neruda": 1,
+     "Ralph Waldo Emerson": 2,
+     "Mother Teresa": 2,
+     "Garrison Keillor": 1,
+     "Jim Henson": 1,
+     "Charles M. Schulz": 1,
+     "William Nicholson": 1,
+     "Jorge Luis Borges": 1,
+     "George Eliot": 1,
+     "George R.R. Martin": 2,
+     "C.S. Lewis": 5,
+     "Martin Luther King Jr.": 1,
+     "James Baldwin": 1,
+     "Haruki Murakami": 1,
+     "Alexandre Dumas fils": 1,
+     "Stephenie Meyer": 1,
+     "Ernest Hemingway": 2,
+     "Helen Keller": 1,
+     "George Bernard Shaw": 1,
+     "Charles Bukowski": 2,
+     "Suzanne Collins": 2,
+     "J.R.R. Tolkien": 1,
+     "Alfred Tennyson": 1,
+     "Terry Pratchett": 1,
+     "J.D. Salinger": 1,
+     "George Carlin": 1,
+     "John Lennon": 1,
+     "W.C. Fields": 1,
+     "Ayn Rand": 1,
+     "Jimi Hendrix": 1,
+     "J.M. Barrie": 1,
+     "E.E. Cummings": 1,
+     "Khaled Hosseini": 1,
+     "Harper Lee": 1,
+     "Madeleine L'Engle": 1
+    }
+   },
+   "wallMs": 20522,
+   "apiMs": 13290,
+   "turns": 5,
+   "toolCalls": 4,
+   "tokens": {
+    "input": 10,
+    "output": 622,
+    "cacheWrite": 4210,
+    "cacheRead": 21923,
+    "total": 26765
+   },
+   "costUsd": 0.0379146,
+   "models": [
+    "claude-opus-5-5"
+   ],
+   "exitCode": 0,
+   "timedOut": false,
+   "subtype": "success",
+   "startedAt": "2026-10-17T23:24:39.238Z",
+   "dir": "runs/hard/quotes-top-author/cli-1"
+  },
+  {
+   "task": "quotes-top-author",
+   "site": "quotes",
+   "mode": "cli",
+   "trial": 2,
+   "tag": "hard",
+   "ok": true,
+   "why": "all expected values present",
+   "answer": "Albert Einstein, 10 quotes",
+   "expected": {
+    "expect": [
+     "Albert Einstein"
+    ],
+    "number": 10,
+    "detail": {
+     "Albert Einstein": 10,
+     "J.K. Rowling": 9,
+     "Jane Austen": 5,
+     "Marilyn Monroe": 7,
+     "André Gide": 1,
+     "Thomas A. Edison": 1,
+     "Eleanor Roosevelt": 2,
+     "Steve Martin": 1,
+     "Bob Marley": 3,
+     "Dr. Seuss": 6,
+     "Douglas Adams": 1,
+     "Elie Wiesel": 1,
+     "Friedrich Nietzsche": 1,
+     "Mark Twain": 6,
+     "Allen Saunders": 1,
+     "Pablo Neruda": 1,
+     "Ralph Waldo Emerson": 2,
+     "Mother Teresa": 2,
+     "Garrison Keillor": 1,
+     "Jim Henson": 1,
+     "Charles M. Schulz": 1,
+     "William Nicholson": 1,
+     "Jorge Luis Borges": 1,
+     "George Eliot": 1,
+     "George R.R. Martin": 2,
+     "C.S. Lewis": 5,
+     "Martin Luther King Jr.": 1,
+     "James Baldwin": 1,
+     "Haruki Murakami": 1,
+     "Alexandre Dumas fils": 1,
+     "Stephenie Meyer": 1,
+     "Ernest Hemingway": 2,
+     "Helen Keller": 1,
+     "George Bernard Shaw": 1,
+     "Charles Bukowski": 2,
+     "Suzanne Collins": 2,
+     "J.R.R. Tolkien": 1,
+     "Alfred Tennyson": 1,
+     "Terry Pratchett": 1,
+     "J.D. Salinger": 1,
+     "George Carlin": 1,
+     "John Lennon": 1,
+     "W.C. Fields": 1,
+     "Ayn Rand": 1,
+     "Jimi Hendrix": 1,
+     "J.M. Barrie": 1,
+     "E.E. Cummings": 1,
+     "Khaled Hosseini": 1,
+     "Harper Lee": 1,
+     "Madeleine L'Engle": 1
+    }
+   },
+   "wallMs": 14448,
+   "apiMs": 7242,
+   "turns": 3,
+   "toolCalls": 2,
+   "tokens": {
+    "input": 6,
+    "output": 416,
+    "cacheWrite": 4042,
+    "cacheRead": 10543,
+    "total": 15007
+   },
+   "costUsd": 0.0306626,
+   "models": [
+    "claude-opus-5-5"
+   ],
+   "exitCode": 0,
+   "timedOut": false,
+   "subtype": "success",
+   "startedAt": "2026-10-17T23:24:39.241Z",
+   "dir": "runs/hard/quotes-top-author/cli-2"
+  },
+  {
+   "task": "ubuntu-lts-supported",
+   "site": "endoflife",
+   "mode": "browser",
+   "trial": 1,
+   "tag": "hard",
+   "ok": true,
+   "why": "all expected values present",
+   "answer": "26.04, 24.04, 22.04",
+   "expected": {
+    "expect": [
+     "26.04",
+     "24.04",
+     "22.04"
+    ],
+    "detail": [
+     "26.04",
+     "24.04",
+     "22.04"
+    ]
+   },
+   "wallMs": 12973,
+   "apiMs": 10541,
+   "turns": 4,
+   "toolCalls": 3,
+   "tokens": {
+    "input": 6,
+    "output": 752,
+    "cacheWrite": 8433,
+    "cacheRead": 30776,
+    "total": 39967
+   },
+   "costUsd": 0.0633842,
+   "models": [
+    "claude-opus-5-5"
+   ],
+   "exitCode": 0,
+   "timedOut": false,
+   "subtype": "success",
+   "startedAt": "2026-10-17T23:25:28.691Z",
+   "dir": "runs/hard/ubuntu-lts-supported/browser-1"
+  },
+  {
+   "task": "ubuntu-lts-supported",
+   "site": "endoflife",
+   "mode": "browser",
+   "trial": 2,
+   "tag": "hard",
+   "ok": true,
+   "why": "all expected values present",
+   "answer": "26.04, 24.04, 22.04",
+   "expected": {
+    "expect": [
+     "26.04",
+     "24.04",
+     "22.04"
+    ],
+    "detail": [
+     "26.04",
+     "24.04",
+     "22.04"
+    ]
+   },
+   "wallMs": 11918,
+   "apiMs": 9362,
+   "turns": 4,
+   "toolCalls": 3,
+   "tokens": {
+    "input": 6,
+    "output": 737,
+    "cacheWrite": 10400,
+    "cacheRead": 30776,
+    "total": 41919
+   },
+   "costUsd": 0.07291919999999999,
+   "models": [
+    "claude-opus-5-5"
+   ],
+   "exitCode": 0,
+   "timedOut": false,
+   "subtype": "success",
+   "startedAt": "2026-10-17T23:25:41.479Z",
+   "dir": "runs/hard/ubuntu-lts-supported/browser-2"
+  },
+  {
+   "task": "ubuntu-lts-supported",
+   "site": "endoflife",
+   "mode": "cli",
+   "trial": 1,
+   "tag": "hard",
+   "ok": true,
+   "why": "all expected values present",
+   "answer": "26.04, 24.04, 22.04",
+   "expected": {
+    "expect": [
+     "26.04",
+     "24.04",
+     "22.04"
+    ],
+    "detail": [
+     "26.04",
+     "24.04",
+     "22.04"
+    ]
+   },
+   "wallMs": 14132,
+   "apiMs": 13226,
+   "turns": 3,
+   "toolCalls": 2,
+   "tokens": {
+    "input": 6,
+    "output": 905,
+    "cacheWrite": 5680,
+    "cacheRead": 10400,
+    "total": 16991
+   },
+   "costUsd": 0.048604,
+   "models": [
+    "claude-opus-5-5"
+   ],
+   "exitCode": 0,
+   "timedOut": false,
+   "subtype": "success",
+   "startedAt": "2026-10-17T23:25:34.416Z",
+   "dir": "runs/hard/ubuntu-lts-supported/cli-1"
+  },
+  {
+   "task": "ubuntu-lts-supported",
+   "site": "endoflife",
+   "mode": "cli",
+   "trial": 2,
+   "tag": "hard",
+   "ok": true,
+   "why": "all expected values present",
+   "answer": "22.04, 24.04, 26.04",
+   "expected": {
+    "expect": [
+     "26.04",
+     "24.04",
+     "22.04"
+    ],
+    "detail": [
+     "26.04",
+     "24.04",
+     "22.04"
+    ]
+   },
+   "wallMs": 10370,
+   "apiMs": 9443,
+   "turns": 3,
+   "toolCalls": 2,
+   "tokens": {
+    "input": 6,
+    "output": 660,
+    "cacheWrite": 8725,
+    "cacheRead": 10400,
+    "total": 19791
+   },
+   "costUsd": 0.058928999999999995,
+   "models": [
+    "claude-opus-5-5"
+   ],
+   "exitCode": 0,
+   "timedOut": false,
+   "subtype": "success",
+   "startedAt": "2026-10-17T23:25:41.665Z",
+   "dir": "runs/hard/ubuntu-lts-supported/cli-2"
+  },
+  {
+   "task": "books-cheapest-first-5-pages",
+   "site": "books",
+   "mode": "browser-ui",
+   "trial": 1,
+   "tag": "ui",
+   "ok": true,
+   "why": "all expected values present",
+   "answer": "Patience — £10.16",
+   "expected": {
+    "expect": [
+     "Patience",
+     "10.16"
+    ],
+    "detail": {
+     "title": "Patience",
+     "price": "£10.16",
+     "stock": "In stock",
+     "rating": "star-rating Three",
+     "url": "https://books.toscrape.com/catalogue/patience_916/index.html",
+     "n": 100
+    }
+   },
+   "wallMs": 22338,
+   "apiMs": 19378,
+   "turns": 12,
+   "toolCalls": 11,
+   "tokens": {
+    "input": 14,
+    "output": 1332,
+    "cacheWrite": 14817,
+    "cacheRead": 111333,
+    "total": 127496
+   },
+   "costUsd": 0.12304760000000001,
+   "models": [
+    "claude-opus-5-5"
+   ],
+   "exitCode": 0,
+   "timedOut": false,
+   "subtype": "success",
+   "startedAt": "2026-10-17T23:29:10.282Z",
+   "dir": "runs/ui/books-cheapest-first-5-pages/browser-ui-1"
+  },
+  {
+   "task": "books-mystery-max",
+   "site": "books",
+   "mode": "browser-ui",
+   "trial": 1,
+   "tag": "ui",
+   "ok": true,
+   "why": "all expected values present",
+   "answer": "Boar Island (Anna Pigeon #19) — £59.48",
+   "expected": {
+    "expect": [
+     "Boar Island",
+     "59.48"
+    ],
+    "detail": {
+     "title": "Boar Island (Anna Pigeon #19)",
+     "price": "£59.48",
+     "url": "https://books.toscrape.com/catalogue/boar-island-anna-pigeon-19_613/index.html",
+     "n": 32
+    }
+   },
+   "wallMs": 13331,
+   "apiMs": 10468,
+   "turns": 6,
+   "toolCalls": 5,
+   "tokens": {
+    "input": 10,
+    "output": 580,
+    "cacheWrite": 22901,
+    "cacheRead": 67471,
+    "total": 90962
+   },
+   "costUsd": 0.13963920000000002,
+   "models": [
+    "claude-opus-5-5"
+   ],
+   "exitCode": 0,
+   "timedOut": false,
+   "subtype": "success",
+   "startedAt": "2026-10-17T23:28:11.694Z",
+   "dir": "runs/ui/books-mystery-max/browser-ui-1"
+  },
+  {
+   "task": "books-travel-over-40",
+   "site": "books",
+   "mode": "browser-ui",
+   "trial": 1,
+   "tag": "ui",
+   "ok": true,
+   "why": "all expected values present",
+   "answer": "5",
+   "expected": {
+    "number": 5,
+    "detail": {
+     "n": 11
+    }
+   },
+   "wallMs": 11608,
+   "apiMs": 8906,
+   "turns": 4,
+   "toolCalls": 3,
+   "tokens": {
+    "input": 8,
+    "output": 406,
+    "cacheWrite": 13673,
+    "cacheRead": 43259,
+    "total": 57346
+   },
+   "costUsd": 0.08516879999999999,
+   "models": [
+    "claude-opus-5-5"
+   ],
+   "exitCode": 0,
+   "timedOut": false,
+   "subtype": "success",
+   "startedAt": "2026-10-17T23:28:11.697Z",
+   "dir": "runs/ui/books-travel-over-40/browser-ui-1"
+  },
+  {
+   "task": "crates-serde-vs-tokio",
+   "site": "crates",
+   "mode": "browser-ui",
+   "trial": 1,
+   "tag": "ui",
+   "ok": true,
+   "why": "all expected values present",
+   "answer": "serde",
+   "expected": {
+    "expect": [
+     "serde"
+    ],
+    "detail": {
+     "serde": 1545402289,
+     "tokio": 1075593975
+    }
+   },
+   "wallMs": 13489,
+   "apiMs": 10994,
+   "turns": 7,
+   "toolCalls": 6,
+   "tokens": {
+    "input": 12,
+    "output": 496,
+    "cacheWrite": 23390,
+    "cacheRead": 81467,
+    "total": 105365
+   },
+   "costUsd": 0.1432114,
+   "models": [
+    "claude-opus-5-5"
+   ],
+   "exitCode": 0,
+   "timedOut": false,
+   "subtype": "success",
+   "startedAt": "2026-10-17T23:29:33.374Z",
+   "dir": "runs/ui/crates-serde-vs-tokio/browser-ui-1"
+  },
+  {
+   "task": "crates-tokio",
+   "site": "crates",
+   "mode": "browser-ui",
+   "trial": 1,
+   "tag": "ui",
+   "ok": true,
+   "why": "all expected values present",
+   "answer": "tokio v1.53.3, licensed MIT",
+   "expected": {
+    "expect": [
+     "1.53.3",
+     "MIT"
+    ],
+    "detail": {
+     "v": "1.53.3",
+     "l": "MIT"
+    }
+   },
+   "wallMs": 16781,
+   "apiMs": 14191,
+   "turns": 7,
+   "toolCalls": 6,
+   "tokens": {
+    "input": 12,
+    "output": 804,
+    "cacheWrite": 18880,
+    "cacheRead": 92610,
+    "total": 112306
+   },
+   "costUsd": 0.12904999999999997,
+   "models": [
+    "claude-opus-5-5"
+   ],
+   "exitCode": 0,
+   "timedOut": false,
+   "subtype": "success",
+   "startedAt": "2026-10-17T23:28:45.471Z",
+   "dir": "runs/ui/crates-tokio/browser-ui-1"
+  },
+  {
+   "task": "debian-nginx-bookworm",
+   "site": "debian",
+   "mode": "browser-ui",
+   "trial": 1,
+   "tag": "ui",
+   "ok": true,
+   "why": "all expected values present",
+   "answer": "1.22.1-9+deb12u10",
+   "expected": {
+    "expect": [
+     "1.22.1-9+deb12u10"
+    ],
+    "detail": {
+     "h": "Package: nginx (1.22.1-9+deb12u10 and others) [security]"
+    }
+   },
+   "wallMs": 17019,
+   "apiMs": 13690,
+   "turns": 6,
+   "toolCalls": 5,
+   "tokens": {
+    "input": 12,
+    "output": 693,
+    "cacheWrite": 10429,
+    "cacheRead": 68227,
+    "total": 79361
+   },
+   "costUsd": 0.0796984,
+   "models": [
+    "claude-opus-5-5"
+   ],
+   "exitCode": 0,
+   "timedOut": false,
+   "subtype": "success",
+   "startedAt": "2026-10-17T23:28:49.719Z",
+   "dir": "runs/ui/debian-nginx-bookworm/browser-ui-1"
+  },
+  {
+   "task": "endoflife-ubuntu-2204",
+   "site": "endoflife",
+   "mode": "browser-ui",
+   "trial": 1,
+   "tag": "ui",
+   "ok": true,
+   "why": "all expected values present",
+   "answer": "2027-06-01",
+   "expected": {
+    "expect": [
+     "2027-06-01"
+    ],
+    "detail": {
+     "codename": "Jammy Jellyfish",
+     "lts": true,
+     "releaseDate": "2022-04-21",
+     "eol": "2027-06-01",
+     "latest": "22.04.5",
+     "latestReleaseDate": "2024-09-12",
+     "support": "2024-09-30",
+     "extendedSupport": "2032-04-21"
+    }
+   },
+   "wallMs": 15866,
+   "apiMs": 13298,
+   "turns": 5,
+   "toolCalls": 4,
+   "tokens": {
+    "input": 8,
+    "output": 612,
+    "cacheWrite": 7675,
+    "cacheRead": 44220,
+    "total": 52515
+   },
+   "costUsd": 0.059491,
+   "models": [
+    "claude-opus-5-5"
+   ],
+   "exitCode": 0,
+   "timedOut": false,
+   "subtype": "success",
+   "startedAt": "2026-10-17T23:28:30.325Z",
+   "dir": "runs/ui/endoflife-ubuntu-2204/browser-ui-1"
+  },
+  {
+   "task": "github-playwright-release",
+   "site": "github",
+   "mode": "browser-ui",
+   "trial": 1,
+   "tag": "ui",
+   "ok": true,
+   "why": "all expected values present",
+   "answer": "v1.64.1, published 2026-10-14",
+   "expected": {
+    "expect": [
+     "1.64.1",
+     "2026-10-14"
+    ],
+    "detail": {
+     "tag_name": "v1.64.1",
+     "published_at": "2026-10-14T11:51:33Z"
+    }
+   },
+   "wallMs": 18724,
+   "apiMs": 14699,
+   "turns": 7,
+   "toolCalls": 6,
+   "tokens": {
+    "input": 12,
+    "output": 842,
+    "cacheWrite": 9403,
+    "cacheRead": 73772,
+    "total": 84029
+   },
+   "costUsd": 0.0786574,
+   "models": [
+    "claude-opus-5-5"
+   ],
+   "exitCode": 0,
+   "timedOut": false,
+   "subtype": "success",
+   "startedAt": "2026-10-17T23:28:50.802Z",
+   "dir": "runs/ui/github-playwright-release/browser-ui-1"
+  },
+  {
+   "task": "github-playwright-releases-2026",
+   "site": "github",
+   "mode": "browser-ui",
+   "trial": 1,
+   "tag": "ui",
+   "ok": true,
+   "why": "all expected values present",
+   "answer": "13",
+   "expected": {
+    "number": 13,
+    "detail": [
+     {
+      "tag_name": "v1.64.1",
+      "published_at": "2026-10-14T11:51:33Z"
+     },
+     {
+      "tag_name": "v1.64.0",
+      "published_at": "2026-10-07T20:40:43Z"
+     },
+     {
+      "tag_name": "v1.63.0",
+      "published_at": "2026-09-04T22:40:31Z"
+     },
+     {
+      "tag_name": "v1.62.1",
+      "published_at": "2026-07-30T16:35:55Z"
+     },
+     {
+      "tag_name": "v1.62.0",
+      "published_at": "2026-07-24T21:55:03Z"
+     },
+     {
+      "tag_name": "v1.61.1",
+      "published_at": "2026-06-23T19:47:55Z"
+     },
+     {
+      "tag_name": "v1.61.0",
+      "published_at": "2026-06-15T10:05:19Z"
+     },
+     {
+      "tag_name": "v1.60.0",
+      "published_at": "2026-05-11T19:08:18Z"
+     },
+     {
+      "tag_name": "v1.59.1",
+      "published_at": "2026-04-01T17:55:35Z"
+     },
+     {
+      "tag_name": "v1.59.0",
+      "published_at": "2026-04-01T00:27:06Z"
+     },
+     {
+      "tag_name": "v1.58.2",
+      "published_at": "2026-02-06T16:41:43Z"
+     },
+     {
+      "tag_name": "v1.58.1",
+      "published_at": "2026-01-30T18:23:42Z"
+     },
+     {
+      "tag_name": "v1.58.0",
+      "published_at": "2026-01-23T11:53:47Z"
+     },
+     {
+      "tag_name": "v1.57.0",
+      "published_at": "2025-11-25T11:16:13Z"
+     },
+     {
+      "tag_name": "v1.56.1",
+      "published_at": "2025-10-17T00:50:36Z"
+     },
+     {
+      "tag_name": "v1.56.0",
+      "published_at": "2025-10-06T14:53:30Z"
+     },
+     {
+      "tag_name": "v1.55.1",
+      "published_at": "2025-09-23T09:56:01Z"
+     },
+     {
+      "tag_name": "v1.55.0",
+      "published_at": "2025-08-20T10:26:40Z"
+     },
+     {
+      "tag_name": "v1.54.2",
+      "published_at": "2025-08-01T07:01:13Z"
+     },
+     {
+      "tag_name": "v1.54.1",
+      "published_at": "2025-07-11T14:06:28Z"
+     }
+    ]
+   },
+   "wallMs": 24851,
+   "apiMs": 19416,
+   "turns": 10,
+   "toolCalls": 9,
+   "tokens": {
+    "input": 14,
+    "output": 1538,
+    "cacheWrite": 25120,
+    "cacheRead": 112907,
+    "total": 139579
+   },
+   "costUsd": 0.17899740000000003,
+   "models": [
+    "claude-opus-5-5"
+   ],
+   "exitCode": 0,
+   "timedOut": false,
+   "subtype": "success",
+   "startedAt": "2026-10-17T23:29:16.474Z",
+   "dir": "runs/ui/github-playwright-releases-2026/browser-ui-1"
+  },
+  {
+   "task": "hex-phoenix",
+   "site": "hex",
+   "mode": "browser-ui",
+   "trial": 1,
+   "tag": "ui",
+   "ok": true,
+   "why": "all expected values present",
+   "answer": "1.8.15, MIT License",
+   "expected": {
+    "expect": [
+     "1.8.15",
+     "MIT"
+    ],
+    "detail": {
+     "latest_stable_version": "1.8.15",
+     "meta.licenses": [
+      "MIT"
+     ]
+    }
+   },
+   "wallMs": 14884,
+   "apiMs": 11160,
+   "turns": 5,
+   "toolCalls": 4,
+   "tokens": {
+    "input": 8,
+    "output": 618,
+    "cacheWrite": 9948,
+    "cacheRead": 43889,
+    "total": 54463
+   },
+   "costUsd": 0.0709098,
+   "models": [
+    "claude-opus-5-5"
+   ],
+   "exitCode": 0,
+   "timedOut": false,
+   "subtype": "success",
+   "startedAt": "2026-10-17T23:28:46.945Z",
+   "dir": "runs/ui/hex-phoenix/browser-ui-1"
+  },
+  {
+   "task": "hockey-best-1990",
+   "site": "scrapethis",
+   "mode": "browser-ui",
+   "trial": 1,
+   "tag": "ui",
+   "ok": true,
+   "why": "all expected values present",
+   "answer": "Chicago Blackhawks, 49 wins",
+   "expected": {
+    "expect": [
+     "Chicago Blackhawks"
+    ],
+    "number": 49,
+    "detail": {
+     "name": "Chicago Blackhawks",
+     "year": "1990",
+     "wins": "49",
+     "losses": "23",
+     "winPct": "0.613",
+     "goalsFor": "284",
+     "goalsAgainst": "211",
+     "rows": 582
+    }
+   },
+   "wallMs": 16294,
+   "apiMs": 12876,
+   "turns": 7,
+   "toolCalls": 6,
+   "tokens": {
+    "input": 12,
+    "output": 736,
+    "cacheWrite": 15280,
+    "cacheRead": 70547,
+    "total": 86575
+   },
+   "costUsd": 0.1052774,
+   "models": [
+    "claude-opus-5-5"
+   ],
+   "exitCode": 0,
+   "timedOut": false,
+   "subtype": "success",
+   "startedAt": "2026-10-17T23:29:07.493Z",
+   "dir": "runs/ui/hockey-best-1990/browser-ui-1"
+  },
+  {
+   "task": "homebrew-ffmpeg",
+   "site": "homebrew",
+   "mode": "browser-ui",
+   "trial": 1,
+   "tag": "ui",
+   "ok": true,
+   "why": "all expected values present",
+   "answer": "9.0.2, GPL-3.0-or-later",
+   "expected": {
+    "expect": [
+     "9.0.2",
+     "GPL-3.0-or-later"
+    ],
+    "detail": {
+     "versions.stable": "9.0.2",
+     "license": "GPL-3.0-or-later"
+    }
+   },
+   "wallMs": 9121,
+   "apiMs": 6889,
+   "turns": 4,
+   "toolCalls": 3,
+   "tokens": {
+    "input": 8,
+    "output": 357,
+    "cacheWrite": 6419,
+    "cacheRead": 44007,
+    "total": 50791
+   },
+   "costUsd": 0.0480684,
+   "models": [
+    "claude-opus-5-5"
+   ],
+   "exitCode": 0,
+   "timedOut": false,
+   "subtype": "success",
+   "startedAt": "2026-10-17T23:28:39.841Z",
+   "dir": "runs/ui/homebrew-ffmpeg/browser-ui-1"
+  },
+  {
+   "task": "nodejs-latest-lts",
+   "site": "nodejs",
+   "mode": "browser-ui",
+   "trial": 1,
+   "tag": "ui",
+   "ok": true,
+   "why": "all expected values present",
+   "answer": "v24.22.0 (Krypton)",
+   "expected": {
+    "expect": [
+     "24.22.0",
+     "Krypton"
+    ],
+    "detail": {
+     "version": "v24.22.0",
+     "lts": "Krypton"
+    }
+   },
+   "wallMs": 13139,
+   "apiMs": 10716,
+   "turns": 4,
+   "toolCalls": 3,
+   "tokens": {
+    "input": 8,
+    "output": 530,
+    "cacheWrite": 10899,
+    "cacheRead": 43191,
+    "total": 54628
+   },
+   "costUsd": 0.0737652,
+   "models": [
+    "claude-opus-5-5"
+   ],
+   "exitCode": 0,
+   "timedOut": false,
+   "subtype": "success",
+   "startedAt": "2026-10-17T23:29:02.583Z",
+   "dir": "runs/ui/nodejs-latest-lts/browser-ui-1"
+  },
+  {
+   "task": "quotes-humor-author",
+   "site": "quotes",
+   "mode": "browser-ui",
+   "trial": 1,
+   "tag": "ui",
+   "ok": true,
+   "why": "all expected values present",
+   "answer": "Jane Austen, born December 16, 1775",
+   "expected": {
+    "expect": [
+     "Jane Austen",
+     "December 16 1775"
+    ],
+    "detail": {
+     "author": "Jane Austen",
+     "born": "December 16, 1775"
+    }
+   },
+   "wallMs": 17840,
+   "apiMs": 13678,
+   "turns": 7,
+   "toolCalls": 6,
+   "tokens": {
+    "input": 14,
+    "output": 656,
+    "cacheWrite": 7850,
+    "cacheRead": 84352,
+    "total": 92872
+   },
+   "costUsd": 0.0692964,
+   "models": [
+    "claude-opus-5-5"
+   ],
+   "exitCode": 0,
+   "timedOut": false,
+   "subtype": "success",
+   "startedAt": "2026-10-17T23:28:11.698Z",
+   "dir": "runs/ui/quotes-humor-author/browser-ui-1"
+  },
+  {
+   "task": "quotes-love-count",
+   "site": "quotes",
+   "mode": "browser-ui",
+   "trial": 1,
+   "tag": "ui",
+   "ok": true,
+   "why": "all expected values present",
+   "answer": "14",
+   "expected": {
+    "number": 14
+   },
+   "wallMs": 17874,
+   "apiMs": 15249,
+   "turns": 6,
+   "toolCalls": 5,
+   "tokens": {
+    "input": 10,
+    "output": 752,
+    "cacheWrite": 10768,
+    "cacheRead": 59959,
+    "total": 71489
+   },
+   "costUsd": 0.0809118,
+   "models": [
+    "claude-opus-5-5"
+   ],
+   "exitCode": 0,
+   "timedOut": false,
+   "subtype": "success",
+   "startedAt": "2026-10-17T23:28:11.699Z",
+   "dir": "runs/ui/quotes-love-count/browser-ui-1"
+  },
+  {
+   "task": "quotes-top-author",
+   "site": "quotes",
+   "mode": "browser-ui",
+   "trial": 1,
+   "tag": "ui",
+   "ok": true,
+   "why": "all expected values present",
+   "answer": "Albert Einstein, 10 quotes",
+   "expected": {
+    "expect": [
+     "Albert Einstein"
+    ],
+    "number": 10,
+    "detail": {
+     "Albert Einstein": 10,
+     "J.K. Rowling": 9,
+     "Jane Austen": 5,
+     "Marilyn Monroe": 7,
+     "André Gide": 1,
+     "Thomas A. Edison": 1,
+     "Eleanor Roosevelt": 2,
+     "Steve Martin": 1,
+     "Bob Marley": 3,
+     "Dr. Seuss": 6,
+     "Douglas Adams": 1,
+     "Elie Wiesel": 1,
+     "Friedrich Nietzsche": 1,
+     "Mark Twain": 6,
+     "Allen Saunders": 1,
+     "Pablo Neruda": 1,
+     "Ralph Waldo Emerson": 2,
+     "Mother Teresa": 2,
+     "Garrison Keillor": 1,
+     "Jim Henson": 1,
+     "Charles M. Schulz": 1,
+     "William Nicholson": 1,
+     "Jorge Luis Borges": 1,
+     "George Eliot": 1,
+     "George R.R. Martin": 2,
+     "C.S. Lewis": 5,
+     "Martin Luther King Jr.": 1,
+     "James Baldwin": 1,
+     "Haruki Murakami": 1,
+     "Alexandre Dumas fils": 1,
+     "Stephenie Meyer": 1,
+     "Ernest Hemingway": 2,
+     "Helen Keller": 1,
+     "George Bernard Shaw": 1,
+     "Charles Bukowski": 2,
+     "Suzanne Collins": 2,
+     "J.R.R. Tolkien": 1,
+     "Alfred Tennyson": 1,
+     "Terry Pratchett": 1,
+     "J.D. Salinger": 1,
+     "George Carlin": 1,
+     "John Lennon": 1,
+     "W.C. Fields": 1,
+     "Ayn Rand": 1,
+     "Jimi Hendrix": 1,
+     "J.M. Barrie": 1,
+     "E.E. Cummings": 1,
+     "Khaled Hosseini": 1,
+     "Harper Lee": 1,
+     "Madeleine L'Engle": 1
+    }
+   },
+   "wallMs": 48626,
+   "apiMs": 45838,
+   "turns": 26,
+   "toolCalls": 25,
+   "tokens": {
+    "input": 34,
+    "output": 3016,
+    "cacheWrite": 32329,
+    "cacheRead": 386364,
+    "total": 421743
+   },
+   "costUsd": 0.2993738,
+   "models": [
+    "claude-opus-5-5"
+   ],
+   "exitCode": 0,
+   "timedOut": false,
+   "subtype": "success",
+   "startedAt": "2026-10-17T23:29:03.006Z",
+   "dir": "runs/ui/quotes-top-author/browser-ui-1"
+  },
+  {
+   "task": "scrapethis-hockey-detroit-1995",
+   "site": "scrapethis",
+   "mode": "browser-ui",
+   "trial": 1,
+   "tag": "ui",
+   "ok": true,
+   "why": "all expected values present",
+   "answer": "62",
+   "expected": {
+    "number": 62,
+    "detail": {
+     "name": "Detroit Red Wings",
+     "year": "1995",
+     "wins": "62",
+     "losses": "13",
+     "winPct": "0.756",
+     "goalsFor": "325",
+     "goalsAgainst": "181"
+    }
+   },
+   "wallMs": 13306,
+   "apiMs": 10329,
+   "turns": 5,
+   "toolCalls": 4,
+   "tokens": {
+    "input": 8,
+    "output": 423,
+    "cacheWrite": 11616,
+    "cacheRead": 44063,
+    "total": 56110
+   },
+   "costUsd": 0.0753846,
+   "models": [
+    "claude-opus-5-5"
+   ],
+   "exitCode": 0,
+   "timedOut": false,
+   "subtype": "success",
+   "startedAt": "2026-10-17T23:28:25.781Z",
+   "dir": "runs/ui/scrapethis-hockey-detroit-1995/browser-ui-1"
+  },
+  {
+   "task": "scrapethis-oscar-2012",
+   "site": "scrapethis",
+   "mode": "browser-ui",
+   "trial": 1,
+   "tag": "ui",
+   "ok": true,
+   "why": "all expected values present",
+   "answer": "Argo — 3 awards",
+   "expected": {
+    "expect": [
+     "Argo"
+    ],
+    "number": 3,
+    "detail": {
+     "title": "Argo",
+     "year": 2012,
+     "awards": 3,
+     "nominations": 7,
+     "best_picture": true
+    }
+   },
+   "wallMs": 20654,
+   "apiMs": 15851,
+   "turns": 10,
+   "toolCalls": 9,
+   "tokens": {
+    "input": 16,
+    "output": 799,
+    "cacheWrite": 10919,
+    "cacheRead": 105602,
+    "total": 117336
+   },
+   "costUsd": 0.0917594,
+   "models": [
+    "claude-opus-5-5"
+   ],
+   "exitCode": 0,
+   "timedOut": false,
+   "subtype": "success",
+   "startedAt": "2026-10-17T23:28:24.063Z",
+   "dir": "runs/ui/scrapethis-oscar-2012/browser-ui-1"
+  },
+  {
+   "task": "ubuntu-lts-supported",
+   "site": "endoflife",
+   "mode": "browser-ui",
+   "trial": 1,
+   "tag": "ui",
+   "ok": true,
+   "why": "all expected values present",
+   "answer": "26.04, 24.04, 22.04",
+   "expected": {
+    "expect": [
+     "26.04",
+     "24.04",
+     "22.04"
+    ],
+    "detail": [
+     "26.04",
+     "24.04",
+     "22.04"
+    ]
+   },
+   "wallMs": 11963,
+   "apiMs": 9396,
+   "turns": 5,
+   "toolCalls": 4,
+   "tokens": {
+    "input": 10,
+    "output": 738,
+    "cacheWrite": 13602,
+    "cacheRead": 56010,
+    "total": 70360
+   },
+   "costUsd": 0.094012,
+   "models": [
+    "claude-opus-5-5"
+   ],
+   "exitCode": 0,
+   "timedOut": false,
+   "subtype": "success",
+   "startedAt": "2026-10-17T23:29:24.543Z",
+   "dir": "runs/ui/ubuntu-lts-supported/browser-ui-1"
+  },
+  {
+   "task": "webscraper-laptop-max",
+   "site": "webscraper",
+   "mode": "browser-ui",
+   "trial": 1,
+   "tag": "ui",
+   "ok": true,
+   "why": "all expected values present",
+   "answer": "Asus ROG Strix SCAR Edition GL503VM-ED115T — $1799",
+   "expected": {
+    "expect": [
+     "Asus ROG Strix SCAR Edition GL503VM-ED115T",
+     "1799"
+    ],
+    "detail": {
+     "title": "Asus ROG Strix SCAR Edition GL503VM-ED115T",
+     "price": "$1799",
+     "description": "Asus ROG Strix SCAR Edition GL503VM-ED115T, 15.6\" FHD 120Hz, Core i7-7700HQ, 16GB, 256GB SSD + 1TB SSHD, GeForce GTX 1060 6GB, Windows 10 Home",
+     "reviews": "8 reviews",
+     "url": "https://webscraper.io/test-sites/e-commerce/allinone/product/59",
+     "n": 117
+    }
+   },
+   "wallMs": 19751,
+   "apiMs": 15920,
+   "turns": 7,
+   "toolCalls": 6,
+   "tokens": {
+    "input": 14,
+    "output": 897,
+    "cacheWrite": 7824,
+    "cacheRead": 84704,
+    "total": 93439
+   },
+   "costUsd": 0.07405679999999999,
+   "models": [
+    "claude-opus-5-5"
+   ],
+   "exitCode": 0,
+   "timedOut": false,
+   "subtype": "success",
+   "startedAt": "2026-10-17T23:28:30.295Z",
+   "dir": "runs/ui/webscraper-laptop-max/browser-ui-1"
+  },
+  {
+   "task": "books-cheapest-first-5-pages",
+   "site": "books",
+   "mode": "browser-ui",
+   "trial": 1,
+   "tag": "ui2",
+   "ok": true,
+   "why": "all expected values present",
+   "answer": "Patience — £10.16",
+   "expected": {
+    "expect": [
+     "Patience",
+     "10.16"
+    ],
+    "detail": {
+     "title": "Patience",
+     "price": "£10.16",
+     "stock": "In stock",
+     "rating": "star-rating Three",
+     "url": "https://books.toscrape.com/catalogue/patience_916/index.html",
+     "n": 100
+    }
+   },
+   "wallMs": 22942,
+   "apiMs": 19742,
+   "turns": 13,
+   "toolCalls": 12,
+   "tokens": {
+    "input": 14,
+    "output": 1489,
+    "cacheWrite": 22443,
+    "cacheRead": 134516,
+    "total": 158462
+   },
+   "costUsd": 0.1689542,
+   "models": [
+    "claude-opus-5-5"
+   ],
+   "exitCode": 0,
+   "timedOut": false,
+   "subtype": "success",
+   "startedAt": "2026-10-17T23:33:25.335Z",
+   "dir": "runs/ui2/books-cheapest-first-5-pages/browser-ui-1"
+  },
+  {
+   "task": "books-mystery-max",
+   "site": "books",
+   "mode": "browser-ui",
+   "trial": 1,
+   "tag": "ui2",
+   "ok": true,
+   "why": "all expected values present",
+   "answer": "Boar Island (Anna Pigeon #19) — £59.48",
+   "expected": {
+    "expect": [
+     "Boar Island",
+     "59.48"
+    ],
+    "detail": {
+     "title": "Boar Island (Anna Pigeon #19)",
+     "price": "£59.48",
+     "url": "https://books.toscrape.com/catalogue/boar-island-anna-pigeon-19_613/index.html",
+     "n": 32
+    }
+   },
+   "wallMs": 13235,
+   "apiMs": 10400,
+   "turns": 6,
+   "toolCalls": 5,
+   "tokens": {
+    "input": 10,
+    "output": 582,
+    "cacheWrite": 22930,
+    "cacheRead": 67505,
+    "total": 91027
+   },
+   "costUsd": 0.13983099999999998,
+   "models": [
+    "claude-opus-5-5"
+   ],
+   "exitCode": 0,
+   "timedOut": false,
+   "subtype": "success",
+   "startedAt": "2026-10-17T23:32:09.174Z",
+   "dir": "runs/ui2/books-mystery-max/browser-ui-1"
+  },
+  {
+   "task": "books-travel-over-40",
+   "site": "books",
+   "mode": "browser-ui",
+   "trial": 1,
+   "tag": "ui2",
+   "ok": true,
+   "why": "all expected values present",
+   "answer": "5",
+   "expected": {
+    "number": 5,
+    "detail": {
+     "n": 11
+    }
+   },
+   "wallMs": 10465,
+   "apiMs": 7911,
+   "turns": 4,
+   "toolCalls": 3,
+   "tokens": {
+    "input": 8,
+    "output": 469,
+    "cacheWrite": 13676,
+    "cacheRead": 43268,
+    "total": 57421
+   },
+   "costUsd": 0.08644560000000001,
+   "models": [
+    "claude-opus-5-5"
+   ],
+   "exitCode": 0,
+   "timedOut": false,
+   "subtype": "success",
+   "startedAt": "2026-10-17T23:32:09.177Z",
+   "dir": "runs/ui2/books-travel-over-40/browser-ui-1"
+  },
+  {
+   "task": "crates-serde-vs-tokio",
+   "site": "crates",
+   "mode": "browser-ui",
+   "trial": 1,
+   "tag": "ui2",
+   "ok": true,
+   "why": "all expected values present",
+   "answer": "serde",
+   "expected": {
+    "expect": [
+     "serde"
+    ],
+    "detail": {
+     "serde": 1545402289,
+     "tokio": 1075593975
+    }
+   },
+   "wallMs": 11933,
+   "apiMs": 9929,
+   "turns": 7,
+   "toolCalls": 6,
+   "tokens": {
+    "input": 10,
+    "output": 512,
+    "cacheWrite": 13285,
+    "cacheRead": 63834,
+    "total": 77641
+   },
+   "costUsd": 0.08947179999999999,
+   "models": [
+    "claude-opus-5-5"
+   ],
+   "exitCode": 0,
+   "timedOut": false,
+   "subtype": "success",
+   "startedAt": "2026-10-17T23:33:59.783Z",
+   "dir": "runs/ui2/crates-serde-vs-tokio/browser-ui-1"
+  },
+  {
+   "task": "crates-tokio",
+   "site": "crates",
+   "mode": "browser-ui",
+   "trial": 1,
+   "tag": "ui2",
+   "ok": true,
+   "why": "all expected values present",
+   "answer": "tokio 1.53.3, licensed MIT",
+   "expected": {
+    "expect": [
+     "1.53.3",
+     "MIT"
+    ],
+    "detail": {
+     "v": "1.53.3",
+     "l": "MIT"
+    }
+   },
+   "wallMs": 13600,
+   "apiMs": 11236,
+   "turns": 6,
+   "toolCalls": 5,
+   "tokens": {
+    "input": 10,
+    "output": 660,
+    "cacheWrite": 14088,
+    "cacheRead": 58594,
+    "total": 73352
+   },
+   "costUsd": 0.0953988,
+   "models": [
+    "claude-opus-5-5"
+   ],
+   "exitCode": 0,
+   "timedOut": false,
+   "subtype": "success",
+   "startedAt": "2026-10-17T23:32:52.028Z",
+   "dir": "runs/ui2/crates-tokio/browser-ui-1"
+  },
+  {
+   "task": "debian-nginx-bookworm",
+   "site": "debian",
+   "mode": "browser-ui",
+   "trial": 1,
+   "tag": "ui2",
+   "ok": true,
+   "why": "all expected values present",
+   "answer": "1.22.1-9+deb12u10",
+   "expected": {
+    "expect": [
+     "1.22.1-9+deb12u10"
+    ],
+    "detail": {
+     "h": "Package: nginx (1.22.1-9+deb12u10 and others) [security]"
+    }
+   },
+   "wallMs": 20054,
+   "apiMs": 16855,
+   "turns": 6,
+   "toolCalls": 5,
+   "tokens": {
+    "input": 12,
+    "output": 691,
+    "cacheWrite": 10421,
+    "cacheRead": 68242,
+    "total": 79366
+   },
+   "costUsd": 0.07962140000000001,
+   "models": [
+    "claude-opus-5-5"
+   ],
+   "exitCode": 0,
+   "timedOut": false,
+   "subtype": "success",
+   "startedAt": "2026-10-17T23:33:01.876Z",
+   "dir": "runs/ui2/debian-nginx-bookworm/browser-ui-1"
+  },
+  {
+   "task": "endoflife-ubuntu-2204",
+   "site": "endoflife",
+   "mode": "browser-ui",
+   "trial": 1,
+   "tag": "ui2",
+   "ok": true,
+   "why": "all expected values present",
+   "answer": "2027-06-01",
+   "expected": {
+    "expect": [
+     "2027-06-01"
+    ],
+    "detail": {
+     "codename": "Jammy Jellyfish",
+     "lts": true,
+     "releaseDate": "2022-04-21",
+     "eol": "2027-06-01",
+     "latest": "22.04.5",
+     "latestReleaseDate": "2024-09-12",
+     "support": "2024-09-30",
+     "extendedSupport": "2032-04-21"
+    }
+   },
+   "wallMs": 12496,
+   "apiMs": 9226,
+   "turns": 7,
+   "toolCalls": 6,
+   "tokens": {
+    "input": 10,
+    "output": 707,
+    "cacheWrite": 8660,
+    "cacheRead": 58131,
+    "total": 67508
+   },
+   "costUsd": 0.0691062,
+   "models": [
+    "claude-opus-5-5"
+   ],
+   "exitCode": 0,
+   "timedOut": false,
+   "subtype": "success",
+   "startedAt": "2026-10-17T23:32:38.777Z",
+   "dir": "runs/ui2/endoflife-ubuntu-2204/browser-ui-1"
+  },
+  {
+   "task": "github-playwright-release",
+   "site": "github",
+   "mode": "browser-ui",
+   "trial": 1,
+   "tag": "ui2",
+   "ok": true,
+   "why": "all expected values present",
+   "answer": "v1.64.1, published 2026-10-14",
+   "expected": {
+    "expect": [
+     "1.64.1",
+     "2026-10-14"
+    ],
+    "detail": {
+     "tag_name": "v1.64.1",
+     "published_at": "2026-10-14T11:51:33Z"
+    }
+   },
+   "wallMs": 18198,
+   "apiMs": 14849,
+   "turns": 6,
+   "toolCalls": 5,
+   "tokens": {
+    "input": 12,
+    "output": 772,
+    "cacheWrite": 8792,
+    "cacheRead": 72266,
+    "total": 81842
+   },
+   "costUsd": 0.0739012,
+   "models": [
+    "claude-opus-5-5"
+   ],
+   "exitCode": 0,
+   "timedOut": false,
+   "subtype": "success",
+   "startedAt": "2026-10-17T23:33:06.382Z",
+   "dir": "runs/ui2/github-playwright-release/browser-ui-1"
+  },
+  {
+   "task": "github-playwright-releases-2026",
+   "site": "github",
+   "mode": "browser-ui",
+   "trial": 1,
+   "tag": "ui2",
+   "ok": true,
+   "why": "all expected values present",
+   "answer": "13",
+   "expected": {
+    "number": 13,
+    "detail": [
+     {
+      "tag_name": "v1.64.1",
+      "published_at": "2026-10-14T11:51:33Z"
+     },
+     {
+      "tag_name": "v1.64.0",
+      "published_at": "2026-10-07T20:40:43Z"
+     },
+     {
+      "tag_name": "v1.63.0",
+      "published_at": "2026-09-04T22:40:31Z"
+     },
+     {
+      "tag_name": "v1.62.1",
+      "published_at": "2026-07-30T16:35:55Z"
+     },
+     {
+      "tag_name": "v1.62.0",
+      "published_at": "2026-07-24T21:55:03Z"
+     },
+     {
+      "tag_name": "v1.61.1",
+      "published_at": "2026-06-23T19:47:55Z"
+     },
+     {
+      "tag_name": "v1.61.0",
+      "published_at": "2026-06-15T10:05:19Z"
+     },
+     {
+      "tag_name": "v1.60.0",
+      "published_at": "2026-05-11T19:08:18Z"
+     },
+     {
+      "tag_name": "v1.59.1",
+      "published_at": "2026-04-01T17:55:35Z"
+     },
+     {
+      "tag_name": "v1.59.0",
+      "published_at": "2026-04-01T00:27:06Z"
+     },
+     {
+      "tag_name": "v1.58.2",
+      "published_at": "2026-02-06T16:41:43Z"
+     },
+     {
+      "tag_name": "v1.58.1",
+      "published_at": "2026-01-30T18:23:42Z"
+     },
+     {
+      "tag_name": "v1.58.0",
+      "published_at": "2026-01-23T11:53:47Z"
+     },
+     {
+      "tag_name": "v1.57.0",
+      "published_at": "2025-11-25T11:16:13Z"
+     },
+     {
+      "tag_name": "v1.56.1",
+      "published_at": "2025-10-17T00:50:36Z"
+     },
+     {
+      "tag_name": "v1.56.0",
+      "published_at": "2025-10-06T14:53:30Z"
+     },
+     {
+      "tag_name": "v1.55.1",
+      "published_at": "2025-09-23T09:56:01Z"
+     },
+     {
+      "tag_name": "v1.55.0",
+      "published_at": "2025-08-20T10:26:40Z"
+     },
+     {
+      "tag_name": "v1.54.2",
+      "published_at": "2025-08-01T07:01:13Z"
+     },
+     {
+      "tag_name": "v1.54.1",
+      "published_at": "2025-07-11T14:06:28Z"
+     }
+    ]
+   },
+   "wallMs": 23134,
+   "apiMs": 17940,
+   "turns": 10,
+   "toolCalls": 9,
+   "tokens": {
+    "input": 14,
+    "output": 1222,
+    "cacheWrite": 23860,
+    "cacheRead": 109419,
+    "total": 134515
+   },
+   "costUsd": 0.1656798,
+   "models": [
+    "claude-opus-5-5"
+   ],
+   "exitCode": 0,
+   "timedOut": false,
+   "subtype": "success",
+   "startedAt": "2026-10-17T23:33:42.645Z",
+   "dir": "runs/ui2/github-playwright-releases-2026/browser-ui-1"
+  },
+  {
+   "task": "hex-phoenix",
+   "site": "hex",
+   "mode": "browser-ui",
+   "trial": 1,
+   "tag": "ui2",
+   "ok": true,
+   "why": "all expected values present",
+   "answer": "1.8.15, MIT License",
+   "expected": {
+    "expect": [
+     "1.8.15",
+     "MIT"
+    ],
+    "detail": {
+     "latest_stable_version": "1.8.15",
+     "meta.licenses": [
+      "MIT"
+     ]
+    }
+   },
+   "wallMs": 16831,
+   "apiMs": 14167,
+   "turns": 4,
+   "toolCalls": 3,
+   "tokens": {
+    "input": 8,
+    "output": 494,
+    "cacheWrite": 13178,
+    "cacheRead": 43193,
+    "total": 56873
+   },
+   "costUsd": 0.0844406,
+   "models": [
+    "claude-opus-5-5"
+   ],
+   "exitCode": 0,
+   "timedOut": false,
+   "subtype": "success",
+   "startedAt": "2026-10-17T23:32:52.911Z",
+   "dir": "runs/ui2/hex-phoenix/browser-ui-1"
+  },
+  {
+   "task": "hockey-best-1990",
+   "site": "scrapethis",
+   "mode": "browser-ui",
+   "trial": 1,
+   "tag": "ui2",
+   "ok": true,
+   "why": "all expected values present",
+   "answer": "Chicago Blackhawks, 49 wins",
+   "expected": {
+    "expect": [
+     "Chicago Blackhawks"
+    ],
+    "number": 49,
+    "detail": {
+     "name": "Chicago Blackhawks",
+     "year": "1990",
+     "wins": "49",
+     "losses": "23",
+     "winPct": "0.613",
+     "goalsFor": "284",
+     "goalsAgainst": "211",
+     "rows": 582
+    }
+   },
+   "wallMs": 18400,
+   "apiMs": 14787,
+   "turns": 6,
+   "toolCalls": 5,
+   "tokens": {
+    "input": 10,
+    "output": 662,
+    "cacheWrite": 10324,
+    "cacheRead": 57006,
+    "total": 68002
+   },
+   "costUsd": 0.0763012,
+   "models": [
+    "claude-opus-5-5"
+   ],
+   "exitCode": 0,
+   "timedOut": false,
+   "subtype": "success",
+   "startedAt": "2026-10-17T23:33:23.493Z",
+   "dir": "runs/ui2/hockey-best-1990/browser-ui-1"
+  },
+  {
+   "task": "homebrew-ffmpeg",
+   "site": "homebrew",
+   "mode": "browser-ui",
+   "trial": 1,
+   "tag": "ui2",
+   "ok": true,
+   "why": "all expected values present",
+   "answer": "9.0.2, GPL-3.0-or-later",
+   "expected": {
+    "expect": [
+     "9.0.2",
+     "GPL-3.0-or-later"
+    ],
+    "detail": {
+     "versions.stable": "9.0.2",
+     "license": "GPL-3.0-or-later"
+    }
+   },
+   "wallMs": 10344,
+   "apiMs": 8142,
+   "turns": 4,
+   "toolCalls": 3,
+   "tokens": {
+    "input": 8,
+    "output": 355,
+    "cacheWrite": 11481,
+    "cacheRead": 43222,
+    "total": 55066
+   },
+   "costUsd": 0.07318140000000001,
+   "models": [
+    "claude-opus-5-5"
+   ],
+   "exitCode": 0,
+   "timedOut": false,
+   "subtype": "success",
+   "startedAt": "2026-10-17T23:32:41.813Z",
+   "dir": "runs/ui2/homebrew-ffmpeg/browser-ui-1"
+  },
+  {
+   "task": "nodejs-latest-lts",
+   "site": "nodejs",
+   "mode": "browser-ui",
+   "trial": 1,
+   "tag": "ui2",
+   "ok": true,
+   "why": "all expected values present",
+   "answer": "v24.22.0 (Krypton)",
+   "expected": {
+    "expect": [
+     "24.22.0",
+     "Krypton"
+    ],
+    "detail": {
+     "version": "v24.22.0",
+     "lts": "Krypton"
+    }
+   },
+   "wallMs": 12240,
+   "apiMs": 9927,
+   "turns": 4,
+   "toolCalls": 3,
+   "tokens": {
+    "input": 8,
+    "output": 568,
+    "cacheWrite": 10902,
+    "cacheRead": 43200,
+    "total": 54678
+   },
+   "costUsd": 0.074542,
+   "models": [
+    "claude-opus-5-5"
+   ],
+   "exitCode": 0,
+   "timedOut": false,
+   "subtype": "success",
+   "startedAt": "2026-10-17T23:33:10.497Z",
+   "dir": "runs/ui2/nodejs-latest-lts/browser-ui-1"
+  },
+  {
+   "task": "quotes-humor-author",
+   "site": "quotes",
+   "mode": "browser-ui",
+   "trial": 1,
+   "tag": "ui2",
+   "ok": true,
+   "why": "all expected values present",
+   "answer": "Jane Austen, born December 16, 1775",
+   "expected": {
+    "expect": [
+     "Jane Austen",
+     "December 16 1775"
+    ],
+    "detail": {
+     "author": "Jane Austen",
+     "born": "December 16, 1775"
+    }
+   },
+   "wallMs": 14696,
+   "apiMs": 11766,
+   "turns": 6,
+   "toolCalls": 5,
+   "tokens": {
+    "input": 12,
+    "output": 649,
+    "cacheWrite": 10926,
+    "cacheRead": 75937,
+    "total": 87524
+   },
+   "costUsd": 0.0828454,
+   "models": [
+    "claude-opus-5-5"
+   ],
+   "exitCode": 0,
+   "timedOut": false,
+   "subtype": "success",
+   "startedAt": "2026-10-17T23:32:09.178Z",
+   "dir": "runs/ui2/quotes-humor-author/browser-ui-1"
+  },
+  {
+   "task": "quotes-love-count",
+   "site": "quotes",
+   "mode": "browser-ui",
+   "trial": 1,
+   "tag": "ui2",
+   "ok": true,
+   "why": "all expected values present",
+   "answer": "14",
+   "expected": {
+    "number": 14
+   },
+   "wallMs": 20659,
+   "apiMs": 18177,
+   "turns": 7,
+   "toolCalls": 6,
+   "tokens": {
+    "input": 12,
+    "output": 930,
+    "cacheWrite": 10742,
+    "cacheRead": 76479,
+    "total": 88163
+   },
+   "costUsd": 0.0876538,
+   "models": [
+    "claude-opus-5-5"
+   ],
+   "exitCode": 0,
+   "timedOut": false,
+   "subtype": "success",
+   "startedAt": "2026-10-17T23:32:20.398Z",
+   "dir": "runs/ui2/quotes-love-count/browser-ui-1"
+  },
+  {
+   "task": "quotes-top-author",
+   "site": "quotes",
+   "mode": "browser-ui",
+   "trial": 1,
+   "tag": "ui2",
+   "ok": true,
+   "why": "all expected values present",
+   "answer": "Albert Einstein, 10 quotes",
+   "expected": {
+    "expect": [
+     "Albert Einstein"
+    ],
+    "number": 10,
+    "detail": {
+     "Albert Einstein": 10,
+     "J.K. Rowling": 9,
+     "Jane Austen": 5,
+     "Marilyn Monroe": 7,
+     "André Gide": 1,
+     "Thomas A. Edison": 1,
+     "Eleanor Roosevelt": 2,
+     "Steve Martin": 1,
+     "Bob Marley": 3,
+     "Dr. Seuss": 6,
+     "Douglas Adams": 1,
+     "Elie Wiesel": 1,
+     "Friedrich Nietzsche": 1,
+     "Mark Twain": 6,
+     "Allen Saunders": 1,
+     "Pablo Neruda": 1,
+     "Ralph Waldo Emerson": 2,
+     "Mother Teresa": 2,
+     "Garrison Keillor": 1,
+     "Jim Henson": 1,
+     "Charles M. Schulz": 1,
+     "William Nicholson": 1,
+     "Jorge Luis Borges": 1,
+     "George Eliot": 1,
+     "George R.R. Martin": 2,
+     "C.S. Lewis": 5,
+     "Martin Luther King Jr.": 1,
+     "James Baldwin": 1,
+     "Haruki Murakami": 1,
+     "Alexandre Dumas fils": 1,
+     "Stephenie Meyer": 1,
+     "Ernest Hemingway": 2,
+     "Helen Keller": 1,
+     "George Bernard Shaw": 1,
+     "Charles Bukowski": 2,
+     "Suzanne Collins": 2,
+     "J.R.R. Tolkien": 1,
+     "Alfred Tennyson": 1,
+     "Terry Pratchett": 1,
+     "J.D. Salinger": 1,
+     "George Carlin": 1,
+     "John Lennon": 1,
+     "W.C. Fields": 1,
+     "Ayn Rand": 1,
+     "Jimi Hendrix": 1,
+     "J.M. Barrie": 1,
+     "E.E. Cummings": 1,
+     "Khaled Hosseini": 1,
+     "Harper Lee": 1,
+     "Madeleine L'Engle": 1
+    }
+   },
+   "wallMs": 36342,
+   "apiMs": 33742,
+   "turns": 22,
+   "toolCalls": 21,
+   "tokens": {
+    "input": 24,
+    "output": 2575,
+    "cacheWrite": 32606,
+    "cacheRead": 266894,
+    "total": 302099
+   },
+   "costUsd": 0.2680048,
+   "models": [
+    "claude-opus-5-5"
+   ],
+   "exitCode": 0,
+   "timedOut": false,
+   "subtype": "success",
+   "startedAt": "2026-10-17T23:33:22.686Z",
+   "dir": "runs/ui2/quotes-top-author/browser-ui-1"
+  },
+  {
+   "task": "scrapethis-hockey-detroit-1995",
+   "site": "scrapethis",
+   "mode": "browser-ui",
+   "trial": 1,
+   "tag": "ui2",
+   "ok": true,
+   "why": "all expected values present",
+   "answer": "62",
+   "expected": {
+    "number": 62,
+    "detail": {
+     "name": "Detroit Red Wings",
+     "year": "1995",
+     "wins": "62",
+     "losses": "13",
+     "winPct": "0.756",
+     "goalsFor": "325",
+     "goalsAgainst": "181"
+    }
+   },
+   "wallMs": 13393,
+   "apiMs": 10695,
+   "turns": 6,
+   "toolCalls": 5,
+   "tokens": {
+    "input": 8,
+    "output": 476,
+    "cacheWrite": 6671,
+    "cacheRead": 43852,
+    "total": 51007
+   },
+   "costUsd": 0.0516774,
+   "models": [
+    "claude-opus-5-5"
+   ],
+   "exitCode": 0,
+   "timedOut": false,
+   "subtype": "success",
+   "startedAt": "2026-10-17T23:32:24.628Z",
+   "dir": "runs/ui2/scrapethis-hockey-detroit-1995/browser-ui-1"
+  },
+  {
+   "task": "scrapethis-oscar-2012",
+   "site": "scrapethis",
+   "mode": "browser-ui",
+   "trial": 1,
+   "tag": "ui2",
+   "ok": true,
+   "why": "all expected values present",
+   "answer": "Argo (3 awards)",
+   "expected": {
+    "expect": [
+     "Argo"
+    ],
+    "number": 3,
+    "detail": {
+     "title": "Argo",
+     "year": 2012,
+     "awards": 3,
+     "nominations": 7,
+     "best_picture": true
+    }
+   },
+   "wallMs": 14360,
+   "apiMs": 10125,
+   "turns": 6,
+   "toolCalls": 5,
+   "tokens": {
+    "input": 10,
+    "output": 554,
+    "cacheWrite": 8082,
+    "cacheRead": 57446,
+    "total": 66092
+   },
+   "costUsd": 0.0630192,
+   "models": [
+    "claude-opus-5-5"
+   ],
+   "exitCode": 0,
+   "timedOut": false,
+   "subtype": "success",
+   "startedAt": "2026-10-17T23:32:23.166Z",
+   "dir": "runs/ui2/scrapethis-oscar-2012/browser-ui-1"
+  },
+  {
+   "task": "ubuntu-lts-supported",
+   "site": "endoflife",
+   "mode": "browser-ui",
+   "trial": 1,
+   "tag": "ui2",
+   "ok": true,
+   "why": "all expected values present",
+   "answer": "26.04, 24.04, 22.04",
+   "expected": {
+    "expect": [
+     "26.04",
+     "24.04",
+     "22.04"
+    ],
+    "detail": [
+     "26.04",
+     "24.04",
+     "22.04"
+    ]
+   },
+   "wallMs": 15404,
+   "apiMs": 12657,
+   "turns": 5,
+   "toolCalls": 4,
+   "tokens": {
+    "input": 10,
+    "output": 719,
+    "cacheWrite": 17341,
+    "cacheRead": 60543,
+    "total": 78613
+   },
+   "costUsd": 0.1132336,
+   "models": [
+    "claude-opus-5-5"
+   ],
+   "exitCode": 0,
+   "timedOut": false,
+   "subtype": "success",
+   "startedAt": "2026-10-17T23:33:49.034Z",
+   "dir": "runs/ui2/ubuntu-lts-supported/browser-ui-1"
+  },
+  {
+   "task": "webscraper-laptop-max",
+   "site": "webscraper",
+   "mode": "browser-ui",
+   "trial": 1,
+   "tag": "ui2",
+   "ok": true,
+   "why": "all expected values present",
+   "answer": "Asus ROG Strix SCAR Edition GL503VM-ED115T — $1799",
+   "expected": {
+    "expect": [
+     "Asus ROG Strix SCAR Edition GL503VM-ED115T",
+     "1799"
+    ],
+    "detail": {
+     "title": "Asus ROG Strix SCAR Edition GL503VM-ED115T",
+     "price": "$1799",
+     "description": "Asus ROG Strix SCAR Edition GL503VM-ED115T, 15.6\" FHD 120Hz, Core i7-7700HQ, 16GB, 256GB SSD + 1TB SSHD, GeForce GTX 1060 6GB, Windows 10 Home",
+     "reviews": "8 reviews",
+     "url": "https://webscraper.io/test-sites/e-commerce/allinone/product/59",
+     "n": 117
+    }
+   },
+   "wallMs": 22840,
+   "apiMs": 19130,
+   "turns": 8,
+   "toolCalls": 7,
+   "tokens": {
+    "input": 14,
+    "output": 898,
+    "cacheWrite": 8632,
+    "cacheRead": 85228,
+    "total": 94772
+   },
+   "costUsd": 0.0782216,
+   "models": [
+    "claude-opus-5-5"
+   ],
+   "exitCode": 0,
+   "timedOut": false,
+   "subtype": "success",
+   "startedAt": "2026-10-17T23:32:38.280Z",
+   "dir": "runs/ui2/webscraper-laptop-max/browser-ui-1"
+  }
+ ],
+ "speedupMedian": 1.4091185410334346,
+ "tokenRatioMedian": 3.0640184645286688
+}

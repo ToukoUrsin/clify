@@ -1,0 +1,95 @@
+{
+ "ok": true,
+ "site": "artic",
+ "url": "https://www.artic.edu/collection",
+ "commands": [
+  {
+   "name": "search-artworks",
+   "summary": "Full-text search of the collection's artworks, with optional filters (public domain, on view, department, artist id), sort by date and pagination",
+   "verified": true
+  },
+  {
+   "name": "facet-artworks",
+   "summary": "Get facet counts (aggregation buckets) over the whole artwork collection for a keyword field such as department, classification or artist",
+   "verified": true
+  },
+  {
+   "name": "get-artwork",
+   "summary": "Get full details of one artwork by numeric id (title, artist, date, medium, dimensions, credit line, gallery, description, image id)",
+   "verified": true
+  },
+  {
+   "name": "get-artworks",
+   "summary": "Fetch several artworks at once by a comma-separated list of ids",
+   "verified": true
+  },
+  {
+   "name": "get-artwork-manifest",
+   "summary": "Get the IIIF Presentation manifest for an artwork (image service URLs, label, metadata)",
+   "verified": true
+  },
+  {
+   "name": "search-artists",
+   "summary": "Search artists by name. The returned id works with get-artist and the artist_id filter of search-artworks.",
+   "verified": true
+  },
+  {
+   "name": "get-artist",
+   "summary": "Get details of one artist by id (name, alternate names, birth and death dates, biography)",
+   "verified": true
+  },
+  {
+   "name": "search-exhibitions",
+   "summary": "Search museum exhibitions (current and past) by keyword",
+   "verified": true
+  },
+  {
+   "name": "get-exhibition",
+   "summary": "Get details of one exhibition by id (dates, gallery, description, artworks shown)",
+   "verified": true
+  },
+  {
+   "name": "search-events",
+   "summary": "Search museum events (tours, talks, programs) by keyword",
+   "verified": true
+  },
+  {
+   "name": "search-articles",
+   "summary": "Search the museum's editorial articles by keyword",
+   "verified": true
+  },
+  {
+   "name": "search-category-terms",
+   "summary": "Search category terms (styles, subjects, themes, classifications, materials, techniques, departments)",
+   "verified": true
+  }
+ ],
+ "verified": 12,
+ "writes": 0,
+ "dropped": [
+  {
+   "name": "get-related-artworks",
+   "reason": "The endpoint returns its data as an HTML fragment inside a JSON 'html' string. clify cannot run selectors on HTML embedded in JSON, so no structured fields can be extracted. search-artworks and get-artworks cover lookups."
+  },
+  {
+   "name": "autocomplete",
+   "reason": "HTTP 403: this endpoint needs a login or the site refused the request. (HTTP 403)"
+  }
+ ],
+ "blockers": [
+  "bot-check at https://www.artic.edu/collection?q=monet",
+  "captcha"
+ ],
+ "loggedIn": false,
+ "seconds": 230,
+ "next": [
+  "clify artic",
+  "clify artic search-artworks --q \"monet\""
+ ],
+ "installed": "/home/ubuntu/clify-runs/batch2/home/bin/artic",
+ "explored": {
+  "steps": 15,
+  "recorded": 36,
+  "heldWrites": 0
+ }
+}

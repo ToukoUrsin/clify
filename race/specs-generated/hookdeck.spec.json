@@ -1,0 +1,1418 @@
+{
+  "name": "hookdeck",
+  "startUrl": "https://dashboard.hookdeck.com/",
+  "origin": "https://dashboard.hookdeck.com",
+  "createdAt": "2026-10-18T09:46:42.277Z",
+  "description": "Hookdeck Event Gateway dashboard API: list and inspect connections, sources, destinations, requests, events and issues, and create a connection from a new source to a new HTTP destination.",
+  "commands": [
+    {
+      "name": "list-connections",
+      "summary": "List connections (source -> destination pipelines) in the project, with optional name search and source/destination filters",
+      "method": "GET",
+      "urlTemplate": "https://api.hookdeck.com/2026-09-01/webhooks",
+      "params": [
+        {
+          "name": "teamId",
+          "key": "x-hookdeck-team-id",
+          "in": "header",
+          "required": true,
+          "type": "string",
+          "description": "Project (team) id, e.g. tm_...",
+          "example": "tm_FW0ek6XKAZBc",
+          "context": "teamId"
+        },
+        {
+          "name": "fullName",
+          "key": "full_name",
+          "in": "query",
+          "required": false,
+          "type": "string",
+          "description": "Filter by connection full name ('source -> connection'), partial match"
+        },
+        {
+          "name": "sourceId",
+          "key": "source_id",
+          "in": "query",
+          "required": false,
+          "type": "string",
+          "description": "Only connections from this source id (src_...)"
+        },
+        {
+          "name": "destinationId",
+          "key": "destination_id",
+          "in": "query",
+          "required": false,
+          "type": "string",
+          "description": "Only connections to this destination id (des_...)"
+        },
+        {
+          "name": "disabled",
+          "in": "query",
+          "required": false,
+          "type": "boolean",
+          "description": "Include disabled connections",
+          "default": true
+        },
+        {
+          "name": "orderBy",
+          "key": "order_by",
+          "in": "query",
+          "required": false,
+          "type": "string",
+          "description": "Sort field",
+          "enum": [
+            "created_at",
+            "full_name",
+            "sources.created_at"
+          ],
+          "default": "created_at"
+        },
+        {
+          "name": "dir",
+          "in": "query",
+          "required": false,
+          "type": "string",
+          "description": "Sort direction",
+          "enum": [
+            "asc",
+            "desc"
+          ],
+          "default": "desc"
+        },
+        {
+          "name": "api_limit",
+          "key": "limit",
+          "in": "query",
+          "required": false,
+          "type": "number",
+          "description": "Max results per page (up to 250) (sent to the site as \"limit\"; clify's own --limit only shapes the output)",
+          "default": 100
+        },
+        {
+          "name": "next",
+          "in": "query",
+          "required": false,
+          "type": "string",
+          "description": "Pagination cursor from a previous response"
+        }
+      ],
+      "responseType": "json",
+      "resultPath": "models",
+      "defaultFields": [
+        "id",
+        "full_name",
+        "source.id",
+        "source.url",
+        "destination.id",
+        "destination.config.url",
+        "paused_at",
+        "disabled_at"
+      ],
+      "pagination": {
+        "type": "cursor",
+        "param": "next",
+        "nextPath": "pagination.next"
+      },
+      "mutates": false,
+      "auth": true,
+      "example": {},
+      "source": "E20 GET https://api.hookdeck.com/2026-09-01/webhooks",
+      "verified": true,
+      "sample": "{\"id\":\"web_tgaZwTmFKbx8\",\"full_name\":\"race-gen-1 -> race-gen-3\",\"source.id\":\"src_dg1rfolj53kjuv\",\"source.url\":\"https://hkdk.events/dg1rfolj53kjuv\",\"destination.id\":\"des_rXO6e3TYzkub\",\"destination.config.url\":\"https://example.com/webhooks\",\"paused_at\":null,\"disabled_at\":null}",
+      "resultFields": [
+        "id",
+        "team_id",
+        "updated_at",
+        "created_at",
+        "paused_at",
+        "name",
+        "rules",
+        "description",
+        "destination",
+        "source",
+        "disabled_at",
+        "full_name"
+      ]
+    },
+    {
+      "name": "create-connection",
+      "summary": "Create a new connection along with a new WEBHOOK source and a new HTTP destination. Returns the source's ingest URL.",
+      "method": "POST",
+      "urlTemplate": "https://api.hookdeck.com/2026-09-01/webhooks",
+      "params": [
+        {
+          "name": "teamId",
+          "key": "x-hookdeck-team-id",
+          "in": "header",
+          "required": true,
+          "type": "string",
+          "description": "Project (team) id, e.g. tm_...",
+          "example": "tm_FW0ek6XKAZBc",
+          "context": "teamId"
+        },
+        {
+          "name": "name",
+          "in": "body",
+          "required": true,
+          "type": "string",
+          "description": "Connection name",
+          "example": "my-connection"
+        },
+        {
+          "name": "sourceName",
+          "in": "body",
+          "required": true,
+          "type": "string",
+          "description": "Name for the new source (must be unique in the project)",
+          "example": "my-source"
+        },
+        {
+          "name": "destinationName",
+          "in": "body",
+          "required": true,
+          "type": "string",
+          "description": "Name for the new destination (must be unique in the project)",
+          "example": "my-destination"
+        },
+        {
+          "name": "destinationUrl",
+          "in": "body",
+          "required": true,
+          "type": "string",
+          "description": "Public HTTP(S) URL that events are delivered to",
+          "example": "https://example.com/webhooks"
+        },
+        {
+          "name": "retryStrategy",
+          "in": "body",
+          "required": false,
+          "type": "string",
+          "description": "Retry strategy for failed deliveries",
+          "enum": [
+            "exponential",
+            "linear"
+          ],
+          "default": "exponential"
+        },
+        {
+          "name": "retryInterval",
+          "in": "body",
+          "required": false,
+          "type": "number",
+          "description": "Retry interval in milliseconds",
+          "default": 30000
+        },
+        {
+          "name": "retryCount",
+          "in": "body",
+          "required": false,
+          "type": "number",
+          "description": "Maximum number of automatic retries",
+          "default": 5
+        }
+      ],
+      "bodyTemplate": {
+        "name": "{name}",
+        "description": null,
+        "source": {
+          "name": "{sourceName}",
+          "description": null,
+          "type": "WEBHOOK",
+          "config": {
+            "allowed_http_methods": [
+              "POST",
+              "PUT",
+              "PATCH",
+              "DELETE"
+            ],
+            "custom_response": null,
+            "auth_type": null,
+            "auth": null
+          }
+        },
+        "destination": {
+          "name": "{destinationName}",
+          "description": null,
+          "type": "HTTP",
+          "config": {
+            "path": null,
+            "http_method": null,
+            "url": "{destinationUrl}",
+            "delivery_policy": {
+              "rate": null,
+              "period": null,
+              "groups": null
+            },
+            "delivery_timeout": 60,
+            "path_forwarding_disabled": false,
+            "auth_type": "HOOKDECK_SIGNATURE",
+            "auth": {}
+          }
+        },
+        "rules": [
+          {
+            "type": "retry",
+            "strategy": "{retryStrategy}",
+            "interval": "{retryInterval}",
+            "count": "{retryCount}"
+          }
+        ]
+      },
+      "bodyEncoding": "json",
+      "responseType": "json",
+      "defaultFields": [
+        "id",
+        "full_name",
+        "source.id",
+        "source.name",
+        "source.url",
+        "destination.id",
+        "destination.name",
+        "destination.config.url"
+      ],
+      "mutates": true,
+      "auth": true,
+      "example": {
+        "name": "my-connection",
+        "sourceName": "my-source",
+        "destinationName": "my-destination",
+        "destinationUrl": "https://example.com/webhooks"
+      },
+      "source": "E4 POST https://api.hookdeck.com/2026-09-01/webhooks",
+      "verified": false,
+      "verifyNote": "write: dry-run preview only, not sent"
+    },
+    {
+      "name": "list-sources",
+      "summary": "List sources (inbound webhook endpoints) in the project, with their ingest URLs",
+      "method": "GET",
+      "urlTemplate": "https://api.hookdeck.com/2026-09-01/sources",
+      "params": [
+        {
+          "name": "teamId",
+          "key": "x-hookdeck-team-id",
+          "in": "header",
+          "required": true,
+          "type": "string",
+          "description": "Project (team) id, e.g. tm_...",
+          "example": "tm_FW0ek6XKAZBc",
+          "context": "teamId"
+        },
+        {
+          "name": "name",
+          "in": "query",
+          "required": false,
+          "type": "string",
+          "description": "Exact source name"
+        },
+        {
+          "name": "nameContains",
+          "key": "name[contains]",
+          "in": "query",
+          "required": false,
+          "type": "string",
+          "description": "Source name contains this text"
+        },
+        {
+          "name": "orderBy",
+          "key": "order_by",
+          "in": "query",
+          "required": false,
+          "type": "string",
+          "description": "Sort field",
+          "enum": [
+            "created_at",
+            "name"
+          ],
+          "default": "created_at"
+        },
+        {
+          "name": "dir",
+          "in": "query",
+          "required": false,
+          "type": "string",
+          "description": "Sort direction",
+          "enum": [
+            "asc",
+            "desc"
+          ],
+          "default": "desc"
+        },
+        {
+          "name": "api_limit",
+          "key": "limit",
+          "in": "query",
+          "required": false,
+          "type": "number",
+          "description": "Max results per page (sent to the site as \"limit\"; clify's own --limit only shapes the output)",
+          "default": 50
+        },
+        {
+          "name": "next",
+          "in": "query",
+          "required": false,
+          "type": "string",
+          "description": "Pagination cursor from a previous response"
+        }
+      ],
+      "responseType": "json",
+      "resultPath": "models",
+      "defaultFields": [
+        "id",
+        "name",
+        "type",
+        "url",
+        "authenticated",
+        "disabled_at",
+        "created_at"
+      ],
+      "pagination": {
+        "type": "cursor",
+        "param": "next",
+        "nextPath": "pagination.next"
+      },
+      "mutates": false,
+      "auth": true,
+      "example": {},
+      "source": "E17 GET https://api.hookdeck.com/2026-09-01/sources",
+      "verified": true,
+      "sample": "{\"id\":\"src_dg1rfolj53kjuv\",\"name\":\"race-gen-1\",\"type\":\"WEBHOOK\",\"url\":\"https://hkdk.events/dg1rfolj53kjuv\",\"authenticated\":false,\"disabled_at\":null,\"created_at\":\"2026-10-18T09:42:12.505Z\"}",
+      "resultFields": [
+        "id",
+        "team_id",
+        "updated_at",
+        "created_at",
+        "name",
+        "description",
+        "type",
+        "config",
+        "disabled_at",
+        "url",
+        "authenticated"
+      ]
+    },
+    {
+      "name": "list-destinations",
+      "summary": "List destinations (where events are delivered) in the project",
+      "method": "GET",
+      "urlTemplate": "https://api.hookdeck.com/2026-09-01/destinations",
+      "params": [
+        {
+          "name": "teamId",
+          "key": "x-hookdeck-team-id",
+          "in": "header",
+          "required": true,
+          "type": "string",
+          "description": "Project (team) id, e.g. tm_...",
+          "example": "tm_FW0ek6XKAZBc",
+          "context": "teamId"
+        },
+        {
+          "name": "name",
+          "in": "query",
+          "required": false,
+          "type": "string",
+          "description": "Exact destination name"
+        },
+        {
+          "name": "nameContains",
+          "key": "name[contains]",
+          "in": "query",
+          "required": false,
+          "type": "string",
+          "description": "Destination name contains this text"
+        },
+        {
+          "name": "orderBy",
+          "key": "order_by",
+          "in": "query",
+          "required": false,
+          "type": "string",
+          "description": "Sort field",
+          "enum": [
+            "created_at",
+            "name"
+          ],
+          "default": "created_at"
+        },
+        {
+          "name": "dir",
+          "in": "query",
+          "required": false,
+          "type": "string",
+          "description": "Sort direction",
+          "enum": [
+            "asc",
+            "desc"
+          ],
+          "default": "desc"
+        },
+        {
+          "name": "api_limit",
+          "key": "limit",
+          "in": "query",
+          "required": false,
+          "type": "number",
+          "description": "Max results per page (sent to the site as \"limit\"; clify's own --limit only shapes the output)",
+          "default": 50
+        },
+        {
+          "name": "next",
+          "in": "query",
+          "required": false,
+          "type": "string",
+          "description": "Pagination cursor from a previous response"
+        }
+      ],
+      "responseType": "json",
+      "resultPath": "models",
+      "defaultFields": [
+        "id",
+        "name",
+        "type",
+        "config.url",
+        "config.auth_type",
+        "disabled_at",
+        "created_at"
+      ],
+      "pagination": {
+        "type": "cursor",
+        "param": "next",
+        "nextPath": "pagination.next"
+      },
+      "mutates": false,
+      "auth": true,
+      "example": {},
+      "source": "E18 GET https://api.hookdeck.com/2026-09-01/destinations",
+      "verified": true,
+      "sample": "{\"id\":\"des_rXO6e3TYzkub\",\"name\":\"race-gen-2\",\"type\":\"HTTP\",\"config.url\":\"https://example.com/webhooks\",\"config.auth_type\":\"HOOKDECK_SIGNATURE\",\"disabled_at\":null,\"created_at\":\"2026-10-18T09:42:12.504Z\"}",
+      "resultFields": [
+        "id",
+        "team_id",
+        "updated_at",
+        "created_at",
+        "name",
+        "description",
+        "type",
+        "config",
+        "disabled_at"
+      ]
+    },
+    {
+      "name": "get-connection",
+      "summary": "Get one connection by id (web_...), including its source, destination and rules",
+      "method": "GET",
+      "urlTemplate": "https://api.hookdeck.com/2026-09-01/webhooks/{id}",
+      "params": [
+        {
+          "name": "teamId",
+          "key": "x-hookdeck-team-id",
+          "in": "header",
+          "required": true,
+          "type": "string",
+          "description": "Project (team) id, e.g. tm_...",
+          "example": "tm_FW0ek6XKAZBc",
+          "context": "teamId"
+        },
+        {
+          "name": "id",
+          "in": "path",
+          "required": true,
+          "type": "string",
+          "description": "Connection id, e.g. web_...",
+          "example": "web_tgaZwTmFKbx8"
+        }
+      ],
+      "responseType": "json",
+      "defaultFields": [
+        "id",
+        "full_name",
+        "rules",
+        "source.id",
+        "source.url",
+        "destination.id",
+        "destination.config.url",
+        "paused_at"
+      ],
+      "mutates": false,
+      "auth": true,
+      "example": {
+        "id": "web_tgaZwTmFKbx8"
+      },
+      "source": "E35 GET https://api.hookdeck.com/2026-09-01/webhooks/{id}",
+      "verified": true,
+      "sample": "{\"id\":\"web_tgaZwTmFKbx8\",\"full_name\":\"race-gen-1 -> race-gen-3\",\"rules\":[{\"type\":\"retry\",\"count\":5,\"interval\":30000,\"strategy\":\"exponential\",\"response_status_codes\":null}],\"source.id\":\"src_dg1rfolj53kjuv\",\"source.url\":\"https://hkdk.events/dg1rfolj53kjuv\",\"destination.id\":\"des_rXO6e3TYzkub\",\"destination.config.url\":\"https://example.com/webhooks\",\"paused_at\":n",
+      "resultFields": [
+        "id",
+        "team_id",
+        "updated_at",
+        "created_at",
+        "paused_at",
+        "name",
+        "rules",
+        "description",
+        "destination",
+        "source",
+        "disabled_at",
+        "full_name"
+      ]
+    },
+    {
+      "name": "get-source",
+      "summary": "Get one source by id (src_...), including its ingest URL and auth config",
+      "method": "GET",
+      "urlTemplate": "https://api.hookdeck.com/2026-09-01/sources/{id}?include=config.auth",
+      "params": [
+        {
+          "name": "teamId",
+          "key": "x-hookdeck-team-id",
+          "in": "header",
+          "required": true,
+          "type": "string",
+          "description": "Project (team) id, e.g. tm_...",
+          "example": "tm_FW0ek6XKAZBc",
+          "context": "teamId"
+        },
+        {
+          "name": "id",
+          "in": "path",
+          "required": true,
+          "type": "string",
+          "description": "Source id, e.g. src_...",
+          "example": "src_dg1rfolj53kjuv"
+        }
+      ],
+      "responseType": "json",
+      "defaultFields": [
+        "id",
+        "name",
+        "type",
+        "url",
+        "config",
+        "authenticated",
+        "disabled_at",
+        "created_at"
+      ],
+      "mutates": false,
+      "auth": true,
+      "example": {
+        "id": "src_dg1rfolj53kjuv"
+      },
+      "source": "E36 GET https://api.hookdeck.com/2026-09-01/sources/{id}",
+      "verified": true,
+      "sample": "{\"id\":\"src_dg1rfolj53kjuv\",\"name\":\"race-gen-1\",\"type\":\"WEBHOOK\",\"url\":\"https://hkdk.events/dg1rfolj53kjuv\",\"config\":{\"allowed_http_methods\":[\"POST\",\"PUT\",\"PATCH\",\"DELETE\"],\"custom_response\":null,\"auth\":null,\"auth_type\":null},\"authenticated\":false,\"disabled_at\":null,\"created_at\":\"2026-10-18T09:42:12.505Z\"}",
+      "resultFields": [
+        "id",
+        "team_id",
+        "updated_at",
+        "created_at",
+        "name",
+        "description",
+        "type",
+        "config",
+        "disabled_at",
+        "url",
+        "authenticated"
+      ]
+    },
+    {
+      "name": "get-destination",
+      "summary": "Get one destination by id (des_...), including its URL, auth type and delivery policy",
+      "method": "GET",
+      "urlTemplate": "https://api.hookdeck.com/2026-09-01/destinations/{id}?include=config.auth",
+      "params": [
+        {
+          "name": "teamId",
+          "key": "x-hookdeck-team-id",
+          "in": "header",
+          "required": true,
+          "type": "string",
+          "description": "Project (team) id, e.g. tm_...",
+          "example": "tm_FW0ek6XKAZBc",
+          "context": "teamId"
+        },
+        {
+          "name": "id",
+          "in": "path",
+          "required": true,
+          "type": "string",
+          "description": "Destination id, e.g. des_...",
+          "example": "des_rXO6e3TYzkub"
+        }
+      ],
+      "responseType": "json",
+      "defaultFields": [
+        "id",
+        "name",
+        "type",
+        "config.url",
+        "config.auth_type",
+        "config.delivery_timeout",
+        "config.delivery_policy",
+        "disabled_at"
+      ],
+      "mutates": false,
+      "auth": true,
+      "example": {
+        "id": "des_rXO6e3TYzkub"
+      },
+      "source": "E38 GET https://api.hookdeck.com/2026-09-01/destinations/{id}",
+      "verified": true,
+      "sample": "{\"id\":\"des_rXO6e3TYzkub\",\"name\":\"race-gen-2\",\"type\":\"HTTP\",\"config.url\":\"https://example.com/webhooks\",\"config.auth_type\":\"HOOKDECK_SIGNATURE\",\"config.delivery_timeout\":60,\"config.delivery_policy\":{\"rate\":null,\"period\":\"second\",\"groups\":null},\"disabled_at\":null}",
+      "resultFields": [
+        "id",
+        "team_id",
+        "updated_at",
+        "created_at",
+        "name",
+        "description",
+        "type",
+        "config",
+        "disabled_at"
+      ]
+    },
+    {
+      "name": "count-connections",
+      "summary": "Count connections, optionally only those using a given source or destination",
+      "method": "GET",
+      "urlTemplate": "https://api.hookdeck.com/2026-09-01/webhooks/count",
+      "params": [
+        {
+          "name": "teamId",
+          "key": "x-hookdeck-team-id",
+          "in": "header",
+          "required": true,
+          "type": "string",
+          "description": "Project (team) id, e.g. tm_...",
+          "example": "tm_FW0ek6XKAZBc",
+          "context": "teamId"
+        },
+        {
+          "name": "sourceId",
+          "key": "source_id",
+          "in": "query",
+          "required": false,
+          "type": "string",
+          "description": "Source id (src_...)"
+        },
+        {
+          "name": "destinationId",
+          "key": "destination_id",
+          "in": "query",
+          "required": false,
+          "type": "string",
+          "description": "Destination id (des_...)"
+        }
+      ],
+      "responseType": "json",
+      "defaultFields": [
+        "count"
+      ],
+      "mutates": false,
+      "auth": true,
+      "example": {},
+      "source": "E25 GET https://api.hookdeck.com/2026-09-01/webhooks/count",
+      "verified": true,
+      "sample": "{\"count\":1}",
+      "resultFields": [
+        "count"
+      ]
+    },
+    {
+      "name": "get-event-metrics",
+      "summary": "Get event count metrics over a time range, optionally grouped by status or connection",
+      "method": "GET",
+      "urlTemplate": "https://api.hookdeck.com/2026-09-01/metrics/events",
+      "params": [
+        {
+          "name": "teamId",
+          "key": "x-hookdeck-team-id",
+          "in": "header",
+          "required": true,
+          "type": "string",
+          "description": "Project (team) id, e.g. tm_...",
+          "example": "tm_FW0ek6XKAZBc",
+          "context": "teamId"
+        },
+        {
+          "name": "start",
+          "key": "date_range[start]",
+          "in": "query",
+          "required": true,
+          "type": "string",
+          "description": "ISO datetime start, e.g. 2026-10-17T10:00:00.000Z",
+          "example": "2026-10-17T10:00:00.000Z"
+        },
+        {
+          "name": "end",
+          "key": "date_range[end]",
+          "in": "query",
+          "required": true,
+          "type": "string",
+          "description": "ISO datetime end, e.g. 2026-10-18T10:00:00.000Z",
+          "example": "2026-10-18T10:00:00.000Z"
+        },
+        {
+          "name": "granularity",
+          "in": "query",
+          "required": false,
+          "type": "string",
+          "description": "Time bucket size",
+          "enum": [
+            "1m",
+            "5m",
+            "1h",
+            "1d"
+          ]
+        },
+        {
+          "name": "measure",
+          "key": "measures[]",
+          "in": "query",
+          "required": false,
+          "type": "string",
+          "description": "Metric to compute",
+          "enum": [
+            "count",
+            "max_count_per_second"
+          ],
+          "default": "count"
+        },
+        {
+          "name": "dimension",
+          "key": "dimensions[]",
+          "in": "query",
+          "required": false,
+          "type": "string",
+          "description": "Group results by this dimension",
+          "enum": [
+            "status",
+            "webhook_id"
+          ]
+        },
+        {
+          "name": "connectionId",
+          "key": "filters[webhook_id][]",
+          "in": "query",
+          "required": false,
+          "type": "string",
+          "description": "Only events of this connection id (web_...)"
+        }
+      ],
+      "responseType": "json",
+      "resultPath": "data",
+      "mutates": false,
+      "auth": true,
+      "example": {
+        "start": "2026-10-17T10:00:00.000Z",
+        "end": "2026-10-18T10:00:00.000Z"
+      },
+      "source": "E15 GET https://api.hookdeck.com/2026-09-01/metrics/events",
+      "verified": true,
+      "sample": "{\"time_bucket\":null,\"dimensions\":{},\"metrics\":{\"count\":0}}",
+      "resultFields": [
+        "time_bucket",
+        "dimensions",
+        "metrics"
+      ]
+    },
+    {
+      "name": "list-source-types",
+      "summary": "List supported source types (e.g. WEBHOOK, STRIPE, GITHUB) with their verification fields",
+      "method": "GET",
+      "urlTemplate": "https://api.hookdeck.com/2026-09-01/internal/source-types",
+      "params": [
+        {
+          "name": "teamId",
+          "key": "x-hookdeck-team-id",
+          "in": "header",
+          "required": true,
+          "type": "string",
+          "description": "Project (team) id, e.g. tm_...",
+          "example": "tm_FW0ek6XKAZBc",
+          "context": "teamId"
+        }
+      ],
+      "responseType": "json",
+      "mutates": false,
+      "auth": true,
+      "example": {},
+      "source": "E16 GET https://api.hookdeck.com/2026-09-01/internal/source-types",
+      "verified": true,
+      "sample": "{\"AIPRISE\":{\"label\":\"Aiprise\",\"category\":\"platform\",\"features\":{\"VERIFICATION\":{\"advanced\":false,\"fields\":[\"{…}\"]},\"CUSTOM_HTTP_METHOD\":{\"managed\":true,\"show_in_guided_connection\":true,\"default_value\":[\"POST\"]}},\"icon\":\"aiprise\",\"icon_domain\":\"https://www.aiprise.com/\",\"external_docs_url\":\"https://docs.aiprise.com/docs/callbacks-authentication\"},\"AIRCALL\":{\"",
+      "resultFields": [
+        "AIPRISE",
+        "AIRCALL",
+        "ALCHEMY",
+        "ATTENTIVE",
+        "DOCUSIGN",
+        "INTERCOM",
+        "PUBLISH_API",
+        "WEBHOOK",
+        "HTTP",
+        "MCP_EVENTS",
+        "MANAGED",
+        "HOOKDECK_OUTPOST",
+        "SANITY",
+        "BASELINKER",
+        "BIGCOMMERCE",
+        "CLAUDE",
+        "OPENAI",
+        "POLAR",
+        "BRIDGE_XYZ",
+        "BRIDGE_API",
+        "CHARGEBEE_BILLING",
+        "CHAINDOTS",
+        "CLOUDSIGNAL",
+        "COINBASE",
+        "COURIER",
+        "CURSOR",
+        "MERAKI",
+        "MICROSOFT_GRAPH",
+        "MICROSOFT_SHAREPOINT",
+        "AZURE_EVENT_GRID",
+        "FIREBLOCKS",
+        "FRONTAPP",
+        "ZOOM",
+        "TWITTER",
+        "RECHARGE",
+        "CRONOFY",
+        "RECURLY",
+        "RETELL",
+        "REVOLUT",
+        "RING_CENTRAL"
+      ]
+    },
+    {
+      "name": "list-destination-types",
+      "summary": "List supported destination types (HTTP, CLI, MOCK_API, ...) and their auth options",
+      "method": "GET",
+      "urlTemplate": "https://api.hookdeck.com/2026-09-01/internal/destination-types",
+      "params": [
+        {
+          "name": "teamId",
+          "key": "x-hookdeck-team-id",
+          "in": "header",
+          "required": true,
+          "type": "string",
+          "description": "Project (team) id, e.g. tm_...",
+          "example": "tm_FW0ek6XKAZBc",
+          "context": "teamId"
+        }
+      ],
+      "responseType": "json",
+      "mutates": false,
+      "auth": true,
+      "example": {},
+      "source": "E19 GET https://api.hookdeck.com/2026-09-01/internal/destination-types",
+      "verified": true,
+      "sample": "{\"HTTP\":{\"category\":\"generic\",\"label\":\"HTTP\",\"description\":\"Send events to a public endpoint, e.g. an API\",\"features\":{\"CUSTOM_URL\":{\"required\":true},\"MAX_DELIVERY_RATE\":{\"advanced\":false,\"delivery_groups\":true},\"PATH_FORWARDING\":{\"advanced\":true},\"VERIFICATION\":{\"advanced\":true,\"auth\":{\"HOOKDECK_SIGNATURE\":\"{…}\",\"CUSTOM_SIGNATURE\":\"{…}\",\"BASIC_AUTH\":\"{…}\",\"",
+      "resultFields": [
+        "HTTP",
+        "CLI",
+        "MOCK_API"
+      ]
+    },
+    {
+      "name": "list-projects",
+      "summary": "List the projects (teams) the signed-in user can access; the id is the teamId used by other commands",
+      "method": "GET",
+      "urlTemplate": "https://api.hookdeck.com/2026-09-01/projects",
+      "params": [],
+      "responseType": "json",
+      "defaultFields": [
+        "id",
+        "name",
+        "type",
+        "organization_id",
+        "role",
+        "max_events_per_second"
+      ],
+      "mutates": false,
+      "auth": true,
+      "source": "E7 GET https://api.hookdeck.com/2026-09-01/projects",
+      "verified": true,
+      "sample": "{\"id\":\"tm_FW0ek6XKAZBc\",\"name\":\"Event Gateway Starter\",\"type\":\"event_gateway\",\"organization_id\":\"org_S0a6Scxzp7Vf\",\"role\":\"admin\",\"max_events_per_second\":5}",
+      "resultFields": [
+        "id",
+        "name",
+        "updated_at",
+        "created_at",
+        "is_guest",
+        "static_ip_proxy",
+        "notification_methods",
+        "webhook_source_id",
+        "webhook_topics",
+        "custom_hostnames",
+        "organization_id",
+        "headers_prefix",
+        "private",
+        "max_events_per_second",
+        "notification_preferences",
+        "team_role",
+        "organization_role",
+        "role",
+        "billing_meta",
+        "type",
+        "directory_sync_enabled"
+      ],
+      "example": {}
+    },
+    {
+      "name": "get-me",
+      "summary": "Get the signed-in user's profile, including the last-used project id",
+      "method": "GET",
+      "urlTemplate": "https://api.hookdeck.com/2026-09-01/session/me",
+      "params": [],
+      "responseType": "json",
+      "defaultFields": [
+        "id",
+        "name",
+        "email",
+        "last_team_id",
+        "auth_method",
+        "created_at"
+      ],
+      "mutates": false,
+      "auth": true,
+      "source": "E5 GET https://api.hookdeck.com/2026-09-01/session/me",
+      "verified": true,
+      "sample": "{\"id\":\"usr_yc73QmAvulBQ\",\"name\":\"clify agent\",\"email\":\"clify-agent-b3d326@inkboxmail.com\",\"last_team_id\":\"tm_FW0ek6XKAZBc\",\"auth_method\":\"email\",\"created_at\":\"2026-10-18T06:26:42.219Z\"}",
+      "resultFields": [
+        "id",
+        "email",
+        "name",
+        "github_id",
+        "google_id",
+        "updated_at",
+        "created_at",
+        "disable_alerts",
+        "is_guest",
+        "auth_method",
+        "last_team_id",
+        "sso_idp_id",
+        "workos_profile_id",
+        "workos_org_id",
+        "deleted_at",
+        "last_seen_changelog",
+        "last_dismissed_changelog",
+        "two_factor_enabled",
+        "product_source",
+        "has_password"
+      ],
+      "example": {},
+      "aliases": [
+        "me"
+      ]
+    }
+  ],
+  "blockers": [],
+  "notes": [
+    "Most commands need teamId (the project id, tm_...). Get it from list-projects or get-me's last_team_id.",
+    "In the API, connections are called 'webhooks' (ids web_...). Sources are src_... and destinations are des_...",
+    "List responses are paginated. Pass the returned pagination.next value as --next to get the next page.",
+    "Senders post webhooks to a source's url; Hookdeck then delivers them to the destination's config.url."
+  ],
+  "auth": {
+    "headerNames": []
+  },
+  "dropped": [
+    {
+      "name": "list-requests",
+      "summary": "List inbound HTTP requests received by sources, filterable by source, status and date range",
+      "method": "GET",
+      "urlTemplate": "https://api.hookdeck.com/2026-09-01/requests",
+      "params": [
+        {
+          "name": "teamId",
+          "key": "x-hookdeck-team-id",
+          "in": "header",
+          "required": true,
+          "type": "string",
+          "description": "Project (team) id, e.g. tm_...",
+          "example": "tm_FW0ek6XKAZBc"
+        },
+        {
+          "name": "sourceId",
+          "key": "source_id",
+          "in": "query",
+          "required": false,
+          "type": "string",
+          "description": "Only requests to this source id (src_...)"
+        },
+        {
+          "name": "status",
+          "in": "query",
+          "required": false,
+          "type": "string",
+          "description": "Request status",
+          "enum": [
+            "accepted",
+            "rejected"
+          ]
+        },
+        {
+          "name": "createdAfter",
+          "key": "created_at[gte]",
+          "in": "query",
+          "required": false,
+          "type": "string",
+          "description": "ISO datetime lower bound, e.g. 2026-10-17T10:00:00.000Z"
+        },
+        {
+          "name": "createdBefore",
+          "key": "created_at[lte]",
+          "in": "query",
+          "required": false,
+          "type": "string",
+          "description": "ISO datetime upper bound, e.g. 2026-10-18T10:00:00.000Z"
+        },
+        {
+          "name": "dir",
+          "in": "query",
+          "required": false,
+          "type": "string",
+          "description": "Sort direction by created_at",
+          "enum": [
+            "asc",
+            "desc"
+          ],
+          "default": "desc"
+        },
+        {
+          "name": "api_limit",
+          "key": "limit",
+          "in": "query",
+          "required": false,
+          "type": "number",
+          "description": "Max results per page (sent to the site as \"limit\"; clify's own --limit only shapes the output)",
+          "default": 100
+        },
+        {
+          "name": "next",
+          "in": "query",
+          "required": false,
+          "type": "string",
+          "description": "Pagination cursor from a previous response"
+        }
+      ],
+      "responseType": "json",
+      "resultPath": "models",
+      "defaultFields": [
+        "id",
+        "source_id",
+        "status",
+        "rejection_cause",
+        "events_count",
+        "created_at"
+      ],
+      "pagination": {
+        "type": "cursor",
+        "param": "next",
+        "nextPath": "pagination.next"
+      },
+      "mutates": false,
+      "auth": true,
+      "example": {
+        "teamId": "tm_FW0ek6XKAZBc"
+      },
+      "source": "E29 GET https://api.hookdeck.com/2026-09-01/requests",
+      "verified": false,
+      "verifyNote": "empty list: the example args returned nothing or the selector/resultPath is wrong"
+    },
+    {
+      "name": "list-events",
+      "summary": "List events (delivery jobs per connection), filterable by connection and date range",
+      "method": "GET",
+      "urlTemplate": "https://api.hookdeck.com/2026-09-01/events",
+      "params": [
+        {
+          "name": "teamId",
+          "key": "x-hookdeck-team-id",
+          "in": "header",
+          "required": true,
+          "type": "string",
+          "description": "Project (team) id, e.g. tm_...",
+          "example": "tm_FW0ek6XKAZBc"
+        },
+        {
+          "name": "connectionId",
+          "key": "webhook_id[0]",
+          "in": "query",
+          "required": false,
+          "type": "string",
+          "description": "Only events for this connection id (web_...)"
+        },
+        {
+          "name": "createdAfter",
+          "key": "created_at[gte]",
+          "in": "query",
+          "required": false,
+          "type": "string",
+          "description": "ISO datetime lower bound, e.g. 2026-10-17T10:00:00.000Z"
+        },
+        {
+          "name": "createdBefore",
+          "key": "created_at[lte]",
+          "in": "query",
+          "required": false,
+          "type": "string",
+          "description": "ISO datetime upper bound, e.g. 2026-10-18T10:00:00.000Z"
+        },
+        {
+          "name": "dir",
+          "in": "query",
+          "required": false,
+          "type": "string",
+          "description": "Sort direction by created_at",
+          "enum": [
+            "asc",
+            "desc"
+          ],
+          "default": "desc"
+        },
+        {
+          "name": "api_limit",
+          "key": "limit",
+          "in": "query",
+          "required": false,
+          "type": "number",
+          "description": "Max results per page (sent to the site as \"limit\"; clify's own --limit only shapes the output)",
+          "default": 100
+        },
+        {
+          "name": "next",
+          "in": "query",
+          "required": false,
+          "type": "string",
+          "description": "Pagination cursor from a previous response"
+        }
+      ],
+      "responseType": "json",
+      "resultPath": "models",
+      "defaultFields": [
+        "id",
+        "webhook_id",
+        "source_id",
+        "destination_id",
+        "status",
+        "attempts",
+        "response_status",
+        "created_at"
+      ],
+      "pagination": {
+        "type": "cursor",
+        "param": "next",
+        "nextPath": "pagination.next"
+      },
+      "mutates": false,
+      "auth": true,
+      "example": {
+        "teamId": "tm_FW0ek6XKAZBc"
+      },
+      "source": "E30 GET https://api.hookdeck.com/2026-09-01/events",
+      "verified": false,
+      "verifyNote": "empty list: the example args returned nothing or the selector/resultPath is wrong"
+    },
+    {
+      "name": "list-issues",
+      "summary": "List delivery/transformation issues in the project by status",
+      "method": "GET",
+      "urlTemplate": "https://api.hookdeck.com/2026-09-01/issues",
+      "params": [
+        {
+          "name": "teamId",
+          "key": "x-hookdeck-team-id",
+          "in": "header",
+          "required": true,
+          "type": "string",
+          "description": "Project (team) id, e.g. tm_...",
+          "example": "tm_FW0ek6XKAZBc"
+        },
+        {
+          "name": "status",
+          "in": "query",
+          "required": false,
+          "type": "string",
+          "description": "Issue status",
+          "enum": [
+            "OPENED",
+            "ACKNOWLEDGED",
+            "RESOLVED",
+            "IGNORED"
+          ],
+          "default": "OPENED"
+        },
+        {
+          "name": "orderBy",
+          "key": "order_by",
+          "in": "query",
+          "required": false,
+          "type": "string",
+          "description": "Sort field",
+          "enum": [
+            "first_seen_at",
+            "last_seen_at"
+          ],
+          "default": "first_seen_at"
+        },
+        {
+          "name": "dir",
+          "in": "query",
+          "required": false,
+          "type": "string",
+          "description": "Sort direction",
+          "enum": [
+            "asc",
+            "desc"
+          ],
+          "default": "desc"
+        },
+        {
+          "name": "api_limit",
+          "key": "limit",
+          "in": "query",
+          "required": false,
+          "type": "number",
+          "description": "Max results per page (sent to the site as \"limit\"; clify's own --limit only shapes the output)",
+          "default": 50
+        },
+        {
+          "name": "next",
+          "in": "query",
+          "required": false,
+          "type": "string",
+          "description": "Pagination cursor from a previous response"
+        }
+      ],
+      "responseType": "json",
+      "resultPath": "models",
+      "defaultFields": [
+        "id",
+        "type",
+        "status",
+        "first_seen_at",
+        "last_seen_at"
+      ],
+      "pagination": {
+        "type": "cursor",
+        "param": "next",
+        "nextPath": "pagination.next"
+      },
+      "mutates": false,
+      "auth": true,
+      "example": {
+        "teamId": "tm_FW0ek6XKAZBc"
+      },
+      "source": "E41 GET https://api.hookdeck.com/2026-09-01/issues",
+      "verified": false,
+      "verifyNote": "empty list: the example args returned nothing or the selector/resultPath is wrong"
+    },
+    {
+      "name": "list-transformations",
+      "summary": "List transformations (JS payload transforms) in the project",
+      "method": "GET",
+      "urlTemplate": "https://api.hookdeck.com/2026-09-01/transformations",
+      "params": [
+        {
+          "name": "teamId",
+          "key": "x-hookdeck-team-id",
+          "in": "header",
+          "required": true,
+          "type": "string",
+          "description": "Project (team) id, e.g. tm_...",
+          "example": "tm_FW0ek6XKAZBc"
+        },
+        {
+          "name": "dir",
+          "in": "query",
+          "required": false,
+          "type": "string",
+          "description": "Sort direction by created_at",
+          "enum": [
+            "asc",
+            "desc"
+          ],
+          "default": "desc"
+        },
+        {
+          "name": "api_limit",
+          "key": "limit",
+          "in": "query",
+          "required": false,
+          "type": "number",
+          "description": "Max results per page (sent to the site as \"limit\"; clify's own --limit only shapes the output)",
+          "default": 50
+        },
+        {
+          "name": "next",
+          "in": "query",
+          "required": false,
+          "type": "string",
+          "description": "Pagination cursor from a previous response"
+        }
+      ],
+      "responseType": "json",
+      "resultPath": "models",
+      "defaultFields": [
+        "id",
+        "name",
+        "created_at",
+        "updated_at"
+      ],
+      "pagination": {
+        "type": "cursor",
+        "param": "next",
+        "nextPath": "pagination.next"
+      },
+      "mutates": false,
+      "auth": true,
+      "example": {
+        "teamId": "tm_FW0ek6XKAZBc"
+      },
+      "source": "E26 GET https://api.hookdeck.com/2026-09-01/transformations",
+      "verified": false,
+      "verifyNote": "empty list: the example args returned nothing or the selector/resultPath is wrong"
+    },
+    {
+      "name": "list-cli-sessions",
+      "summary": "List active Hookdeck CLI sessions forwarding events to localhost",
+      "method": "GET",
+      "urlTemplate": "https://api.hookdeck.com/2026-09-01/cli-sessions?active=true",
+      "params": [
+        {
+          "name": "teamId",
+          "key": "x-hookdeck-team-id",
+          "in": "header",
+          "required": true,
+          "type": "string",
+          "description": "Project (team) id, e.g. tm_...",
+          "example": "tm_FW0ek6XKAZBc"
+        }
+      ],
+      "responseType": "json",
+      "mutates": false,
+      "auth": true,
+      "example": {
+        "teamId": "tm_FW0ek6XKAZBc"
+      },
+      "source": "E21 GET https://api.hookdeck.com/2026-09-01/cli-sessions",
+      "verified": false,
+      "verifyNote": "empty list: the example args returned nothing or the selector/resultPath is wrong"
+    }
+  ],
+  "context": {
+    "teamId": {
+      "value": "tm_FW0ek6XKAZBc",
+      "from": "same value on every recorded request (list-connections, create-connection, list-sources)"
+    }
+  },
+  "generated": {
+    "by": "clify add",
+    "model": "claude-opus-5-5",
+    "exploredSteps": 0,
+    "recorded": 408,
+    "verifiedAt": "2026-10-18T09:48:30.137Z",
+    "seconds": 108
+  }
+}

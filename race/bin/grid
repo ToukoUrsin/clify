@@ -1,0 +1,44 @@
+#!/usr/bin/env bash
+# Twelve agents at once: for each of the six signed-in tasks, a browser agent and a
+# clify agent race on that one site. One tile per agent (race/web/grid.html).
+#   race/bin/grid            live (run on the Linux machine; race/bin/demo grid tunnels it)
+#   race/bin/grid replay     replay of the recorded grid run (race/results/grid-replay.txt)
+set -euo pipefail
+cd "$(dirname "$0")/../.."
+PORT=${PORT:-8870}
+url="http://127.0.0.1:${VIEW_PORT:-$PORT}"
+if [ "${1:-live}" = replay ]; then
+  run=$(cat race/results/grid-replay.txt)
+  echo "REPLAY of $run  ->  $url"
+  exec env PORT=$PORT RACE_REPLAY_SPEED=${RACE_REPLAY_SPEED:-1} node race/grid-server.mjs --replay "$run"
+fi
+if ss -ltn "sport = :$PORT" | grep -q LISTEN; then echo "port $PORT is busy (an old dashboard?): pkill -f 'race/(grid-)?server.mjs' and retry" >&2; exit 1; fi
+node race/accounts/cleanup.mjs >/tmp/race-cleanup.log 2>&1 || { cat /tmp/race-cleanup.log; echo "preflight failed: fix the session above or run: race/bin/grid replay" >&2; exit 1; }
+grid=race/runs/grid-$(date -u +%Y-%m-%dT%H-%M-%S)
+mkdir -p "$grid"
+# One task file per site; grid.json gives the tile order and, once started, the grid clock's zero.
+node -e '
+const fs = require("fs"), [src, dir] = process.argv.slice(1), set = JSON.parse(fs.readFileSync(src, "utf8"));
+for (const t of set.tasks) fs.writeFileSync(`${dir}/${t.id}.tasks.json`, JSON.stringify({...set, tasks: [t]}, null, 2));
+fs.writeFileSync(`${dir}/grid.json`, JSON.stringify({sites: set.tasks.map(t => t.id), labels: Object.fromEntries(set.tasks.map(t => [t.id, t.label])), startedAt: null}));
+' race/tasks/accounts.json "$grid"
+PORT=$PORT node race/grid-server.mjs --dir "$grid" >/dev/null & srv=$!
+pids=()
+trap 'kill $srv 2>/dev/null || true; for p in "${pids[@]}"; do kill -INT $p 2>/dev/null || true; done' EXIT
+echo
+echo "  Grid: $url"
+echo
+echo "  Open it, then press Space in the page (or Enter here) to start 12 agents..."
+until [ -f "$grid/start" ]; do read -t 1 -r _ && break || { [ -t 0 ] || sleep 0.5; }; done
+node -e 'const fs=require("fs"),f=process.argv[1],g=JSON.parse(fs.readFileSync(f,"utf8"));g.startedAt=Date.now();fs.writeFileSync(f,JSON.stringify(g))' "$grid/grid.json"
+tag=$(date -u +%H%M)
+i=0
+for site in $(node -e 'console.log(JSON.parse(require("fs").readFileSync(process.argv[1],"utf8")).sites.join(" "))' "$grid/grid.json"); do
+  RACE_TASKS="$grid/$site.tasks.json" RACE_RUN_DIR="$grid/$site" RACE_SKIP_PREFLIGHT=1 RACE_TAG="$tag$i" RACE_BROWSER_MODE=ui \
+    nice -n 10 node race/run.mjs >"$grid/$site.log" 2>&1 & pids+=($!)
+  i=$((i+1))
+done
+fails=0; for p in "${pids[@]}"; do wait "$p" || fails=$((fails+1)); done
+pids=()
+echo "All 12 agents finished ($fails run errors; logs in $grid/*.log) and cleaned up. Grid stays up on $url until Ctrl-C."
+while read -r _; do :; done

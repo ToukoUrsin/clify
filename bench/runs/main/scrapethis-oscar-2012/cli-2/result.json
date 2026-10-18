@@ -1,0 +1,42 @@
+{
+ "task": "scrapethis-oscar-2012",
+ "site": "scrapethis",
+ "mode": "cli",
+ "trial": 2,
+ "tag": "main",
+ "ok": true,
+ "why": "all expected values present",
+ "answer": "Argo, 3 awards",
+ "expected": {
+  "expect": [
+   "Argo"
+  ],
+  "number": 3,
+  "detail": {
+   "title": "Argo",
+   "year": 2012,
+   "awards": 3,
+   "nominations": 7,
+   "best_picture": true
+  }
+ },
+ "wallMs": 8238,
+ "apiMs": 7314,
+ "turns": 3,
+ "toolCalls": 2,
+ "tokens": {
+  "input": 6,
+  "output": 259,
+  "cacheWrite": 3840,
+  "cacheRead": 10627,
+  "total": 14732
+ },
+ "costUsd": 0.0265294,
+ "models": [
+  "claude-opus-5-5"
+ ],
+ "exitCode": 0,
+ "timedOut": false,
+ "subtype": "success",
+ "startedAt": "2026-10-17T23:21:33.403Z"
+}

@@ -1,0 +1,98 @@
+{
+ "ok": true,
+ "site": "dev-to",
+ "url": "https://dev.to/",
+ "commands": [
+  {
+   "name": "list-articles",
+   "summary": "List published articles. Filter by one tag, any of several tags, excluded tags, author or organization username, feed state (fresh/rising), top articles of the last N days, or series (collection_id).",
+   "verified": true
+  },
+  {
+   "name": "list-latest-articles",
+   "summary": "List the newest published articles, newest first.",
+   "verified": true
+  },
+  {
+   "name": "get-article",
+   "summary": "Get one article by numeric id, with metadata, tags, author and full body (body_html/body_markdown).",
+   "verified": true
+  },
+  {
+   "name": "get-article-by-path",
+   "summary": "Get one article by author username and slug (the two parts of its dev.to URL path).",
+   "verified": true
+  },
+  {
+   "name": "list-comments",
+   "summary": "List all comment threads on an article. Each comment has nested replies in children.",
+   "verified": true
+  },
+  {
+   "name": "get-comment",
+   "summary": "Get one comment and all of its nested replies by comment id_code.",
+   "verified": true
+  },
+  {
+   "name": "get-comment-reaction-counts",
+   "summary": "Get public reaction counts for the comments of an article, as a list of {id: numeric comment id, count}.",
+   "verified": true
+  },
+  {
+   "name": "get-user-by-username",
+   "summary": "Get a user's public profile by username.",
+   "verified": true
+  },
+  {
+   "name": "get-user",
+   "summary": "Get a user's public profile by numeric user id.",
+   "verified": true
+  },
+  {
+   "name": "get-organization",
+   "summary": "Get an organization's profile by its username.",
+   "verified": true
+  },
+  {
+   "name": "list-organization-articles",
+   "summary": "List articles published under an organization.",
+   "verified": true
+  },
+  {
+   "name": "list-organization-users",
+   "summary": "List the members of an organization.",
+   "verified": true
+  },
+  {
+   "name": "list-tags",
+   "summary": "List tags, most popular first.",
+   "verified": true
+  },
+  {
+   "name": "list-podcast-episodes",
+   "summary": "List recent podcast episodes hosted on DEV.",
+   "verified": true
+  },
+  {
+   "name": "list-videos",
+   "summary": "List recent articles that contain a video.",
+   "verified": true
+  }
+ ],
+ "verified": 15,
+ "writes": 0,
+ "dropped": [],
+ "blockers": [],
+ "loggedIn": false,
+ "seconds": 185,
+ "next": [
+  "clify dev",
+  "clify dev list-articles --tag \"react\" --per_page \"10\""
+ ],
+ "installed": "/home/ubuntu/clify-runs/batch2/home/bin/dev",
+ "explored": {
+  "steps": 20,
+  "recorded": 51,
+  "heldWrites": 8
+ }
+}

@@ -1,0 +1,36 @@
+{
+ "task": "ubuntu-lts-supported",
+ "site": "endoflife",
+ "mode": "curl",
+ "trial": 2,
+ "tag": "curl",
+ "ok": true,
+ "why": "all expected values present",
+ "answer": "26.04, 24.04, 22.04",
+ "expected": {
+  "expect": [
+   "26.04",
+   "24.04",
+   "22.04"
+  ]
+ },
+ "wallMs": 18058,
+ "apiMs": 15916,
+ "turns": 5,
+ "toolCalls": 4,
+ "tokens": {
+  "input": 10,
+  "output": 1311,
+  "cacheWrite": 5730,
+  "cacheRead": 24690,
+  "total": 31741
+ },
+ "costUsd": 0.059848,
+ "models": [
+  "claude-opus-5-5"
+ ],
+ "exitCode": 0,
+ "timedOut": false,
+ "subtype": "success",
+ "startedAt": "2026-10-18T12:44:19.741Z"
+}

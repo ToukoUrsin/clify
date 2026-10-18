@@ -1,0 +1,586 @@
+{
+ "name": "rubygems",
+ "startUrl": "https://rubygems.org/",
+ "origin": "https://rubygems.org",
+ "createdAt": "2026-10-18T07:06:33.851Z",
+ "description": "RubyGems.org, the Ruby community gem host. This CLI searches gems and looks up gem metadata, versions, dependencies, reverse dependencies, owners, profiles, download counts and release feeds through the public RubyGems.org API, plus a few server-rendered listing pages.",
+ "commands": [
+  {
+   "name": "search-gems",
+   "summary": "Search gems by keyword (name/description); 30 results per page",
+   "method": "GET",
+   "urlTemplate": "/api/v1/search.json",
+   "params": [
+    {
+     "name": "query",
+     "in": "query",
+     "required": true,
+     "type": "string",
+     "description": "Search keywords, e.g. 'json parser'",
+     "example": "json parser"
+    },
+    {
+     "name": "page",
+     "in": "query",
+     "required": false,
+     "type": "number",
+     "description": "Result page number (1-based)",
+     "default": 1,
+     "example": "2"
+    }
+   ],
+   "responseType": "json",
+   "defaultFields": [
+    "name",
+    "version",
+    "info",
+    "downloads",
+    "version_downloads",
+    "authors",
+    "homepage_uri",
+    "project_uri"
+   ],
+   "pagination": {
+    "type": "page",
+    "param": "page"
+   },
+   "mutates": false,
+   "example": {
+    "query": "json parser"
+   },
+   "source": "E4 GET https://rubygems.org/api/v1/search.json",
+   "verified": true
+  },
+  {
+   "name": "autocomplete-gem-names",
+   "summary": "Suggest gem names that start with or match a partial query (returns up to 30 names)",
+   "method": "GET",
+   "urlTemplate": "/api/v1/search/autocomplete",
+   "params": [
+    {
+     "name": "query",
+     "in": "query",
+     "required": true,
+     "type": "string",
+     "description": "Partial gem name",
+     "example": "json"
+    }
+   ],
+   "responseType": "json",
+   "mutates": false,
+   "example": {
+    "query": "json"
+   },
+   "source": "E2 GET https://rubygems.org/api/v1/search/autocomplete",
+   "verified": true
+  },
+  {
+   "name": "get-gem",
+   "summary": "Get metadata for a gem's latest version: downloads, description, licenses, links, runtime/development dependencies",
+   "method": "GET",
+   "urlTemplate": "/api/v1/gems/{name}.json",
+   "params": [
+    {
+     "name": "name",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Gem name, e.g. oj",
+     "example": "oj"
+    }
+   ],
+   "responseType": "json",
+   "defaultFields": [
+    "name",
+    "version",
+    "version_created_at",
+    "downloads",
+    "info",
+    "licenses",
+    "source_code_uri",
+    "dependencies"
+   ],
+   "mutates": false,
+   "example": {
+    "name": "oj"
+   },
+   "source": "E5 GET https://rubygems.org/api/v1/gems/oj.json",
+   "verified": true
+  },
+  {
+   "name": "list-gem-versions",
+   "summary": "List every published version of a gem, newest first, with dates, download counts and Ruby requirements",
+   "method": "GET",
+   "urlTemplate": "/api/v1/versions/{name}.json",
+   "params": [
+    {
+     "name": "name",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Gem name",
+     "example": "oj"
+    }
+   ],
+   "responseType": "json",
+   "defaultFields": [
+    "number",
+    "created_at",
+    "downloads_count",
+    "platform",
+    "prerelease",
+    "ruby_version",
+    "licenses",
+    "sha"
+   ],
+   "mutates": false,
+   "example": {
+    "name": "oj"
+   },
+   "source": "E6 GET https://rubygems.org/api/v1/versions/oj.json",
+   "verified": true
+  },
+  {
+   "name": "get-latest-version",
+   "summary": "Get only the latest version number of a gem",
+   "method": "GET",
+   "urlTemplate": "/api/v1/versions/{name}/latest.json",
+   "params": [
+    {
+     "name": "name",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Gem name",
+     "example": "oj"
+    }
+   ],
+   "responseType": "json",
+   "mutates": false,
+   "example": {
+    "name": "oj"
+   },
+   "source": "E13 GET https://rubygems.org/api/v1/versions/oj/latest.json",
+   "verified": true
+  },
+  {
+   "name": "get-gem-version",
+   "summary": "Get full details of one specific gem version: dependencies, checksums, required Ruby, downloads",
+   "method": "GET",
+   "urlTemplate": "/api/v2/rubygems/{name}/versions/{version}.json",
+   "params": [
+    {
+     "name": "name",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Gem name",
+     "example": "oj"
+    },
+    {
+     "name": "version",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Exact version number, e.g. 3.17.7",
+     "example": "3.17.7"
+    }
+   ],
+   "responseType": "json",
+   "defaultFields": [
+    "name",
+    "number",
+    "created_at",
+    "downloads_count",
+    "ruby_version",
+    "licenses",
+    "sha",
+    "dependencies"
+   ],
+   "mutates": false,
+   "example": {
+    "name": "oj",
+    "version": "3.17.7"
+   },
+   "source": "E14 GET https://rubygems.org/api/v2/rubygems/oj/versions/3.17.7.json",
+   "verified": true
+  },
+  {
+   "name": "get-version-downloads",
+   "summary": "Get total gem downloads and downloads of one specific version",
+   "method": "GET",
+   "urlTemplate": "/api/v1/downloads/{name}-{version}.json",
+   "params": [
+    {
+     "name": "name",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Gem name",
+     "example": "oj"
+    },
+    {
+     "name": "version",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Exact version number",
+     "example": "3.17.7"
+    }
+   ],
+   "responseType": "json",
+   "mutates": false,
+   "example": {
+    "name": "oj",
+    "version": "3.17.7"
+   },
+   "source": "E11 GET https://rubygems.org/api/v1/downloads/oj-3.17.7.json",
+   "verified": true
+  },
+  {
+   "name": "list-reverse-dependencies",
+   "summary": "List the names of all gems whose versions depend on the given gem (full list, names only)",
+   "method": "GET",
+   "urlTemplate": "/api/v1/gems/{name}/reverse_dependencies.json",
+   "params": [
+    {
+     "name": "name",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Gem name",
+     "example": "oj"
+    }
+   ],
+   "responseType": "json",
+   "mutates": false,
+   "example": {
+    "name": "oj"
+   },
+   "source": "E7 GET https://rubygems.org/api/v1/gems/oj/reverse_dependencies.json",
+   "verified": true
+  },
+  {
+   "name": "search-reverse-dependencies",
+   "summary": "Browse or filter gems whose latest version requires the given gem, with their version, date and downloads",
+   "method": "GET",
+   "urlTemplate": "/gems/{name}/reverse_dependencies",
+   "params": [
+    {
+     "name": "name",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Gem name",
+     "example": "oj"
+    },
+    {
+     "name": "query",
+     "key": "rdeps_query",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Optional filter on dependent gem names, e.g. elastic",
+     "example": "elastic"
+    },
+    {
+     "name": "page",
+     "in": "query",
+     "required": false,
+     "type": "number",
+     "description": "Page number (1-based)",
+     "default": 1
+    }
+   ],
+   "responseType": "html",
+   "extract": {
+    "list": "table.w-full tbody tr",
+    "fields": {
+     "name": "td a",
+     "url": "td a@href",
+     "version": "td code",
+     "released": "td p",
+     "downloads": "td a span"
+    }
+   },
+   "defaultFields": [
+    "name",
+    "version",
+    "released",
+    "downloads",
+    "url"
+   ],
+   "pagination": {
+    "type": "page",
+    "param": "page"
+   },
+   "mutates": false,
+   "example": {
+    "name": "oj"
+   },
+   "source": "E16",
+   "verified": true
+  },
+  {
+   "name": "list-gem-owners",
+   "summary": "List the owners (user handles and roles) of a gem",
+   "method": "GET",
+   "urlTemplate": "/api/v1/gems/{name}/owners.json",
+   "params": [
+    {
+     "name": "name",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Gem name",
+     "example": "oj"
+    }
+   ],
+   "responseType": "json",
+   "defaultFields": [
+    "handle",
+    "role",
+    "id"
+   ],
+   "mutates": false,
+   "example": {
+    "name": "oj"
+   },
+   "source": "E12 GET https://rubygems.org/api/v1/gems/oj/owners.json",
+   "verified": true
+  },
+  {
+   "name": "list-owner-gems",
+   "summary": "List all gems owned by a RubyGems user handle",
+   "method": "GET",
+   "urlTemplate": "/api/v1/owners/{handle}/gems.json",
+   "params": [
+    {
+     "name": "handle",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "RubyGems user handle, e.g. ohler",
+     "example": "ohler"
+    }
+   ],
+   "responseType": "json",
+   "defaultFields": [
+    "name",
+    "version",
+    "version_created_at",
+    "downloads",
+    "info",
+    "licenses",
+    "source_code_uri"
+   ],
+   "mutates": false,
+   "example": {
+    "handle": "ohler"
+   },
+   "source": "E8 GET https://rubygems.org/api/v1/owners/ohler/gems.json",
+   "verified": true
+  },
+  {
+   "name": "get-profile",
+   "summary": "Get a RubyGems user's public profile (id and handle)",
+   "method": "GET",
+   "urlTemplate": "/api/v1/profiles/{handle}.json",
+   "params": [
+    {
+     "name": "handle",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "RubyGems user handle",
+     "example": "ohler"
+    }
+   ],
+   "responseType": "json",
+   "mutates": false,
+   "example": {
+    "handle": "ohler"
+   },
+   "source": "E15 GET https://rubygems.org/api/v1/profiles/ohler.json",
+   "verified": true
+  },
+  {
+   "name": "list-latest-gems",
+   "summary": "List the most recently added gems (brand-new gem names)",
+   "method": "GET",
+   "urlTemplate": "/api/v1/activity/latest.json",
+   "params": [],
+   "responseType": "json",
+   "defaultFields": [
+    "name",
+    "version",
+    "version_created_at",
+    "info",
+    "authors",
+    "downloads",
+    "project_uri"
+   ],
+   "mutates": false,
+   "source": "E9 GET https://rubygems.org/api/v1/activity/latest.json",
+   "verified": true
+  },
+  {
+   "name": "list-just-updated-gems",
+   "summary": "List gems that just had a new version pushed",
+   "method": "GET",
+   "urlTemplate": "/api/v1/activity/just_updated.json",
+   "params": [],
+   "responseType": "json",
+   "defaultFields": [
+    "name",
+    "version",
+    "version_created_at",
+    "info",
+    "authors",
+    "downloads",
+    "project_uri"
+   ],
+   "mutates": false,
+   "source": "E10 GET https://rubygems.org/api/v1/activity/just_updated.json",
+   "verified": true
+  },
+  {
+   "name": "list-new-releases",
+   "summary": "List recent releases across all gems (10 per page)",
+   "method": "GET",
+   "urlTemplate": "/releases",
+   "params": [
+    {
+     "name": "page",
+     "in": "query",
+     "required": false,
+     "type": "number",
+     "description": "Page number (1-based)",
+     "default": 1
+    }
+   ],
+   "responseType": "html",
+   "extract": {
+    "list": "article a.flex.flex-col",
+    "fields": {
+     "name": "h2",
+     "version": "code",
+     "summary": "p",
+     "downloads": "span.flex span",
+     "url": "@href"
+    }
+   },
+   "defaultFields": [
+    "name",
+    "version",
+    "summary",
+    "downloads",
+    "url"
+   ],
+   "pagination": {
+    "type": "page",
+    "param": "page"
+   },
+   "mutates": false,
+   "source": "E24 GET https://rubygems.org/releases",
+   "verified": true
+  },
+  {
+   "name": "list-popular-releases",
+   "summary": "List recent releases of popular gems, ranked by total downloads (10 per page)",
+   "method": "GET",
+   "urlTemplate": "/releases/popular",
+   "params": [
+    {
+     "name": "page",
+     "in": "query",
+     "required": false,
+     "type": "number",
+     "description": "Page number (1-based)",
+     "default": 1,
+     "example": "2"
+    }
+   ],
+   "responseType": "html",
+   "extract": {
+    "list": "article a.flex.flex-col",
+    "fields": {
+     "name": "h2",
+     "version": "code",
+     "summary": "p",
+     "downloads": "span.flex span",
+     "url": "@href"
+    }
+   },
+   "defaultFields": [
+    "name",
+    "version",
+    "summary",
+    "downloads",
+    "url"
+   ],
+   "pagination": {
+    "type": "page",
+    "param": "page"
+   },
+   "mutates": false,
+   "source": "E17 GET https://rubygems.org/releases/popular",
+   "verified": true
+  },
+  {
+   "name": "list-most-downloaded",
+   "summary": "List the all-time most downloaded gems with download counts (10 per page)",
+   "method": "GET",
+   "urlTemplate": "/stats",
+   "params": [
+    {
+     "name": "page",
+     "in": "query",
+     "required": false,
+     "type": "number",
+     "description": "Page number (1-based)",
+     "default": 1
+    }
+   ],
+   "responseType": "html",
+   "extract": {
+    "list": "article div.flex.flex-col > div",
+    "fields": {
+     "name": "h3 a",
+     "url": "h3 a@href",
+     "downloads": "span.text-b4"
+    }
+   },
+   "defaultFields": [
+    "name",
+    "downloads",
+    "url"
+   ],
+   "pagination": {
+    "type": "page",
+    "param": "page"
+   },
+   "mutates": false,
+   "source": "E25 GET https://rubygems.org/stats",
+   "verified": true
+  }
+ ],
+ "blockers": [],
+ "notes": [
+  "All commands are public reads and need no login. The HTML /search and /gems listing pages are disallowed by robots.txt, so use search-gems (JSON API) for searching.",
+  "Gem names are case-sensitive slugs, for example 'oj' or 'rails'. Version numbers must be exact strings such as '3.17.7'. Use get-latest-version or list-gem-versions to find them.",
+  "get-gem returns the latest version's dependencies. For the dependencies of an older version, use get-gem-version.",
+  "list-reverse-dependencies returns a flat array of gem names that can be very long (871 for oj). Use search-reverse-dependencies to filter by name and to get downloads and versions.",
+  "Download counts in the HTML listings are display strings (for example '+77.6 Million Downloads' or '3,845,448,471'), not numbers.",
+  "Gem detail pages request GitHub repository info from api.github.com. That is a third-party call and is not included here."
+ ],
+ "dropped": [],
+ "generated": {
+  "by": "clify add",
+  "model": "claude-opus-5-5",
+  "exploredSteps": 15,
+  "recorded": 33,
+  "verifiedAt": "2026-10-18T07:07:45.341Z",
+  "seconds": 173
+ }
+}

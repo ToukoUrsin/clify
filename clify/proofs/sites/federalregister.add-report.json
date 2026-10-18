@@ -1,0 +1,90 @@
+{
+ "ok": true,
+ "site": "federalregister",
+ "url": "https://www.federalregister.gov/",
+ "commands": [
+  {
+   "name": "search-documents",
+   "summary": "Search published Federal Register documents by keyword, with optional filters for type, agency, publication date and significance, plus sort and paging",
+   "verified": true
+  },
+  {
+   "name": "get-document",
+   "summary": "Get full metadata for one Federal Register document by its document number: abstract, action, dates, CFR references, dockets and full-text links",
+   "verified": true
+  },
+  {
+   "name": "get-documents",
+   "summary": "Get metadata for several Federal Register documents at once, given a comma-separated list of document numbers",
+   "verified": true
+  },
+  {
+   "name": "count-documents-by-facet",
+   "summary": "Count documents matching a search, grouped by agency, document type, topic, section or publication period (facet counts)",
+   "verified": true
+  },
+  {
+   "name": "export-documents-csv",
+   "summary": "Export documents matching a search as CSV text (document number, title, type, date, agencies, citation, URLs)",
+   "verified": true
+  },
+  {
+   "name": "list-agencies",
+   "summary": "List all Federal Register agencies with id, slug, short name, parent and child agencies",
+   "verified": true
+  },
+  {
+   "name": "get-agency",
+   "summary": "Get one agency's details (description, short name, logo, parent/child agencies, recent-documents link) by slug or numeric id",
+   "verified": true
+  },
+  {
+   "name": "list-current-public-inspection",
+   "summary": "List documents currently on public inspection, which are filed but not yet published in the Federal Register",
+   "verified": true
+  },
+  {
+   "name": "list-public-inspection-by-date",
+   "summary": "List the documents that were on public inspection on a given date",
+   "verified": true
+  },
+  {
+   "name": "get-public-inspection-document",
+   "summary": "Get one public inspection document by document number: filing time, scheduled publication date, PDF and raw-text links",
+   "verified": true
+  },
+  {
+   "name": "list-suggested-searches",
+   "summary": "List curated topic searches (e.g. Dodd-Frank, stock trading), grouped by section, with saved search conditions and recent document counts",
+   "verified": true
+  },
+  {
+   "name": "get-suggested-search",
+   "summary": "Get one curated topic search by slug, including its description and the search conditions to reuse with search-documents",
+   "verified": true
+  },
+  {
+   "name": "get-image",
+   "summary": "Get metadata and download URLs (large, medium, original size) for an image embedded in a Federal Register document",
+   "verified": true
+  }
+ ],
+ "verified": 13,
+ "writes": 0,
+ "dropped": [],
+ "blockers": [
+  "captcha at https://unblock.federalregister.gov/"
+ ],
+ "loggedIn": false,
+ "seconds": 132,
+ "next": [
+  "clify federalregister",
+  "clify federalregister search-documents --term \"climate\""
+ ],
+ "installed": "/home/ubuntu/clify-runs/batch2/home/bin/federalregister",
+ "explored": {
+  "steps": 5,
+  "recorded": 17,
+  "heldWrites": 0
+ }
+}

@@ -1,0 +1,749 @@
+{
+ "name": "zenodo",
+ "startUrl": "https://zenodo.org/",
+ "origin": "https://zenodo.org",
+ "createdAt": "2026-10-18T08:54:01.302Z",
+ "description": "Zenodo (CERN's open research repository). This CLI searches communities and the records inside them, and fetches record metadata, versions, formatted citations, citing works, community members, subcommunities and collection records.",
+ "commands": [
+  {
+   "name": "search-community-records",
+   "summary": "Search or list records (datasets, software, publications\u2026) inside a community by keyword, with resource-type and access filters, sorting and pagination",
+   "method": "GET",
+   "urlTemplate": "/api/communities/{community_id}/records",
+   "params": [
+    {
+     "name": "community_id",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Community UUID (the 'id' field from search-communities or get-record-communities)",
+     "example": "f0a8b890-f97a-4eb2-9eac-8b8a712d3a6c"
+    },
+    {
+     "name": "q",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Keyword query. Elasticsearch/Lucene syntax is allowed, e.g. metadata.title:galaxy. Empty lists all records.",
+     "example": "climate change"
+    },
+    {
+     "name": "sort",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Sort order",
+     "enum": [
+      "bestmatch",
+      "newest",
+      "oldest",
+      "mostviewed"
+     ],
+     "example": "bestmatch"
+    },
+    {
+     "name": "resource_type",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Filter by resource type id, e.g. dataset, software, publication, image, video, poster, presentation, lesson, other",
+     "example": "dataset"
+    },
+    {
+     "name": "access_status",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Filter by access status",
+     "enum": [
+      "open",
+      "embargoed",
+      "restricted",
+      "metadata-only"
+     ],
+     "example": "open"
+    },
+    {
+     "name": "allversions",
+     "in": "query",
+     "required": false,
+     "type": "boolean",
+     "description": "Include all versions of each record, not only the latest"
+    },
+    {
+     "name": "page",
+     "in": "query",
+     "required": false,
+     "type": "number",
+     "description": "Page number, starting at 1",
+     "default": 1
+    },
+    {
+     "name": "size",
+     "in": "query",
+     "required": false,
+     "type": "number",
+     "description": "Results per page",
+     "default": 10
+    }
+   ],
+   "headers": {
+    "Accept": "application/vnd.inveniordm.v1+json"
+   },
+   "responseType": "json",
+   "resultPath": "hits.hits",
+   "defaultFields": [
+    "id",
+    "metadata.title",
+    "metadata.publication_date",
+    "metadata.resource_type.id",
+    "metadata.version",
+    "pids.doi.identifier",
+    "stats.this_version.views",
+    "links.self_html"
+   ],
+   "pagination": {
+    "type": "page",
+    "param": "page"
+   },
+   "mutates": false,
+   "example": {
+    "community_id": "f0a8b890-f97a-4eb2-9eac-8b8a712d3a6c",
+    "q": "climate change",
+    "sort": "bestmatch"
+   },
+   "source": "E1 GET https://zenodo.org/api/communities/{id}/records",
+   "verified": true
+  },
+  {
+   "name": "search-communities",
+   "summary": "Search or browse Zenodo communities by keyword, with a community-type filter, sorting and pagination",
+   "method": "GET",
+   "urlTemplate": "/api/communities",
+   "params": [
+    {
+     "name": "q",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Keyword query. Empty lists all communities.",
+     "example": "biodiversity"
+    },
+    {
+     "name": "sort",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Sort order",
+     "enum": [
+      "bestmatch",
+      "newest"
+     ],
+     "example": "bestmatch"
+    },
+    {
+     "name": "type",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Community type filter",
+     "enum": [
+      "project",
+      "organization",
+      "event",
+      "topic"
+     ],
+     "example": "project"
+    },
+    {
+     "name": "page",
+     "in": "query",
+     "required": false,
+     "type": "number",
+     "description": "Page number, starting at 1",
+     "default": 1
+    },
+    {
+     "name": "size",
+     "in": "query",
+     "required": false,
+     "type": "number",
+     "description": "Results per page",
+     "default": 10
+    }
+   ],
+   "headers": {
+    "Accept": "application/vnd.inveniordm.v1+json"
+   },
+   "responseType": "json",
+   "resultPath": "hits.hits",
+   "defaultFields": [
+    "id",
+    "slug",
+    "metadata.title",
+    "metadata.type.id",
+    "metadata.website",
+    "created",
+    "links.self_html"
+   ],
+   "pagination": {
+    "type": "page",
+    "param": "page"
+   },
+   "mutates": false,
+   "example": {
+    "q": "biodiversity",
+    "sort": "bestmatch"
+   },
+   "source": "E2 GET https://zenodo.org/api/communities",
+   "verified": true
+  },
+  {
+   "name": "list-featured-communities",
+   "summary": "List the communities currently featured on Zenodo's home and communities pages",
+   "method": "GET",
+   "urlTemplate": "/api/communities/featured",
+   "params": [],
+   "headers": {
+    "Accept": "application/vnd.inveniordm.v1+json"
+   },
+   "responseType": "json",
+   "resultPath": "hits.hits",
+   "defaultFields": [
+    "id",
+    "slug",
+    "metadata.title",
+    "metadata.type.id",
+    "metadata.website",
+    "links.self_html"
+   ],
+   "mutates": false,
+   "source": "E6 GET https://zenodo.org/api/communities/featured",
+   "verified": true
+  },
+  {
+   "name": "get-record",
+   "summary": "Get a record's full metadata (title, creators, description, DOI, license, files, stats) as JSON, using the record's JSON export",
+   "method": "GET",
+   "urlTemplate": "/records/{record_id}/export/json",
+   "params": [
+    {
+     "name": "record_id",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Numeric Zenodo record id, e.g. 23448934 (the number in zenodo.org/records/{id})",
+     "example": "23448934"
+    }
+   ],
+   "responseType": "json",
+   "defaultFields": [
+    "id",
+    "metadata.title",
+    "metadata.creators",
+    "metadata.publication_date",
+    "metadata.resource_type.id",
+    "metadata.version",
+    "pids.doi.identifier",
+    "files.entries"
+   ],
+   "mutates": false,
+   "example": {
+    "record_id": "23448934"
+   },
+   "source": "E13 GET https://zenodo.org/records/{n}",
+   "verified": true
+  },
+  {
+   "name": "get-record-communities",
+   "summary": "List the communities a record belongs to",
+   "method": "GET",
+   "urlTemplate": "/api/records/{record_id}/communities",
+   "params": [
+    {
+     "name": "record_id",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Numeric Zenodo record id",
+     "example": "23448934"
+    }
+   ],
+   "headers": {
+    "Accept": "application/vnd.inveniordm.v1+json"
+   },
+   "responseType": "json",
+   "resultPath": "hits.hits",
+   "defaultFields": [
+    "id",
+    "slug",
+    "metadata.title",
+    "metadata.type.id",
+    "metadata.website",
+    "links.self_html"
+   ],
+   "mutates": false,
+   "example": {
+    "record_id": "23448934"
+   },
+   "source": "E3 GET https://zenodo.org/api/records/{n}/communities",
+   "verified": true
+  },
+  {
+   "name": "list-record-versions",
+   "summary": "List all versions of a record, ordered by version",
+   "method": "GET",
+   "urlTemplate": "/api/records/{record_id}/versions?sort=version&allversions=true",
+   "params": [
+    {
+     "name": "record_id",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Numeric Zenodo record id (any version of the record)",
+     "example": "23448934"
+    },
+    {
+     "name": "page",
+     "in": "query",
+     "required": false,
+     "type": "number",
+     "description": "Page number, starting at 1",
+     "default": 1
+    },
+    {
+     "name": "size",
+     "in": "query",
+     "required": false,
+     "type": "number",
+     "description": "Versions per page",
+     "default": 5
+    }
+   ],
+   "headers": {
+    "Accept": "application/vnd.inveniordm.v1+json"
+   },
+   "responseType": "json",
+   "resultPath": "hits.hits",
+   "defaultFields": [
+    "id",
+    "metadata.title",
+    "metadata.version",
+    "metadata.publication_date",
+    "versions.index",
+    "versions.is_latest",
+    "pids.doi.identifier",
+    "links.self_html"
+   ],
+   "pagination": {
+    "type": "page",
+    "param": "page"
+   },
+   "mutates": false,
+   "example": {
+    "record_id": "23448934"
+   },
+   "source": "E4 GET https://zenodo.org/api/records/{n}/versions",
+   "verified": true
+  },
+  {
+   "name": "get-record-citation",
+   "summary": "Get a formatted bibliography citation for a record in a chosen citation style (APA, Harvard, MLA, Vancouver, Chicago, IEEE)",
+   "method": "GET",
+   "urlTemplate": "/api/records/{record_id}",
+   "params": [
+    {
+     "name": "record_id",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Numeric Zenodo record id",
+     "example": "23448934"
+    },
+    {
+     "name": "style",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Citation style (CSL style id)",
+     "enum": [
+      "apa",
+      "harvard-cite-them-right",
+      "modern-language-association",
+      "vancouver",
+      "chicago-fullnote-bibliography",
+      "ieee"
+     ],
+     "default": "apa"
+    },
+    {
+     "name": "locale",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Citation locale",
+     "default": "en-US"
+    }
+   ],
+   "headers": {
+    "Accept": "text/x-bibliography"
+   },
+   "responseType": "text",
+   "mutates": false,
+   "example": {
+    "record_id": "23448934",
+    "style": "apa"
+   },
+   "source": "E12 GET https://zenodo.org/api/records/{n}",
+   "verified": true
+  },
+  {
+   "name": "list-citing-works",
+   "summary": "List works that cite a Zenodo record, looked up by the record's concept (parent) DOI through the Zenodo citation broker",
+   "method": "GET",
+   "urlTemplate": "https://zenodo-broker.web.cern.ch/api/relationships?relation=isCitedBy&scheme=doi&group_by=version",
+   "params": [
+    {
+     "name": "doi",
+     "key": "id",
+     "in": "query",
+     "required": true,
+     "type": "string",
+     "description": "Parent/concept DOI of the record (links.parent_doi without the https://doi.org/ prefix), e.g. 10.5281/zenodo.592536",
+     "example": "10.5281/zenodo.592536"
+    },
+    {
+     "name": "q",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Keyword filter on citing works"
+    },
+    {
+     "name": "sort",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Sort order",
+     "default": "mostrecent"
+    },
+    {
+     "name": "page",
+     "in": "query",
+     "required": false,
+     "type": "number",
+     "description": "Page number, starting at 1",
+     "default": 1
+    },
+    {
+     "name": "size",
+     "in": "query",
+     "required": false,
+     "type": "number",
+     "description": "Results per page",
+     "default": 10
+    }
+   ],
+   "headers": {
+    "Accept": "application/json"
+   },
+   "responseType": "json",
+   "resultPath": "hits.hits",
+   "pagination": {
+    "type": "page",
+    "param": "page"
+   },
+   "mutates": false,
+   "example": {
+    "doi": "10.5281/zenodo.592536"
+   },
+   "source": "E5",
+   "verified": true
+  },
+  {
+   "name": "list-community-members",
+   "summary": "List the public members of a community",
+   "method": "GET",
+   "urlTemplate": "/api/communities/{community_id}/members/public",
+   "params": [
+    {
+     "name": "community_id",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Community UUID (the 'id' field from search-communities or get-record-communities)",
+     "example": "c529f97d-f8cb-4c13-a439-9e36891694c2"
+    },
+    {
+     "name": "q",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Filter members by name"
+    },
+    {
+     "name": "page",
+     "in": "query",
+     "required": false,
+     "type": "number",
+     "description": "Page number, starting at 1",
+     "default": 1
+    },
+    {
+     "name": "size",
+     "in": "query",
+     "required": false,
+     "type": "number",
+     "description": "Members per page",
+     "default": 25
+    }
+   ],
+   "headers": {
+    "Accept": "application/json"
+   },
+   "responseType": "json",
+   "resultPath": "hits.hits",
+   "defaultFields": [
+    "member.id",
+    "member.name",
+    "member.type",
+    "member.description",
+    "role"
+   ],
+   "pagination": {
+    "type": "page",
+    "param": "page"
+   },
+   "mutates": false,
+   "example": {
+    "community_id": "c529f97d-f8cb-4c13-a439-9e36891694c2"
+   },
+   "source": "E7",
+   "verified": true
+  },
+  {
+   "name": "list-subcommunities",
+   "summary": "List the subcommunities of a parent community, e.g. the EU Open Research Repository or the Biodiversity Literature Repository",
+   "method": "GET",
+   "urlTemplate": "/api/communities/{community_id}/subcommunities",
+   "params": [
+    {
+     "name": "community_id",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Parent community UUID",
+     "example": "c529f97d-f8cb-4c13-a439-9e36891694c2"
+    },
+    {
+     "name": "q",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Keyword filter"
+    },
+    {
+     "name": "sort",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Sort order",
+     "enum": [
+      "oldest",
+      "newest",
+      "bestmatch"
+     ],
+     "default": "oldest"
+    },
+    {
+     "name": "page",
+     "in": "query",
+     "required": false,
+     "type": "number",
+     "description": "Page number, starting at 1",
+     "default": 1
+    },
+    {
+     "name": "size",
+     "in": "query",
+     "required": false,
+     "type": "number",
+     "description": "Results per page",
+     "default": 5
+    }
+   ],
+   "headers": {
+    "Accept": "application/vnd.inveniordm.v1+json"
+   },
+   "responseType": "json",
+   "resultPath": "hits.hits",
+   "defaultFields": [
+    "id",
+    "slug",
+    "metadata.title",
+    "metadata.type.id",
+    "metadata.website",
+    "links.self_html"
+   ],
+   "pagination": {
+    "type": "page",
+    "param": "page"
+   },
+   "mutates": false,
+   "example": {
+    "community_id": "c529f97d-f8cb-4c13-a439-9e36891694c2"
+   },
+   "source": "E8 GET https://zenodo.org/api/communities/{id}/subcommunities",
+   "verified": true
+  },
+  {
+   "name": "list-collection-records",
+   "summary": "List or search the records in a community collection (e.g. Biodiversity Literature Repository taxon collections) by numeric collection id",
+   "method": "GET",
+   "urlTemplate": "/api/collections/{collection_id}/records",
+   "params": [
+    {
+     "name": "collection_id",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Numeric collection id, e.g. 63 (Tyrannosaurus rex in biosyslit)",
+     "example": "63"
+    },
+    {
+     "name": "q",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Keyword query within the collection"
+    },
+    {
+     "name": "page",
+     "in": "query",
+     "required": false,
+     "type": "number",
+     "description": "Page number, starting at 1",
+     "default": 1
+    },
+    {
+     "name": "size",
+     "in": "query",
+     "required": false,
+     "type": "number",
+     "description": "Results per page",
+     "default": 10
+    }
+   ],
+   "headers": {
+    "Accept": "application/vnd.inveniordm.v1+json"
+   },
+   "responseType": "json",
+   "resultPath": "hits.hits",
+   "defaultFields": [
+    "id",
+    "metadata.title",
+    "metadata.publication_date",
+    "metadata.resource_type.id",
+    "pids.doi.identifier",
+    "links.self_html"
+   ],
+   "pagination": {
+    "type": "page",
+    "param": "page"
+   },
+   "mutates": false,
+   "example": {
+    "collection_id": "63"
+   },
+   "source": "E9 GET https://zenodo.org/api/collections/{n}/records",
+   "verified": true
+  },
+  {
+   "name": "search-records",
+   "summary": "Search across all Zenodo records with an Elasticsearch/Lucene query, e.g. by title, creator, community id or related identifiers",
+   "method": "GET",
+   "urlTemplate": "/api/records",
+   "params": [
+    {
+     "name": "q",
+     "in": "query",
+     "required": true,
+     "type": "string",
+     "description": "Elasticsearch/Lucene query over record fields (metadata.title, metadata.creators.person_or_org.name, parent.communities.ids, metadata.related_identifiers.identifier, \u2026), e.g. parent.communities.ids:<u",
+     "example": "parent.communities.ids:c529f97d-f8cb-4c13-a439-9e36891694c2 AND metadata.title:\"Tyrannosaurus rex\""
+    },
+    {
+     "name": "sort",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Sort order",
+     "enum": [
+      "bestmatch",
+      "newest",
+      "oldest",
+      "mostviewed"
+     ],
+     "default": "bestmatch"
+    },
+    {
+     "name": "page",
+     "in": "query",
+     "required": false,
+     "type": "number",
+     "description": "Page number, starting at 1",
+     "default": 1
+    },
+    {
+     "name": "size",
+     "in": "query",
+     "required": false,
+     "type": "number",
+     "description": "Results per page",
+     "default": 12
+    }
+   ],
+   "headers": {
+    "Accept": "application/vnd.inveniordm.v1+json"
+   },
+   "responseType": "json",
+   "resultPath": "hits.hits",
+   "defaultFields": [
+    "id",
+    "metadata.title",
+    "metadata.publication_date",
+    "metadata.resource_type.id",
+    "pids.doi.identifier",
+    "links.self_html"
+   ],
+   "pagination": {
+    "type": "page",
+    "param": "page"
+   },
+   "mutates": false,
+   "example": {
+    "q": "parent.communities.ids:c529f97d-f8cb-4c13-a439-9e36891694c2 AND metadata.title:\"Tyrannosaurus rex\""
+   },
+   "source": "E10",
+   "verified": true
+  }
+ ],
+ "blockers": [],
+ "notes": [
+  "Community commands take the community UUID, not the slug. Find it in the 'id' field of search-communities, list-featured-communities or get-record-communities. Examples: eu = f0a8b890-f97a-4eb2-9eac-8b8a712d3a6c, dockstore = f312c6b6-0dd6-4fb2-a224-7c4960394ac1, biosyslit = c529f97d-f8cb-4c13-a439-9e36891694c2.",
+  "Record ids are the numeric part of zenodo.org/records/{id}. links.parent_doi gives the concept DOI, which list-citing-works needs; strip the https://doi.org/ prefix first.",
+  "robots.txt disallows the global /search page and direct /api/records URLs. search-records replays the XHR the record page makes. If it gets blocked, use search-community-records with a q query scoped to a community.",
+  "Search responses include hits.total and aggregations (facet counts for resource_type, access_status, etc.) next to hits.hits.",
+  "list-citing-works queries an external host (zenodo-broker.web.cern.ch) and often returns zero hits for new records.",
+  "All commands are anonymous reads. Nothing here needs a login."
+ ],
+ "dropped": [],
+ "generated": {
+  "by": "clify add",
+  "model": "claude-opus-5-5",
+  "exploredSteps": 24,
+  "recorded": 50,
+  "verifiedAt": "2026-10-18T08:55:32.702Z",
+  "seconds": 301
+ }
+}

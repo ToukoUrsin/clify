@@ -1,0 +1,49 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=1920,initial-scale=1">
+<title>RACE · same agent, two surfaces</title>
+<link rel="stylesheet" href="/web/style.css">
+</head>
+<body>
+<header>
+  <div class="brand">
+    <div class="eyebrow">YC · MAKE SOMETHING AGENTS WANT <b id="mode">LIVE</b><b id="speed" class="speed">4× SPEED</b></div>
+    <h1>SAME AGENT. <em>TWO WAYS.</em></h1>
+  </div>
+  <p class="dek" id="dek">Six real jobs on six live websites. Same model, same prompt.</p>
+  <div class="hstat model"><span>MODEL · BOTH RACERS</span><strong id="model">—</strong></div>
+  <div class="hstat"><span>RACE CLOCK</span><strong id="clock">0:00.0</strong></div>
+</header>
+
+<main id="main">
+  <section class="lane browser">
+    <div class="lane-head">
+      <div><div class="kicker" id="browser-kicker">A · HEADLESS BROWSER</div><h2 id="browser-title">Agent + Playwright MCP</h2></div>
+      <div class="status" id="browser-status">READY</div>
+    </div>
+    <div class="screen"><img id="frame" alt=""><div class="screen-empty" id="frame-empty">STARTING BROWSER…</div><div class="caption" id="browser-caption"></div></div>
+    <div class="metrics" id="browser-metrics"></div>
+    <div class="sites" id="browser-sites"></div>
+  </section>
+  <section class="lane clify">
+    <div class="lane-head">
+      <div><div class="kicker" id="clify-kicker">B · CLIFY JSON CLI</div><h2 id="clify-title">Agent + clify (shell only)</h2></div>
+      <div class="status" id="clify-status">READY</div>
+    </div>
+    <div class="screen terminal"><div class="term-top"><i></i><i></i><i></i><label>shell · clify</label></div><div class="term-lines" id="term"></div></div>
+    <div class="metrics" id="clify-metrics"></div>
+    <div class="sites" id="clify-sites"></div>
+  </section>
+  <div class="score" id="score"></div>
+</main>
+
+<section class="bottom">
+  <div class="panel"><div class="panel-head">FRESH TOKENS <small>input + output + cache writes</small></div><div class="plot"><canvas id="chart-tokens"></canvas></div></div>
+  <div class="panel"><div class="panel-head">COST <small>list price, incl. cache reads</small></div><div class="plot"><canvas id="chart-cost"></canvas></div></div>
+  <div class="panel wide"><div class="panel-head">PER-SITE TIMELINE <small>bar = working on the site · tick = tool call · ✓ verified on the live site</small></div><div class="plot"><canvas id="timeline"></canvas></div></div>
+</section>
+<script src="/web/app.js"></script>
+</body>
+</html>

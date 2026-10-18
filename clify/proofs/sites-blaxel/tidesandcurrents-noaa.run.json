@@ -1,0 +1,246 @@
+{
+ "url": "https://tidesandcurrents.noaa.gov/",
+ "category": "gov-us",
+ "sandbox": "clify-tidesandcurrents-noaa-gov",
+ "startedAt": "2026-10-18T09:17:38.477Z",
+ "region": "us-pdx-1",
+ "chrome": "Chrome/148.0.7778.96",
+ "sandboxStartMs": 2245,
+ "addSeconds": 285,
+ "addExit": 0,
+ "add": {
+  "ok": true,
+  "site": "tidesandcurrents-noaa",
+  "url": "https://tidesandcurrents.noaa.gov/",
+  "commands": [
+   {
+    "name": "search-tide-stations",
+    "summary": "Search tide prediction stations by name (e.g. 'Boston'); returns station IDs, state, region and coordinates",
+    "verified": true
+   },
+   {
+    "name": "list-stations",
+    "summary": "List all CO-OPS stations offering a given product type (water levels, met, currents, current predictions, datums, harmonic constituents, etc.)",
+    "verified": true
+   },
+   {
+    "name": "get-station",
+    "summary": "Get metadata for one station by ID (name, location, timezone, flags) with optional expanded products, datums, details, notices, benchmarks",
+    "verified": true
+   },
+   {
+    "name": "get-station-datums",
+    "summary": "Get tidal datums for a station (MLLW, MHHW, MSL, NAVD88 etc.) plus LAT/HAT and record min/max",
+    "verified": true
+   },
+   {
+    "name": "get-station-sensors",
+    "summary": "List a station's sensors (water level, barometer, wind, temperature...) with status and elevation",
+    "verified": true
+   },
+   {
+    "name": "get-harmonic-constituents",
+    "summary": "Get tidal harmonic constituents (M2, S2, K1...) for a station: amplitude, phase, speed",
+    "verified": true
+   },
+   {
+    "name": "get-nearby-stations",
+    "summary": "List the stations nearest to a given station, with distance and station type",
+    "verified": true
+   },
+   {
+    "name": "get-tide-prediction-offsets",
+    "summary": "Get tide prediction offsets for a station (reference vs. subordinate, time/height offsets to its reference station)",
+    "verified": true
+   },
+   {
+    "name": "get-tide-predictions",
+    "summary": "Get tide predictions for a station: high/low times and heights or a regular time series, for a date or date range",
+    "verified": true
+   },
+   {
+    "name": "get-observations",
+    "summary": "Get observed data for a station: water levels, air/water temperature, wind, air pressure, humidity, visibility, conductivity, salinity, air gap",
+    "verified": true
+   },
+   {
+    "name": "get-current-predictions",
+    "summary": "Get tidal current predictions for a current station: max flood/ebb and slack times and speeds, or a time series",
+    "verified": true
+   },
+   {
+    "name": "list-tide-prediction-regions",
+    "summary": "Browse tide prediction geographic groups: top-level regions (lvl=4), states (lvl=5), or children of a parent group",
+    "verified": true
+   },
+   {
+    "name": "list-tide-prediction-group-stations",
+    "summary": "List the sub-areas and tide prediction stations inside a geographic group (e.g. a state such as 1403 = Massachusetts)",
+    "verified": true
+   },
+   {
+    "name": "list-current-prediction-groups",
+    "summary": "Get the full hierarchy of current prediction regions and their stations (coast > state > area > station with bin)",
+    "verified": true
+   },
+   {
+    "name": "list-ports-stations",
+    "summary": "List PORTS (Physical Oceanographic Real-Time System) stations with the sensors each provides",
+    "verified": true
+   },
+   {
+    "name": "get-data-inventory",
+    "summary": "Get a station's data inventory: which parameters it has measured and over what date ranges",
+    "verified": true
+   },
+   {
+    "name": "list-sea-level-trends",
+    "summary": "List relative sea level trends (inches/decade, period of record) for all US or global stations, or one station",
+    "verified": true
+   },
+   {
+    "name": "export-sea-level-trend-csv",
+    "summary": "Download a station's monthly mean sea level trend data as CSV (year, month, monthly MSL, linear trend, confidence bounds)",
+    "verified": true
+   },
+   {
+    "name": "list-storm-surge-events",
+    "summary": "List active storm surge / coastal inundation events (storm name, type, analysis, links)",
+    "verified": true
+   },
+   {
+    "name": "list-news",
+    "summary": "List recent NOAA Tides & Currents news posts",
+    "verified": true
+   }
+  ],
+  "verified": 20,
+  "writes": 0,
+  "dropped": [],
+  "blockers": [],
+  "loggedIn": false,
+  "seconds": 284,
+  "next": [
+   "clify tidesandcurrents-noaa",
+   "clify tidesandcurrents-noaa search-tide-stations --q \"Boston\""
+  ],
+  "installed": "/home/ubuntu/clify-runs/blaxel-w2/home/bin/tidesandcurrents-noaa",
+  "explored": {
+   "steps": 29,
+   "recorded": 285,
+   "heldWrites": 0
+  }
+ },
+ "check": {
+  "on": "blaxel",
+  "node": "v24.22.0",
+  "seconds": 7,
+  "reads": 20,
+  "verified": 20,
+  "failed": [],
+  "results": [
+   {
+    "name": "search-tide-stations",
+    "ok": true,
+    "ms": 223
+   },
+   {
+    "name": "list-stations",
+    "ok": true,
+    "ms": 1395
+   },
+   {
+    "name": "get-station",
+    "ok": true,
+    "ms": 75
+   },
+   {
+    "name": "get-station-datums",
+    "ok": true,
+    "ms": 84
+   },
+   {
+    "name": "get-station-sensors",
+    "ok": true,
+    "ms": 115
+   },
+   {
+    "name": "get-harmonic-constituents",
+    "ok": true,
+    "ms": 85
+   },
+   {
+    "name": "get-nearby-stations",
+    "ok": true,
+    "ms": 74
+   },
+   {
+    "name": "get-tide-prediction-offsets",
+    "ok": true,
+    "ms": 79
+   },
+   {
+    "name": "get-tide-predictions",
+    "ok": true,
+    "ms": 88
+   },
+   {
+    "name": "get-observations",
+    "ok": true,
+    "ms": 85
+   },
+   {
+    "name": "get-current-predictions",
+    "ok": true,
+    "ms": 90
+   },
+   {
+    "name": "list-tide-prediction-regions",
+    "ok": true,
+    "ms": 84
+   },
+   {
+    "name": "list-tide-prediction-group-stations",
+    "ok": true,
+    "ms": 134
+   },
+   {
+    "name": "list-current-prediction-groups",
+    "ok": true,
+    "ms": 545
+   },
+   {
+    "name": "list-ports-stations",
+    "ok": true,
+    "ms": 198
+   },
+   {
+    "name": "get-data-inventory",
+    "ok": true,
+    "ms": 645
+   },
+   {
+    "name": "list-sea-level-trends",
+    "ok": true,
+    "ms": 362
+   },
+   {
+    "name": "export-sea-level-trend-csv",
+    "ok": true,
+    "ms": 535
+   },
+   {
+    "name": "list-storm-surge-events",
+    "ok": true,
+    "ms": 114
+   },
+   {
+    "name": "list-news",
+    "ok": true,
+    "ms": 651
+   }
+  ]
+ },
+ "deleted": true,
+ "seconds": 295
+}

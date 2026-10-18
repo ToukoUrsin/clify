@@ -1,0 +1,20 @@
+{
+  "name": "quotes",
+  "startUrl": "https://quotes.toscrape.com/",
+  "origin": "https://quotes.toscrape.com",
+  "createdAt": "2026-10-18T06:40:00Z",
+  "description": "Quotes to Scrape (scraping sandbox): quotes by page or by tag (10 per page; an empty list means no more pages), author bios.",
+  "commands": [
+    { "name": "list-quotes", "summary": "Quotes, 10 per page", "method": "GET", "urlTemplate": "/page/{page}/", "responseType": "html", "mutates": false,
+      "params": [ { "name": "page", "in": "path", "required": false, "type": "number", "default": 1 } ],
+      "extract": { "list": "div.quote", "fields": { "text": "span.text", "author": "small.author", "tags": "meta.keywords@content" } } },
+    { "name": "by-tag", "summary": "Quotes with one tag, one page", "method": "GET", "urlTemplate": "/tag/{tag}/page/{page}/", "responseType": "html", "mutates": false,
+      "params": [ { "name": "tag", "in": "path", "required": true, "type": "string", "description": "e.g. love, life, humor" },
+                  { "name": "page", "in": "path", "required": false, "type": "number", "default": 1 } ],
+      "extract": { "list": "div.quote", "fields": { "text": "span.text", "author": "small.author" } },
+      "example": { "tag": "love", "page": "2" } },
+    { "name": "get-author", "summary": "Author bio", "method": "GET", "urlTemplate": "/author/{slug}/", "responseType": "html", "mutates": false,
+      "params": [ { "name": "slug", "in": "path", "required": true, "type": "string", "description": "e.g. Albert-Einstein" } ],
+      "extract": { "fields": { "name": "h3.author-title", "born": "span.author-born-date", "location": "span.author-born-location" } } }
+  ]
+}

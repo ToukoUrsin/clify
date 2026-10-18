@@ -1,0 +1,743 @@
+{
+  "name": "healthchecks",
+  "startUrl": "https://healthchecks.io/",
+  "origin": "https://healthchecks.io",
+  "createdAt": "2026-10-18T09:48:52.980Z",
+  "description": "Healthchecks.io is a cron job monitoring service. This CLI lists your projects and checks, creates and edits checks (name, tags, period, grace), and can pause, ping, delete and inspect them.",
+  "commands": [
+    {
+      "name": "list-checks",
+      "summary": "List the checks in a project, with name, status icon and details URL. Optionally filter by tag and sort.",
+      "method": "GET",
+      "urlTemplate": "/projects/{projectId}/checks/",
+      "params": [
+        {
+          "name": "projectId",
+          "in": "path",
+          "required": true,
+          "type": "string",
+          "description": "Project UUID (see list-projects)",
+          "example": "0d103ac6-8389-4868-8f5f-944911961863",
+          "context": "projectId"
+        },
+        {
+          "name": "tag",
+          "in": "query",
+          "required": false,
+          "type": "string",
+          "description": "Only show checks that have this tag",
+          "example": "backup"
+        },
+        {
+          "name": "sort",
+          "in": "query",
+          "required": false,
+          "type": "string",
+          "description": "Sort order. A leading '-' means descending.",
+          "enum": [
+            "name",
+            "-name",
+            "last_ping",
+            "-last_ping",
+            "created"
+          ]
+        }
+      ],
+      "responseType": "html",
+      "extract": {
+        "list": "tr.checks-row",
+        "fields": {
+          "name": "div.my-checks-name",
+          "status": "span.status@class",
+          "url": "a.btn@href"
+        }
+      },
+      "defaultFields": [
+        "name",
+        "status",
+        "url"
+      ],
+      "mutates": false,
+      "auth": true,
+      "example": {},
+      "source": "E11 GET https://healthchecks.io/projects/{id}/checks/",
+      "verified": true,
+      "sample": "{\"name\":\"My First Check\",\"status\":\"status ic-new\",\"url\":\"https://healthchecks.io/checks/32aeab82-e185-4901-9e68-458a739fb02d/details/\"}",
+      "resultFields": [
+        "name",
+        "status",
+        "url"
+      ]
+    },
+    {
+      "name": "add-check",
+      "summary": "Create a new simple (period-based) check in a project with name, tags, period and grace time. Returns the project's check list.",
+      "method": "POST",
+      "urlTemplate": "/projects/{projectId}/checks/add/",
+      "params": [
+        {
+          "name": "projectId",
+          "in": "path",
+          "required": true,
+          "type": "string",
+          "description": "Project UUID",
+          "example": "0d103ac6-8389-4868-8f5f-944911961863",
+          "context": "projectId"
+        },
+        {
+          "name": "name",
+          "in": "body",
+          "required": true,
+          "type": "string",
+          "description": "Human-friendly check name",
+          "example": "nightly-backup"
+        },
+        {
+          "name": "tags",
+          "in": "body",
+          "required": false,
+          "type": "string",
+          "description": "Tags separated by spaces, e.g. 'backup nightly'",
+          "example": "backup nightly"
+        },
+        {
+          "name": "timeout",
+          "in": "body",
+          "required": false,
+          "type": "number",
+          "description": "Period: the expected time between pings, in seconds (e.g. 86400 for one day)",
+          "default": 86400,
+          "example": "7200"
+        },
+        {
+          "name": "grace",
+          "in": "body",
+          "required": false,
+          "type": "number",
+          "description": "Grace time in seconds: how long to wait after a missed ping before alerting",
+          "default": 3600,
+          "example": "1800"
+        },
+        {
+          "name": "slug",
+          "in": "body",
+          "required": false,
+          "type": "string",
+          "description": "Optional custom slug for slug-style ping URLs"
+        }
+      ],
+      "bodyTemplate": {
+        "name": "{name}",
+        "slug": "{slug}",
+        "tags": "{tags}",
+        "timeout": "{timeout}",
+        "grace": "{grace}",
+        "kind": "simple",
+        "tz": "UTC"
+      },
+      "bodyEncoding": "form",
+      "responseType": "html",
+      "extract": {
+        "list": "tr.checks-row",
+        "fields": {
+          "name": "div.my-checks-name",
+          "status": "span.status@class",
+          "url": "a.btn@href"
+        }
+      },
+      "defaultFields": [
+        "name",
+        "status",
+        "url"
+      ],
+      "csrf": {
+        "from": "/projects/{projectId}/checks/",
+        "selector": "input[name=csrfmiddlewaretoken]@value",
+        "field": "csrfmiddlewaretoken"
+      },
+      "mutates": true,
+      "auth": true,
+      "example": {
+        "name": "nightly-backup",
+        "tags": "backup nightly",
+        "timeout": "7200",
+        "grace": "1800"
+      },
+      "source": "E4 POST https://healthchecks.io/projects/{id}/checks/add/",
+      "verified": false,
+      "verifyNote": "write: dry-run preview only, not sent"
+    },
+    {
+      "name": "get-checks-status",
+      "summary": "Get the live status of every check in a project as JSON: check UUID, status, last ping and started flag.",
+      "method": "GET",
+      "urlTemplate": "/projects/{projectId}/checks/status/",
+      "params": [
+        {
+          "name": "projectId",
+          "in": "path",
+          "required": true,
+          "type": "string",
+          "description": "Project UUID",
+          "example": "0d103ac6-8389-4868-8f5f-944911961863",
+          "context": "projectId"
+        }
+      ],
+      "headers": {
+        "X-Requested-With": "XMLHttpRequest"
+      },
+      "responseType": "json",
+      "resultPath": "details",
+      "defaultFields": [
+        "code",
+        "status",
+        "last_ping",
+        "started"
+      ],
+      "mutates": false,
+      "auth": true,
+      "example": {},
+      "source": "E1 GET https://healthchecks.io/projects/{id}/checks/status/",
+      "verified": true,
+      "sample": "{\"code\":\"32aeab82-e185-4901-9e68-458a739fb02d\",\"status\":\"new\",\"last_ping\":\"Never\",\"started\":false}",
+      "resultFields": [
+        "code",
+        "status",
+        "last_ping",
+        "started"
+      ]
+    },
+    {
+      "name": "get-check",
+      "summary": "Get one check's details page: name, tags, description and ping URLs.",
+      "method": "GET",
+      "urlTemplate": "/checks/{checkId}/details/",
+      "params": [
+        {
+          "name": "checkId",
+          "in": "path",
+          "required": true,
+          "type": "string",
+          "description": "Check UUID (taken from the URL in list-checks or 'code' in get-checks-status)",
+          "example": "32aeab82-e185-4901-9e68-458a739fb02d"
+        }
+      ],
+      "responseType": "html",
+      "extract": {
+        "fields": {
+          "name": "div#details-head h1",
+          "tags": "div#details-head span.label-tag",
+          "description": "div.details-block",
+          "pingUrl": "div#how-to-ping code.click-to-copy"
+        }
+      },
+      "defaultFields": [
+        "name",
+        "tags",
+        "description",
+        "pingUrl"
+      ],
+      "mutates": false,
+      "auth": true,
+      "example": {
+        "checkId": "32aeab82-e185-4901-9e68-458a739fb02d"
+      },
+      "source": "E12 GET https://healthchecks.io/checks/{id}/details/",
+      "verified": true,
+      "sample": "{\"name\":\"My First Check (edit…)\",\"description\":\"Description Add description…\",\"pingUrl\":\"https://hc-ping.com/32aeab82-e185-4901-9e68-458a739fb02d\"}",
+      "resultFields": [
+        "name",
+        "description",
+        "pingUrl"
+      ]
+    },
+    {
+      "name": "get-check-status",
+      "summary": "Get one check's live status as JSON: status, started flag and page title. The text, event and downtime fields are HTML fragments.",
+      "method": "GET",
+      "urlTemplate": "/checks/{checkId}/status/",
+      "params": [
+        {
+          "name": "checkId",
+          "in": "path",
+          "required": true,
+          "type": "string",
+          "description": "Check UUID",
+          "example": "32aeab82-e185-4901-9e68-458a739fb02d"
+        }
+      ],
+      "headers": {
+        "X-Requested-With": "XMLHttpRequest"
+      },
+      "responseType": "json",
+      "defaultFields": [
+        "status",
+        "started",
+        "title",
+        "status_text"
+      ],
+      "mutates": false,
+      "auth": true,
+      "example": {
+        "checkId": "32aeab82-e185-4901-9e68-458a739fb02d"
+      },
+      "source": "E2 GET https://healthchecks.io/checks/{id}/status/",
+      "verified": true,
+      "sample": "{\"status\":\"new\",\"started\":false,\"title\":\"My First Check – Healthchecks.io\",\"status_text\":\"\\n\\n    \\n        This check has never received a ping.\\n    \\n\\n    \\n        <br /> &nbsp;\\n    \\n\\n\"}",
+      "resultFields": [
+        "status",
+        "status_text",
+        "title",
+        "updated",
+        "started",
+        "events",
+        "downtimes"
+      ]
+    },
+    {
+      "name": "update-check-name",
+      "summary": "Change a check's name, slug, tags and description. This replaces all four fields.",
+      "method": "POST",
+      "urlTemplate": "/checks/{checkId}/name/",
+      "params": [
+        {
+          "name": "checkId",
+          "in": "path",
+          "required": true,
+          "type": "string",
+          "description": "Check UUID",
+          "example": "32aeab82-e185-4901-9e68-458a739fb02d"
+        },
+        {
+          "name": "name",
+          "in": "body",
+          "required": true,
+          "type": "string",
+          "description": "New check name",
+          "example": "nightly-backup"
+        },
+        {
+          "name": "tags",
+          "in": "body",
+          "required": false,
+          "type": "string",
+          "description": "Tags separated by spaces",
+          "example": "backup nightly"
+        },
+        {
+          "name": "desc",
+          "in": "body",
+          "required": false,
+          "type": "string",
+          "description": "Free-text description"
+        },
+        {
+          "name": "slug",
+          "in": "body",
+          "required": false,
+          "type": "string",
+          "description": "Custom slug"
+        }
+      ],
+      "bodyTemplate": {
+        "name": "{name}",
+        "slug": "{slug}",
+        "tags": "{tags}",
+        "desc": "{desc}"
+      },
+      "bodyEncoding": "form",
+      "responseType": "html",
+      "extract": {
+        "fields": {
+          "name": "div#details-head h1",
+          "tags": "div#details-head span.label-tag"
+        }
+      },
+      "csrf": {
+        "from": "/checks/{checkId}/details/",
+        "selector": "input[name=csrfmiddlewaretoken]@value",
+        "field": "csrfmiddlewaretoken"
+      },
+      "mutates": true,
+      "auth": true,
+      "example": {
+        "checkId": "32aeab82-e185-4901-9e68-458a739fb02d",
+        "name": "nightly-backup",
+        "tags": "backup nightly"
+      },
+      "source": "E5 POST https://healthchecks.io/checks/{id}/name/",
+      "verified": false,
+      "verifyNote": "write: dry-run preview only, not sent"
+    },
+    {
+      "name": "update-check-schedule",
+      "summary": "Change a check's period and grace time (simple schedule).",
+      "method": "POST",
+      "urlTemplate": "/checks/{checkId}/timeout/",
+      "params": [
+        {
+          "name": "checkId",
+          "in": "path",
+          "required": true,
+          "type": "string",
+          "description": "Check UUID",
+          "example": "32aeab82-e185-4901-9e68-458a739fb02d"
+        },
+        {
+          "name": "timeout",
+          "in": "body",
+          "required": true,
+          "type": "number",
+          "description": "Period in seconds between expected pings",
+          "example": "10800"
+        },
+        {
+          "name": "grace",
+          "in": "body",
+          "required": true,
+          "type": "number",
+          "description": "Grace time in seconds",
+          "example": "1800"
+        }
+      ],
+      "bodyTemplate": {
+        "kind": "simple",
+        "timeout": "{timeout}",
+        "grace": "{grace}"
+      },
+      "bodyEncoding": "form",
+      "responseType": "html",
+      "csrf": {
+        "from": "/checks/{checkId}/details/",
+        "selector": "input[name=csrfmiddlewaretoken]@value",
+        "field": "csrfmiddlewaretoken"
+      },
+      "mutates": true,
+      "auth": true,
+      "example": {
+        "checkId": "32aeab82-e185-4901-9e68-458a739fb02d",
+        "timeout": "10800",
+        "grace": "1800"
+      },
+      "source": "E6 POST https://healthchecks.io/checks/{id}/timeout/",
+      "verified": false,
+      "verifyNote": "write: dry-run preview only, not sent"
+    },
+    {
+      "name": "ping-check",
+      "summary": "Send a success ping to a check's ping URL, marking the job as having just run. No login is needed.",
+      "method": "POST",
+      "urlTemplate": "https://hc-ping.com/{checkId}",
+      "params": [
+        {
+          "name": "checkId",
+          "in": "path",
+          "required": true,
+          "type": "string",
+          "description": "Check UUID",
+          "example": "32aeab82-e185-4901-9e68-458a739fb02d"
+        }
+      ],
+      "bodyEncoding": "none",
+      "responseType": "text",
+      "mutates": true,
+      "example": {
+        "checkId": "32aeab82-e185-4901-9e68-458a739fb02d"
+      },
+      "source": "E3 POST https://hc-ping.com/{id}",
+      "verified": false,
+      "verifyNote": "write: dry-run preview only, not sent"
+    },
+    {
+      "name": "pause-check",
+      "summary": "Pause monitoring for a check. It stays paused until its next ping.",
+      "method": "POST",
+      "urlTemplate": "/checks/{checkId}/pause/",
+      "params": [
+        {
+          "name": "checkId",
+          "in": "path",
+          "required": true,
+          "type": "string",
+          "description": "Check UUID",
+          "example": "32aeab82-e185-4901-9e68-458a739fb02d"
+        }
+      ],
+      "bodyTemplate": {},
+      "bodyEncoding": "form",
+      "responseType": "html",
+      "csrf": {
+        "from": "/checks/{checkId}/details/",
+        "selector": "input[name=csrfmiddlewaretoken]@value",
+        "field": "csrfmiddlewaretoken"
+      },
+      "mutates": true,
+      "auth": true,
+      "example": {
+        "checkId": "32aeab82-e185-4901-9e68-458a739fb02d"
+      },
+      "source": "E7 POST https://healthchecks.io/checks/{id}/pause/",
+      "verified": false,
+      "verifyNote": "write: dry-run preview only, not sent"
+    },
+    {
+      "name": "delete-check",
+      "summary": "Permanently delete a check.",
+      "method": "POST",
+      "urlTemplate": "/checks/{checkId}/remove/",
+      "params": [
+        {
+          "name": "checkId",
+          "in": "path",
+          "required": true,
+          "type": "string",
+          "description": "Check UUID",
+          "example": "32aeab82-e185-4901-9e68-458a739fb02d"
+        }
+      ],
+      "bodyTemplate": {},
+      "bodyEncoding": "form",
+      "responseType": "html",
+      "extract": {
+        "list": "tr.checks-row",
+        "fields": {
+          "name": "div.my-checks-name",
+          "url": "a.btn@href"
+        }
+      },
+      "csrf": {
+        "from": "/checks/{checkId}/details/",
+        "selector": "input[name=csrfmiddlewaretoken]@value",
+        "field": "csrfmiddlewaretoken"
+      },
+      "mutates": true,
+      "auth": true,
+      "example": {
+        "checkId": "<checkId>"
+      },
+      "source": "E8 POST https://healthchecks.io/checks/{id}/remove/",
+      "verified": false,
+      "verifyNote": "write: dry-run preview only, not sent"
+    },
+    {
+      "name": "list-projects",
+      "summary": "List the signed-in user's projects with their check URLs. The project UUID is in the URL.",
+      "method": "GET",
+      "urlTemplate": "/",
+      "params": [],
+      "responseType": "html",
+      "extract": {
+        "list": "div#project-selector a[href*='/projects/']",
+        "fields": {
+          "name": "h4",
+          "url": "@href"
+        }
+      },
+      "defaultFields": [
+        "name",
+        "url"
+      ],
+      "mutates": false,
+      "auth": true,
+      "source": "E16",
+      "verified": true,
+      "sample": "{\"name\":\"clify-agent-b3d326@inkboxmail.com\",\"url\":\"https://healthchecks.io/projects/0d103ac6-8389-4868-8f5f-944911961863/checks/\"}",
+      "resultFields": [
+        "name",
+        "url"
+      ],
+      "example": {},
+      "aliases": [
+        "me"
+      ]
+    },
+    {
+      "name": "list-integrations",
+      "summary": "List a project's notification integrations (email, SMS, …) and how many checks each is assigned to.",
+      "method": "GET",
+      "urlTemplate": "/projects/{projectId}/integrations/",
+      "params": [
+        {
+          "name": "projectId",
+          "in": "path",
+          "required": true,
+          "type": "string",
+          "description": "Project UUID",
+          "example": "0d103ac6-8389-4868-8f5f-944911961863",
+          "context": "projectId"
+        }
+      ],
+      "responseType": "html",
+      "extract": {
+        "list": "tr.channel-row",
+        "fields": {
+          "name": "div.unnamed",
+          "details": "div.channel-details-mini",
+          "assignedChecks": "div.edit-checks",
+          "editUrl": "a.btn@href"
+        }
+      },
+      "defaultFields": [
+        "name",
+        "details",
+        "assignedChecks",
+        "editUrl"
+      ],
+      "mutates": false,
+      "auth": true,
+      "example": {},
+      "source": "E13 GET https://healthchecks.io/projects/{id}/integrations/",
+      "verified": true,
+      "sample": "{\"name\":\"unnamed\",\"details\":\"Email to clify-agent-b3d326@inkboxmail.com\",\"assignedChecks\":\"1 of 1\",\"editUrl\":\"https://healthchecks.io/integrations/4e2e41d9-2caf-4e3d-8214-9d4590282499/edit/\"}",
+      "resultFields": [
+        "name",
+        "details",
+        "assignedChecks",
+        "editUrl"
+      ]
+    },
+    {
+      "name": "preview-cron",
+      "summary": "Preview the next expected ping dates for a cron expression in a timezone. Read-only.",
+      "method": "POST",
+      "urlTemplate": "/checks/cron_preview/",
+      "params": [
+        {
+          "name": "schedule",
+          "in": "body",
+          "required": true,
+          "type": "string",
+          "description": "Cron expression 'm h dom mon dow', e.g. '0 2 * * *'",
+          "example": "* * * * *"
+        },
+        {
+          "name": "tz",
+          "in": "body",
+          "required": false,
+          "type": "string",
+          "description": "IANA timezone name, e.g. Europe/Riga",
+          "default": "UTC",
+          "example": "UTC"
+        }
+      ],
+      "bodyTemplate": {
+        "schedule": "{schedule}",
+        "tz": "{tz}"
+      },
+      "bodyEncoding": "form",
+      "headers": {
+        "X-Requested-With": "XMLHttpRequest"
+      },
+      "responseType": "html",
+      "extract": {
+        "list": "table#cron-preview-table tr",
+        "fields": {
+          "text": ""
+        }
+      },
+      "csrf": {
+        "from": "/accounts/login/",
+        "selector": "input[name=csrfmiddlewaretoken]",
+        "cookie": "csrftoken",
+        "field": "csrfmiddlewaretoken",
+        "header": "X-CSRFToken"
+      },
+      "mutates": false,
+      "example": {
+        "schedule": "* * * * *",
+        "tz": "UTC"
+      },
+      "source": "E9",
+      "verified": true,
+      "sample": "{\"text\":\"Expected Ping Dates\"}",
+      "resultFields": [
+        "text"
+      ]
+    },
+    {
+      "name": "preview-oncalendar",
+      "summary": "Preview the next expected ping dates for a systemd OnCalendar expression. Read-only.",
+      "method": "POST",
+      "urlTemplate": "/checks/oncalendar_preview/",
+      "params": [
+        {
+          "name": "schedule",
+          "in": "body",
+          "required": true,
+          "type": "string",
+          "description": "systemd OnCalendar expression, e.g. '*-*-* 02:00:00'",
+          "example": "*-*-* *:*:*"
+        },
+        {
+          "name": "tz",
+          "in": "body",
+          "required": false,
+          "type": "string",
+          "description": "IANA timezone name, e.g. Europe/Riga",
+          "default": "UTC",
+          "example": "UTC"
+        }
+      ],
+      "bodyTemplate": {
+        "schedule": "{schedule}",
+        "tz": "{tz}"
+      },
+      "bodyEncoding": "form",
+      "headers": {
+        "X-Requested-With": "XMLHttpRequest"
+      },
+      "responseType": "html",
+      "extract": {
+        "list": "table.table tr",
+        "fields": {
+          "text": ""
+        }
+      },
+      "csrf": {
+        "from": "/accounts/login/",
+        "selector": "input[name=csrfmiddlewaretoken]",
+        "cookie": "csrftoken",
+        "field": "csrfmiddlewaretoken",
+        "header": "X-CSRFToken"
+      },
+      "mutates": false,
+      "example": {
+        "schedule": "*-*-* *:*:*",
+        "tz": "UTC"
+      },
+      "source": "E10",
+      "verified": true,
+      "sample": "{\"text\":\"Expected Ping Dates\"}",
+      "resultFields": [
+        "text"
+      ]
+    }
+  ],
+  "blockers": [],
+  "notes": [
+    "Period (timeout) and grace are in seconds: 3600 = 1 hour, 86400 = 1 day.",
+    "Tags are a single space-separated string, e.g. 'backup nightly'.",
+    "The check UUID is the 'code' in get-checks-status and the segment in /checks/{uuid}/details/ URLs from list-checks.",
+    "Get the projectId from the URLs returned by list-projects."
+  ],
+  "auth": {
+    "headerNames": [
+      "x-csrftoken"
+    ]
+  },
+  "dropped": [],
+  "context": {
+    "projectId": {
+      "value": "0d103ac6-8389-4868-8f5f-944911961863",
+      "from": "same value on every recorded request (list-checks, add-check, get-checks-status)"
+    }
+  },
+  "generated": {
+    "by": "clify add",
+    "model": "claude-opus-5-5",
+    "exploredSteps": 0,
+    "recorded": 54,
+    "verifiedAt": "2026-10-18T09:50:55.271Z",
+    "seconds": 123
+  }
+}

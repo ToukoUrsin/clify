@@ -1,0 +1,6 @@
+Which Rust crate is the top result on crates.io for "http client" sorted by downloads, and what is its latest version and total download count?
+List the 3 strongest earthquakes reported by the USGS in the past day, with magnitude, place and time.
+What does the National Weather Service forecast for tonight in Seattle, WA?
+How many clinical trials studying glioblastoma are currently recruiting on ClinicalTrials.gov? Give the NCT id and title of one of them.
+Find the 3 newest Finnish public procurement notices (hankintailmoitukset.fi) that mention "ohjelmisto", with their titles and publication dates.
+What is the most recent arXiv paper with "LLM agents" in its title? Give the title, authors and arXiv id.

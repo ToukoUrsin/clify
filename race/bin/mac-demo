@@ -1,0 +1,21 @@
+#!/usr/bin/env bash
+# One command on the Mac for the stage demo. The twelve agents run on $RACE_BOX
+# (default build-box); this tunnels the grid here and opens the explainer in Chrome.
+#   race/bin/mac-demo           live grid (explainer → → → grid → Space starts the agents)
+#   race/bin/mac-demo replay    the recorded grid run, no agents
+# Keys in the browser: → or Space on the explainer goes to the grid; Space on the grid starts it; ← back.
+# Ctrl-C here stops everything (the box cleans up the run).
+BOX=${RACE_BOX:-build-box}
+PORT=${PORT:-8790}
+BOX_PORT=${BOX_PORT:-8870}
+DIR=${RACE_DIR:-race-dev}
+mode=${1:-live}; [ "$mode" = replay ] || mode=
+lsof -ti tcp:"$PORT" -sTCP:LISTEN >/dev/null 2>&1 && { echo "port $PORT is busy here: close the old demo (Ctrl-C in its terminal) and retry" >&2; exit 1; }
+# Open the explainer as soon as the tunnel answers.
+( for _ in $(seq 1 120); do
+    curl -sf -o /dev/null "http://127.0.0.1:$PORT/explainer.html" && exec open -a "Google Chrome" "http://127.0.0.1:$PORT/explainer.html"
+    sleep 0.5
+  done; echo "the grid did not come up on port $PORT" >&2 ) &
+# Free the box port from an earlier demo, then run the grid there with its page tunnelled to this Mac.
+exec ssh -t -o ExitOnForwardFailure=yes -L "$PORT:127.0.0.1:$BOX_PORT" "$BOX" \
+  "pkill -f 'race/grid-[s]erver.mjs'; pkill -f 'race/[s]erver.mjs'; sleep 0.5; cd $DIR && PORT=$BOX_PORT VIEW_PORT=$PORT race/bin/grid $mode"

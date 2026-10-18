@@ -1,0 +1,9 @@
+{
+ "capturedAt": "2026-10-18T07:59:52.129650+00:00",
+ "host": "build-box",
+ "home": "~/clify-runs/batch2/home (the run in clify/proofs/sites.md)",
+ "cmd": "ycombinator list-jobs-by-role --role product-manager --limit 3",
+ "exit": 0,
+ "ms": 429,
+ "stdout": "{\n  \"ok\": true,\n  \"status\": 200,\n  \"count\": 35,\n  \"data\": [\n    {\n      \"title\": \"Ex Technical Founder (Product Engineer)\",\n      \"url\": \"https://www.ycombinator.com/companies/cogram/jobs/LDTrViN-ex-technical-founder-product-engineer\"\n    },\n    {\n      \"title\": \"Senior Product Manager - Cards & Payments\",\n      \"url\": \"https://www.ycombinator.com/companies/gosats/jobs/0TZL6W7-senior-product-manager-cards-payments\"\n    },\n    {\n      \"title\": \"Member of Technical Staff\",\n      \"url\": \"https://www.ycombinator.com/companies/concourse/jobs/hghMmKM-member-of-technical-staff\"\n    }\n  ]\n}\n"
+}

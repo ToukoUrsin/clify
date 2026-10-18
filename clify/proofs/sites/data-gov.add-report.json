@@ -1,0 +1,68 @@
+{
+ "ok": true,
+ "site": "data-gov",
+ "url": "https://www.data.gov.uk/",
+ "commands": [
+  {
+   "name": "search-datasets",
+   "summary": "Search the UK open data directory (CKAN package_search). Returns dataset metadata including publisher, licence and resources. Filter with Solr fq, sort, and page by offset.",
+   "verified": true
+  },
+  {
+   "name": "get-dataset",
+   "summary": "Get full metadata for one dataset by its UUID or CKAN name (CKAN package_show). Includes publisher, licence, description and every resource with its URL, format and date.",
+   "verified": true
+  },
+  {
+   "name": "list-dataset-files",
+   "summary": "List the data links shown on a dataset page on data.gov.uk: name, format, date, and the link or preview URL for each file.",
+   "verified": true
+  },
+  {
+   "name": "preview-datafile",
+   "summary": "Open the preview page for one data file of a dataset. Shows the file title and a preview, or a message saying no preview is available.",
+   "verified": true
+  },
+  {
+   "name": "list-filter-options",
+   "summary": "List the filter values the directory search offers (publisher names, topics and formats). Use these to build search filters.",
+   "verified": true
+  },
+  {
+   "name": "list-collections",
+   "summary": "List the curated theme collections on the data.gov.uk home page (Business and economy, Environment, etc.).",
+   "verified": true
+  },
+  {
+   "name": "list-collection-topics",
+   "summary": "List the topics inside a theme collection, e.g. environment has weather and air-quality.",
+   "verified": true
+  },
+  {
+   "name": "get-collection-topic",
+   "summary": "Get a collection topic page: headline chart title, description, the chart-data download link and the external 'get the data' link.",
+   "verified": true
+  },
+  {
+   "name": "download-collection-chart-data",
+   "summary": "Download the raw data behind a collection topic's headline chart, e.g. the UK annual mean temperature series.",
+   "verified": true
+  }
+ ],
+ "verified": 9,
+ "writes": 0,
+ "dropped": [],
+ "blockers": [],
+ "loggedIn": false,
+ "seconds": 178,
+ "next": [
+  "clify data-gov",
+  "clify data-gov search-datasets --q \"air quality\""
+ ],
+ "installed": "/home/ubuntu/clify-runs/batch2/home/bin/data-gov",
+ "explored": {
+  "steps": 20,
+  "recorded": 14,
+  "heldWrites": 0
+ }
+}

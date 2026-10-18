@@ -1,0 +1,38 @@
+{
+ "url": "https://digitaltmuseum.no/",
+ "category": "culture",
+ "sandbox": "clify-digitaltmuseum-no",
+ "startedAt": "2026-10-18T09:19:26.591Z",
+ "region": "us-pdx-1",
+ "chrome": "Chrome/148.0.7778.96",
+ "sandboxStartMs": 2469,
+ "addSeconds": 21,
+ "addExit": 1,
+ "add": {
+  "ok": false,
+  "site": "digitaltmuseum",
+  "url": "https://digitaltmuseum.no/",
+  "commands": [],
+  "verified": 0,
+  "writes": 0,
+  "dropped": [],
+  "blockers": [
+   "bot-check at https://digitaltmuseum.no/",
+   "bot-check at https://digitaltmuseum.no/owners",
+   "captcha"
+  ],
+  "loggedIn": false,
+  "seconds": 21,
+  "next": [
+   "clify digitaltmuseum",
+   "clify repair digitaltmuseum --goal \"<what you need from the site>\""
+  ],
+  "explored": {
+   "steps": 3,
+   "recorded": 4,
+   "heldWrites": 0
+  }
+ },
+ "deleted": true,
+ "seconds": 24
+}

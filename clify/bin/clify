@@ -1,0 +1,4 @@
+#!/usr/bin/env bash
+# clify launcher: runs the TypeScript sources through tsx.
+here="$(cd "$(dirname "$(readlink -f "${BASH_SOURCE[0]}")")/.." && pwd)"
+exec node --no-warnings --import "$here/node_modules/tsx/dist/esm/index.mjs" "$here/src/cli.ts" "$@"

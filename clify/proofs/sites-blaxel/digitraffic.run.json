@@ -1,0 +1,276 @@
+{
+ "url": "https://www.digitraffic.fi/",
+ "category": "gov-nordic",
+ "sandbox": "clify-www-digitraffic-fi",
+ "startedAt": "2026-10-18T08:56:06.557Z",
+ "region": "us-pdx-1",
+ "chrome": "Chrome/148.0.7778.96",
+ "sandboxStartMs": 2502,
+ "addSeconds": 277,
+ "addExit": 0,
+ "add": {
+  "ok": true,
+  "site": "digitraffic",
+  "url": "https://www.digitraffic.fi/",
+  "commands": [
+   {
+    "name": "list-announcements",
+    "summary": "List Digitraffic announcements (tiedotteet), newest first. You can filter by traffic type or tag.",
+    "verified": true
+   },
+   {
+    "name": "get-announcement",
+    "summary": "Get the full text of one announcement by date and slug, as found in the URL /tiedotteet/YYYY/MM/DD/slug.html.",
+    "verified": true
+   },
+   {
+    "name": "get-service-status",
+    "summary": "Get the current status (ok/disrupted/down) of every Digitraffic API system.",
+    "verified": true
+   },
+   {
+    "name": "list-status-issues",
+    "summary": "List incidents on the status page (outages, disruptions), newest first, with their resolution state.",
+    "verified": true
+   },
+   {
+    "name": "list-traffic-messages",
+    "summary": "List current road traffic messages (announcements, road works, weight restrictions, exempted transports) as GeoJSON features.",
+    "verified": true
+   },
+   {
+    "name": "get-traffic-message",
+    "summary": "Get one road traffic message by its situationId, e.g. GUID50xxxxxx (take the id from list-traffic-messages).",
+    "verified": true
+   },
+   {
+    "name": "list-weather-station-data",
+    "summary": "Get the latest sensor readings from all road weather stations.",
+    "verified": true
+   },
+   {
+    "name": "get-weather-station-data",
+    "summary": "Get the latest sensor readings (air/road temperature, wind, etc.) for one road weather station.",
+    "verified": true
+   },
+   {
+    "name": "get-tms-station-data",
+    "summary": "Get live traffic measurement data (vehicle counts, average speeds) for one TMS station.",
+    "verified": true
+   },
+   {
+    "name": "list-weathercam-stations",
+    "summary": "List all road weather camera stations, with location and state.",
+    "verified": true
+   },
+   {
+    "name": "get-weathercam-station",
+    "summary": "Get one weather camera station by id, including camera presets and image URLs.",
+    "verified": true
+   },
+   {
+    "name": "list-maintenance-routes",
+    "summary": "Get the latest road maintenance tracking points (snow ploughing, salting, etc.) as GeoJSON.",
+    "verified": true
+   },
+   {
+    "name": "list-station-live-trains",
+    "summary": "List live trains arriving at and departing from a railway station, by station short code (e.g. HKI, TPE).",
+    "verified": true
+   },
+   {
+    "name": "list-trains-between-stations",
+    "summary": "List the next trains running from one station to another, by station short codes.",
+    "verified": true
+   },
+   {
+    "name": "get-train",
+    "summary": "Get one train's timetable and live status by departure date (or 'latest') and train number.",
+    "verified": true
+   },
+   {
+    "name": "get-train-composition",
+    "summary": "Get a train's composition (locomotives, wagons, length, max speed) by departure date and train number.",
+    "verified": true
+   },
+   {
+    "name": "list-rail-stations",
+    "summary": "List all railway stations with short codes, names, UIC codes and coordinates.",
+    "verified": true
+   },
+   {
+    "name": "list-train-locations",
+    "summary": "Get the latest GPS location and speed of every running train.",
+    "verified": true
+   },
+   {
+    "name": "list-vessel-locations",
+    "summary": "Get the latest AIS vessel positions (GeoJSON). You can filter by MMSI or by a radius around a point.",
+    "verified": true
+   },
+   {
+    "name": "get-vessel",
+    "summary": "Get AIS vessel metadata (name, call sign, IMO, ship type, destination) by MMSI.",
+    "verified": true
+   },
+   {
+    "name": "list-port-calls",
+    "summary": "List port calls (vessel arrivals and departures) for a port, by UN/LOCODE (e.g. FIHEL).",
+    "verified": true
+   },
+   {
+    "name": "list-sea-state",
+    "summary": "Get the latest sea state estimation (SSE) measurements from coastal sites: wind, wave, sea state.",
+    "verified": true
+   },
+   {
+    "name": "list-aton-faults",
+    "summary": "List current faults in aids to navigation (buoys, lights, beacons) in Finnish waters.",
+    "verified": true
+   }
+  ],
+  "verified": 23,
+  "writes": 0,
+  "dropped": [],
+  "blockers": [],
+  "loggedIn": false,
+  "seconds": 277,
+  "next": [
+   "clify digitraffic",
+   "clify digitraffic list-announcements"
+  ],
+  "installed": "/home/ubuntu/clify-runs/blaxel-w1/home/bin/digitraffic",
+  "explored": {
+   "steps": 30,
+   "recorded": 23,
+   "heldWrites": 1
+  }
+ },
+ "check": {
+  "on": "blaxel",
+  "node": "v24.22.0",
+  "seconds": 6,
+  "reads": 23,
+  "verified": 23,
+  "failed": [],
+  "results": [
+   {
+    "name": "list-announcements",
+    "ok": true,
+    "ms": 103
+   },
+   {
+    "name": "get-announcement",
+    "ok": true,
+    "ms": 113
+   },
+   {
+    "name": "get-service-status",
+    "ok": true,
+    "ms": 113
+   },
+   {
+    "name": "list-status-issues",
+    "ok": true,
+    "ms": 142
+   },
+   {
+    "name": "list-traffic-messages",
+    "ok": true,
+    "ms": 111
+   },
+   {
+    "name": "get-traffic-message",
+    "ok": true,
+    "ms": 62
+   },
+   {
+    "name": "list-weather-station-data",
+    "ok": true,
+    "ms": 196
+   },
+   {
+    "name": "get-weather-station-data",
+    "ok": true,
+    "ms": 75
+   },
+   {
+    "name": "get-tms-station-data",
+    "ok": true,
+    "ms": 64
+   },
+   {
+    "name": "list-weathercam-stations",
+    "ok": true,
+    "ms": 92
+   },
+   {
+    "name": "get-weathercam-station",
+    "ok": true,
+    "ms": 61
+   },
+   {
+    "name": "list-maintenance-routes",
+    "ok": true,
+    "ms": 68
+   },
+   {
+    "name": "list-station-live-trains",
+    "ok": true,
+    "ms": 128
+   },
+   {
+    "name": "list-trains-between-stations",
+    "ok": true,
+    "ms": 100
+   },
+   {
+    "name": "get-train",
+    "ok": true,
+    "ms": 579
+   },
+   {
+    "name": "get-train-composition",
+    "ok": true,
+    "ms": 67
+   },
+   {
+    "name": "list-rail-stations",
+    "ok": true,
+    "ms": 65
+   },
+   {
+    "name": "list-train-locations",
+    "ok": true,
+    "ms": 436
+   },
+   {
+    "name": "list-vessel-locations",
+    "ok": true,
+    "ms": 125
+   },
+   {
+    "name": "get-vessel",
+    "ok": true,
+    "ms": 67
+   },
+   {
+    "name": "list-port-calls",
+    "ok": true,
+    "ms": 102
+   },
+   {
+    "name": "list-sea-state",
+    "ok": true,
+    "ms": 63
+   },
+   {
+    "name": "list-aton-faults",
+    "ok": true,
+    "ms": 771
+   }
+  ]
+ },
+ "deleted": true,
+ "seconds": 286
+}

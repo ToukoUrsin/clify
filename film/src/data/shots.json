@@ -1,0 +1,202 @@
+{
+ "capturedAt": "2026-10-17T22:48:18.598Z",
+ "viewport": [
+  1440,
+  900
+ ],
+ "flows": {
+  "books": {
+   "url": "https://books.toscrape.com/",
+   "steps": [
+    {
+     "file": "books-0.png",
+     "url": "https://books.toscrape.com/",
+     "intent": "page load"
+    },
+    {
+     "file": "books-1-pre.png",
+     "url": "https://books.toscrape.com/",
+     "intent": "filter by category",
+     "action": "click",
+     "target": {
+      "x": 170,
+      "y": 297.109375,
+      "width": 49,
+      "height": 16
+     }
+    },
+    {
+     "file": "books-1.png",
+     "url": "https://books.toscrape.com/catalogue/category/books/mystery_3/index.html",
+     "intent": "filter by category",
+     "after": true
+    },
+    {
+     "file": "books-2-pre.png",
+     "url": "https://books.toscrape.com/catalogue/category/books/mystery_3/index.html",
+     "intent": "next page",
+     "action": "click",
+     "target": {
+      "x": 1258.53125,
+      "y": 818.109375,
+      "width": 56.46875,
+      "height": 32
+     }
+    },
+    {
+     "file": "books-2.png",
+     "url": "https://books.toscrape.com/catalogue/category/books/mystery_3/page-2.html",
+     "intent": "next page",
+     "after": true
+    },
+    {
+     "file": "books-3-pre.png",
+     "url": "https://books.toscrape.com/catalogue/category/books/mystery_3/page-2.html",
+     "intent": "open book detail",
+     "action": "click",
+     "target": {
+      "x": 461.3125,
+      "y": 624.109375,
+      "width": 162.375,
+      "height": 16
+     }
+    },
+    {
+     "file": "books-3.png",
+     "url": "https://books.toscrape.com/catalogue/the-mysterious-affair-at-styles-hercule-poirot-1_452/index.html",
+     "intent": "open book detail",
+     "after": true
+    }
+   ],
+   "nonGet": []
+  },
+  "httpbinform": {
+   "url": "https://httpbin.org/forms/post",
+   "steps": [
+    {
+     "file": "httpbinform-0.png",
+     "url": "https://httpbin.org/forms/post",
+     "intent": "page load"
+    },
+    {
+     "file": "httpbinform-1-pre.png",
+     "url": "https://httpbin.org/forms/post",
+     "intent": "fill order form",
+     "action": "type",
+     "target": {
+      "x": 117.3125,
+      "y": 16,
+      "width": 185,
+      "height": 21
+     },
+     "text": "Write guard test"
+    },
+    {
+     "file": "httpbinform-1.png",
+     "url": "https://httpbin.org/forms/post",
+     "intent": "fill order form",
+     "after": true
+    },
+    {
+     "file": "httpbinform-2-pre.png",
+     "url": "https://httpbin.org/forms/post",
+     "intent": "submit order (held, never sent)",
+     "action": "click",
+     "target": {
+      "x": 8,
+      "y": 594.1875,
+      "width": 92.3125,
+      "height": 21
+     }
+    },
+    {
+     "file": "httpbinform-2.png",
+     "url": "chrome-error://chromewebdata/",
+     "intent": "submit order (held, never sent)",
+     "after": true
+    }
+   ],
+   "nonGet": [
+    {
+     "method": "POST",
+     "url": "https://httpbin.org/post",
+     "aborted": true
+    }
+   ]
+  },
+  "hnsearch": {
+   "url": "https://hn.algolia.com/",
+   "steps": [
+    {
+     "file": "hnsearch-0.png",
+     "url": "https://hn.algolia.com/",
+     "intent": "page load"
+    },
+    {
+     "file": "hnsearch-1-pre.png",
+     "url": "https://hn.algolia.com/",
+     "intent": "keyword search",
+     "action": "type",
+     "target": {
+      "x": 341,
+      "y": 9,
+      "width": 882,
+      "height": 42
+     },
+     "text": "playwright"
+    },
+    {
+     "file": "hnsearch-1.png",
+     "url": "https://hn.algolia.com/?dateRange=all&page=0&prefix=true&query=playwright&sort=byPopularity&type=story",
+     "intent": "keyword search",
+     "after": true
+    }
+   ],
+   "nonGet": []
+  },
+  "quotes": {
+   "url": "https://quotes.toscrape.com/",
+   "steps": [
+    {
+     "file": "quotes-0.png",
+     "url": "https://quotes.toscrape.com/",
+     "intent": "page load"
+    }
+   ],
+   "nonGet": []
+  },
+  "wikipedia": {
+   "url": "https://en.wikipedia.org/wiki/Hacker_News",
+   "steps": [
+    {
+     "file": "wikipedia-0.png",
+     "url": "https://en.wikipedia.org/wiki/Hacker_News",
+     "intent": "page load"
+    }
+   ],
+   "nonGet": []
+  },
+  "scrapethis": {
+   "url": "https://www.scrapethissite.com/pages/",
+   "steps": [
+    {
+     "file": "scrapethis-0.png",
+     "url": "https://www.scrapethissite.com/pages/",
+     "intent": "page load"
+    }
+   ],
+   "nonGet": []
+  },
+  "captcha": {
+   "url": "https://www.google.com/recaptcha/api2/demo",
+   "steps": [
+    {
+     "file": "captcha-0.png",
+     "url": "https://www.google.com/recaptcha/api2/demo",
+     "intent": "page load"
+    }
+   ],
+   "nonGet": []
+  }
+ }
+}

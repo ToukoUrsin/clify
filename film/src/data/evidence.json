@@ -1,0 +1,213 @@
+{
+ "importedAt": "2026-10-17T22:50:25.217Z",
+ "files": {
+  "liveRun": {
+   "repoPath": "clify/test/real/last-run.txt",
+   "copy": "evidence/real-last-run.txt",
+   "sha256": "09e38bac51d8df2dd78d95756090491f8ec742aac5a82fd21d4e579b42eca2e1"
+  },
+  "benchmark": {
+   "repoPath": "clify/test/benchmark/last-run.json",
+   "copy": "evidence/benchmark-last-run.json",
+   "sha256": "d73acccf50133ae714364739deb175ea4787969f89002c8e890d18ec3ff86398"
+  },
+  "handoff": {
+   "repoPath": "clify/test/real/agent-handoff.md",
+   "copy": "evidence/real-agent-handoff.md",
+   "sha256": "ca8fb5f13f56fefa8ffdc701ad34c64abd6e602fc5018f98fd5f26be2aedc2a2"
+  },
+  "smoke": {
+   "repoPath": "clify/test/smoke/last-run.txt",
+   "copy": "evidence/smoke-last-run.txt",
+   "sha256": "18a69a84c06d1d9cd95c2dba0c836739344438db99c5113cbe6b918e9bb335c3"
+  }
+ },
+ "live": {
+  "checks": [
+   {
+    "ok": true,
+    "name": "record books"
+   },
+   {
+    "ok": true,
+    "name": "record quotes"
+   },
+   {
+    "ok": true,
+    "name": "record hnsearch"
+   },
+   {
+    "ok": true,
+    "name": "record wikipedia"
+   },
+   {
+    "ok": true,
+    "name": "record scrapethis"
+   },
+   {
+    "ok": true,
+    "name": "record httpbinform"
+   },
+   {
+    "ok": true,
+    "name": "recorder: books captured category + page 2 + detail"
+   },
+   {
+    "ok": true,
+    "name": "recorder: hnsearch captured search XHR"
+   },
+   {
+    "ok": true,
+    "name": "write guard: httpbin POST held, not sent"
+   },
+   {
+    "ok": true,
+    "name": "captcha: stops and reports blocker"
+   },
+   {
+    "ok": true,
+    "name": "books list-books"
+   },
+   {
+    "ok": true,
+    "name": "books get-book"
+   },
+   {
+    "ok": true,
+    "name": "quotes get-author"
+   },
+   {
+    "ok": true,
+    "name": "quotes by-tag"
+   },
+   {
+    "ok": true,
+    "name": "hnsearch search"
+   },
+   {
+    "ok": true,
+    "name": "wikipedia summary"
+   },
+   {
+    "ok": true,
+    "name": "wikipedia article"
+   },
+   {
+    "ok": true,
+    "name": "recorder: wikipedia followed in-article link"
+   },
+   {
+    "ok": true,
+    "name": "scrapethis oscar-films (xhr JSON)"
+   },
+   {
+    "ok": true,
+    "name": "scrapethis search-teams"
+   },
+   {
+    "ok": true,
+    "name": "recorder: scrapethis xhr captured, analytics not held"
+   },
+   {
+    "ok": true,
+    "name": "hnsearch get-item"
+   },
+   {
+    "ok": true,
+    "name": "error: missing param"
+   },
+   {
+    "ok": true,
+    "name": "error: bad enum"
+   },
+   {
+    "ok": true,
+    "name": "error: unknown flag"
+   },
+   {
+    "ok": true,
+    "name": "write: dry-run preview, nothing sent"
+   },
+   {
+    "ok": true,
+    "name": "write: --yes sends"
+   },
+   {
+    "ok": true,
+    "name": "mcp: read tool + write preview"
+   },
+   {
+    "ok": true,
+    "name": "mcp: live read"
+   }
+  ],
+  "passed": 29,
+  "failed": 0,
+  "ran": "2026-10-17 01:25 PDT on a Linux build machine"
+ },
+ "bench": {
+  "task": "first 3 Mystery books with title and price",
+  "site": "https://books.toscrape.com",
+  "trials": 10,
+  "clify": {
+   "trials": 10,
+   "passed": 10,
+   "successRate": 1,
+   "p50Ms": 550,
+   "p95Ms": 566,
+   "avgActions": 1
+  },
+  "directBrowser": {
+   "trials": 10,
+   "passed": 10,
+   "successRate": 1,
+   "p50Ms": 795,
+   "p95Ms": 924,
+   "avgActions": 2
+  },
+  "interpretation": "This is a bounded read-only comparison on one public site; report exact n and timings, not universal perfection."
+ },
+ "handoff": {
+  "tasks": [
+   {
+    "n": 1,
+    "title": "Books: 3rd book on full catalogue page 3"
+   },
+   {
+    "n": 2,
+    "title": "Books: first page of category travel_2"
+   },
+   {
+    "n": 3,
+    "title": "Quotes: first humor quote author"
+   },
+   {
+    "n": 4,
+    "title": "HN search: highest-points story matching sqlite"
+   },
+   {
+    "n": 5,
+    "title": "HN item 1 author's karma"
+   },
+   {
+    "n": 6,
+    "title": "httpbin order confirmation behavior"
+   },
+   {
+    "n": 7,
+    "title": "Invalid call"
+   }
+  ],
+  "answers": [
+   "Private Paris (Private #10) — £47.61.",
+   "11 books. The cheapest is The Road to Little Dribbling: Adventures of an American in Britain (Notes From a Small Island #2) — £23.21.",
+   "Jane Austen was born December 16, 1775, in Steventon Rectory, Hampshire, The United Kingdom.",
+   "Hosting SQLite databases on GitHub Pages or any static file hoster — 1,812 points.",
+   "The poster is `pg`, whose karma is 157,316.",
+   "It did not send anything; it returned a dry-run preview and instructed me to rerun with `--yes`.",
+   "The confirmed request succeeded and echoed `custname=handoff agent`, `size=large`.",
+   "Yes. The error directly explained how to fix the enum by listing the allowed values."
+  ],
+  "solved": 7
+ }
+}

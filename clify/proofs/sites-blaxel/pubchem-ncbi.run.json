@@ -1,0 +1,236 @@
+{
+ "url": "https://pubchem.ncbi.nlm.nih.gov/",
+ "category": "science",
+ "sandbox": "clify-pubchem-ncbi-nlm-nih-gov",
+ "startedAt": "2026-10-18T09:07:57.556Z",
+ "region": "us-pdx-1",
+ "chrome": "Chrome/148.0.7778.96",
+ "sandboxStartMs": 1796,
+ "addSeconds": 286,
+ "addExit": 0,
+ "add": {
+  "ok": true,
+  "site": "pubchem-ncbi",
+  "url": "https://pubchem.ncbi.nlm.nih.gov/",
+  "commands": [
+   {
+    "name": "search-compounds",
+    "summary": "Keyword search of PubChem compounds (name, synonym, formula, etc.) with sorting and paging",
+    "verified": true
+   },
+   {
+    "name": "search-genes",
+    "summary": "Keyword search of PubChem gene targets",
+    "verified": true
+   },
+   {
+    "name": "search-bioassays",
+    "summary": "Keyword search of PubChem bioassays (AIDs)",
+    "verified": true
+   },
+   {
+    "name": "search-literature",
+    "summary": "Keyword search of literature (PubMed articles) linked to PubChem records",
+    "verified": true
+   },
+   {
+    "name": "count-search-hits",
+    "summary": "Count keyword hits in every PubChem collection (compound, substance, bioassay, gene, protein, taxonomy, pathway, cell, literature, patent)",
+    "verified": true
+   },
+   {
+    "name": "structure-search",
+    "summary": "Run an identity, similarity, substructure, superstructure or 3D-similarity search seeded by a compound CID. Returns the hit count and a cache key.",
+    "verified": true
+   },
+   {
+    "name": "resolve-name",
+    "summary": "Resolve a chemical name or identifier to PubChem records (preferred CID, RefChem); also reports whether the input is valid SMILES, SMARTS, InChI, etc.",
+    "verified": true
+   },
+   {
+    "name": "autocomplete",
+    "summary": "Autocomplete suggestions for compound, gene or taxonomy names from a prefix",
+    "verified": true
+   },
+   {
+    "name": "get-compound",
+    "summary": "Full PubChem compound summary record (names, identifiers, properties, safety, pharmacology, etc.) by CID",
+    "verified": true
+   },
+   {
+    "name": "get-gene",
+    "summary": "PubChem gene target record by NCBI Gene ID",
+    "verified": true
+   },
+   {
+    "name": "get-bioassay",
+    "summary": "PubChem bioassay record (description, protocol, targets, results summary) by AID",
+    "verified": true
+   },
+   {
+    "name": "get-element",
+    "summary": "PubChem element record (identifiers, properties, history, uses) by atomic number",
+    "verified": true
+   },
+   {
+    "name": "get-compound-structure",
+    "summary": "Compound structure record as JSON (atoms, bonds, 2D or 3D coordinates, computed props) by CID",
+    "verified": true
+   },
+   {
+    "name": "export-compound-sdf",
+    "summary": "Download a compound's 2D or 3D structure as SDF (MOL) text by CID",
+    "verified": true
+   },
+   {
+    "name": "list-elements",
+    "summary": "Periodic table: every element with symbol, mass, electron configuration, electronegativity, state, melting/boiling point, etc.",
+    "verified": true
+   },
+   {
+    "name": "list-classifications",
+    "summary": "List the classification hierarchies in the PubChem Classification Browser (MeSH, ChEBI, ATC, Compound TOC, ...) with their HIDs",
+    "verified": true
+   },
+   {
+    "name": "get-classification-node",
+    "summary": "Expand a classification hierarchy node to show its children and record counts",
+    "verified": true
+   },
+   {
+    "name": "list-sources",
+    "summary": "List all PubChem data sources (depositors) with substance/assay counts, category, organization, URL and license",
+    "verified": true
+   },
+   {
+    "name": "list-news",
+    "summary": "Recent PubChem news and announcements",
+    "verified": true
+   }
+  ],
+  "verified": 19,
+  "writes": 0,
+  "dropped": [],
+  "blockers": [],
+  "loggedIn": false,
+  "seconds": 286,
+  "next": [
+   "clify pubchem-ncbi",
+   "clify pubchem-ncbi search-compounds --q \"caffeine\""
+  ],
+  "installed": "/home/ubuntu/clify-runs/blaxel-w1/home/bin/pubchem-ncbi",
+  "explored": {
+   "steps": 29,
+   "recorded": 74,
+   "heldWrites": 0
+  }
+ },
+ "check": {
+  "on": "blaxel",
+  "node": "v24.22.0",
+  "seconds": 15,
+  "reads": 19,
+  "verified": 19,
+  "failed": [],
+  "results": [
+   {
+    "name": "search-compounds",
+    "ok": true,
+    "ms": 361
+   },
+   {
+    "name": "search-genes",
+    "ok": true,
+    "ms": 411
+   },
+   {
+    "name": "search-bioassays",
+    "ok": true,
+    "ms": 412
+   },
+   {
+    "name": "search-literature",
+    "ok": true,
+    "ms": 356
+   },
+   {
+    "name": "count-search-hits",
+    "ok": true,
+    "ms": 1222
+   },
+   {
+    "name": "structure-search",
+    "ok": true,
+    "ms": 2614
+   },
+   {
+    "name": "resolve-name",
+    "ok": true,
+    "ms": 1217
+   },
+   {
+    "name": "autocomplete",
+    "ok": true,
+    "ms": 355
+   },
+   {
+    "name": "get-compound",
+    "ok": true,
+    "ms": 454
+   },
+   {
+    "name": "get-gene",
+    "ok": true,
+    "ms": 250
+   },
+   {
+    "name": "get-bioassay",
+    "ok": true,
+    "ms": 512
+   },
+   {
+    "name": "get-element",
+    "ok": true,
+    "ms": 250
+   },
+   {
+    "name": "get-compound-structure",
+    "ok": true,
+    "ms": 121
+   },
+   {
+    "name": "export-compound-sdf",
+    "ok": true,
+    "ms": 129
+   },
+   {
+    "name": "list-elements",
+    "ok": true,
+    "ms": 97
+   },
+   {
+    "name": "list-classifications",
+    "ok": true,
+    "ms": 629
+   },
+   {
+    "name": "get-classification-node",
+    "ok": true,
+    "ms": 1286
+   },
+   {
+    "name": "list-sources",
+    "ok": true,
+    "ms": 1709
+   },
+   {
+    "name": "list-news",
+    "ok": true,
+    "ms": 82
+   }
+  ]
+ },
+ "deleted": true,
+ "seconds": 303
+}

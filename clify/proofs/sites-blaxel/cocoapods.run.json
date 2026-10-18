@@ -1,0 +1,86 @@
+{
+ "url": "https://cocoapods.org/",
+ "category": "dev",
+ "sandbox": "clify-cocoapods-org",
+ "startedAt": "2026-10-18T09:22:25.181Z",
+ "region": "us-pdx-1",
+ "chrome": "Chrome/148.0.7778.96",
+ "sandboxStartMs": 1773,
+ "addSeconds": 105,
+ "addExit": 0,
+ "add": {
+  "ok": true,
+  "site": "cocoapods",
+  "url": "https://cocoapods.org/",
+  "commands": [
+   {
+    "name": "search-pods",
+    "summary": "Search CocoaPods libraries by keyword. Returns name, version, summary, license, platforms, download counts and repo owner. Paginated, 20 per page.",
+    "verified": true
+   },
+   {
+    "name": "get-pod",
+    "summary": "Get one pod's detail page: version, metadata table (tests, language, license, release, SPM), first maintainer, Podfile line, podspec/GitHub links and README text.",
+    "verified": true
+   },
+   {
+    "name": "get-pod-changelog",
+    "summary": "Get a pod's CHANGELOG as rendered text. Some pods only contain a link to their GitHub releases (see first_link).",
+    "verified": true
+   },
+   {
+    "name": "list-owner-pods",
+    "summary": "List all pods maintained by an owner (numeric owner id from get-pod's maintainer_url), with summary, license and language.",
+    "verified": true
+   }
+  ],
+  "verified": 4,
+  "writes": 0,
+  "dropped": [],
+  "blockers": [],
+  "loggedIn": false,
+  "seconds": 104,
+  "next": [
+   "clify cocoapods",
+   "clify cocoapods search-pods --query \"networking\""
+  ],
+  "installed": "/home/ubuntu/clify-runs/blaxel-w2/home/bin/cocoapods",
+  "explored": {
+   "steps": 13,
+   "recorded": 11,
+   "heldWrites": 0
+  }
+ },
+ "check": {
+  "on": "blaxel",
+  "node": "v24.22.0",
+  "seconds": 3,
+  "reads": 4,
+  "verified": 4,
+  "failed": [],
+  "results": [
+   {
+    "name": "search-pods",
+    "ok": true,
+    "ms": 115
+   },
+   {
+    "name": "get-pod",
+    "ok": true,
+    "ms": 109
+   },
+   {
+    "name": "get-pod-changelog",
+    "ok": true,
+    "ms": 158
+   },
+   {
+    "name": "list-owner-pods",
+    "ok": true,
+    "ms": 360
+   }
+  ]
+ },
+ "deleted": true,
+ "seconds": 109
+}

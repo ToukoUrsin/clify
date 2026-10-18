@@ -1,0 +1,295 @@
+{
+ "name": "formulae-brew",
+ "startUrl": "https://formulae.brew.sh/",
+ "origin": "https://formulae.brew.sh",
+ "createdAt": "2026-10-18T07:09:05.792Z",
+ "description": "Homebrew Formulae (formulae.brew.sh), the official Homebrew package index. This CLI searches formulae and casks, fetches full package metadata (versions, dependencies, bottles, artifacts, install analytics), lists every formula, cask and cask font, and reads Homebrew's public install analytics rankings.",
+ "commands": [
+  {
+   "name": "search-packages",
+   "summary": "Keyword search across Homebrew formulae and casks (Algolia index used by the site's search box); returns matching package page URLs and names",
+   "method": "POST",
+   "urlTemplate": "https://d9hg3g8gs4-dsn.algolia.net/1/indexes/*/queries?x-algolia-api-key=e3369d62b2366b374c54b2c5a2835a00&x-algolia-application-id=D9HG3G8GS4",
+   "params": [
+    {
+     "name": "query",
+     "in": "body",
+     "required": true,
+     "type": "string",
+     "description": "Search keywords, e.g. a package name or app name",
+     "example": "python"
+    },
+    {
+     "name": "page",
+     "in": "body",
+     "required": false,
+     "type": "number",
+     "description": "Zero-based results page (20 hits per page)",
+     "default": 0
+    },
+    {
+     "name": "hits_per_page",
+     "key": "hitsPerPage",
+     "in": "body",
+     "required": false,
+     "type": "number",
+     "description": "Number of hits per page (max 1000)",
+     "default": 20
+    }
+   ],
+   "bodyTemplate": {
+    "requests": [
+     {
+      "query": "{query}",
+      "indexName": "brew_all",
+      "attributesToRetrieve": [
+       "hierarchy.lvl0",
+       "hierarchy.lvl1",
+       "hierarchy.lvl2",
+       "hierarchy.lvl3",
+       "hierarchy.lvl4",
+       "hierarchy.lvl5",
+       "hierarchy.lvl6",
+       "content",
+       "type",
+       "url"
+      ],
+      "attributesToSnippet": [
+       "hierarchy.lvl1:10",
+       "hierarchy.lvl2:10",
+       "hierarchy.lvl3:10",
+       "hierarchy.lvl4:10",
+       "hierarchy.lvl5:10",
+       "hierarchy.lvl6:10",
+       "content:10"
+      ],
+      "snippetEllipsisText": "\u2026",
+      "highlightPreTag": "<mark>",
+      "highlightPostTag": "</mark>",
+      "hitsPerPage": "{hits_per_page}",
+      "page": "{page}",
+      "clickAnalytics": false,
+      "facetFilters": [
+       "site:formulae"
+      ]
+     }
+    ]
+   },
+   "bodyEncoding": "json",
+   "responseType": "json",
+   "resultPath": "results.0.hits",
+   "defaultFields": [
+    "hierarchy.lvl0",
+    "hierarchy.lvl1",
+    "hierarchy.lvl2",
+    "url",
+    "type"
+   ],
+   "pagination": {
+    "type": "page",
+    "param": "page"
+   },
+   "mutates": false,
+   "example": {
+    "query": "python"
+   },
+   "source": "E1 POST https://d9hg3g8gs4-dsn.algolia.net/{n}/indexes/*/queries",
+   "verified": true
+  },
+  {
+   "name": "get-formula",
+   "summary": "Get full metadata for one homebrew-core formula by name: description, versions, license, dependencies, bottles, caveats and install analytics",
+   "method": "GET",
+   "urlTemplate": "/api/formula/{name}.json",
+   "params": [
+    {
+     "name": "name",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Formula name, including any @version suffix, e.g. wget or python@3.15",
+     "example": "python@3.15"
+    }
+   ],
+   "responseType": "json",
+   "defaultFields": [
+    "name",
+    "desc",
+    "versions.stable",
+    "homepage",
+    "license",
+    "aliases",
+    "dependencies",
+    "build_dependencies"
+   ],
+   "mutates": false,
+   "example": {
+    "name": "python@3.15"
+   },
+   "source": "E2 E4 GET https://formulae.brew.sh/api/formula/python@3.15.json",
+   "verified": true
+  },
+  {
+   "name": "get-cask",
+   "summary": "Get full metadata for one homebrew-cask cask (macOS app or font) by token: name, version, download URL, artifacts, dependencies, conflicts and analytics",
+   "method": "GET",
+   "urlTemplate": "/api/cask/{token}.json",
+   "params": [
+    {
+     "name": "token",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Cask token, e.g. firefox, visual-studio-code or font-0xproto",
+     "example": "firefox"
+    }
+   ],
+   "responseType": "json",
+   "defaultFields": [
+    "token",
+    "name",
+    "desc",
+    "version",
+    "homepage",
+    "url",
+    "auto_updates",
+    "deprecated"
+   ],
+   "mutates": false,
+   "example": {
+    "token": "firefox"
+   },
+   "source": "E3 E5 GET https://formulae.brew.sh/api/cask/firefox.json",
+   "verified": true
+  },
+  {
+   "name": "list-formulae",
+   "summary": "List every homebrew-core formula with full metadata (very large response, several thousand items)",
+   "method": "GET",
+   "urlTemplate": "/api/formula.json",
+   "params": [],
+   "responseType": "json",
+   "defaultFields": [
+    "name",
+    "versions.stable",
+    "desc",
+    "homepage",
+    "license"
+   ],
+   "mutates": false,
+   "source": "E7",
+   "verified": true
+  },
+  {
+   "name": "list-casks",
+   "summary": "List every homebrew-cask cask (apps and fonts) with full metadata (very large response, several thousand items)",
+   "method": "GET",
+   "urlTemplate": "/api/cask.json",
+   "params": [],
+   "responseType": "json",
+   "defaultFields": [
+    "token",
+    "name",
+    "version",
+    "desc",
+    "homepage"
+   ],
+   "mutates": false,
+   "source": "E8",
+   "verified": true
+  },
+  {
+   "name": "list-cask-fonts",
+   "summary": "List all font casks (token and detail URL) from the cask-font index page; much smaller than list-casks",
+   "method": "GET",
+   "urlTemplate": "/cask-font/",
+   "params": [],
+   "responseType": "html",
+   "extract": {
+    "list": "tr",
+    "fields": {
+     "token": "td a",
+     "url": "td a@href"
+    }
+   },
+   "defaultFields": [
+    "token",
+    "url"
+   ],
+   "mutates": false,
+   "source": "E8",
+   "verified": true
+  },
+  {
+   "name": "get-analytics",
+   "summary": "Get Homebrew's ranked install analytics (top formulae installs, installs-on-request, cask installs, build errors, or macOS versions) for a 30/90/365-day period",
+   "method": "GET",
+   "urlTemplate": "/api/analytics/{category}/{period}.json",
+   "params": [
+    {
+     "name": "category",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Analytics category: install (all formula installs), install-on-request (formulae installed explicitly), cask-install, build-error, os-version",
+     "enum": [
+      "install",
+      "install-on-request",
+      "cask-install",
+      "build-error",
+      "os-version"
+     ],
+     "example": "install-on-request"
+    },
+    {
+     "name": "period",
+     "in": "path",
+     "required": false,
+     "type": "string",
+     "description": "Time window",
+     "enum": [
+      "30d",
+      "90d",
+      "365d"
+     ],
+     "default": "30d"
+    }
+   ],
+   "responseType": "json",
+   "resultPath": "items",
+   "defaultFields": [
+    "number",
+    "formula",
+    "cask",
+    "os_version",
+    "count",
+    "percent"
+   ],
+   "mutates": false,
+   "example": {
+    "category": "install-on-request",
+    "period": "30d"
+   },
+   "source": "",
+   "verified": true
+  }
+ ],
+ "blockers": [],
+ "notes": [
+  "search-packages hits are page sections. hierarchy.lvl0 is 'Formulae' or 'Casks' and hierarchy.lvl1 is the formula name or cask token. Strip the '#fragment' from url. Pass the name to get-formula when the URL contains /formula/, and to get-cask when it contains /cask/.",
+  "Fonts are ordinary casks (tokens start with 'font-'). Use get-cask for their details.",
+  "list-formulae and list-casks return the entire catalogue (tens of MB). Prefer search-packages, get-formula or get-cask for targeted lookups.",
+  "get-formula and get-cask responses include an 'analytics' object with 30d/90d/365d install counts for that package.",
+  "get-analytics item keys depend on the category: 'formula' for install, install-on-request and build-error, 'cask' for cask-install, 'os_version' for os-version. Counts and percents are strings with thousands separators.",
+  "The site is static and public: no login, no filters or sorting beyond what is listed here."
+ ],
+ "dropped": [],
+ "generated": {
+  "by": "clify add",
+  "model": "claude-opus-5-5",
+  "exploredSteps": 19,
+  "recorded": 10,
+  "verifiedAt": "2026-10-18T07:10:01.048Z",
+  "seconds": 135
+ }
+}

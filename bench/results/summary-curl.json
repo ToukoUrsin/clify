@@ -1,0 +1,2538 @@
+{
+ "generatedAt": "2026-10-18T12:47:25.022Z",
+ "tags": [
+  "curl"
+ ],
+ "model": [
+  "claude-opus-5-5"
+ ],
+ "setup": {
+  "browser": "Claude Code -p, Playwright MCP 0.0.83 (default tools) over CDP to headless Chromium; built-in tools disabled",
+  "browserUi": "same as browser, with browser_evaluate and browser_run_code_unsafe disabled (no page JavaScript)",
+  "cli": "Claude Code -p, Bash only, clify on PATH; told to use clify, no curl/WebFetch",
+  "curl": "Claude Code -p, Bash (curl, jq, python3) + WebFetch + WebSearch; no clify, no browser",
+  "grading": "every expected value must appear in the final ANSWER line; ground truth recomputed with clify right before each task"
+ },
+ "nTasks": 20,
+ "nSites": 11,
+ "browser": {
+  "n": 0,
+  "ok": 0,
+  "rate": null,
+  "medianSec": null,
+  "meanSec": 0,
+  "medianTokens": null,
+  "medianToolCalls": null,
+  "medianTurns": null,
+  "totalCostUsd": 0,
+  "medianCostUsd": null
+ },
+ "browserUi": {
+  "n": 0,
+  "ok": 0,
+  "rate": null,
+  "medianSec": null,
+  "meanSec": 0,
+  "medianTokens": null,
+  "medianToolCalls": null,
+  "medianTurns": null,
+  "totalCostUsd": 0,
+  "medianCostUsd": null
+ },
+ "cli": {
+  "n": 0,
+  "ok": 0,
+  "rate": null,
+  "medianSec": null,
+  "meanSec": 0,
+  "medianTokens": null,
+  "medianToolCalls": null,
+  "medianTurns": null,
+  "totalCostUsd": 0,
+  "medianCostUsd": null
+ },
+ "curl": {
+  "n": 40,
+  "ok": 40,
+  "rate": 1,
+  "medianSec": 7.5095,
+  "meanSec": 9.139899999999999,
+  "medianTokens": 10204,
+  "medianToolCalls": 1,
+  "medianTurns": 2,
+  "totalCostUsd": 1.1220146,
+  "medianCostUsd": 0.0243362
+ },
+ "perTask": [
+  {
+   "task": "books-cheapest-first-5-pages",
+   "site": "books",
+   "browser": {
+    "n": 0,
+    "ok": 0,
+    "rate": null,
+    "medianSec": null,
+    "meanSec": 0,
+    "medianTokens": null,
+    "medianToolCalls": null,
+    "medianTurns": null,
+    "totalCostUsd": 0,
+    "medianCostUsd": null
+   },
+   "browserUi": {
+    "n": 0,
+    "ok": 0,
+    "rate": null,
+    "medianSec": null,
+    "meanSec": 0,
+    "medianTokens": null,
+    "medianToolCalls": null,
+    "medianTurns": null,
+    "totalCostUsd": 0,
+    "medianCostUsd": null
+   },
+   "cli": {
+    "n": 0,
+    "ok": 0,
+    "rate": null,
+    "medianSec": null,
+    "meanSec": 0,
+    "medianTokens": null,
+    "medianToolCalls": null,
+    "medianTurns": null,
+    "totalCostUsd": 0,
+    "medianCostUsd": null
+   },
+   "curl": {
+    "n": 2,
+    "ok": 2,
+    "rate": 1,
+    "medianSec": 10.871500000000001,
+    "meanSec": 10.871500000000001,
+    "medianTokens": 10147,
+    "medianToolCalls": 1,
+    "medianTurns": 2,
+    "totalCostUsd": 0.0488324,
+    "medianCostUsd": 0.0244162
+   }
+  },
+  {
+   "task": "books-mystery-max",
+   "site": "books",
+   "browser": {
+    "n": 0,
+    "ok": 0,
+    "rate": null,
+    "medianSec": null,
+    "meanSec": 0,
+    "medianTokens": null,
+    "medianToolCalls": null,
+    "medianTurns": null,
+    "totalCostUsd": 0,
+    "medianCostUsd": null
+   },
+   "browserUi": {
+    "n": 0,
+    "ok": 0,
+    "rate": null,
+    "medianSec": null,
+    "meanSec": 0,
+    "medianTokens": null,
+    "medianToolCalls": null,
+    "medianTurns": null,
+    "totalCostUsd": 0,
+    "medianCostUsd": null
+   },
+   "cli": {
+    "n": 0,
+    "ok": 0,
+    "rate": null,
+    "medianSec": null,
+    "meanSec": 0,
+    "medianTokens": null,
+    "medianToolCalls": null,
+    "medianTurns": null,
+    "totalCostUsd": 0,
+    "medianCostUsd": null
+   },
+   "curl": {
+    "n": 2,
+    "ok": 2,
+    "rate": 1,
+    "medianSec": 12.7695,
+    "meanSec": 12.7695,
+    "medianTokens": 10165.5,
+    "medianToolCalls": 1,
+    "medianTurns": 2,
+    "totalCostUsd": 0.0503884,
+    "medianCostUsd": 0.0251942
+   }
+  },
+  {
+   "task": "books-travel-over-40",
+   "site": "books",
+   "browser": {
+    "n": 0,
+    "ok": 0,
+    "rate": null,
+    "medianSec": null,
+    "meanSec": 0,
+    "medianTokens": null,
+    "medianToolCalls": null,
+    "medianTurns": null,
+    "totalCostUsd": 0,
+    "medianCostUsd": null
+   },
+   "browserUi": {
+    "n": 0,
+    "ok": 0,
+    "rate": null,
+    "medianSec": null,
+    "meanSec": 0,
+    "medianTokens": null,
+    "medianToolCalls": null,
+    "medianTurns": null,
+    "totalCostUsd": 0,
+    "medianCostUsd": null
+   },
+   "cli": {
+    "n": 0,
+    "ok": 0,
+    "rate": null,
+    "medianSec": null,
+    "meanSec": 0,
+    "medianTokens": null,
+    "medianToolCalls": null,
+    "medianTurns": null,
+    "totalCostUsd": 0,
+    "medianCostUsd": null
+   },
+   "curl": {
+    "n": 2,
+    "ok": 2,
+    "rate": 1,
+    "medianSec": 6.009,
+    "meanSec": 6.009,
+    "medianTokens": 10039.5,
+    "medianToolCalls": 1,
+    "medianTurns": 2,
+    "totalCostUsd": 0.0453322,
+    "medianCostUsd": 0.0226661
+   }
+  },
+  {
+   "task": "crates-serde-vs-tokio",
+   "site": "crates",
+   "browser": {
+    "n": 0,
+    "ok": 0,
+    "rate": null,
+    "medianSec": null,
+    "meanSec": 0,
+    "medianTokens": null,
+    "medianToolCalls": null,
+    "medianTurns": null,
+    "totalCostUsd": 0,
+    "medianCostUsd": null
+   },
+   "browserUi": {
+    "n": 0,
+    "ok": 0,
+    "rate": null,
+    "medianSec": null,
+    "meanSec": 0,
+    "medianTokens": null,
+    "medianToolCalls": null,
+    "medianTurns": null,
+    "totalCostUsd": 0,
+    "medianCostUsd": null
+   },
+   "cli": {
+    "n": 0,
+    "ok": 0,
+    "rate": null,
+    "medianSec": null,
+    "meanSec": 0,
+    "medianTokens": null,
+    "medianToolCalls": null,
+    "medianTurns": null,
+    "totalCostUsd": 0,
+    "medianCostUsd": null
+   },
+   "curl": {
+    "n": 2,
+    "ok": 2,
+    "rate": 1,
+    "medianSec": 6.352,
+    "meanSec": 6.352,
+    "medianTokens": 9786,
+    "medianToolCalls": 1,
+    "medianTurns": 2,
+    "totalCostUsd": 0.0407554,
+    "medianCostUsd": 0.0203777
+   }
+  },
+  {
+   "task": "crates-tokio",
+   "site": "crates",
+   "browser": {
+    "n": 0,
+    "ok": 0,
+    "rate": null,
+    "medianSec": null,
+    "meanSec": 0,
+    "medianTokens": null,
+    "medianToolCalls": null,
+    "medianTurns": null,
+    "totalCostUsd": 0,
+    "medianCostUsd": null
+   },
+   "browserUi": {
+    "n": 0,
+    "ok": 0,
+    "rate": null,
+    "medianSec": null,
+    "meanSec": 0,
+    "medianTokens": null,
+    "medianToolCalls": null,
+    "medianTurns": null,
+    "totalCostUsd": 0,
+    "medianCostUsd": null
+   },
+   "cli": {
+    "n": 0,
+    "ok": 0,
+    "rate": null,
+    "medianSec": null,
+    "meanSec": 0,
+    "medianTokens": null,
+    "medianToolCalls": null,
+    "medianTurns": null,
+    "totalCostUsd": 0,
+    "medianCostUsd": null
+   },
+   "curl": {
+    "n": 2,
+    "ok": 2,
+    "rate": 1,
+    "medianSec": 6.851,
+    "meanSec": 6.851,
+    "medianTokens": 10122,
+    "medianToolCalls": 1,
+    "medianTurns": 2,
+    "totalCostUsd": 0.046731999999999996,
+    "medianCostUsd": 0.023365999999999998
+   }
+  },
+  {
+   "task": "debian-nginx-bookworm",
+   "site": "debian",
+   "browser": {
+    "n": 0,
+    "ok": 0,
+    "rate": null,
+    "medianSec": null,
+    "meanSec": 0,
+    "medianTokens": null,
+    "medianToolCalls": null,
+    "medianTurns": null,
+    "totalCostUsd": 0,
+    "medianCostUsd": null
+   },
+   "browserUi": {
+    "n": 0,
+    "ok": 0,
+    "rate": null,
+    "medianSec": null,
+    "meanSec": 0,
+    "medianTokens": null,
+    "medianToolCalls": null,
+    "medianTurns": null,
+    "totalCostUsd": 0,
+    "medianCostUsd": null
+   },
+   "cli": {
+    "n": 0,
+    "ok": 0,
+    "rate": null,
+    "medianSec": null,
+    "meanSec": 0,
+    "medianTokens": null,
+    "medianToolCalls": null,
+    "medianTurns": null,
+    "totalCostUsd": 0,
+    "medianCostUsd": null
+   },
+   "curl": {
+    "n": 2,
+    "ok": 2,
+    "rate": 1,
+    "medianSec": 12.869,
+    "meanSec": 12.869,
+    "medianTokens": 18274,
+    "medianToolCalls": 2.5,
+    "medianTurns": 3.5,
+    "totalCostUsd": 0.0623384,
+    "medianCostUsd": 0.0311692
+   }
+  },
+  {
+   "task": "endoflife-ubuntu-2204",
+   "site": "endoflife",
+   "browser": {
+    "n": 0,
+    "ok": 0,
+    "rate": null,
+    "medianSec": null,
+    "meanSec": 0,
+    "medianTokens": null,
+    "medianToolCalls": null,
+    "medianTurns": null,
+    "totalCostUsd": 0,
+    "medianCostUsd": null
+   },
+   "browserUi": {
+    "n": 0,
+    "ok": 0,
+    "rate": null,
+    "medianSec": null,
+    "meanSec": 0,
+    "medianTokens": null,
+    "medianToolCalls": null,
+    "medianTurns": null,
+    "totalCostUsd": 0,
+    "medianCostUsd": null
+   },
+   "cli": {
+    "n": 0,
+    "ok": 0,
+    "rate": null,
+    "medianSec": null,
+    "meanSec": 0,
+    "medianTokens": null,
+    "medianToolCalls": null,
+    "medianTurns": null,
+    "totalCostUsd": 0,
+    "medianCostUsd": null
+   },
+   "curl": {
+    "n": 2,
+    "ok": 2,
+    "rate": 1,
+    "medianSec": 13.791,
+    "meanSec": 13.791,
+    "medianTokens": 26869.5,
+    "medianToolCalls": 3.5,
+    "medianTurns": 4.5,
+    "totalCostUsd": 0.09735,
+    "medianCostUsd": 0.048675
+   }
+  },
+  {
+   "task": "github-playwright-release",
+   "site": "github",
+   "browser": {
+    "n": 0,
+    "ok": 0,
+    "rate": null,
+    "medianSec": null,
+    "meanSec": 0,
+    "medianTokens": null,
+    "medianToolCalls": null,
+    "medianTurns": null,
+    "totalCostUsd": 0,
+    "medianCostUsd": null
+   },
+   "browserUi": {
+    "n": 0,
+    "ok": 0,
+    "rate": null,
+    "medianSec": null,
+    "meanSec": 0,
+    "medianTokens": null,
+    "medianToolCalls": null,
+    "medianTurns": null,
+    "totalCostUsd": 0,
+    "medianCostUsd": null
+   },
+   "cli": {
+    "n": 0,
+    "ok": 0,
+    "rate": null,
+    "medianSec": null,
+    "meanSec": 0,
+    "medianTokens": null,
+    "medianToolCalls": null,
+    "medianTurns": null,
+    "totalCostUsd": 0,
+    "medianCostUsd": null
+   },
+   "curl": {
+    "n": 2,
+    "ok": 2,
+    "rate": 1,
+    "medianSec": 5.6080000000000005,
+    "meanSec": 5.6080000000000005,
+    "medianTokens": 9798,
+    "medianToolCalls": 1,
+    "medianTurns": 2,
+    "totalCostUsd": 0.0409816,
+    "medianCostUsd": 0.0204908
+   }
+  },
+  {
+   "task": "github-playwright-releases-2026",
+   "site": "github",
+   "browser": {
+    "n": 0,
+    "ok": 0,
+    "rate": null,
+    "medianSec": null,
+    "meanSec": 0,
+    "medianTokens": null,
+    "medianToolCalls": null,
+    "medianTurns": null,
+    "totalCostUsd": 0,
+    "medianCostUsd": null
+   },
+   "browserUi": {
+    "n": 0,
+    "ok": 0,
+    "rate": null,
+    "medianSec": null,
+    "meanSec": 0,
+    "medianTokens": null,
+    "medianToolCalls": null,
+    "medianTurns": null,
+    "totalCostUsd": 0,
+    "medianCostUsd": null
+   },
+   "cli": {
+    "n": 0,
+    "ok": 0,
+    "rate": null,
+    "medianSec": null,
+    "meanSec": 0,
+    "medianTokens": null,
+    "medianToolCalls": null,
+    "medianTurns": null,
+    "totalCostUsd": 0,
+    "medianCostUsd": null
+   },
+   "curl": {
+    "n": 2,
+    "ok": 2,
+    "rate": 1,
+    "medianSec": 7.2825,
+    "meanSec": 7.2825,
+    "medianTokens": 10330.5,
+    "medianToolCalls": 1,
+    "medianTurns": 2,
+    "totalCostUsd": 0.0494728,
+    "medianCostUsd": 0.0247364
+   }
+  },
+  {
+   "task": "hex-phoenix",
+   "site": "hex",
+   "browser": {
+    "n": 0,
+    "ok": 0,
+    "rate": null,
+    "medianSec": null,
+    "meanSec": 0,
+    "medianTokens": null,
+    "medianToolCalls": null,
+    "medianTurns": null,
+    "totalCostUsd": 0,
+    "medianCostUsd": null
+   },
+   "browserUi": {
+    "n": 0,
+    "ok": 0,
+    "rate": null,
+    "medianSec": null,
+    "meanSec": 0,
+    "medianTokens": null,
+    "medianToolCalls": null,
+    "medianTurns": null,
+    "totalCostUsd": 0,
+    "medianCostUsd": null
+   },
+   "cli": {
+    "n": 0,
+    "ok": 0,
+    "rate": null,
+    "medianSec": null,
+    "meanSec": 0,
+    "medianTokens": null,
+    "medianToolCalls": null,
+    "medianTurns": null,
+    "totalCostUsd": 0,
+    "medianCostUsd": null
+   },
+   "curl": {
+    "n": 2,
+    "ok": 2,
+    "rate": 1,
+    "medianSec": 4.997999999999999,
+    "meanSec": 4.997999999999999,
+    "medianTokens": 9753,
+    "medianToolCalls": 1,
+    "medianTurns": 2,
+    "totalCostUsd": 0.0404032,
+    "medianCostUsd": 0.0202016
+   }
+  },
+  {
+   "task": "hockey-best-1990",
+   "site": "scrapethis",
+   "browser": {
+    "n": 0,
+    "ok": 0,
+    "rate": null,
+    "medianSec": null,
+    "meanSec": 0,
+    "medianTokens": null,
+    "medianToolCalls": null,
+    "medianTurns": null,
+    "totalCostUsd": 0,
+    "medianCostUsd": null
+   },
+   "browserUi": {
+    "n": 0,
+    "ok": 0,
+    "rate": null,
+    "medianSec": null,
+    "meanSec": 0,
+    "medianTokens": null,
+    "medianToolCalls": null,
+    "medianTurns": null,
+    "totalCostUsd": 0,
+    "medianCostUsd": null
+   },
+   "cli": {
+    "n": 0,
+    "ok": 0,
+    "rate": null,
+    "medianSec": null,
+    "meanSec": 0,
+    "medianTokens": null,
+    "medianToolCalls": null,
+    "medianTurns": null,
+    "totalCostUsd": 0,
+    "medianCostUsd": null
+   },
+   "curl": {
+    "n": 2,
+    "ok": 2,
+    "rate": 1,
+    "medianSec": 8.5445,
+    "meanSec": 8.5445,
+    "medianTokens": 11043,
+    "medianToolCalls": 1,
+    "medianTurns": 2,
+    "totalCostUsd": 0.060384400000000005,
+    "medianCostUsd": 0.030192200000000002
+   }
+  },
+  {
+   "task": "homebrew-ffmpeg",
+   "site": "homebrew",
+   "browser": {
+    "n": 0,
+    "ok": 0,
+    "rate": null,
+    "medianSec": null,
+    "meanSec": 0,
+    "medianTokens": null,
+    "medianToolCalls": null,
+    "medianTurns": null,
+    "totalCostUsd": 0,
+    "medianCostUsd": null
+   },
+   "browserUi": {
+    "n": 0,
+    "ok": 0,
+    "rate": null,
+    "medianSec": null,
+    "meanSec": 0,
+    "medianTokens": null,
+    "medianToolCalls": null,
+    "medianTurns": null,
+    "totalCostUsd": 0,
+    "medianCostUsd": null
+   },
+   "cli": {
+    "n": 0,
+    "ok": 0,
+    "rate": null,
+    "medianSec": null,
+    "meanSec": 0,
+    "medianTokens": null,
+    "medianToolCalls": null,
+    "medianTurns": null,
+    "totalCostUsd": 0,
+    "medianCostUsd": null
+   },
+   "curl": {
+    "n": 2,
+    "ok": 2,
+    "rate": 1,
+    "medianSec": 6.0115,
+    "meanSec": 6.0115,
+    "medianTokens": 9853.5,
+    "medianToolCalls": 1,
+    "medianTurns": 2,
+    "totalCostUsd": 0.042577000000000004,
+    "medianCostUsd": 0.021288500000000002
+   }
+  },
+  {
+   "task": "nodejs-latest-lts",
+   "site": "nodejs",
+   "browser": {
+    "n": 0,
+    "ok": 0,
+    "rate": null,
+    "medianSec": null,
+    "meanSec": 0,
+    "medianTokens": null,
+    "medianToolCalls": null,
+    "medianTurns": null,
+    "totalCostUsd": 0,
+    "medianCostUsd": null
+   },
+   "browserUi": {
+    "n": 0,
+    "ok": 0,
+    "rate": null,
+    "medianSec": null,
+    "meanSec": 0,
+    "medianTokens": null,
+    "medianToolCalls": null,
+    "medianTurns": null,
+    "totalCostUsd": 0,
+    "medianCostUsd": null
+   },
+   "cli": {
+    "n": 0,
+    "ok": 0,
+    "rate": null,
+    "medianSec": null,
+    "meanSec": 0,
+    "medianTokens": null,
+    "medianToolCalls": null,
+    "medianTurns": null,
+    "totalCostUsd": 0,
+    "medianCostUsd": null
+   },
+   "curl": {
+    "n": 2,
+    "ok": 2,
+    "rate": 1,
+    "medianSec": 6.244,
+    "meanSec": 6.244,
+    "medianTokens": 9882.5,
+    "medianToolCalls": 1,
+    "medianTurns": 2,
+    "totalCostUsd": 0.043915800000000005,
+    "medianCostUsd": 0.021957900000000002
+   }
+  },
+  {
+   "task": "quotes-humor-author",
+   "site": "quotes",
+   "browser": {
+    "n": 0,
+    "ok": 0,
+    "rate": null,
+    "medianSec": null,
+    "meanSec": 0,
+    "medianTokens": null,
+    "medianToolCalls": null,
+    "medianTurns": null,
+    "totalCostUsd": 0,
+    "medianCostUsd": null
+   },
+   "browserUi": {
+    "n": 0,
+    "ok": 0,
+    "rate": null,
+    "medianSec": null,
+    "meanSec": 0,
+    "medianTokens": null,
+    "medianToolCalls": null,
+    "medianTurns": null,
+    "totalCostUsd": 0,
+    "medianCostUsd": null
+   },
+   "cli": {
+    "n": 0,
+    "ok": 0,
+    "rate": null,
+    "medianSec": null,
+    "meanSec": 0,
+    "medianTokens": null,
+    "medianToolCalls": null,
+    "medianTurns": null,
+    "totalCostUsd": 0,
+    "medianCostUsd": null
+   },
+   "curl": {
+    "n": 2,
+    "ok": 2,
+    "rate": 1,
+    "medianSec": 8.427,
+    "meanSec": 8.427,
+    "medianTokens": 15017.5,
+    "medianToolCalls": 2,
+    "medianTurns": 3,
+    "totalCostUsd": 0.0488272,
+    "medianCostUsd": 0.0244136
+   }
+  },
+  {
+   "task": "quotes-love-count",
+   "site": "quotes",
+   "browser": {
+    "n": 0,
+    "ok": 0,
+    "rate": null,
+    "medianSec": null,
+    "meanSec": 0,
+    "medianTokens": null,
+    "medianToolCalls": null,
+    "medianTurns": null,
+    "totalCostUsd": 0,
+    "medianCostUsd": null
+   },
+   "browserUi": {
+    "n": 0,
+    "ok": 0,
+    "rate": null,
+    "medianSec": null,
+    "meanSec": 0,
+    "medianTokens": null,
+    "medianToolCalls": null,
+    "medianTurns": null,
+    "totalCostUsd": 0,
+    "medianCostUsd": null
+   },
+   "cli": {
+    "n": 0,
+    "ok": 0,
+    "rate": null,
+    "medianSec": null,
+    "meanSec": 0,
+    "medianTokens": null,
+    "medianToolCalls": null,
+    "medianTurns": null,
+    "totalCostUsd": 0,
+    "medianCostUsd": null
+   },
+   "curl": {
+    "n": 2,
+    "ok": 2,
+    "rate": 1,
+    "medianSec": 7.965999999999999,
+    "meanSec": 7.965999999999999,
+    "medianTokens": 9856.5,
+    "medianToolCalls": 1,
+    "medianTurns": 2,
+    "totalCostUsd": 0.04268739999999999,
+    "medianCostUsd": 0.021343699999999997
+   }
+  },
+  {
+   "task": "quotes-top-author",
+   "site": "quotes",
+   "browser": {
+    "n": 0,
+    "ok": 0,
+    "rate": null,
+    "medianSec": null,
+    "meanSec": 0,
+    "medianTokens": null,
+    "medianToolCalls": null,
+    "medianTurns": null,
+    "totalCostUsd": 0,
+    "medianCostUsd": null
+   },
+   "browserUi": {
+    "n": 0,
+    "ok": 0,
+    "rate": null,
+    "medianSec": null,
+    "meanSec": 0,
+    "medianTokens": null,
+    "medianToolCalls": null,
+    "medianTurns": null,
+    "totalCostUsd": 0,
+    "medianCostUsd": null
+   },
+   "cli": {
+    "n": 0,
+    "ok": 0,
+    "rate": null,
+    "medianSec": null,
+    "meanSec": 0,
+    "medianTokens": null,
+    "medianToolCalls": null,
+    "medianTurns": null,
+    "totalCostUsd": 0,
+    "medianCostUsd": null
+   },
+   "curl": {
+    "n": 2,
+    "ok": 2,
+    "rate": 1,
+    "medianSec": 9.6555,
+    "meanSec": 9.6555,
+    "medianTokens": 10004.5,
+    "medianToolCalls": 1,
+    "medianTurns": 2,
+    "totalCostUsd": 0.046947800000000005,
+    "medianCostUsd": 0.023473900000000002
+   }
+  },
+  {
+   "task": "scrapethis-hockey-detroit-1995",
+   "site": "scrapethis",
+   "browser": {
+    "n": 0,
+    "ok": 0,
+    "rate": null,
+    "medianSec": null,
+    "meanSec": 0,
+    "medianTokens": null,
+    "medianToolCalls": null,
+    "medianTurns": null,
+    "totalCostUsd": 0,
+    "medianCostUsd": null
+   },
+   "browserUi": {
+    "n": 0,
+    "ok": 0,
+    "rate": null,
+    "medianSec": null,
+    "meanSec": 0,
+    "medianTokens": null,
+    "medianToolCalls": null,
+    "medianTurns": null,
+    "totalCostUsd": 0,
+    "medianCostUsd": null
+   },
+   "cli": {
+    "n": 0,
+    "ok": 0,
+    "rate": null,
+    "medianSec": null,
+    "meanSec": 0,
+    "medianTokens": null,
+    "medianToolCalls": null,
+    "medianTurns": null,
+    "totalCostUsd": 0,
+    "medianCostUsd": null
+   },
+   "curl": {
+    "n": 2,
+    "ok": 2,
+    "rate": 1,
+    "medianSec": 7.094,
+    "meanSec": 7.094,
+    "medianTokens": 13562,
+    "medianToolCalls": 1.5,
+    "medianTurns": 2.5,
+    "totalCostUsd": 0.0596278,
+    "medianCostUsd": 0.0298139
+   }
+  },
+  {
+   "task": "scrapethis-oscar-2012",
+   "site": "scrapethis",
+   "browser": {
+    "n": 0,
+    "ok": 0,
+    "rate": null,
+    "medianSec": null,
+    "meanSec": 0,
+    "medianTokens": null,
+    "medianToolCalls": null,
+    "medianTurns": null,
+    "totalCostUsd": 0,
+    "medianCostUsd": null
+   },
+   "browserUi": {
+    "n": 0,
+    "ok": 0,
+    "rate": null,
+    "medianSec": null,
+    "meanSec": 0,
+    "medianTokens": null,
+    "medianToolCalls": null,
+    "medianTurns": null,
+    "totalCostUsd": 0,
+    "medianCostUsd": null
+   },
+   "cli": {
+    "n": 0,
+    "ok": 0,
+    "rate": null,
+    "medianSec": null,
+    "meanSec": 0,
+    "medianTokens": null,
+    "medianToolCalls": null,
+    "medianTurns": null,
+    "totalCostUsd": 0,
+    "medianCostUsd": null
+   },
+   "curl": {
+    "n": 2,
+    "ok": 2,
+    "rate": 1,
+    "medianSec": 6.4365,
+    "meanSec": 6.4365,
+    "medianTokens": 10692.5,
+    "medianToolCalls": 1,
+    "medianTurns": 2,
+    "totalCostUsd": 0.052163400000000006,
+    "medianCostUsd": 0.026081700000000003
+   }
+  },
+  {
+   "task": "ubuntu-lts-supported",
+   "site": "endoflife",
+   "browser": {
+    "n": 0,
+    "ok": 0,
+    "rate": null,
+    "medianSec": null,
+    "meanSec": 0,
+    "medianTokens": null,
+    "medianToolCalls": null,
+    "medianTurns": null,
+    "totalCostUsd": 0,
+    "medianCostUsd": null
+   },
+   "browserUi": {
+    "n": 0,
+    "ok": 0,
+    "rate": null,
+    "medianSec": null,
+    "meanSec": 0,
+    "medianTokens": null,
+    "medianToolCalls": null,
+    "medianTurns": null,
+    "totalCostUsd": 0,
+    "medianCostUsd": null
+   },
+   "cli": {
+    "n": 0,
+    "ok": 0,
+    "rate": null,
+    "medianSec": null,
+    "meanSec": 0,
+    "medianTokens": null,
+    "medianToolCalls": null,
+    "medianTurns": null,
+    "totalCostUsd": 0,
+    "medianCostUsd": null
+   },
+   "curl": {
+    "n": 2,
+    "ok": 2,
+    "rate": 1,
+    "medianSec": 17.4665,
+    "meanSec": 17.4665,
+    "medianTokens": 28330.5,
+    "medianToolCalls": 3.5,
+    "medianTurns": 4.5,
+    "totalCostUsd": 0.1122846,
+    "medianCostUsd": 0.0561423
+   }
+  },
+  {
+   "task": "webscraper-laptop-max",
+   "site": "webscraper",
+   "browser": {
+    "n": 0,
+    "ok": 0,
+    "rate": null,
+    "medianSec": null,
+    "meanSec": 0,
+    "medianTokens": null,
+    "medianToolCalls": null,
+    "medianTurns": null,
+    "totalCostUsd": 0,
+    "medianCostUsd": null
+   },
+   "browserUi": {
+    "n": 0,
+    "ok": 0,
+    "rate": null,
+    "medianSec": null,
+    "meanSec": 0,
+    "medianTokens": null,
+    "medianToolCalls": null,
+    "medianTurns": null,
+    "totalCostUsd": 0,
+    "medianCostUsd": null
+   },
+   "cli": {
+    "n": 0,
+    "ok": 0,
+    "rate": null,
+    "medianSec": null,
+    "meanSec": 0,
+    "medianTokens": null,
+    "medianToolCalls": null,
+    "medianTurns": null,
+    "totalCostUsd": 0,
+    "medianCostUsd": null
+   },
+   "curl": {
+    "n": 2,
+    "ok": 2,
+    "rate": 1,
+    "medianSec": 17.551000000000002,
+    "meanSec": 17.551000000000002,
+    "medianTokens": 25977.5,
+    "medianToolCalls": 3.5,
+    "medianTurns": 4.5,
+    "totalCostUsd": 0.0900128,
+    "medianCostUsd": 0.0450064
+   }
+  }
+ ],
+ "runs": [
+  {
+   "task": "books-cheapest-first-5-pages",
+   "site": "books",
+   "mode": "curl",
+   "trial": 1,
+   "tag": "curl",
+   "ok": true,
+   "why": "all expected values present",
+   "answer": "Patience — £10.16",
+   "expected": {
+    "expect": [
+     "Patience",
+     "10.16"
+    ]
+   },
+   "wallMs": 12058,
+   "apiMs": 9338,
+   "turns": 2,
+   "toolCalls": 1,
+   "tokens": {
+    "input": 4,
+    "output": 396,
+    "cacheWrite": 3051,
+    "cacheRead": 6701,
+    "total": 10152
+   },
+   "costUsd": 0.0245312,
+   "models": [
+    "claude-opus-5-5"
+   ],
+   "exitCode": 0,
+   "timedOut": false,
+   "subtype": "success",
+   "startedAt": "2026-10-18T12:44:07.683Z",
+   "dir": "runs/curl/books-cheapest-first-5-pages/curl-1"
+  },
+  {
+   "task": "books-cheapest-first-5-pages",
+   "site": "books",
+   "mode": "curl",
+   "trial": 2,
+   "tag": "curl",
+   "ok": true,
+   "why": "all expected values present",
+   "answer": "Patience — £10.16",
+   "expected": {
+    "expect": [
+     "Patience",
+     "10.16"
+    ]
+   },
+   "wallMs": 9685,
+   "apiMs": 6948,
+   "turns": 2,
+   "toolCalls": 1,
+   "tokens": {
+    "input": 4,
+    "output": 384,
+    "cacheWrite": 3053,
+    "cacheRead": 6701,
+    "total": 10142
+   },
+   "costUsd": 0.024301200000000002,
+   "models": [
+    "claude-opus-5-5"
+   ],
+   "exitCode": 0,
+   "timedOut": false,
+   "subtype": "success",
+   "startedAt": "2026-10-18T12:44:09.416Z",
+   "dir": "runs/curl/books-cheapest-first-5-pages/curl-2"
+  },
+  {
+   "task": "books-mystery-max",
+   "site": "books",
+   "mode": "curl",
+   "trial": 1,
+   "tag": "curl",
+   "ok": true,
+   "why": "all expected values present",
+   "answer": "Boar Island (Anna Pigeon #19) — £59.48",
+   "expected": {
+    "expect": [
+     "Boar Island",
+     "59.48"
+    ]
+   },
+   "wallMs": 8371,
+   "apiMs": 7036,
+   "turns": 2,
+   "toolCalls": 1,
+   "tokens": {
+    "input": 4,
+    "output": 435,
+    "cacheWrite": 3112,
+    "cacheRead": 6666,
+    "total": 10217
+   },
+   "costUsd": 0.0256092,
+   "models": [
+    "claude-opus-5-5"
+   ],
+   "exitCode": 0,
+   "timedOut": false,
+   "subtype": "success",
+   "startedAt": "2026-10-18T12:42:34.964Z",
+   "dir": "runs/curl/books-mystery-max/curl-1"
+  },
+  {
+   "task": "books-mystery-max",
+   "site": "books",
+   "mode": "curl",
+   "trial": 2,
+   "tag": "curl",
+   "ok": true,
+   "why": "all expected values present",
+   "answer": "Boar Island (Anna Pigeon #19) — £59.48",
+   "expected": {
+    "expect": [
+     "Boar Island",
+     "59.48"
+    ]
+   },
+   "wallMs": 17168,
+   "apiMs": 15570,
+   "turns": 2,
+   "toolCalls": 1,
+   "tokens": {
+    "input": 4,
+    "output": 414,
+    "cacheWrite": 3030,
+    "cacheRead": 6666,
+    "total": 10114
+   },
+   "costUsd": 0.0247792,
+   "models": [
+    "claude-opus-5-5"
+   ],
+   "exitCode": 0,
+   "timedOut": false,
+   "subtype": "success",
+   "startedAt": "2026-10-18T12:42:34.967Z",
+   "dir": "runs/curl/books-mystery-max/curl-2"
+  },
+  {
+   "task": "books-travel-over-40",
+   "site": "books",
+   "mode": "curl",
+   "trial": 1,
+   "tag": "curl",
+   "ok": true,
+   "why": "all expected values present",
+   "answer": "5",
+   "expected": {
+    "number": 5
+   },
+   "wallMs": 6553,
+   "apiMs": 5708,
+   "turns": 2,
+   "toolCalls": 1,
+   "tokens": {
+    "input": 4,
+    "output": 338,
+    "cacheWrite": 3186,
+    "cacheRead": 6663,
+    "total": 10191
+   },
+   "costUsd": 0.0240386,
+   "models": [
+    "claude-opus-5-5"
+   ],
+   "exitCode": 0,
+   "timedOut": false,
+   "subtype": "success",
+   "startedAt": "2026-10-18T12:42:34.969Z",
+   "dir": "runs/curl/books-travel-over-40/curl-1"
+  },
+  {
+   "task": "books-travel-over-40",
+   "site": "books",
+   "mode": "curl",
+   "trial": 2,
+   "tag": "curl",
+   "ok": true,
+   "why": "all expected values present",
+   "answer": "5",
+   "expected": {
+    "number": 5
+   },
+   "wallMs": 5465,
+   "apiMs": 4627,
+   "turns": 2,
+   "toolCalls": 1,
+   "tokens": {
+    "input": 4,
+    "output": 256,
+    "cacheWrite": 2965,
+    "cacheRead": 6663,
+    "total": 9888
+   },
+   "costUsd": 0.0212936,
+   "models": [
+    "claude-opus-5-5"
+   ],
+   "exitCode": 0,
+   "timedOut": false,
+   "subtype": "success",
+   "startedAt": "2026-10-18T12:42:41.523Z",
+   "dir": "runs/curl/books-travel-over-40/curl-2"
+  },
+  {
+   "task": "crates-serde-vs-tokio",
+   "site": "crates",
+   "mode": "curl",
+   "trial": 1,
+   "tag": "curl",
+   "ok": true,
+   "why": "all expected values present",
+   "answer": "serde",
+   "expected": {
+    "expect": [
+     "serde"
+    ]
+   },
+   "wallMs": 6317,
+   "apiMs": 5156,
+   "turns": 2,
+   "toolCalls": 1,
+   "tokens": {
+    "input": 4,
+    "output": 246,
+    "cacheWrite": 2889,
+    "cacheRead": 6671,
+    "total": 9810
+   },
+   "costUsd": 0.0207152,
+   "models": [
+    "claude-opus-5-5"
+   ],
+   "exitCode": 0,
+   "timedOut": false,
+   "subtype": "success",
+   "startedAt": "2026-10-18T12:44:24.039Z",
+   "dir": "runs/curl/crates-serde-vs-tokio/curl-1"
+  },
+  {
+   "task": "crates-serde-vs-tokio",
+   "site": "crates",
+   "mode": "curl",
+   "trial": 2,
+   "tag": "curl",
+   "ok": true,
+   "why": "all expected values present",
+   "answer": "serde",
+   "expected": {
+    "expect": [
+     "serde"
+    ]
+   },
+   "wallMs": 6387,
+   "apiMs": 5040,
+   "turns": 2,
+   "toolCalls": 1,
+   "tokens": {
+    "input": 4,
+    "output": 217,
+    "cacheWrite": 2870,
+    "cacheRead": 6671,
+    "total": 9762
+   },
+   "costUsd": 0.0200402,
+   "models": [
+    "claude-opus-5-5"
+   ],
+   "exitCode": 0,
+   "timedOut": false,
+   "subtype": "success",
+   "startedAt": "2026-10-18T12:44:30.357Z",
+   "dir": "runs/curl/crates-serde-vs-tokio/curl-2"
+  },
+  {
+   "task": "crates-tokio",
+   "site": "crates",
+   "mode": "curl",
+   "trial": 1,
+   "tag": "curl",
+   "ok": true,
+   "why": "all expected values present",
+   "answer": "1.53.3, MIT",
+   "expected": {
+    "expect": [
+     "1.53.3",
+     "MIT"
+    ],
+    "moves": true
+   },
+   "wallMs": 7402,
+   "apiMs": 6584,
+   "turns": 2,
+   "toolCalls": 1,
+   "tokens": {
+    "input": 4,
+    "output": 291,
+    "cacheWrite": 3080,
+    "cacheRead": 6650,
+    "total": 10025
+   },
+   "costUsd": 0.022566,
+   "models": [
+    "claude-opus-5-5"
+   ],
+   "exitCode": 0,
+   "timedOut": false,
+   "subtype": "success",
+   "startedAt": "2026-10-18T12:43:27.875Z",
+   "dir": "runs/curl/crates-tokio/curl-1"
+  },
+  {
+   "task": "crates-tokio",
+   "site": "crates",
+   "mode": "curl",
+   "trial": 2,
+   "tag": "curl",
+   "ok": true,
+   "why": "all expected values present",
+   "answer": "tokio 1.53.3, licensed MIT",
+   "expected": {
+    "expect": [
+     "1.53.3",
+     "MIT"
+    ],
+    "moves": true
+   },
+   "wallMs": 6300,
+   "apiMs": 5525,
+   "turns": 2,
+   "toolCalls": 1,
+   "tokens": {
+    "input": 4,
+    "output": 333,
+    "cacheWrite": 3232,
+    "cacheRead": 6650,
+    "total": 10219
+   },
+   "costUsd": 0.024166,
+   "models": [
+    "claude-opus-5-5"
+   ],
+   "exitCode": 0,
+   "timedOut": false,
+   "subtype": "success",
+   "startedAt": "2026-10-18T12:43:34.421Z",
+   "dir": "runs/curl/crates-tokio/curl-2"
+  },
+  {
+   "task": "debian-nginx-bookworm",
+   "site": "debian",
+   "mode": "curl",
+   "trial": 1,
+   "tag": "curl",
+   "ok": true,
+   "why": "all expected values present",
+   "answer": "1.22.1-9+deb12u10",
+   "expected": {
+    "expect": [
+     "1.22.1-9+deb12u10"
+    ],
+    "moves": true
+   },
+   "wallMs": 12482,
+   "apiMs": 10739,
+   "turns": 4,
+   "toolCalls": 3,
+   "tokens": {
+    "input": 8,
+    "output": 617,
+    "cacheWrite": 3687,
+    "cacheRead": 16857,
+    "total": 21169
+   },
+   "costUsd": 0.0341784,
+   "models": [
+    "claude-opus-5-5"
+   ],
+   "exitCode": 0,
+   "timedOut": false,
+   "subtype": "success",
+   "startedAt": "2026-10-18T12:43:39.574Z",
+   "dir": "runs/curl/debian-nginx-bookworm/curl-1"
+  },
+  {
+   "task": "debian-nginx-bookworm",
+   "site": "debian",
+   "mode": "curl",
+   "trial": 2,
+   "tag": "curl",
+   "ok": true,
+   "why": "all expected values present",
+   "answer": "1.22.1-9+deb12u10",
+   "expected": {
+    "expect": [
+     "1.22.1-9+deb12u10"
+    ],
+    "moves": true
+   },
+   "wallMs": 13256,
+   "apiMs": 12656,
+   "turns": 3,
+   "toolCalls": 2,
+   "tokens": {
+    "input": 6,
+    "output": 433,
+    "cacheWrite": 3435,
+    "cacheRead": 11505,
+    "total": 15379
+   },
+   "costUsd": 0.02816,
+   "models": [
+    "claude-opus-5-5"
+   ],
+   "exitCode": 0,
+   "timedOut": false,
+   "subtype": "success",
+   "startedAt": "2026-10-18T12:43:40.433Z",
+   "dir": "runs/curl/debian-nginx-bookworm/curl-2"
+  },
+  {
+   "task": "endoflife-ubuntu-2204",
+   "site": "endoflife",
+   "mode": "curl",
+   "trial": 1,
+   "tag": "curl",
+   "ok": true,
+   "why": "all expected values present",
+   "answer": "2027-06-01",
+   "expected": {
+    "expect": [
+     "2027-06-01"
+    ]
+   },
+   "wallMs": 14019,
+   "apiMs": 12801,
+   "turns": 5,
+   "toolCalls": 4,
+   "tokens": {
+    "input": 10,
+    "output": 1006,
+    "cacheWrite": 4458,
+    "cacheRead": 23784,
+    "total": 29258
+   },
+   "costUsd": 0.04720680000000001,
+   "models": [
+    "claude-opus-5-5"
+   ],
+   "exitCode": 0,
+   "timedOut": false,
+   "subtype": "success",
+   "startedAt": "2026-10-18T12:43:08.922Z",
+   "dir": "runs/curl/endoflife-ubuntu-2204/curl-1"
+  },
+  {
+   "task": "endoflife-ubuntu-2204",
+   "site": "endoflife",
+   "mode": "curl",
+   "trial": 2,
+   "tag": "curl",
+   "ok": true,
+   "why": "all expected values present",
+   "answer": "2027-06-01",
+   "expected": {
+    "expect": [
+     "2027-06-01"
+    ]
+   },
+   "wallMs": 13563,
+   "apiMs": 12697,
+   "turns": 4,
+   "toolCalls": 3,
+   "tokens": {
+    "input": 8,
+    "output": 1017,
+    "cacheWrite": 5225,
+    "cacheRead": 18231,
+    "total": 24481
+   },
+   "costUsd": 0.0501432,
+   "models": [
+    "claude-opus-5-5"
+   ],
+   "exitCode": 0,
+   "timedOut": false,
+   "subtype": "success",
+   "startedAt": "2026-10-18T12:43:21.169Z",
+   "dir": "runs/curl/endoflife-ubuntu-2204/curl-2"
+  },
+  {
+   "task": "github-playwright-release",
+   "site": "github",
+   "mode": "curl",
+   "trial": 1,
+   "tag": "curl",
+   "ok": true,
+   "why": "all expected values present",
+   "answer": "v1.64.1, 2026-10-14",
+   "expected": {
+    "expect": [
+     "1.64.1",
+     "2026-10-14"
+    ],
+    "moves": true
+   },
+   "wallMs": 4994,
+   "apiMs": 4477,
+   "turns": 2,
+   "toolCalls": 1,
+   "tokens": {
+    "input": 4,
+    "output": 248,
+    "cacheWrite": 2885,
+    "cacheRead": 6674,
+    "total": 9811
+   },
+   "costUsd": 0.0207358,
+   "models": [
+    "claude-opus-5-5"
+   ],
+   "exitCode": 0,
+   "timedOut": false,
+   "subtype": "success",
+   "startedAt": "2026-10-18T12:43:40.721Z",
+   "dir": "runs/curl/github-playwright-release/curl-1"
+  },
+  {
+   "task": "github-playwright-release",
+   "site": "github",
+   "mode": "curl",
+   "trial": 2,
+   "tag": "curl",
+   "ok": true,
+   "why": "all expected values present",
+   "answer": "v1.64.1, 2026-10-14",
+   "expected": {
+    "expect": [
+     "1.64.1",
+     "2026-10-14"
+    ],
+    "moves": true
+   },
+   "wallMs": 6222,
+   "apiMs": 5826,
+   "turns": 2,
+   "toolCalls": 1,
+   "tokens": {
+    "input": 4,
+    "output": 224,
+    "cacheWrite": 2883,
+    "cacheRead": 6674,
+    "total": 9785
+   },
+   "costUsd": 0.0202458,
+   "models": [
+    "claude-opus-5-5"
+   ],
+   "exitCode": 0,
+   "timedOut": false,
+   "subtype": "success",
+   "startedAt": "2026-10-18T12:43:45.716Z",
+   "dir": "runs/curl/github-playwright-release/curl-2"
+  },
+  {
+   "task": "github-playwright-releases-2026",
+   "site": "github",
+   "mode": "curl",
+   "trial": 1,
+   "tag": "curl",
+   "ok": true,
+   "why": "all expected values present",
+   "answer": "13",
+   "expected": {
+    "number": 13,
+    "moves": true
+   },
+   "wallMs": 5791,
+   "apiMs": 5170,
+   "turns": 2,
+   "toolCalls": 1,
+   "tokens": {
+    "input": 4,
+    "output": 342,
+    "cacheWrite": 3235,
+    "cacheRead": 6677,
+    "total": 10258
+   },
+   "costUsd": 0.0243664,
+   "models": [
+    "claude-opus-5-5"
+   ],
+   "exitCode": 0,
+   "timedOut": false,
+   "subtype": "success",
+   "startedAt": "2026-10-18T12:44:09.474Z",
+   "dir": "runs/curl/github-playwright-releases-2026/curl-1"
+  },
+  {
+   "task": "github-playwright-releases-2026",
+   "site": "github",
+   "mode": "curl",
+   "trial": 2,
+   "tag": "curl",
+   "ok": true,
+   "why": "all expected values present",
+   "answer": "13",
+   "expected": {
+    "number": 13,
+    "moves": true
+   },
+   "wallMs": 8774,
+   "apiMs": 8337,
+   "turns": 2,
+   "toolCalls": 1,
+   "tokens": {
+    "input": 4,
+    "output": 343,
+    "cacheWrite": 3379,
+    "cacheRead": 6677,
+    "total": 10403
+   },
+   "costUsd": 0.0251064,
+   "models": [
+    "claude-opus-5-5"
+   ],
+   "exitCode": 0,
+   "timedOut": false,
+   "subtype": "success",
+   "startedAt": "2026-10-18T12:44:15.265Z",
+   "dir": "runs/curl/github-playwright-releases-2026/curl-2"
+  },
+  {
+   "task": "hex-phoenix",
+   "site": "hex",
+   "mode": "curl",
+   "trial": 1,
+   "tag": "curl",
+   "ok": true,
+   "why": "all expected values present",
+   "answer": "1.8.15, MIT",
+   "expected": {
+    "expect": [
+     "1.8.15",
+     "MIT"
+    ],
+    "moves": true
+   },
+   "wallMs": 4842,
+   "apiMs": 4274,
+   "turns": 2,
+   "toolCalls": 1,
+   "tokens": {
+    "input": 4,
+    "output": 224,
+    "cacheWrite": 2871,
+    "cacheRead": 6653,
+    "total": 9752
+   },
+   "costUsd": 0.020181599999999997,
+   "models": [
+    "claude-opus-5-5"
+   ],
+   "exitCode": 0,
+   "timedOut": false,
+   "subtype": "success",
+   "startedAt": "2026-10-18T12:43:34.732Z",
+   "dir": "runs/curl/hex-phoenix/curl-1"
+  },
+  {
+   "task": "hex-phoenix",
+   "site": "hex",
+   "mode": "curl",
+   "trial": 2,
+   "tag": "curl",
+   "ok": true,
+   "why": "all expected values present",
+   "answer": "1.8.15, MIT",
+   "expected": {
+    "expect": [
+     "1.8.15",
+     "MIT"
+    ],
+    "moves": true
+   },
+   "wallMs": 5154,
+   "apiMs": 4595,
+   "turns": 2,
+   "toolCalls": 1,
+   "tokens": {
+    "input": 4,
+    "output": 226,
+    "cacheWrite": 2871,
+    "cacheRead": 6653,
+    "total": 9754
+   },
+   "costUsd": 0.0202216,
+   "models": [
+    "claude-opus-5-5"
+   ],
+   "exitCode": 0,
+   "timedOut": false,
+   "subtype": "success",
+   "startedAt": "2026-10-18T12:43:35.278Z",
+   "dir": "runs/curl/hex-phoenix/curl-2"
+  },
+  {
+   "task": "hockey-best-1990",
+   "site": "scrapethis",
+   "mode": "curl",
+   "trial": 1,
+   "tag": "curl",
+   "ok": true,
+   "why": "all expected values present",
+   "answer": "Chicago Blackhawks, 49 wins",
+   "expected": {
+    "expect": [
+     "Chicago Blackhawks"
+    ],
+    "number": 49
+   },
+   "wallMs": 10494,
+   "apiMs": 9719,
+   "turns": 2,
+   "toolCalls": 1,
+   "tokens": {
+    "input": 4,
+    "output": 505,
+    "cacheWrite": 4471,
+    "cacheRead": 6706,
+    "total": 11686
+   },
+   "costUsd": 0.0338122,
+   "models": [
+    "claude-opus-5-5"
+   ],
+   "exitCode": 0,
+   "timedOut": false,
+   "subtype": "success",
+   "startedAt": "2026-10-18T12:43:58.921Z",
+   "dir": "runs/curl/hockey-best-1990/curl-1"
+  },
+  {
+   "task": "hockey-best-1990",
+   "site": "scrapethis",
+   "mode": "curl",
+   "trial": 2,
+   "tag": "curl",
+   "ok": true,
+   "why": "all expected values present",
+   "answer": "Chicago Blackhawks, 49 wins",
+   "expected": {
+    "expect": [
+     "Chicago Blackhawks"
+    ],
+    "number": 49
+   },
+   "wallMs": 6595,
+   "apiMs": 5919,
+   "turns": 2,
+   "toolCalls": 1,
+   "tokens": {
+    "input": 4,
+    "output": 451,
+    "cacheWrite": 3239,
+    "cacheRead": 6706,
+    "total": 10400
+   },
+   "costUsd": 0.0265722,
+   "models": [
+    "claude-opus-5-5"
+   ],
+   "exitCode": 0,
+   "timedOut": false,
+   "subtype": "success",
+   "startedAt": "2026-10-18T12:44:02.879Z",
+   "dir": "runs/curl/hockey-best-1990/curl-2"
+  },
+  {
+   "task": "homebrew-ffmpeg",
+   "site": "homebrew",
+   "mode": "curl",
+   "trial": 1,
+   "tag": "curl",
+   "ok": true,
+   "why": "all expected values present",
+   "answer": "9.0.2 (GPL-3.0-or-later)",
+   "expected": {
+    "expect": [
+     "9.0.2",
+     "GPL-3.0-or-later"
+    ],
+    "moves": true
+   },
+   "wallMs": 4933,
+   "apiMs": 4494,
+   "turns": 2,
+   "toolCalls": 1,
+   "tokens": {
+    "input": 4,
+    "output": 286,
+    "cacheWrite": 2908,
+    "cacheRead": 6675,
+    "total": 9873
+   },
+   "costUsd": 0.021611,
+   "models": [
+    "claude-opus-5-5"
+   ],
+   "exitCode": 0,
+   "timedOut": false,
+   "subtype": "success",
+   "startedAt": "2026-10-18T12:43:22.942Z",
+   "dir": "runs/curl/homebrew-ffmpeg/curl-1"
+  },
+  {
+   "task": "homebrew-ffmpeg",
+   "site": "homebrew",
+   "mode": "curl",
+   "trial": 2,
+   "tag": "curl",
+   "ok": true,
+   "why": "all expected values present",
+   "answer": "9.0.2, GPL-3.0-or-later",
+   "expected": {
+    "expect": [
+     "9.0.2",
+     "GPL-3.0-or-later"
+    ],
+    "moves": true
+   },
+   "wallMs": 7090,
+   "apiMs": 6700,
+   "turns": 2,
+   "toolCalls": 1,
+   "tokens": {
+    "input": 4,
+    "output": 256,
+    "cacheWrite": 2899,
+    "cacheRead": 6675,
+    "total": 9834
+   },
+   "costUsd": 0.020966000000000002,
+   "models": [
+    "claude-opus-5-5"
+   ],
+   "exitCode": 0,
+   "timedOut": false,
+   "subtype": "success",
+   "startedAt": "2026-10-18T12:43:27.330Z",
+   "dir": "runs/curl/homebrew-ffmpeg/curl-2"
+  },
+  {
+   "task": "nodejs-latest-lts",
+   "site": "nodejs",
+   "mode": "curl",
+   "trial": 1,
+   "tag": "curl",
+   "ok": true,
+   "why": "all expected values present",
+   "answer": "v24.22.0 (Krypton)",
+   "expected": {
+    "expect": [
+     "24.22.0",
+     "Krypton"
+    ],
+    "moves": true
+   },
+   "wallMs": 6983,
+   "apiMs": 6579,
+   "turns": 2,
+   "toolCalls": 1,
+   "tokens": {
+    "input": 4,
+    "output": 309,
+    "cacheWrite": 2867,
+    "cacheRead": 6672,
+    "total": 9852
+   },
+   "costUsd": 0.0218654,
+   "models": [
+    "claude-opus-5-5"
+   ],
+   "exitCode": 0,
+   "timedOut": false,
+   "subtype": "success",
+   "startedAt": "2026-10-18T12:43:51.938Z",
+   "dir": "runs/curl/nodejs-latest-lts/curl-1"
+  },
+  {
+   "task": "nodejs-latest-lts",
+   "site": "nodejs",
+   "mode": "curl",
+   "trial": 2,
+   "tag": "curl",
+   "ok": true,
+   "why": "all expected values present",
+   "answer": "v24.22.0 (Krypton)",
+   "expected": {
+    "expect": [
+     "24.22.0",
+     "Krypton"
+    ],
+    "moves": true
+   },
+   "wallMs": 5505,
+   "apiMs": 5109,
+   "turns": 2,
+   "toolCalls": 1,
+   "tokens": {
+    "input": 4,
+    "output": 301,
+    "cacheWrite": 2936,
+    "cacheRead": 6672,
+    "total": 9913
+   },
+   "costUsd": 0.0220504,
+   "models": [
+    "claude-opus-5-5"
+   ],
+   "exitCode": 0,
+   "timedOut": false,
+   "subtype": "success",
+   "startedAt": "2026-10-18T12:43:52.057Z",
+   "dir": "runs/curl/nodejs-latest-lts/curl-2"
+  },
+  {
+   "task": "quotes-humor-author",
+   "site": "quotes",
+   "mode": "curl",
+   "trial": 1,
+   "tag": "curl",
+   "ok": true,
+   "why": "all expected values present",
+   "answer": "Jane Austen, born December 16, 1775",
+   "expected": {
+    "expect": [
+     "Jane Austen",
+     "December 16 1775"
+    ]
+   },
+   "wallMs": 9237,
+   "apiMs": 8216,
+   "turns": 3,
+   "toolCalls": 2,
+   "tokens": {
+    "input": 6,
+    "output": 325,
+    "cacheWrite": 3093,
+    "cacheRead": 11585,
+    "total": 15009
+   },
+   "costUsd": 0.024305999999999998,
+   "models": [
+    "claude-opus-5-5"
+   ],
+   "exitCode": 0,
+   "timedOut": false,
+   "subtype": "success",
+   "startedAt": "2026-10-18T12:42:43.336Z",
+   "dir": "runs/curl/quotes-humor-author/curl-1"
+  },
+  {
+   "task": "quotes-humor-author",
+   "site": "quotes",
+   "mode": "curl",
+   "trial": 2,
+   "tag": "curl",
+   "ok": true,
+   "why": "all expected values present",
+   "answer": "Jane Austen, born December 16, 1775",
+   "expected": {
+    "expect": [
+     "Jane Austen",
+     "December 16 1775"
+    ]
+   },
+   "wallMs": 7617,
+   "apiMs": 6600,
+   "turns": 3,
+   "toolCalls": 2,
+   "tokens": {
+    "input": 6,
+    "output": 334,
+    "cacheWrite": 3100,
+    "cacheRead": 11586,
+    "total": 15026
+   },
+   "costUsd": 0.024521200000000003,
+   "models": [
+    "claude-opus-5-5"
+   ],
+   "exitCode": 0,
+   "timedOut": false,
+   "subtype": "success",
+   "startedAt": "2026-10-18T12:42:46.989Z",
+   "dir": "runs/curl/quotes-humor-author/curl-2"
+  },
+  {
+   "task": "quotes-love-count",
+   "site": "quotes",
+   "mode": "curl",
+   "trial": 1,
+   "tag": "curl",
+   "ok": true,
+   "why": "all expected values present",
+   "answer": "14",
+   "expected": {
+    "number": 14
+   },
+   "wallMs": 7255,
+   "apiMs": 5651,
+   "turns": 2,
+   "toolCalls": 1,
+   "tokens": {
+    "input": 4,
+    "output": 303,
+    "cacheWrite": 2930,
+    "cacheRead": 6676,
+    "total": 9913
+   },
+   "costUsd": 0.022061199999999996,
+   "models": [
+    "claude-opus-5-5"
+   ],
+   "exitCode": 0,
+   "timedOut": false,
+   "subtype": "success",
+   "startedAt": "2026-10-18T12:42:52.136Z",
+   "dir": "runs/curl/quotes-love-count/curl-1"
+  },
+  {
+   "task": "quotes-love-count",
+   "site": "quotes",
+   "mode": "curl",
+   "trial": 2,
+   "tag": "curl",
+   "ok": true,
+   "why": "all expected values present",
+   "answer": "14",
+   "expected": {
+    "number": 14
+   },
+   "wallMs": 8677,
+   "apiMs": 6790,
+   "turns": 2,
+   "toolCalls": 1,
+   "tokens": {
+    "input": 4,
+    "output": 245,
+    "cacheWrite": 2875,
+    "cacheRead": 6676,
+    "total": 9800
+   },
+   "costUsd": 0.020626199999999997,
+   "models": [
+    "claude-opus-5-5"
+   ],
+   "exitCode": 0,
+   "timedOut": false,
+   "subtype": "success",
+   "startedAt": "2026-10-18T12:42:52.574Z",
+   "dir": "runs/curl/quotes-love-count/curl-2"
+  },
+  {
+   "task": "quotes-top-author",
+   "site": "quotes",
+   "mode": "curl",
+   "trial": 1,
+   "tag": "curl",
+   "ok": true,
+   "why": "all expected values present",
+   "answer": "Albert Einstein, 10 quotes",
+   "expected": {
+    "expect": [
+     "Albert Einstein"
+    ],
+    "number": 10
+   },
+   "wallMs": 9190,
+   "apiMs": 5872,
+   "turns": 2,
+   "toolCalls": 1,
+   "tokens": {
+    "input": 4,
+    "output": 362,
+    "cacheWrite": 2930,
+    "cacheRead": 6677,
+    "total": 9973
+   },
+   "costUsd": 0.023241400000000002,
+   "models": [
+    "claude-opus-5-5"
+   ],
+   "exitCode": 0,
+   "timedOut": false,
+   "subtype": "success",
+   "startedAt": "2026-10-18T12:43:53.689Z",
+   "dir": "runs/curl/quotes-top-author/curl-1"
+  },
+  {
+   "task": "quotes-top-author",
+   "site": "quotes",
+   "mode": "curl",
+   "trial": 2,
+   "tag": "curl",
+   "ok": true,
+   "why": "all expected values present",
+   "answer": "Albert Einstein, 10 quotes",
+   "expected": {
+    "expect": [
+     "Albert Einstein"
+    ],
+    "number": 10
+   },
+   "wallMs": 10121,
+   "apiMs": 6803,
+   "turns": 2,
+   "toolCalls": 1,
+   "tokens": {
+    "input": 4,
+    "output": 372,
+    "cacheWrite": 2983,
+    "cacheRead": 6677,
+    "total": 10036
+   },
+   "costUsd": 0.023706400000000002,
+   "models": [
+    "claude-opus-5-5"
+   ],
+   "exitCode": 0,
+   "timedOut": false,
+   "subtype": "success",
+   "startedAt": "2026-10-18T12:43:57.562Z",
+   "dir": "runs/curl/quotes-top-author/curl-2"
+  },
+  {
+   "task": "scrapethis-hockey-detroit-1995",
+   "site": "scrapethis",
+   "mode": "curl",
+   "trial": 1,
+   "tag": "curl",
+   "ok": true,
+   "why": "all expected values present",
+   "answer": "62",
+   "expected": {
+    "number": 62
+   },
+   "wallMs": 7799,
+   "apiMs": 7003,
+   "turns": 3,
+   "toolCalls": 2,
+   "tokens": {
+    "input": 6,
+    "output": 446,
+    "cacheWrite": 3934,
+    "cacheRead": 11612,
+    "total": 15998
+   },
+   "costUsd": 0.030936400000000003,
+   "models": [
+    "claude-opus-5-5"
+   ],
+   "exitCode": 0,
+   "timedOut": false,
+   "subtype": "success",
+   "startedAt": "2026-10-18T12:43:01.123Z",
+   "dir": "runs/curl/scrapethis-hockey-detroit-1995/curl-1"
+  },
+  {
+   "task": "scrapethis-hockey-detroit-1995",
+   "site": "scrapethis",
+   "mode": "curl",
+   "trial": 2,
+   "tag": "curl",
+   "ok": true,
+   "why": "all expected values present",
+   "answer": "62",
+   "expected": {
+    "number": 62
+   },
+   "wallMs": 6389,
+   "apiMs": 5634,
+   "turns": 2,
+   "toolCalls": 1,
+   "tokens": {
+    "input": 4,
+    "output": 357,
+    "cacheWrite": 4038,
+    "cacheRead": 6727,
+    "total": 11126
+   },
+   "costUsd": 0.0286914,
+   "models": [
+    "claude-opus-5-5"
+   ],
+   "exitCode": 0,
+   "timedOut": false,
+   "subtype": "success",
+   "startedAt": "2026-10-18T12:43:01.252Z",
+   "dir": "runs/curl/scrapethis-hockey-detroit-1995/curl-2"
+  },
+  {
+   "task": "scrapethis-oscar-2012",
+   "site": "scrapethis",
+   "mode": "curl",
+   "trial": 1,
+   "tag": "curl",
+   "ok": true,
+   "why": "all expected values present",
+   "answer": "Argo — 3 awards",
+   "expected": {
+    "expect": [
+     "Argo"
+    ],
+    "number": 3
+   },
+   "wallMs": 6515,
+   "apiMs": 5851,
+   "turns": 2,
+   "toolCalls": 1,
+   "tokens": {
+    "input": 4,
+    "output": 327,
+    "cacheWrite": 3644,
+    "cacheRead": 6716,
+    "total": 10691
+   },
+   "costUsd": 0.026119200000000002,
+   "models": [
+    "claude-opus-5-5"
+   ],
+   "exitCode": 0,
+   "timedOut": false,
+   "subtype": "success",
+   "startedAt": "2026-10-18T12:42:54.607Z",
+   "dir": "runs/curl/scrapethis-oscar-2012/curl-1"
+  },
+  {
+   "task": "scrapethis-oscar-2012",
+   "site": "scrapethis",
+   "mode": "curl",
+   "trial": 2,
+   "tag": "curl",
+   "ok": true,
+   "why": "all expected values present",
+   "answer": "Argo, 3 awards",
+   "expected": {
+    "expect": [
+     "Argo"
+    ],
+    "number": 3
+   },
+   "wallMs": 6358,
+   "apiMs": 5728,
+   "turns": 2,
+   "toolCalls": 1,
+   "tokens": {
+    "input": 4,
+    "output": 321,
+    "cacheWrite": 3653,
+    "cacheRead": 6716,
+    "total": 10694
+   },
+   "costUsd": 0.026044200000000003,
+   "models": [
+    "claude-opus-5-5"
+   ],
+   "exitCode": 0,
+   "timedOut": false,
+   "subtype": "success",
+   "startedAt": "2026-10-18T12:42:59.392Z",
+   "dir": "runs/curl/scrapethis-oscar-2012/curl-2"
+  },
+  {
+   "task": "ubuntu-lts-supported",
+   "site": "endoflife",
+   "mode": "curl",
+   "trial": 1,
+   "tag": "curl",
+   "ok": true,
+   "why": "all expected values present",
+   "answer": "26.04, 24.04, 22.04",
+   "expected": {
+    "expect": [
+     "26.04",
+     "24.04",
+     "22.04"
+    ]
+   },
+   "wallMs": 16875,
+   "apiMs": 15855,
+   "turns": 4,
+   "toolCalls": 3,
+   "tokens": {
+    "input": 8,
+    "output": 1117,
+    "cacheWrite": 5272,
+    "cacheRead": 18523,
+    "total": 24920
+   },
+   "costUsd": 0.0524366,
+   "models": [
+    "claude-opus-5-5"
+   ],
+   "exitCode": 0,
+   "timedOut": false,
+   "subtype": "success",
+   "startedAt": "2026-10-18T12:44:19.101Z",
+   "dir": "runs/curl/ubuntu-lts-supported/curl-1"
+  },
+  {
+   "task": "ubuntu-lts-supported",
+   "site": "endoflife",
+   "mode": "curl",
+   "trial": 2,
+   "tag": "curl",
+   "ok": true,
+   "why": "all expected values present",
+   "answer": "26.04, 24.04, 22.04",
+   "expected": {
+    "expect": [
+     "26.04",
+     "24.04",
+     "22.04"
+    ]
+   },
+   "wallMs": 18058,
+   "apiMs": 15916,
+   "turns": 5,
+   "toolCalls": 4,
+   "tokens": {
+    "input": 10,
+    "output": 1311,
+    "cacheWrite": 5730,
+    "cacheRead": 24690,
+    "total": 31741
+   },
+   "costUsd": 0.059848,
+   "models": [
+    "claude-opus-5-5"
+   ],
+   "exitCode": 0,
+   "timedOut": false,
+   "subtype": "success",
+   "startedAt": "2026-10-18T12:44:19.741Z",
+   "dir": "runs/curl/ubuntu-lts-supported/curl-2"
+  },
+  {
+   "task": "webscraper-laptop-max",
+   "site": "webscraper",
+   "mode": "curl",
+   "trial": 1,
+   "tag": "curl",
+   "ok": true,
+   "why": "all expected values present",
+   "answer": "Asus ROG Strix SCAR Edition GL503VM-ED115T — $1799",
+   "expected": {
+    "expect": [
+     "Asus ROG Strix SCAR Edition GL503VM-ED115T",
+     "1799"
+    ]
+   },
+   "wallMs": 21579,
+   "apiMs": 20387,
+   "turns": 5,
+   "toolCalls": 4,
+   "tokens": {
+    "input": 10,
+    "output": 1172,
+    "cacheWrite": 4908,
+    "cacheRead": 23833,
+    "total": 29923
+   },
+   "costUsd": 0.0527866,
+   "models": [
+    "claude-opus-5-5"
+   ],
+   "exitCode": 0,
+   "timedOut": false,
+   "subtype": "success",
+   "startedAt": "2026-10-18T12:43:05.751Z",
+   "dir": "runs/curl/webscraper-laptop-max/curl-1"
+  },
+  {
+   "task": "webscraper-laptop-max",
+   "site": "webscraper",
+   "mode": "curl",
+   "trial": 2,
+   "tag": "curl",
+   "ok": true,
+   "why": "all expected values present",
+   "answer": "Asus ROG Strix SCAR Edition GL503VM-ED115T — $1799",
+   "expected": {
+    "expect": [
+     "Asus ROG Strix SCAR Edition GL503VM-ED115T",
+     "1799"
+    ]
+   },
+   "wallMs": 13523,
+   "apiMs": 12659,
+   "turns": 4,
+   "toolCalls": 3,
+   "tokens": {
+    "input": 8,
+    "output": 689,
+    "cacheWrite": 3989,
+    "cacheRead": 17346,
+    "total": 22032
+   },
+   "costUsd": 0.0372262,
+   "models": [
+    "claude-opus-5-5"
+   ],
+   "exitCode": 0,
+   "timedOut": false,
+   "subtype": "success",
+   "startedAt": "2026-10-18T12:43:07.646Z",
+   "dir": "runs/curl/webscraper-laptop-max/curl-2"
+  }
+ ],
+ "speedupMedian": null,
+ "tokenRatioMedian": null
+}

@@ -1,0 +1,227 @@
+{
+ "url": "https://waterdata.usgs.gov/",
+ "category": "gov-us",
+ "sandbox": "clify-waterdata-usgs-gov",
+ "startedAt": "2026-10-18T09:05:57.665Z",
+ "region": "us-pdx-1",
+ "chrome": "Chrome/148.0.7778.96",
+ "sandboxStartMs": 1984,
+ "addSeconds": 345,
+ "addExit": 0,
+ "add": {
+  "ok": true,
+  "site": "waterdata-usgs",
+  "url": "https://waterdata.usgs.gov/",
+  "commands": [
+   {
+    "name": "search-monitoring-locations",
+    "summary": "Full-text search for monitoring locations by water body, place name or ID (e.g. 'Potomac River').",
+    "verified": true
+   },
+   {
+    "name": "find-monitoring-locations-by-number",
+    "summary": "Look up monitoring locations whose site number contains a partial number (e.g. '0164600'). This is the site's number autocomplete.",
+    "verified": false,
+    "writes": true
+   },
+   {
+    "name": "get-monitoring-location",
+    "summary": "Get summary metadata for one monitoring location: name, coordinates, elevation, drainage area and description.",
+    "verified": true
+   },
+   {
+    "name": "list-monitoring-locations-in-bbox",
+    "summary": "List monitoring locations inside a bounding box (the Explore map). Filter by data type, site type, parameter code and recent activity.",
+    "verified": true
+   },
+   {
+    "name": "list-time-series",
+    "summary": "List the time series at a monitoring location: series ID, parameter, period of record and description. Needed for the data and statistics commands.",
+    "verified": true
+   },
+   {
+    "name": "get-continuous-data",
+    "summary": "Get continuous (instantaneous, ~15-minute) readings for a time series or for a location and parameter over a recent period.",
+    "verified": true
+   },
+   {
+    "name": "get-field-measurements",
+    "summary": "Get manual field measurements (e.g. measured discharge or gage height) at a monitoring location.",
+    "verified": true
+   },
+   {
+    "name": "get-daily-normals",
+    "summary": "Get day-of-year statistics (median, mean, percentiles) for a daily time series, optionally for a calendar-day range.",
+    "verified": true
+   },
+   {
+    "name": "get-observation-intervals",
+    "summary": "Get monthly and yearly aggregate statistics (e.g. arithmetic mean per month) for daily time series.",
+    "verified": true
+   },
+   {
+    "name": "search-parameter-codes",
+    "summary": "Find USGS parameter codes whose description contains a keyword, case-insensitive (e.g. 'discharge' \u2192 00060).",
+    "verified": true
+   },
+   {
+    "name": "get-states",
+    "summary": "Look up US states/territories by FIPS-based ID (e.g. US-24 \u2192 MD), or list them all.",
+    "verified": true
+   },
+   {
+    "name": "get-hydrologic-unit",
+    "summary": "Get the name of a hydrologic unit (HUC watershed) from its code.",
+    "verified": true
+   },
+   {
+    "name": "get-flood-stage",
+    "summary": "Get NWS flood-stage thresholds (action/minor/moderate/major) for a site; returns {} when none are defined.",
+    "verified": true
+   },
+   {
+    "name": "get-basin",
+    "summary": "Get the upstream drainage basin polygon (GeoJSON) for a monitoring location from the NLDI.",
+    "verified": true
+   },
+   {
+    "name": "navigate-flowlines",
+    "summary": "Get the NHDPlus river flowlines upstream (UM) or downstream (DM) along the main stem from a monitoring location.",
+    "verified": true
+   },
+   {
+    "name": "list-states",
+    "summary": "List the states and territories of a country, with their browse URLs (the state codes are FIPS).",
+    "verified": true
+   },
+   {
+    "name": "list-counties",
+    "summary": "List the counties in a state, with their browse URLs (the county codes are FIPS).",
+    "verified": true
+   },
+   {
+    "name": "list-county-monitoring-locations",
+    "summary": "List every monitoring location in a county, by name and ID.",
+    "verified": true
+   }
+  ],
+  "verified": 17,
+  "writes": 1,
+  "dropped": [],
+  "blockers": [],
+  "loggedIn": false,
+  "seconds": 344,
+  "next": [
+   "clify waterdata-usgs",
+   "clify waterdata-usgs search-monitoring-locations --q \"Potomac River\""
+  ],
+  "installed": "/home/ubuntu/clify-runs/blaxel-w1/home/bin/waterdata-usgs",
+  "explored": {
+   "steps": 30,
+   "recorded": 64,
+   "heldWrites": 1
+  }
+ },
+ "check": {
+  "on": "blaxel",
+  "node": "v24.22.0",
+  "seconds": 3,
+  "reads": 17,
+  "verified": 17,
+  "failed": [],
+  "results": [
+   {
+    "name": "search-monitoring-locations",
+    "ok": true,
+    "ms": 105
+   },
+   {
+    "name": "find-monitoring-locations-by-number",
+    "ok": true,
+    "reason": "write: dry-run preview only, not sent"
+   },
+   {
+    "name": "get-monitoring-location",
+    "ok": true,
+    "ms": 80
+   },
+   {
+    "name": "list-monitoring-locations-in-bbox",
+    "ok": true,
+    "ms": 32
+   },
+   {
+    "name": "list-time-series",
+    "ok": true,
+    "ms": 32
+   },
+   {
+    "name": "get-continuous-data",
+    "ok": true,
+    "ms": 142
+   },
+   {
+    "name": "get-field-measurements",
+    "ok": true,
+    "ms": 75
+   },
+   {
+    "name": "get-daily-normals",
+    "ok": true,
+    "ms": 32
+   },
+   {
+    "name": "get-observation-intervals",
+    "ok": true,
+    "ms": 47
+   },
+   {
+    "name": "search-parameter-codes",
+    "ok": true,
+    "ms": 20
+   },
+   {
+    "name": "get-states",
+    "ok": true,
+    "ms": 34
+   },
+   {
+    "name": "get-hydrologic-unit",
+    "ok": true,
+    "ms": 59
+   },
+   {
+    "name": "get-flood-stage",
+    "ok": true,
+    "ms": 27
+   },
+   {
+    "name": "get-basin",
+    "ok": true,
+    "ms": 51
+   },
+   {
+    "name": "navigate-flowlines",
+    "ok": true,
+    "ms": 70
+   },
+   {
+    "name": "list-states",
+    "ok": true,
+    "ms": 27
+   },
+   {
+    "name": "list-counties",
+    "ok": true,
+    "ms": 33
+   },
+   {
+    "name": "list-county-monitoring-locations",
+    "ok": true,
+    "ms": 70
+   }
+  ]
+ },
+ "deleted": true,
+ "seconds": 350
+}

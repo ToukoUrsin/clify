@@ -1,0 +1,603 @@
+{
+ "name": "smhi",
+ "startUrl": "https://www.smhi.se/",
+ "origin": "https://www.smhi.se",
+ "createdAt": "2026-10-18T09:26:27.641Z",
+ "description": "SMHI (Swedish Meteorological and Hydrological Institute): look up places, get current weather, 10-day forecasts and recent observed weather, see active weather warnings, search SMHI's open-data catalog, download station observations from the open metobs API, and search or read knowledge-bank and news articles.",
+ "commands": [
+  {
+   "name": "search-places",
+   "summary": "Find places in Sweden by name. Returns the geonameid and lat/lon that the forecast and warning commands take.",
+   "method": "GET",
+   "urlTemplate": "https://wpt-a.smhi.se/backend-startpage/geo/autocomplete/places/{query}",
+   "params": [
+    {
+     "name": "query",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Place name or its beginning, e.g. Uppsala",
+     "example": "Uppsala"
+    }
+   ],
+   "responseType": "json",
+   "defaultFields": [
+    "geonameid",
+    "place",
+    "municipality",
+    "county",
+    "country",
+    "lat",
+    "lon",
+    "population"
+   ],
+   "mutates": false,
+   "example": {
+    "query": "Uppsala"
+   },
+   "source": "E4 GET https://wpt-a.smhi.se/backend-startpage/geo/autocomplete/places/Uppsala",
+   "verified": true
+  },
+  {
+   "name": "get-current-weather",
+   "summary": "Get the current weather (temperature and weather symbol) for a place, by geonameid.",
+   "method": "GET",
+   "urlTemplate": "https://wpt-a.smhi.se/backend-startpage/forecast/fetcher/{geonameid}/hour",
+   "params": [
+    {
+     "name": "geonameid",
+     "in": "path",
+     "required": true,
+     "type": "number",
+     "description": "GeoNames place id from search-places, e.g. 2673730 (Stockholm)",
+     "example": "2673730"
+    }
+   ],
+   "responseType": "json",
+   "defaultFields": [
+    "place.place",
+    "place.municipality",
+    "refTime",
+    "timeOfDay",
+    "t",
+    "wSymb2"
+   ],
+   "mutates": false,
+   "example": {
+    "geonameid": "2673730"
+   },
+   "source": "E3 GET https://wpt-a.smhi.se/backend-startpage/forecast/fetcher/{n}/hour",
+   "verified": true
+  },
+  {
+   "name": "get-forecast",
+   "summary": "Get the 10-day weather forecast for a place, by geonameid. Returns one entry per day with a summary, midday values and hourly data.",
+   "method": "GET",
+   "urlTemplate": "https://wpt-a.smhi.se/backend-weatherpage/forecast/v2025.4/{geonameid}",
+   "params": [
+    {
+     "name": "geonameid",
+     "in": "path",
+     "required": true,
+     "type": "number",
+     "description": "GeoNames place id from search-places, e.g. 2666199 (Uppsala)",
+     "example": "2666199"
+    }
+   ],
+   "responseType": "json",
+   "resultPath": "forecast10d.days",
+   "defaultFields": [
+    "midday.localDate",
+    "summary.maxTemp",
+    "summary.minTemp",
+    "summary.accPrec",
+    "midday.t",
+    "midday.Wsymb2",
+    "midday.ws",
+    "midday.precProb"
+   ],
+   "mutates": false,
+   "example": {
+    "geonameid": "2666199"
+   },
+   "source": "E6 GET https://wpt-a.smhi.se/backend-weatherpage/forecast/v2025.4/{n}",
+   "verified": true
+  },
+  {
+   "name": "get-recent-weather",
+   "summary": "Get the analysed/observed weather for the past hours at a place (MESAN analysis), by geonameid.",
+   "method": "GET",
+   "urlTemplate": "https://wpt-a.smhi.se/backend-weatherpage/analys/{geonameid}",
+   "params": [
+    {
+     "name": "geonameid",
+     "in": "path",
+     "required": true,
+     "type": "number",
+     "description": "GeoNames place id from search-places, e.g. 2666199",
+     "example": "2666199"
+    }
+   ],
+   "responseType": "json",
+   "resultPath": "days",
+   "defaultFields": [
+    "summary.accStart",
+    "summary.accEnd",
+    "summary.maxTemp",
+    "summary.minTemp",
+    "summary.accPrec",
+    "midday.t",
+    "midday.Wsymb2",
+    "data"
+   ],
+   "mutates": false,
+   "example": {
+    "geonameid": "2666199"
+   },
+   "source": "E7 GET https://wpt-a.smhi.se/backend-weatherpage/analys/{n}",
+   "verified": true
+  },
+  {
+   "name": "get-place-warnings",
+   "summary": "Get the most severe active warnings and advisories (level, type and count) at a lat/lon coordinate.",
+   "method": "GET",
+   "urlTemplate": "https://wpt-a.smhi.se/backend-weatherpage/warnings/most-severe/lat/{lat}/lon/{lon}",
+   "params": [
+    {
+     "name": "lat",
+     "in": "path",
+     "required": true,
+     "type": "number",
+     "description": "Latitude in decimal degrees, e.g. 59.85",
+     "example": "59.85"
+    },
+    {
+     "name": "lon",
+     "in": "path",
+     "required": true,
+     "type": "number",
+     "description": "Longitude in decimal degrees, e.g. 17.6333333",
+     "example": "17.6333333"
+    }
+   ],
+   "responseType": "json",
+   "mutates": false,
+   "example": {
+    "lat": "59.85",
+    "lon": "17.6333333"
+   },
+   "source": "E8 E5 E22 GET https://wpt-a.smhi.se/backend-weatherpage/warnings/most-severe/lat/59.85/lon/17.6333333",
+   "verified": true
+  },
+  {
+   "name": "get-national-warning-level",
+   "summary": "Get the most severe weather-warning level currently active anywhere in Sweden (e.g. YELLOW).",
+   "method": "GET",
+   "urlTemplate": "https://wpt-a.smhi.se/backend-warningswidget/warnings/most-severe",
+   "params": [],
+   "responseType": "json",
+   "mutates": false,
+   "source": "E1 GET https://wpt-a.smhi.se/backend-warningswidget/warnings/most-severe",
+   "verified": true
+  },
+  {
+   "name": "list-warnings",
+   "summary": "List all active weather warnings and advisories in Sweden, with level, event type, area, time window and descriptions.",
+   "method": "GET",
+   "urlTemplate": "https://wpt-a.smhi.se/backend-warnings-page/warningAreas",
+   "params": [],
+   "responseType": "json",
+   "defaultFields": [
+    "id",
+    "warningLevel.code",
+    "eventDescription.en",
+    "areaName.en",
+    "affectedAreas",
+    "approximateStart",
+    "approximateEnd",
+    "published"
+   ],
+   "mutates": false,
+   "source": "E10 GET https://wpt-a.smhi.se/backend-warnings-page/warningAreas",
+   "verified": true
+  },
+  {
+   "name": "search-open-data",
+   "summary": "Search SMHI's open-data catalog for datasets by keyword. Use query 'all' to list every dataset.",
+   "method": "GET",
+   "urlTemplate": "https://opendata-catalog.smhi.se/catalog/search/{query}",
+   "params": [
+    {
+     "name": "query",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Search term, usually Swedish (e.g. temperatur, nederb\u00f6rd), or 'all' for everything",
+     "example": "temperatur"
+    }
+   ],
+   "responseType": "json",
+   "resultPath": "items",
+   "defaultFields": [
+    "name",
+    "uuid",
+    "info.title",
+    "info.dateStamp",
+    "info.descriptiveKeywords.sid_category",
+    "info.descriptiveKeywords.sid_parameter",
+    "info.descriptiveKeywords.sid_datatype"
+   ],
+   "mutates": false,
+   "example": {
+    "query": "temperatur"
+   },
+   "source": "E13 E11 GET https://opendata-catalog.smhi.se/catalog/search/temperatur",
+   "verified": true
+  },
+  {
+   "name": "get-open-data-dataset",
+   "summary": "Get full metadata for one open-data catalog dataset, by its name slug (from search-open-data).",
+   "method": "GET",
+   "urlTemplate": "https://opendata-catalog.smhi.se/catalog/single/{name}",
+   "params": [
+    {
+     "name": "name",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Dataset name slug from search-open-data",
+     "example": "se-acmf-meteorologiska-observationer-lufttemperatur-timvarde"
+    }
+   ],
+   "responseType": "json",
+   "resultPath": "item",
+   "defaultFields": [
+    "name.key",
+    "uuid.key",
+    "info.title",
+    "info.abstract",
+    "info.dateStamp",
+    "data.identificationInfo.citation.identifier",
+    "data.metadata.contact.electronicMailAddress"
+   ],
+   "mutates": false,
+   "example": {
+    "name": "se-acmf-meteorologiska-observationer-lufttemperatur-timvarde"
+   },
+   "source": "E14 GET https://opendata-catalog.smhi.se/catalog/single/se-acmf-meteorologiska-observationer-lufttemperatur-timvarde",
+   "verified": true
+  },
+  {
+   "name": "list-observation-stations",
+   "summary": "List the meteorological observation stations that measure a parameter (metobs open API). Returns station keys for get-station-observations.",
+   "method": "GET",
+   "urlTemplate": "https://opendata-download-metobs.smhi.se/api/version/latest/parameter/{parameter}.json",
+   "params": [
+    {
+     "name": "parameter",
+     "in": "path",
+     "required": true,
+     "type": "number",
+     "description": "Metobs parameter id: 1 = air temperature, hourly instant value. Other ids are listed by the metobs API.",
+     "example": "1"
+    }
+   ],
+   "headers": {
+    "accept": "application/json"
+   },
+   "responseType": "json",
+   "resultPath": "station",
+   "defaultFields": [
+    "key",
+    "name",
+    "latitude",
+    "longitude",
+    "height",
+    "active",
+    "owner",
+    "to"
+   ],
+   "mutates": false,
+   "example": {
+    "parameter": "1"
+   },
+   "source": "E15 E16 E17 GET https://opendata-download-metobs.smhi.se/api/version/latest/parameter/1.json",
+   "verified": true
+  },
+  {
+   "name": "get-latest-observations-all-stations",
+   "summary": "Get the latest-hour observed value of a parameter from every active station in one call.",
+   "method": "GET",
+   "urlTemplate": "https://opendata-download-metobs.smhi.se/api/version/latest/parameter/{parameter}/station-set/all/period/latest-hour/data.json",
+   "params": [
+    {
+     "name": "parameter",
+     "in": "path",
+     "required": true,
+     "type": "number",
+     "description": "Metobs parameter id, e.g. 1 = air temperature",
+     "example": "1"
+    }
+   ],
+   "headers": {
+    "accept": "application/json"
+   },
+   "responseType": "json",
+   "resultPath": "station",
+   "defaultFields": [
+    "key",
+    "name",
+    "latitude",
+    "longitude",
+    "height",
+    "value"
+   ],
+   "mutates": false,
+   "example": {
+    "parameter": "1"
+   },
+   "source": "E18 GET https://opendata-download-metobs.smhi.se/api/version/latest/parameter/{n}/station-set/all/period/latest-hour/data.json",
+   "verified": true
+  },
+  {
+   "name": "get-station",
+   "summary": "Get details for one observation station and parameter: owner, position history, active status and available data periods.",
+   "method": "GET",
+   "urlTemplate": "https://opendata-download-metobs.smhi.se/api/version/latest/parameter/{parameter}/station/{station}.json",
+   "params": [
+    {
+     "name": "parameter",
+     "in": "path",
+     "required": true,
+     "type": "number",
+     "description": "Metobs parameter id, e.g. 1 = air temperature",
+     "example": "1"
+    },
+    {
+     "name": "station",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Station key from list-observation-stations, e.g. 97510 (Uppsala Aut)",
+     "example": "97510"
+    }
+   ],
+   "headers": {
+    "accept": "application/json"
+   },
+   "responseType": "json",
+   "defaultFields": [
+    "key",
+    "title",
+    "owner",
+    "active",
+    "summary",
+    "from",
+    "to",
+    "period"
+   ],
+   "mutates": false,
+   "example": {
+    "parameter": "1",
+    "station": "97510"
+   },
+   "source": "E19 GET https://opendata-download-metobs.smhi.se/api/version/latest/parameter/{n}/station/97510.json",
+   "verified": true
+  },
+  {
+   "name": "get-station-observations",
+   "summary": "Get observed values (timestamp in epoch ms, value, quality code) for one station, parameter and time period.",
+   "method": "GET",
+   "urlTemplate": "https://opendata-download-metobs.smhi.se/api/version/latest/parameter/{parameter}/station/{station}/period/{period}/data.json",
+   "params": [
+    {
+     "name": "parameter",
+     "in": "path",
+     "required": true,
+     "type": "number",
+     "description": "Metobs parameter id, e.g. 1 = air temperature",
+     "example": "1"
+    },
+    {
+     "name": "station",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Station key, e.g. 97510",
+     "example": "97510"
+    },
+    {
+     "name": "period",
+     "in": "path",
+     "required": false,
+     "type": "string",
+     "description": "Time period: latest-hour, latest-day, or latest-months (last ~4 months)",
+     "enum": [
+      "latest-hour",
+      "latest-day",
+      "latest-months"
+     ],
+     "default": "latest-months",
+     "example": "latest-months"
+    }
+   ],
+   "headers": {
+    "accept": "application/json"
+   },
+   "responseType": "json",
+   "resultPath": "value",
+   "defaultFields": [
+    "date",
+    "value",
+    "quality"
+   ],
+   "mutates": false,
+   "example": {
+    "parameter": "1",
+    "station": "97510",
+    "period": "latest-months"
+   },
+   "source": "E20 GET https://opendata-download-metobs.smhi.se/api/version/latest/parameter/{n}/station/{n}/period/latest-months/data.json",
+   "verified": true
+  },
+  {
+   "name": "search-knowledge-bank",
+   "summary": "Search SMHI's knowledge bank (Kunskapsbanken) articles on meteorology, hydrology, oceanography and climate. Optionally filter by topic.",
+   "method": "GET",
+   "urlTemplate": "/kunskapsbanken/sokresultat",
+   "params": [
+    {
+     "name": "query",
+     "in": "query",
+     "required": true,
+     "type": "string",
+     "description": "Search term, usually Swedish, e.g. \u00e5ska",
+     "example": "\u00e5ska"
+    },
+    {
+     "name": "topic",
+     "key": "100.616a437418e3cf1a8e61a",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Topic facet (\u00c4mne), e.g. Meteorologi, Hydrologi, Oceanografi, Klimat, Forskning"
+    },
+    {
+     "name": "startAtHit",
+     "in": "query",
+     "required": false,
+     "type": "number",
+     "description": "Result offset (10 per page)"
+    }
+   ],
+   "responseType": "html",
+   "extract": {
+    "list": "li.smhi-search__list-item",
+    "fields": {
+     "title": "a.subheading",
+     "url": "a.subheading@href",
+     "category": "span.smhi-search__hit-category",
+     "summary": "p.smhi-search__hit-summary"
+    }
+   },
+   "defaultFields": [
+    "title",
+    "url",
+    "category",
+    "summary"
+   ],
+   "pagination": {
+    "type": "offset",
+    "param": "startAtHit",
+    "step": 10
+   },
+   "mutates": false,
+   "example": {
+    "query": "\u00e5ska"
+   },
+   "source": "E33 E26 GET https://www.smhi.se/kunskapsbanken/sokresultat",
+   "verified": true
+  },
+  {
+   "name": "get-knowledge-article",
+   "summary": "Read a knowledge-bank article, by topic and slug (from the search-knowledge-bank url /kunskapsbanken/{topic}/{slug}).",
+   "method": "GET",
+   "urlTemplate": "/kunskapsbanken/{topic}/{slug}",
+   "params": [
+    {
+     "name": "topic",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Topic path segment, e.g. meteorologi, hydrologi, oceanografi, klimat",
+     "example": "meteorologi"
+    },
+    {
+     "name": "slug",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Article slug, e.g. svenska-nederbordsrekord",
+     "example": "svenska-nederbordsrekord"
+    }
+   ],
+   "responseType": "html",
+   "extract": {
+    "fields": {
+     "title": "h1",
+     "preamble": "p.preamble",
+     "body": "div#Brodtext || div.sv-text-portlet-content p.normal || article || main"
+    }
+   },
+   "defaultFields": [
+    "title",
+    "preamble",
+    "body"
+   ],
+   "mutates": false,
+   "example": {
+    "topic": "meteorologi",
+    "slug": "svenska-nederbordsrekord"
+   },
+   "source": "E32",
+   "verified": true
+  },
+  {
+   "name": "get-news-article",
+   "summary": "Read an SMHI news article, by slug (path segment after /nyheter/nyheter/).",
+   "method": "GET",
+   "urlTemplate": "/nyheter/nyheter/{slug}",
+   "params": [
+    {
+     "name": "slug",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "News article slug, e.g. 2026-10-08-wmo-el-nino-ar-fast-etablerad-och-blir-snabbt-starkare",
+     "example": "2026-10-08-wmo-el-nino-ar-fast-etablerad-och-blir-snabbt-starkare"
+    }
+   ],
+   "responseType": "html",
+   "extract": {
+    "fields": {
+     "title": "h1.heading",
+     "published": "time.smhi-page-meta__time@datetime",
+     "preamble": "p.preamble",
+     "body": "div#Brodtext || div.sv-text-portlet-content p.normal || article || main"
+    }
+   },
+   "defaultFields": [
+    "title",
+    "published",
+    "preamble",
+    "body"
+   ],
+   "mutates": false,
+   "example": {
+    "slug": "2026-10-08-wmo-el-nino-ar-fast-etablerad-och-blir-snabbt-starkare"
+   },
+   "source": "E31",
+   "verified": true
+  }
+ ],
+ "blockers": [],
+ "notes": [
+  "Workflow: search-places gives a geonameid plus lat/lon. Pass the geonameid to get-current-weather, get-forecast and get-recent-weather, and the lat/lon to get-place-warnings.",
+  "Wsymb2 / wSymb2 is SMHI's weather-symbol code: 1 = clear sky, 2 = nearly clear, and so on up to 27 (snow and thunder). Units: wind (ws, gust) in m/s, wind direction (wd) in degrees, humidity (r) in %, pressure (msl) in hPa, visibility (vis) in km, precipitation in mm. A value of '-' means not available.",
+  "Times are UTC ISO strings. In the forecast, localDate is local time, written with a Z suffix.",
+  "Metobs open API timestamps (date, from, to, updated) are epoch milliseconds. Quality codes: G = checked and approved, Y = suspect or aggregated, O = unchecked.",
+  "Metobs parameter 1 = air temperature (hourly instant value). Other parameter ids exist in the SMHI metobs API (https://opendata-download-metobs.smhi.se/api/version/latest.json).",
+  "Warning levels: MESSAGE (advisory), YELLOW, ORANGE, RED. NONE means no warning.",
+  "Knowledge-bank articles nested more than two levels deep (e.g. /kunskapsbanken/meteorologi/aska/olika-typer-av-aska) cannot be fetched with get-knowledge-article's topic/slug params.",
+  "Not covered: general site search (/sokresultat), the news listing and county warning polygons (backend-warnings-page/geo/counties). The first two render their results client-side through Sitevision AJAX routes whose response format was not captured; the county data is mostly polygon geometry."
+ ],
+ "dropped": [],
+ "generated": {
+  "by": "clify add",
+  "model": "claude-opus-5-5",
+  "exploredSteps": 30,
+  "recorded": 87,
+  "verifiedAt": "2026-10-18T09:28:05.284Z",
+  "seconds": 271
+ }
+}

@@ -1,0 +1,241 @@
+{
+ "url": "https://digi.kansalliskirjasto.fi/",
+ "category": "gov-nordic",
+ "sandbox": "clify-digi-kansalliskirjasto-fi",
+ "startedAt": "2026-10-18T09:17:43.448Z",
+ "region": "us-pdx-1",
+ "chrome": "Chrome/148.0.7778.96",
+ "sandboxStartMs": 1602,
+ "addSeconds": 360,
+ "addExit": 0,
+ "add": {
+  "ok": true,
+  "site": "digi-kansalliskirjasto",
+  "url": "https://digi.kansalliskirjasto.fi/",
+  "commands": [
+   {
+    "name": "search-materials",
+    "summary": "Full-text and metadata search over digitized materials. Returns matching pages (bindings) with OCR highlights.",
+    "verified": true
+   },
+   {
+    "name": "search-articles",
+    "summary": "Search component parts (articles or sections within issues) by keyword. Returns article titles with their binding and page.",
+    "verified": true
+   },
+   {
+    "name": "get-binding",
+    "summary": "Get details of one issue or volume (binding): title, date, ISSN, page list with image URLs, PDF link and citation info.",
+    "verified": true
+   },
+   {
+    "name": "get-page-ocr",
+    "summary": "Get the OCR text blocks of one page of a binding.",
+    "verified": true
+   },
+   {
+    "name": "get-ocr-hits",
+    "summary": "Get the positions (bounding boxes) of a search term on one page of a binding.",
+    "verified": true
+   },
+   {
+    "name": "list-page-component-parts",
+    "summary": "List the component parts (articles or sections) that appear on a given page of a binding.",
+    "verified": true
+   },
+   {
+    "name": "get-title-info",
+    "summary": "Get descriptive metadata for a serial title by ISSN: publishing period, places, supplements, political orientation, predecessors and successors.",
+    "verified": true
+   },
+   {
+    "name": "list-title-years",
+    "summary": "List the years for which a serial title (newspaper or journal) has digitized issues.",
+    "verified": true
+   },
+   {
+    "name": "list-title-issues",
+    "summary": "List all digitized issues of a serial title for one year, with binding ids and dates.",
+    "verified": true
+   },
+   {
+    "name": "list-serial-publications",
+    "summary": "List all digitized newspaper and journal titles, with ISSN or id, years, languages, places and coverage. The response is large.",
+    "verified": true
+   },
+   {
+    "name": "search-clippings",
+    "summary": "Search user-made clippings (cut-out articles with category, subject and keywords) by keyword and date.",
+    "verified": true
+   },
+   {
+    "name": "get-clipping",
+    "summary": "Get one user clipping (article) by id: title, text, keywords and source binding.",
+    "verified": true
+   },
+   {
+    "name": "list-clipping-categories",
+    "summary": "List clipping categories and subjects (ids and Finnish names) used to classify clippings.",
+    "verified": true
+   },
+   {
+    "name": "search-clipping-keywords",
+    "summary": "Look up keywords that users have assigned to clippings.",
+    "verified": true
+   },
+   {
+    "name": "search-filter-values",
+    "summary": "Look up values for search filters: titles, collections, publishers, publishing places, tags or authors.",
+    "verified": true
+   },
+   {
+    "name": "get-public-access-cutoffs",
+    "summary": "Show, per material type, the date up to which material is freely viewable. Newer material is restricted for anonymous users.",
+    "verified": true
+   },
+   {
+    "name": "list-collections",
+    "summary": "List the collection tree (collection ids and names, nested by category).",
+    "verified": true
+   },
+   {
+    "name": "get-collection",
+    "summary": "Get a collection's name, HTML description and material types.",
+    "verified": true
+   },
+   {
+    "name": "harvest-oai-records",
+    "summary": "Harvest Dublin Core metadata records for a collection through the public OAI-PMH interface (ListRecords).",
+    "verified": true
+   }
+  ],
+  "verified": 19,
+  "writes": 0,
+  "dropped": [
+   {
+    "name": "get-clipping-comments",
+    "reason": "empty list: the example args returned nothing or the selector/resultPath is wrong"
+   }
+  ],
+  "blockers": [],
+  "loggedIn": false,
+  "seconds": 359,
+  "next": [
+   "clify digi-kansalliskirjasto",
+   "clify digi-kansalliskirjasto search-materials --query \"sibelius\" --format \"NEWSPAPER\""
+  ],
+  "installed": "/home/ubuntu/clify-runs/blaxel-w2/home/bin/digi-kansalliskirjasto",
+  "explored": {
+   "steps": 30,
+   "recorded": 94,
+   "heldWrites": 2
+  }
+ },
+ "check": {
+  "on": "blaxel",
+  "node": "v24.22.0",
+  "seconds": 22,
+  "reads": 19,
+  "verified": 19,
+  "failed": [],
+  "results": [
+   {
+    "name": "search-materials",
+    "ok": true,
+    "ms": 2404
+   },
+   {
+    "name": "search-articles",
+    "ok": true,
+    "ms": 823
+   },
+   {
+    "name": "get-binding",
+    "ok": true,
+    "ms": 232
+   },
+   {
+    "name": "get-page-ocr",
+    "ok": true,
+    "ms": 223
+   },
+   {
+    "name": "get-ocr-hits",
+    "ok": true,
+    "ms": 222
+   },
+   {
+    "name": "list-page-component-parts",
+    "ok": true,
+    "ms": 206
+   },
+   {
+    "name": "get-title-info",
+    "ok": true,
+    "ms": 213
+   },
+   {
+    "name": "list-title-years",
+    "ok": true,
+    "ms": 2542
+   },
+   {
+    "name": "list-title-issues",
+    "ok": true,
+    "ms": 237
+   },
+   {
+    "name": "list-serial-publications",
+    "ok": true,
+    "ms": 3427
+   },
+   {
+    "name": "search-clippings",
+    "ok": true,
+    "ms": 698
+   },
+   {
+    "name": "get-clipping",
+    "ok": true,
+    "ms": 227
+   },
+   {
+    "name": "list-clipping-categories",
+    "ok": true,
+    "ms": 201
+   },
+   {
+    "name": "search-clipping-keywords",
+    "ok": true,
+    "ms": 234
+   },
+   {
+    "name": "search-filter-values",
+    "ok": true,
+    "ms": 222
+   },
+   {
+    "name": "get-public-access-cutoffs",
+    "ok": true,
+    "ms": 203
+   },
+   {
+    "name": "list-collections",
+    "ok": true,
+    "ms": 216
+   },
+   {
+    "name": "get-collection",
+    "ok": true,
+    "ms": 223
+   },
+   {
+    "name": "harvest-oai-records",
+    "ok": true,
+    "ms": 6683
+   }
+  ]
+ },
+ "deleted": true,
+ "seconds": 383
+}

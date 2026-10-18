@@ -1,0 +1,29 @@
+{
+  "title": "Codex CLI",
+  "model": "gpt-6.1-sol (box default Codex model)",
+  "command": "codex exec --json -s read-only -c mcp_servers.clify.url=\"$URL\" -c mcp_servers.clify.default_tools_approval_mode=\"approve\" \"$TASK\"",
+  "calls": [
+    {
+      "tool": "clify_sites",
+      "args": "{\"query\":\"National Weather Service forecast\",\"limit\":6}",
+      "result": "{\"sites\":[{\"site\":\"weather\",\"host\":\"weather.gov\",\"category\":\"government\",\"about\":\"National Weather Service (weather.gov / api.weather.gov)\",\"commands\":11,\"matches\":[{\"command\":\"export-forecast-dwml\",\"params\":\"lat*:number lon*:number\",\"summary\":\"Export the poin …"
+    },
+    {
+      "tool": "crates__get-crate",
+      "args": "{\"name\":\"serde\",\"fields\":\"default_version\"}",
+      "result": "{\"ok\":true,\"status\":200,\"data\":{\"default_version\":\"1.0.229\"}}"
+    },
+    {
+      "tool": "clify_run",
+      "args": "{\"site\":\"weather\",\"command\":\"get-point\",\"args\":{\"lat\":37.7749,\"lon\":-122.4194},\"fields\":\"gridId,gridX,gridY,relativeLocation.properties.city,relativeLocation.properties.state\"}",
+      "result": "{\"ok\":true,\"status\":200,\"data\":{\"gridId\":\"MTR\",\"gridX\":85,\"gridY\":105,\"relativeLocation.properties.city\":\"San Francisco\",\"relativeLocation.properties.state\":\"CA\"}}"
+    },
+    {
+      "tool": "clify_run",
+      "args": "{\"site\":\"weather\",\"command\":\"get-forecast\",\"args\":{\"wfo\":\"MTR\",\"x\":85,\"y\":105,\"units\":\"us\"},\"fields\":\"name,temperature,temperatureUnit,shortForecast\",\"limit\":2}",
+      "result": "{\"ok\":true,\"status\":200,\"count\":14,\"data\":[{\"name\":\"Overnight\",\"temperature\":58,\"temperatureUnit\":\"F\",\"shortForecast\":\"Mostly Clear\"},{\"name\":\"Sunday\",\"temperature\":68,\"temperatureUnit\":\"F\",\"shortForecast\":\"Sunny\"}],\"returned\":2}"
+    }
+  ],
+  "answer": "- **serde:** `1.0.229`\n- **Overnight:** `58 F` — `Mostly Clear`\n- **Sunday:** `68 F` — `Sunny`",
+  "stats": "136870 input tokens (110336 cached), 620 output"
+}

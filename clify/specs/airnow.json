@@ -1,0 +1,578 @@
+{
+ "name": "airnow",
+ "startUrl": "https://www.airnow.gov/",
+ "origin": "https://www.airnow.gov",
+ "createdAt": "2026-10-18T09:22:09.259Z",
+ "description": "AirNow.gov (EPA) U.S. air quality: current and forecast AQI by location, reporting-area and monitor-site history, state tables, national top AQI list, state alerts and site search. The CLI calls airnowgovapi.com and related JSON endpoints directly.",
+ "commands": [
+  {
+   "name": "suggest-reporting-areas",
+   "summary": "Autocomplete AirNow reporting area names (e.g. 'Denver-Boulder, CO') from a city name or ZIP fragment",
+   "method": "GET",
+   "urlTemplate": "https://airnowgovapi.com/v2/reportingarea/suggestions",
+   "params": [
+    {
+     "name": "term",
+     "in": "query",
+     "required": true,
+     "type": "string",
+     "description": "Partial city name or ZIP code",
+     "example": "Denver"
+    },
+    {
+     "name": "maxSuggestions",
+     "in": "query",
+     "required": false,
+     "type": "number",
+     "description": "Maximum suggestions to return",
+     "default": 5
+    }
+   ],
+   "responseType": "json",
+   "mutates": false,
+   "example": {
+    "term": "Denver"
+   },
+   "source": "E13 GET https://airnowgovapi.com/v2/reportingarea/suggestions",
+   "verified": true
+  },
+  {
+   "name": "geocode-location",
+   "summary": "Resolve a U.S. city, region or ZIP code to latitude/longitude (x=longitude, y=latitude) for use with get-current-aqi and get-weather",
+   "method": "GET",
+   "urlTemplate": "https://geocode.arcgis.com/arcgis/rest/services/World/GeocodeServer/findAddressCandidates?f=json&outSR=%7B%22wkid%22%3A4326%7D&outFields=PlaceName%2CType%2CCity%2CRegion%2CCountry%2CAddr_type&category=City%2CRegion%2CPostal&countryCode=US",
+   "params": [
+    {
+     "name": "location",
+     "key": "SingleLine",
+     "in": "query",
+     "required": true,
+     "type": "string",
+     "description": "City name, 'City, ST' or ZIP code",
+     "example": "94103"
+    },
+    {
+     "name": "maxLocations",
+     "in": "query",
+     "required": false,
+     "type": "number",
+     "description": "Maximum candidates to return",
+     "default": 6
+    }
+   ],
+   "responseType": "json",
+   "resultPath": "candidates",
+   "defaultFields": [
+    "address",
+    "location.x",
+    "location.y",
+    "score",
+    "attributes.City",
+    "attributes.Region",
+    "attributes.Type"
+   ],
+   "mutates": false,
+   "example": {
+    "location": "94103"
+   },
+   "source": "E14 GET https://geocode.arcgis.com/arcgis/rest/services/World/GeocodeServer/findAddressCandidates",
+   "verified": true
+  },
+  {
+   "name": "get-current-aqi",
+   "summary": "Get current observed AQI and today/tomorrow forecasts per pollutant for the reporting area nearest a latitude/longitude",
+   "method": "GET",
+   "urlTemplate": "https://airnowgovapi.com/v2/reportingarea/get",
+   "params": [
+    {
+     "name": "latitude",
+     "in": "query",
+     "required": true,
+     "type": "number",
+     "description": "Latitude in decimal degrees",
+     "example": "39.738453"
+    },
+    {
+     "name": "longitude",
+     "in": "query",
+     "required": true,
+     "type": "number",
+     "description": "Longitude in decimal degrees (negative for the western hemisphere)",
+     "example": "-104.984853"
+    },
+    {
+     "name": "stateCode",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Two-letter U.S. state code of the location, e.g. CO",
+     "example": "CO"
+    },
+    {
+     "name": "maxDistance",
+     "in": "query",
+     "required": false,
+     "type": "number",
+     "description": "Search radius in miles",
+     "default": 50
+    }
+   ],
+   "responseType": "json",
+   "defaultFields": [
+    "reportingArea",
+    "stateCode",
+    "dataType",
+    "validDate",
+    "time",
+    "parameter",
+    "aqi",
+    "category"
+   ],
+   "mutates": false,
+   "example": {
+    "latitude": "39.738453",
+    "longitude": "-104.984853",
+    "stateCode": "CO"
+   },
+   "source": "E6 GET https://airnowgovapi.com/v2/reportingarea/get",
+   "verified": true
+  },
+  {
+   "name": "get-reporting-area-location",
+   "summary": "Get the latitude/longitude of a named reporting area",
+   "method": "GET",
+   "urlTemplate": "https://airnowgovapi.com/v2/reportingarea/get_location",
+   "params": [
+    {
+     "name": "reportingArea",
+     "in": "query",
+     "required": true,
+     "type": "string",
+     "description": "Reporting area name, e.g. Austin or Denver-Boulder",
+     "example": "Austin"
+    },
+    {
+     "name": "stateCode",
+     "in": "query",
+     "required": true,
+     "type": "string",
+     "description": "Two-letter state code",
+     "example": "TX"
+    }
+   ],
+   "responseType": "json",
+   "mutates": false,
+   "example": {
+    "reportingArea": "Austin",
+    "stateCode": "TX"
+   },
+   "source": "E22 GET https://airnowgovapi.com/v2/reportingarea/get_location",
+   "verified": true
+  },
+  {
+   "name": "get-reporting-area-providers",
+   "summary": "Get the data and forecast provider agencies (with URLs) for a reporting area",
+   "method": "GET",
+   "urlTemplate": "https://airnowgovapi.com/v2/andata/radataproviders",
+   "params": [
+    {
+     "name": "reportingArea",
+     "in": "query",
+     "required": true,
+     "type": "string",
+     "description": "Reporting area name",
+     "example": "Denver-Boulder"
+    },
+    {
+     "name": "stateCode",
+     "in": "query",
+     "required": true,
+     "type": "string",
+     "description": "Two-letter state code",
+     "example": "CO"
+    }
+   ],
+   "responseType": "json",
+   "mutates": false,
+   "example": {
+    "reportingArea": "Denver-Boulder",
+    "stateCode": "CO"
+   },
+   "source": "E2 GET https://airnowgovapi.com/v2/andata/radataproviders",
+   "verified": true
+  },
+  {
+   "name": "get-interpolated-pm25",
+   "summary": "Get the current interpolated PM2.5 AQI and category for a reporting area",
+   "method": "POST",
+   "urlTemplate": "https://airnowgovapi.com/v2/reportingarea/getinterpolatedPM25",
+   "params": [
+    {
+     "name": "reportingArea",
+     "in": "body",
+     "required": true,
+     "type": "string",
+     "description": "Reporting area name",
+     "example": "San Francisco"
+    },
+    {
+     "name": "stateCode",
+     "in": "body",
+     "required": true,
+     "type": "string",
+     "description": "Two-letter state code",
+     "example": "CA"
+    }
+   ],
+   "bodyTemplate": {
+    "reportingArea": "{reportingArea}",
+    "stateCode": "{stateCode}"
+   },
+   "bodyEncoding": "form",
+   "responseType": "json",
+   "mutates": false,
+   "example": {
+    "reportingArea": "San Francisco",
+    "stateCode": "CA"
+   },
+   "source": "E17 POST https://airnowgovapi.com/v2/reportingarea/{id}",
+   "verified": true
+  },
+  {
+   "name": "get-weather",
+   "summary": "Get current weather (temperature \u00b0F, wind, humidity, pressure) at a latitude/longitude",
+   "method": "GET",
+   "urlTemplate": "https://airnowgovapi.com/v2/weather/get",
+   "params": [
+    {
+     "name": "latitude",
+     "in": "query",
+     "required": true,
+     "type": "number",
+     "description": "Latitude in decimal degrees",
+     "example": "39.751099"
+    },
+    {
+     "name": "longitude",
+     "in": "query",
+     "required": true,
+     "type": "number",
+     "description": "Longitude in decimal degrees",
+     "example": "-104.987198"
+    }
+   ],
+   "responseType": "json",
+   "mutates": false,
+   "example": {
+    "latitude": "39.751099",
+    "longitude": "-104.987198"
+   },
+   "source": "E7 GET https://airnowgovapi.com/v2/weather/get",
+   "verified": true
+  },
+  {
+   "name": "get-reporting-area-hourly",
+   "summary": "Get the last 24 hours of hourly AQI (with dominant pollutant) for a reporting area",
+   "method": "GET",
+   "urlTemplate": "https://airnowgovapi.com/v2/andata/ReportingAreas/{reportingArea}_{stateCode}.json",
+   "params": [
+    {
+     "name": "reportingArea",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Reporting area name exactly as AirNow spells it",
+     "example": "Austin"
+    },
+    {
+     "name": "stateCode",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Two-letter state code",
+     "example": "TX"
+    }
+   ],
+   "responseType": "json",
+   "mutates": false,
+   "example": {
+    "reportingArea": "Austin",
+    "stateCode": "TX"
+   },
+   "source": "E9 GET https://airnowgovapi.com/v2/andata/ReportingAreas/Austin_TX.json",
+   "verified": true
+  },
+  {
+   "name": "get-reporting-area-daily",
+   "summary": "Get the last 30 days of daily AQI (with dominant pollutant) for a reporting area",
+   "method": "GET",
+   "urlTemplate": "https://airnowgovapi.com/v2/andata/ReportingAreas/{reportingArea}_{stateCode}_MONTH.json",
+   "params": [
+    {
+     "name": "reportingArea",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Reporting area name exactly as AirNow spells it",
+     "example": "Austin"
+    },
+    {
+     "name": "stateCode",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Two-letter state code",
+     "example": "TX"
+    }
+   ],
+   "responseType": "json",
+   "mutates": false,
+   "example": {
+    "reportingArea": "Austin",
+    "stateCode": "TX"
+   },
+   "source": "E4 GET https://airnowgovapi.com/v2/andata/ReportingAreas/Austin_TX_MONTH.json",
+   "verified": true
+  },
+  {
+   "name": "get-site-hourly",
+   "summary": "Get the last 24 hours of hourly AQI and concentrations per pollutant for a monitoring site",
+   "method": "GET",
+   "urlTemplate": "https://airnowgovapi.com/v2/andata/Sites/{siteId}.json",
+   "params": [
+    {
+     "name": "siteId",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Monitor site ID (the siteID field from get-current-aqi, e.g. 9-digit AQS code 060750005 or 12-digit 840080010010)",
+     "example": "060750005"
+    }
+   ],
+   "responseType": "json",
+   "mutates": false,
+   "example": {
+    "siteId": "060750005"
+   },
+   "source": "E8 E15 E20 GET https://airnowgovapi.com/v2/andata/Sites/060750005.json",
+   "verified": true
+  },
+  {
+   "name": "get-site-daily",
+   "summary": "Get the last 30 days of daily AQI and concentrations per pollutant for a monitoring site",
+   "method": "GET",
+   "urlTemplate": "https://airnowgovapi.com/v2/andata/Sites/{siteId}_MONTH.json",
+   "params": [
+    {
+     "name": "siteId",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Monitor site ID (siteID from get-current-aqi)",
+     "example": "080310002"
+    }
+   ],
+   "responseType": "json",
+   "mutates": false,
+   "example": {
+    "siteId": "080310002"
+   },
+   "source": "E3 E5 E16 GET https://airnowgovapi.com/v2/andata/Sites/060750005_MONTH.json",
+   "verified": true
+  },
+  {
+   "name": "list-state-aqi",
+   "summary": "List current observations and forecasts for every reporting area in a state",
+   "method": "POST",
+   "urlTemplate": "https://airnowgovapi.com/v2/reportingarea/get_state",
+   "params": [
+    {
+     "name": "stateCode",
+     "key": "state_code",
+     "in": "body",
+     "required": true,
+     "type": "string",
+     "description": "Two-letter state code, e.g. CA",
+     "example": "TX"
+    }
+   ],
+   "bodyTemplate": {
+    "state_code": "{stateCode}"
+   },
+   "bodyEncoding": "form",
+   "responseType": "json",
+   "defaultFields": [
+    "reportingArea",
+    "dataType",
+    "validDate",
+    "time",
+    "parameter",
+    "aqi",
+    "category"
+   ],
+   "mutates": false,
+   "example": {
+    "stateCode": "TX"
+   },
+   "source": "E18 POST https://airnowgovapi.com/v2/reportingarea/get_state",
+   "verified": true
+  },
+  {
+   "name": "get-state-history",
+   "summary": "Get daily AQI for ozone, PM2.5 and PM10 for every reporting area in a state on a past date",
+   "method": "GET",
+   "urlTemplate": "https://airnowgovapi.com/v2/andata/States/{state}/{year}/{month}/{day}.json",
+   "params": [
+    {
+     "name": "state",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Full state name with the first letter capitalized, e.g. Texas",
+     "example": "Texas"
+    },
+    {
+     "name": "year",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Four-digit year",
+     "example": "2026"
+    },
+    {
+     "name": "month",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Month number, e.g. 10",
+     "example": "10"
+    },
+    {
+     "name": "day",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Day of month, e.g. 17",
+     "example": "17"
+    }
+   ],
+   "responseType": "json",
+   "resultPath": "reportingAreas",
+   "mutates": false,
+   "example": {
+    "state": "Texas",
+    "year": "2026",
+    "month": "10",
+    "day": "17"
+   },
+   "source": "E21 GET https://airnowgovapi.com/v2/andata/States/Texas/{n}/{n}/17.json",
+   "verified": true
+  },
+  {
+   "name": "get-top-aqi",
+   "summary": "List the U.S. reporting areas with the highest current NowCast AQI",
+   "method": "GET",
+   "urlTemplate": "https://airnowgovapi.com/v2/reportingarea/get_top",
+   "params": [],
+   "responseType": "json",
+   "defaultFields": [
+    "reportingArea",
+    "stateCode",
+    "parameter",
+    "aqi",
+    "category",
+    "validDate",
+    "time",
+    "timezone"
+   ],
+   "mutates": false,
+   "source": "E26 GET https://airnowgovapi.com/v2/reportingarea/get_top",
+   "verified": true
+  },
+  {
+   "name": "list-state-alerts",
+   "summary": "List states that currently have an AirNow notification (e.g. Wildfires) and its alert type",
+   "method": "GET",
+   "urlTemplate": "/json/stateNotifications.json",
+   "params": [],
+   "responseType": "json",
+   "defaultFields": [
+    "state",
+    "notification.type",
+    "notification.alertnode"
+   ],
+   "mutates": false,
+   "source": "E1 GET https://www.airnow.gov/json/stateNotifications.json",
+   "verified": true
+  },
+  {
+   "name": "search-site",
+   "summary": "Keyword search of AirNow.gov pages and documents (EPA search, scoped to www.airnow.gov), 10 results per page",
+   "method": "GET",
+   "urlTemplate": "https://search.epa.gov/webapps/judy/search?user_ip=0.0.0.0&query_orig=&app_id=epasearch/prod&filter=(URL:%22www.airnow.gov%22)",
+   "params": [
+    {
+     "name": "q",
+     "in": "query",
+     "required": true,
+     "type": "string",
+     "description": "Search keywords",
+     "example": "wildfire smoke"
+    },
+    {
+     "name": "start",
+     "in": "query",
+     "required": false,
+     "type": "number",
+     "description": "Result offset (0, 10, 20, ...)",
+     "default": 0
+    },
+    {
+     "name": "filter",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Extra facet filter in Solr syntax, e.g. filetype_s:\"PDF\" or displaylanguage_s:\"English\"",
+     "example": "filetype_s:\"PDF\""
+    }
+   ],
+   "responseType": "json",
+   "resultPath": "response.docs",
+   "defaultFields": [
+    "title",
+    "id",
+    "mimeType_s",
+    "score"
+   ],
+   "pagination": {
+    "type": "offset",
+    "param": "start",
+    "step": 10
+   },
+   "mutates": false,
+   "example": {
+    "q": "wildfire smoke"
+   },
+   "source": "E10 E11 GET https://search.epa.gov/webapps/judy/search",
+   "verified": true
+  }
+ ],
+ "blockers": [],
+ "notes": [
+  "Typical flow: geocode-location (or suggest-reporting-areas) -> get-current-aqi with lat/lon (location.y = latitude, location.x = longitude) -> use the reportingArea, stateCode and siteID from that result for the history and site commands.",
+  "In AQI results dataType 'O' means an observation and 'F' means a forecast. isPrimary marks the pollutant that drives the area's AQI.",
+  "In history arrays a value of -999 means missing data. aqi, conc and param line up index-by-index with utcDateTimes.",
+  "Reporting area names must match AirNow spelling exactly (e.g. 'Denver-Boulder', 'San Francisco'). Spaces are URL-encoded in path params.",
+  "get-state-history takes the full state name (Texas). list-state-aqi takes the two-letter code (TX).",
+  "Raw search responses also include facet_counts.facet_fields (filetype_s, displaylanguage_s, ...) that list the available filter values."
+ ],
+ "dropped": [],
+ "generated": {
+  "by": "clify add",
+  "model": "claude-opus-5-5",
+  "exploredSteps": 23,
+  "recorded": 112,
+  "verifiedAt": "2026-10-18T09:23:16.113Z",
+  "seconds": 203
+ }
+}

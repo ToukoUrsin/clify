@@ -1,0 +1,127 @@
+{
+ "url": "https://www.wikidata.org/",
+ "category": "science",
+ "sandbox": "clify-www-wikidata-org",
+ "startedAt": "2026-10-18T09:26:14.969Z",
+ "region": "us-pdx-1",
+ "chrome": "Chrome/148.0.7778.96",
+ "sandboxStartMs": 1847,
+ "addSeconds": 210,
+ "addExit": 0,
+ "add": {
+  "ok": true,
+  "site": "wikidata",
+  "url": "https://www.wikidata.org/",
+  "commands": [
+   {
+    "name": "search-entities",
+    "summary": "Search Wikidata entities (items, properties, lexemes or EntitySchemas) by label or alias. Returns matching IDs with label and description.",
+    "verified": true
+   },
+   {
+    "name": "get-entity",
+    "summary": "Get the full JSON of one entity by ID: an item (Q42), property (P31), lexeme (L7) or other entity type. Includes labels, descriptions, aliases, claims, sitelinks, and lexeme forms/senses. Optionally f",
+    "verified": true
+   },
+   {
+    "name": "get-entities",
+    "summary": "Batch-fetch one or more entities by ID through wbgetentities, limited to the chosen parts (claims, labels, descriptions, aliases, sitelinks, info) and languages.",
+    "verified": true
+   },
+   {
+    "name": "export-entity-rdf",
+    "summary": "Export one entity as RDF, in Turtle (ttl) or N-Triples (nt).",
+    "verified": true
+   },
+   {
+    "name": "check-constraints",
+    "summary": "Run Wikidata property constraint checks on an entity. Returns violations, warnings and suggestions per statement.",
+    "verified": true
+   },
+   {
+    "name": "parse-value",
+    "summary": "Parse user-typed text (a date, quantity, coordinate, etc.) into a Wikibase datavalue JSON for a given datatype, the same way the statement editor does.",
+    "verified": true
+   },
+   {
+    "name": "format-value",
+    "summary": "Render a Wikibase datavalue JSON as human-readable text or HTML, e.g. resolve an item ID to its label.",
+    "verified": true
+   },
+   {
+    "name": "set-claim",
+    "summary": "Create or replace a whole statement (main value, qualifiers, references, rank) on an entity. This publishes a live, public edit to Wikidata.",
+    "verified": false,
+    "writes": true
+   }
+  ],
+  "verified": 7,
+  "writes": 1,
+  "dropped": [],
+  "blockers": [],
+  "loggedIn": false,
+  "seconds": 210,
+  "next": [
+   "clify wikidata",
+   "clify wikidata search-entities --search \"Douglas Adams\" --type \"item\""
+  ],
+  "installed": "/home/ubuntu/clify-runs/blaxel-w2/home/bin/wikidata",
+  "explored": {
+   "steps": 22,
+   "recorded": 36,
+   "heldWrites": 1
+  }
+ },
+ "check": {
+  "on": "blaxel",
+  "node": "v24.22.0",
+  "seconds": 5,
+  "reads": 7,
+  "verified": 7,
+  "failed": [],
+  "results": [
+   {
+    "name": "search-entities",
+    "ok": true,
+    "ms": 279
+   },
+   {
+    "name": "get-entity",
+    "ok": true,
+    "ms": 372
+   },
+   {
+    "name": "get-entities",
+    "ok": true,
+    "ms": 394
+   },
+   {
+    "name": "export-entity-rdf",
+    "ok": true,
+    "ms": 1309
+   },
+   {
+    "name": "check-constraints",
+    "ok": true,
+    "ms": 252
+   },
+   {
+    "name": "parse-value",
+    "ok": true,
+    "ms": 92
+   },
+   {
+    "name": "format-value",
+    "ok": true,
+    "ms": 108
+   },
+   {
+    "name": "set-claim",
+    "ok": true,
+    "reason": "write: dry-run preview only, not sent"
+   }
+  ]
+ },
+ "deleted": true,
+ "seconds": 217
+}

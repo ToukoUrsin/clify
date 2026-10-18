@@ -1,0 +1,99 @@
+{
+ "url": "https://eur-lex.europa.eu/",
+ "category": "gov-eu",
+ "sandbox": "clify-eur-lex-europa-eu",
+ "startedAt": "2026-10-18T08:29:22.807Z",
+ "region": "us-pdx-1",
+ "chrome": "Chrome/148.0.7778.96",
+ "sandboxStartMs": 2211,
+ "addSeconds": 209,
+ "addExit": 0,
+ "add": {
+  "ok": true,
+  "site": "eur-lex-europa",
+  "url": "https://eur-lex.europa.eu/",
+  "commands": [
+   {
+    "name": "suggest-search-terms",
+    "summary": "Get autocomplete suggestions for a partial EUR-Lex quick-search query",
+    "verified": true
+   },
+   {
+    "name": "search-documents",
+    "summary": "Keyword search over EU law documents (regulations, directives, decisions, case law, etc.), with filters by type of act, year, month, author, collection and procedure, plus sorting and paging",
+    "verified": true
+   },
+   {
+    "name": "get-document-info",
+    "summary": "Fetch the 'all information' page for an EU legal document by CELEX number: title, dates, author/form, legal basis, relationships and classifications",
+    "verified": true
+   }
+  ],
+  "verified": 3,
+  "writes": 0,
+  "dropped": [
+   {
+    "name": "get-document-text",
+    "reason": "only 0 of 2 fields extracted (missing: title, text)"
+   }
+  ],
+  "blockers": [
+   "captcha"
+  ],
+  "loggedIn": false,
+  "seconds": 208,
+  "next": [
+   "clify eur-lex-europa",
+   "clify eur-lex-europa suggest-search-terms --query \"data protection\""
+  ],
+  "installed": "/home/ubuntu/clify-runs/blaxel-w1/home/bin/eur-lex-europa",
+  "explored": {
+   "steps": 17,
+   "recorded": 21,
+   "heldWrites": 3
+  }
+ },
+ "check": {
+  "on": "blaxel",
+  "node": "v24.22.0",
+  "seconds": 2,
+  "reads": 3,
+  "verified": 0,
+  "failed": [
+   {
+    "name": "suggest-search-terms",
+    "reason": "response was not JSON (content-type text/html; charset=UTF-8): "
+   },
+   {
+    "name": "search-documents",
+    "reason": "empty list: the example args returned nothing or the selector/resultPath is wrong"
+   },
+   {
+    "name": "get-document-info",
+    "reason": "only 1 of 7 fields extracted (missing: title, dates, misc, relationships, classifications, procedure)"
+   }
+  ],
+  "results": [
+   {
+    "name": "suggest-search-terms",
+    "ok": false,
+    "reason": "response was not JSON (content-type text/html; charset=UTF-8): ",
+    "ms": 404
+   },
+   {
+    "name": "search-documents",
+    "ok": false,
+    "reason": "empty list: the example args returned nothing or the selector/resultPath is wrong",
+    "ms": 46
+   },
+   {
+    "name": "get-document-info",
+    "ok": false,
+    "reason": "only 1 of 7 fields extracted (missing: title, dates, misc, relationships, classifications, procedure)",
+    "ms": 16
+   }
+  ]
+ },
+ "deleted": true,
+ "seconds": 214
+}

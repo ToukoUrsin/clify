@@ -1,0 +1,1022 @@
+{
+ "name": "rcsb",
+ "startUrl": "https://www.rcsb.org/",
+ "origin": "https://www.rcsb.org",
+ "createdAt": "2026-10-18T07:25:41.945Z",
+ "description": "RCSB Protein Data Bank (rcsb.org): search 3D macromolecular structures by keyword, attribute or 3D shape, and fetch entry chains, sequence annotations, UniProt alignments, version history, ligand definitions and coordinate/FASTA files.",
+ "commands": [
+  {
+   "name": "search-structures",
+   "summary": "Full-text keyword search of PDB entries (e.g. 'hemoglobin'), with sorting and offset pagination; returns PDB IDs, titles, methods, organisms and ligands",
+   "method": "POST",
+   "urlTemplate": "/search/data",
+   "params": [
+    {
+     "name": "query",
+     "in": "body",
+     "required": true,
+     "type": "string",
+     "description": "Free-text search terms",
+     "example": "hemoglobin"
+    },
+    {
+     "name": "start",
+     "in": "body",
+     "required": false,
+     "type": "number",
+     "description": "0-based result offset. Use 25 for page 2.",
+     "default": 0
+    },
+    {
+     "name": "rows",
+     "in": "body",
+     "required": false,
+     "type": "number",
+     "description": "Results per page",
+     "default": 25
+    },
+    {
+     "name": "sort_by",
+     "in": "body",
+     "required": false,
+     "type": "string",
+     "description": "Sort key: relevance score or initial release date",
+     "enum": [
+      "score",
+      "rcsb_accession_info.initial_release_date"
+     ],
+     "default": "score"
+    },
+    {
+     "name": "direction",
+     "in": "body",
+     "required": false,
+     "type": "string",
+     "description": "Sort direction. Use desc with the release date to get the newest entries first.",
+     "enum": [
+      "desc",
+      "asc"
+     ],
+     "default": "desc"
+    },
+    {
+     "name": "content_type",
+     "in": "body",
+     "required": false,
+     "type": "string",
+     "description": "experimental = PDB entries; computational = computed structure models (CSM)",
+     "enum": [
+      "experimental",
+      "computational"
+     ],
+     "default": "experimental"
+    }
+   ],
+   "bodyTemplate": {
+    "report": "search_summary",
+    "request": {
+     "query": {
+      "type": "group",
+      "logical_operator": "and",
+      "nodes": [
+       {
+        "type": "group",
+        "label": "text",
+        "logical_operator": "and",
+        "nodes": [
+         {
+          "type": "terminal",
+          "service": "full_text",
+          "parameters": {
+           "value": "{query}"
+          }
+         }
+        ]
+       }
+      ]
+     },
+     "return_type": "entry",
+     "request_options": {
+      "paginate": {
+       "start": "{start}",
+       "rows": "{rows}"
+      },
+      "results_content_type": [
+       "{content_type}"
+      ],
+      "sort": [
+       {
+        "sort_by": "{sort_by}",
+        "direction": "{direction}"
+       }
+      ],
+      "scoring_strategy": "combined"
+     }
+    },
+    "getDrilldown": true,
+    "attributes": null
+   },
+   "bodyEncoding": "json",
+   "responseType": "json",
+   "resultPath": "result_set",
+   "defaultFields": [
+    "identifier",
+    "data.title",
+    "data.exptl",
+    "data.organisms",
+    "data.initial_release_date",
+    "data.proteinChains",
+    "data.ligands",
+    "data.publication"
+   ],
+   "pagination": {
+    "type": "offset",
+    "param": "start",
+    "step": 25
+   },
+   "mutates": false,
+   "example": {
+    "query": "hemoglobin"
+   },
+   "source": "E1 POST https://www.rcsb.org/search/data",
+   "verified": true
+  },
+  {
+   "name": "search-structures-filtered",
+   "summary": "Keyword search of PDB entries refined by one facet filter (source organism, experimental method, etc.), with sorting and pagination",
+   "method": "POST",
+   "urlTemplate": "/search/data",
+   "params": [
+    {
+     "name": "query",
+     "in": "body",
+     "required": true,
+     "type": "string",
+     "description": "Free-text search terms",
+     "example": "hemoglobin"
+    },
+    {
+     "name": "filter_attribute",
+     "in": "body",
+     "required": false,
+     "type": "string",
+     "description": "Facet attribute to refine on (exact match)",
+     "enum": [
+      "rcsb_entity_source_organism.ncbi_scientific_name",
+      "exptl.method",
+      "rcsb_entry_info.polymer_entity_count_protein",
+      "struct_keywords.pdbx_keywords"
+     ],
+     "default": "rcsb_entity_source_organism.ncbi_scientific_name"
+    },
+    {
+     "name": "filter_value",
+     "in": "body",
+     "required": true,
+     "type": "string",
+     "description": "Exact facet value, e.g. 'Homo sapiens' for organism, or 'X-RAY DIFFRACTION', 'ELECTRON MICROSCOPY' or 'SOLUTION NMR' for exptl.method",
+     "example": "Homo sapiens"
+    },
+    {
+     "name": "start",
+     "in": "body",
+     "required": false,
+     "type": "number",
+     "description": "0-based result offset",
+     "default": 0
+    },
+    {
+     "name": "rows",
+     "in": "body",
+     "required": false,
+     "type": "number",
+     "description": "Results per page",
+     "default": 25
+    },
+    {
+     "name": "sort_by",
+     "in": "body",
+     "required": false,
+     "type": "string",
+     "description": "Sort key",
+     "enum": [
+      "score",
+      "rcsb_accession_info.initial_release_date"
+     ],
+     "default": "score"
+    },
+    {
+     "name": "direction",
+     "in": "body",
+     "required": false,
+     "type": "string",
+     "description": "Sort direction",
+     "enum": [
+      "desc",
+      "asc"
+     ],
+     "default": "desc"
+    }
+   ],
+   "bodyTemplate": {
+    "report": "search_summary",
+    "request": {
+     "query": {
+      "type": "group",
+      "logical_operator": "and",
+      "nodes": [
+       {
+        "type": "group",
+        "label": "text",
+        "logical_operator": "and",
+        "nodes": [
+         {
+          "type": "terminal",
+          "service": "full_text",
+          "parameters": {
+           "value": "{query}"
+          }
+         },
+         {
+          "type": "group",
+          "label": "__refinements__",
+          "logical_operator": "and",
+          "nodes": [
+           {
+            "type": "terminal",
+            "service": "text",
+            "parameters": {
+             "attribute": "{filter_attribute}",
+             "operator": "exact_match",
+             "value": "{filter_value}"
+            }
+           }
+          ]
+         }
+        ]
+       }
+      ]
+     },
+     "return_type": "entry",
+     "request_options": {
+      "paginate": {
+       "start": "{start}",
+       "rows": "{rows}"
+      },
+      "results_content_type": [
+       "experimental"
+      ],
+      "sort": [
+       {
+        "sort_by": "{sort_by}",
+        "direction": "{direction}"
+       }
+      ],
+      "scoring_strategy": "combined"
+     }
+    },
+    "getDrilldown": true,
+    "attributes": null
+   },
+   "bodyEncoding": "json",
+   "responseType": "json",
+   "resultPath": "result_set",
+   "defaultFields": [
+    "identifier",
+    "data.title",
+    "data.exptl",
+    "data.organisms",
+    "data.initial_release_date",
+    "data.proteinChains",
+    "data.ligands"
+   ],
+   "pagination": {
+    "type": "offset",
+    "param": "start",
+    "step": 25
+   },
+   "mutates": false,
+   "example": {
+    "query": "hemoglobin",
+    "filter_attribute": "rcsb_entity_source_organism.ncbi_scientific_name",
+    "filter_value": "Homo sapiens"
+   },
+   "source": "E1 POST https://www.rcsb.org/search/data",
+   "verified": true
+  },
+  {
+   "name": "search-by-attribute",
+   "summary": "Search PDB entries by a structured attribute such as author name, source organism, gene name or experimental method",
+   "method": "POST",
+   "urlTemplate": "/search/data",
+   "params": [
+    {
+     "name": "attribute",
+     "in": "body",
+     "required": true,
+     "type": "string",
+     "description": "Search attribute path. Examples: audit_author.name, rcsb_entity_source_organism.ncbi_scientific_name, rcsb_entity_source_organism.rcsb_gene_name.value, exptl.method, struct.title",
+     "example": "rcsb_entity_source_organism.rcsb_gene_name.value"
+    },
+    {
+     "name": "value",
+     "in": "body",
+     "required": true,
+     "type": "string",
+     "description": "Value to match, e.g. 'HBB', 'Perutz, M.F.' or 'Homo sapiens'",
+     "example": "HBB"
+    },
+    {
+     "name": "operator",
+     "in": "body",
+     "required": false,
+     "type": "string",
+     "description": "Comparison operator",
+     "enum": [
+      "exact_match",
+      "contains_phrase",
+      "contains_words",
+      "in",
+      "exists"
+     ],
+     "default": "exact_match"
+    },
+    {
+     "name": "start",
+     "in": "body",
+     "required": false,
+     "type": "number",
+     "description": "0-based result offset",
+     "default": 0
+    },
+    {
+     "name": "rows",
+     "in": "body",
+     "required": false,
+     "type": "number",
+     "description": "Results per page",
+     "default": 25
+    },
+    {
+     "name": "sort_by",
+     "in": "body",
+     "required": false,
+     "type": "string",
+     "description": "Sort key",
+     "enum": [
+      "score",
+      "rcsb_accession_info.initial_release_date"
+     ],
+     "default": "score"
+    },
+    {
+     "name": "direction",
+     "in": "body",
+     "required": false,
+     "type": "string",
+     "description": "Sort direction",
+     "enum": [
+      "desc",
+      "asc"
+     ],
+     "default": "desc"
+    }
+   ],
+   "bodyTemplate": {
+    "report": "search_summary",
+    "request": {
+     "query": {
+      "type": "terminal",
+      "service": "text",
+      "parameters": {
+       "attribute": "{attribute}",
+       "operator": "{operator}",
+       "value": "{value}"
+      }
+     },
+     "return_type": "entry",
+     "request_options": {
+      "paginate": {
+       "start": "{start}",
+       "rows": "{rows}"
+      },
+      "results_content_type": [
+       "experimental"
+      ],
+      "sort": [
+       {
+        "sort_by": "{sort_by}",
+        "direction": "{direction}"
+       }
+      ],
+      "scoring_strategy": "combined"
+     }
+    },
+    "getDrilldown": true,
+    "attributes": null
+   },
+   "bodyEncoding": "json",
+   "responseType": "json",
+   "resultPath": "result_set",
+   "defaultFields": [
+    "identifier",
+    "data.title",
+    "data.exptl",
+    "data.organisms",
+    "data.initial_release_date",
+    "data.proteinChains",
+    "data.ligands"
+   ],
+   "pagination": {
+    "type": "offset",
+    "param": "start",
+    "step": 25
+   },
+   "mutates": false,
+   "example": {
+    "attribute": "rcsb_entity_source_organism.rcsb_gene_name.value",
+    "value": "HBB"
+   },
+   "source": "E1 E12 POST https://www.rcsb.org/search/data",
+   "verified": true
+  },
+  {
+   "name": "search-similar-assemblies",
+   "summary": "3D shape similarity search: find biological assemblies structurally similar to a given entry's assembly",
+   "method": "POST",
+   "urlTemplate": "/search/data",
+   "params": [
+    {
+     "name": "entry_id",
+     "in": "body",
+     "required": true,
+     "type": "string",
+     "description": "PDB ID of the query structure",
+     "example": "1SHR"
+    },
+    {
+     "name": "assembly_id",
+     "in": "body",
+     "required": false,
+     "type": "string",
+     "description": "Assembly ID of the query structure (see get-structure-chains)",
+     "default": "1"
+    },
+    {
+     "name": "operator",
+     "in": "body",
+     "required": false,
+     "type": "string",
+     "description": "Shape match strictness",
+     "enum": [
+      "strict_shape_match",
+      "relaxed_shape_match"
+     ],
+     "default": "strict_shape_match"
+    },
+    {
+     "name": "start",
+     "in": "body",
+     "required": false,
+     "type": "number",
+     "description": "0-based result offset",
+     "default": 0
+    }
+   ],
+   "bodyTemplate": {
+    "report": "search_summary",
+    "request": {
+     "query": {
+      "type": "terminal",
+      "service": "structure",
+      "parameters": {
+       "value": {
+        "entry_id": "{entry_id}",
+        "assembly_id": "{assembly_id}"
+       },
+       "operator": "{operator}"
+      }
+     },
+     "return_type": "assembly",
+     "request_options": {
+      "paginate": {
+       "start": "{start}",
+       "rows": 25
+      },
+      "results_content_type": [
+       "experimental"
+      ],
+      "sort": [
+       {
+        "sort_by": "score",
+        "direction": "desc"
+       }
+      ],
+      "scoring_strategy": "combined"
+     }
+    },
+    "getDrilldown": true,
+    "attributes": null
+   },
+   "bodyEncoding": "json",
+   "responseType": "json",
+   "resultPath": "result_set",
+   "defaultFields": [
+    "identifier",
+    "score",
+    "data.title",
+    "data.organisms",
+    "data.exptl"
+   ],
+   "pagination": {
+    "type": "offset",
+    "param": "start",
+    "step": 25
+   },
+   "mutates": false,
+   "example": {
+    "entry_id": "1SHR",
+    "assembly_id": "1"
+   },
+   "source": "E1 E8 E12 POST https://www.rcsb.org/search/data",
+   "verified": true
+  },
+  {
+   "name": "suggest-search-terms",
+   "summary": "Autocomplete: suggested search terms (molecule names, keywords, organisms...) for a partial query, grouped by attribute",
+   "method": "GET",
+   "urlTemplate": "/search/suggest/false/{term}",
+   "params": [
+    {
+     "name": "term",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Partial search text",
+     "example": "insul"
+    }
+   ],
+   "responseType": "json",
+   "mutates": false,
+   "example": {
+    "term": "insul"
+   },
+   "source": "E6 E7 GET https://www.rcsb.org/search/suggest/false/hemoglobin",
+   "verified": true
+  },
+  {
+   "name": "get-structure-chains",
+   "summary": "List the assemblies and polymer chains (entity id, name, label/auth asym ids) of a PDB entry",
+   "method": "GET",
+   "urlTemplate": "/search/structure/{entry_id}",
+   "params": [
+    {
+     "name": "entry_id",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "PDB ID, e.g. 4HHB",
+     "example": "1SHR"
+    }
+   ],
+   "responseType": "json",
+   "mutates": false,
+   "example": {
+    "entry_id": "1SHR"
+   },
+   "source": "E8 GET https://www.rcsb.org/search/structure/1SHR",
+   "verified": true
+  },
+  {
+   "name": "get-entry-instances",
+   "summary": "Get all polymer chains of a PDB entry, with molecule names, organisms, sequence lengths, method, resolution and assembly composition (Data API GraphQL)",
+   "method": "POST",
+   "urlTemplate": "https://data.rcsb.org/graphql",
+   "params": [
+    {
+     "name": "entry_id",
+     "in": "body",
+     "required": true,
+     "type": "string",
+     "description": "PDB ID, e.g. 4HHB",
+     "example": "4HHB"
+    }
+   ],
+   "bodyTemplate": {
+    "operationName": "QueryEntryInstance",
+    "query": "query QueryEntryInstance($entry_id: String!){\n    entry(\n        entry_id:$entry_id\n    ){\n        polymer_entities {\n            polymer_entity_instances{\n                rcsb_id\n                polymer_entity{\n                    rcsb_polymer_entity{\n                        pdbx_description\n                        rcsb_polymer_name_combined{\n                            names\n                        }\n                        formula_weight\n                    }\n                    entity_poly{\n                        rcsb_entity_polymer_type\n                        rcsb_sample_sequence_length\n                    }\n                    rcsb_entity_source_organism {\n                        ncbi_scientific_name\n                    }\n                    entry {\n                        rcsb_entry_info{\n                            experimental_method\n                            resolution_combined\n                            molecular_weight\n                            structure_determination_methodology\n                            representative_model\n                        }\n                    }\n                }\n                rcsb_polymer_entity_instance_container_identifiers{\n                    asym_id\n                    auth_asym_id\n                    entry_id\n                    entity_id\n                    auth_to_entity_poly_seq_mapping\n                }\n            }\n        }\n        assemblies {\n            rcsb_assembly_container_identifiers {\n                assembly_id\n            }\n            pdbx_struct_assembly_gen {\n                assembly_id\n                asym_id_list\n                oper_expression\n            }\n        }\n    }\n}",
+    "variables": {
+     "entry_id": "{entry_id}"
+    }
+   },
+   "bodyEncoding": "json",
+   "headers": {
+    "accept": "application/graphql-response+json, application/json"
+   },
+   "responseType": "json",
+   "resultPath": "data.entry",
+   "mutates": false,
+   "example": {
+    "entry_id": "4HHB"
+   },
+   "source": "E5 POST https://data.rcsb.org/graphql (GraphQL operation QueryEntryInstance)",
+   "verified": true
+  },
+  {
+   "name": "get-entity-instances",
+   "summary": "Get the chain instances of one polymer entity (e.g. 4HHB_2), with molecule name, organism, length, method and resolution (Data API GraphQL)",
+   "method": "POST",
+   "urlTemplate": "https://data.rcsb.org/graphql",
+   "params": [
+    {
+     "name": "entity_ids",
+     "in": "body",
+     "required": true,
+     "type": "string",
+     "description": "Polymer entity ID in the form <PDBID>_<entity number>, e.g. 4HHB_1",
+     "example": "4HHB_2"
+    }
+   ],
+   "bodyTemplate": {
+    "operationName": "QueryMultipleEntityInstances",
+    "query": "query QueryMultipleEntityInstances($entity_ids: [String!]!){\n    polymer_entities(\n        entity_ids:$entity_ids\n    ){\n        polymer_entity_instances{\n            rcsb_id\n            polymer_entity{\n                rcsb_polymer_entity{\n                    pdbx_description\n                    rcsb_polymer_name_combined{\n                        names\n                    }\n                    formula_weight\n                }\n                entity_poly{\n                    rcsb_entity_polymer_type\n                    rcsb_sample_sequence_length\n                }\n                rcsb_entity_source_organism {\n                    ncbi_scientific_name\n                }\n                entry {\n                    rcsb_entry_info{\n                        representative_model\n                        experimental_method\n                        resolution_combined\n                        structure_determination_methodology\n                    }\n                }\n            }\n            rcsb_polymer_entity_instance_container_identifiers{\n                asym_id\n                auth_asym_id\n                entry_id\n                entity_id\n                auth_to_entity_poly_seq_mapping\n            }\n        }\n    }\n}",
+    "variables": {
+     "entity_ids": "{entity_ids}"
+    }
+   },
+   "bodyEncoding": "json",
+   "headers": {
+    "accept": "application/graphql-response+json, application/json"
+   },
+   "responseType": "json",
+   "resultPath": "data.polymer_entities",
+   "mutates": false,
+   "example": {
+    "entity_ids": "4HHB_2"
+   },
+   "source": "E4 POST https://data.rcsb.org/graphql (GraphQL operation QueryMultipleEntityInstances)",
+   "verified": true
+  },
+  {
+   "name": "get-sequence-alignment",
+   "summary": "Align a PDB entity or chain sequence to its UniProt reference sequence, with coverage and aligned regions (Sequence Coordinates API)",
+   "method": "POST",
+   "urlTemplate": "https://sequence-coordinates.rcsb.org/graphql",
+   "params": [
+    {
+     "name": "queryId",
+     "in": "body",
+     "required": true,
+     "type": "string",
+     "description": "Entity ID (4HHB_2) when from=PDB_ENTITY, or chain instance ID (4HHB.B) when from=PDB_INSTANCE",
+     "example": "4HHB_2"
+    },
+    {
+     "name": "from",
+     "in": "body",
+     "required": false,
+     "type": "string",
+     "description": "Sequence reference type of queryId",
+     "enum": [
+      "PDB_ENTITY",
+      "PDB_INSTANCE",
+      "UNIPROT"
+     ],
+     "default": "PDB_ENTITY"
+    },
+    {
+     "name": "to",
+     "in": "body",
+     "required": false,
+     "type": "string",
+     "description": "Target sequence reference",
+     "enum": [
+      "UNIPROT",
+      "PDB_ENTITY",
+      "PDB_INSTANCE"
+     ],
+     "default": "UNIPROT"
+    }
+   ],
+   "bodyTemplate": {
+    "operationName": "QueryAlignment",
+    "query": "query QueryAlignment($queryId: String!, $from: SequenceReference!, $to:SequenceReference!, $range:[Int!]){\n    alignments(\n        queryId:$queryId\n        from:$from\n        to:$to\n        range:$range\n    ){\n        query_sequence\n        target_alignments {\n            target_id\n            orientation\n            target_sequence\n            coverage {\n                query_coverage\n                query_length\n                target_coverage\n                target_length\n            }\n            aligned_regions {\n                query_begin\n                query_end\n                target_begin\n                target_end\n                exon_shift\n            }\n        }\n\n    }\n}",
+    "variables": {
+     "queryId": "{queryId}",
+     "from": "{from}",
+     "to": "{to}"
+    }
+   },
+   "bodyEncoding": "json",
+   "headers": {
+    "accept": "application/graphql-response+json, application/json"
+   },
+   "responseType": "json",
+   "resultPath": "data.alignments",
+   "mutates": false,
+   "example": {
+    "queryId": "4HHB_2",
+    "from": "PDB_ENTITY",
+    "to": "UNIPROT"
+   },
+   "source": "E2 POST https://sequence-coordinates.rcsb.org/graphql (GraphQL operation QueryAlignment)",
+   "verified": true
+  },
+  {
+   "name": "get-sequence-annotations",
+   "summary": "Get positional sequence annotations (Pfam domains, disorder, secondary structure, binding sites, unobserved residues, UniProt features) for a PDB chain or entity",
+   "method": "POST",
+   "urlTemplate": "https://sequence-coordinates.rcsb.org/graphql",
+   "params": [
+    {
+     "name": "queryId",
+     "in": "body",
+     "required": true,
+     "type": "string",
+     "description": "Chain instance ID (4HHB.B) when reference=PDB_INSTANCE, or entity ID (4HHB_2) when reference=PDB_ENTITY",
+     "example": "4HHB.B"
+    },
+    {
+     "name": "reference",
+     "in": "body",
+     "required": false,
+     "type": "string",
+     "description": "Coordinate system of queryId",
+     "enum": [
+      "PDB_INSTANCE",
+      "PDB_ENTITY",
+      "UNIPROT"
+     ],
+     "default": "PDB_INSTANCE"
+    }
+   ],
+   "bodyTemplate": {
+    "operationName": "QueryAnnotations",
+    "query": "query QueryAnnotations(\n    $queryId: String!,\n    $reference: SequenceReference!,\n    $sources:[AnnotationReference!]!,\n    $range:[Int!],\n    $filters: [AnnotationFilterInput!]\n){\n    annotations(\n        queryId:$queryId\n        reference:$reference\n        sources:$sources\n        range:$range\n        filters:$filters\n    ){\n        source\n        target_id\n        target_identifiers{\n            target_id\n            entry_id\n            assembly_id\n            entity_id\n            asym_id\n            interface_id\n            interface_partner_index\n        }\n        features {\n            type\n            provenance_source\n            description\n            feature_id\n            name\n            value\n            feature_positions {\n                beg_seq_id\n                end_seq_id\n                beg_ori_id\n                end_ori_id\n                range_id\n                open_begin\n                open_end\n                value\n                values\n            }\n        }\n    }\n}",
+    "variables": {
+     "queryId": "{queryId}",
+     "reference": "{reference}",
+     "sources": [
+      "PDB_ENTITY",
+      "PDB_INSTANCE",
+      "UNIPROT"
+     ]
+    }
+   },
+   "bodyEncoding": "json",
+   "headers": {
+    "accept": "application/graphql-response+json, application/json"
+   },
+   "responseType": "json",
+   "resultPath": "data.annotations",
+   "defaultFields": [
+    "source",
+    "target_id",
+    "features"
+   ],
+   "mutates": false,
+   "example": {
+    "queryId": "4HHB.B",
+    "reference": "PDB_INSTANCE"
+   },
+   "source": "E3 POST https://sequence-coordinates.rcsb.org/graphql (GraphQL operation QueryAnnotations)",
+   "verified": true
+  },
+  {
+   "name": "get-structure-summary",
+   "summary": "Get the title and IDs of a PDB entry from its structure summary page",
+   "method": "GET",
+   "urlTemplate": "/structure/{entry_id}",
+   "params": [
+    {
+     "name": "entry_id",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "PDB ID, e.g. 4HHB",
+     "example": "4HHB"
+    }
+   ],
+   "responseType": "html",
+   "extract": {
+    "fields": {
+     "id": "span#structureID",
+     "page_title": "title",
+     "title": "h4 > span",
+     "data_api_url": "div.btn-group > a.btn.btn-sm@href"
+    }
+   },
+   "mutates": false,
+   "example": {
+    "entry_id": "4HHB"
+   },
+   "source": "E13 E19 GET https://www.rcsb.org/structure/4HHB",
+   "verified": true
+  },
+  {
+   "name": "get-structure-annotations",
+   "summary": "List the domain classification rows (SCOP/SCOPe, CATH, ECOD, etc.) for a PDB entry",
+   "method": "GET",
+   "urlTemplate": "/annotations/{entry_id}",
+   "params": [
+    {
+     "name": "entry_id",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "PDB ID",
+     "example": "4HHB"
+    }
+   ],
+   "responseType": "html",
+   "extract": {
+    "list": "tbody > tr",
+    "fields": {
+     "row": "",
+     "link": "a@href"
+    }
+   },
+   "mutates": false,
+   "example": {
+    "entry_id": "4HHB"
+   },
+   "source": "E14 GET https://www.rcsb.org/annotations/4HHB",
+   "verified": true
+  },
+  {
+   "name": "get-experimental-method",
+   "summary": "Get the experimental method (X-ray, EM, NMR...) and experiment page title for a PDB entry",
+   "method": "GET",
+   "urlTemplate": "/experimental/{entry_id}",
+   "params": [
+    {
+     "name": "entry_id",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "PDB ID",
+     "example": "4HHB"
+    }
+   ],
+   "responseType": "html",
+   "extract": {
+    "fields": {
+     "id": "span#structureID",
+     "method": "div#experimentalMethod",
+     "title": "div.col > h4 > span || h4 > span"
+    }
+   },
+   "mutates": false,
+   "example": {
+    "entry_id": "4HHB"
+   },
+   "source": "E18 GET https://www.rcsb.org/experimental/4HHB",
+   "verified": true
+  },
+  {
+   "name": "list-entry-versions",
+   "summary": "List the revision history of a PDB entry (version number, date, change type), with links to versioned files",
+   "method": "GET",
+   "urlTemplate": "/versions/{entry_id}",
+   "params": [
+    {
+     "name": "entry_id",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "PDB ID",
+     "example": "4HHB"
+    }
+   ],
+   "responseType": "html",
+   "extract": {
+    "list": "tbody > tr",
+    "fields": {
+     "row": "",
+     "file_url": "a@href"
+    }
+   },
+   "mutates": false,
+   "example": {
+    "entry_id": "4HHB"
+   },
+   "source": "E17 GET https://www.rcsb.org/versions/4HHB",
+   "verified": true
+  },
+  {
+   "name": "get-entry-fasta",
+   "summary": "Download the FASTA sequences of all polymer entities in a PDB entry as text",
+   "method": "GET",
+   "urlTemplate": "/fasta/entry/{entry_id}",
+   "params": [
+    {
+     "name": "entry_id",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "PDB ID",
+     "example": "4HHB"
+    }
+   ],
+   "responseType": "text",
+   "mutates": false,
+   "example": {
+    "entry_id": "4HHB"
+   },
+   "source": "E13 GET https://www.rcsb.org/structure/4HHB",
+   "verified": true
+  },
+  {
+   "name": "get-entry-file",
+   "summary": "Fetch a PDB entry's coordinate file (mmCIF or legacy PDB) as text, either full or header-only",
+   "method": "GET",
+   "urlTemplate": "https://files.rcsb.org/{part}/{entry_id}.{format}",
+   "params": [
+    {
+     "name": "entry_id",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "PDB ID",
+     "example": "4HHB"
+    },
+    {
+     "name": "format",
+     "in": "path",
+     "required": false,
+     "type": "string",
+     "description": "File format",
+     "enum": [
+      "cif",
+      "pdb"
+     ],
+     "default": "cif"
+    },
+    {
+     "name": "part",
+     "in": "path",
+     "required": false,
+     "type": "string",
+     "description": "header = metadata only (small); view = full coordinates (can be large)",
+     "enum": [
+      "header",
+      "view"
+     ],
+     "default": "header"
+    }
+   ],
+   "responseType": "text",
+   "mutates": false,
+   "example": {
+    "entry_id": "4HHB",
+    "format": "cif",
+    "part": "header"
+   },
+   "source": "E13 GET https://www.rcsb.org/structure/4HHB",
+   "verified": true
+  },
+  {
+   "name": "get-ligand-definition",
+   "summary": "Get the chemical component definition (name, formula, synonyms, atoms, bonds) of a ligand as mmCIF text, e.g. HEM",
+   "method": "GET",
+   "urlTemplate": "https://files.rcsb.org/ligands/view/{ligand_id}.cif",
+   "params": [
+    {
+     "name": "ligand_id",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Chemical component ID (1-5 chars), e.g. HEM, ATP, NAG",
+     "example": "HEM"
+    }
+   ],
+   "responseType": "text",
+   "mutates": false,
+   "example": {
+    "ligand_id": "HEM"
+   },
+   "source": "E10 E15 GET https://files.rcsb.org/ligands/view/HEM.cif",
+   "verified": true
+  }
+ ],
+ "blockers": [],
+ "notes": [
+  "Search commands return result_set items. 'identifier' is the PDB ID (or PDBID-assemblyId for assembly searches). The full response also has total_count. Paginate with start in steps of rows (25).",
+  "To get the newest entries first, use sort_by=rcsb_accession_info.initial_release_date and direction=desc.",
+  "ID formats: entry = 4HHB; polymer entity = 4HHB_1 (entry_entityNumber); chain instance = 4HHB.A (entry.labelAsymId). Use get-structure-chains or get-entry-instances to find valid entity and chain IDs.",
+  "search-by-attribute sends value as a string. Numeric range filters (such as resolution) were not captured in the recording and may need the public Search API (search.rcsb.org) instead.",
+  "Only experimental entries are returned by default. Ligand and polymer-entity result tabs were not captured, so searches return entries (or assemblies for 3D similarity).",
+  "get-entry-file with part=view and format=cif/pdb returns full coordinate files, which can be very large. Prefer part=header for metadata.",
+  "Data API (data.rcsb.org/graphql) and Sequence Coordinates API are public and need no auth. The GraphQL bodies used by the web app are replayed here verbatim. The pdbx_struct_assembly_gen selection in get-entry-instances was reconstructed because the recorded query was truncated.",
+  "robots.txt disallows /search/browse and /groups/summary, so they are not exposed."
+ ],
+ "dropped": [],
+ "generated": {
+  "by": "clify add",
+  "model": "claude-opus-5-5",
+  "exploredSteps": 25,
+  "recorded": 61,
+  "verifiedAt": "2026-10-18T07:27:53.622Z",
+  "seconds": 253
+ }
+}

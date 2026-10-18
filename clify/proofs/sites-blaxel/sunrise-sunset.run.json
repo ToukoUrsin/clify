@@ -1,0 +1,126 @@
+{
+ "url": "https://sunrise-sunset.org/",
+ "category": "maps-weather",
+ "sandbox": "clify-sunrise-sunset-org",
+ "startedAt": "2026-10-18T09:39:03.209Z",
+ "region": "us-pdx-1",
+ "chrome": "Chrome/148.0.7778.96",
+ "sandboxStartMs": 1727,
+ "addSeconds": 229,
+ "addExit": 0,
+ "add": {
+  "ok": true,
+  "site": "sunrise-sunset",
+  "url": "https://sunrise-sunset.org/",
+  "commands": [
+   {
+    "name": "search-cities",
+    "summary": "Search cities by name. Returns numeric city ids and labels; use the id with get-today-times.",
+    "verified": true
+   },
+   {
+    "name": "get-today-times",
+    "summary": "Get today's and tomorrow's sunrise/sunset widget for a city, selected by numeric id. Returns JSON with pre-rendered HTML fragments.",
+    "verified": true
+   },
+   {
+    "name": "list-popular-today",
+    "summary": "Get today's sunrise/sunset cards for the most-searched cities in the visitor's country (grid), or for the visitor's geolocated city (geo).",
+    "verified": true
+   },
+   {
+    "name": "get-sun-times",
+    "summary": "Public JSON API: sunrise, sunset, solar noon, day length and twilight times for a latitude/longitude on one date or across a date range.",
+    "verified": true
+   },
+   {
+    "name": "get-location-page",
+    "summary": "Open a city or region page by country code and slug (e.g. fr/paris, jp/tokyo, jp/tokyo-prefecture). Returns the page heading, title and meta description.",
+    "verified": true
+   },
+   {
+    "name": "list-countries",
+    "summary": "List all countries on the explore page. Each link leads to a country listing of regions and cities.",
+    "verified": true
+   },
+   {
+    "name": "list-country-locations",
+    "summary": "List the regions and cities for a country by its full-name slug (e.g. japan). Links point to /{cc}/{slug} pages usable with get-location-page.",
+    "verified": true
+   },
+   {
+    "name": "get-monthly-calendar",
+    "summary": "Get the monthly sunrise/sunset calendar for a location by name. Returns one item per day with the date, sunrise and sunset text.",
+    "verified": true
+   }
+  ],
+  "verified": 8,
+  "writes": 0,
+  "dropped": [],
+  "blockers": [],
+  "loggedIn": false,
+  "seconds": 228,
+  "next": [
+   "clify sunrise-sunset",
+   "clify sunrise-sunset search-cities --q \"Paris\""
+  ],
+  "installed": "/home/ubuntu/clify-runs/blaxel-retry2/home/bin/sunrise-sunset",
+  "explored": {
+   "steps": 18,
+   "recorded": 1333,
+   "heldWrites": 729
+  }
+ },
+ "check": {
+  "on": "blaxel",
+  "node": "v24.22.0",
+  "seconds": 4,
+  "reads": 8,
+  "verified": 8,
+  "failed": [],
+  "results": [
+   {
+    "name": "search-cities",
+    "ok": true,
+    "ms": 209
+   },
+   {
+    "name": "get-today-times",
+    "ok": true,
+    "ms": 110
+   },
+   {
+    "name": "list-popular-today",
+    "ok": true,
+    "ms": 104
+   },
+   {
+    "name": "get-sun-times",
+    "ok": true,
+    "ms": 352
+   },
+   {
+    "name": "get-location-page",
+    "ok": true,
+    "ms": 178
+   },
+   {
+    "name": "list-countries",
+    "ok": true,
+    "ms": 98
+   },
+   {
+    "name": "list-country-locations",
+    "ok": true,
+    "ms": 135
+   },
+   {
+    "name": "get-monthly-calendar",
+    "ok": true,
+    "ms": 117
+   }
+  ]
+ },
+ "deleted": true,
+ "seconds": 235
+}

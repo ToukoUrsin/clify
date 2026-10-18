@@ -1,0 +1,621 @@
+{
+ "name": "nrk",
+ "startUrl": "https://www.nrk.no/",
+ "origin": "https://www.nrk.no",
+ "createdAt": "2026-10-18T08:49:28.174Z",
+ "description": "NRK (Norwegian Broadcasting) news, sport, culture, TV and radio: the CLI reads news collections and articles, tag, author and review listings, TV/radio broadcast schedules, playback metadata and manifests, radio/podcast catalogs and NRK TV page plugs.",
+ "commands": [
+  {
+   "name": "get-content",
+   "summary": "Get an nrk.no content item (article teaser, news collection or stream such as 'Krigen i Ukraina' or the sports news stream) by its 1.<id>, including its latest related items",
+   "method": "GET",
+   "urlTemplate": "/serum/api/content/json/{id}?v=2&context=items",
+   "params": [
+    {
+     "name": "id",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "NRK content id in the form 1.<number>, taken from legacy article/collection URLs (\u2026-1.11480927)",
+     "example": "1.11480927"
+    },
+    {
+     "name": "api_limit",
+     "key": "limit",
+     "in": "query",
+     "required": false,
+     "type": "number",
+     "description": "How many related items (relations) to include (sent to the site as \"limit\"; clify's own --limit only shapes the output)",
+     "default": 3
+    }
+   ],
+   "headers": {
+    "x-requested-with": "XMLHttpRequest"
+   },
+   "responseType": "json",
+   "defaultFields": [
+    "id",
+    "title",
+    "lead",
+    "published",
+    "updated",
+    "messageCount",
+    "relations",
+    "modelType"
+   ],
+   "mutates": false,
+   "example": {
+    "id": "1.11480927"
+   },
+   "source": "E7 E8 E9 E10 E11 E23 E24 E36 E37 E38 E43 E44 GET https://www.nrk.no/serum/api/content/json/1.14612682",
+   "verified": true
+  },
+  {
+   "name": "list-topic-articles",
+   "summary": "List articles on an nrk.no topic/tag page (e.g. /atomkraft/, /sverige/) by topic id, newest first, with cursor paging",
+   "method": "GET",
+   "urlTemplate": "/komponenter/api/autonomous-content/plugs.json?type=topic",
+   "params": [
+    {
+     "name": "topicId",
+     "key": "criteria",
+     "in": "query",
+     "required": true,
+     "type": "string",
+     "description": "Numeric topic/tag id",
+     "example": "148"
+    },
+    {
+     "name": "count",
+     "in": "query",
+     "required": false,
+     "type": "number",
+     "description": "Number of articles per page",
+     "default": 6
+    },
+    {
+     "name": "cursor",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Paging cursor from the previous page. It is base64 JSON {timestamp, contentId} of the last item seen."
+    }
+   ],
+   "responseType": "json",
+   "resultPath": "plugs",
+   "defaultFields": [
+    "url",
+    "title",
+    "description",
+    "published",
+    "updated",
+    "type"
+   ],
+   "pagination": {
+    "type": "cursor",
+    "param": "cursor",
+    "nextPath": "cursor"
+   },
+   "mutates": false,
+   "example": {
+    "topicId": "148"
+   },
+   "source": "E2",
+   "verified": true
+  },
+  {
+   "name": "list-author-articles",
+   "summary": "List articles written by an NRK journalist (author profile /forfatter/<slug>-<id>) by author id, with cursor paging",
+   "method": "GET",
+   "urlTemplate": "/komponenter/api/autonomous-content/plugs.json?type=author",
+   "params": [
+    {
+     "name": "authorId",
+     "key": "criteria",
+     "in": "query",
+     "required": true,
+     "type": "string",
+     "description": "Numeric author id (the trailing number in /forfatter/<slug>-<id>)",
+     "example": "385"
+    },
+    {
+     "name": "count",
+     "in": "query",
+     "required": false,
+     "type": "number",
+     "description": "Number of articles per page",
+     "default": 6
+    },
+    {
+     "name": "cursor",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Paging cursor from the previous page (base64 JSON {timestamp, contentId} of the last item)"
+    }
+   ],
+   "responseType": "json",
+   "resultPath": "plugs",
+   "defaultFields": [
+    "url",
+    "title",
+    "description",
+    "published",
+    "updated",
+    "type"
+   ],
+   "pagination": {
+    "type": "cursor",
+    "param": "cursor",
+    "nextPath": "cursor"
+   },
+   "mutates": false,
+   "example": {
+    "authorId": "385"
+   },
+   "source": "E2",
+   "verified": true
+  },
+  {
+   "name": "list-reviews",
+   "summary": "List NRK reviews (anmeldelser) of a given category, e.g. books, with score and cursor paging",
+   "method": "GET",
+   "urlTemplate": "/komponenter/api/autonomous-content/plugs.json?type=reviews&criteria=reviewTypes:{reviewType}",
+   "params": [
+    {
+     "name": "reviewType",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Review category key. 'literature' is books (B\u00f8ker). Other categories presumably use similar English keys.",
+     "example": "literature"
+    },
+    {
+     "name": "count",
+     "in": "query",
+     "required": false,
+     "type": "number",
+     "description": "Number of reviews per page",
+     "default": 6
+    },
+    {
+     "name": "cursor",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Paging cursor from the previous page (base64 JSON {timestamp, contentId} of the last item)"
+    }
+   ],
+   "responseType": "json",
+   "resultPath": "plugs",
+   "defaultFields": [
+    "url",
+    "title",
+    "reviewScore",
+    "reviewType",
+    "published",
+    "description"
+   ],
+   "pagination": {
+    "type": "cursor",
+    "param": "cursor",
+    "nextPath": "cursor"
+   },
+   "mutates": false,
+   "example": {
+    "reviewType": "literature"
+   },
+   "source": "E2",
+   "verified": true
+  },
+  {
+   "name": "list-related-articles",
+   "summary": "List articles topically related to a given (newer-format /artikkel/<slug>-<id>) article id",
+   "method": "GET",
+   "urlTemplate": "/komponenter/api/autonomous-content/plugs.json?type=topicallyRelated",
+   "params": [
+    {
+     "name": "articleId",
+     "key": "criteria",
+     "in": "query",
+     "required": true,
+     "type": "string",
+     "description": "Numeric article id (the trailing number in /artikkel/<slug>-<id>)",
+     "example": "1530245"
+    },
+    {
+     "name": "count",
+     "in": "query",
+     "required": false,
+     "type": "number",
+     "description": "Number of related articles",
+     "default": 4
+    }
+   ],
+   "responseType": "json",
+   "resultPath": "plugs",
+   "defaultFields": [
+    "url",
+    "title",
+    "description",
+    "published",
+    "type"
+   ],
+   "mutates": false,
+   "example": {
+    "articleId": "1530245"
+   },
+   "source": "E2",
+   "verified": true
+  },
+  {
+   "name": "get-epg",
+   "summary": "Get the broadcast schedule (EPG) for one or more NRK TV/radio channels on a given date",
+   "method": "GET",
+   "urlTemplate": "https://psapi.nrk.no/epg/{channels}",
+   "params": [
+    {
+     "name": "channels",
+     "in": "path",
+     "required": false,
+     "type": "string",
+     "description": "Comma-separated channel ids, e.g. nrk1,nrk2,nrk3,sport,p1,p2",
+     "default": "p1,p2,nrk2,nrk1,sport,nrk3",
+     "example": "p1,p2,nrk2,nrk1,sport,nrk3"
+    },
+    {
+     "name": "date",
+     "in": "query",
+     "required": true,
+     "type": "string",
+     "description": "Date in YYYY-MM-DD format",
+     "example": "2026-10-18"
+    }
+   ],
+   "responseType": "json",
+   "defaultFields": [
+    "id",
+    "channel.id",
+    "channel.title",
+    "date",
+    "entries"
+   ],
+   "mutates": false,
+   "example": {
+    "channels": "p1,p2,nrk2,nrk1,sport,nrk3",
+    "date": "2026-10-18"
+   },
+   "source": "E6 GET https://psapi.nrk.no/epg/p1,p2,nrk2,nrk1,sport,nrk3",
+   "verified": true
+  },
+  {
+   "name": "get-playback-metadata",
+   "summary": "Get playback metadata (title, duration, availability, geoblocking, manifest link) for a video clip, TV/radio program, podcast episode or live channel",
+   "method": "GET",
+   "urlTemplate": "https://psapi.nrk.no/playback/metadata/{kind}/{id}?eea-portability=true",
+   "params": [
+    {
+     "name": "kind",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Media kind",
+     "enum": [
+      "clip",
+      "program",
+      "podcast",
+      "channel"
+     ],
+     "example": "clip"
+    },
+    {
+     "name": "id",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Media id. Clips use a UUID, programs ids like MNAN12004326, podcast episodes l_<uuid>, channels ids like nrktv8.",
+     "example": "4c5a7d19-d101-4877-a1a8-faefbd3f9ce5"
+    }
+   ],
+   "headers": {
+    "accept": "application/vnd.nrk.psapi+json; version=9; player=nrkno-player; device=player-core"
+   },
+   "responseType": "json",
+   "defaultFields": [
+    "id",
+    "playability",
+    "streamingMode",
+    "duration",
+    "preplay.titles.title",
+    "preplay.titles.subtitle",
+    "availability.isGeoBlocked",
+    "nonPlayable.endUserMessage"
+   ],
+   "mutates": false,
+   "example": {
+    "kind": "clip",
+    "id": "4c5a7d19-d101-4877-a1a8-faefbd3f9ce5"
+   },
+   "source": "E5 E18 E19 E20 E21 E22 E27 E28 E31 E32 E41 E42 E46 E47 E53 GET https://psapi.nrk.no/playback/metadata/clip/{id}",
+   "verified": true
+  },
+  {
+   "name": "get-playback-manifest",
+   "summary": "Get the playback manifest (stream URLs such as HLS, plus subtitles) for a playable clip, program, podcast episode or channel",
+   "method": "GET",
+   "urlTemplate": "https://psapi.nrk.no/playback/manifest/{kind}/{id}?eea-portability=true",
+   "params": [
+    {
+     "name": "kind",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Media kind",
+     "enum": [
+      "clip",
+      "program",
+      "podcast",
+      "channel"
+     ],
+     "example": "program"
+    },
+    {
+     "name": "id",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Media id (same as in get-playback-metadata)",
+     "example": "KMNO10048526"
+    }
+   ],
+   "headers": {
+    "accept": "application/vnd.nrk.psapi+json; version=9; player=nrkno-player; device=player-core"
+   },
+   "responseType": "json",
+   "defaultFields": [
+    "id",
+    "playability",
+    "streamingMode",
+    "availability.isGeoBlocked",
+    "availability.onDemand",
+    "playable.assets",
+    "playable.subtitles",
+    "playable.duration"
+   ],
+   "mutates": false,
+   "example": {
+    "kind": "program",
+    "id": "KMNO10048526"
+   },
+   "source": "E33 E48",
+   "verified": true
+  },
+  {
+   "name": "get-radio-catalog",
+   "summary": "Get an NRK radio series or podcast catalog entry, including its seasons (months) and links",
+   "method": "GET",
+   "urlTemplate": "https://psapi.nrk.no/radio/catalog/{kind}/{slug}",
+   "params": [
+    {
+     "name": "kind",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Catalog type",
+     "enum": [
+      "series",
+      "podcast"
+     ],
+     "example": "podcast"
+    },
+    {
+     "name": "slug",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Series/podcast slug, e.g. dagsnytt-atten, politisk-kvarter, kjapt_oppdatert, bakrommet",
+     "example": "kjapt_oppdatert"
+    }
+   ],
+   "headers": {
+    "accept": "application/json"
+   },
+   "responseType": "json",
+   "mutates": false,
+   "example": {
+    "kind": "podcast",
+    "slug": "kjapt_oppdatert"
+   },
+   "source": "E14 E15 E16 E17 E39 E40 E45 GET https://psapi.nrk.no/radio/catalog/series/politisk-kvarter",
+   "verified": true
+  },
+  {
+   "name": "get-podcast-episode",
+   "summary": "Get details of a single NRK podcast episode (title, date, duration, contributors, playback link)",
+   "method": "GET",
+   "urlTemplate": "https://psapi.nrk.no/radio/catalog/podcast/{slug}/episodes/{episodeId}",
+   "params": [
+    {
+     "name": "slug",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Podcast slug",
+     "example": "verden_paa_loerdag"
+    },
+    {
+     "name": "episodeId",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Episode id, l_<uuid>",
+     "example": "l_13410bb3-fa4c-47b6-810b-b3fa4cf7b65b"
+    }
+   ],
+   "headers": {
+    "accept": "application/json"
+   },
+   "responseType": "json",
+   "defaultFields": [
+    "episodeId",
+    "titles.title",
+    "titles.subtitle",
+    "date",
+    "programInformation.details.displayValue",
+    "contributors",
+    "category.displayValue",
+    "_links.playback.href"
+   ],
+   "mutates": false,
+   "example": {
+    "slug": "verden_paa_loerdag",
+    "episodeId": "l_13410bb3-fa4c-47b6-810b-b3fa4cf7b65b"
+   },
+   "source": "E25 E26 E52 GET https://psapi.nrk.no/radio/catalog/podcast/verden_paa_loerdag/episodes/l_13410bb3-fa4c-47b6-810b-b3fa4cf7b65b",
+   "verified": true
+  },
+  {
+   "name": "get-latest-episode",
+   "summary": "Get the latest (or next upcoming) episode of an NRK TV series, e.g. dagsrevyen or nyheter",
+   "method": "GET",
+   "urlTemplate": "https://psapi.nrk.no/series/{seriesId}/latestOrNextEpisode/mediaelement",
+   "params": [
+    {
+     "name": "seriesId",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "TV series slug, e.g. dagsrevyen, nyheter, rykter",
+     "example": "dagsrevyen"
+    }
+   ],
+   "responseType": "json",
+   "defaultFields": [
+    "id",
+    "fullTitle",
+    "description",
+    "duration",
+    "isAvailable",
+    "messageType",
+    "seriesTitle",
+    "relativeOriginUrl"
+   ],
+   "mutates": false,
+   "example": {
+    "seriesId": "dagsrevyen"
+   },
+   "source": "E12 E13 E51 GET https://psapi.nrk.no/series/nyheter/latestOrNextEpisode/mediaelement",
+   "verified": true
+  },
+  {
+   "name": "get-tv-page",
+   "summary": "Get an NRK TV page (e.g. the front page) with its sections and plug references",
+   "method": "GET",
+   "urlTemplate": "https://pages.tv.api.nrk.no/v4.9/pages/{pageId}?contentGroup=adults&includeLinkPlugs=true",
+   "params": [
+    {
+     "name": "pageId",
+     "in": "path",
+     "required": false,
+     "type": "string",
+     "description": "TV page id",
+     "default": "frontpage",
+     "example": "frontpage"
+    }
+   ],
+   "headers": {
+    "x-nrk-platform": "web"
+   },
+   "responseType": "json",
+   "resultPath": "sections",
+   "defaultFields": [
+    "id",
+    "included.title",
+    "included.displayContract",
+    "included.plugRefs"
+   ],
+   "mutates": false,
+   "example": {
+    "pageId": "frontpage"
+   },
+   "source": "E30 GET https://pages.tv.api.nrk.no/v4.9/pages/frontpage",
+   "verified": true
+  },
+  {
+   "name": "get-tv-plug",
+   "summary": "Resolve an NRK TV plug reference (from get-tv-page plugRefs) to its series/program title, description, images and ids",
+   "method": "GET",
+   "urlTemplate": "https://pages.tv.api.nrk.no/v4.9/plugs/{id}",
+   "params": [
+    {
+     "name": "id",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Plug ref hash (32 hex chars)",
+     "example": "5f40e67541e33f899a71aa5a15fc71e4"
+    }
+   ],
+   "headers": {
+    "x-nrk-platform": "web"
+   },
+   "responseType": "json",
+   "defaultFields": [
+    "type",
+    "title",
+    "description",
+    "series.seriesId",
+    "trailerId",
+    "analytics.contentId"
+   ],
+   "mutates": false,
+   "example": {
+    "id": "5f40e67541e33f899a71aa5a15fc71e4"
+   },
+   "source": "E3 GET https://pages.tv.api.nrk.no/v4.9/plugs/{id}",
+   "verified": true
+  },
+  {
+   "name": "list-clip-collections",
+   "summary": "List the related video collections shown alongside an nrk.no video clip",
+   "method": "GET",
+   "urlTemplate": "/video/api/v1/allcollections",
+   "params": [
+    {
+     "name": "clipId",
+     "in": "query",
+     "required": true,
+     "type": "string",
+     "description": "Video clip UUID (the suffix of /video/<section>/<slug>_<uuid>)",
+     "example": "4c5a7d19-d101-4877-a1a8-faefbd3f9ce5"
+    }
+   ],
+   "responseType": "json",
+   "mutates": false,
+   "example": {
+    "clipId": "4c5a7d19-d101-4877-a1a8-faefbd3f9ce5"
+   },
+   "source": "E49 GET https://www.nrk.no/video/api/v1/allcollections",
+   "verified": true
+  }
+ ],
+ "blockers": [],
+ "notes": [
+  "Keyword search is not available: /sok is disallowed and no search request was captured.",
+  "The legacy article/collection ids look like '1.18057825'. Pass them as-is to get-content. The 'relations' array lists child item ids, which you can also fetch with get-content.",
+  "Paging on plugs.json (topic, author and reviews) uses an opaque cursor: base64 JSON {timestamp, contentId} of the last item on the previous page. Pass it back via --cursor. The cursor field name in the response was not recorded.",
+  "Topic ids, author ids and review category keys are not exposed as listings. Take them from page URLs (/forfatter/<slug>-<id>) or from earlier results.",
+  "Many video clips and TV programs are geoblocked outside Norway (nonPlayable.messageType 'ProgramIsGeoblocked'). Radio and podcast content is usually playable everywhere.",
+  "The video person/collection load-more (video/api/v1/loadmore) and regional load-more (serum/api/render/<id> with offset params) are not exposed because their parameters were not fully recorded.",
+  "get-epg dates are YYYY-MM-DD in Norwegian local time. Today and tomorrow were confirmed to work."
+ ],
+ "dropped": [],
+ "generated": {
+  "by": "clify add",
+  "model": "claude-opus-5-5",
+  "exploredSteps": 30,
+  "recorded": 288,
+  "verifiedAt": "2026-10-18T08:51:06.710Z",
+  "seconds": 287
+ }
+}

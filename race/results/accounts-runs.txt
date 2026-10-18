@@ -1,0 +1,27 @@
+valid runs: 7 (2026-10-18T07-26-09-765Z [ui], 2026-10-18T07-32-30-754Z [js], 2026-10-18T07-39-12-302Z [ui], 2026-10-18T07-46-47-405Z [js], 2026-10-18T07-52-51-283Z [ui], 2026-10-18T07-56-47-924Z [js], 2026-10-18T08-13-23-000Z-live [ui])
+
+per run:
+  2026-10-18T07-26-09-765Z claude-opus-5-5 [ui]: browser 330.4s 118,669 fresh 4,386,436 all $1.9291 3,472MB 31.5%cpu 6/6 | clify 105.4s 24,161 fresh 336,490 all $0.2873 338.2MB 3.5%cpu 6/6
+  2026-10-18T07-32-30-754Z claude-opus-5-5 [js]: browser 383s 86,029 fresh 3,379,413 all $1.4617 3,316MB 28.7%cpu 6/6 | clify 60s 24,851 fresh 333,281 all $0.2960 336.4MB 6.5%cpu 6/6
+  2026-10-18T07-39-12-302Z claude-opus-5-5 [ui]: browser 436.6s 96,542 fresh 4,548,415 all $1.7665 3,395MB 23.1%cpu 6/6 | clify 63.3s 27,531 fresh 377,430 all $0.3250 340.9MB 6.2%cpu 6/6
+  2026-10-18T07-46-47-405Z claude-opus-5-5 [js]: browser 345s 119,375 fresh 4,214,040 all $1.9131 3,253MB 27.3%cpu 6/6 | clify 58.5s 26,176 fresh 346,127 all $0.3049 338.3MB 5.8%cpu 6/6
+  2026-10-18T07-52-51-283Z claude-opus-5-5 [ui]: browser 218.7s 111,129 fresh 5,265,210 all $2.0269 3,361MB 39.7%cpu 6/6 | clify 64.5s 24,849 fresh 339,748 all $0.3030 334.1MB 5.6%cpu 6/6
+  2026-10-18T07-56-47-924Z claude-opus-5-5 [js]: browser 294.1s 88,421 fresh 3,892,917 all $1.5897 3,328MB 30.6%cpu 6/6 | clify 67.5s 25,601 fresh 338,577 all $0.2999 361.8MB 5.1%cpu 6/6
+  2026-10-18T08-13-23-000Z-live claude-opus-5-5 [ui]: browser 270.7s 117,908 fresh 3,720,253 all $1.7755 3,411MB 33.2%cpu 6/6 | clify 64.4s 25,967 fresh 342,156 all $0.3041 337.1MB 5.5%cpu 6/6
+
+metric            A browser, clicks + screenshots (n=4)B browser + page JavaScript (n=3)   C clify (Bash only) (n=7)           
+time s            314.1 [218.7-436.6]                 340.7 [294.1-383]                   69.1 [58.5-105.4]                   
+fresh tokens      111,062 [96,542-118,669]            97,942 [86,029-119,375]             25,591 [24,161-27,531]              
+all tokens        4,480,079 [3,720,253-5,265,210]     3,828,790 [3,379,413-4,214,040]     344,830 [333,281-377,430]           
+cost $            1.9 [1.8-2]                         1.7 [1.5-1.9]                       0.3029 [0.2873-0.325]               
+peak RAM MB       3,409 [3,361-3,472]                 3,299 [3,253-3,328]                 341 [334.1-361.8]                   
+avg CPU %         31.9 [23.1-39.7]                    28.9 [27.3-30.6]                    5.5 [3.5-6.5]                       
+model calls       77.3 [63-94]                        63.3 [61-67]                        17.1 [17-18]                        
+tool calls        110.5 [95-133]                      114.3 [108-122]                     16.1 [16-17]                        
+verified          6 [6-6]                             6 [6-6]                             6 [6-6]                             
+
+ratio A/C, paired per run (n=4): time s 4.40x [3.13-6.89] · fresh tokens 4.36x [3.51-4.91] · all tokens 12.86x [10.87-15.50] · cost $ 6.17x [5.44-6.71] · peak RAM MB 10.10x [9.96-10.27] · avg CPU % 6.43x [3.70-8.91] · model calls 4.48x [3.71-5.53] · tool calls 6.82x [5.59-8.31]
+representative ui run (closest to the mean ratios): 2026-10-18T08-13-23-000Z-live
+
+ratio B/C, paired per run (n=3): time s 5.55x [4.36-6.39] · fresh tokens 3.83x [3.45-4.56] · all tokens 11.27x [10.14-12.17] · cost $ 5.50x [4.94-6.27] · peak RAM MB 9.56x [9.20-9.86] · avg CPU % 5.04x [4.41-5.97] · model calls 3.73x [3.59-3.94] · tool calls 7.15x [6.75-7.63]
+representative js run (closest to the mean ratios): 2026-10-18T07-32-30-754Z

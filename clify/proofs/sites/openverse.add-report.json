@@ -1,0 +1,77 @@
+{
+ "ok": true,
+ "site": "openverse",
+ "url": "https://openverse.org/",
+ "commands": [
+  {
+   "name": "search-images",
+   "summary": "Search openly licensed images by keyword, with filters for license, category, aspect ratio, size, source, tags and creator",
+   "verified": true
+  },
+  {
+   "name": "get-image-oembed",
+   "summary": "Get oEmbed data for an Openverse image page URL, for embedding with attribution",
+   "verified": true
+  },
+  {
+   "name": "list-image-sources",
+   "summary": "List all image content sources (e.g. flickr, wikimedia) with their media counts",
+   "verified": true
+  },
+  {
+   "name": "search-audio",
+   "summary": "Search openly licensed audio by keyword, with filters for category, length, file extension, license and source",
+   "verified": true
+  },
+  {
+   "name": "list-audio-sources",
+   "summary": "List all audio content sources (e.g. freesound, jamendo) with their media counts",
+   "verified": true
+  },
+  {
+   "name": "get-rate-limit",
+   "summary": "Show the current API rate-limit status for this client (requests used and remaining)",
+   "verified": true
+  }
+ ],
+ "verified": 6,
+ "writes": 0,
+ "dropped": [
+  {
+   "name": "get-image",
+   "reason": "the site answered with a bot check (HTTP 404); clify does not bypass these"
+  },
+  {
+   "name": "get-related-images",
+   "reason": "the site answered with a bot check (HTTP 404); clify does not bypass these"
+  },
+  {
+   "name": "get-audio",
+   "reason": "the site answered with a bot check (HTTP 404); clify does not bypass these"
+  },
+  {
+   "name": "get-related-audio",
+   "reason": "the site answered with a bot check (HTTP 404); clify does not bypass these"
+  },
+  {
+   "name": "get-audio-waveform",
+   "reason": "the site answered with a bot check (HTTP 404); clify does not bypass these"
+  }
+ ],
+ "blockers": [
+  "bot-check at https://openverse.org/",
+  "captcha"
+ ],
+ "loggedIn": false,
+ "seconds": 135,
+ "next": [
+  "clify openverse",
+  "clify openverse search-images --q \"cat\""
+ ],
+ "installed": "/home/ubuntu/clify-runs/batch2/home/bin/openverse",
+ "explored": {
+  "steps": 8,
+  "recorded": 3,
+  "heldWrites": 0
+ }
+}

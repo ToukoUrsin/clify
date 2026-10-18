@@ -1,0 +1,5 @@
+[
+  {"tool":"click","input":{"selector":"a:has-text(\"Mystery\")","intent":"filter by category"}},
+  {"tool":"click","input":{"selector":"li.next a","intent":"next page"}},
+  {"tool":"click","input":{"selector":"article.product_pod h3 a","intent":"open book detail"}}
+]

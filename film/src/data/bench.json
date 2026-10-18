@@ -1,0 +1,3249 @@
+{
+ "generatedAt": "2026-10-17T23:41:26.650Z",
+ "tags": [
+  "main",
+  "hard",
+  "ui",
+  "ui2"
+ ],
+ "model": [
+  "claude-opus-5-5"
+ ],
+ "setup": {
+  "browser": "Claude Code -p, Playwright MCP 0.0.83 (default tools) over CDP to headless Chromium; built-in tools disabled",
+  "browserUi": "same as browser, with browser_evaluate and browser_run_code_unsafe disabled (no page JavaScript)",
+  "cli": "Claude Code -p, Bash only, clify on PATH; told to use clify, no curl/WebFetch",
+  "grading": "every expected value must appear in the final ANSWER line; ground truth recomputed with clify right before each task"
+ },
+ "nTasks": 20,
+ "nSites": 11,
+ "browser": {
+  "n": 40,
+  "ok": 40,
+  "rate": 1,
+  "medianSec": 12.748999999999999,
+  "meanSec": 13.447424999999999,
+  "medianTokens": 50446,
+  "medianToolCalls": 3,
+  "medianTurns": 4,
+  "totalCostUsd": 2.2945217999999996,
+  "medianCostUsd": 0.0542947
+ },
+ "browserUi": {
+  "n": 40,
+  "ok": 40,
+  "rate": 1,
+  "medianSec": 16.08,
+  "meanSec": 17.475625,
+  "medianTokens": 79363.5,
+  "medianToolCalls": 5,
+  "medianTurns": 6,
+  "totalCostUsd": 4.1213078,
+  "medianCostUsd": 0.083643
+ },
+ "cli": {
+  "n": 40,
+  "ok": 40,
+  "rate": 1,
+  "medianSec": 9.0475,
+  "meanSec": 9.906025000000001,
+  "medianTokens": 16464,
+  "medianToolCalls": 2,
+  "medianTurns": 3,
+  "totalCostUsd": 1.2771044,
+  "medianCostUsd": 0.030197300000000003
+ },
+ "speedupMedian": 1.4091185410334346,
+ "tokenRatioMedian": 3.0640184645286688,
+ "perTask": [
+  {
+   "task": "books-mystery-max",
+   "site": "books",
+   "browser": {
+    "n": 2,
+    "ok": 2,
+    "rate": 1,
+    "medianSec": 14.002,
+    "meanSec": 14.002,
+    "medianTokens": 50726.5,
+    "medianToolCalls": 3.5,
+    "medianTurns": 4.5,
+    "totalCostUsd": 0.113403,
+    "medianCostUsd": 0.0567015
+   },
+   "browserUi": {
+    "n": 2,
+    "ok": 2,
+    "rate": 1,
+    "medianSec": 13.283,
+    "meanSec": 13.283,
+    "medianTokens": 90994.5,
+    "medianToolCalls": 5,
+    "medianTurns": 6,
+    "totalCostUsd": 0.2794702,
+    "medianCostUsd": 0.1397351
+   },
+   "cli": {
+    "n": 2,
+    "ok": 2,
+    "rate": 1,
+    "medianSec": 9.8765,
+    "meanSec": 9.8765,
+    "medianTokens": 25410.5,
+    "medianToolCalls": 3,
+    "medianTurns": 4,
+    "totalCostUsd": 0.08866539999999999,
+    "medianCostUsd": 0.044332699999999996
+   }
+  },
+  {
+   "task": "books-travel-over-40",
+   "site": "books",
+   "browser": {
+    "n": 2,
+    "ok": 2,
+    "rate": 1,
+    "medianSec": 13.584,
+    "meanSec": 13.584,
+    "medianTokens": 50691,
+    "medianToolCalls": 4,
+    "medianTurns": 5,
+    "totalCostUsd": 0.10828940000000001,
+    "medianCostUsd": 0.054144700000000004
+   },
+   "browserUi": {
+    "n": 2,
+    "ok": 2,
+    "rate": 1,
+    "medianSec": 11.0365,
+    "meanSec": 11.0365,
+    "medianTokens": 57383.5,
+    "medianToolCalls": 3,
+    "medianTurns": 4,
+    "totalCostUsd": 0.1716144,
+    "medianCostUsd": 0.0858072
+   },
+   "cli": {
+    "n": 2,
+    "ok": 2,
+    "rate": 1,
+    "medianSec": 6.6165,
+    "meanSec": 6.6165,
+    "medianTokens": 15249,
+    "medianToolCalls": 2,
+    "medianTurns": 3,
+    "totalCostUsd": 0.0575196,
+    "medianCostUsd": 0.0287598
+   }
+  },
+  {
+   "task": "crates-tokio",
+   "site": "crates",
+   "browser": {
+    "n": 2,
+    "ok": 2,
+    "rate": 1,
+    "medianSec": 12.710999999999999,
+    "meanSec": 12.710999999999999,
+    "medianTokens": 44446.5,
+    "medianToolCalls": 3.5,
+    "medianTurns": 4.5,
+    "totalCostUsd": 0.10213900000000001,
+    "medianCostUsd": 0.051069500000000004
+   },
+   "browserUi": {
+    "n": 2,
+    "ok": 2,
+    "rate": 1,
+    "medianSec": 15.1905,
+    "meanSec": 15.1905,
+    "medianTokens": 92829,
+    "medianToolCalls": 5.5,
+    "medianTurns": 6.5,
+    "totalCostUsd": 0.22444879999999998,
+    "medianCostUsd": 0.11222439999999999
+   },
+   "cli": {
+    "n": 2,
+    "ok": 2,
+    "rate": 1,
+    "medianSec": 13.839,
+    "meanSec": 13.839,
+    "medianTokens": 33195.5,
+    "medianToolCalls": 5,
+    "medianTurns": 6,
+    "totalCostUsd": 0.0878252,
+    "medianCostUsd": 0.0439126
+   }
+  },
+  {
+   "task": "debian-nginx-bookworm",
+   "site": "debian",
+   "browser": {
+    "n": 2,
+    "ok": 2,
+    "rate": 1,
+    "medianSec": 16.1675,
+    "meanSec": 16.1675,
+    "medianTokens": 79485,
+    "medianToolCalls": 5,
+    "medianTurns": 6,
+    "totalCostUsd": 0.15882480000000004,
+    "medianCostUsd": 0.07941240000000002
+   },
+   "browserUi": {
+    "n": 2,
+    "ok": 2,
+    "rate": 1,
+    "medianSec": 18.536499999999997,
+    "meanSec": 18.536499999999997,
+    "medianTokens": 79363.5,
+    "medianToolCalls": 5,
+    "medianTurns": 6,
+    "totalCostUsd": 0.1593198,
+    "medianCostUsd": 0.0796599
+   },
+   "cli": {
+    "n": 2,
+    "ok": 2,
+    "rate": 1,
+    "medianSec": 10.7365,
+    "meanSec": 10.7365,
+    "medianTokens": 19476.5,
+    "medianToolCalls": 3,
+    "medianTurns": 4,
+    "totalCostUsd": 0.058393,
+    "medianCostUsd": 0.0291965
+   }
+  },
+  {
+   "task": "endoflife-ubuntu-2204",
+   "site": "endoflife",
+   "browser": {
+    "n": 2,
+    "ok": 2,
+    "rate": 1,
+    "medianSec": 13.6465,
+    "meanSec": 13.6465,
+    "medianTokens": 65285,
+    "medianToolCalls": 4.5,
+    "medianTurns": 5.5,
+    "totalCostUsd": 0.1270428,
+    "medianCostUsd": 0.0635214
+   },
+   "browserUi": {
+    "n": 2,
+    "ok": 2,
+    "rate": 1,
+    "medianSec": 14.181000000000001,
+    "meanSec": 14.181000000000001,
+    "medianTokens": 60011.5,
+    "medianToolCalls": 5,
+    "medianTurns": 6,
+    "totalCostUsd": 0.12859720000000002,
+    "medianCostUsd": 0.06429860000000001
+   },
+   "cli": {
+    "n": 2,
+    "ok": 2,
+    "rate": 1,
+    "medianSec": 9.396999999999998,
+    "meanSec": 9.396999999999998,
+    "medianTokens": 14003,
+    "medianToolCalls": 2,
+    "medianTurns": 3,
+    "totalCostUsd": 0.055502,
+    "medianCostUsd": 0.027751
+   }
+  },
+  {
+   "task": "github-playwright-release",
+   "site": "github",
+   "browser": {
+    "n": 2,
+    "ok": 2,
+    "rate": 1,
+    "medianSec": 13.858500000000001,
+    "meanSec": 13.858500000000001,
+    "medianTokens": 44096.5,
+    "medianToolCalls": 3.5,
+    "medianTurns": 4.5,
+    "totalCostUsd": 0.100289,
+    "medianCostUsd": 0.0501445
+   },
+   "browserUi": {
+    "n": 2,
+    "ok": 2,
+    "rate": 1,
+    "medianSec": 18.461,
+    "meanSec": 18.461,
+    "medianTokens": 82935.5,
+    "medianToolCalls": 5.5,
+    "medianTurns": 6.5,
+    "totalCostUsd": 0.1525586,
+    "medianCostUsd": 0.0762793
+   },
+   "cli": {
+    "n": 2,
+    "ok": 2,
+    "rate": 1,
+    "medianSec": 8.173,
+    "meanSec": 8.173,
+    "medianTokens": 17995.5,
+    "medianToolCalls": 2.5,
+    "medianTurns": 3.5,
+    "totalCostUsd": 0.06321760000000001,
+    "medianCostUsd": 0.031608800000000006
+   }
+  },
+  {
+   "task": "hex-phoenix",
+   "site": "hex",
+   "browser": {
+    "n": 2,
+    "ok": 2,
+    "rate": 1,
+    "medianSec": 12.3525,
+    "meanSec": 12.3525,
+    "medianTokens": 56949.5,
+    "medianToolCalls": 3,
+    "medianTurns": 4,
+    "totalCostUsd": 0.1681564,
+    "medianCostUsd": 0.0840782
+   },
+   "browserUi": {
+    "n": 2,
+    "ok": 2,
+    "rate": 1,
+    "medianSec": 15.8575,
+    "meanSec": 15.8575,
+    "medianTokens": 55668,
+    "medianToolCalls": 3.5,
+    "medianTurns": 4.5,
+    "totalCostUsd": 0.1553504,
+    "medianCostUsd": 0.0776752
+   },
+   "cli": {
+    "n": 2,
+    "ok": 2,
+    "rate": 1,
+    "medianSec": 6.4045,
+    "meanSec": 6.4045,
+    "medianTokens": 13646.5,
+    "medianToolCalls": 2,
+    "medianTurns": 3,
+    "totalCostUsd": 0.0434896,
+    "medianCostUsd": 0.0217448
+   }
+  },
+  {
+   "task": "homebrew-ffmpeg",
+   "site": "homebrew",
+   "browser": {
+    "n": 2,
+    "ok": 2,
+    "rate": 1,
+    "medianSec": 10.311,
+    "meanSec": 10.311,
+    "medianTokens": 53203.5,
+    "medianToolCalls": 3,
+    "medianTurns": 4,
+    "totalCostUsd": 0.1250288,
+    "medianCostUsd": 0.0625144
+   },
+   "browserUi": {
+    "n": 2,
+    "ok": 2,
+    "rate": 1,
+    "medianSec": 9.7325,
+    "meanSec": 9.7325,
+    "medianTokens": 52928.5,
+    "medianToolCalls": 3,
+    "medianTurns": 4,
+    "totalCostUsd": 0.1212498,
+    "medianCostUsd": 0.0606249
+   },
+   "cli": {
+    "n": 2,
+    "ok": 2,
+    "rate": 1,
+    "medianSec": 7.6515,
+    "meanSec": 7.6515,
+    "medianTokens": 13487,
+    "medianToolCalls": 2,
+    "medianTurns": 3,
+    "totalCostUsd": 0.04322720000000001,
+    "medianCostUsd": 0.021613600000000004
+   }
+  },
+  {
+   "task": "nodejs-latest-lts",
+   "site": "nodejs",
+   "browser": {
+    "n": 2,
+    "ok": 2,
+    "rate": 1,
+    "medianSec": 14.967500000000001,
+    "meanSec": 14.967500000000001,
+    "medianTokens": 52555,
+    "medianToolCalls": 4,
+    "medianTurns": 5,
+    "totalCostUsd": 0.1211712,
+    "medianCostUsd": 0.0605856
+   },
+   "browserUi": {
+    "n": 2,
+    "ok": 2,
+    "rate": 1,
+    "medianSec": 12.689499999999999,
+    "meanSec": 12.689499999999999,
+    "medianTokens": 54653,
+    "medianToolCalls": 3,
+    "medianTurns": 4,
+    "totalCostUsd": 0.1483072,
+    "medianCostUsd": 0.0741536
+   },
+   "cli": {
+    "n": 2,
+    "ok": 2,
+    "rate": 1,
+    "medianSec": 10.736,
+    "meanSec": 10.736,
+    "medianTokens": 22596.5,
+    "medianToolCalls": 3.5,
+    "medianTurns": 4.5,
+    "totalCostUsd": 0.0661088,
+    "medianCostUsd": 0.0330544
+   }
+  },
+  {
+   "task": "quotes-humor-author",
+   "site": "quotes",
+   "browser": {
+    "n": 2,
+    "ok": 2,
+    "rate": 1,
+    "medianSec": 12.6865,
+    "meanSec": 12.6865,
+    "medianTokens": 50965,
+    "medianToolCalls": 5,
+    "medianTurns": 6,
+    "totalCostUsd": 0.11121900000000001,
+    "medianCostUsd": 0.055609500000000006
+   },
+   "browserUi": {
+    "n": 2,
+    "ok": 2,
+    "rate": 1,
+    "medianSec": 16.268,
+    "meanSec": 16.268,
+    "medianTokens": 90198,
+    "medianToolCalls": 5.5,
+    "medianTurns": 6.5,
+    "totalCostUsd": 0.1521418,
+    "medianCostUsd": 0.0760709
+   },
+   "cli": {
+    "n": 2,
+    "ok": 2,
+    "rate": 1,
+    "medianSec": 8.434999999999999,
+    "meanSec": 8.434999999999999,
+    "medianTokens": 19480,
+    "medianToolCalls": 3,
+    "medianTurns": 4,
+    "totalCostUsd": 0.054288,
+    "medianCostUsd": 0.027144
+   }
+  },
+  {
+   "task": "quotes-love-count",
+   "site": "quotes",
+   "browser": {
+    "n": 2,
+    "ok": 2,
+    "rate": 1,
+    "medianSec": 15.942,
+    "meanSec": 15.942,
+    "medianTokens": 43625.5,
+    "medianToolCalls": 3,
+    "medianTurns": 4,
+    "totalCostUsd": 0.0971912,
+    "medianCostUsd": 0.0485956
+   },
+   "browserUi": {
+    "n": 2,
+    "ok": 2,
+    "rate": 1,
+    "medianSec": 19.2665,
+    "meanSec": 19.2665,
+    "medianTokens": 79826,
+    "medianToolCalls": 5.5,
+    "medianTurns": 6.5,
+    "totalCostUsd": 0.1685656,
+    "medianCostUsd": 0.0842828
+   },
+   "cli": {
+    "n": 2,
+    "ok": 2,
+    "rate": 1,
+    "medianSec": 9.715499999999999,
+    "meanSec": 9.715499999999999,
+    "medianTokens": 14466,
+    "medianToolCalls": 2,
+    "medianTurns": 3,
+    "totalCostUsd": 0.053202000000000006,
+    "medianCostUsd": 0.026601000000000003
+   }
+  },
+  {
+   "task": "scrapethis-hockey-detroit-1995",
+   "site": "scrapethis",
+   "browser": {
+    "n": 2,
+    "ok": 2,
+    "rate": 1,
+    "medianSec": 10.271999999999998,
+    "meanSec": 10.271999999999998,
+    "medianTokens": 43787,
+    "medianToolCalls": 3,
+    "medianTurns": 4,
+    "totalCostUsd": 0.09350519999999998,
+    "medianCostUsd": 0.04675259999999999
+   },
+   "browserUi": {
+    "n": 2,
+    "ok": 2,
+    "rate": 1,
+    "medianSec": 13.349499999999999,
+    "meanSec": 13.349499999999999,
+    "medianTokens": 53558.5,
+    "medianToolCalls": 4.5,
+    "medianTurns": 5.5,
+    "totalCostUsd": 0.127062,
+    "medianCostUsd": 0.063531
+   },
+   "cli": {
+    "n": 2,
+    "ok": 2,
+    "rate": 1,
+    "medianSec": 6.5075,
+    "meanSec": 6.5075,
+    "medianTokens": 15000.5,
+    "medianToolCalls": 2,
+    "medianTurns": 3,
+    "totalCostUsd": 0.0543176,
+    "medianCostUsd": 0.0271588
+   }
+  },
+  {
+   "task": "scrapethis-oscar-2012",
+   "site": "scrapethis",
+   "browser": {
+    "n": 2,
+    "ok": 2,
+    "rate": 1,
+    "medianSec": 11.259,
+    "meanSec": 11.259,
+    "medianTokens": 44301.5,
+    "medianToolCalls": 3,
+    "medianTurns": 4,
+    "totalCostUsd": 0.10020240000000001,
+    "medianCostUsd": 0.050101200000000005
+   },
+   "browserUi": {
+    "n": 2,
+    "ok": 2,
+    "rate": 1,
+    "medianSec": 17.506999999999998,
+    "meanSec": 17.506999999999998,
+    "medianTokens": 91714,
+    "medianToolCalls": 7,
+    "medianTurns": 8,
+    "totalCostUsd": 0.1547786,
+    "medianCostUsd": 0.0773893
+   },
+   "cli": {
+    "n": 2,
+    "ok": 2,
+    "rate": 1,
+    "medianSec": 7.5649999999999995,
+    "meanSec": 7.5649999999999995,
+    "medianTokens": 14715.5,
+    "medianToolCalls": 2,
+    "medianTurns": 3,
+    "totalCostUsd": 0.0523988,
+    "medianCostUsd": 0.0261994
+   }
+  },
+  {
+   "task": "webscraper-laptop-max",
+   "site": "webscraper",
+   "browser": {
+    "n": 2,
+    "ok": 2,
+    "rate": 1,
+    "medianSec": 12.687000000000001,
+    "meanSec": 12.687000000000001,
+    "medianTokens": 50221,
+    "medianToolCalls": 3,
+    "medianTurns": 4,
+    "totalCostUsd": 0.10339799999999999,
+    "medianCostUsd": 0.051698999999999995
+   },
+   "browserUi": {
+    "n": 2,
+    "ok": 2,
+    "rate": 1,
+    "medianSec": 21.2955,
+    "meanSec": 21.2955,
+    "medianTokens": 94105.5,
+    "medianToolCalls": 6.5,
+    "medianTurns": 7.5,
+    "totalCostUsd": 0.15227839999999998,
+    "medianCostUsd": 0.07613919999999999
+   },
+   "cli": {
+    "n": 2,
+    "ok": 2,
+    "rate": 1,
+    "medianSec": 12.15,
+    "meanSec": 12.15,
+    "medianTokens": 20058,
+    "medianToolCalls": 3,
+    "medianTurns": 4,
+    "totalCostUsd": 0.06880820000000001,
+    "medianCostUsd": 0.03440410000000001
+   }
+  },
+  {
+   "task": "books-cheapest-first-5-pages",
+   "site": "books",
+   "browser": {
+    "n": 2,
+    "ok": 2,
+    "rate": 1,
+    "medianSec": 11.522,
+    "meanSec": 11.522,
+    "medianTokens": 37742.5,
+    "medianToolCalls": 3,
+    "medianTurns": 4,
+    "totalCostUsd": 0.0978952,
+    "medianCostUsd": 0.0489476
+   },
+   "browserUi": {
+    "n": 2,
+    "ok": 2,
+    "rate": 1,
+    "medianSec": 22.64,
+    "meanSec": 22.64,
+    "medianTokens": 142979,
+    "medianToolCalls": 11.5,
+    "medianTurns": 12.5,
+    "totalCostUsd": 0.2920018,
+    "medianCostUsd": 0.1460009
+   },
+   "cli": {
+    "n": 2,
+    "ok": 2,
+    "rate": 1,
+    "medianSec": 11.5755,
+    "meanSec": 11.5755,
+    "medianTokens": 20971,
+    "medianToolCalls": 3,
+    "medianTurns": 4,
+    "totalCostUsd": 0.06473519999999999,
+    "medianCostUsd": 0.032367599999999996
+   }
+  },
+  {
+   "task": "crates-serde-vs-tokio",
+   "site": "crates",
+   "browser": {
+    "n": 2,
+    "ok": 2,
+    "rate": 1,
+    "medianSec": 10.339,
+    "meanSec": 10.339,
+    "medianTokens": 37030.5,
+    "medianToolCalls": 3,
+    "medianTurns": 4,
+    "totalCostUsd": 0.08634119999999998,
+    "medianCostUsd": 0.04317059999999999
+   },
+   "browserUi": {
+    "n": 2,
+    "ok": 2,
+    "rate": 1,
+    "medianSec": 12.711,
+    "meanSec": 12.711,
+    "medianTokens": 91503,
+    "medianToolCalls": 6,
+    "medianTurns": 7,
+    "totalCostUsd": 0.23268319999999998,
+    "medianCostUsd": 0.11634159999999999
+   },
+   "cli": {
+    "n": 2,
+    "ok": 2,
+    "rate": 1,
+    "medianSec": 7.6525,
+    "meanSec": 7.6525,
+    "medianTokens": 13925.5,
+    "medianToolCalls": 2,
+    "medianTurns": 3,
+    "totalCostUsd": 0.045606999999999995,
+    "medianCostUsd": 0.022803499999999997
+   }
+  },
+  {
+   "task": "github-playwright-releases-2026",
+   "site": "github",
+   "browser": {
+    "n": 2,
+    "ok": 2,
+    "rate": 1,
+    "medianSec": 18.7345,
+    "meanSec": 18.7345,
+    "medianTokens": 52594.5,
+    "medianToolCalls": 6,
+    "medianTurns": 7,
+    "totalCostUsd": 0.13125560000000003,
+    "medianCostUsd": 0.06562780000000001
+   },
+   "browserUi": {
+    "n": 2,
+    "ok": 2,
+    "rate": 1,
+    "medianSec": 23.9925,
+    "meanSec": 23.9925,
+    "medianTokens": 137047,
+    "medianToolCalls": 9,
+    "medianTurns": 10,
+    "totalCostUsd": 0.3446772,
+    "medianCostUsd": 0.1723386
+   },
+   "cli": {
+    "n": 2,
+    "ok": 2,
+    "rate": 1,
+    "medianSec": 7.135,
+    "meanSec": 7.135,
+    "medianTokens": 15579,
+    "medianToolCalls": 2,
+    "medianTurns": 3,
+    "totalCostUsd": 0.0622752,
+    "medianCostUsd": 0.0311376
+   }
+  },
+  {
+   "task": "hockey-best-1990",
+   "site": "scrapethis",
+   "browser": {
+    "n": 2,
+    "ok": 2,
+    "rate": 1,
+    "medianSec": 18.6715,
+    "meanSec": 18.6715,
+    "medianTokens": 50639.5,
+    "medianToolCalls": 3,
+    "medianTurns": 4,
+    "totalCostUsd": 0.110481,
+    "medianCostUsd": 0.0552405
+   },
+   "browserUi": {
+    "n": 2,
+    "ok": 2,
+    "rate": 1,
+    "medianSec": 17.347,
+    "meanSec": 17.347,
+    "medianTokens": 77288.5,
+    "medianToolCalls": 5.5,
+    "medianTurns": 6.5,
+    "totalCostUsd": 0.18157859999999998,
+    "medianCostUsd": 0.09078929999999999
+   },
+   "cli": {
+    "n": 2,
+    "ok": 2,
+    "rate": 1,
+    "medianSec": 14.218,
+    "meanSec": 14.218,
+    "medianTokens": 29702,
+    "medianToolCalls": 4.5,
+    "medianTurns": 5.5,
+    "totalCostUsd": 0.08141380000000001,
+    "medianCostUsd": 0.040706900000000004
+   }
+  },
+  {
+   "task": "quotes-top-author",
+   "site": "quotes",
+   "browser": {
+    "n": 2,
+    "ok": 2,
+    "rate": 1,
+    "medianSec": 12.789000000000001,
+    "meanSec": 12.789000000000001,
+    "medianTokens": 43944.5,
+    "medianToolCalls": 3,
+    "medianTurns": 4,
+    "totalCostUsd": 0.10238520000000001,
+    "medianCostUsd": 0.051192600000000005
+   },
+   "browserUi": {
+    "n": 2,
+    "ok": 2,
+    "rate": 1,
+    "medianSec": 42.483999999999995,
+    "meanSec": 42.483999999999995,
+    "medianTokens": 361921,
+    "medianToolCalls": 23,
+    "medianTurns": 24,
+    "totalCostUsd": 0.5673786000000001,
+    "medianCostUsd": 0.28368930000000003
+   },
+   "cli": {
+    "n": 2,
+    "ok": 2,
+    "rate": 1,
+    "medianSec": 17.485,
+    "meanSec": 17.485,
+    "medianTokens": 20886,
+    "medianToolCalls": 3,
+    "medianTurns": 4,
+    "totalCostUsd": 0.0685772,
+    "medianCostUsd": 0.0342886
+   }
+  },
+  {
+   "task": "ubuntu-lts-supported",
+   "site": "endoflife",
+   "browser": {
+    "n": 2,
+    "ok": 2,
+    "rate": 1,
+    "medianSec": 12.4455,
+    "meanSec": 12.4455,
+    "medianTokens": 40943,
+    "medianToolCalls": 3,
+    "medianTurns": 4,
+    "totalCostUsd": 0.1363034,
+    "medianCostUsd": 0.0681517
+   },
+   "browserUi": {
+    "n": 2,
+    "ok": 2,
+    "rate": 1,
+    "medianSec": 13.683499999999999,
+    "meanSec": 13.683499999999999,
+    "medianTokens": 74486.5,
+    "medianToolCalls": 4,
+    "medianTurns": 5,
+    "totalCostUsd": 0.2072456,
+    "medianCostUsd": 0.1036228
+   },
+   "cli": {
+    "n": 2,
+    "ok": 2,
+    "rate": 1,
+    "medianSec": 12.251,
+    "meanSec": 12.251,
+    "medianTokens": 18391,
+    "medianToolCalls": 2,
+    "medianTurns": 3,
+    "totalCostUsd": 0.10753299999999999,
+    "medianCostUsd": 0.053766499999999995
+   }
+  }
+ ],
+ "runs": [
+  {
+   "task": "books-mystery-max",
+   "site": "books",
+   "mode": "browser",
+   "trial": 1,
+   "tag": "main",
+   "ok": true,
+   "why": "all expected values present",
+   "wallMs": 14287,
+   "tokens": 51097,
+   "toolCalls": 4,
+   "costUsd": 0.058632000000000004,
+   "answer": "Boar Island (Anna Pigeon #19) — £59.48"
+  },
+  {
+   "task": "books-mystery-max",
+   "site": "books",
+   "mode": "browser",
+   "trial": 2,
+   "tag": "main",
+   "ok": true,
+   "why": "all expected values present",
+   "wallMs": 13717,
+   "tokens": 50356,
+   "toolCalls": 3,
+   "costUsd": 0.05477100000000001,
+   "answer": "Boar Island (Anna Pigeon #19) — £59.48"
+  },
+  {
+   "task": "books-mystery-max",
+   "site": "books",
+   "mode": "cli",
+   "trial": 1,
+   "tag": "main",
+   "ok": true,
+   "why": "all expected values present",
+   "wallMs": 9676,
+   "tokens": 25367,
+   "toolCalls": 3,
+   "costUsd": 0.043628,
+   "answer": "Boar Island (Anna Pigeon #19) — £59.48"
+  },
+  {
+   "task": "books-mystery-max",
+   "site": "books",
+   "mode": "cli",
+   "trial": 2,
+   "tag": "main",
+   "ok": true,
+   "why": "all expected values present",
+   "wallMs": 10077,
+   "tokens": 25454,
+   "toolCalls": 3,
+   "costUsd": 0.04503739999999999,
+   "answer": "Boar Island (Anna Pigeon #19) — £59.48"
+  },
+  {
+   "task": "books-travel-over-40",
+   "site": "books",
+   "mode": "browser",
+   "trial": 1,
+   "tag": "main",
+   "ok": true,
+   "why": "all expected values present",
+   "wallMs": 15463,
+   "tokens": 51186,
+   "toolCalls": 5,
+   "costUsd": 0.05693980000000001,
+   "answer": "5"
+  },
+  {
+   "task": "books-travel-over-40",
+   "site": "books",
+   "mode": "browser",
+   "trial": 2,
+   "tag": "main",
+   "ok": true,
+   "why": "all expected values present",
+   "wallMs": 11705,
+   "tokens": 50196,
+   "toolCalls": 3,
+   "costUsd": 0.0513496,
+   "answer": "5"
+  },
+  {
+   "task": "books-travel-over-40",
+   "site": "books",
+   "mode": "cli",
+   "trial": 1,
+   "tag": "main",
+   "ok": true,
+   "why": "all expected values present",
+   "wallMs": 6442,
+   "tokens": 15238,
+   "toolCalls": 2,
+   "costUsd": 0.028539799999999997,
+   "answer": "5"
+  },
+  {
+   "task": "books-travel-over-40",
+   "site": "books",
+   "mode": "cli",
+   "trial": 2,
+   "tag": "main",
+   "ok": true,
+   "why": "all expected values present",
+   "wallMs": 6791,
+   "tokens": 15260,
+   "toolCalls": 2,
+   "costUsd": 0.0289798,
+   "answer": "5"
+  },
+  {
+   "task": "crates-tokio",
+   "site": "crates",
+   "mode": "browser",
+   "trial": 1,
+   "tag": "main",
+   "ok": true,
+   "why": "all expected values present",
+   "wallMs": 10414,
+   "tokens": 37242,
+   "toolCalls": 3,
+   "costUsd": 0.04652100000000001,
+   "answer": "tokio 1.53.3, licensed MIT"
+  },
+  {
+   "task": "crates-tokio",
+   "site": "crates",
+   "mode": "browser",
+   "trial": 2,
+   "tag": "main",
+   "ok": true,
+   "why": "all expected values present",
+   "wallMs": 15008,
+   "tokens": 51651,
+   "toolCalls": 4,
+   "costUsd": 0.055618,
+   "answer": "1.53.3, MIT license"
+  },
+  {
+   "task": "crates-tokio",
+   "site": "crates",
+   "mode": "cli",
+   "trial": 1,
+   "tag": "main",
+   "ok": true,
+   "why": "all expected values present",
+   "wallMs": 13582,
+   "tokens": 33356,
+   "toolCalls": 5,
+   "costUsd": 0.045919600000000005,
+   "answer": "1.53.3, MIT"
+  },
+  {
+   "task": "crates-tokio",
+   "site": "crates",
+   "mode": "cli",
+   "trial": 2,
+   "tag": "main",
+   "ok": true,
+   "why": "all expected values present",
+   "wallMs": 14096,
+   "tokens": 33035,
+   "toolCalls": 5,
+   "costUsd": 0.0419056,
+   "answer": "tokio 1.53.3, licensed MIT"
+  },
+  {
+   "task": "debian-nginx-bookworm",
+   "site": "debian",
+   "mode": "browser",
+   "trial": 1,
+   "tag": "main",
+   "ok": true,
+   "why": "all expected values present",
+   "wallMs": 16230,
+   "tokens": 79503,
+   "toolCalls": 5,
+   "costUsd": 0.07971240000000002,
+   "answer": "1.22.1-9+deb12u10"
+  },
+  {
+   "task": "debian-nginx-bookworm",
+   "site": "debian",
+   "mode": "browser",
+   "trial": 2,
+   "tag": "main",
+   "ok": true,
+   "why": "all expected values present",
+   "wallMs": 16105,
+   "tokens": 79467,
+   "toolCalls": 5,
+   "costUsd": 0.07911240000000001,
+   "answer": "1.22.1-9+deb12u10"
+  },
+  {
+   "task": "debian-nginx-bookworm",
+   "site": "debian",
+   "mode": "cli",
+   "trial": 1,
+   "tag": "main",
+   "ok": true,
+   "why": "all expected values present",
+   "wallMs": 9689,
+   "tokens": 19445,
+   "toolCalls": 3,
+   "costUsd": 0.028619,
+   "answer": "1.22.1-9+deb12u10"
+  },
+  {
+   "task": "debian-nginx-bookworm",
+   "site": "debian",
+   "mode": "cli",
+   "trial": 2,
+   "tag": "main",
+   "ok": true,
+   "why": "all expected values present",
+   "wallMs": 11784,
+   "tokens": 19508,
+   "toolCalls": 3,
+   "costUsd": 0.029774,
+   "answer": "1.22.1-9+deb12u10"
+  },
+  {
+   "task": "endoflife-ubuntu-2204",
+   "site": "endoflife",
+   "mode": "browser",
+   "trial": 1,
+   "tag": "main",
+   "ok": true,
+   "why": "all expected values present",
+   "wallMs": 15848,
+   "tokens": 65270,
+   "toolCalls": 4,
+   "costUsd": 0.0638214,
+   "answer": "2027-06-01"
+  },
+  {
+   "task": "endoflife-ubuntu-2204",
+   "site": "endoflife",
+   "mode": "browser",
+   "trial": 2,
+   "tag": "main",
+   "ok": true,
+   "why": "all expected values present",
+   "wallMs": 11445,
+   "tokens": 65300,
+   "toolCalls": 5,
+   "costUsd": 0.06322140000000001,
+   "answer": "2027-06-01"
+  },
+  {
+   "task": "endoflife-ubuntu-2204",
+   "site": "endoflife",
+   "mode": "cli",
+   "trial": 1,
+   "tag": "main",
+   "ok": true,
+   "why": "all expected values present",
+   "wallMs": 8870,
+   "tokens": 13963,
+   "toolCalls": 2,
+   "costUsd": 0.026951000000000003,
+   "answer": "2027-06-01"
+  },
+  {
+   "task": "endoflife-ubuntu-2204",
+   "site": "endoflife",
+   "mode": "cli",
+   "trial": 2,
+   "tag": "main",
+   "ok": true,
+   "why": "all expected values present",
+   "wallMs": 9924,
+   "tokens": 14043,
+   "toolCalls": 2,
+   "costUsd": 0.028551,
+   "answer": "2027-06-01"
+  },
+  {
+   "task": "github-playwright-release",
+   "site": "github",
+   "mode": "browser",
+   "trial": 1,
+   "tag": "main",
+   "ok": true,
+   "why": "all expected values present",
+   "wallMs": 10521,
+   "tokens": 37323,
+   "toolCalls": 3,
+   "costUsd": 0.0464706,
+   "answer": "v1.64.1, published 2026-10-14"
+  },
+  {
+   "task": "github-playwright-release",
+   "site": "github",
+   "mode": "browser",
+   "trial": 2,
+   "tag": "main",
+   "ok": true,
+   "why": "all expected values present",
+   "wallMs": 17196,
+   "tokens": 50870,
+   "toolCalls": 4,
+   "costUsd": 0.0538184,
+   "answer": "v1.64.1, published 2026-10-14"
+  },
+  {
+   "task": "github-playwright-release",
+   "site": "github",
+   "mode": "cli",
+   "trial": 1,
+   "tag": "main",
+   "ok": true,
+   "why": "all expected values present",
+   "wallMs": 7833,
+   "tokens": 15937,
+   "toolCalls": 2,
+   "costUsd": 0.0333806,
+   "answer": "v1.64.1, published 2026-10-14"
+  },
+  {
+   "task": "github-playwright-release",
+   "site": "github",
+   "mode": "cli",
+   "trial": 2,
+   "tag": "main",
+   "ok": true,
+   "why": "all expected values present",
+   "wallMs": 8513,
+   "tokens": 20054,
+   "toolCalls": 3,
+   "costUsd": 0.029837000000000002,
+   "answer": "v1.64.1, published 2026-10-14"
+  },
+  {
+   "task": "hex-phoenix",
+   "site": "hex",
+   "mode": "browser",
+   "trial": 1,
+   "tag": "main",
+   "ok": true,
+   "why": "all expected values present",
+   "wallMs": 11906,
+   "tokens": 56934,
+   "toolCalls": 3,
+   "costUsd": 0.08376820000000001,
+   "answer": "1.8.15, MIT"
+  },
+  {
+   "task": "hex-phoenix",
+   "site": "hex",
+   "mode": "browser",
+   "trial": 2,
+   "tag": "main",
+   "ok": true,
+   "why": "all expected values present",
+   "wallMs": 12799,
+   "tokens": 56965,
+   "toolCalls": 3,
+   "costUsd": 0.0843882,
+   "answer": "1.8.15, MIT license"
+  },
+  {
+   "task": "hex-phoenix",
+   "site": "hex",
+   "mode": "cli",
+   "trial": 1,
+   "tag": "main",
+   "ok": true,
+   "why": "all expected values present",
+   "wallMs": 6491,
+   "tokens": 13645,
+   "toolCalls": 2,
+   "costUsd": 0.0217148,
+   "answer": "1.8.15, MIT license"
+  },
+  {
+   "task": "hex-phoenix",
+   "site": "hex",
+   "mode": "cli",
+   "trial": 2,
+   "tag": "main",
+   "ok": true,
+   "why": "all expected values present",
+   "wallMs": 6318,
+   "tokens": 13648,
+   "toolCalls": 2,
+   "costUsd": 0.0217748,
+   "answer": "1.8.15, MIT"
+  },
+  {
+   "task": "homebrew-ffmpeg",
+   "site": "homebrew",
+   "mode": "browser",
+   "trial": 1,
+   "tag": "main",
+   "ok": true,
+   "why": "all expected values present",
+   "wallMs": 10155,
+   "tokens": 55156,
+   "toolCalls": 3,
+   "costUsd": 0.073419,
+   "answer": "9.0.2, GPL-3.0-or-later"
+  },
+  {
+   "task": "homebrew-ffmpeg",
+   "site": "homebrew",
+   "mode": "browser",
+   "trial": 2,
+   "tag": "main",
+   "ok": true,
+   "why": "all expected values present",
+   "wallMs": 10467,
+   "tokens": 51251,
+   "toolCalls": 3,
+   "costUsd": 0.0516098,
+   "answer": "9.0.2, GPL-3.0-or-later"
+  },
+  {
+   "task": "homebrew-ffmpeg",
+   "site": "homebrew",
+   "mode": "cli",
+   "trial": 1,
+   "tag": "main",
+   "ok": true,
+   "why": "all expected values present",
+   "wallMs": 8927,
+   "tokens": 13483,
+   "toolCalls": 2,
+   "costUsd": 0.021533600000000003,
+   "answer": "9.0.2, GPL-3.0-or-later"
+  },
+  {
+   "task": "homebrew-ffmpeg",
+   "site": "homebrew",
+   "mode": "cli",
+   "trial": 2,
+   "tag": "main",
+   "ok": true,
+   "why": "all expected values present",
+   "wallMs": 6376,
+   "tokens": 13491,
+   "toolCalls": 2,
+   "costUsd": 0.021693600000000004,
+   "answer": "9.0.2, GPL-3.0-or-later"
+  },
+  {
+   "task": "nodejs-latest-lts",
+   "site": "nodejs",
+   "mode": "browser",
+   "trial": 1,
+   "tag": "main",
+   "ok": true,
+   "why": "all expected values present",
+   "wallMs": 13071,
+   "tokens": 50327,
+   "toolCalls": 3,
+   "costUsd": 0.0527468,
+   "answer": "v24.22.0 (Krypton)"
+  },
+  {
+   "task": "nodejs-latest-lts",
+   "site": "nodejs",
+   "mode": "browser",
+   "trial": 2,
+   "tag": "main",
+   "ok": true,
+   "why": "all expected values present",
+   "wallMs": 16864,
+   "tokens": 54783,
+   "toolCalls": 5,
+   "costUsd": 0.0684244,
+   "answer": "v24.22.0 (Krypton)"
+  },
+  {
+   "task": "nodejs-latest-lts",
+   "site": "nodejs",
+   "mode": "cli",
+   "trial": 1,
+   "tag": "main",
+   "ok": true,
+   "why": "all expected values present",
+   "wallMs": 9168,
+   "tokens": 19831,
+   "toolCalls": 3,
+   "costUsd": 0.031282199999999996,
+   "answer": "v24.22.0 (Krypton)"
+  },
+  {
+   "task": "nodejs-latest-lts",
+   "site": "nodejs",
+   "mode": "cli",
+   "trial": 2,
+   "tag": "main",
+   "ok": true,
+   "why": "all expected values present",
+   "wallMs": 12304,
+   "tokens": 25362,
+   "toolCalls": 4,
+   "costUsd": 0.0348266,
+   "answer": "v24.22.0 (Krypton)"
+  },
+  {
+   "task": "quotes-humor-author",
+   "site": "quotes",
+   "mode": "browser",
+   "trial": 1,
+   "tag": "main",
+   "ok": true,
+   "why": "all expected values present",
+   "wallMs": 12852,
+   "tokens": 50964,
+   "toolCalls": 5,
+   "costUsd": 0.05573320000000001,
+   "answer": "Jane Austen, born December 16, 1775"
+  },
+  {
+   "task": "quotes-humor-author",
+   "site": "quotes",
+   "mode": "browser",
+   "trial": 2,
+   "tag": "main",
+   "ok": true,
+   "why": "all expected values present",
+   "wallMs": 12521,
+   "tokens": 50966,
+   "toolCalls": 5,
+   "costUsd": 0.0554858,
+   "answer": "Jane Austen, born December 16, 1775"
+  },
+  {
+   "task": "quotes-humor-author",
+   "site": "quotes",
+   "mode": "cli",
+   "trial": 1,
+   "tag": "main",
+   "ok": true,
+   "why": "all expected values present",
+   "wallMs": 8507,
+   "tokens": 19489,
+   "toolCalls": 3,
+   "costUsd": 0.027324,
+   "answer": "Jane Austen, born December 16, 1775"
+  },
+  {
+   "task": "quotes-humor-author",
+   "site": "quotes",
+   "mode": "cli",
+   "trial": 2,
+   "tag": "main",
+   "ok": true,
+   "why": "all expected values present",
+   "wallMs": 8363,
+   "tokens": 19471,
+   "toolCalls": 3,
+   "costUsd": 0.026964000000000002,
+   "answer": "Jane Austen, born December 16, 1775"
+  },
+  {
+   "task": "quotes-love-count",
+   "site": "quotes",
+   "mode": "browser",
+   "trial": 1,
+   "tag": "main",
+   "ok": true,
+   "why": "all expected values present",
+   "wallMs": 9718,
+   "tokens": 37356,
+   "toolCalls": 3,
+   "costUsd": 0.0462414,
+   "answer": "14"
+  },
+  {
+   "task": "quotes-love-count",
+   "site": "quotes",
+   "mode": "browser",
+   "trial": 2,
+   "tag": "main",
+   "ok": true,
+   "why": "all expected values present",
+   "wallMs": 22166,
+   "tokens": 49895,
+   "toolCalls": 3,
+   "costUsd": 0.0509498,
+   "answer": "14"
+  },
+  {
+   "task": "quotes-love-count",
+   "site": "quotes",
+   "mode": "cli",
+   "trial": 1,
+   "tag": "main",
+   "ok": true,
+   "why": "all expected values present",
+   "wallMs": 8430,
+   "tokens": 14462,
+   "toolCalls": 2,
+   "costUsd": 0.025786000000000003,
+   "answer": "14"
+  },
+  {
+   "task": "quotes-love-count",
+   "site": "quotes",
+   "mode": "cli",
+   "trial": 2,
+   "tag": "main",
+   "ok": true,
+   "why": "all expected values present",
+   "wallMs": 11001,
+   "tokens": 14470,
+   "toolCalls": 2,
+   "costUsd": 0.027416000000000003,
+   "answer": "14"
+  },
+  {
+   "task": "scrapethis-hockey-detroit-1995",
+   "site": "scrapethis",
+   "mode": "browser",
+   "trial": 1,
+   "tag": "main",
+   "ok": true,
+   "why": "all expected values present",
+   "wallMs": 10399,
+   "tokens": 49805,
+   "toolCalls": 3,
+   "costUsd": 0.04699339999999999,
+   "answer": "62"
+  },
+  {
+   "task": "scrapethis-hockey-detroit-1995",
+   "site": "scrapethis",
+   "mode": "browser",
+   "trial": 2,
+   "tag": "main",
+   "ok": true,
+   "why": "all expected values present",
+   "wallMs": 10145,
+   "tokens": 37769,
+   "toolCalls": 3,
+   "costUsd": 0.0465118,
+   "answer": "62"
+  },
+  {
+   "task": "scrapethis-hockey-detroit-1995",
+   "site": "scrapethis",
+   "mode": "cli",
+   "trial": 1,
+   "tag": "main",
+   "ok": true,
+   "why": "all expected values present",
+   "wallMs": 6799,
+   "tokens": 15887,
+   "toolCalls": 2,
+   "costUsd": 0.0319588,
+   "answer": "62"
+  },
+  {
+   "task": "scrapethis-hockey-detroit-1995",
+   "site": "scrapethis",
+   "mode": "cli",
+   "trial": 2,
+   "tag": "main",
+   "ok": true,
+   "why": "all expected values present",
+   "wallMs": 6216,
+   "tokens": 14114,
+   "toolCalls": 2,
+   "costUsd": 0.022358799999999998,
+   "answer": "62"
+  },
+  {
+   "task": "scrapethis-oscar-2012",
+   "site": "scrapethis",
+   "mode": "browser",
+   "trial": 1,
+   "tag": "main",
+   "ok": true,
+   "why": "all expected values present",
+   "wallMs": 12001,
+   "tokens": 50536,
+   "toolCalls": 3,
+   "costUsd": 0.05136,
+   "answer": "Argo — 3 awards"
+  },
+  {
+   "task": "scrapethis-oscar-2012",
+   "site": "scrapethis",
+   "mode": "browser",
+   "trial": 2,
+   "tag": "main",
+   "ok": true,
+   "why": "all expected values present",
+   "wallMs": 10517,
+   "tokens": 38067,
+   "toolCalls": 3,
+   "costUsd": 0.04884240000000001,
+   "answer": "Argo — 3 awards"
+  },
+  {
+   "task": "scrapethis-oscar-2012",
+   "site": "scrapethis",
+   "mode": "cli",
+   "trial": 1,
+   "tag": "main",
+   "ok": true,
+   "why": "all expected values present",
+   "wallMs": 6892,
+   "tokens": 14699,
+   "toolCalls": 2,
+   "costUsd": 0.0258694,
+   "answer": "Argo, 3 awards"
+  },
+  {
+   "task": "scrapethis-oscar-2012",
+   "site": "scrapethis",
+   "mode": "cli",
+   "trial": 2,
+   "tag": "main",
+   "ok": true,
+   "why": "all expected values present",
+   "wallMs": 8238,
+   "tokens": 14732,
+   "toolCalls": 2,
+   "costUsd": 0.0265294,
+   "answer": "Argo, 3 awards"
+  },
+  {
+   "task": "webscraper-laptop-max",
+   "site": "webscraper",
+   "mode": "browser",
+   "trial": 1,
+   "tag": "main",
+   "ok": true,
+   "why": "all expected values present",
+   "wallMs": 12699,
+   "tokens": 50181,
+   "toolCalls": 3,
+   "costUsd": 0.051558999999999994,
+   "answer": "Asus ROG Strix SCAR Edition GL503VM-ED115T — $1799.00"
+  },
+  {
+   "task": "webscraper-laptop-max",
+   "site": "webscraper",
+   "mode": "browser",
+   "trial": 2,
+   "tag": "main",
+   "ok": true,
+   "why": "all expected values present",
+   "wallMs": 12675,
+   "tokens": 50261,
+   "toolCalls": 3,
+   "costUsd": 0.051838999999999996,
+   "answer": "Asus ROG Strix SCAR Edition GL503VM-ED115T — $1799"
+  },
+  {
+   "task": "webscraper-laptop-max",
+   "site": "webscraper",
+   "mode": "cli",
+   "trial": 1,
+   "tag": "main",
+   "ok": true,
+   "why": "all expected values present",
+   "wallMs": 10358,
+   "tokens": 20118,
+   "toolCalls": 3,
+   "costUsd": 0.034910800000000006,
+   "answer": "Asus ROG Strix SCAR Edition GL503VM-ED115T — $1799"
+  },
+  {
+   "task": "webscraper-laptop-max",
+   "site": "webscraper",
+   "mode": "cli",
+   "trial": 2,
+   "tag": "main",
+   "ok": true,
+   "why": "all expected values present",
+   "wallMs": 13942,
+   "tokens": 19998,
+   "toolCalls": 3,
+   "costUsd": 0.0338974,
+   "answer": "Asus ROG Strix SCAR Edition GL503VM-ED115T — $1,799"
+  },
+  {
+   "task": "books-cheapest-first-5-pages",
+   "site": "books",
+   "mode": "browser",
+   "trial": 1,
+   "tag": "hard",
+   "ok": true,
+   "why": "all expected values present",
+   "wallMs": 9932,
+   "tokens": 37735,
+   "toolCalls": 3,
+   "costUsd": 0.0487526,
+   "answer": "Patience — £10.16"
+  },
+  {
+   "task": "books-cheapest-first-5-pages",
+   "site": "books",
+   "mode": "browser",
+   "trial": 2,
+   "tag": "hard",
+   "ok": true,
+   "why": "all expected values present",
+   "wallMs": 13112,
+   "tokens": 37750,
+   "toolCalls": 3,
+   "costUsd": 0.0491426,
+   "answer": "Patience — £10.16"
+  },
+  {
+   "task": "books-cheapest-first-5-pages",
+   "site": "books",
+   "mode": "cli",
+   "trial": 1,
+   "tag": "hard",
+   "ok": true,
+   "why": "all expected values present",
+   "wallMs": 11435,
+   "tokens": 21264,
+   "toolCalls": 3,
+   "costUsd": 0.033214,
+   "answer": "Patience — £10.16"
+  },
+  {
+   "task": "books-cheapest-first-5-pages",
+   "site": "books",
+   "mode": "cli",
+   "trial": 2,
+   "tag": "hard",
+   "ok": true,
+   "why": "all expected values present",
+   "wallMs": 11716,
+   "tokens": 20678,
+   "toolCalls": 3,
+   "costUsd": 0.0315212,
+   "answer": "Patience — £10.16"
+  },
+  {
+   "task": "crates-serde-vs-tokio",
+   "site": "crates",
+   "mode": "browser",
+   "trial": 1,
+   "tag": "hard",
+   "ok": true,
+   "why": "all expected values present",
+   "wallMs": 8676,
+   "tokens": 37030,
+   "toolCalls": 3,
+   "costUsd": 0.04316059999999999,
+   "answer": "serde"
+  },
+  {
+   "task": "crates-serde-vs-tokio",
+   "site": "crates",
+   "mode": "browser",
+   "trial": 2,
+   "tag": "hard",
+   "ok": true,
+   "why": "all expected values present",
+   "wallMs": 12002,
+   "tokens": 37031,
+   "toolCalls": 3,
+   "costUsd": 0.04318059999999999,
+   "answer": "serde"
+  },
+  {
+   "task": "crates-serde-vs-tokio",
+   "site": "crates",
+   "mode": "cli",
+   "trial": 1,
+   "tag": "hard",
+   "ok": true,
+   "why": "all expected values present",
+   "wallMs": 8204,
+   "tokens": 13917,
+   "toolCalls": 2,
+   "costUsd": 0.022881,
+   "answer": "serde"
+  },
+  {
+   "task": "crates-serde-vs-tokio",
+   "site": "crates",
+   "mode": "cli",
+   "trial": 2,
+   "tag": "hard",
+   "ok": true,
+   "why": "all expected values present",
+   "wallMs": 7101,
+   "tokens": 13934,
+   "toolCalls": 2,
+   "costUsd": 0.022726,
+   "answer": "serde"
+  },
+  {
+   "task": "github-playwright-releases-2026",
+   "site": "github",
+   "mode": "browser",
+   "trial": 1,
+   "tag": "hard",
+   "ok": true,
+   "why": "all expected values present",
+   "wallMs": 21065,
+   "tokens": 52536,
+   "toolCalls": 6,
+   "costUsd": 0.06445780000000001,
+   "answer": "13"
+  },
+  {
+   "task": "github-playwright-releases-2026",
+   "site": "github",
+   "mode": "browser",
+   "trial": 2,
+   "tag": "hard",
+   "ok": true,
+   "why": "all expected values present",
+   "wallMs": 16404,
+   "tokens": 52653,
+   "toolCalls": 6,
+   "costUsd": 0.0667978,
+   "answer": "13"
+  },
+  {
+   "task": "github-playwright-releases-2026",
+   "site": "github",
+   "mode": "cli",
+   "trial": 1,
+   "tag": "hard",
+   "ok": true,
+   "why": "all expected values present",
+   "wallMs": 7286,
+   "tokens": 15550,
+   "toolCalls": 2,
+   "costUsd": 0.0305576,
+   "answer": "13"
+  },
+  {
+   "task": "github-playwright-releases-2026",
+   "site": "github",
+   "mode": "cli",
+   "trial": 2,
+   "tag": "hard",
+   "ok": true,
+   "why": "all expected values present",
+   "wallMs": 6984,
+   "tokens": 15608,
+   "toolCalls": 2,
+   "costUsd": 0.0317176,
+   "answer": "13"
+  },
+  {
+   "task": "hockey-best-1990",
+   "site": "scrapethis",
+   "mode": "browser",
+   "trial": 1,
+   "tag": "hard",
+   "ok": true,
+   "why": "all expected values present",
+   "wallMs": 15573,
+   "tokens": 50546,
+   "toolCalls": 3,
+   "costUsd": 0.05547079999999999,
+   "answer": "Chicago Blackhawks, 49 wins"
+  },
+  {
+   "task": "hockey-best-1990",
+   "site": "scrapethis",
+   "mode": "browser",
+   "trial": 2,
+   "tag": "hard",
+   "ok": true,
+   "why": "all expected values present",
+   "wallMs": 21770,
+   "tokens": 50733,
+   "toolCalls": 3,
+   "costUsd": 0.0550102,
+   "answer": "Chicago Blackhawks, 49 wins"
+  },
+  {
+   "task": "hockey-best-1990",
+   "site": "scrapethis",
+   "mode": "cli",
+   "trial": 1,
+   "tag": "hard",
+   "ok": true,
+   "why": "all expected values present",
+   "wallMs": 14636,
+   "tokens": 32233,
+   "toolCalls": 5,
+   "costUsd": 0.041438,
+   "answer": "Chicago Blackhawks, 49 wins"
+  },
+  {
+   "task": "hockey-best-1990",
+   "site": "scrapethis",
+   "mode": "cli",
+   "trial": 2,
+   "tag": "hard",
+   "ok": true,
+   "why": "all expected values present",
+   "wallMs": 13800,
+   "tokens": 27171,
+   "toolCalls": 4,
+   "costUsd": 0.0399758,
+   "answer": "Chicago Blackhawks, 49 wins"
+  },
+  {
+   "task": "quotes-top-author",
+   "site": "quotes",
+   "mode": "browser",
+   "trial": 1,
+   "tag": "hard",
+   "ok": true,
+   "why": "all expected values present",
+   "wallMs": 13685,
+   "tokens": 50092,
+   "toolCalls": 3,
+   "costUsd": 0.0515922,
+   "answer": "Albert Einstein, 10 quotes"
+  },
+  {
+   "task": "quotes-top-author",
+   "site": "quotes",
+   "mode": "browser",
+   "trial": 2,
+   "tag": "hard",
+   "ok": true,
+   "why": "all expected values present",
+   "wallMs": 11893,
+   "tokens": 37797,
+   "toolCalls": 3,
+   "costUsd": 0.050793000000000005,
+   "answer": "Albert Einstein, 10 quotes"
+  },
+  {
+   "task": "quotes-top-author",
+   "site": "quotes",
+   "mode": "cli",
+   "trial": 1,
+   "tag": "hard",
+   "ok": true,
+   "why": "all expected values present",
+   "wallMs": 20522,
+   "tokens": 26765,
+   "toolCalls": 4,
+   "costUsd": 0.0379146,
+   "answer": "Albert Einstein, 10 quotes"
+  },
+  {
+   "task": "quotes-top-author",
+   "site": "quotes",
+   "mode": "cli",
+   "trial": 2,
+   "tag": "hard",
+   "ok": true,
+   "why": "all expected values present",
+   "wallMs": 14448,
+   "tokens": 15007,
+   "toolCalls": 2,
+   "costUsd": 0.0306626,
+   "answer": "Albert Einstein, 10 quotes"
+  },
+  {
+   "task": "ubuntu-lts-supported",
+   "site": "endoflife",
+   "mode": "browser",
+   "trial": 1,
+   "tag": "hard",
+   "ok": true,
+   "why": "all expected values present",
+   "wallMs": 12973,
+   "tokens": 39967,
+   "toolCalls": 3,
+   "costUsd": 0.0633842,
+   "answer": "26.04, 24.04, 22.04"
+  },
+  {
+   "task": "ubuntu-lts-supported",
+   "site": "endoflife",
+   "mode": "browser",
+   "trial": 2,
+   "tag": "hard",
+   "ok": true,
+   "why": "all expected values present",
+   "wallMs": 11918,
+   "tokens": 41919,
+   "toolCalls": 3,
+   "costUsd": 0.07291919999999999,
+   "answer": "26.04, 24.04, 22.04"
+  },
+  {
+   "task": "ubuntu-lts-supported",
+   "site": "endoflife",
+   "mode": "cli",
+   "trial": 1,
+   "tag": "hard",
+   "ok": true,
+   "why": "all expected values present",
+   "wallMs": 14132,
+   "tokens": 16991,
+   "toolCalls": 2,
+   "costUsd": 0.048604,
+   "answer": "26.04, 24.04, 22.04"
+  },
+  {
+   "task": "ubuntu-lts-supported",
+   "site": "endoflife",
+   "mode": "cli",
+   "trial": 2,
+   "tag": "hard",
+   "ok": true,
+   "why": "all expected values present",
+   "wallMs": 10370,
+   "tokens": 19791,
+   "toolCalls": 2,
+   "costUsd": 0.058928999999999995,
+   "answer": "22.04, 24.04, 26.04"
+  },
+  {
+   "task": "books-cheapest-first-5-pages",
+   "site": "books",
+   "mode": "browser-ui",
+   "trial": 1,
+   "tag": "ui",
+   "ok": true,
+   "why": "all expected values present",
+   "wallMs": 22338,
+   "tokens": 127496,
+   "toolCalls": 11,
+   "costUsd": 0.12304760000000001,
+   "answer": "Patience — £10.16"
+  },
+  {
+   "task": "books-mystery-max",
+   "site": "books",
+   "mode": "browser-ui",
+   "trial": 1,
+   "tag": "ui",
+   "ok": true,
+   "why": "all expected values present",
+   "wallMs": 13331,
+   "tokens": 90962,
+   "toolCalls": 5,
+   "costUsd": 0.13963920000000002,
+   "answer": "Boar Island (Anna Pigeon #19) — £59.48"
+  },
+  {
+   "task": "books-travel-over-40",
+   "site": "books",
+   "mode": "browser-ui",
+   "trial": 1,
+   "tag": "ui",
+   "ok": true,
+   "why": "all expected values present",
+   "wallMs": 11608,
+   "tokens": 57346,
+   "toolCalls": 3,
+   "costUsd": 0.08516879999999999,
+   "answer": "5"
+  },
+  {
+   "task": "crates-serde-vs-tokio",
+   "site": "crates",
+   "mode": "browser-ui",
+   "trial": 1,
+   "tag": "ui",
+   "ok": true,
+   "why": "all expected values present",
+   "wallMs": 13489,
+   "tokens": 105365,
+   "toolCalls": 6,
+   "costUsd": 0.1432114,
+   "answer": "serde"
+  },
+  {
+   "task": "crates-tokio",
+   "site": "crates",
+   "mode": "browser-ui",
+   "trial": 1,
+   "tag": "ui",
+   "ok": true,
+   "why": "all expected values present",
+   "wallMs": 16781,
+   "tokens": 112306,
+   "toolCalls": 6,
+   "costUsd": 0.12904999999999997,
+   "answer": "tokio v1.53.3, licensed MIT"
+  },
+  {
+   "task": "debian-nginx-bookworm",
+   "site": "debian",
+   "mode": "browser-ui",
+   "trial": 1,
+   "tag": "ui",
+   "ok": true,
+   "why": "all expected values present",
+   "wallMs": 17019,
+   "tokens": 79361,
+   "toolCalls": 5,
+   "costUsd": 0.0796984,
+   "answer": "1.22.1-9+deb12u10"
+  },
+  {
+   "task": "endoflife-ubuntu-2204",
+   "site": "endoflife",
+   "mode": "browser-ui",
+   "trial": 1,
+   "tag": "ui",
+   "ok": true,
+   "why": "all expected values present",
+   "wallMs": 15866,
+   "tokens": 52515,
+   "toolCalls": 4,
+   "costUsd": 0.059491,
+   "answer": "2027-06-01"
+  },
+  {
+   "task": "github-playwright-release",
+   "site": "github",
+   "mode": "browser-ui",
+   "trial": 1,
+   "tag": "ui",
+   "ok": true,
+   "why": "all expected values present",
+   "wallMs": 18724,
+   "tokens": 84029,
+   "toolCalls": 6,
+   "costUsd": 0.0786574,
+   "answer": "v1.64.1, published 2026-10-14"
+  },
+  {
+   "task": "github-playwright-releases-2026",
+   "site": "github",
+   "mode": "browser-ui",
+   "trial": 1,
+   "tag": "ui",
+   "ok": true,
+   "why": "all expected values present",
+   "wallMs": 24851,
+   "tokens": 139579,
+   "toolCalls": 9,
+   "costUsd": 0.17899740000000003,
+   "answer": "13"
+  },
+  {
+   "task": "hex-phoenix",
+   "site": "hex",
+   "mode": "browser-ui",
+   "trial": 1,
+   "tag": "ui",
+   "ok": true,
+   "why": "all expected values present",
+   "wallMs": 14884,
+   "tokens": 54463,
+   "toolCalls": 4,
+   "costUsd": 0.0709098,
+   "answer": "1.8.15, MIT License"
+  },
+  {
+   "task": "hockey-best-1990",
+   "site": "scrapethis",
+   "mode": "browser-ui",
+   "trial": 1,
+   "tag": "ui",
+   "ok": true,
+   "why": "all expected values present",
+   "wallMs": 16294,
+   "tokens": 86575,
+   "toolCalls": 6,
+   "costUsd": 0.1052774,
+   "answer": "Chicago Blackhawks, 49 wins"
+  },
+  {
+   "task": "homebrew-ffmpeg",
+   "site": "homebrew",
+   "mode": "browser-ui",
+   "trial": 1,
+   "tag": "ui",
+   "ok": true,
+   "why": "all expected values present",
+   "wallMs": 9121,
+   "tokens": 50791,
+   "toolCalls": 3,
+   "costUsd": 0.0480684,
+   "answer": "9.0.2, GPL-3.0-or-later"
+  },
+  {
+   "task": "nodejs-latest-lts",
+   "site": "nodejs",
+   "mode": "browser-ui",
+   "trial": 1,
+   "tag": "ui",
+   "ok": true,
+   "why": "all expected values present",
+   "wallMs": 13139,
+   "tokens": 54628,
+   "toolCalls": 3,
+   "costUsd": 0.0737652,
+   "answer": "v24.22.0 (Krypton)"
+  },
+  {
+   "task": "quotes-humor-author",
+   "site": "quotes",
+   "mode": "browser-ui",
+   "trial": 1,
+   "tag": "ui",
+   "ok": true,
+   "why": "all expected values present",
+   "wallMs": 17840,
+   "tokens": 92872,
+   "toolCalls": 6,
+   "costUsd": 0.0692964,
+   "answer": "Jane Austen, born December 16, 1775"
+  },
+  {
+   "task": "quotes-love-count",
+   "site": "quotes",
+   "mode": "browser-ui",
+   "trial": 1,
+   "tag": "ui",
+   "ok": true,
+   "why": "all expected values present",
+   "wallMs": 17874,
+   "tokens": 71489,
+   "toolCalls": 5,
+   "costUsd": 0.0809118,
+   "answer": "14"
+  },
+  {
+   "task": "quotes-top-author",
+   "site": "quotes",
+   "mode": "browser-ui",
+   "trial": 1,
+   "tag": "ui",
+   "ok": true,
+   "why": "all expected values present",
+   "wallMs": 48626,
+   "tokens": 421743,
+   "toolCalls": 25,
+   "costUsd": 0.2993738,
+   "answer": "Albert Einstein, 10 quotes"
+  },
+  {
+   "task": "scrapethis-hockey-detroit-1995",
+   "site": "scrapethis",
+   "mode": "browser-ui",
+   "trial": 1,
+   "tag": "ui",
+   "ok": true,
+   "why": "all expected values present",
+   "wallMs": 13306,
+   "tokens": 56110,
+   "toolCalls": 4,
+   "costUsd": 0.0753846,
+   "answer": "62"
+  },
+  {
+   "task": "scrapethis-oscar-2012",
+   "site": "scrapethis",
+   "mode": "browser-ui",
+   "trial": 1,
+   "tag": "ui",
+   "ok": true,
+   "why": "all expected values present",
+   "wallMs": 20654,
+   "tokens": 117336,
+   "toolCalls": 9,
+   "costUsd": 0.0917594,
+   "answer": "Argo — 3 awards"
+  },
+  {
+   "task": "ubuntu-lts-supported",
+   "site": "endoflife",
+   "mode": "browser-ui",
+   "trial": 1,
+   "tag": "ui",
+   "ok": true,
+   "why": "all expected values present",
+   "wallMs": 11963,
+   "tokens": 70360,
+   "toolCalls": 4,
+   "costUsd": 0.094012,
+   "answer": "26.04, 24.04, 22.04"
+  },
+  {
+   "task": "webscraper-laptop-max",
+   "site": "webscraper",
+   "mode": "browser-ui",
+   "trial": 1,
+   "tag": "ui",
+   "ok": true,
+   "why": "all expected values present",
+   "wallMs": 19751,
+   "tokens": 93439,
+   "toolCalls": 6,
+   "costUsd": 0.07405679999999999,
+   "answer": "Asus ROG Strix SCAR Edition GL503VM-ED115T — $1799"
+  },
+  {
+   "task": "books-cheapest-first-5-pages",
+   "site": "books",
+   "mode": "browser-ui",
+   "trial": 1,
+   "tag": "ui2",
+   "ok": true,
+   "why": "all expected values present",
+   "wallMs": 22942,
+   "tokens": 158462,
+   "toolCalls": 12,
+   "costUsd": 0.1689542,
+   "answer": "Patience — £10.16"
+  },
+  {
+   "task": "books-mystery-max",
+   "site": "books",
+   "mode": "browser-ui",
+   "trial": 1,
+   "tag": "ui2",
+   "ok": true,
+   "why": "all expected values present",
+   "wallMs": 13235,
+   "tokens": 91027,
+   "toolCalls": 5,
+   "costUsd": 0.13983099999999998,
+   "answer": "Boar Island (Anna Pigeon #19) — £59.48"
+  },
+  {
+   "task": "books-travel-over-40",
+   "site": "books",
+   "mode": "browser-ui",
+   "trial": 1,
+   "tag": "ui2",
+   "ok": true,
+   "why": "all expected values present",
+   "wallMs": 10465,
+   "tokens": 57421,
+   "toolCalls": 3,
+   "costUsd": 0.08644560000000001,
+   "answer": "5"
+  },
+  {
+   "task": "crates-serde-vs-tokio",
+   "site": "crates",
+   "mode": "browser-ui",
+   "trial": 1,
+   "tag": "ui2",
+   "ok": true,
+   "why": "all expected values present",
+   "wallMs": 11933,
+   "tokens": 77641,
+   "toolCalls": 6,
+   "costUsd": 0.08947179999999999,
+   "answer": "serde"
+  },
+  {
+   "task": "crates-tokio",
+   "site": "crates",
+   "mode": "browser-ui",
+   "trial": 1,
+   "tag": "ui2",
+   "ok": true,
+   "why": "all expected values present",
+   "wallMs": 13600,
+   "tokens": 73352,
+   "toolCalls": 5,
+   "costUsd": 0.0953988,
+   "answer": "tokio 1.53.3, licensed MIT"
+  },
+  {
+   "task": "debian-nginx-bookworm",
+   "site": "debian",
+   "mode": "browser-ui",
+   "trial": 1,
+   "tag": "ui2",
+   "ok": true,
+   "why": "all expected values present",
+   "wallMs": 20054,
+   "tokens": 79366,
+   "toolCalls": 5,
+   "costUsd": 0.07962140000000001,
+   "answer": "1.22.1-9+deb12u10"
+  },
+  {
+   "task": "endoflife-ubuntu-2204",
+   "site": "endoflife",
+   "mode": "browser-ui",
+   "trial": 1,
+   "tag": "ui2",
+   "ok": true,
+   "why": "all expected values present",
+   "wallMs": 12496,
+   "tokens": 67508,
+   "toolCalls": 6,
+   "costUsd": 0.0691062,
+   "answer": "2027-06-01"
+  },
+  {
+   "task": "github-playwright-release",
+   "site": "github",
+   "mode": "browser-ui",
+   "trial": 1,
+   "tag": "ui2",
+   "ok": true,
+   "why": "all expected values present",
+   "wallMs": 18198,
+   "tokens": 81842,
+   "toolCalls": 5,
+   "costUsd": 0.0739012,
+   "answer": "v1.64.1, published 2026-10-14"
+  },
+  {
+   "task": "github-playwright-releases-2026",
+   "site": "github",
+   "mode": "browser-ui",
+   "trial": 1,
+   "tag": "ui2",
+   "ok": true,
+   "why": "all expected values present",
+   "wallMs": 23134,
+   "tokens": 134515,
+   "toolCalls": 9,
+   "costUsd": 0.1656798,
+   "answer": "13"
+  },
+  {
+   "task": "hex-phoenix",
+   "site": "hex",
+   "mode": "browser-ui",
+   "trial": 1,
+   "tag": "ui2",
+   "ok": true,
+   "why": "all expected values present",
+   "wallMs": 16831,
+   "tokens": 56873,
+   "toolCalls": 3,
+   "costUsd": 0.0844406,
+   "answer": "1.8.15, MIT License"
+  },
+  {
+   "task": "hockey-best-1990",
+   "site": "scrapethis",
+   "mode": "browser-ui",
+   "trial": 1,
+   "tag": "ui2",
+   "ok": true,
+   "why": "all expected values present",
+   "wallMs": 18400,
+   "tokens": 68002,
+   "toolCalls": 5,
+   "costUsd": 0.0763012,
+   "answer": "Chicago Blackhawks, 49 wins"
+  },
+  {
+   "task": "homebrew-ffmpeg",
+   "site": "homebrew",
+   "mode": "browser-ui",
+   "trial": 1,
+   "tag": "ui2",
+   "ok": true,
+   "why": "all expected values present",
+   "wallMs": 10344,
+   "tokens": 55066,
+   "toolCalls": 3,
+   "costUsd": 0.07318140000000001,
+   "answer": "9.0.2, GPL-3.0-or-later"
+  },
+  {
+   "task": "nodejs-latest-lts",
+   "site": "nodejs",
+   "mode": "browser-ui",
+   "trial": 1,
+   "tag": "ui2",
+   "ok": true,
+   "why": "all expected values present",
+   "wallMs": 12240,
+   "tokens": 54678,
+   "toolCalls": 3,
+   "costUsd": 0.074542,
+   "answer": "v24.22.0 (Krypton)"
+  },
+  {
+   "task": "quotes-humor-author",
+   "site": "quotes",
+   "mode": "browser-ui",
+   "trial": 1,
+   "tag": "ui2",
+   "ok": true,
+   "why": "all expected values present",
+   "wallMs": 14696,
+   "tokens": 87524,
+   "toolCalls": 5,
+   "costUsd": 0.0828454,
+   "answer": "Jane Austen, born December 16, 1775"
+  },
+  {
+   "task": "quotes-love-count",
+   "site": "quotes",
+   "mode": "browser-ui",
+   "trial": 1,
+   "tag": "ui2",
+   "ok": true,
+   "why": "all expected values present",
+   "wallMs": 20659,
+   "tokens": 88163,
+   "toolCalls": 6,
+   "costUsd": 0.0876538,
+   "answer": "14"
+  },
+  {
+   "task": "quotes-top-author",
+   "site": "quotes",
+   "mode": "browser-ui",
+   "trial": 1,
+   "tag": "ui2",
+   "ok": true,
+   "why": "all expected values present",
+   "wallMs": 36342,
+   "tokens": 302099,
+   "toolCalls": 21,
+   "costUsd": 0.2680048,
+   "answer": "Albert Einstein, 10 quotes"
+  },
+  {
+   "task": "scrapethis-hockey-detroit-1995",
+   "site": "scrapethis",
+   "mode": "browser-ui",
+   "trial": 1,
+   "tag": "ui2",
+   "ok": true,
+   "why": "all expected values present",
+   "wallMs": 13393,
+   "tokens": 51007,
+   "toolCalls": 5,
+   "costUsd": 0.0516774,
+   "answer": "62"
+  },
+  {
+   "task": "scrapethis-oscar-2012",
+   "site": "scrapethis",
+   "mode": "browser-ui",
+   "trial": 1,
+   "tag": "ui2",
+   "ok": true,
+   "why": "all expected values present",
+   "wallMs": 14360,
+   "tokens": 66092,
+   "toolCalls": 5,
+   "costUsd": 0.0630192,
+   "answer": "Argo (3 awards)"
+  },
+  {
+   "task": "ubuntu-lts-supported",
+   "site": "endoflife",
+   "mode": "browser-ui",
+   "trial": 1,
+   "tag": "ui2",
+   "ok": true,
+   "why": "all expected values present",
+   "wallMs": 15404,
+   "tokens": 78613,
+   "toolCalls": 4,
+   "costUsd": 0.1132336,
+   "answer": "26.04, 24.04, 22.04"
+  },
+  {
+   "task": "webscraper-laptop-max",
+   "site": "webscraper",
+   "mode": "browser-ui",
+   "trial": 1,
+   "tag": "ui2",
+   "ok": true,
+   "why": "all expected values present",
+   "wallMs": 22840,
+   "tokens": 94772,
+   "toolCalls": 7,
+   "costUsd": 0.0782216,
+   "answer": "Asus ROG Strix SCAR Edition GL503VM-ED115T — $1799"
+  }
+ ],
+ "heroes": {
+  "quotes-top-author": {
+   "browser-ui": {
+    "dir": "runs/ui/quotes-top-author/browser-ui-1",
+    "ok": true,
+    "why": "all expected values present",
+    "answer": "Albert Einstein, 10 quotes",
+    "wallMs": 48626,
+    "turns": 26,
+    "toolCalls": 25,
+    "tokens": {
+     "input": 34,
+     "output": 3016,
+     "cacheWrite": 32329,
+     "cacheRead": 386364,
+     "total": 421743
+    },
+    "costUsd": 0.2993738,
+    "models": [
+     "claude-opus-5-5"
+    ],
+    "prompt": "On Quotes to Scrape (quotes.toscrape.com), which author has the most quotes across the whole site (every page), and how many quotes do they have?\n\nStart from https://quotes.toscrape.com/. Work it out using only the tools you have, then end your reply with one final line exactly in the form:\nANSWER: <short answer>\n\nYou have a web browser (Playwright tools). Use it to find the answer on the website.",
+    "events": [
+     {
+      "ms": 1585,
+      "kind": "init",
+      "tools": 35,
+      "model": "claude-opus-5-5"
+     },
+     {
+      "ms": 3801,
+      "kind": "tool",
+      "id": "toolu_013K9hQsApAZUzXHAkaAvAP6",
+      "name": "ToolSearch",
+      "input": {
+       "query": "select:mcp__playwright__browser_navigate,mcp__playwright__browser_evaluate,mcp__playwright__browser_snapshot",
+       "max_results": 5
+      },
+      "endMs": 3813,
+      "isError": false,
+      "resultChars": 1,
+      "result": "\n"
+     },
+     {
+      "ms": 5902,
+      "kind": "tool",
+      "id": "toolu_01B6HfhxeA1xKguxFwpf7vzn",
+      "name": "mcp__playwright__browser_navigate",
+      "input": {
+       "url": "https://quotes.toscrape.com/"
+      },
+      "endMs": 6498,
+      "isError": false,
+      "resultChars": 240,
+      "result": "### Ran Playwright code\n```js\nawait page.goto('https://quotes.toscrape.com/');\n```\n### Page\n- Page URL: https://quotes.toscrape.com/\n- Page Title: Quotes to Scrape\n### Snapshot\n- [Snapshot](.playwright-mcp/page-2026-10-17T23-29-09-494Z.yml)"
+     },
+     {
+      "ms": 8580,
+      "kind": "tool",
+      "id": "toolu_01QQuGhJfpAC9yYaECL2zGVk",
+      "name": "mcp__playwright__browser_snapshot",
+      "input": {},
+      "endMs": 8605,
+      "isError": false,
+      "resultChars": 8959,
+      "result": "### Page\n- Page URL: https://quotes.toscrape.com/\n- Page Title: Quotes to Scrape\n- Console: 1 errors, 0 warnings\n### Snapshot\n```yaml\n- generic [active] [ref=e1]:\n  - generic [ref=e2]:\n    - generic [ref=e3]:\n      - heading [level=1] [ref=e5]:\n        - link \"Quotes to Scrape\" [ref=e6] [cursor=pointer]:\n          - /url: /\n      - paragraph [ref=e8]:\n        - link \"Login\" [ref=e9] [cursor=pointer]:\n          - /url: /login\n    - generic [ref=e10]:\n      - generic [ref=e11]:\n        - generic [ref=e12]:\n          - generic [ref=e13]: “The world as we have created it is a process of our thinking. It cannot be changed without changing our thinking.”\n          - generic [ref=e14]:\n            - text: by Albert Einstein\n            - link \"(about)\" [ref=e15] [cursor=pointer]:\n              - /url: /author/Albert-Einstein\n          - generic [ref=e16]:\n            - text: \"Tags:\"\n            - link \"change\" [ref=e17] [cursor=pointer]:\n              - /url: /tag/change/page/1/\n            - link \"deep-thoughts\" [ref=e18] [cursor=pointer]:\n              - /url: /tag/deep-thoughts/page/1/\n            - link \"thinking\" [ref=e19] [cursor=pointer]:\n              - /url: /tag/thinking/page/1/\n            - link \"world\" [ref=e20] [cursor=pointer]:\n              - /url: /tag/world/page/1/\n        - generic [ref=e21]:\n          - generic [ref=e22]: “It is our choices, Harry, that show what we truly are, far more than our abilities.”\n          - generic [ref=e23]:\n            - text: by J.K"
+     },
+     {
+      "ms": 10731,
+      "kind": "tool",
+      "id": "toolu_01Urxx1f8D22MBsFp2CCv2oY",
+      "name": "ToolSearch",
+      "input": {
+       "query": "select:mcp__playwright__browser_find",
+       "max_results": 1
+      },
+      "endMs": 10736,
+      "isError": false,
+      "resultChars": 0,
+      "result": ""
+     },
+     {
+      "ms": 13184,
+      "kind": "tool",
+      "id": "toolu_01VRWaRUMrQuwBtfVmdf9URb",
+      "name": "mcp__playwright__browser_navigate",
+      "input": {
+       "url": "https://quotes.toscrape.com/page/2/"
+      },
+      "endMs": 13425,
+      "isError": false,
+      "resultChars": 254,
+      "result": "### Ran Playwright code\n```js\nawait page.goto('https://quotes.toscrape.com/page/2/');\n```\n### Page\n- Page URL: https://quotes.toscrape.com/page/2/\n- Page Title: Quotes to Scrape\n### Snapshot\n- [Snapshot](.playwright-mcp/page-2026-10-17T23-29-16-423Z.yml)"
+     },
+     {
+      "ms": 13446,
+      "kind": "tool",
+      "id": "toolu_01SUegXUKbUSV2kxh3NzZP2E",
+      "name": "mcp__playwright__browser_find",
+      "input": {
+       "regex": "^by "
+      },
+      "endMs": 13470,
+      "isError": false,
+      "resultChars": 39,
+      "result": "### Result\nNo matches found for /^by /."
+     },
+     {
+      "ms": 16685,
+      "kind": "tool",
+      "id": "toolu_01WCNv4qDgamHrZ7WyRUmUwZ",
+      "name": "mcp__playwright__browser_find",
+      "input": {
+       "text": "by "
+      },
+      "endMs": 16710,
+      "isError": false,
+      "resultChars": 6512,
+      "result": "### Result\nFound 10 matches for \"by \":\n\n- generic [active] [ref=f1e1]:\n  - generic [ref=f1e2]:\n    - generic [ref=f1e10]:\n      - generic [ref=f1e11]:\n        - generic [ref=f1e12]:\n          - generic [ref=f1e13]: “This life is what you make it. No matter what, you're going to mess up sometimes, it's a universal truth. But the good part is you get to decide how you're going to mess it up. Girls will be your friends - they'll act like it anyway. But just remember, some come, some go. The ones that stay with you through everything - they're your true best friends. Don't let go of them. Also remember, sisters make the best friends in the world. As for lovers, well, they'll come and go too. And baby, I hate to say it, most of them - actually pretty much all of them are going to break your heart, but you can't give up because if you give up, you'll never find your soulmate. You'll never find that half who makes you whole and that goes for everything. Just because you fail once, doesn't mean you're gonna fail at everything. Keep trying, hold on, and always, always, always believe in yourself, because if you don't, then who will, sweetie? So keep your head high, keep your chin up, and most importantly, keep smiling, because life's a beautiful thing and there's so much to smile about.”\n          - generic [ref=f1e14]:\n            - text: by Marilyn Monroe\n            - link \"(about)\" [ref=f1e15] [cursor=pointer]:\n              - /url: /author/Marilyn-Monroe\n          - generic [ref="
+     },
+     {
+      "ms": 20220,
+      "kind": "text",
+      "text": "Pages 1–2 read. Continuing through the remaining pages."
+     },
+     {
+      "ms": 20289,
+      "kind": "tool",
+      "id": "toolu_014kHayfQVHMJe6Hob6yhTQR",
+      "name": "mcp__playwright__browser_navigate",
+      "input": {
+       "url": "https://quotes.toscrape.com/page/3/"
+      },
+      "endMs": 20529,
+      "isError": false,
+      "resultChars": 254,
+      "result": "### Ran Playwright code\n```js\nawait page.goto('https://quotes.toscrape.com/page/3/');\n```\n### Page\n- Page URL: https://quotes.toscrape.com/page/3/\n- Page Title: Quotes to Scrape\n### Snapshot\n- [Snapshot](.playwright-mcp/page-2026-10-17T23-29-23-529Z.yml)"
+     },
+     {
+      "ms": 20644,
+      "kind": "tool",
+      "id": "toolu_01LQwMEFsHuMkM8DLTAwEjj5",
+      "name": "mcp__playwright__browser_find",
+      "input": {
+       "regex": "^by .*"
+      },
+      "endMs": 20666,
+      "isError": false,
+      "resultChars": 41,
+      "result": "### Result\nNo matches found for /^by .*/."
+     },
+     {
+      "ms": 22288,
+      "kind": "tool",
+      "id": "toolu_017m2Mmu7EtPyrQN5z83BmQH",
+      "name": "mcp__playwright__browser_find",
+      "input": {
+       "text": "/author/"
+      },
+      "endMs": 22308,
+      "isError": false,
+      "resultChars": 4333,
+      "result": "### Result\nFound 10 matches for \"/author/\":\n\n- generic [active] [ref=f2e1]:\n  - generic [ref=f2e2]:\n    - generic [ref=f2e10]:\n      - generic [ref=f2e11]:\n        - generic [ref=f2e12]:\n          - generic [ref=f2e14]:\n            - text: by Pablo Neruda\n            - link \"(about)\" [ref=f2e15] [cursor=pointer]:\n              - /url: /author/Pablo-Neruda\n          - generic [ref=f2e16]:\n            - text: \"Tags:\"\n            - link \"love\" [ref=f2e17] [cursor=pointer]:\n\n----\n\n- generic [active] [ref=f2e1]:\n  - generic [ref=f2e2]:\n    - generic [ref=f2e10]:\n      - generic [ref=f2e11]:\n        - generic [ref=f2e19]:\n          - generic [ref=f2e21]:\n            - text: by Ralph Waldo Emerson\n            - link \"(about)\" [ref=f2e22] [cursor=pointer]:\n              - /url: /author/Ralph-Waldo-Emerson\n          - generic [ref=f2e23]:\n            - text: \"Tags:\"\n            - link \"happiness\" [ref=f2e24] [cursor=pointer]:\n\n----\n\n- generic [active] [ref=f2e1]:\n  - generic [ref=f2e2]:\n    - generic [ref=f2e10]:\n      - generic [ref=f2e11]:\n        - generic [ref=f2e25]:\n          - generic [ref=f2e27]:\n            - text: by Mother Teresa\n            - link \"(about)\" [ref=f2e28] [cursor=pointer]:\n              - /url: /author/Mother-Teresa\n          - generic [ref=f2e29]:\n            - text: \"Tags:\"\n            - link \"attributed-no-source\" [ref=f2e30] [cursor=pointer]:\n\n----\n\n- generic [active] [ref=f2e1]:\n  - generic [ref=f2e2]:\n    - generic [ref=f2e10]:\n      - generic [ref=f2e1"
+     },
+     {
+      "ms": 25122,
+      "kind": "tool",
+      "id": "toolu_01YR73sja9QUmwSfGoSsjbez",
+      "name": "mcp__playwright__browser_navigate",
+      "input": {
+       "url": "https://quotes.toscrape.com/page/4/"
+      },
+      "endMs": 25362,
+      "isError": false,
+      "resultChars": 254,
+      "result": "### Ran Playwright code\n```js\nawait page.goto('https://quotes.toscrape.com/page/4/');\n```\n### Page\n- Page URL: https://quotes.toscrape.com/page/4/\n- Page Title: Quotes to Scrape\n### Snapshot\n- [Snapshot](.playwright-mcp/page-2026-10-17T23-29-28-361Z.yml)"
+     },
+     {
+      "ms": 25329,
+      "kind": "tool",
+      "id": "toolu_01GEetSS52UXybFQVMtvdzDF",
+      "name": "mcp__playwright__browser_find",
+      "input": {
+       "text": "/author/"
+      },
+      "endMs": 25384,
+      "isError": false,
+      "resultChars": 4516,
+      "result": "### Result\nFound 10 matches for \"/author/\":\n\n- generic [active] [ref=f3e1]:\n  - generic [ref=f3e2]:\n    - generic [ref=f3e10]:\n      - generic [ref=f3e11]:\n        - generic [ref=f3e12]:\n          - generic [ref=f3e14]:\n            - text: by Dr. Seuss\n            - link \"(about)\" [ref=f3e15] [cursor=pointer]:\n              - /url: /author/Dr-Seuss\n          - generic [ref=f3e16]:\n            - text: \"Tags:\"\n            - link \"learning\" [ref=f3e17] [cursor=pointer]:\n\n----\n\n- generic [active] [ref=f3e1]:\n  - generic [ref=f3e2]:\n    - generic [ref=f3e10]:\n      - generic [ref=f3e11]:\n        - generic [ref=f3e20]:\n          - generic [ref=f3e22]:\n            - text: by J.K. Rowling\n            - link \"(about)\" [ref=f3e23] [cursor=pointer]:\n              - /url: /author/J-K-Rowling\n          - generic [ref=f3e24]:\n            - text: \"Tags:\"\n            - link \"dumbledore\" [ref=f3e25] [cursor=pointer]:\n\n----\n\n- generic [active] [ref=f3e1]:\n  - generic [ref=f3e2]:\n    - generic [ref=f3e10]:\n      - generic [ref=f3e11]:\n        - generic [ref=f3e26]:\n          - generic [ref=f3e28]:\n            - text: by Bob Marley\n            - link \"(about)\" [ref=f3e29] [cursor=pointer]:\n              - /url: /author/Bob-Marley\n          - generic [ref=f3e30]:\n            - text: \"Tags:\"\n            - link \"friendship\" [ref=f3e31] [cursor=pointer]:\n\n----\n\n- generic [active] [ref=f3e1]:\n  - generic [ref=f3e2]:\n    - generic [ref=f3e10]:\n      - generic [ref=f3e11]:\n        - generic [ref=f3e32]"
+     },
+     {
+      "ms": 27420,
+      "kind": "tool",
+      "id": "toolu_01K4Tnmu4wSJ9fq22DnUiuvz",
+      "name": "mcp__playwright__browser_navigate",
+      "input": {
+       "url": "https://quotes.toscrape.com/page/5/"
+      },
+      "endMs": 27663,
+      "isError": false,
+      "resultChars": 254,
+      "result": "### Ran Playwright code\n```js\nawait page.goto('https://quotes.toscrape.com/page/5/');\n```\n### Page\n- Page URL: https://quotes.toscrape.com/page/5/\n- Page Title: Quotes to Scrape\n### Snapshot\n- [Snapshot](.playwright-mcp/page-2026-10-17T23-29-30-661Z.yml)"
+     },
+     {
+      "ms": 27697,
+      "kind": "tool",
+      "id": "toolu_01E8gKY7XM8ggUEU1JhdSQqs",
+      "name": "mcp__playwright__browser_find",
+      "input": {
+       "text": "/author/"
+      },
+      "endMs": 27720,
+      "isError": false,
+      "resultChars": 4340,
+      "result": "### Result\nFound 10 matches for \"/author/\":\n\n- generic [active] [ref=f4e1]:\n  - generic [ref=f4e2]:\n    - generic [ref=f4e10]:\n      - generic [ref=f4e11]:\n        - generic [ref=f4e12]:\n          - generic [ref=f4e14]:\n            - text: by George R.R. Martin\n            - link \"(about)\" [ref=f4e15] [cursor=pointer]:\n              - /url: /author/George-R-R-Martin\n          - generic [ref=f4e16]:\n            - text: \"Tags:\"\n            - link \"read\" [ref=f4e17] [cursor=pointer]:\n\n----\n\n- generic [active] [ref=f4e1]:\n  - generic [ref=f4e2]:\n    - generic [ref=f4e10]:\n      - generic [ref=f4e11]:\n        - generic [ref=f4e21]:\n          - generic [ref=f4e23]:\n            - text: by C.S. Lewis\n            - link \"(about)\" [ref=f4e24] [cursor=pointer]:\n              - /url: /author/C-S-Lewis\n          - generic [ref=f4e25]:\n            - text: \"Tags:\"\n            - link \"books\" [ref=f4e26] [cursor=pointer]:\n\n----\n\n- generic [active] [ref=f4e1]:\n  - generic [ref=f4e2]:\n    - generic [ref=f4e10]:\n      - generic [ref=f4e11]:\n        - generic [ref=f4e30]:\n          - generic [ref=f4e32]:\n            - text: by Marilyn Monroe\n            - link \"(about)\" [ref=f4e33] [cursor=pointer]:\n              - /url: /author/Marilyn-Monroe\n        - generic [ref=f4e34]:\n          - generic [ref=f4e35]: “If you can make a woman laugh, you can make her do anything.”\n          - generic [ref=f4e36]:\n            - text: by Marilyn Monroe\n            - link \"(about)\" [ref=f4e37] [cursor=pointer]:\n"
+     },
+     {
+      "ms": 30765,
+      "kind": "tool",
+      "id": "toolu_014kQYQG8epPp5RDBrobSnj7",
+      "name": "mcp__playwright__browser_navigate",
+      "input": {
+       "url": "https://quotes.toscrape.com/page/6/"
+      },
+      "endMs": 31017,
+      "isError": false,
+      "resultChars": 254,
+      "result": "### Ran Playwright code\n```js\nawait page.goto('https://quotes.toscrape.com/page/6/');\n```\n### Page\n- Page URL: https://quotes.toscrape.com/page/6/\n- Page Title: Quotes to Scrape\n### Snapshot\n- [Snapshot](.playwright-mcp/page-2026-10-17T23-29-34-015Z.yml)"
+     },
+     {
+      "ms": 31035,
+      "kind": "tool",
+      "id": "toolu_01S88W2APFi1y1S5NMYALkB7",
+      "name": "mcp__playwright__browser_find",
+      "input": {
+       "text": "/author/"
+      },
+      "endMs": 31067,
+      "isError": false,
+      "resultChars": 4545,
+      "result": "### Result\nFound 10 matches for \"/author/\":\n\n- generic [active] [ref=f5e1]:\n  - generic [ref=f5e2]:\n    - generic [ref=f5e10]:\n      - generic [ref=f5e11]:\n        - generic [ref=f5e12]:\n          - generic [ref=f5e14]:\n            - text: by Jane Austen\n            - link \"(about)\" [ref=f5e15] [cursor=pointer]:\n              - /url: /author/Jane-Austen\n          - generic [ref=f5e16]:\n            - text: \"Tags:\"\n            - link \"friendship\" [ref=f5e17] [cursor=pointer]:\n\n----\n\n- generic [active] [ref=f5e1]:\n  - generic [ref=f5e2]:\n    - generic [ref=f5e10]:\n      - generic [ref=f5e11]:\n        - generic [ref=f5e19]:\n          - generic [ref=f5e21]:\n            - text: by Eleanor Roosevelt\n            - link \"(about)\" [ref=f5e22] [cursor=pointer]:\n              - /url: /author/Eleanor-Roosevelt\n          - generic [ref=f5e23]:\n            - text: \"Tags:\"\n            - link \"attributed\" [ref=f5e24] [cursor=pointer]:\n\n----\n\n- generic [active] [ref=f5e1]:\n  - generic [ref=f5e2]:\n    - generic [ref=f5e10]:\n      - generic [ref=f5e11]:\n        - generic [ref=f5e27]:\n          - generic [ref=f5e29]:\n            - text: by Marilyn Monroe\n            - link \"(about)\" [ref=f5e30] [cursor=pointer]:\n              - /url: /author/Marilyn-Monroe\n          - generic [ref=f5e31]:\n            - text: \"Tags:\"\n            - link \"attributed-no-source\" [ref=f5e32] [cursor=pointer]:\n\n----\n\n- generic [active] [ref=f5e1]:\n  - generic [ref=f5e2]:\n    - generic [ref=f5e10]:\n      - generic [ref=f"
+     },
+     {
+      "ms": 33306,
+      "kind": "text",
+      "text": "Through page 6: Einstein 9, Monroe 7, Rowling 6. Continuing."
+     },
+     {
+      "ms": 33504,
+      "kind": "tool",
+      "id": "toolu_01K5MyE3kyhiGqVE5H8UwCzR",
+      "name": "mcp__playwright__browser_navigate",
+      "input": {
+       "url": "https://quotes.toscrape.com/page/7/"
+      },
+      "endMs": 33740,
+      "isError": false,
+      "resultChars": 254,
+      "result": "### Ran Playwright code\n```js\nawait page.goto('https://quotes.toscrape.com/page/7/');\n```\n### Page\n- Page URL: https://quotes.toscrape.com/page/7/\n- Page Title: Quotes to Scrape\n### Snapshot\n- [Snapshot](.playwright-mcp/page-2026-10-17T23-29-36-737Z.yml)"
+     },
+     {
+      "ms": 33734,
+      "kind": "tool",
+      "id": "toolu_01XaqYQoDnxu49AecaMJtrDe",
+      "name": "mcp__playwright__browser_find",
+      "input": {
+       "text": "/author/"
+      },
+      "endMs": 33764,
+      "isError": false,
+      "resultChars": 4472,
+      "result": "### Result\nFound 10 matches for \"/author/\":\n\n- generic [active] [ref=f6e1]:\n  - generic [ref=f6e2]:\n    - generic [ref=f6e10]:\n      - generic [ref=f6e11]:\n        - generic [ref=f6e12]:\n          - generic [ref=f6e14]:\n            - text: by Charles Bukowski\n            - link \"(about)\" [ref=f6e15] [cursor=pointer]:\n              - /url: /author/Charles-Bukowski\n          - generic [ref=f6e16]:\n            - text: \"Tags:\"\n            - link \"alcohol\" [ref=f6e17] [cursor=pointer]:\n\n----\n\n- generic [active] [ref=f6e1]:\n  - generic [ref=f6e2]:\n    - generic [ref=f6e10]:\n      - generic [ref=f6e11]:\n        - generic [ref=f6e18]:\n          - generic [ref=f6e20]:\n            - text: by Suzanne Collins\n            - link \"(about)\" [ref=f6e21] [cursor=pointer]:\n              - /url: /author/Suzanne-Collins\n          - generic [ref=f6e22]:\n            - text: \"Tags:\"\n            - link \"the-hunger-games\" [ref=f6e23] [cursor=pointer]:\n\n----\n\n- generic [active] [ref=f6e1]:\n  - generic [ref=f6e2]:\n    - generic [ref=f6e10]:\n      - generic [ref=f6e11]:\n        - generic [ref=f6e24]:\n          - generic [ref=f6e26]:\n            - text: by Suzanne Collins\n            - link \"(about)\" [ref=f6e27] [cursor=pointer]:\n              - /url: /author/Suzanne-Collins\n          - generic [ref=f6e28]:\n            - text: \"Tags:\"\n            - link \"humor\" [ref=f6e29] [cursor=pointer]:\n\n----\n\n- generic [active] [ref=f6e1]:\n  - generic [ref=f6e2]:\n    - generic [ref=f6e10]:\n      - generic [ref=f6e11"
+     },
+     {
+      "ms": 35858,
+      "kind": "tool",
+      "id": "toolu_01Uiyd2wDxA3pJRLcTN3zght",
+      "name": "mcp__playwright__browser_navigate",
+      "input": {
+       "url": "https://quotes.toscrape.com/page/8/"
+      },
+      "endMs": 36097,
+      "isError": false,
+      "resultChars": 254,
+      "result": "### Ran Playwright code\n```js\nawait page.goto('https://quotes.toscrape.com/page/8/');\n```\n### Page\n- Page URL: https://quotes.toscrape.com/page/8/\n- Page Title: Quotes to Scrape\n### Snapshot\n- [Snapshot](.playwright-mcp/page-2026-10-17T23-29-39-090Z.yml)"
+     },
+     {
+      "ms": 36090,
+      "kind": "tool",
+      "id": "toolu_01YUaSFbPuQAcCXkSUenhWrH",
+      "name": "mcp__playwright__browser_find",
+      "input": {
+       "text": "/author/"
+      },
+      "endMs": 36115,
+      "isError": false,
+      "resultChars": 4279,
+      "result": "### Result\nFound 10 matches for \"/author/\":\n\n- generic [active] [ref=f7e1]:\n  - generic [ref=f7e2]:\n    - generic [ref=f7e10]:\n      - generic [ref=f7e11]:\n        - generic [ref=f7e12]:\n          - generic [ref=f7e14]:\n            - text: by Alfred Tennyson\n            - link \"(about)\" [ref=f7e15] [cursor=pointer]:\n              - /url: /author/Alfred-Tennyson\n          - generic [ref=f7e16]:\n            - text: \"Tags:\"\n            - link \"friendship\" [ref=f7e17] [cursor=pointer]:\n\n----\n\n- generic [active] [ref=f7e1]:\n  - generic [ref=f7e2]:\n    - generic [ref=f7e10]:\n      - generic [ref=f7e11]:\n        - generic [ref=f7e19]:\n          - generic [ref=f7e21]:\n            - text: by Charles Bukowski\n            - link \"(about)\" [ref=f7e22] [cursor=pointer]:\n              - /url: /author/Charles-Bukowski\n          - generic [ref=f7e23]:\n            - text: \"Tags:\"\n            - link \"humor\" [ref=f7e24] [cursor=pointer]:\n\n----\n\n- generic [active] [ref=f7e1]:\n  - generic [ref=f7e2]:\n    - generic [ref=f7e10]:\n      - generic [ref=f7e11]:\n        - generic [ref=f7e25]:\n          - generic [ref=f7e27]:\n            - text: by Terry Pratchett\n            - link \"(about)\" [ref=f7e28] [cursor=pointer]:\n              - /url: /author/Terry-Pratchett\n          - generic [ref=f7e29]:\n            - text: \"Tags:\"\n            - link \"humor\" [ref=f7e30] [cursor=pointer]:\n\n----\n\n- generic [active] [ref=f7e1]:\n  - generic [ref=f7e2]:\n    - generic [ref=f7e10]:\n      - generic [ref=f7e11]:\n     "
+     },
+     {
+      "ms": 38310,
+      "kind": "tool",
+      "id": "toolu_01Q2y3jkB6Wii66nQxyEN2Th",
+      "name": "mcp__playwright__browser_navigate",
+      "input": {
+       "url": "https://quotes.toscrape.com/page/9/"
+      },
+      "endMs": 38535,
+      "isError": false,
+      "resultChars": 254,
+      "result": "### Ran Playwright code\n```js\nawait page.goto('https://quotes.toscrape.com/page/9/');\n```\n### Page\n- Page URL: https://quotes.toscrape.com/page/9/\n- Page Title: Quotes to Scrape\n### Snapshot\n- [Snapshot](.playwright-mcp/page-2026-10-17T23-29-41-536Z.yml)"
+     },
+     {
+      "ms": 38539,
+      "kind": "tool",
+      "id": "toolu_01EHgAd5tRWCTFgZMaoYTWyt",
+      "name": "mcp__playwright__browser_find",
+      "input": {
+       "text": "/author/"
+      },
+      "endMs": 38558,
+      "isError": false,
+      "resultChars": 4433,
+      "result": "### Result\nFound 10 matches for \"/author/\":\n\n- generic [active] [ref=f8e1]:\n  - generic [ref=f8e2]:\n    - generic [ref=f8e10]:\n      - generic [ref=f8e11]:\n        - generic [ref=f8e12]:\n          - generic [ref=f8e14]:\n            - text: by Albert Einstein\n            - link \"(about)\" [ref=f8e15] [cursor=pointer]:\n              - /url: /author/Albert-Einstein\n          - generic [ref=f8e16]:\n            - text: \"Tags:\"\n            - link \"mistakes\" [ref=f8e17] [cursor=pointer]:\n\n----\n\n- generic [active] [ref=f8e1]:\n  - generic [ref=f8e2]:\n    - generic [ref=f8e10]:\n      - generic [ref=f8e11]:\n        - generic [ref=f8e18]:\n          - generic [ref=f8e20]:\n            - text: by Jane Austen\n            - link \"(about)\" [ref=f8e21] [cursor=pointer]:\n              - /url: /author/Jane-Austen\n          - generic [ref=f8e22]:\n            - text: \"Tags:\"\n            - link \"humor\" [ref=f8e23] [cursor=pointer]:\n\n----\n\n- generic [active] [ref=f8e1]:\n  - generic [ref=f8e2]:\n    - generic [ref=f8e10]:\n      - generic [ref=f8e11]:\n        - generic [ref=f8e27]:\n          - generic [ref=f8e29]:\n            - text: by J.K. Rowling\n            - link \"(about)\" [ref=f8e30] [cursor=pointer]:\n              - /url: /author/J-K-Rowling\n          - generic [ref=f8e31]:\n            - text: \"Tags:\"\n            - link \"integrity\" [ref=f8e32] [cursor=pointer]:\n\n----\n\n- generic [active] [ref=f8e1]:\n  - generic [ref=f8e2]:\n    - generic [ref=f8e10]:\n      - generic [ref=f8e11]:\n        - generic [r"
+     },
+     {
+      "ms": 40686,
+      "kind": "tool",
+      "id": "toolu_01KH86uFV1FTyYGn31jAKMz5",
+      "name": "mcp__playwright__browser_navigate",
+      "input": {
+       "url": "https://quotes.toscrape.com/page/10/"
+      },
+      "endMs": 40919,
+      "isError": false,
+      "resultChars": 256,
+      "result": "### Ran Playwright code\n```js\nawait page.goto('https://quotes.toscrape.com/page/10/');\n```\n### Page\n- Page URL: https://quotes.toscrape.com/page/10/\n- Page Title: Quotes to Scrape\n### Snapshot\n- [Snapshot](.playwright-mcp/page-2026-10-17T23-29-43-918Z.yml)"
+     },
+     {
+      "ms": 41075,
+      "kind": "tool",
+      "id": "toolu_01S9qTFUumHjgRVxpaFeQLXU",
+      "name": "mcp__playwright__browser_find",
+      "input": {
+       "regex": "by (Albert Einstein|J\\.K\\. Rowling|Marilyn Monroe)|Next"
+      },
+      "endMs": 41097,
+      "isError": false,
+      "resultChars": 590,
+      "result": "### Result\nFound 1 match for /by (Albert Einstein|J\\.K\\. Rowling|Marilyn Monroe)|Next/:\n\n- generic [active] [ref=f9e1]:\n  - generic [ref=f9e2]:\n    - generic [ref=f9e10]:\n      - generic [ref=f9e11]:\n        - generic [ref=f9e12]:\n          - generic [ref=f9e13]: “The truth.\" Dumbledore sighed. \"It is a beautiful and terrible thing, and should therefore be treated with great caution.”\n          - generic [ref=f9e14]:\n            - text: by J.K. Rowling\n            - link \"(about)\" [ref=f9e15] [cursor=pointer]:\n              - /url: /author/J-K-Rowling\n          - generic [ref=f9e16]:"
+     },
+     {
+      "ms": 44714,
+      "kind": "tool",
+      "id": "toolu_018omTf8FfTphJYgq33KNsAK",
+      "name": "mcp__playwright__browser_find",
+      "input": {
+       "regex": "by (Dr\\. Seuss|Mark Twain|Jane Austen|C\\.S\\. Lewis)"
+      },
+      "endMs": 44737,
+      "isError": false,
+      "resultChars": 943,
+      "result": "### Result\nFound 2 matches for /by (Dr\\. Seuss|Mark Twain|Jane Austen|C\\.S\\. Lewis)/:\n\n- generic [active] [ref=f9e1]:\n  - generic [ref=f9e2]:\n    - generic [ref=f9e10]:\n      - generic [ref=f9e11]:\n        - generic [ref=f9e62]:\n          - generic [ref=f9e63]: “Never tell the truth to people who are not worthy of it.”\n          - generic [ref=f9e64]:\n            - text: by Mark Twain\n            - link \"(about)\" [ref=f9e65] [cursor=pointer]:\n              - /url: /author/Mark-Twain\n          - generic [ref=f9e66]:\n\n----\n\n- generic [active] [ref=f9e1]:\n  - generic [ref=f9e2]:\n    - generic [ref=f9e10]:\n      - generic [ref=f9e11]:\n        - generic [ref=f9e68]:\n          - generic [ref=f9e69]: “A person's a person, no matter how small.”\n          - generic [ref=f9e70]:\n            - text: by Dr. Seuss\n            - link \"(about)\" [ref=f9e71] [cursor=pointer]:\n              - /url: /author/Dr-Seuss\n          - generic [ref=f9e72]:"
+     },
+     {
+      "ms": 48445,
+      "kind": "text",
+      "text": "Albert Einstein has the most quotes on the site, with 10. I went through all 10 pages; page 10 has no \"Next\" link, so it's the last one.\n\nRunning totals:\n\n| Author | Quotes |\n|---|---|\n| Albert Einstein | 10 |\n| J.K. Rowling | 9 |\n| Marilyn Monroe | 7 |\n| Dr. Seuss | 6 |\n| Mark Twain | 6 |\n\nOn page 10 I only searched for the leading authors rather than counting all 10 quotes. Of those, only Rowling, Twain and Seuss appear there, once each. No other author was close enough to pass 10.\n\nANSWER: Albert Einstein, 10 quotes"
+     }
+    ],
+    "tokensOverTime": [
+     {
+      "ms": 3801,
+      "total": 11640
+     },
+     {
+      "ms": 5902,
+      "total": 23883
+     },
+     {
+      "ms": 8580,
+      "total": 36401
+     },
+     {
+      "ms": 10731,
+      "total": 52829
+     },
+     {
+      "ms": 13446,
+      "total": 69810
+     },
+     {
+      "ms": 16685,
+      "total": 87310
+     },
+     {
+      "ms": 20644,
+      "total": 107535
+     },
+     {
+      "ms": 22288,
+      "total": 128334
+     },
+     {
+      "ms": 25329,
+      "total": 151210
+     },
+     {
+      "ms": 27697,
+      "total": 176649
+     },
+     {
+      "ms": 31035,
+      "total": 204509
+     },
+     {
+      "ms": 33734,
+      "total": 234952
+     },
+     {
+      "ms": 36090,
+      "total": 267933
+     },
+     {
+      "ms": 38539,
+      "total": 303285
+     },
+     {
+      "ms": 41075,
+      "total": 341112
+     },
+     {
+      "ms": 44714,
+      "total": 379634
+     },
+     {
+      "ms": 48445,
+      "total": 418894
+     }
+    ],
+    "video": {
+     "src": "hero/quotes-top-author/browser-ui.mp4",
+     "firstFrameSec": 0,
+     "frames": 13,
+     "w": 1280,
+     "h": 600,
+     "urls": [
+      {
+       "s": 6.477,
+       "url": "https://quotes.toscrape.com/"
+      },
+      {
+       "s": 13.394,
+       "url": "https://quotes.toscrape.com/page/2/"
+      },
+      {
+       "s": 20.497,
+       "url": "https://quotes.toscrape.com/page/3/"
+      },
+      {
+       "s": 25.329,
+       "url": "https://quotes.toscrape.com/page/4/"
+      },
+      {
+       "s": 27.627,
+       "url": "https://quotes.toscrape.com/page/5/"
+      },
+      {
+       "s": 30.977,
+       "url": "https://quotes.toscrape.com/page/6/"
+      },
+      {
+       "s": 33.709,
+       "url": "https://quotes.toscrape.com/page/7/"
+      },
+      {
+       "s": 36.073,
+       "url": "https://quotes.toscrape.com/page/8/"
+      },
+      {
+       "s": 38.523,
+       "url": "https://quotes.toscrape.com/page/9/"
+      },
+      {
+       "s": 40.891,
+       "url": "https://quotes.toscrape.com/page/10/"
+      }
+     ]
+    }
+   },
+   "browser": {
+    "dir": "runs/hard/quotes-top-author/browser-1",
+    "ok": true,
+    "why": "all expected values present",
+    "answer": "Albert Einstein, 10 quotes",
+    "wallMs": 13685,
+    "turns": 4,
+    "toolCalls": 3,
+    "tokens": {
+     "input": 8,
+     "output": 567,
+     "cacheWrite": 6316,
+     "cacheRead": 43201,
+     "total": 50092
+    },
+    "costUsd": 0.0515922,
+    "models": [
+     "claude-opus-5-5"
+    ],
+    "prompt": "On Quotes to Scrape (quotes.toscrape.com), which author has the most quotes across the whole site (every page), and how many quotes do they have?\n\nStart from https://quotes.toscrape.com/. Work it out using only the tools you have, then end your reply with one final line exactly in the form:\nANSWER: <short answer>\n\nYou have a web browser (Playwright tools). Use it to find the answer on the website.",
+    "events": [
+     {
+      "ms": 1555,
+      "kind": "init",
+      "tools": 37,
+      "model": "claude-opus-5-5"
+     },
+     {
+      "ms": 3705,
+      "kind": "tool",
+      "id": "toolu_0171cwEtksiPvxLj6r7RszxS",
+      "name": "ToolSearch",
+      "input": {
+       "query": "select:mcp__playwright__browser_navigate,mcp__playwright__browser_evaluate",
+       "max_results": 2
+      },
+      "endMs": 3713,
+      "isError": false,
+      "resultChars": 1,
+      "result": "\n"
+     },
+     {
+      "ms": 5579,
+      "kind": "tool",
+      "id": "toolu_01JR7d1JcJ4feA62sEFbqi25",
+      "name": "mcp__playwright__browser_navigate",
+      "input": {
+       "url": "https://quotes.toscrape.com/"
+      },
+      "endMs": 6229,
+      "isError": false,
+      "resultChars": 240,
+      "result": "### Ran Playwright code\n```js\nawait page.goto('https://quotes.toscrape.com/');\n```\n### Page\n- Page URL: https://quotes.toscrape.com/\n- Page Title: Quotes to Scrape\n### Snapshot\n- [Snapshot](.playwright-mcp/page-2026-10-17T23-24-46-206Z.yml)"
+     },
+     {
+      "ms": 9622,
+      "kind": "tool",
+      "id": "toolu_01VTP6K88oy5SN8uo7Hrs1AP",
+      "name": "mcp__playwright__browser_evaluate",
+      "input": {
+       "function": "async () => { const c={}; let url='/'; let pages=0, total=0; while(url){ const r=await fetch(url); const t=await r.text(); const d=new DOMParser().parseFromString(t,'text/html'); d.querySelectorAll('.quote .author').forEach(a=>{c[a.textContent.trim()]=(c[a.textContent.trim()]||0)+1; total++;}); pages++; const n=d.querySelector('li.next a'); url=n?n.getAttribute('href'):null;} return {pages,total,top:Object.entries(c).sort((a,b)=>b[1]-a[1]).slice(0,5)}; }"
+      },
+      "endMs": 11435,
+      "isError": false,
+      "resultChars": 1005,
+      "result": "### Result\n{\n  \"pages\": 10,\n  \"total\": 100,\n  \"top\": [\n    [\n      \"Albert Einstein\",\n      10\n    ],\n    [\n      \"J.K. Rowling\",\n      9\n    ],\n    [\n      \"Marilyn Monroe\",\n      7\n    ],\n    [\n      \"Dr. Seuss\",\n      6\n    ],\n    [\n      \"Mark Twain\",\n      6\n    ]\n  ]\n}\n### Ran Playwright code\n```js\nawait page.evaluate('async () => { const c={}; let url=\\'/\\'; let pages=0, total=0; while(url){ const r=await fetch(url); const t=await r.text(); const d=new DOMParser().parseFromString(t,\\'text/html\\'); d.querySelectorAll(\\'.quote .author\\').forEach(a=>{c[a.textContent.trim()]=(c[a.textContent.trim()]||0)+1; total++;}); pages++; const n=d.querySelector(\\'li.next a\\'); url=n?n.getAttribute(\\'href\\'):null;} return {pages,total,top:Object.entries(c).sort((a,b)=>b[1]-a[1]).slice(0,5)}; }');\n```\n### Page\n- Page URL: https://quotes.toscrape.com/\n- Page Title: Quotes to Scrape\n- Console: 1 errors, 0 warnings\n### Events\n- New console entries: .playwright-mcp/console-2026-10-17T23-24-45-645Z.log#L1"
+     },
+     {
+      "ms": 13502,
+      "kind": "text",
+      "text": "Albert Einstein has the most quotes on the site, with 10.\n\nI followed the \"Next\" links from the home page through all 10 pages (100 quotes in total) and counted how many quotes each author has. The next highest are J.K. Rowling with 9 and Marilyn Monroe with 7.\n\nANSWER: Albert Einstein, 10 quotes"
+     }
+    ],
+    "tokensOverTime": [
+     {
+      "ms": 3705,
+      "total": 11667
+     },
+     {
+      "ms": 5579,
+      "total": 23911
+     },
+     {
+      "ms": 9622,
+      "total": 36376
+     },
+     {
+      "ms": 13502,
+      "total": 49730
+     }
+    ],
+    "video": {
+     "src": "hero/quotes-top-author/browser.mp4",
+     "firstFrameSec": 0,
+     "frames": 4,
+     "w": 1280,
+     "h": 600,
+     "urls": [
+      {
+       "s": 6.151,
+       "url": "https://quotes.toscrape.com/"
+      }
+     ]
+    }
+   },
+   "cli": {
+    "dir": "runs/hard/quotes-top-author/cli-1",
+    "ok": true,
+    "why": "all expected values present",
+    "answer": "Albert Einstein, 10 quotes",
+    "wallMs": 20522,
+    "turns": 5,
+    "toolCalls": 4,
+    "tokens": {
+     "input": 10,
+     "output": 622,
+     "cacheWrite": 4210,
+     "cacheRead": 21923,
+     "total": 26765
+    },
+    "costUsd": 0.0379146,
+    "models": [
+     "claude-opus-5-5"
+    ],
+    "prompt": "On Quotes to Scrape (quotes.toscrape.com), which author has the most quotes across the whole site (every page), and how many quotes do they have?\n\nStart from https://quotes.toscrape.com/. Work it out using only the tools you have, then end your reply with one final line exactly in the form:\nANSWER: <short answer>\n\nThe website is available as a command-line tool: run `clify quotes` to see its commands (JSON help), then call them. Use clify only; do not use curl, wget, Python HTTP or other network tools.",
+    "events": [
+     {
+      "ms": 529,
+      "kind": "init",
+      "tools": 1,
+      "model": "claude-opus-5-5"
+     },
+     {
+      "ms": 3188,
+      "kind": "tool",
+      "id": "toolu_01EsMzB8DMX8sS2xGhJk6zGL",
+      "name": "Bash",
+      "input": {
+       "command": "clify quotes"
+      },
+      "endMs": 3361,
+      "isError": false,
+      "resultChars": 1614,
+      "result": "{\n  \"site\": \"quotes\",\n  \"description\": \"Quotes to Scrape (scraping sandbox): quotes by page or tag, author bios. Hand-written from recording.jsonl.\",\n  \"origin\": \"https://quotes.toscrape.com\",\n  \"loggedIn\": false,\n  \"usage\": \"clify quotes <command> [--param value ...] [--fields a,b] [--limit N] [--yes]\",\n  \"tips\": [\n    \"Results can be long objects: pass --fields with the keys you need (dot paths work, e.g. --fields title,content_urls.desktop.page).\",\n    \"List results include count; if a command has a --page param, more results are on the next page.\",\n    \"Commands marked writes:true return a dry-run preview until you add --yes.\"\n  ],\n  \"commands\": [\n    {\n      \"name\": \"list-quotes\",\n      \"summary\": \"Quotes, 10 per page\",\n      \"params\": [\n        {\n          \"name\": \"--page\",\n          \"type\": \"number\",\n          \"default\": 1\n        }\n      ]\n    },\n    {\n      \"name\": \"by-tag\",\n      \"summary\": \"Quotes with a tag\",\n      \"params\": [\n        {\n          \"name\": \"--tag\",\n          \"type\": \"string\",\n          \"required\": true,\n          \"description\": \"e.g. love, life, humor\"\n        },\n        {\n          \"name\": \"--page\",\n          \"type\": \"number\",\n          \"default\": 1\n        }\n      ],\n      \"example\": \"clify quotes by-tag --tag \\\"love\\\" --page \\\"2\\\"\"\n    },\n    {\n      \"name\": \"get-author\",\n      \"summary\": \"Author bio\",\n      \"params\": [\n        {\n          \"name\": \"--slug\",\n          \"type\": \"string\",\n          \"required\": true,\n          \"description\": \"e.g. Alb"
+     },
+     {
+      "ms": 5712,
+      "kind": "tool",
+      "id": "toolu_01KS6XDm1Cch7KkzZFaVBdya",
+      "name": "Bash",
+      "input": {
+       "command": "clify quotes list-quotes --page 1 | head -c 1500; echo; for p in $(seq 1 15); do clify quotes list-quotes --page $p > /tmp/q$p.json; echo \"$p $(jq '.count // (.results|length)' /tmp/q$p.json)\"; done"
+      },
+      "endMs": 12168,
+      "isError": false,
+      "resultChars": 1556,
+      "result": "{\n  \"ok\": true,\n  \"status\": 200,\n  \"count\": 10,\n  \"nextPage\": \"--page 2\",\n  \"data\": [\n    {\n      \"text\": \"“The world as we have created it is a process of our thinking. It cannot be changed without changing our thinking.”\",\n      \"author\": \"Albert Einstein\",\n      \"tags\": \"change,deep-thoughts,thinking,world\",\n      \"authorUrl\": \"https://quotes.toscrape.com/author/Albert-Einstein\"\n    },\n    {\n      \"text\": \"“It is our choices, Harry, that show what we truly are, far more than our abilities.”\",\n      \"author\": \"J.K. Rowling\",\n      \"tags\": \"abilities,choices\",\n      \"authorUrl\": \"https://quotes.toscrape.com/author/J-K-Rowling\"\n    },\n    {\n      \"text\": \"“There are only two ways to live your life. One is as though nothing is a miracle. The other is as though everything is a miracle.”\",\n      \"author\": \"Albert Einstein\",\n      \"tags\": \"inspirational,life,live,miracle,miracles\",\n      \"authorUrl\": \"https://quotes.toscrape.com/author/Albert-Einstein\"\n    },\n    {\n      \"text\": \"“The person, be it gentleman or lady, who has not pleasure in a good novel, must be intolerably stupid.”\",\n      \"author\": \"Jane Austen\",\n      \"tags\": \"aliteracy,books,classic,humor\",\n      \"authorUrl\": \"https://quotes.toscrape.com/author/Jane-Austen\"\n    },\n    {\n      \"text\": \"“Imperfection is beauty, madness is genius and it's better to be absolutely ridiculous than absolutely boring.”\",\n      \"author\": \"Marilyn Monroe\",\n      \"tags\": \"be-yourself,inspirational\",\n      \"authorUrl\"\n1 10\n2 10\n3 10\n4 10"
+     },
+     {
+      "ms": 15475,
+      "kind": "tool",
+      "id": "toolu_014HXGWeEBQEDq8KJdPL1Jvc",
+      "name": "Bash",
+      "input": {
+       "command": "jq -r '.nextPage' /tmp/q10.json; cat /tmp/q{1..10}.json | jq -r '.data[].author' | sort | uniq -c | sort -rn | head -5; cat /tmp/q{1..10}.json | jq -r '.data[].text' | sort -u | wc -l"
+      },
+      "endMs": 15509,
+      "isError": false,
+      "resultChars": 118,
+      "result": "--page 11\n     10 Albert Einstein\n      9 J.K. Rowling\n      7 Marilyn Monroe\n      6 Mark Twain\n      6 Dr. Seuss\n100"
+     },
+     {
+      "ms": 17534,
+      "kind": "tool",
+      "id": "toolu_01JCiGZQUsBaF66kfKWjbFdm",
+      "name": "Bash",
+      "input": {
+       "command": "cat /tmp/q11.json | head -c 300"
+      },
+      "endMs": 17562,
+      "isError": false,
+      "resultChars": 88,
+      "result": "{\n  \"ok\": true,\n  \"status\": 200,\n  \"count\": 0,\n  \"nextPage\": \"--page 12\",\n  \"data\": []\n}"
+     },
+     {
+      "ms": 20496,
+      "kind": "text",
+      "text": "Albert Einstein has the most quotes on the site, with 10.\n\nI fetched every page with `clify quotes list-quotes`. Pages 1 to 10 each had 10 quotes, which makes 100 quotes, and none of them repeat. Page 11 and later came back empty.\n\nQuote counts for the top authors:\n- Albert Einstein: 10\n- J.K. Rowling: 9\n- Marilyn Monroe: 7\n- Mark Twain: 6\n- Dr. Seuss: 6\n\nANSWER: Albert Einstein, 10 quotes"
+     }
+    ],
+    "tokensOverTime": [
+     {
+      "ms": 3188,
+      "total": 4064
+     },
+     {
+      "ms": 5712,
+      "total": 8815
+     },
+     {
+      "ms": 15475,
+      "total": 14401
+     },
+     {
+      "ms": 17534,
+      "total": 20223
+     },
+     {
+      "ms": 20496,
+      "total": 26388
+     }
+    ],
+    "video": null
+   }
+  }
+ },
+ "source": "~/clify-demo/bench2/results/summary-main+hard+ui+ui2.json"
+}

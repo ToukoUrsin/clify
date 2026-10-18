@@ -1,0 +1,9 @@
+{
+  "name": "clify-blaxel",
+  "private": true,
+  "type": "module",
+  "description": "Run `clify add` with each site's browser in its own Blaxel sandbox, then verify the generated CLI in that sandbox.",
+  "dependencies": {
+    "@blaxel/core": "^0.3.30"
+  }
+}

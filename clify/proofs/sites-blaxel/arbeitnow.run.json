@@ -1,0 +1,96 @@
+{
+ "url": "https://www.arbeitnow.com/",
+ "category": "jobs-market",
+ "sandbox": "clify-www-arbeitnow-com",
+ "startedAt": "2026-10-18T08:34:42.400Z",
+ "region": "us-pdx-1",
+ "chrome": "Chrome/148.0.7778.96",
+ "sandboxStartMs": 1793,
+ "addSeconds": 188,
+ "addExit": 0,
+ "add": {
+  "ok": true,
+  "site": "arbeitnow",
+  "url": "https://www.arbeitnow.com/",
+  "commands": [
+   {
+    "name": "search-jobs",
+    "summary": "Search jobs by keyword, with optional tag, location/category, date-posted filter, sort order and page. Returns paging info plus the result list as rendered HTML; each <li data-slug> holds a job slug a",
+    "verified": true
+   },
+   {
+    "name": "list-company-jobs",
+    "summary": "List the open jobs of one company. Needs both the display name and the slug. Returns paging info plus the result list as rendered HTML; each <li data-slug> holds a job slug for get-job.",
+    "verified": true
+   },
+   {
+    "name": "list-jobs-feed",
+    "summary": "Free public job-board API feed: newest jobs as clean JSON (slug, company, title, description, remote flag, tags, job types, location, created_at), paginated.",
+    "verified": true
+   },
+   {
+    "name": "get-job",
+    "summary": "Get full details of one job posting: title, HTML description, salary, employment type, remote/location, dates and hiring company.",
+    "verified": true
+   },
+   {
+    "name": "list-companies",
+    "summary": "List the companies hiring on Arbeitnow with their open-job count. The company slug is the last segment of url; use it with list-company-jobs.",
+    "verified": true
+   }
+  ],
+  "verified": 5,
+  "writes": 0,
+  "dropped": [],
+  "blockers": [],
+  "loggedIn": false,
+  "seconds": 188,
+  "next": [
+   "clify arbeitnow",
+   "clify arbeitnow search-jobs --search \"python developer\""
+  ],
+  "installed": "/home/ubuntu/clify-runs/blaxel-w1/home/bin/arbeitnow",
+  "explored": {
+   "steps": 19,
+   "recorded": 41,
+   "heldWrites": 13
+  }
+ },
+ "check": {
+  "on": "blaxel",
+  "node": "v24.22.0",
+  "seconds": 5,
+  "reads": 5,
+  "verified": 5,
+  "failed": [],
+  "results": [
+   {
+    "name": "search-jobs",
+    "ok": true,
+    "ms": 882
+   },
+   {
+    "name": "list-company-jobs",
+    "ok": true,
+    "ms": 192
+   },
+   {
+    "name": "list-jobs-feed",
+    "ok": true,
+    "ms": 123
+   },
+   {
+    "name": "get-job",
+    "ok": true,
+    "ms": 235
+   },
+   {
+    "name": "list-companies",
+    "ok": true,
+    "ms": 2003
+   }
+  ]
+ },
+ "deleted": true,
+ "seconds": 196
+}

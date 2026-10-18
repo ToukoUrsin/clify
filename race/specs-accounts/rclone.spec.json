@@ -1,0 +1,14 @@
+{
+  "name": "rclone",
+  "startUrl": "https://forum.rclone.org/",
+  "origin": "https://forum.rclone.org",
+  "createdAt": "2026-10-18T07:20:00Z",
+  "description": "rclone community forum (Discourse), public read-only.",
+  "commands": [
+    { "name": "categories", "summary": "Forum categories (id, slug, name)", "method": "GET", "urlTemplate": "/categories.json", "responseType": "json", "resultPath": "category_list.categories", "mutates": false, "params": [], "source": "GET https://forum.rclone.org/categories.json" },
+    { "name": "category-topics", "summary": "Topics in a category (30 per page). order=created sorts by creation date, newest first; pinned topics come first.", "method": "GET", "urlTemplate": "/c/{slug}/{id}/l/latest.json", "responseType": "json", "resultPath": "topic_list.topics", "mutates": false,
+      "params": [ { "name": "slug", "in": "path", "required": true, "type": "string" }, { "name": "id", "in": "path", "required": true, "type": "number" }, { "name": "order", "in": "query", "required": false, "type": "string", "enum": ["created", "activity", "posts", "views", "likes"] }, { "name": "page", "in": "query", "required": false, "type": "number" } ], "source": "GET https://forum.rclone.org/c/<slug>/<id>/l/latest.json" },
+    { "name": "topic", "summary": "One topic: title, created_at, posts_count, details.created_by.username (original poster)", "method": "GET", "urlTemplate": "/t/{id}.json", "responseType": "json", "mutates": false,
+      "params": [ { "name": "id", "in": "path", "required": true, "type": "number" } ], "source": "GET https://forum.rclone.org/t/<id>.json" }
+  ]
+}

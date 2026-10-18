@@ -1,0 +1,183 @@
+{
+ "name": "devdocs",
+ "startUrl": "https://devdocs.io/",
+ "origin": "https://devdocs.io",
+ "createdAt": "2026-10-18T09:29:31.935Z",
+ "description": "DevDocs (devdocs.io) is a single site that bundles many API documentation sets. This CLI lists the available docs, fetches a doc's index of entries and categories, and retrieves documentation pages or full offline bundles as static JSON or HTML from documents.devdocs.io.",
+ "commands": [
+  {
+   "name": "list-docs",
+   "summary": "List every documentation set on DevDocs with its slug, version, release, mtime and size. Use the slug in the other commands.",
+   "method": "GET",
+   "urlTemplate": "/docs.json",
+   "params": [],
+   "responseType": "json",
+   "defaultFields": [
+    "name",
+    "slug",
+    "version",
+    "release",
+    "alias",
+    "mtime",
+    "db_size"
+   ],
+   "mutates": false,
+   "source": "E3 GET https://devdocs.io/assets/docs-4c935d324abcac03e9483519f8fe8502d676a3af28d9098d48e8318bd0d61838.json",
+   "verified": true
+  },
+  {
+   "name": "list-entries",
+   "summary": "List all entries (name, path, type) in one documentation set's search index. DevDocs search is done on the client against this list, so filter the result by name to search.",
+   "method": "GET",
+   "urlTemplate": "https://documents.devdocs.io/{slug}/index.json",
+   "params": [
+    {
+     "name": "slug",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Documentation slug from list-docs, e.g. git, css, javascript, html, dom, http, python~3.13 (versioned slugs use ~)",
+     "example": "git"
+    }
+   ],
+   "responseType": "json",
+   "resultPath": "entries",
+   "defaultFields": [
+    "name",
+    "path",
+    "type"
+   ],
+   "mutates": false,
+   "example": {
+    "slug": "git"
+   },
+   "source": "E1 E4 E5 E6 E7 E8 E9 GET https://documents.devdocs.io/git/index.json",
+   "verified": true
+  },
+  {
+   "name": "list-types",
+   "summary": "List the categories (types) of one documentation set, with entry counts and slugs, e.g. 'Branching and Merging' for git or 'Elements' for html.",
+   "method": "GET",
+   "urlTemplate": "https://documents.devdocs.io/{slug}/index.json",
+   "params": [
+    {
+     "name": "slug",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Documentation slug from list-docs, e.g. git, html, python~3.13",
+     "example": "html"
+    }
+   ],
+   "responseType": "json",
+   "resultPath": "types",
+   "defaultFields": [
+    "name",
+    "count",
+    "slug"
+   ],
+   "mutates": false,
+   "example": {
+    "slug": "html"
+   },
+   "source": "E1 E5 GET https://documents.devdocs.io/git/index.json",
+   "verified": true
+  },
+  {
+   "name": "get-doc-home",
+   "summary": "Get the HTML home/overview page of one documentation set.",
+   "method": "GET",
+   "urlTemplate": "https://documents.devdocs.io/{slug}/index.html",
+   "params": [
+    {
+     "name": "slug",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Documentation slug from list-docs, e.g. git, python~3.13",
+     "example": "git"
+    }
+   ],
+   "responseType": "text",
+   "mutates": false,
+   "example": {
+    "slug": "git"
+   },
+   "source": "E14 E19 GET https://documents.devdocs.io/git/index.html",
+   "verified": true
+  },
+  {
+   "name": "get-page",
+   "summary": "Get the HTML content of one documentation page, using the slug and an entry path from list-entries.",
+   "method": "GET",
+   "urlTemplate": "https://documents.devdocs.io/{slug}/{path}.html",
+   "params": [
+    {
+     "name": "slug",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Documentation slug from list-docs, e.g. git, css, javascript, python~3.13",
+     "example": "git"
+    },
+    {
+     "name": "path",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Entry path from list-entries with any '#anchor' removed, e.g. git-merge, properties/flex, global_objects/array/map, library/json",
+     "example": "git-merge"
+    }
+   ],
+   "responseType": "text",
+   "mutates": false,
+   "example": {
+    "slug": "git",
+    "path": "git-merge"
+   },
+   "source": "E11 E12 E15 E20 GET https://documents.devdocs.io/css/properties/flex.html",
+   "verified": true
+  },
+  {
+   "name": "download-doc",
+   "summary": "Download the full offline bundle of one documentation set: a JSON object that maps each page path to its HTML. This can be very large.",
+   "method": "GET",
+   "urlTemplate": "https://documents.devdocs.io/{slug}/db.json",
+   "params": [
+    {
+     "name": "slug",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Documentation slug from list-docs, e.g. git, javascript",
+     "example": "git"
+    }
+   ],
+   "responseType": "json",
+   "mutates": false,
+   "example": {
+    "slug": "git"
+   },
+   "source": "E2 GET https://documents.devdocs.io/javascript/db.json",
+   "verified": true
+  }
+ ],
+ "blockers": [],
+ "notes": [
+  "DevDocs has no server-side search API. To search, run list-entries for a doc and match entry names on the client side (the site does fuzzy matching).",
+  "Entry paths can contain '#anchor' (e.g. library/json#json.dumps). Pass only the part before '#' to get-page; the anchor points to a section inside that page.",
+  "Entry paths can contain slashes (e.g. properties/flex). These must be sent unescaped in the URL.",
+  "Versioned docs use slugs like python~3.13 or angular~21. Get the slugs from list-docs.",
+  "The web app adds ?<mtime> to document URLs only to bust the cache. It is not required.",
+  "Nothing requires login, and there is no pagination."
+ ],
+ "dropped": [],
+ "generated": {
+  "by": "clify add",
+  "model": "claude-opus-5-5",
+  "exploredSteps": 18,
+  "recorded": 118,
+  "verifiedAt": "2026-10-18T09:30:02.371Z",
+  "seconds": 127
+ }
+}

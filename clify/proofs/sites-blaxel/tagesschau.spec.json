@@ -1,0 +1,357 @@
+{
+ "name": "tagesschau",
+ "startUrl": "https://www.tagesschau.de/",
+ "origin": "https://www.tagesschau.de",
+ "createdAt": "2026-10-18T08:57:21.055Z",
+ "description": "tagesschau.de is the ARD-aktuell German news site. This CLI searches news, lists top, ressort, regional, daily-archive and topic news, fetches full articles as JSON, and lists live streams.",
+ "commands": [
+  {
+   "name": "search-news",
+   "summary": "Full-text search of tagesschau news via the public api2u API. Returns stories with title, date, teaser and detail URLs, newest first.",
+   "method": "GET",
+   "urlTemplate": "/api2u/search/",
+   "params": [
+    {
+     "name": "searchText",
+     "in": "query",
+     "required": true,
+     "type": "string",
+     "description": "Search keyword(s), e.g. Klimawandel",
+     "example": "Klimawandel"
+    },
+    {
+     "name": "pageSize",
+     "in": "query",
+     "required": false,
+     "type": "number",
+     "description": "Results per page",
+     "default": 10,
+     "example": "10"
+    },
+    {
+     "name": "resultPage",
+     "in": "query",
+     "required": false,
+     "type": "number",
+     "description": "1-based page number",
+     "default": 1,
+     "example": "1"
+    }
+   ],
+   "responseType": "json",
+   "resultPath": "searchResults",
+   "defaultFields": [
+    "sophoraId",
+    "title",
+    "topline",
+    "date",
+    "firstSentence",
+    "shareURL",
+    "details",
+    "type"
+   ],
+   "pagination": {
+    "type": "page",
+    "param": "resultPage"
+   },
+   "mutates": false,
+   "example": {
+    "searchText": "Klimawandel",
+    "pageSize": "10",
+    "resultPage": "1"
+   },
+   "source": "E6 GET https://www.tagesschau.de/api2u/search/",
+   "verified": true
+  },
+  {
+   "name": "search-site",
+   "summary": "Website search with a media-type filter (article, video, audio, image gallery). Returns per-type counts and result items, newest first.",
+   "method": "GET",
+   "urlTemplate": "/json/search",
+   "params": [
+    {
+     "name": "searchText",
+     "in": "query",
+     "required": true,
+     "type": "string",
+     "description": "Search keyword(s)",
+     "example": "Klimawandel"
+    },
+    {
+     "name": "documentType",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Restrict to one content type. If omitted, returns a short preview for every type.",
+     "enum": [
+      "article",
+      "video",
+      "audio",
+      "imageGallery"
+     ],
+     "example": "article"
+    },
+    {
+     "name": "pageIndex",
+     "in": "query",
+     "required": false,
+     "type": "number",
+     "description": "Page index, 0-based. Only meaningful together with documentType.",
+     "example": "1"
+    }
+   ],
+   "responseType": "json",
+   "resultPath": "documentTypes",
+   "defaultFields": [
+    "type",
+    "title",
+    "count",
+    "items"
+   ],
+   "pagination": {
+    "type": "page",
+    "param": "pageIndex"
+   },
+   "mutates": false,
+   "example": {
+    "searchText": "Klimawandel",
+    "documentType": "article"
+   },
+   "source": "E2 GET https://www.tagesschau.de/json/search",
+   "verified": true
+  },
+  {
+   "name": "get-homepage-news",
+   "summary": "Current top news shown on the tagesschau.de homepage, as JSON.",
+   "method": "GET",
+   "urlTemplate": "/api2u/homepage",
+   "params": [],
+   "responseType": "json",
+   "resultPath": "news",
+   "defaultFields": [
+    "sophoraId",
+    "title",
+    "topline",
+    "date",
+    "firstSentence",
+    "ressort",
+    "shareURL",
+    "details"
+   ],
+   "mutates": false,
+   "source": "E8 E14 GET https://www.tagesschau.de/api2u/homepage",
+   "verified": true
+  },
+  {
+   "name": "list-news",
+   "summary": "Latest news, optionally filtered by ressort (section) and German federal-state region(s).",
+   "method": "GET",
+   "urlTemplate": "/api2u/news/",
+   "params": [
+    {
+     "name": "ressort",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Section filter",
+     "enum": [
+      "inland",
+      "ausland",
+      "wirtschaft",
+      "sport",
+      "video",
+      "investigativ",
+      "wissen"
+     ],
+     "example": "wirtschaft"
+    },
+    {
+     "name": "regions",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Federal-state region id(s), 1-16 (1=Baden-W\u00fcrttemberg \u2026 16=Th\u00fcringen, alphabetical). Separate multiple ids with commas.",
+     "example": "1"
+    }
+   ],
+   "responseType": "json",
+   "resultPath": "news",
+   "defaultFields": [
+    "sophoraId",
+    "title",
+    "topline",
+    "date",
+    "firstSentence",
+    "ressort",
+    "shareURL",
+    "details"
+   ],
+   "mutates": false,
+   "example": {
+    "ressort": "wirtschaft"
+   },
+   "source": "E5 GET https://www.tagesschau.de/api2u/news/",
+   "verified": true
+  },
+  {
+   "name": "get-article",
+   "summary": "Full article as JSON (text blocks, tags, images, video), looked up by its 3-segment web path ressort/subressort/slug.",
+   "method": "GET",
+   "urlTemplate": "/api2u/{ressort}/{subressort}/{slug}.json",
+   "params": [
+    {
+     "name": "ressort",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "First path segment of the article URL, e.g. wissen, inland, ausland, wirtschaft",
+     "example": "wissen"
+    },
+    {
+     "name": "subressort",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Second path segment of the article URL, e.g. klima, europa, verbraucher",
+     "example": "klima"
+    },
+    {
+     "name": "slug",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Last path segment without .html, e.g. antarktis-eisschmelze-100. Take it from a shareURL or url. For a 4-segment regional path, use the 'details' URL from list/search results instead.",
+     "example": "antarktis-eisschmelze-100"
+    }
+   ],
+   "responseType": "json",
+   "defaultFields": [
+    "sophoraId",
+    "title",
+    "topline",
+    "date",
+    "firstSentence",
+    "content",
+    "tags",
+    "shareURL"
+   ],
+   "mutates": false,
+   "example": {
+    "ressort": "wissen",
+    "subressort": "klima",
+    "slug": "antarktis-eisschmelze-100"
+   },
+   "source": "E7 E10",
+   "verified": true
+  },
+  {
+   "name": "list-channels",
+   "summary": "Live channels and streams (e.g. tagesschau24) with stream URLs.",
+   "method": "GET",
+   "urlTemplate": "/api2u/channels",
+   "params": [],
+   "responseType": "json",
+   "resultPath": "channels",
+   "defaultFields": [
+    "sophoraId",
+    "title",
+    "date",
+    "streams",
+    "shareURL",
+    "details"
+   ],
+   "mutates": false,
+   "source": "E9 E15 GET https://www.tagesschau.de/api2u/channels",
+   "verified": true
+  },
+  {
+   "name": "list-news-by-date",
+   "summary": "All news published on a given day, from the 7-day 'alle Meldungen' archive. Defaults to today.",
+   "method": "GET",
+   "urlTemplate": "/archiv/allemeldungen",
+   "params": [
+    {
+     "name": "datum",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Date in ISO format YYYY-MM-DD, within roughly the last 7 days",
+     "example": "2026-10-17"
+    }
+   ],
+   "responseType": "html",
+   "extract": {
+    "list": "li.teaser-mikro",
+    "fields": {
+     "url": "a.teaser-mikro__link@href",
+     "topline": "p.teaser-mikro__topline-container strong",
+     "headline": "h3.teaser-mikro__headline-wrapper",
+     "date": "span.teaser-mikro__date"
+    }
+   },
+   "defaultFields": [
+    "headline",
+    "date",
+    "topline",
+    "url"
+   ],
+   "mutates": false,
+   "example": {
+    "datum": "2026-10-17"
+   },
+   "source": "E12",
+   "verified": true
+  },
+  {
+   "name": "list-topic-news",
+   "summary": "Latest articles on a topic/tag page (e.g. ukraine, antarktis).",
+   "method": "GET",
+   "urlTemplate": "/thema/{topic}",
+   "params": [
+    {
+     "name": "topic",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Topic slug, lowercase, as in /thema/<topic> (also found in article 'about.sameAs' links)",
+     "example": "ukraine"
+    }
+   ],
+   "responseType": "html",
+   "resultPath": "mainEntity.itemListElement",
+   "extract": {
+    "jsonScript": "script[type=\"application/ld+json\"]"
+   },
+   "defaultFields": [
+    "position",
+    "item.headline",
+    "item.url"
+   ],
+   "mutates": false,
+   "example": {
+    "topic": "ukraine"
+   },
+   "source": "E17 E16 GET https://www.tagesschau.de/thema/ukraine",
+   "verified": true
+  }
+ ],
+ "blockers": [],
+ "notes": [
+  "No login is needed. All commands are public reads.",
+  "To get an article as JSON, take its web URL, e.g. https://www.tagesschau.de/inland/innenpolitik/spd-wirft-cdu-sexismus-vor-100.html, strip the domain and '.html', and pass the rest to get-article as --path (inland/innenpolitik/spd-wirft-cdu-sexismus-vor-100). The 'details' field in api2u results is the ready-made JSON URL.",
+  "search-site: pageIndex is 0-based and only pages within a single documentType. sortBy=relevance returned 0 results, so results are always sorted newest first (dateTime_dt desc).",
+  "search-news (api2u) is 1-based (resultPage) and reports totalItemCount. Its counts differ from the website search (search-site).",
+  "list-news-by-date uses HTML selectors (teaser-right__*) based on tagesschau's known archive markup. The recorded outline only showed site chrome, so these selectors were not seen in the recording. The archive covers about the last 7 days.",
+  "The trailing-slash forms /api2u/homepage/ and /api2u/channels/ return a 308 redirect. Use the paths as given. /thema/<topic>/ also redirects to /thema/<topic>.",
+  "Article content blocks are in 'content' (type text/headline/box/video\u2026). Text values contain HTML."
+ ],
+ "dropped": [],
+ "generated": {
+  "by": "clify add",
+  "model": "claude-opus-5-5",
+  "exploredSteps": 16,
+  "recorded": 51,
+  "verifiedAt": "2026-10-18T08:58:23.737Z",
+  "seconds": 266
+ }
+}

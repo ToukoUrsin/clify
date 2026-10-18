@@ -1,0 +1,196 @@
+{
+ "url": "https://www.bbc.com/news",
+ "category": "news",
+ "sandbox": "clify-www-bbc-com-news",
+ "startedAt": "2026-10-18T08:22:11.132Z",
+ "region": "us-pdx-1",
+ "chrome": "Chrome/148.0.7778.96",
+ "sandboxStartMs": 3289,
+ "addSeconds": 298,
+ "addExit": 0,
+ "add": {
+  "ok": true,
+  "site": "bbc",
+  "url": "https://www.bbc.com/news",
+  "commands": [
+   {
+    "name": "list-section-news",
+    "summary": "List the latest stories (articles, videos, live pages) on a top-level BBC section page such as news, sport, business or technology.",
+    "verified": true
+   },
+   {
+    "name": "list-subsection-news",
+    "summary": "List the latest stories on a BBC sub-section page, e.g. technology/artificial-intelligence.",
+    "verified": true
+   },
+   {
+    "name": "list-region-news",
+    "summary": "List the latest BBC News stories for a world region (Europe, Asia, Africa, ...).",
+    "verified": true
+   },
+   {
+    "name": "list-topic-articles",
+    "summary": "List stories tagged with a BBC News topic (e.g. France), paginated.",
+    "verified": true
+   },
+   {
+    "name": "get-article",
+    "summary": "Get a BBC News article's metadata: headline, description, author, publish/modify dates, image.",
+    "verified": true
+   },
+   {
+    "name": "get-video",
+    "summary": "Get a BBC News video page: title, description, publish time and related video links.",
+    "verified": true
+   },
+   {
+    "name": "get-live-blog",
+    "summary": "Get a BBC live blog page: title, description and latest update time.",
+    "verified": true
+   },
+   {
+    "name": "list-live-pages",
+    "summary": "List the BBC live blogs currently running (news and sport), from the /live index.",
+    "verified": true
+   },
+   {
+    "name": "list-football-scores",
+    "summary": "List football matches (scores and fixtures, all competitions) on a given date.",
+    "verified": true
+   },
+   {
+    "name": "list-team-fixtures",
+    "summary": "List a football team's recent results and upcoming fixtures.",
+    "verified": true
+   },
+   {
+    "name": "get-league-table",
+    "summary": "Get the current standings table for a football competition.",
+    "verified": true
+   },
+   {
+    "name": "search-football-teams",
+    "summary": "Find football teams and competitions by name. Returns BBC URNs and scores-fixtures URLs (the team slug is in the URL).",
+    "verified": true
+   },
+   {
+    "name": "list-tv-schedule",
+    "summary": "List the BBC News TV channel programme schedule (titles, synopses, start times) for a country feed.",
+    "verified": true
+   },
+   {
+    "name": "get-page-content",
+    "summary": "Get structured JSON content for a BBC page path (e.g. a /reel/video/{id}/watch video): title, summary, publish times, metadata.",
+    "verified": true
+   },
+   {
+    "name": "get-media-streams",
+    "summary": "Resolve a BBC media PID into playable stream URLs (HLS video renditions and thumbnails).",
+    "verified": true
+   }
+  ],
+  "verified": 15,
+  "writes": 0,
+  "dropped": [],
+  "blockers": [],
+  "loggedIn": false,
+  "seconds": 297,
+  "next": [
+   "clify bbc",
+   "clify bbc list-section-news --section \"technology\""
+  ],
+  "installed": "/home/ubuntu/clify-runs/blaxel-w1/home/bin/bbc",
+  "explored": {
+   "steps": 30,
+   "recorded": 604,
+   "heldWrites": 165
+  }
+ },
+ "check": {
+  "on": "blaxel",
+  "node": "v24.22.0",
+  "seconds": 4,
+  "reads": 15,
+  "verified": 15,
+  "failed": [],
+  "results": [
+   {
+    "name": "list-section-news",
+    "ok": true,
+    "ms": 119
+   },
+   {
+    "name": "list-subsection-news",
+    "ok": true,
+    "ms": 23
+   },
+   {
+    "name": "list-region-news",
+    "ok": true,
+    "ms": 22
+   },
+   {
+    "name": "list-topic-articles",
+    "ok": true,
+    "ms": 19
+   },
+   {
+    "name": "get-article",
+    "ok": true,
+    "ms": 19
+   },
+   {
+    "name": "get-video",
+    "ok": true,
+    "ms": 19
+   },
+   {
+    "name": "get-live-blog",
+    "ok": true,
+    "ms": 20
+   },
+   {
+    "name": "list-live-pages",
+    "ok": true,
+    "ms": 25
+   },
+   {
+    "name": "list-football-scores",
+    "ok": true,
+    "ms": 65
+   },
+   {
+    "name": "list-team-fixtures",
+    "ok": true,
+    "ms": 32
+   },
+   {
+    "name": "get-league-table",
+    "ok": true,
+    "ms": 21
+   },
+   {
+    "name": "search-football-teams",
+    "ok": true,
+    "ms": 397
+   },
+   {
+    "name": "list-tv-schedule",
+    "ok": true,
+    "ms": 41
+   },
+   {
+    "name": "get-page-content",
+    "ok": true,
+    "ms": 11
+   },
+   {
+    "name": "get-media-streams",
+    "ok": true,
+    "ms": 226
+   }
+  ]
+ },
+ "deleted": true,
+ "seconds": 305
+}

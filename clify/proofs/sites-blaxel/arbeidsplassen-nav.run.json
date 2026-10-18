@@ -1,0 +1,96 @@
+{
+ "url": "https://arbeidsplassen.nav.no/",
+ "category": "jobs-market",
+ "sandbox": "clify-arbeidsplassen-nav-no",
+ "startedAt": "2026-10-18T08:58:28.475Z",
+ "region": "us-pdx-1",
+ "chrome": "Chrome/148.0.7778.96",
+ "sandboxStartMs": 2670,
+ "addSeconds": 226,
+ "addExit": 0,
+ "add": {
+  "ok": true,
+  "site": "arbeidsplassen-nav",
+  "url": "https://arbeidsplassen.nav.no/",
+  "commands": [
+   {
+    "name": "search-jobs",
+    "summary": "Search job ads (ledige stillinger) by keyword, with filters for county, publish date, category, extent, remote work, sector, experience and under-18, plus sorting and paging (25 results per page)",
+    "verified": true
+   },
+   {
+    "name": "get-job",
+    "summary": "Get one job ad by its UUID: title, employer, location, employment details, application deadline, apply link and full description",
+    "verified": true
+   },
+   {
+    "name": "get-auth-status",
+    "summary": "Check whether the current session is logged in to arbeidsplassen.no (returns ok and isAuthenticated)",
+    "verified": true
+   },
+   {
+    "name": "list-youth-shortcuts",
+    "summary": "List the youth landing-page shortcuts (/ung), such as jobs for under-18s and jobs that need no experience, with their search URLs",
+    "verified": true
+   },
+   {
+    "name": "get-import-api-info",
+    "summary": "Read NAV's info page about the job-ad import API (how employers and vendors can publish ads to arbeidsplassen.no)",
+    "verified": true
+   }
+  ],
+  "verified": 5,
+  "writes": 0,
+  "dropped": [],
+  "blockers": [],
+  "loggedIn": false,
+  "seconds": 225,
+  "next": [
+   "clify arbeidsplassen-nav",
+   "clify arbeidsplassen-nav search-jobs --q \"utvikler\" --county \"OSLO\" --sort \"published\""
+  ],
+  "installed": "/home/ubuntu/clify-runs/blaxel-w1/home/bin/arbeidsplassen-nav",
+  "explored": {
+   "steps": 30,
+   "recorded": 67,
+   "heldWrites": 30
+  }
+ },
+ "check": {
+  "on": "blaxel",
+  "node": "v24.22.0",
+  "seconds": 5,
+  "reads": 5,
+  "verified": 5,
+  "failed": [],
+  "results": [
+   {
+    "name": "search-jobs",
+    "ok": true,
+    "ms": 833
+   },
+   {
+    "name": "get-job",
+    "ok": true,
+    "ms": 761
+   },
+   {
+    "name": "get-auth-status",
+    "ok": true,
+    "ms": 185
+   },
+   {
+    "name": "list-youth-shortcuts",
+    "ok": true,
+    "ms": 730
+   },
+   {
+    "name": "get-import-api-info",
+    "ok": true,
+    "ms": 233
+   }
+  ]
+ },
+ "deleted": true,
+ "seconds": 233
+}

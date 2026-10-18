@@ -1,0 +1,36 @@
+{
+ "url": "https://dp.la/",
+ "category": "culture",
+ "sandbox": "clify-dp-la",
+ "startedAt": "2026-10-18T08:51:12.111Z",
+ "region": "us-pdx-1",
+ "chrome": "Chrome/148.0.7778.96",
+ "sandboxStartMs": 2399,
+ "addSeconds": 13,
+ "addExit": 1,
+ "add": {
+  "ok": false,
+  "site": "dp",
+  "url": "https://dp.la/",
+  "commands": [],
+  "verified": 0,
+  "writes": 0,
+  "dropped": [],
+  "blockers": [
+   "captcha"
+  ],
+  "loggedIn": false,
+  "seconds": 13,
+  "next": [
+   "clify dp",
+   "clify repair dp --goal \"<what you need from the site>\""
+  ],
+  "explored": {
+   "steps": 3,
+   "recorded": 2,
+   "heldWrites": 0
+  }
+ },
+ "deleted": true,
+ "seconds": 16
+}

@@ -1,0 +1,23 @@
+{
+ "name": "dp",
+ "startUrl": "https://dp.la/",
+ "origin": "https://dp.la",
+ "createdAt": "2026-10-18T08:51:27.866Z",
+ "description": "CLI for dp.la",
+ "commands": [],
+ "blockers": [
+  "captcha"
+ ],
+ "notes": [
+  "nothing usable was recorded"
+ ],
+ "dropped": [],
+ "generated": {
+  "by": "clify add",
+  "model": "claude-opus-5-5",
+  "exploredSteps": 3,
+  "recorded": 2,
+  "verifiedAt": "2026-10-18T08:51:27.867Z",
+  "seconds": 13
+ }
+}

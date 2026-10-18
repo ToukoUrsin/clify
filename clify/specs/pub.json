@@ -1,0 +1,525 @@
+{
+ "name": "pub",
+ "startUrl": "https://pub.dev/",
+ "origin": "https://pub.dev",
+ "createdAt": "2026-10-18T08:08:48.586Z",
+ "description": "pub.dev is the official registry for Dart and Flutter packages. This CLI searches packages and reads package metadata, versions, scores, metrics, docs status, publishers, topics and the atom feeds through pub.dev's public JSON API.",
+ "commands": [
+  {
+   "name": "search-packages",
+   "summary": "Search pub.dev packages by keyword and/or qualifiers (topic:, platform:, sdk:, dependency:, publisher:, is:, license:, has:, updated:), with sort and pagination.",
+   "method": "GET",
+   "urlTemplate": "/api/search",
+   "params": [
+    {
+     "name": "q",
+     "in": "query",
+     "required": true,
+     "type": "string",
+     "description": "Search query. Free text plus optional qualifiers, e.g. 'http', 'topic:http platform:web', 'dependency:dio', 'publisher:dart.dev', 'is:flutter-favorite'. Prefix a qualifier with '-' to negate it.",
+     "example": "http"
+    },
+    {
+     "name": "sort",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Sort order. Omit for the default ranking.",
+     "enum": [
+      "top",
+      "text",
+      "created",
+      "updated",
+      "like",
+      "points",
+      "downloads",
+      "trending"
+     ],
+     "example": "like"
+    },
+    {
+     "name": "page",
+     "in": "query",
+     "required": false,
+     "type": "number",
+     "description": "Result page number, starting at 1. Each page has 10 packages.",
+     "example": "2"
+    }
+   ],
+   "responseType": "json",
+   "resultPath": "packages",
+   "defaultFields": [
+    "package"
+   ],
+   "pagination": {
+    "type": "page",
+    "param": "page"
+   },
+   "mutates": false,
+   "example": {
+    "q": "http"
+   },
+   "source": "E3",
+   "verified": true
+  },
+  {
+   "name": "get-package",
+   "summary": "Get a package's latest version: version number, pubspec (description, dependencies, SDK constraint, repository), archive URL and publish date.",
+   "method": "GET",
+   "urlTemplate": "/api/packages/{name}",
+   "params": [
+    {
+     "name": "name",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Package name, e.g. http",
+     "example": "http"
+    }
+   ],
+   "responseType": "json",
+   "resultPath": "latest",
+   "defaultFields": [
+    "version",
+    "pubspec.description",
+    "pubspec.environment",
+    "pubspec.dependencies",
+    "pubspec.repository",
+    "pubspec.topics",
+    "archive_url",
+    "published"
+   ],
+   "mutates": false,
+   "example": {
+    "name": "http"
+   },
+   "source": "E4 GET https://pub.dev/api/packages/http",
+   "verified": true
+  },
+  {
+   "name": "list-package-versions",
+   "summary": "List all published versions of a package, oldest first, with publish date and archive URL.",
+   "method": "GET",
+   "urlTemplate": "/api/packages/{name}",
+   "params": [
+    {
+     "name": "name",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Package name, e.g. dio",
+     "example": "dio"
+    }
+   ],
+   "responseType": "json",
+   "resultPath": "versions",
+   "defaultFields": [
+    "version",
+    "published",
+    "pubspec.environment.sdk",
+    "archive_url",
+    "archive_sha256"
+   ],
+   "mutates": false,
+   "example": {
+    "name": "dio"
+   },
+   "source": "E4 E17 GET https://pub.dev/api/packages/http",
+   "verified": true
+  },
+  {
+   "name": "get-package-version",
+   "summary": "Get the pubspec, archive URL/sha256 and publish date of one specific package version.",
+   "method": "GET",
+   "urlTemplate": "/api/packages/{name}/versions/{version}",
+   "params": [
+    {
+     "name": "name",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Package name",
+     "example": "dio"
+    },
+    {
+     "name": "version",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Exact semver version, e.g. 5.11.1",
+     "example": "5.11.1"
+    }
+   ],
+   "responseType": "json",
+   "defaultFields": [
+    "version",
+    "pubspec.description",
+    "pubspec.environment",
+    "pubspec.dependencies",
+    "pubspec.repository",
+    "archive_url",
+    "archive_sha256",
+    "published"
+   ],
+   "mutates": false,
+   "example": {
+    "name": "dio",
+    "version": "5.11.1"
+   },
+   "source": "E6 GET https://pub.dev/api/packages/dio/versions/5.11.1",
+   "verified": true
+  },
+  {
+   "name": "get-package-score",
+   "summary": "Get a package's pub points (granted/max), like count, 30-day downloads and tags (sdk, platform, publisher, license, etc.).",
+   "method": "GET",
+   "urlTemplate": "/api/packages/{name}/score",
+   "params": [
+    {
+     "name": "name",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Package name",
+     "example": "dio"
+    }
+   ],
+   "responseType": "json",
+   "defaultFields": [
+    "grantedPoints",
+    "maxPoints",
+    "likeCount",
+    "downloadCount30Days",
+    "tags"
+   ],
+   "mutates": false,
+   "example": {
+    "name": "dio"
+   },
+   "source": "E5 GET https://pub.dev/api/packages/dio/score",
+   "verified": true
+  },
+  {
+   "name": "get-package-metrics",
+   "summary": "Get the full analysis scorecard for a package: score, pana report sections, licenses, repository verification, all dependencies and weekly download history.",
+   "method": "GET",
+   "urlTemplate": "/api/packages/{name}/metrics",
+   "params": [
+    {
+     "name": "name",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Package name",
+     "example": "dio"
+    }
+   ],
+   "responseType": "json",
+   "defaultFields": [
+    "score.grantedPoints",
+    "score.maxPoints",
+    "score.downloadCount30Days",
+    "scorecard.packageVersion",
+    "scorecard.panaReport.derivedTags",
+    "scorecard.panaReport.allDependencies",
+    "scorecard.panaReport.result.repositoryUrl",
+    "scorecard.panaReport.result.repositoryStatus"
+   ],
+   "mutates": false,
+   "example": {
+    "name": "dio"
+   },
+   "source": "E9 GET https://pub.dev/api/packages/dio/metrics",
+   "verified": true
+  },
+  {
+   "name": "get-package-likes",
+   "summary": "Get the number of likes for a package.",
+   "method": "GET",
+   "urlTemplate": "/api/packages/{name}/likes",
+   "params": [
+    {
+     "name": "name",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Package name",
+     "example": "dio"
+    }
+   ],
+   "responseType": "json",
+   "defaultFields": [
+    "package",
+    "likes"
+   ],
+   "mutates": false,
+   "example": {
+    "name": "dio"
+   },
+   "source": "E10 GET https://pub.dev/api/packages/dio/likes",
+   "verified": true
+  },
+  {
+   "name": "get-package-publisher",
+   "summary": "Get the verified publisher ID that owns a package (null if it has no publisher).",
+   "method": "GET",
+   "urlTemplate": "/api/packages/{name}/publisher",
+   "params": [
+    {
+     "name": "name",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Package name",
+     "example": "dio"
+    }
+   ],
+   "responseType": "json",
+   "defaultFields": [
+    "publisherId"
+   ],
+   "mutates": false,
+   "example": {
+    "name": "dio"
+   },
+   "source": "E7 GET https://pub.dev/api/packages/dio/publisher",
+   "verified": true
+  },
+  {
+   "name": "get-package-options",
+   "summary": "Check whether a package is discontinued or unlisted, and which package replaces it.",
+   "method": "GET",
+   "urlTemplate": "/api/packages/{name}/options",
+   "params": [
+    {
+     "name": "name",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Package name",
+     "example": "dio"
+    }
+   ],
+   "responseType": "json",
+   "defaultFields": [
+    "isDiscontinued",
+    "replacedBy",
+    "isUnlisted"
+   ],
+   "mutates": false,
+   "example": {
+    "name": "dio"
+   },
+   "source": "E14 GET https://pub.dev/api/packages/dio/options",
+   "verified": true
+  },
+  {
+   "name": "get-package-docs-status",
+   "summary": "List a package's versions with their API documentation (dartdoc) build status and availability.",
+   "method": "GET",
+   "urlTemplate": "/api/documentation/{name}",
+   "params": [
+    {
+     "name": "name",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Package name",
+     "example": "dio"
+    }
+   ],
+   "responseType": "json",
+   "resultPath": "versions",
+   "defaultFields": [
+    "version",
+    "status",
+    "hasDocumentation"
+   ],
+   "mutates": false,
+   "example": {
+    "name": "dio"
+   },
+   "source": "E11 GET https://pub.dev/api/documentation/dio",
+   "verified": true
+  },
+  {
+   "name": "get-package-feed",
+   "summary": "Get the Atom feed of a package's recently published versions, including changelog excerpts.",
+   "method": "GET",
+   "urlTemplate": "/api/packages/{name}/feed.atom",
+   "params": [
+    {
+     "name": "name",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Package name",
+     "example": "dio"
+    }
+   ],
+   "responseType": "json",
+   "resultPath": "feed.entry",
+   "defaultFields": [
+    "title",
+    "updated",
+    "content",
+    "link.@href"
+   ],
+   "mutates": false,
+   "example": {
+    "name": "dio"
+   },
+   "source": "E20 GET https://pub.dev/api/packages/dio/feed.atom",
+   "verified": true
+  },
+  {
+   "name": "get-publisher",
+   "summary": "Get a verified publisher's description, website URL and contact email.",
+   "method": "GET",
+   "urlTemplate": "/api/publishers/{publisher}",
+   "params": [
+    {
+     "name": "publisher",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Publisher ID (a verified domain), e.g. dart.dev",
+     "example": "dart.dev"
+    }
+   ],
+   "responseType": "json",
+   "defaultFields": [
+    "description",
+    "websiteUrl",
+    "contactEmail"
+   ],
+   "mutates": false,
+   "example": {
+    "publisher": "dart.dev"
+   },
+   "source": "E13 GET https://pub.dev/api/publishers/dart.dev",
+   "verified": true
+  },
+  {
+   "name": "list-publisher-packages",
+   "summary": "List packages owned by a publisher, with likes, pub points, downloads, latest version and description (scraped from the publisher's packages page).",
+   "method": "GET",
+   "urlTemplate": "/publishers/{publisher}/packages",
+   "params": [
+    {
+     "name": "publisher",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Publisher ID (a verified domain), e.g. dart.dev",
+     "example": "dart.dev"
+    }
+   ],
+   "responseType": "html",
+   "extract": {
+    "list": "div.packages > div.packages-item",
+    "fields": {
+     "name": "h3.packages-title a",
+     "url": "h3.packages-title a@href",
+     "description": "div.packages-description span",
+     "version": "span.packages-metadata-block a",
+     "likes": "div.packages-score-like span.packages-score-value-number",
+     "points": "div.packages-score-health span.packages-score-value-number",
+     "downloads": "div.packages-score-downloads span.packages-score-value-number"
+    }
+   },
+   "defaultFields": [
+    "name",
+    "url",
+    "version",
+    "likes",
+    "points",
+    "downloads",
+    "description"
+   ],
+   "mutates": false,
+   "example": {
+    "publisher": "dart.dev"
+   },
+   "source": "E19 GET https://pub.dev/publishers/dart.dev/packages",
+   "verified": true
+  },
+  {
+   "name": "list-recent-packages",
+   "summary": "Get the site-wide Atom feed of the most recently published package versions on pub.dev.",
+   "method": "GET",
+   "urlTemplate": "/feed.atom",
+   "params": [],
+   "responseType": "json",
+   "resultPath": "feed.entry",
+   "defaultFields": [
+    "title",
+    "updated",
+    "author.name",
+    "content",
+    "link.@title",
+    "link.@href"
+   ],
+   "mutates": false,
+   "source": "E21 GET https://pub.dev/feed.atom",
+   "verified": true
+  },
+  {
+   "name": "list-package-names",
+   "summary": "List the names of every package on pub.dev. The output is very large.",
+   "method": "GET",
+   "urlTemplate": "/api/package-names",
+   "params": [],
+   "responseType": "json",
+   "resultPath": "packages",
+   "mutates": false,
+   "source": "E8 GET https://pub.dev/api/package-names",
+   "verified": true
+  },
+  {
+   "name": "list-topics",
+   "summary": "List all package topics with the number of packages tagged with each, as a map of topic to count.",
+   "method": "GET",
+   "urlTemplate": "/api/topic-name-completion-data",
+   "params": [],
+   "responseType": "json",
+   "mutates": false,
+   "source": "E12 GET https://pub.dev/api/topic-name-completion-data",
+   "verified": true
+  },
+  {
+   "name": "list-search-qualifiers",
+   "summary": "List the search qualifiers (is:, has:, license:, platform:, sdk:, topic:, etc.) and the allowed values for each, for building search-packages queries.",
+   "method": "GET",
+   "urlTemplate": "/api/search-input-completion-data",
+   "params": [],
+   "responseType": "json",
+   "resultPath": "completions",
+   "defaultFields": [
+    "match",
+    "options"
+   ],
+   "mutates": false,
+   "source": "E2 GET https://pub.dev/api/search-input-completion-data",
+   "verified": true
+  }
+ ],
+ "blockers": [],
+ "notes": [
+  "search-packages returns only package names, 10 per page. Use get-package, get-package-score or get-package-metrics to get details for each name.",
+  "Search qualifiers can be combined in q, for example 'topic:http platform:web', 'dependency:dio' (packages that depend on dio) or 'publisher:dart.dev'. Use list-search-qualifiers for the valid qualifier values and list-topics for topic names.",
+  "The HTML search page (/packages?q=...) is blocked by robots.txt, so always use the JSON search API.",
+  "get-package and list-package-versions both call /api/packages/{name}. get-package returns the latest version and list-package-versions returns the full version history.",
+  "Package archives can be downloaded from the archive_url field (https://pub.dev/api/archives/{name}-{version}.tar.gz).",
+  "Liking a package requires a signed-in Google session. It was not recorded, so it is not exposed."
+ ],
+ "dropped": [],
+ "generated": {
+  "by": "clify add",
+  "model": "claude-opus-5-5",
+  "exploredSteps": 25,
+  "recorded": 26,
+  "verifiedAt": "2026-10-18T08:09:52.787Z",
+  "seconds": 222
+ }
+}

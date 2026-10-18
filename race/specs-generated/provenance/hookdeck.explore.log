@@ -1,0 +1,242 @@
+09:41:16 🔭 exploring https://dashboard.hookdeck.com/ (logged in from the vault)
+09:41:17 🌐 https://dashboard.hookdeck.com/
+09:41:17   ✉ write sent (--allow-writes) POST https://api.hookdeck.com/2026-09-01/internal/t
+09:41:17   ✉ write sent (--allow-writes) POST https://ph.hookdeck.com/flags/?v=2&ip=0&_=1792316477751&ver=1.386.8&compression=base64
+09:41:18   ✉ write sent (--allow-writes) POST https://alb.reddit.com/rp?id=a2_jcidenjemc2o&event=gtm.init_consent
+09:41:18   ✉ write sent (--allow-writes) POST https://alb.reddit.com/rp?id=a2_jcidenjemc2o&event=gtm.init
+09:41:18   ✉ write sent (--allow-writes) POST https://alb.reddit.com/rp?id=a2_jcidenjemc2o&event=gtag.config
+09:41:18   ✉ write sent (--allow-writes) POST https://alb.reddit.com/rp?id=a2_jcidenjemc2o&event=gtag.config
+09:41:18   ✉ write sent (--allow-writes) POST https://alb.reddit.com/rp?id=a2_jcidenjemc2o&event=gtm.js
+09:41:18   ✉ write sent (--allow-writes) POST https://alb.reddit.com/rp?id=a2_jcidenjemc2o&event=gtm.dom
+09:41:18   ✉ write sent (--allow-writes) POST https://alb.reddit.com/rp?id=a2_jcidenjemc2o&event=gtm.scrollDepth
+09:41:18   ✉ write sent (--allow-writes) POST https://alb.reddit.com/rp?id=a2_jcidenjemc2o&event=scroll
+09:41:18   ✉ write sent (--allow-writes) POST https://alb.reddit.com/rp?id=a2_jcidenjemc2o&event=gtm.historyChange
+09:41:18   ✉ write sent (--allow-writes) POST https://alb.reddit.com/rp?id=a2_jcidenjemc2o&event=gtm.load
+09:41:18   ✉ write sent (--allow-writes) POST https://m.stripe.com/6
+09:41:18   ✉ write sent (--allow-writes) POST https://alb.reddit.com/rp?id=a2_jcidenjemc2o&event=gtm.historyChange-v2
+09:41:18   ✉ write sent (--allow-writes) POST https://alb.reddit.com/rp?id=a2_jcidenjemc2o&event=page_view
+09:41:18   ✉ write sent (--allow-writes) POST https://alb.reddit.com/rp?id=a2_jcidenjemc2o&event=page_view
+09:41:19   ✉ write sent (--allow-writes) POST https://bzr.openai.com/v1/sdk/events?pid=7Cxjtzh8KnSQXdaSEimK5v&st=oaiq-web&sv=0.1.41&t=179231647902
+09:41:22   ✉ write sent (--allow-writes) POST https://m.stripe.com/6
+09:41:24   ✉ write sent (--allow-writes) POST https://r.stripe.com/b
+09:41:26 → click {"i":2,"intent":"list connections"}
+09:41:26   ✉ write sent (--allow-writes) POST https://alb.reddit.com/rp?id=a2_jcidenjemc2o&event=gtm.historyChange
+09:41:27   ✉ write sent (--allow-writes) POST https://alb.reddit.com/rp?id=a2_jcidenjemc2o&event=gtm.historyChange-v2
+09:41:27   ✉ write sent (--allow-writes) POST https://alb.reddit.com/rp?id=a2_jcidenjemc2o&event=page_view
+09:41:27   ✉ write sent (--allow-writes) POST https://alb.reddit.com/rp?id=a2_jcidenjemc2o&event=page_view
+09:41:27   ✉ write sent (--allow-writes) POST https://m.stripe.com/6
+09:41:32 → click {"i":3,"intent":"list sources"}
+09:41:32   ✉ write sent (--allow-writes) POST https://alb.reddit.com/rp?id=a2_jcidenjemc2o&event=gtm.historyChange
+09:41:32   ✉ write sent (--allow-writes) POST https://m.stripe.com/6
+09:41:33   ✉ write sent (--allow-writes) POST https://alb.reddit.com/rp?id=a2_jcidenjemc2o&event=gtm.historyChange-v2
+09:41:33   ✉ write sent (--allow-writes) POST https://alb.reddit.com/rp?id=a2_jcidenjemc2o&event=page_view
+09:41:33   ✉ write sent (--allow-writes) POST https://alb.reddit.com/rp?id=a2_jcidenjemc2o&event=page_view
+09:41:36 → click {"i":4,"intent":"list destinations"}
+09:41:36   ✉ write sent (--allow-writes) POST https://alb.reddit.com/rp?id=a2_jcidenjemc2o&event=gtm.historyChange
+09:41:37   ✉ write sent (--allow-writes) POST https://alb.reddit.com/rp?id=a2_jcidenjemc2o&event=gtm.historyChange-v2
+09:41:37   ✉ write sent (--allow-writes) POST https://alb.reddit.com/rp?id=a2_jcidenjemc2o&event=page_view
+09:41:37   ✉ write sent (--allow-writes) POST https://alb.reddit.com/rp?id=a2_jcidenjemc2o&event=page_view
+09:41:37   ✉ write sent (--allow-writes) POST https://m.stripe.com/6
+09:41:39 → goto {"url":"https://dashboard.hookdeck.com/connections/new","intent":"open new connection form"}
+09:41:40   ✉ write sent (--allow-writes) POST https://alb.reddit.com/rp?id=a2_jcidenjemc2o&event=gtm.init_consent
+09:41:40   ✉ write sent (--allow-writes) POST https://alb.reddit.com/rp?id=a2_jcidenjemc2o&event=gtm.init
+09:41:40   ✉ write sent (--allow-writes) POST https://alb.reddit.com/rp?id=a2_jcidenjemc2o&event=gtag.config
+09:41:40   ✉ write sent (--allow-writes) POST https://alb.reddit.com/rp?id=a2_jcidenjemc2o&event=gtag.config
+09:41:40   ✉ write sent (--allow-writes) POST https://alb.reddit.com/rp?id=a2_jcidenjemc2o&event=gtm.js
+09:41:40   ✉ write sent (--allow-writes) POST https://alb.reddit.com/rp?id=a2_jcidenjemc2o&event=gtm.dom
+09:41:40   ✉ write sent (--allow-writes) POST https://alb.reddit.com/rp?id=a2_jcidenjemc2o&event=gtm.scrollDepth
+09:41:40   ✉ write sent (--allow-writes) POST https://alb.reddit.com/rp?id=a2_jcidenjemc2o&event=scroll
+09:41:40   ✉ write sent (--allow-writes) POST https://api.hookdeck.com/2026-09-01/internal/t
+09:41:40   ✉ write sent (--allow-writes) POST https://ph.hookdeck.com/flags/?v=2&ip=0&_=1792316500113&ver=1.386.8&compression=base64
+09:41:40   ✉ write sent (--allow-writes) POST https://alb.reddit.com/rp?id=a2_jcidenjemc2o&event=gtm.load
+09:41:41   ✉ write sent (--allow-writes) POST https://m.stripe.com/6
+09:41:41   ✉ write sent (--allow-writes) POST https://bzr.openai.com/v1/sdk/events?pid=7Cxjtzh8KnSQXdaSEimK5v&st=oaiq-web&sv=0.1.41&t=179231650130
+09:41:46   ✉ write sent (--allow-writes) POST https://r.stripe.com/b
+09:41:46 → click {"i":23,"intent":"choose source type"}
+09:41:50 → click {"i":29,"intent":"select Webhook source type"}
+09:41:55 → type {"i":25,"text":"race-gen-1","intent":"set source name"}
+09:41:56 → click {"i":30,"intent":"choose destination type"}
+09:41:56   ✉ write sent (--allow-writes) POST https://alb.reddit.com/rp?id=a2_jcidenjemc2o&event=gtm.formInteract
+09:41:56   ✉ write sent (--allow-writes) POST https://alb.reddit.com/rp?id=a2_jcidenjemc2o&event=form_start
+09:41:56   ✉ write sent (--allow-writes) POST https://alb.reddit.com/rp?id=a2_jcidenjemc2o&event=form_start
+09:42:00 → click {"i":31,"intent":"select HTTP destination type"}
+09:42:05 → type {"i":32,"text":"race-gen-2","intent":"set destination name"}
+09:42:06 → type {"i":34,"text":"https://example.com/webhooks","intent":"set destination URL"}
+09:42:06   ✉ write sent (--allow-writes) POST https://alb.reddit.com/rp?id=a2_jcidenjemc2o&event=gtm.formInteract
+09:42:08 → type {"i":54,"text":"race-gen-3","intent":"set connection name"}
+09:42:08   ✉ write sent (--allow-writes) POST https://alb.reddit.com/rp?id=a2_jcidenjemc2o&event=gtm.formInteract
+09:42:12 → click {"i":43,"intent":"create connection with new source and HTTP destination"}
+09:42:12   ✉ write sent (--allow-writes) POST https://alb.reddit.com/rp?id=a2_jcidenjemc2o&event=gtm.formInteract
+09:42:12   ✉ write sent (--allow-writes) POST https://api.hookdeck.com/2026-09-01/webhooks
+09:42:12   ✉ write sent (--allow-writes) POST https://alb.reddit.com/rp?id=a2_jcidenjemc2o&event=gtm.historyChange
+09:42:13   ✉ write sent (--allow-writes) POST https://alb.reddit.com/rp?id=a2_jcidenjemc2o&event=gtm.historyChange-v2
+09:42:13   ✉ write sent (--allow-writes) POST https://alb.reddit.com/rp?id=a2_jcidenjemc2o&event=page_view
+09:42:13   ✉ write sent (--allow-writes) POST https://alb.reddit.com/rp?id=a2_jcidenjemc2o&event=page_view
+09:42:15   ✉ write sent (--allow-writes) POST https://m.stripe.com/6
+09:42:16 → goto {"url":"https://dashboard.hookdeck.com/connections/web_tgaZwTmFKbx8","intent":"open connection detail"}
+09:42:16   ✉ write sent (--allow-writes) POST https://alb.reddit.com/rp?id=a2_jcidenjemc2o&event=gtm.init_consent
+09:42:16   ✉ write sent (--allow-writes) POST https://alb.reddit.com/rp?id=a2_jcidenjemc2o&event=gtm.init
+09:42:16   ✉ write sent (--allow-writes) POST https://alb.reddit.com/rp?id=a2_jcidenjemc2o&event=gtag.config
+09:42:16   ✉ write sent (--allow-writes) POST https://alb.reddit.com/rp?id=a2_jcidenjemc2o&event=gtag.config
+09:42:16   ✉ write sent (--allow-writes) POST https://alb.reddit.com/rp?id=a2_jcidenjemc2o&event=gtm.js
+09:42:16   ✉ write sent (--allow-writes) POST https://alb.reddit.com/rp?id=a2_jcidenjemc2o&event=gtm.dom
+09:42:16   ✉ write sent (--allow-writes) POST https://alb.reddit.com/rp?id=a2_jcidenjemc2o&event=gtm.historyChange
+09:42:16   ✉ write sent (--allow-writes) POST https://alb.reddit.com/rp?id=a2_jcidenjemc2o&event=gtm.scrollDepth
+09:42:16   ✉ write sent (--allow-writes) POST https://alb.reddit.com/rp?id=a2_jcidenjemc2o&event=scroll
+09:42:16   ✉ write sent (--allow-writes) POST https://api.hookdeck.com/2026-09-01/internal/t
+09:42:16   ✉ write sent (--allow-writes) POST https://ph.hookdeck.com/flags/?v=2&ip=0&_=1792316536647&ver=1.386.8&compression=base64
+09:42:16   ✉ write sent (--allow-writes) POST https://alb.reddit.com/rp?id=a2_jcidenjemc2o&event=gtm.load
+09:42:17   ✉ write sent (--allow-writes) POST https://m.stripe.com/6
+09:42:17   ✉ write sent (--allow-writes) POST https://bzr.openai.com/v1/sdk/events?pid=7Cxjtzh8KnSQXdaSEimK5v&st=oaiq-web&sv=0.1.41&t=179231653782
+09:42:22   ✉ write sent (--allow-writes) POST https://r.stripe.com/b
+09:42:25 → click {"i":25,"intent":"open source detail"}
+09:42:25   ✉ write sent (--allow-writes) POST https://alb.reddit.com/rp?id=a2_jcidenjemc2o&event=gtm.historyChange
+09:42:26   ✉ write sent (--allow-writes) POST https://alb.reddit.com/rp?id=a2_jcidenjemc2o&event=gtm.historyChange-v2
+09:42:26   ✉ write sent (--allow-writes) POST https://alb.reddit.com/rp?id=a2_jcidenjemc2o&event=page_view
+09:42:26   ✉ write sent (--allow-writes) POST https://alb.reddit.com/rp?id=a2_jcidenjemc2o&event=page_view
+09:42:26   ✉ write sent (--allow-writes) POST https://m.stripe.com/6
+09:42:29 → goto {"url":"https://dashboard.hookdeck.com/destinations/des_rXO6e3TYzkub","intent":"open destination detail"}
+09:42:29   ✉ write sent (--allow-writes) POST https://alb.reddit.com/rp?id=a2_jcidenjemc2o&event=gtm.init_consent
+09:42:29   ✉ write sent (--allow-writes) POST https://alb.reddit.com/rp?id=a2_jcidenjemc2o&event=gtm.init
+09:42:29   ✉ write sent (--allow-writes) POST https://alb.reddit.com/rp?id=a2_jcidenjemc2o&event=gtag.config
+09:42:29   ✉ write sent (--allow-writes) POST https://alb.reddit.com/rp?id=a2_jcidenjemc2o&event=gtag.config
+09:42:29   ✉ write sent (--allow-writes) POST https://alb.reddit.com/rp?id=a2_jcidenjemc2o&event=gtm.js
+09:42:29   ✉ write sent (--allow-writes) POST https://alb.reddit.com/rp?id=a2_jcidenjemc2o&event=gtm.dom
+09:42:29   ✉ write sent (--allow-writes) POST https://alb.reddit.com/rp?id=a2_jcidenjemc2o&event=gtm.scrollDepth
+09:42:29   ✉ write sent (--allow-writes) POST https://alb.reddit.com/rp?id=a2_jcidenjemc2o&event=scroll
+09:42:29   ✉ write sent (--allow-writes) POST https://api.hookdeck.com/2026-09-01/internal/t
+09:42:29   ✉ write sent (--allow-writes) POST https://ph.hookdeck.com/flags/?v=2&ip=0&_=1792316549913&ver=1.386.8&compression=base64
+09:42:30   ✉ write sent (--allow-writes) POST https://alb.reddit.com/rp?id=a2_jcidenjemc2o&event=gtm.load
+09:42:30   ✉ write sent (--allow-writes) POST https://m.stripe.com/6
+09:42:31   ✉ write sent (--allow-writes) POST https://bzr.openai.com/v1/sdk/events?pid=7Cxjtzh8KnSQXdaSEimK5v&st=oaiq-web&sv=0.1.41&t=179231655109
+09:42:36   ✉ write sent (--allow-writes) POST https://r.stripe.com/b
+09:42:39 → goto {"url":"https://dashboard.hookdeck.com/connections","intent":"list connections"}
+09:42:39   ✉ write sent (--allow-writes) POST https://alb.reddit.com/rp?id=a2_jcidenjemc2o&event=gtm.init_consent
+09:42:39   ✉ write sent (--allow-writes) POST https://alb.reddit.com/rp?id=a2_jcidenjemc2o&event=gtm.init
+09:42:39   ✉ write sent (--allow-writes) POST https://alb.reddit.com/rp?id=a2_jcidenjemc2o&event=gtag.config
+09:42:39   ✉ write sent (--allow-writes) POST https://alb.reddit.com/rp?id=a2_jcidenjemc2o&event=gtag.config
+09:42:39   ✉ write sent (--allow-writes) POST https://alb.reddit.com/rp?id=a2_jcidenjemc2o&event=gtm.js
+09:42:39   ✉ write sent (--allow-writes) POST https://alb.reddit.com/rp?id=a2_jcidenjemc2o&event=gtm.dom
+09:42:39   ✉ write sent (--allow-writes) POST https://api.hookdeck.com/2026-09-01/internal/t
+09:42:39   ✉ write sent (--allow-writes) POST https://ph.hookdeck.com/flags/?v=2&ip=0&_=1792316559987&ver=1.386.8&compression=base64
+09:42:40   ✉ write sent (--allow-writes) POST https://alb.reddit.com/rp?id=a2_jcidenjemc2o&event=gtm.scrollDepth
+09:42:40   ✉ write sent (--allow-writes) POST https://alb.reddit.com/rp?id=a2_jcidenjemc2o&event=scroll
+09:42:40   ✉ write sent (--allow-writes) POST https://alb.reddit.com/rp?id=a2_jcidenjemc2o&event=gtm.load
+09:42:40   ✉ write sent (--allow-writes) POST https://m.stripe.com/6
+09:42:41   ✉ write sent (--allow-writes) POST https://bzr.openai.com/v1/sdk/events?pid=7Cxjtzh8KnSQXdaSEimK5v&st=oaiq-web&sv=0.1.41&t=179231656115
+09:42:46   ✉ write sent (--allow-writes) POST https://r.stripe.com/b
+09:42:47 → type {"i":23,"text":"race-gen","intent":"filter connections by name","submit":true}
+09:42:51 → click {"i":20,"intent":"view connections as table"}
+09:42:56 → click {"i":25,"intent":"filter connections by status"}
+09:43:00 → click {"i":27,"intent":"filter connections enabled only"}
+09:43:00   ✉ write sent (--allow-writes) POST https://alb.reddit.com/rp?id=a2_jcidenjemc2o&event=gtm.historyChange
+09:43:01   ✉ write sent (--allow-writes) POST https://alb.reddit.com/rp?id=a2_jcidenjemc2o&event=gtm.historyChange-v2
+09:43:01   ✉ write sent (--allow-writes) POST https://alb.reddit.com/rp?id=a2_jcidenjemc2o&event=page_view
+09:43:01   ✉ write sent (--allow-writes) POST https://alb.reddit.com/rp?id=a2_jcidenjemc2o&event=page_view
+09:43:04   ✉ write sent (--allow-writes) POST https://m.stripe.com/6
+09:43:05 → click {"i":26,"intent":"change connection sort order"}
+09:43:09 → click {"i":27,"intent":"sort connections by name A to Z"}
+09:43:13 → goto {"url":"https://dashboard.hookdeck.com/sources/src_dg1rfolj53kjuv/connections","intent":"list connections for a source"}
+09:43:13   ✉ write sent (--allow-writes) POST https://alb.reddit.com/rp?id=a2_jcidenjemc2o&event=gtm.init_consent
+09:43:13   ✉ write sent (--allow-writes) POST https://alb.reddit.com/rp?id=a2_jcidenjemc2o&event=gtm.init
+09:43:13   ✉ write sent (--allow-writes) POST https://alb.reddit.com/rp?id=a2_jcidenjemc2o&event=gtag.config
+09:43:13   ✉ write sent (--allow-writes) POST https://alb.reddit.com/rp?id=a2_jcidenjemc2o&event=gtag.config
+09:43:13   ✉ write sent (--allow-writes) POST https://alb.reddit.com/rp?id=a2_jcidenjemc2o&event=gtm.js
+09:43:13   ✉ write sent (--allow-writes) POST https://alb.reddit.com/rp?id=a2_jcidenjemc2o&event=gtm.dom
+09:43:13   ✉ write sent (--allow-writes) POST https://alb.reddit.com/rp?id=a2_jcidenjemc2o&event=gtm.historyChange
+09:43:13   ✉ write sent (--allow-writes) POST https://alb.reddit.com/rp?id=a2_jcidenjemc2o&event=gtm.scrollDepth
+09:43:13   ✉ write sent (--allow-writes) POST https://alb.reddit.com/rp?id=a2_jcidenjemc2o&event=scroll
+09:43:13   ✉ write sent (--allow-writes) POST https://api.hookdeck.com/2026-09-01/internal/t
+09:43:13   ✉ write sent (--allow-writes) POST https://ph.hookdeck.com/flags/?v=2&ip=0&_=1792316593619&ver=1.386.8&compression=base64
+09:43:13   ✉ write sent (--allow-writes) POST https://alb.reddit.com/rp?id=a2_jcidenjemc2o&event=gtm.load
+09:43:14   ✉ write sent (--allow-writes) POST https://m.stripe.com/6
+09:43:14   ✉ write sent (--allow-writes) POST https://bzr.openai.com/v1/sdk/events?pid=7Cxjtzh8KnSQXdaSEimK5v&st=oaiq-web&sv=0.1.41&t=179231659481
+09:43:19   ✉ write sent (--allow-writes) POST https://r.stripe.com/b
+09:43:22 → goto {"url":"https://dashboard.hookdeck.com/requests","intent":"list inbound requests"}
+09:43:22   ✉ write sent (--allow-writes) POST https://alb.reddit.com/rp?id=a2_jcidenjemc2o&event=gtm.init_consent
+09:43:22   ✉ write sent (--allow-writes) POST https://alb.reddit.com/rp?id=a2_jcidenjemc2o&event=gtm.init
+09:43:22   ✉ write sent (--allow-writes) POST https://alb.reddit.com/rp?id=a2_jcidenjemc2o&event=gtag.config
+09:43:22   ✉ write sent (--allow-writes) POST https://alb.reddit.com/rp?id=a2_jcidenjemc2o&event=gtag.config
+09:43:22   ✉ write sent (--allow-writes) POST https://alb.reddit.com/rp?id=a2_jcidenjemc2o&event=gtm.js
+09:43:22   ✉ write sent (--allow-writes) POST https://alb.reddit.com/rp?id=a2_jcidenjemc2o&event=gtm.dom
+09:43:22   ✉ write sent (--allow-writes) POST https://alb.reddit.com/rp?id=a2_jcidenjemc2o&event=gtm.scrollDepth
+09:43:22   ✉ write sent (--allow-writes) POST https://alb.reddit.com/rp?id=a2_jcidenjemc2o&event=scroll
+09:43:22   ✉ write sent (--allow-writes) POST https://api.hookdeck.com/2026-09-01/internal/t
+09:43:22   ✉ write sent (--allow-writes) POST https://ph.hookdeck.com/flags/?v=2&ip=0&_=1792316602976&ver=1.386.8&compression=base64
+09:43:23   ✉ write sent (--allow-writes) POST https://alb.reddit.com/rp?id=a2_jcidenjemc2o&event=gtm.load
+09:43:23   ✉ write sent (--allow-writes) POST https://m.stripe.com/6
+09:43:24   ✉ write sent (--allow-writes) POST https://bzr.openai.com/v1/sdk/events?pid=7Cxjtzh8KnSQXdaSEimK5v&st=oaiq-web&sv=0.1.41&t=179231660416
+09:43:29   ✉ write sent (--allow-writes) POST https://r.stripe.com/b
+09:43:29 → click {"i":6,"intent":"list issues"}
+09:43:29   ✉ write sent (--allow-writes) POST https://alb.reddit.com/rp?id=a2_jcidenjemc2o&event=gtm.historyChange
+09:43:30   ✉ write sent (--allow-writes) POST https://alb.reddit.com/rp?id=a2_jcidenjemc2o&event=gtm.historyChange-v2
+09:43:30   ✉ write sent (--allow-writes) POST https://alb.reddit.com/rp?id=a2_jcidenjemc2o&event=page_view
+09:43:30   ✉ write sent (--allow-writes) POST https://alb.reddit.com/rp?id=a2_jcidenjemc2o&event=page_view
+09:43:32   ✉ write sent (--allow-writes) POST https://m.stripe.com/6
+09:43:35 → click {"i":5,"intent":"list transformations"}
+09:43:35   ✉ write sent (--allow-writes) POST https://alb.reddit.com/rp?id=a2_jcidenjemc2o&event=gtm.historyChange
+09:43:36   ✉ write sent (--allow-writes) POST https://alb.reddit.com/rp?id=a2_jcidenjemc2o&event=gtm.historyChange-v2
+09:43:36   ✉ write sent (--allow-writes) POST https://alb.reddit.com/rp?id=a2_jcidenjemc2o&event=page_view
+09:43:36   ✉ write sent (--allow-writes) POST https://alb.reddit.com/rp?id=a2_jcidenjemc2o&event=page_view
+09:43:37   ✉ write sent (--allow-writes) POST https://m.stripe.com/6
+09:43:39 → click {"i":3,"intent":"list sources"}
+09:43:39   ✉ write sent (--allow-writes) POST https://alb.reddit.com/rp?id=a2_jcidenjemc2o&event=gtm.historyChange
+09:43:40   ✉ write sent (--allow-writes) POST https://alb.reddit.com/rp?id=a2_jcidenjemc2o&event=gtm.historyChange-v2
+09:43:40   ✉ write sent (--allow-writes) POST https://alb.reddit.com/rp?id=a2_jcidenjemc2o&event=page_view
+09:43:40   ✉ write sent (--allow-writes) POST https://alb.reddit.com/rp?id=a2_jcidenjemc2o&event=page_view
+09:43:42   ✉ write sent (--allow-writes) POST https://m.stripe.com/6
+09:43:44 → type {"i":21,"text":"race","intent":"filter sources by name","submit":true}
+09:43:44   ✉ write sent (--allow-writes) POST https://alb.reddit.com/rp?id=a2_jcidenjemc2o&event=gtm.historyChange
+09:43:45   ✉ write sent (--allow-writes) POST https://alb.reddit.com/rp?id=a2_jcidenjemc2o&event=gtm.historyChange-v2
+09:43:45   ✉ write sent (--allow-writes) POST https://alb.reddit.com/rp?id=a2_jcidenjemc2o&event=page_view
+09:43:45   ✉ write sent (--allow-writes) POST https://alb.reddit.com/rp?id=a2_jcidenjemc2o&event=page_view
+09:43:47   ✉ write sent (--allow-writes) POST https://m.stripe.com/6
+09:43:48 → goto {"url":"https://dashboard.hookdeck.com/destinations","intent":"list destinations"}
+09:43:48   ✉ write sent (--allow-writes) POST https://alb.reddit.com/rp?id=a2_jcidenjemc2o&event=gtm.init_consent
+09:43:48   ✉ write sent (--allow-writes) POST https://alb.reddit.com/rp?id=a2_jcidenjemc2o&event=gtm.init
+09:43:48   ✉ write sent (--allow-writes) POST https://alb.reddit.com/rp?id=a2_jcidenjemc2o&event=gtag.config
+09:43:48   ✉ write sent (--allow-writes) POST https://alb.reddit.com/rp?id=a2_jcidenjemc2o&event=gtag.config
+09:43:48   ✉ write sent (--allow-writes) POST https://alb.reddit.com/rp?id=a2_jcidenjemc2o&event=gtm.js
+09:43:48   ✉ write sent (--allow-writes) POST https://alb.reddit.com/rp?id=a2_jcidenjemc2o&event=gtm.dom
+09:43:48   ✉ write sent (--allow-writes) POST https://api.hookdeck.com/2026-09-01/internal/t
+09:43:48   ✉ write sent (--allow-writes) POST https://ph.hookdeck.com/flags/?v=2&ip=0&_=1792316628853&ver=1.386.8&compression=base64
+09:43:48   ✉ write sent (--allow-writes) POST https://alb.reddit.com/rp?id=a2_jcidenjemc2o&event=gtm.scrollDepth
+09:43:48   ✉ write sent (--allow-writes) POST https://alb.reddit.com/rp?id=a2_jcidenjemc2o&event=scroll
+09:43:49   ✉ write sent (--allow-writes) POST https://alb.reddit.com/rp?id=a2_jcidenjemc2o&event=gtm.load
+09:43:49   ✉ write sent (--allow-writes) POST https://m.stripe.com/6
+09:43:50   ✉ write sent (--allow-writes) POST https://bzr.openai.com/v1/sdk/events?pid=7Cxjtzh8KnSQXdaSEimK5v&st=oaiq-web&sv=0.1.41&t=179231663007
+09:43:55   ✉ write sent (--allow-writes) POST https://r.stripe.com/b
+09:43:55 → type {"i":21,"text":"race","intent":"filter destinations by name","submit":true}
+09:43:55   ✉ write sent (--allow-writes) POST https://alb.reddit.com/rp?id=a2_jcidenjemc2o&event=gtm.historyChange
+09:43:56   ✉ write sent (--allow-writes) POST https://alb.reddit.com/rp?id=a2_jcidenjemc2o&event=gtm.historyChange-v2
+09:43:56   ✉ write sent (--allow-writes) POST https://alb.reddit.com/rp?id=a2_jcidenjemc2o&event=page_view
+09:43:56   ✉ write sent (--allow-writes) POST https://alb.reddit.com/rp?id=a2_jcidenjemc2o&event=page_view
+09:43:58   ✉ write sent (--allow-writes) POST https://m.stripe.com/6
+09:43:59 → click {"i":8,"intent":"view project metrics"}
+09:44:00   ✉ write sent (--allow-writes) POST https://alb.reddit.com/rp?id=a2_jcidenjemc2o&event=gtm.historyChange
+09:44:01   ✉ write sent (--allow-writes) POST https://alb.reddit.com/rp?id=a2_jcidenjemc2o&event=gtm.historyChange-v2
+09:44:01   ✉ write sent (--allow-writes) POST https://alb.reddit.com/rp?id=a2_jcidenjemc2o&event=page_view
+09:44:01   ✉ write sent (--allow-writes) POST https://alb.reddit.com/rp?id=a2_jcidenjemc2o&event=page_view
+09:44:03   ✉ write sent (--allow-writes) POST https://m.stripe.com/6
+09:44:08 → done {"summary":"Covered the user's goal: listed connections (GET /webhooks, with name filter full_name, status filter, sort order_by full_name/c
+09:44:08 📼 recorded 408 calls, 0 held writes
+09:44:08 🧠 synthesizing from 55 endpoints (89k chars)
+09:45:42 🔎 verify round 0: list-connections, create-connection, list-sources, list-destinations, get-connection, get-source, get-destination, count-connections, list-requests, list-events, list-issues, count-issues, list-transformations, get-event-metrics, get-project-context, list-projects, get-current-user
+09:45:43   ✓ list-connections (149 ms)
+09:45:43   ✓ create-connection: write: dry-run preview only, not sent
+09:45:43   ✓ list-sources (302 ms)
+09:45:43   ✓ list-destinations (143 ms)
+09:45:43   ✓ get-connection (132 ms)
+09:45:43   ✓ get-source (120 ms)
+09:45:43   ✓ get-destination (109 ms)
+09:45:43   ✓ count-connections (115 ms)
+09:45:43   ✗ list-requests: empty list: the example args returned nothing or the selector/resultPath is wrong (185 ms)
+09:45:43   ✗ list-events: empty list: the example args returned nothing or the selector/resultPath is wrong (176 ms)
+09:45:43   ✗ list-issues: empty list: the example args returned nothing or the selector/resultPath is wrong (130 ms)
+09:45:43   ✓ count-issues (102 ms)
+09:45:43   ✗ list-transformations: empty list: the example args returned nothing or the selector/resultPath is wrong (117 ms)
+09:45:43   ✓ get-event-metrics (141 ms)
+09:45:43   ✓ get-project-context (109 ms)
+09:45:43   ✓ list-projects (121 ms)
+09:45:43   ✓ get-current-user (110 ms)
+09:45:56   ⚑ context teamId = tm_FW0ek6XKAZBc (same value on every recorded request (list-connections, create-connection, list-sources))

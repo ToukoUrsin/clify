@@ -1,0 +1,380 @@
+{
+ "name": "ipac-caltech",
+ "startUrl": "https://exoplanetarchive.ipac.caltech.edu/",
+ "origin": "https://exoplanetarchive.ipac.caltech.edu",
+ "createdAt": "2026-10-18T09:24:31.833Z",
+ "description": "NASA Exoplanet Archive (IPAC/Caltech). This CLI queries confirmed exoplanets, TESS TOI candidates, table schemas and archive statistics through the public TAP/ADQL API. It also checks whether an object name resolves and reads system overview pages.",
+ "commands": [
+  {
+   "name": "run-tap-query",
+   "summary": "Run an arbitrary ADQL query against the archive's TAP service (tables: ps, pscomppars, toi, cumulative, stellarhosts, k2pandc, ...) and return JSON rows",
+   "method": "GET",
+   "urlTemplate": "/TAP/sync?format=json",
+   "params": [
+    {
+     "name": "query",
+     "in": "query",
+     "required": true,
+     "type": "string",
+     "description": "ADQL query, e.g. \"select top 10 pl_name,hostname from pscomppars where disc_year=2024 order by pl_rade desc\". Use plain WHERE clauses; avoid contains(point,circle) cone searches, which may be blocked.",
+     "example": "select top 10 pl_name,hostname,pl_orbper,pl_rade,disc_year from pscomppars where disc_year=2024 order by pl_rade desc"
+    },
+    {
+     "name": "maxrec",
+     "in": "query",
+     "required": false,
+     "type": "number",
+     "description": "Maximum number of rows to return (an alternative to 'select top N')",
+     "example": "20"
+    }
+   ],
+   "responseType": "json",
+   "mutates": false,
+   "example": {
+    "query": "select top 10 pl_name,hostname,pl_orbper,pl_rade,disc_year from pscomppars where disc_year=2024 order by pl_rade desc"
+   },
+   "source": "E2",
+   "verified": true
+  },
+  {
+   "name": "export-tap-csv",
+   "summary": "Run an ADQL query against the TAP service and return the result as CSV text (for bulk export)",
+   "method": "GET",
+   "urlTemplate": "/TAP/sync?format=csv",
+   "params": [
+    {
+     "name": "query",
+     "in": "query",
+     "required": true,
+     "type": "string",
+     "description": "ADQL query, e.g. \"select toi,tid,tfopwg_disp,pl_orbper,pl_rade from toi where tfopwg_disp='PC' order by toi\"",
+     "example": "select toi,tid,tfopwg_disp,pl_orbper,pl_rade from toi where tfopwg_disp='PC' order by toi"
+    },
+    {
+     "name": "maxrec",
+     "in": "query",
+     "required": false,
+     "type": "number",
+     "description": "Maximum number of rows to return",
+     "example": "20"
+    }
+   ],
+   "responseType": "text",
+   "mutates": false,
+   "example": {
+    "query": "select toi,tid,tfopwg_disp,pl_orbper,pl_rade from toi where tfopwg_disp='PC' order by toi",
+    "maxrec": "20"
+   },
+   "source": "E2 GET https://exoplanetarchive.ipac.caltech.edu/TAP/sync",
+   "verified": true
+  },
+  {
+   "name": "list-planets-by-year",
+   "summary": "List confirmed planets discovered in a given year (Planetary Systems Composite table), sorted by a chosen column, top N",
+   "method": "GET",
+   "urlTemplate": "/TAP/sync?query=select+top+{api_limit}+pl_name,hostname,pl_orbper,pl_rade,pl_bmasse,discoverymethod,disc_year+from+pscomppars+where+disc_year={year}+order+by+{sort}+{order}&format=json",
+   "params": [
+    {
+     "name": "year",
+     "in": "path",
+     "required": true,
+     "type": "number",
+     "description": "Discovery year, e.g. 2024",
+     "example": "2024"
+    },
+    {
+     "name": "api_limit",
+     "in": "path",
+     "required": false,
+     "type": "number",
+     "description": "Number of planets to return (sent to the site as \"limit\"; clify's own --limit only shapes the output)",
+     "default": 10,
+     "example": "10"
+    },
+    {
+     "name": "sort",
+     "in": "path",
+     "required": false,
+     "type": "string",
+     "description": "Column to sort by (pl_rade = radius in Earth radii, pl_orbper = orbital period in days, pl_bmasse = mass in Earth masses)",
+     "enum": [
+      "pl_rade",
+      "pl_orbper",
+      "pl_bmasse",
+      "pl_name"
+     ],
+     "default": "pl_rade",
+     "example": "pl_rade"
+    },
+    {
+     "name": "order",
+     "in": "path",
+     "required": false,
+     "type": "string",
+     "description": "Sort direction",
+     "enum": [
+      "desc",
+      "asc"
+     ],
+     "default": "desc",
+     "example": "desc"
+    }
+   ],
+   "responseType": "json",
+   "defaultFields": [
+    "pl_name",
+    "hostname",
+    "pl_orbper",
+    "pl_rade",
+    "pl_bmasse",
+    "discoverymethod",
+    "disc_year"
+   ],
+   "mutates": false,
+   "example": {
+    "year": "2024",
+    "api_limit": "10",
+    "sort": "pl_rade",
+    "order": "desc"
+   },
+   "source": "E2 GET https://exoplanetarchive.ipac.caltech.edu/TAP/sync",
+   "verified": true
+  },
+  {
+   "name": "list-host-planets",
+   "summary": "List all confirmed planets orbiting a given host star, with period, radius, mass and discovery method",
+   "method": "GET",
+   "urlTemplate": "/TAP/sync?query=select+pl_name,hostname,pl_orbper,pl_rade,pl_bmasse,discoverymethod,disc_year+from+pscomppars+where+hostname=%27{hostname}%27&format=json",
+   "params": [
+    {
+     "name": "hostname",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Exact host star name as used by the archive, e.g. Kepler-186, TRAPPIST-1",
+     "example": "Kepler-186"
+    }
+   ],
+   "responseType": "json",
+   "defaultFields": [
+    "pl_name",
+    "hostname",
+    "pl_orbper",
+    "pl_rade",
+    "pl_bmasse",
+    "discoverymethod",
+    "disc_year"
+   ],
+   "mutates": false,
+   "example": {
+    "hostname": "Kepler-186"
+   },
+   "source": "E2 GET https://exoplanetarchive.ipac.caltech.edu/TAP/sync",
+   "verified": true
+  },
+  {
+   "name": "list-toi-candidates",
+   "summary": "List TESS Objects of Interest (TOI) filtered by TFOPWG disposition, ordered by TOI number",
+   "method": "GET",
+   "urlTemplate": "/TAP/sync?query=select+toi,tid,tfopwg_disp,pl_orbper,pl_rade+from+toi+where+tfopwg_disp=%27{disposition}%27+order+by+toi&format=json",
+   "params": [
+    {
+     "name": "disposition",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "TFOPWG disposition: PC = planet candidate, APC = ambiguous PC, CP = confirmed planet, KP = known planet, FP = false positive, FA = false alarm",
+     "enum": [
+      "PC",
+      "APC",
+      "CP",
+      "KP",
+      "FP",
+      "FA"
+     ],
+     "example": "PC"
+    },
+    {
+     "name": "maxrec",
+     "in": "query",
+     "required": false,
+     "type": "number",
+     "description": "Maximum number of rows to return",
+     "default": 20,
+     "example": "20"
+    }
+   ],
+   "responseType": "json",
+   "defaultFields": [
+    "toi",
+    "tid",
+    "tfopwg_disp",
+    "pl_orbper",
+    "pl_rade"
+   ],
+   "mutates": false,
+   "example": {
+    "disposition": "PC",
+    "maxrec": "20"
+   },
+   "source": "E2 GET https://exoplanetarchive.ipac.caltech.edu/TAP/sync",
+   "verified": true
+  },
+  {
+   "name": "list-tap-tables",
+   "summary": "List all tables available through the TAP service, with descriptions",
+   "method": "GET",
+   "urlTemplate": "/TAP/sync?query=select+table_name,description+from+TAP_SCHEMA.tables&format=json",
+   "params": [],
+   "responseType": "json",
+   "defaultFields": [
+    "table_name",
+    "description"
+   ],
+   "mutates": false,
+   "source": "E2 GET https://exoplanetarchive.ipac.caltech.edu/TAP/sync",
+   "verified": true
+  },
+  {
+   "name": "get-table-columns",
+   "summary": "Get the column schema (name, datatype, description) of a TAP table such as pscomppars, ps or toi",
+   "method": "GET",
+   "urlTemplate": "/TAP/sync?query=select+column_name,datatype,description+from+TAP_SCHEMA.columns+where+table_name+like+%27{table}%27&format=json",
+   "params": [
+    {
+     "name": "table",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "TAP table name, e.g. pscomppars, ps, toi, cumulative, stellarhosts",
+     "example": "pscomppars"
+    }
+   ],
+   "responseType": "json",
+   "defaultFields": [
+    "column_name",
+    "datatype",
+    "description"
+   ],
+   "mutates": false,
+   "example": {
+    "table": "pscomppars"
+   },
+   "source": "E2 GET https://exoplanetarchive.ipac.caltech.edu/TAP/sync",
+   "verified": true
+  },
+  {
+   "name": "check-object-name",
+   "summary": "Check whether an object/system name resolves in the archive inventory; stat OK means /overview/<name> exists",
+   "method": "GET",
+   "urlTemplate": "/cgi-bin/Inventory/nph-coordCheck?radius=",
+   "params": [
+    {
+     "name": "locstr",
+     "in": "query",
+     "required": true,
+     "type": "string",
+     "description": "Object/system name, e.g. Kepler-186 or TRAPPIST-1",
+     "example": "Kepler-186"
+    }
+   ],
+   "responseType": "json",
+   "mutates": false,
+   "example": {
+    "locstr": "Kepler-186"
+   },
+   "source": "E4",
+   "verified": true
+  },
+  {
+   "name": "get-system-overview",
+   "summary": "Get the planets shown on a system's overview page (planet name, radius in Jupiter radii, confirmed/candidate status)",
+   "method": "GET",
+   "urlTemplate": "/overview/{name}",
+   "params": [
+    {
+     "name": "name",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "System/host name, e.g. Kepler-186 or TRAPPIST-1",
+     "example": "TRAPPIST-1"
+    }
+   ],
+   "responseType": "html",
+   "extract": {
+    "list": "div.planet_wrapper",
+    "fields": {
+     "planet": "div.letter",
+     "radius_rjup": "div.value",
+     "status": "div.planet@title"
+    }
+   },
+   "defaultFields": [
+    "planet",
+    "radius_rjup",
+    "status"
+   ],
+   "mutates": false,
+   "example": {
+    "name": "TRAPPIST-1"
+   },
+   "source": "E7 E8 GET https://exoplanetarchive.ipac.caltech.edu/overview/Kepler-186",
+   "verified": true
+  },
+  {
+   "name": "get-archive-statistics",
+   "summary": "Get the archive's statistics page rows (confirmed planet counts by discovery method, mass/radius coverage, radius bins, Kepler/TESS candidate counts)",
+   "method": "GET",
+   "urlTemplate": "/docs/counts_detail.html",
+   "params": [],
+   "responseType": "html",
+   "extract": {
+    "list": "table.half_table tr",
+    "fields": {
+     "label": "a",
+     "row": ""
+    }
+   },
+   "defaultFields": [
+    "label",
+    "row"
+   ],
+   "mutates": false,
+   "source": "E11 GET https://exoplanetarchive.ipac.caltech.edu/docs/counts_detail.html",
+   "verified": true
+  },
+  {
+   "name": "get-toi-counts",
+   "summary": "Get current TESS TOI totals from ExoFOP: total count, latest new/updated dates and counts, and counts per TFOPWG disposition",
+   "method": "GET",
+   "urlTemplate": "https://exofop.ipac.caltech.edu/tess/download_toi.php?output=count",
+   "params": [],
+   "responseType": "json",
+   "mutates": false,
+   "source": "E6 GET https://exofop.ipac.caltech.edu/tess/download_toi.php",
+   "verified": true
+  }
+ ],
+ "blockers": [
+  "bot-check at https://exoplanetarchive.ipac.caltech.edu/TAP/sync?query=select+pl_name,ra,dec,sy_dist+from+ps+where+default_flag=1+and+contains(point(%27icrs%27,ra,dec),circle(%27icrs%27,291.4,48.1,2))=1&format=json"
+ ],
+ "notes": [
+  "TAP (/TAP/sync) is the main data interface. It takes ADQL: SELECT <cols> FROM <table> WHERE <constraints>. Use 'select top N' or maxrec to limit rows. There is no paginated listing.",
+  "Useful tables: pscomppars (one row per confirmed planet, composite parameters), ps (all parameter sets; filter default_flag=1 for defaults), toi (TESS candidates), cumulative (Kepler KOIs), stellarhosts.",
+  "Common columns: pl_name, hostname, pl_orbper (days), pl_rade (Earth radii), pl_bmasse (Earth masses), pl_eqt (K), discoverymethod, disc_year, sy_dist (pc). Use get-table-columns to discover more.",
+  "Use plain ADQL WHERE clauses. Cloudflare's WAF blocked queries using contains(point(...),circle(...)) cone searches.",
+  "String literals in ADQL use single quotes. Name filters in list-host-planets are exact matches; use run-tap-query with \"hostname like 'Kepler-%'\" for wildcard matches.",
+  "robots.txt disallows /cgi-bin/TblView/nph-tblView, /cgi-bin/ExoOverview, /cgi-bin/nstedAPI and /cgi-bin/Lookup/nph-aliaslookup.py. The legacy nstedAPI is retired in favour of TAP.",
+  "No login is needed; all commands are public reads."
+ ],
+ "dropped": [],
+ "generated": {
+  "by": "clify add",
+  "model": "claude-opus-5-5",
+  "exploredSteps": 17,
+  "recorded": 21,
+  "verifiedAt": "2026-10-18T09:25:59.554Z",
+  "seconds": 204
+ }
+}

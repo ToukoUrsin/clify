@@ -1,0 +1,101 @@
+{
+  "name": "books",
+  "startUrl": "https://books.toscrape.com/",
+  "origin": "https://books.toscrape.com",
+  "createdAt": "2026-10-17T08:15:00Z",
+  "description": "Books to Scrape (scraping sandbox): browse the catalogue, filter by category, open a book. Hand-written from recording.jsonl. Ratings come back as the star class, e.g. \"star-rating Three\" = 3 of 5.",
+  "commands": [
+    {
+      "name": "list-books",
+      "summary": "All books, 20 per page",
+      "method": "GET",
+      "urlTemplate": "/catalogue/page-{page}.html",
+      "responseType": "html",
+      "mutates": false,
+      "params": [
+        {
+          "name": "page",
+          "in": "path",
+          "required": false,
+          "type": "number",
+          "default": 1
+        }
+      ],
+      "extract": {
+        "list": "article.product_pod",
+        "fields": {
+          "title": "h3 a@title",
+          "price": ".price_color",
+          "stock": ".availability",
+          "rating": "p.star-rating@class",
+          "url": "h3 a@href"
+        }
+      },
+      "example": {
+        "page": "2"
+      },
+      "source": "GET https://books.toscrape.com/catalogue/category/books/mystery_3/page-2.html"
+    },
+    {
+      "name": "list-category",
+      "summary": "Books in one category (slug like mystery_3, travel_2)",
+      "method": "GET",
+      "urlTemplate": "/catalogue/category/books/{category}/index.html",
+      "responseType": "html",
+      "mutates": false,
+      "params": [
+        {
+          "name": "category",
+          "in": "path",
+          "required": true,
+          "type": "string",
+          "description": "category slug, e.g. mystery_3"
+        }
+      ],
+      "extract": {
+        "list": "article.product_pod",
+        "fields": {
+          "title": "h3 a@title",
+          "price": ".price_color",
+          "url": "h3 a@href",
+          "stock": ".availability",
+          "rating": "p.star-rating@class"
+        }
+      },
+      "example": {
+        "category": "mystery_3"
+      },
+      "source": "GET https://books.toscrape.com/catalogue/category/books/mystery_3/index.html"
+    },
+    {
+      "name": "get-book",
+      "summary": "One book's detail page",
+      "method": "GET",
+      "urlTemplate": "/catalogue/{slug}/index.html",
+      "responseType": "html",
+      "mutates": false,
+      "params": [
+        {
+          "name": "slug",
+          "in": "path",
+          "required": true,
+          "type": "string",
+          "description": "e.g. the-mysterious-affair-at-styles-hercule-poirot-1_452"
+        }
+      ],
+      "extract": {
+        "fields": {
+          "title": "div.product_main h1",
+          "price": "div.product_main p.price_color",
+          "stock": "div.product_main p.availability",
+          "upc": "table.table td",
+          "rating": "div.product_main p.star-rating@class"
+        }
+      },
+      "example": {
+        "slug": "the-mysterious-affair-at-styles-hercule-poirot-1_452"
+      },
+      "source": "GET https://books.toscrape.com/catalogue/the-mysterious-affair-at-styles-hercule-poirot-1_452/index.html"
+    }
+  ]
+}

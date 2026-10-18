@@ -1,0 +1,372 @@
+{
+ "name": "docs-python",
+ "startUrl": "https://docs.python.org/3/",
+ "origin": "https://docs.python.org",
+ "createdAt": "2026-10-18T07:13:59.194Z",
+ "description": "Official Python documentation (docs.python.org, a static Sphinx site). The CLI fetches the glossary as JSON, the module index, the general index by letter, tables of contents, What's New highlights, doc pages, the API entries on a page, and documentation downloads, for any docs version.",
+ "commands": [
+  {
+   "name": "get-glossary",
+   "summary": "Get every Python glossary term with its HTML definition, as a JSON object keyed by term",
+   "method": "GET",
+   "urlTemplate": "/{version}/_static/glossary.json",
+   "params": [
+    {
+     "name": "version",
+     "in": "path",
+     "required": false,
+     "type": "string",
+     "description": "Docs version: '3' (latest stable) or a specific version such as '3.12' or '3.13'",
+     "default": "3",
+     "example": "3"
+    }
+   ],
+   "responseType": "json",
+   "mutates": false,
+   "example": {
+    "version": "3"
+   },
+   "source": "E1 GET https://docs.python.org/{n}/_static/glossary.json",
+   "verified": true
+  },
+  {
+   "name": "list-modules",
+   "summary": "List all standard-library modules from the Python Module Index, with descriptions and doc links",
+   "method": "GET",
+   "urlTemplate": "/{version}/py-modindex.html",
+   "params": [
+    {
+     "name": "version",
+     "in": "path",
+     "required": false,
+     "type": "string",
+     "description": "Docs version: '3' (latest) or e.g. '3.12'",
+     "default": "3",
+     "example": "3"
+    }
+   ],
+   "responseType": "html",
+   "extract": {
+    "list": "table.modindextable tr",
+    "fields": {
+     "module": "a code || a",
+     "url": "a@href",
+     "description": "em"
+    }
+   },
+   "defaultFields": [
+    "module",
+    "description",
+    "url"
+   ],
+   "mutates": false,
+   "example": {
+    "version": "3"
+   },
+   "source": "E38 GET https://docs.python.org/{n}/py-modindex.html",
+   "verified": true
+  },
+  {
+   "name": "get-index-letter",
+   "summary": "List general index entries (functions, classes, keywords, topics) that start with a given letter, with links to where each is documented",
+   "method": "GET",
+   "urlTemplate": "/{version}/genindex-{letter}.html",
+   "params": [
+    {
+     "name": "letter",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Uppercase index letter A-Z, or 'Symbols' or '_'",
+     "example": "G"
+    },
+    {
+     "name": "version",
+     "in": "path",
+     "required": false,
+     "type": "string",
+     "description": "Docs version: '3' (latest) or e.g. '3.12'",
+     "default": "3",
+     "example": "3"
+    }
+   ],
+   "responseType": "html",
+   "extract": {
+    "list": "table.indextable td > ul > li",
+    "fields": {
+     "entry": "a",
+     "url": "a@href"
+    }
+   },
+   "defaultFields": [
+    "entry",
+    "url"
+   ],
+   "mutates": false,
+   "example": {
+    "letter": "G",
+    "version": "3"
+   },
+   "source": "E39",
+   "verified": true
+  },
+  {
+   "name": "list-toc",
+   "summary": "List the table of contents (chapters and pages) of a docs section such as the library reference, tutorial, HOWTOs, language reference or What's New",
+   "method": "GET",
+   "urlTemplate": "/{version}/{section}/index.html",
+   "params": [
+    {
+     "name": "section",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Docs section",
+     "enum": [
+      "library",
+      "tutorial",
+      "howto",
+      "reference",
+      "whatsnew",
+      "builtins",
+      "using",
+      "extending",
+      "c-api",
+      "faq"
+     ],
+     "example": "library"
+    },
+    {
+     "name": "version",
+     "in": "path",
+     "required": false,
+     "type": "string",
+     "description": "Docs version: '3' (latest) or e.g. '3.12'",
+     "default": "3",
+     "example": "3"
+    }
+   ],
+   "responseType": "html",
+   "extract": {
+    "list": "li.toctree-l1 > a.reference, li.toctree-l2 > a.reference",
+    "fields": {
+     "title": "",
+     "url": "@href"
+    }
+   },
+   "defaultFields": [
+    "title",
+    "url"
+   ],
+   "mutates": false,
+   "example": {
+    "section": "library",
+    "version": "3"
+   },
+   "source": "E10 E44 GET https://docs.python.org/{n}/library/index.html",
+   "verified": true
+  },
+  {
+   "name": "get-page",
+   "summary": "Get a documentation page (module reference, tutorial chapter, HOWTO, What's New) with its title, breadcrumb, source link and full text",
+   "method": "GET",
+   "urlTemplate": "/{version}/{section}/{page}.html",
+   "params": [
+    {
+     "name": "section",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Docs section directory, e.g. library, tutorial, howto, reference, whatsnew, builtins",
+     "example": "library"
+    },
+    {
+     "name": "page",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Page name without .html, e.g. 'json', 'asyncio-task', 'dataclasses', '3.11', 'enum', 'classes', 'compound_stmts', 'stdtypes'",
+     "example": "json"
+    },
+    {
+     "name": "version",
+     "in": "path",
+     "required": false,
+     "type": "string",
+     "description": "Docs version: '3' (latest) or e.g. '3.12'",
+     "default": "3",
+     "example": "3"
+    }
+   ],
+   "responseType": "html",
+   "extract": {
+    "fields": {
+     "title": "h1",
+     "breadcrumb": "li.nav-item-1 > a",
+     "parent": "li.nav-item-2 > a",
+     "sourceCode": "a.extlink-source@href",
+     "content": "div.body"
+    }
+   },
+   "mutates": false,
+   "example": {
+    "section": "library",
+    "page": "json",
+    "version": "3"
+   },
+   "source": "E5 E7 E8 E13 E19 E20 E21 E22 E23 E24 E25 E26 E27 E28 E29 E30 E37 GET https://docs.python.org/{n}/library/asyncio-task.html",
+   "verified": true
+  },
+  {
+   "name": "get-api-entries",
+   "summary": "List the API objects (functions, classes, methods, attributes, exceptions, data) documented on a page, each with signature, anchor and first description paragraph",
+   "method": "GET",
+   "urlTemplate": "/{version}/{section}/{page}.html",
+   "params": [
+    {
+     "name": "section",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Docs section directory, usually 'library' or 'builtins'",
+     "example": "library"
+    },
+    {
+     "name": "page",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Page name without .html, e.g. 'copy', 'heapq', 'queue', 'asyncio-queue', 'pprint'",
+     "example": "copy"
+    },
+    {
+     "name": "version",
+     "in": "path",
+     "required": false,
+     "type": "string",
+     "description": "Docs version: '3' (latest) or e.g. '3.12'",
+     "default": "3",
+     "example": "3"
+    }
+   ],
+   "responseType": "html",
+   "extract": {
+    "list": "dl.py",
+    "fields": {
+     "signature": "dt.sig",
+     "anchor": "dt.sig a.headerlink@href",
+     "description": "dd > p"
+    }
+   },
+   "defaultFields": [
+    "signature",
+    "anchor",
+    "description"
+   ],
+   "mutates": false,
+   "example": {
+    "section": "library",
+    "page": "copy",
+    "version": "3"
+   },
+   "source": "E17 E19 E26 E27 E28 E16 GET https://docs.python.org/{n}/library/asyncio-queue.html",
+   "verified": true
+  },
+  {
+   "name": "get-release-highlights",
+   "summary": "Get the 'Summary \u2013 Release highlights' bullet points from a Python release's What's New page",
+   "method": "GET",
+   "urlTemplate": "/{version}/whatsnew/{release}.html",
+   "params": [
+    {
+     "name": "release",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Python release, e.g. '3.15', '3.14', '3.11', '3.7'",
+     "example": "3.11"
+    },
+    {
+     "name": "version",
+     "in": "path",
+     "required": false,
+     "type": "string",
+     "description": "Docs version to read from: '3' (latest) or e.g. '3.12'",
+     "default": "3",
+     "example": "3"
+    }
+   ],
+   "responseType": "html",
+   "extract": {
+    "list": "section#summary-release-highlights li",
+    "fields": {
+     "text": "",
+     "link": "a@href"
+    }
+   },
+   "defaultFields": [
+    "text",
+    "link"
+   ],
+   "mutates": false,
+   "example": {
+    "release": "3.11",
+    "version": "3"
+   },
+   "source": "E2 E3 E4 E9 E12 E15 E31 E34 GET https://docs.python.org/{n}/whatsnew/3.11.html",
+   "verified": true
+  },
+  {
+   "name": "list-downloads",
+   "summary": "List downloadable documentation archives (PDF, HTML, plain text, EPUB) for a docs version",
+   "method": "GET",
+   "urlTemplate": "/{version}/download.html",
+   "params": [
+    {
+     "name": "version",
+     "in": "path",
+     "required": false,
+     "type": "string",
+     "description": "Docs version: '3' (latest) or e.g. '3.12'",
+     "default": "3",
+     "example": "3"
+    }
+   ],
+   "responseType": "html",
+   "extract": {
+    "list": "table td a",
+    "fields": {
+     "label": "",
+     "url": "@href"
+    }
+   },
+   "defaultFields": [
+    "label",
+    "url"
+   ],
+   "mutates": false,
+   "example": {
+    "version": "3"
+   },
+   "source": "E41 E42 GET https://docs.python.org/{n}/download.html",
+   "verified": true
+  }
+ ],
+ "blockers": [],
+ "notes": [
+  "Full-text search (search.html) runs in the browser against searchindex.js, so the server returns no results. To find things, use list-modules, get-index-letter (general index by letter), get-glossary or list-toc, then get-page.",
+  "The version path param accepts '3' (latest stable, currently 3.15) or a specific version such as '3.12'. Translations use a language prefix in the URL, e.g. /fr/3/ (not exposed as a param).",
+  "Links in results are relative to the page, e.g. 'library/json.html#module-json' from the module index, or 'asyncio-task.html#asyncio.Task' from a library page. To call get-page, split the link into section (directory) and page (file name without .html).",
+  "get-page returns the full page text in 'content', which can be large. Use get-api-entries for a compact list of the functions and classes on a reference page.",
+  "Glossary bodies are HTML fragments, and their links are relative to glossary.html."
+ ],
+ "dropped": [],
+ "generated": {
+  "by": "clify add",
+  "model": "claude-opus-5-5",
+  "exploredSteps": 7,
+  "recorded": 61,
+  "verifiedAt": "2026-10-18T07:15:08.445Z",
+  "seconds": 130
+ }
+}

@@ -1,0 +1,6 @@
+On endoflife.date, when does standard support end for Ubuntu 22.04 LTS? Give the date as YYYY-MM-DD.
+
+Start from https://endoflife.date/. Work it out using only the tools you have, then end your reply with one final line exactly in the form:
+ANSWER: <short answer>
+
+You have a web browser (Playwright tools). Use it to find the answer on the website.

@@ -1,0 +1,226 @@
+{
+ "url": "https://find-and-update.company-information.service.gov.uk/",
+ "category": "gov-eu",
+ "sandbox": "clify-find-and-update-company-information-ser",
+ "startedAt": "2026-10-18T08:41:50.030Z",
+ "region": "us-pdx-1",
+ "chrome": "Chrome/148.0.7778.96",
+ "sandboxStartMs": 2372,
+ "addSeconds": 344,
+ "addExit": 0,
+ "add": {
+  "ok": true,
+  "site": "company-information-service",
+  "url": "https://find-and-update.company-information.service.gov.uk/",
+  "commands": [
+   {
+    "name": "search-all",
+    "summary": "Search companies and officers together by keyword. Results are mixed; the item class is type-company or type-officer.",
+    "verified": true
+   },
+   {
+    "name": "search-companies",
+    "summary": "Search companies by name or number. Returns name, profile URL, company number, incorporation or dissolution date and address.",
+    "verified": true
+   },
+   {
+    "name": "search-officers",
+    "summary": "Search company officers (directors, secretaries, corporate officers) by name. Returns links to each officer's appointments.",
+    "verified": true
+   },
+   {
+    "name": "search-disqualified-officers",
+    "summary": "Search disqualified directors by name. Returns links to each disqualification detail page.",
+    "verified": true
+   },
+   {
+    "name": "get-disqualified-officer",
+    "summary": "Get disqualification details for a person or company: date of birth, nationality, disqualification type, start and end dates, case reference, companies involved and reason.",
+    "verified": true
+   },
+   {
+    "name": "get-company",
+    "summary": "Get a company overview by company number: name, registered office address, status, SIC code and previous names.",
+    "verified": true
+   },
+   {
+    "name": "list-filing-history",
+    "summary": "List a company's filing history (date, type, description, PDF link), optionally filtered by category. Paginated.",
+    "verified": true
+   },
+   {
+    "name": "get-filing-document",
+    "summary": "Download a filing document PDF. The server redirects to a signed S3 URL.",
+    "verified": true
+   },
+   {
+    "name": "list-company-officers",
+    "summary": "List a company's officers (directors and secretaries) with role, appointment date, date of birth and links to their appointments.",
+    "verified": true
+   },
+   {
+    "name": "list-company-pscs",
+    "summary": "List a company's persons with significant control (owners and controllers), or the reason the company is exempt.",
+    "verified": true
+   },
+   {
+    "name": "list-company-charges",
+    "summary": "List a company's registered charges (mortgages and security agreements), with links to each charge's details.",
+    "verified": true
+   },
+   {
+    "name": "get-charge",
+    "summary": "Get one charge's details: type, created and delivered dates, status, filing transaction with PDF link, and persons entitled.",
+    "verified": true
+   },
+   {
+    "name": "get-officer-appointments",
+    "summary": "List all company appointments held by one officer: company, company status, role, appointed and resigned dates, correspondence address.",
+    "verified": true
+   },
+   {
+    "name": "advanced-search-companies",
+    "summary": "Advanced company search. Filter by name include/exclude, registered office address, incorporation and dissolution date ranges, status, SIC code and company type. Returns company names and profile URLs",
+    "verified": true
+   },
+   {
+    "name": "export-advanced-search-csv",
+    "summary": "Download advanced company search results as CSV, using the same filters as advanced-search-companies.",
+    "verified": true
+   },
+   {
+    "name": "search-dissolved-companies",
+    "summary": "Search companies dissolved since 1989 by their name at dissolution or by a previous name.",
+    "verified": true
+   },
+   {
+    "name": "alphabetical-search-companies",
+    "summary": "Browse the register alphabetically around a company name (40 rows per page). Returns name, number and status. Uses cursor paging via searchAfter/searchBefore.",
+    "verified": true
+   },
+   {
+    "name": "check-company-name-availability",
+    "summary": "Check whether a proposed company name is available by listing existing companies with the same or similar names.",
+    "verified": true
+   }
+  ],
+  "verified": 18,
+  "writes": 0,
+  "dropped": [],
+  "blockers": [],
+  "loggedIn": false,
+  "seconds": 343,
+  "next": [
+   "clify company-information-service",
+   "clify company-information-service search-all --q \"tesco\""
+  ],
+  "installed": "/home/ubuntu/clify-runs/blaxel-w1/home/bin/company-information-service",
+  "explored": {
+   "steps": 30,
+   "recorded": 30,
+   "heldWrites": 0
+  }
+ },
+ "check": {
+  "on": "blaxel",
+  "node": "v24.22.0",
+  "seconds": 11,
+  "reads": 18,
+  "verified": 18,
+  "failed": [],
+  "results": [
+   {
+    "name": "search-all",
+    "ok": true,
+    "ms": 927
+   },
+   {
+    "name": "search-companies",
+    "ok": true,
+    "ms": 746
+   },
+   {
+    "name": "search-officers",
+    "ok": true,
+    "ms": 215
+   },
+   {
+    "name": "search-disqualified-officers",
+    "ok": true,
+    "ms": 361
+   },
+   {
+    "name": "get-disqualified-officer",
+    "ok": true,
+    "ms": 199
+   },
+   {
+    "name": "get-company",
+    "ok": true,
+    "ms": 203
+   },
+   {
+    "name": "list-filing-history",
+    "ok": true,
+    "ms": 724
+   },
+   {
+    "name": "get-filing-document",
+    "ok": true,
+    "ms": 2258
+   },
+   {
+    "name": "list-company-officers",
+    "ok": true,
+    "ms": 418
+   },
+   {
+    "name": "list-company-pscs",
+    "ok": true,
+    "ms": 296
+   },
+   {
+    "name": "list-company-charges",
+    "ok": true,
+    "ms": 258
+   },
+   {
+    "name": "get-charge",
+    "ok": true,
+    "ms": 292
+   },
+   {
+    "name": "get-officer-appointments",
+    "ok": true,
+    "ms": 191
+   },
+   {
+    "name": "advanced-search-companies",
+    "ok": true,
+    "ms": 323
+   },
+   {
+    "name": "export-advanced-search-csv",
+    "ok": true,
+    "ms": 215
+   },
+   {
+    "name": "search-dissolved-companies",
+    "ok": true,
+    "ms": 188
+   },
+   {
+    "name": "alphabetical-search-companies",
+    "ok": true,
+    "ms": 1148
+   },
+   {
+    "name": "check-company-name-availability",
+    "ok": true,
+    "ms": 192
+   }
+  ]
+ },
+ "deleted": true,
+ "seconds": 358
+}

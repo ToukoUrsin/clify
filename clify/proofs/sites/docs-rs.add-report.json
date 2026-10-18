@@ -1,0 +1,103 @@
+{
+ "ok": true,
+ "site": "docs-rs",
+ "url": "https://docs.rs/",
+ "commands": [
+  {
+   "name": "search-crates",
+   "summary": "Search Rust crates on docs.rs by keyword, optionally sorted by downloads or recency",
+   "verified": true
+  },
+  {
+   "name": "resolve-crate",
+   "summary": "I'm Feeling Lucky: jump to the best-matching crate for a query and return its exact name and latest version",
+   "verified": true
+  },
+  {
+   "name": "get-crate",
+   "summary": "Get a crate's docs.rs overview page: title, description, documentation link and coverage",
+   "verified": true
+  },
+  {
+   "name": "get-crate-status",
+   "summary": "Check whether docs built successfully for a crate version (JSON: doc_status, resolved version)",
+   "verified": true
+  },
+  {
+   "name": "list-crate-builds",
+   "summary": "List the docs build history of a crate version: rustc version, date, duration, memory, result",
+   "verified": true
+  },
+  {
+   "name": "list-crate-features",
+   "summary": "List the Cargo feature flags of a crate version",
+   "verified": true
+  },
+  {
+   "name": "list-crate-versions",
+   "summary": "List all published versions of a crate with their release dates",
+   "verified": true
+  },
+  {
+   "name": "list-source-files",
+   "summary": "List the files and folders in a crate's published source package (root or a subfolder)",
+   "verified": true
+  },
+  {
+   "name": "get-source-file",
+   "summary": "Read the contents of one file in a crate's source package, e.g. Cargo.toml or src/lib.rs",
+   "verified": true
+  },
+  {
+   "name": "get-crate-docs",
+   "summary": "Read a crate's rustdoc landing page: crate docs text, version, permalink",
+   "verified": true
+  },
+  {
+   "name": "list-crate-items",
+   "summary": "List every public item (structs, enums, traits, functions, types, constants) of a crate, with links to their doc pages",
+   "verified": true
+  },
+  {
+   "name": "get-doc-item",
+   "summary": "Read the rustdoc page of one item (struct, trait, fn...) inside a crate",
+   "verified": true
+  },
+  {
+   "name": "list-releases",
+   "summary": "Browse docs.rs release listings: recent releases, top crates by GitHub stars, recent build failures, or failures sorted by stars",
+   "verified": true
+  },
+  {
+   "name": "get-releases-feed",
+   "summary": "Get the Atom feed of the most recently built crate releases (structured JSON)",
+   "verified": true
+  },
+  {
+   "name": "list-build-queue",
+   "summary": "List the crate releases waiting in the docs.rs build queue",
+   "verified": true
+  },
+  {
+   "name": "list-builds-in-progress",
+   "summary": "List the crate docs builds currently running and how long they have been running",
+   "verified": true
+  }
+ ],
+ "verified": 16,
+ "writes": 0,
+ "dropped": [],
+ "blockers": [],
+ "loggedIn": false,
+ "seconds": 230,
+ "next": [
+  "clify docs",
+  "clify docs search-crates --query \"serde\""
+ ],
+ "installed": "/home/ubuntu/clify-runs/batch2/home/bin/docs",
+ "explored": {
+  "steps": 30,
+  "recorded": 93,
+  "heldWrites": 0
+ }
+}

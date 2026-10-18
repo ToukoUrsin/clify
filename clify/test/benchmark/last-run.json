@@ -1,0 +1,22 @@
+{
+  "task": "first 3 Mystery books with title and price",
+  "site": "https://books.toscrape.com",
+  "trials": 10,
+  "clify": {
+    "trials": 10,
+    "passed": 10,
+    "successRate": 1,
+    "p50Ms": 550,
+    "p95Ms": 566,
+    "avgActions": 1
+  },
+  "directBrowser": {
+    "trials": 10,
+    "passed": 10,
+    "successRate": 1,
+    "p50Ms": 795,
+    "p95Ms": 924,
+    "avgActions": 2
+  },
+  "interpretation": "This is a bounded read-only comparison on one public site; report exact n and timings, not universal perfection."
+}

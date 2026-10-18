@@ -1,0 +1,4 @@
+[
+  {"tool":"type","input":{"selector":"input[name=custname]","text":"Write guard test","intent":"fill order form"}},
+  {"tool":"click","input":{"selector":"button","intent":"submit order (must be held, never sent)"}}
+]

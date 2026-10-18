@@ -1,0 +1,109 @@
+{
+ "url": "https://data.ecb.europa.eu/",
+ "category": "gov-eu",
+ "sandbox": "clify-data-ecb-europa-eu",
+ "startedAt": "2026-10-18T09:13:39.388Z",
+ "region": "us-pdx-1",
+ "chrome": "Chrome/148.0.7778.96",
+ "sandboxStartMs": 2420,
+ "addSeconds": 338,
+ "addExit": 0,
+ "add": {
+  "ok": true,
+  "site": "ecb-europa",
+  "url": "https://data.ecb.europa.eu/",
+  "commands": [
+   {
+    "name": "get-series-observations",
+    "summary": "Get the observations (period, value, unit, trend, status) of one ECB series by its full series key, e.g. HICP.M.U2.N.SERV00.4D0.ANR",
+    "verified": true
+   },
+   {
+    "name": "search-series",
+    "summary": "Keyword search for ECB data series, optionally filtered by concept tag; returns links to series detail pages that contain the series keys",
+    "verified": true
+   },
+   {
+    "name": "get-sdmx-data",
+    "summary": "Download series data as CSV from the public ECB SDMX REST API (data-api.ecb.europa.eu); supports wildcard keys and period filters",
+    "verified": true
+   },
+   {
+    "name": "list-dataflows",
+    "summary": "List all ECB dataflows (dataset ids, names and their data structure ids) from the SDMX REST API",
+    "verified": true
+   },
+   {
+    "name": "get-data-structure",
+    "summary": "Get the SDMX data structure definition (dimensions, concepts and code lists) for a dataset, e.g. ECB_EXR1 for EXR",
+    "verified": true
+   }
+  ],
+  "verified": 5,
+  "writes": 0,
+  "dropped": [
+   {
+    "name": "search-data-information",
+    "reason": "Output is only site navigation links (Data categories, Concepts, Geographical areas), not search results. The evidence shows no result markup to target with a better selector."
+   },
+   {
+    "name": "search-publications",
+    "reason": "Output is repeated 'Publications' menu links, not publication search results. The results appear to load client-side."
+   },
+   {
+    "name": "get-dataset",
+    "reason": "Output is only page navigation (dataset title, Data and Data information tabs), not series links. get-sdmx-data with detail=serieskeysonly already lists a dataset's series."
+   }
+  ],
+  "blockers": [],
+  "loggedIn": false,
+  "seconds": 337,
+  "next": [
+   "clify ecb-europa",
+   "clify ecb-europa get-series-observations --series_key \"HICP.M.U2.N.SERV00.4D0.ANR\""
+  ],
+  "installed": "/home/ubuntu/clify-runs/blaxel-w2/home/bin/ecb-europa",
+  "explored": {
+   "steps": 29,
+   "recorded": 562,
+   "heldWrites": 0
+  }
+ },
+ "check": {
+  "on": "blaxel",
+  "node": "v24.22.0",
+  "seconds": 7,
+  "reads": 5,
+  "verified": 5,
+  "failed": [],
+  "results": [
+   {
+    "name": "get-series-observations",
+    "ok": true,
+    "ms": 781
+   },
+   {
+    "name": "search-series",
+    "ok": true,
+    "ms": 1011
+   },
+   {
+    "name": "get-sdmx-data",
+    "ok": true,
+    "ms": 963
+   },
+   {
+    "name": "list-dataflows",
+    "ok": true,
+    "ms": 950
+   },
+   {
+    "name": "get-data-structure",
+    "ok": true,
+    "ms": 1120
+   }
+  ]
+ },
+ "deleted": true,
+ "seconds": 347
+}

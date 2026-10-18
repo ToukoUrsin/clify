@@ -1,0 +1,434 @@
+{
+ "name": "pubmed-ncbi",
+ "startUrl": "https://pubmed.ncbi.nlm.nih.gov/",
+ "origin": "https://pubmed.ncbi.nlm.nih.gov",
+ "createdAt": "2026-10-18T07:24:35.588Z",
+ "description": "PubMed (NCBI biomedical literature database): search articles by keyword, author or field-tagged query, with filters, sorting and pagination, and fetch full abstract records, MEDLINE text exports and PMID lists. All commands read the server-rendered search page.",
+ "commands": [
+  {
+   "name": "search-articles",
+   "summary": "Search PubMed articles by keyword or field-tagged query with optional filters, sort, author ID and pagination; returns summary results (PMID, title, authors, citation, snippet)",
+   "method": "GET",
+   "urlTemplate": "/",
+   "params": [
+    {
+     "name": "term",
+     "in": "query",
+     "required": true,
+     "type": "string",
+     "description": "Search query. Accepts plain keywords and PubMed field tags, e.g. 'crispr', 'Hryhorowicz M', '\"Nature\"[jour] AND crispr', '31727474[pmid] OR 36163606[pmid]'",
+     "example": "crispr"
+    },
+    {
+     "name": "sort",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Sort order. relevance=Best match (the default when omitted), date=Most recent, pubdate=Publication date, fauth=First author, jour=Journal",
+     "enum": [
+      "relevance",
+      "date",
+      "pubdate",
+      "fauth",
+      "jour"
+     ]
+    },
+    {
+     "name": "sort_order",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Sort direction, used with sort=pubdate/fauth/jour",
+     "enum": [
+      "asc",
+      "desc"
+     ]
+    },
+    {
+     "name": "filter",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Result filter. Examples: datesearch.y_1, datesearch.y_5, datesearch.y_10 (last 1/5/10 years); years.2020-2025 (custom year range); simsearch1.fha (has abstract); simsearch2.ffrft (free full text); pub",
+     "example": "simsearch2.ffrft"
+    },
+    {
+     "name": "filter2",
+     "key": "filter",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Second filter to combine with the first. Same values as --filter",
+     "example": "pubt.review"
+    },
+    {
+     "name": "filter3",
+     "key": "filter",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Third filter to combine with the others. Same values as --filter",
+     "example": "datesearch.y_5"
+    },
+    {
+     "name": "cauthor_id",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Computed author ID. Use it with an author-name term to restrict results to one disambiguated author, e.g. term='Hryhorowicz M' cauthor_id=27699445",
+     "example": "27699445"
+    },
+    {
+     "name": "page",
+     "in": "query",
+     "required": false,
+     "type": "number",
+     "description": "Results page number, starting at 1",
+     "default": 1
+    },
+    {
+     "name": "size",
+     "in": "query",
+     "required": false,
+     "type": "number",
+     "description": "Results per page",
+     "enum": [
+      "10",
+      "20",
+      "50",
+      "100",
+      "200"
+     ],
+     "default": 10
+    }
+   ],
+   "responseType": "html",
+   "extract": {
+    "list": "article.full-docsum",
+    "fields": {
+     "pmid": "a.docsum-title@data-article-id || span.docsum-pmid",
+     "title": "a.docsum-title",
+     "url": "a.docsum-title@href",
+     "authors": "span.docsum-authors.full-authors || span.docsum-authors",
+     "citation": "span.docsum-journal-citation.full-journal-citation || span.docsum-journal-citation",
+     "publication_type": "span.publication-type",
+     "free_full_text": "span.free-resources",
+     "snippet": "div.full-view-snippet || div.docsum-snippet"
+    }
+   },
+   "defaultFields": [
+    "pmid",
+    "title",
+    "authors",
+    "citation",
+    "publication_type",
+    "free_full_text",
+    "snippet",
+    "url"
+   ],
+   "pagination": {
+    "type": "page",
+    "param": "page"
+   },
+   "mutates": false,
+   "example": {
+    "term": "crispr"
+   },
+   "source": "E2 GET https://pubmed.ncbi.nlm.nih.gov/",
+   "verified": true
+  },
+  {
+   "name": "get-articles",
+   "summary": "Get full article records (title, authors, affiliations, PMID/PMCID/DOI, journal, abstract, full-text links) for a query, typically a list of PMIDs; this replaces the blocked article detail pages",
+   "method": "GET",
+   "urlTemplate": "/?format=abstract",
+   "params": [
+    {
+     "name": "term",
+     "in": "query",
+     "required": true,
+     "type": "string",
+     "description": "Query whose results are shown as full records. For specific articles join PMIDs with OR, e.g. '31727474[pmid] OR 36163606[pmid]'. Any search query also works",
+     "example": "31727474[pmid] OR 36163606[pmid]"
+    },
+    {
+     "name": "sort",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Sort order: relevance, date (most recent), pubdate, fauth (first author), jour (journal)",
+     "enum": [
+      "relevance",
+      "date",
+      "pubdate",
+      "fauth",
+      "jour"
+     ]
+    },
+    {
+     "name": "filter",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Optional result filter, e.g. simsearch2.ffrft, pubt.review, datesearch.y_5, years.2020-2025"
+    },
+    {
+     "name": "page",
+     "in": "query",
+     "required": false,
+     "type": "number",
+     "description": "Results page number, starting at 1",
+     "default": 1
+    },
+    {
+     "name": "size",
+     "in": "query",
+     "required": false,
+     "type": "number",
+     "description": "Records per page",
+     "enum": [
+      "10",
+      "20",
+      "50",
+      "100",
+      "200"
+     ],
+     "default": 10
+    }
+   ],
+   "responseType": "html",
+   "extract": {
+    "list": "div.results-article",
+    "fields": {
+     "pmid": "strong.current-id",
+     "title": "h1.heading-title",
+     "authors": "div.authors-list || div.inline-authors",
+     "journal": "button.journal-actions-trigger",
+     "citation": "span.cit || div.article-source",
+     "doi": "span.citation-doi",
+     "pmcid": "span.identifier.pmc",
+     "abstract": "div.abstract-content || div.abstract",
+     "affiliations": "div.affiliations",
+     "full_text_link": "a.link-item@href"
+    }
+   },
+   "defaultFields": [
+    "pmid",
+    "title",
+    "authors",
+    "journal",
+    "citation",
+    "doi",
+    "abstract",
+    "full_text_link"
+   ],
+   "pagination": {
+    "type": "page",
+    "param": "page"
+   },
+   "mutates": false,
+   "example": {
+    "term": "31727474[pmid] OR 36163606[pmid]"
+   },
+   "source": "E2",
+   "verified": true
+  },
+  {
+   "name": "export-medline",
+   "summary": "Export search results as plain-text MEDLINE/PubMed records (all tagged fields: PMID, TI, AB, AU, AD, MH, DP, etc.)",
+   "method": "GET",
+   "urlTemplate": "/?format=pubmed",
+   "params": [
+    {
+     "name": "term",
+     "in": "query",
+     "required": true,
+     "type": "string",
+     "description": "Search query or PMID list, e.g. 'crispr' or '31727474[pmid] OR 36163606[pmid]'",
+     "example": "31727474[pmid] OR 36163606[pmid]"
+    },
+    {
+     "name": "sort",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Sort order: relevance, date, pubdate, fauth, jour",
+     "enum": [
+      "relevance",
+      "date",
+      "pubdate",
+      "fauth",
+      "jour"
+     ]
+    },
+    {
+     "name": "filter",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Optional result filter, e.g. simsearch2.ffrft, pubt.review, datesearch.y_5"
+    },
+    {
+     "name": "page",
+     "in": "query",
+     "required": false,
+     "type": "number",
+     "description": "Page number, starting at 1",
+     "default": 1
+    },
+    {
+     "name": "size",
+     "in": "query",
+     "required": false,
+     "type": "number",
+     "description": "Records per page",
+     "enum": [
+      "10",
+      "20",
+      "50",
+      "100",
+      "200"
+     ],
+     "default": 10
+    }
+   ],
+   "responseType": "html",
+   "extract": {
+    "fields": {
+     "medline": "pre.search-results-chunk || pre"
+    }
+   },
+   "defaultFields": [
+    "medline"
+   ],
+   "pagination": {
+    "type": "page",
+    "param": "page"
+   },
+   "mutates": false,
+   "example": {
+    "term": "31727474[pmid] OR 36163606[pmid]"
+   },
+   "source": "E2 GET https://pubmed.ncbi.nlm.nih.gov/",
+   "verified": true
+  },
+  {
+   "name": "list-pmids",
+   "summary": "Get only the PMIDs that match a search query, as a plain list (up to 200 per page); a cheap way to collect IDs for get-articles",
+   "method": "GET",
+   "urlTemplate": "/?format=pmid",
+   "params": [
+    {
+     "name": "term",
+     "in": "query",
+     "required": true,
+     "type": "string",
+     "description": "Search query, e.g. 'crispr' or '\"Nature\"[jour] AND crispr'",
+     "example": "crispr"
+    },
+    {
+     "name": "sort",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Sort order: relevance, date, pubdate, fauth, jour",
+     "enum": [
+      "relevance",
+      "date",
+      "pubdate",
+      "fauth",
+      "jour"
+     ]
+    },
+    {
+     "name": "sort_order",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Sort direction for pubdate/fauth/jour",
+     "enum": [
+      "asc",
+      "desc"
+     ]
+    },
+    {
+     "name": "filter",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Optional result filter, e.g. simsearch2.ffrft, pubt.review, datesearch.y_5, years.2020-2025"
+    },
+    {
+     "name": "filter2",
+     "key": "filter",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Second filter to combine with the first. Same values as --filter"
+    },
+    {
+     "name": "page",
+     "in": "query",
+     "required": false,
+     "type": "number",
+     "description": "Page number, starting at 1",
+     "default": 1
+    },
+    {
+     "name": "size",
+     "in": "query",
+     "required": false,
+     "type": "number",
+     "description": "PMIDs per page",
+     "enum": [
+      "10",
+      "20",
+      "50",
+      "100",
+      "200"
+     ],
+     "default": 10
+    }
+   ],
+   "responseType": "html",
+   "extract": {
+    "fields": {
+     "pmids": "pre.search-results-chunk || pre"
+    }
+   },
+   "defaultFields": [
+    "pmids"
+   ],
+   "pagination": {
+    "type": "page",
+    "param": "page"
+   },
+   "mutates": false,
+   "example": {
+    "term": "crispr"
+   },
+   "source": "E2 GET https://pubmed.ncbi.nlm.nih.gov/",
+   "verified": true
+  }
+ ],
+ "blockers": [],
+ "notes": [
+  "Every command reads the server-rendered search page https://pubmed.ncbi.nlm.nih.gov/?term=...; the format parameter (summary/abstract/pubmed/pmid) picks the output. No login is needed.",
+  "Article detail pages (/{pmid}/), cited-by listings, /{pmid}/citations/ and /suggestions/ return 403 for this client. Use get-articles with PMID field tags instead.",
+  "A query that matches exactly one article (e.g. a single PMID) makes PubMed redirect to the blocked detail page. To fetch one article, OR its PMID with another, or use export-medline. Some single-hit queries may still fail.",
+  "Field tags work inside term: [pmid], [jour], [au], [ti], [tiab], [dp], [mh]. Combine them with AND/OR/NOT.",
+  "To combine filters, pass --filter, --filter2 and --filter3; each one is sent as its own repeated 'filter' query parameter.",
+  "To search one disambiguated author, set term to the author name and add cauthor_id (e.g. 'Hryhorowicz M' and 27699445). Sorting by date is typical.",
+  "export-medline and list-pmids return the text block shown on the page. Split the MEDLINE output on blank lines between records and the PMID list on newlines.",
+  "The alerts.json endpoint on cdn.ncbi.nlm.nih.gov only carries site banner notices and is not exposed as a command."
+ ],
+ "dropped": [],
+ "generated": {
+  "by": "clify add",
+  "model": "claude-opus-5-5",
+  "exploredSteps": 15,
+  "recorded": 30,
+  "verifiedAt": "2026-10-18T07:25:55.830Z",
+  "seconds": 176
+ }
+}

@@ -1,0 +1,6 @@
+On endoflife.date, which Ubuntu LTS releases are still inside standard support as of 2026-10-17? List their version numbers.
+
+Start from https://endoflife.date/. Work it out using only the tools you have, then end your reply with one final line exactly in the form:
+ANSWER: <short answer>
+
+You have a shell with curl, jq and python3, plus WebFetch and WebSearch. Use them to find the answer from the website (its pages or any public API). There is no browser.

@@ -1,0 +1,176 @@
+{
+ "url": "https://fred.stlouisfed.org/",
+ "category": "gov-us",
+ "sandbox": "clify-fred-stlouisfed-org",
+ "startedAt": "2026-10-18T08:41:29.569Z",
+ "region": "us-pdx-1",
+ "chrome": "Chrome/148.0.7778.96",
+ "sandboxStartMs": 2434,
+ "addSeconds": 281,
+ "addExit": 0,
+ "add": {
+  "ok": true,
+  "site": "fred-stlouisfed",
+  "url": "https://fred.stlouisfed.org/",
+  "commands": [
+   {
+    "name": "search-series",
+    "summary": "Search FRED series by keyword (the header autocomplete); returns series IDs, titles, frequency, units and date coverage",
+    "verified": true
+   },
+   {
+    "name": "get-series",
+    "summary": "Get chart metadata for a series by ID: title, frequency, observation date range, units, seasonal adjustment and available transformations",
+    "verified": true
+   },
+   {
+    "name": "get-series-recent-observations",
+    "summary": "Get the most recent observations (date and value) shown on a series page",
+    "verified": true
+   },
+   {
+    "name": "list-categories",
+    "summary": "List the top-level FRED data categories and their main subcategories, with category IDs (in the url) and series counts",
+    "verified": true
+   },
+   {
+    "name": "list-category-series",
+    "summary": "List series in a category (by category ID), with optional tag filter, sorting and paging",
+    "verified": true
+   },
+   {
+    "name": "list-series-by-tag",
+    "summary": "List all series or series matching tags (e.g. 'inflation'), sorted by popularity or last update; with no tag and ob=pv this lists the most popular series",
+    "verified": true
+   },
+   {
+    "name": "search-tags",
+    "summary": "List or search FRED tags (concepts, geographies, frequencies, sources, ...) with series counts; tag slugs feed list-series-by-tag",
+    "verified": true
+   },
+   {
+    "name": "list-releases",
+    "summary": "List FRED data releases alphabetically (50 per page) with release IDs (rid in the url)",
+    "verified": true
+   },
+   {
+    "name": "list-release-series",
+    "summary": "List series in a data release (by release ID), with optional tag filter, sorting and paging",
+    "verified": true
+   },
+   {
+    "name": "list-release-tables",
+    "summary": "Browse a release's table tree: list the table sections/elements under a release (or under a given element ID) with element IDs (eid in the url) and series counts",
+    "verified": true
+   },
+   {
+    "name": "get-release-calendar",
+    "summary": "Get the release calendar for a date range (all releases or one release ID) as per-day events, e.g. '33 releases' on 2026-10-19",
+    "verified": true
+   },
+   {
+    "name": "list-sources",
+    "summary": "List the data sources (agencies and organizations) that FRED series come from, with source IDs (soid in the url)",
+    "verified": true
+   },
+   {
+    "name": "list-source-releases",
+    "summary": "List the releases published by a data source (by source ID)",
+    "verified": true
+   }
+  ],
+  "verified": 13,
+  "writes": 0,
+  "dropped": [],
+  "blockers": [],
+  "loggedIn": false,
+  "seconds": 281,
+  "next": [
+   "clify fred-stlouisfed",
+   "clify fred-stlouisfed search-series --q \"gdp\""
+  ],
+  "installed": "/home/ubuntu/clify-runs/blaxel-w1/home/bin/fred-stlouisfed",
+  "explored": {
+   "steps": 28,
+   "recorded": 165,
+   "heldWrites": 62
+  }
+ },
+ "check": {
+  "on": "blaxel",
+  "node": "v24.22.0",
+  "seconds": 3,
+  "reads": 13,
+  "verified": 13,
+  "failed": [],
+  "results": [
+   {
+    "name": "search-series",
+    "ok": true,
+    "ms": 436
+   },
+   {
+    "name": "get-series",
+    "ok": true,
+    "ms": 27
+   },
+   {
+    "name": "get-series-recent-observations",
+    "ok": true,
+    "ms": 89
+   },
+   {
+    "name": "list-categories",
+    "ok": true,
+    "ms": 43
+   },
+   {
+    "name": "list-category-series",
+    "ok": true,
+    "ms": 67
+   },
+   {
+    "name": "list-series-by-tag",
+    "ok": true,
+    "ms": 85
+   },
+   {
+    "name": "search-tags",
+    "ok": true,
+    "ms": 46
+   },
+   {
+    "name": "list-releases",
+    "ok": true,
+    "ms": 36
+   },
+   {
+    "name": "list-release-series",
+    "ok": true,
+    "ms": 65
+   },
+   {
+    "name": "list-release-tables",
+    "ok": true,
+    "ms": 42
+   },
+   {
+    "name": "get-release-calendar",
+    "ok": true,
+    "ms": 49
+   },
+   {
+    "name": "list-sources",
+    "ok": true,
+    "ms": 42
+   },
+   {
+    "name": "list-source-releases",
+    "ok": true,
+    "ms": 69
+   }
+  ]
+ },
+ "deleted": true,
+ "seconds": 287
+}

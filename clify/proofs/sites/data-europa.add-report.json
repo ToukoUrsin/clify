@@ -1,0 +1,78 @@
+{
+ "ok": true,
+ "site": "data-europa",
+ "url": "https://data.europa.eu/en",
+ "commands": [
+  {
+   "name": "search-datasets",
+   "summary": "Keyword search over open datasets, with optional facet filters, sorting and pagination",
+   "verified": true
+  },
+  {
+   "name": "count-results",
+   "summary": "Count matches for a query across all indexes (datasets, catalogues, data services, dataset series, editorial content)",
+   "verified": true
+  },
+  {
+   "name": "search-catalogues",
+   "summary": "List or search the data catalogues (national and EU portals) that publish datasets",
+   "verified": true
+  },
+  {
+   "name": "list-countries",
+   "summary": "List the country vocabulary (ids and multilingual labels) used for the country facet",
+   "verified": true
+  },
+  {
+   "name": "get-dataset",
+   "summary": "Get full metadata for one dataset: title, description, catalogue, country, keywords, distributions/download links",
+   "verified": true
+  },
+  {
+   "name": "get-catalogue",
+   "summary": "Get metadata for one catalogue (publisher portal): title, description, homepage, country",
+   "verified": true
+  },
+  {
+   "name": "get-similar-datasets",
+   "summary": "Find datasets similar to a given dataset (lower distance = more similar)",
+   "verified": true
+  },
+  {
+   "name": "get-dataset-jsonld",
+   "summary": "Get a dataset's full DCAT-AP metadata as a JSON-LD graph (distributions, licences, spatial coverage, contacts)",
+   "verified": true
+  },
+  {
+   "name": "export-dataset-metadata",
+   "summary": "Export a dataset's DCAT-AP metadata as raw RDF text (RDF/XML, Turtle, N3 or N-Triples)",
+   "verified": true
+  },
+  {
+   "name": "get-dataset-feed",
+   "summary": "Get the RSS feed for a dataset, which tracks updates to its metadata and distributions",
+   "verified": true
+  }
+ ],
+ "verified": 10,
+ "writes": 0,
+ "dropped": [
+  {
+   "name": "get-dataset-comments",
+   "reason": "The endpoint works but returns total 0 for the example. No dataset with comments is known, so the command cannot be verified with a non-empty example."
+  }
+ ],
+ "blockers": [],
+ "loggedIn": false,
+ "seconds": 247,
+ "next": [
+  "clify data-europa",
+  "clify data-europa search-datasets --q \"air quality\""
+ ],
+ "installed": "/home/ubuntu/clify-runs/batch2/home/bin/data-europa",
+ "explored": {
+  "steps": 30,
+  "recorded": 83,
+  "heldWrites": 4
+ }
+}

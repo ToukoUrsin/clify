@@ -1,0 +1,21 @@
+{
+  "name": "demo",
+  "startUrl": "http://127.0.0.1:18731/",
+  "origin": "http://127.0.0.1:18731",
+  "createdAt": "2026-10-17T00:00:00Z",
+  "description": "Hand-written spec for the local static smoke fixture",
+  "auth": { "headerNames": [] },
+  "commands": [
+    { "name": "list-items", "summary": "List items", "method": "GET", "urlTemplate": "/items.json", "responseType": "json", "resultPath": "items", "mutates": false,
+      "params": [ { "name": "q", "in": "query", "required": false, "type": "string", "description": "keyword (ignored by the static server)" } ] },
+    { "name": "get-item", "summary": "One item by id", "method": "GET", "urlTemplate": "/item/{id}.json", "responseType": "json", "mutates": false,
+      "params": [ { "name": "id", "in": "path", "required": true, "type": "number" } ] },
+    { "name": "sort-items", "summary": "List items with a sort key", "method": "GET", "urlTemplate": "/items.json", "responseType": "json", "resultPath": "items", "mutates": false,
+      "params": [ { "name": "sort", "in": "query", "required": false, "type": "string", "enum": ["name", "price"], "default": "name" } ] },
+    { "name": "add-item", "summary": "Add an item", "method": "POST", "urlTemplate": "/items", "responseType": "json", "bodyEncoding": "json", "mutates": true,
+      "params": [ { "name": "name", "in": "body", "required": true, "type": "string" }, { "name": "price", "in": "body", "required": false, "type": "number" } ] },
+    { "name": "my-items", "summary": "Items for the signed-in user", "method": "GET", "urlTemplate": "/items.json", "responseType": "json", "mutates": false, "auth": true, "params": [] },
+    { "name": "other-host", "summary": "Same server under a different hostname (session must not be sent)", "method": "GET", "urlTemplate": "http://localhost:18731/items.json", "responseType": "json", "mutates": false, "params": [] },
+    { "name": "missing", "summary": "A path that does not exist", "method": "GET", "urlTemplate": "/nope.json", "responseType": "json", "mutates": false, "params": [] }
+  ]
+}

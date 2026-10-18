@@ -1,0 +1,39 @@
+{
+ "task": "crates-tokio",
+ "site": "crates",
+ "mode": "cli",
+ "trial": 2,
+ "tag": "main",
+ "ok": true,
+ "why": "all expected values present",
+ "answer": "tokio 1.53.3, licensed MIT",
+ "expected": {
+  "expect": [
+   "1.53.3",
+   "MIT"
+  ],
+  "detail": {
+   "v": "1.53.3",
+   "l": "MIT"
+  }
+ },
+ "wallMs": 14096,
+ "apiMs": 12044,
+ "turns": 6,
+ "toolCalls": 5,
+ "tokens": {
+  "input": 12,
+  "output": 611,
+  "cacheWrite": 4824,
+  "cacheRead": 27588,
+  "total": 33035
+ },
+ "costUsd": 0.0419056,
+ "models": [
+  "claude-opus-5-5"
+ ],
+ "exitCode": 0,
+ "timedOut": false,
+ "subtype": "success",
+ "startedAt": "2026-10-17T23:22:26.626Z"
+}

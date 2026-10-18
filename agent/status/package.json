@@ -1,0 +1,9 @@
+{
+  "name": "clify-agent-status",
+  "private": true,
+  "type": "module",
+  "description": "Public read-only status page of the clify agent, served through the Inkbox tunnel of its identity.",
+  "dependencies": {
+    "@inkbox/sdk": "^0.7.19"
+  }
+}

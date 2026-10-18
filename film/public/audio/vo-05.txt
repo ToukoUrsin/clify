@@ -1,0 +1,1 @@
+A headless browser clicks through the site, and clify records the request behind every click.nPczCjzI2devNBz1zQrb

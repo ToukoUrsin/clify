@@ -1,0 +1,117 @@
+{
+ "url": "https://www.usajobs.gov/",
+ "category": "jobs-market",
+ "sandbox": "clify-www-usajobs-gov",
+ "startedAt": "2026-10-18T08:29:22.804Z",
+ "region": "us-pdx-1",
+ "chrome": "Chrome/148.0.7778.96",
+ "sandboxStartMs": 2495,
+ "addSeconds": 485,
+ "addExit": 0,
+ "add": {
+  "ok": true,
+  "site": "usajobs",
+  "url": "https://www.usajobs.gov/",
+  "commands": [
+   {
+    "name": "get-job",
+    "summary": "Get one job announcement's details (title, agency, salary, location, dates, description, duties, qualifications) by its numeric announcement id",
+    "verified": true
+   },
+   {
+    "name": "suggest-keywords",
+    "summary": "Get keyword or job-title suggestions for a partial search term",
+    "verified": true
+   },
+   {
+    "name": "suggest-locations",
+    "summary": "Get location name suggestions for a partial place name, to use as search-jobs --location",
+    "verified": true
+   },
+   {
+    "name": "list-events",
+    "summary": "List federal recruiting events (career fairs, webinars, info sessions), optionally only online events",
+    "verified": true
+   },
+   {
+    "name": "get-event",
+    "summary": "Get a recruiting event's details (date, time, venue, address, website, description, host) by event id",
+    "verified": true
+   },
+   {
+    "name": "list-event-jobs",
+    "summary": "List the job announcements linked to a recruiting event",
+    "verified": true
+   }
+  ],
+  "verified": 6,
+  "writes": 0,
+  "dropped": [
+   {
+    "name": "save-job",
+    "reason": "needs login: run `clify login` then `clify repair` to verify"
+   },
+   {
+    "name": "search-jobs",
+    "reason": "HTTP 503 (HTTP 503)"
+   }
+  ],
+  "blockers": [
+   "bot-check at https://usajobshelp.opm.gov/hc/en-us/articles/53059807800979-What-are-hiring-paths-and-how-can-they-help-you"
+  ],
+  "loggedIn": false,
+  "seconds": 484,
+  "next": [
+   "clify usajobs",
+   "clify usajobs get-job --id \"885810700\""
+  ],
+  "installed": "/home/ubuntu/clify-runs/blaxel-w1/home/bin/usajobs",
+  "explored": {
+   "steps": 29,
+   "recorded": 40,
+   "heldWrites": 2
+  }
+ },
+ "check": {
+  "on": "blaxel",
+  "node": "v24.22.0",
+  "seconds": 4,
+  "reads": 6,
+  "verified": 6,
+  "failed": [],
+  "results": [
+   {
+    "name": "get-job",
+    "ok": true,
+    "ms": 348
+   },
+   {
+    "name": "suggest-keywords",
+    "ok": true,
+    "ms": 226
+   },
+   {
+    "name": "suggest-locations",
+    "ok": true,
+    "ms": 283
+   },
+   {
+    "name": "list-events",
+    "ok": true,
+    "ms": 163
+   },
+   {
+    "name": "get-event",
+    "ok": true,
+    "ms": 160
+   },
+   {
+    "name": "list-event-jobs",
+    "ok": true,
+    "ms": 129
+   }
+  ]
+ },
+ "deleted": true,
+ "seconds": 492
+}

@@ -1,0 +1,22 @@
+name: test
+on:
+  push:
+  pull_request:
+jobs:
+  clify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    defaults:
+      run:
+        working-directory: clify
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: clify/package-lock.json
+      - run: npm ci
+      - run: npx playwright install --with-deps chromium   # headless, for the login suites
+      - run: npm test                                       # offline: typecheck, smoke, discovery, login, accounts
+      - run: node ../scripts/counts.mjs ..                   # every doc count matches its source

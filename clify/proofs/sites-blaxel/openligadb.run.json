@@ -1,0 +1,206 @@
+{
+ "url": "https://www.openligadb.de/",
+ "category": "sports-ent",
+ "sandbox": "clify-www-openligadb-de",
+ "startedAt": "2026-10-18T08:51:27.983Z",
+ "region": "us-pdx-1",
+ "chrome": "Chrome/148.0.7778.96",
+ "sandboxStartMs": 1843,
+ "addSeconds": 206,
+ "addExit": 0,
+ "add": {
+  "ok": true,
+  "site": "openligadb",
+  "url": "https://www.openligadb.de/",
+  "commands": [
+   {
+    "name": "list-leagues",
+    "summary": "List all available leagues across all sports and seasons, with shortcut and season ids for the other commands",
+    "verified": true
+   },
+   {
+    "name": "list-leagues-by-season",
+    "summary": "List leagues for one season from the website's league overview (name, created info, results/schedule links that contain the league shortcut)",
+    "verified": true
+   },
+   {
+    "name": "list-sports",
+    "summary": "List all sports available in OpenLigaDB",
+    "verified": true
+   },
+   {
+    "name": "list-teams",
+    "summary": "List the teams of a league in a season, with the teamId values used by match commands",
+    "verified": true
+   },
+   {
+    "name": "list-matchdays",
+    "summary": "List the matchdays (groups) of a league season, with groupOrderID used as the matchday number",
+    "verified": true
+   },
+   {
+    "name": "get-current-matchday",
+    "summary": "Get the current matchday (group) of a league",
+    "verified": true
+   },
+   {
+    "name": "list-matchday-matches",
+    "summary": "List all matches (fixtures and results) of one matchday in a league season",
+    "verified": true
+   },
+   {
+    "name": "search-team-matches",
+    "summary": "List a league season's matches for teams whose name contains the given text",
+    "verified": true
+   },
+   {
+    "name": "get-match",
+    "summary": "Get full details of one match by matchID: teams, results, goals, location and viewers",
+    "verified": true
+   },
+   {
+    "name": "get-head-to-head",
+    "summary": "List all recorded matches between two teams, identified by teamId",
+    "verified": true
+   },
+   {
+    "name": "list-team-matches",
+    "summary": "List a team's matches in a time window around today, given as weeks in the past and weeks in the future",
+    "verified": true
+   },
+   {
+    "name": "get-next-match",
+    "summary": "Get the next upcoming match of a league",
+    "verified": true
+   },
+   {
+    "name": "get-last-match",
+    "summary": "Get the most recently played match of a league",
+    "verified": true
+   },
+   {
+    "name": "get-standings",
+    "summary": "Get the league table (standings) for a league season",
+    "verified": true
+   },
+   {
+    "name": "get-top-scorers",
+    "summary": "Get the goal scorers ranking for a league season",
+    "verified": true
+   },
+   {
+    "name": "get-last-change",
+    "summary": "Get the timestamp of the last data change for one matchday; a cheap poll before refetching match data",
+    "verified": true
+   }
+  ],
+  "verified": 16,
+  "writes": 0,
+  "dropped": [],
+  "blockers": [],
+  "loggedIn": false,
+  "seconds": 205,
+  "next": [
+   "clify openligadb",
+   "clify openligadb list-leagues"
+  ],
+  "installed": "/home/ubuntu/clify-runs/blaxel-w1/home/bin/openligadb",
+  "explored": {
+   "steps": 11,
+   "recorded": 12,
+   "heldWrites": 3
+  }
+ },
+ "check": {
+  "on": "blaxel",
+  "node": "v24.22.0",
+  "seconds": 7,
+  "reads": 16,
+  "verified": 16,
+  "failed": [],
+  "results": [
+   {
+    "name": "list-leagues",
+    "ok": true,
+    "ms": 679
+   },
+   {
+    "name": "list-leagues-by-season",
+    "ok": true,
+    "ms": 1330
+   },
+   {
+    "name": "list-sports",
+    "ok": true,
+    "ms": 204
+   },
+   {
+    "name": "list-teams",
+    "ok": true,
+    "ms": 200
+   },
+   {
+    "name": "list-matchdays",
+    "ok": true,
+    "ms": 208
+   },
+   {
+    "name": "get-current-matchday",
+    "ok": true,
+    "ms": 208
+   },
+   {
+    "name": "list-matchday-matches",
+    "ok": true,
+    "ms": 204
+   },
+   {
+    "name": "search-team-matches",
+    "ok": true,
+    "ms": 204
+   },
+   {
+    "name": "get-match",
+    "ok": true,
+    "ms": 207
+   },
+   {
+    "name": "get-head-to-head",
+    "ok": true,
+    "ms": 198
+   },
+   {
+    "name": "list-team-matches",
+    "ok": true,
+    "ms": 186
+   },
+   {
+    "name": "get-next-match",
+    "ok": true,
+    "ms": 186
+   },
+   {
+    "name": "get-last-match",
+    "ok": true,
+    "ms": 183
+   },
+   {
+    "name": "get-standings",
+    "ok": true,
+    "ms": 186
+   },
+   {
+    "name": "get-top-scorers",
+    "ok": true,
+    "ms": 196
+   },
+   {
+    "name": "get-last-change",
+    "ok": true,
+    "ms": 192
+   }
+  ]
+ },
+ "deleted": true,
+ "seconds": 215
+}

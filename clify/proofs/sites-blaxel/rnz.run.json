@@ -1,0 +1,201 @@
+{
+ "url": "https://www.rnz.co.nz/news",
+ "category": "news",
+ "sandbox": "clify-www-rnz-co-nz-news",
+ "startedAt": "2026-10-18T09:24:06.502Z",
+ "region": "us-pdx-1",
+ "chrome": "Chrome/148.0.7778.96",
+ "sandboxStartMs": 2330,
+ "addSeconds": 220,
+ "addExit": 0,
+ "add": {
+  "ok": true,
+  "site": "rnz",
+  "url": "https://www.rnz.co.nz/news",
+  "commands": [
+   {
+    "name": "search-content",
+    "summary": "Keyword search across RNZ news stories and audio items, with paging.",
+    "verified": true
+   },
+   {
+    "name": "list-tag-stories",
+    "summary": "List stories tagged with a topic slug, e.g. housing.",
+    "verified": true
+   },
+   {
+    "name": "list-section-news",
+    "summary": "List the latest news stories in a news section, e.g. education, political, world, business or sport.",
+    "verified": true
+   },
+   {
+    "name": "list-author-articles",
+    "summary": "List articles written by an RNZ reporter, identified by author slug.",
+    "verified": true
+   },
+   {
+    "name": "get-news-feed",
+    "summary": "Get the latest stories in a news category from its RSS feed (structured title, link, date, description).",
+    "verified": true
+   },
+   {
+    "name": "list-rss-feeds",
+    "summary": "List all available RNZ RSS feeds and their URLs.",
+    "verified": true
+   },
+   {
+    "name": "get-news-article",
+    "summary": "Get a news article's headline, description, publish time and body text.",
+    "verified": true
+   },
+   {
+    "name": "get-audio-item",
+    "summary": "Get metadata (headline, description, dates, image) for a radio programme audio item.",
+    "verified": true
+   },
+   {
+    "name": "list-life-articles",
+    "summary": "List RNZ Life (arts, culture, music, lifestyle) articles in a category such as music.",
+    "verified": true
+   },
+   {
+    "name": "get-life-article",
+    "summary": "Get an RNZ Life article's headline, description and body text.",
+    "verified": true
+   },
+   {
+    "name": "list-podcasts",
+    "summary": "List all RNZ podcasts (A\u2013Z) with their slugs.",
+    "verified": true
+   },
+   {
+    "name": "get-podcast-episodes",
+    "summary": "Get a podcast's recent episodes from its RSS feed, including title, date, duration and MP3 URL.",
+    "verified": true
+   },
+   {
+    "name": "list-podcast-episodes-by-year",
+    "summary": "List a podcast's episodes published in a given year (an archive beyond the RSS feed's latest items).",
+    "verified": true
+   },
+   {
+    "name": "get-national-schedule",
+    "summary": "Get the RNZ National radio schedule (programmes) for a date; returns today's schedule when no date is given.",
+    "verified": true
+   },
+   {
+    "name": "list-video-series",
+    "summary": "List RNZ video series and documentaries, with their slugs.",
+    "verified": true
+   }
+  ],
+  "verified": 15,
+  "writes": 0,
+  "dropped": [
+   {
+    "name": "get-video",
+    "reason": "Brightcove returned 401 INVALID_POLICY_KEY. The recorded policy key appears truncated or invalid, and no valid key can be recovered from the evidence."
+   }
+  ],
+  "blockers": [],
+  "loggedIn": false,
+  "seconds": 219,
+  "next": [
+   "clify rnz",
+   "clify rnz search-content --query \"housing\""
+  ],
+  "installed": "/home/ubuntu/clify-runs/blaxel-w2/home/bin/rnz",
+  "explored": {
+   "steps": 16,
+   "recorded": 130,
+   "heldWrites": 0
+  }
+ },
+ "check": {
+  "on": "blaxel",
+  "node": "v24.22.0",
+  "seconds": 4,
+  "reads": 15,
+  "verified": 15,
+  "failed": [],
+  "results": [
+   {
+    "name": "search-content",
+    "ok": true,
+    "ms": 107
+   },
+   {
+    "name": "list-tag-stories",
+    "ok": true,
+    "ms": 20
+   },
+   {
+    "name": "list-section-news",
+    "ok": true,
+    "ms": 535
+   },
+   {
+    "name": "list-author-articles",
+    "ok": true,
+    "ms": 20
+   },
+   {
+    "name": "get-news-feed",
+    "ok": true,
+    "ms": 17
+   },
+   {
+    "name": "list-rss-feeds",
+    "ok": true,
+    "ms": 16
+   },
+   {
+    "name": "get-news-article",
+    "ok": true,
+    "ms": 73
+   },
+   {
+    "name": "get-audio-item",
+    "ok": true,
+    "ms": 15
+   },
+   {
+    "name": "list-life-articles",
+    "ok": true,
+    "ms": 569
+   },
+   {
+    "name": "get-life-article",
+    "ok": true,
+    "ms": 39
+   },
+   {
+    "name": "list-podcasts",
+    "ok": true,
+    "ms": 118
+   },
+   {
+    "name": "get-podcast-episodes",
+    "ok": true,
+    "ms": 59
+   },
+   {
+    "name": "list-podcast-episodes-by-year",
+    "ok": true,
+    "ms": 46
+   },
+   {
+    "name": "get-national-schedule",
+    "ok": true,
+    "ms": 16
+   },
+   {
+    "name": "list-video-series",
+    "ok": true,
+    "ms": 761
+   }
+  ]
+ },
+ "deleted": true,
+ "seconds": 226
+}

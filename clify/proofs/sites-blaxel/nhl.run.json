@@ -1,0 +1,316 @@
+{
+ "url": "https://www.nhl.com/stats/",
+ "category": "sports-ent",
+ "sandbox": "clify-www-nhl-com-stats",
+ "startedAt": "2026-10-18T09:23:45.262Z",
+ "region": "us-pdx-1",
+ "chrome": "Chrome/148.0.7778.96",
+ "sandboxStartMs": 2197,
+ "addSeconds": 394,
+ "addExit": 0,
+ "add": {
+  "ok": true,
+  "site": "nhl",
+  "url": "https://www.nhl.com/stats/",
+  "commands": [
+   {
+    "name": "get-skater-leaders",
+    "summary": "Top-10 skater leaders for points, goals or assists in a season (optionally rookies or defensemen only)",
+    "verified": true
+   },
+   {
+    "name": "get-goalie-leaders",
+    "summary": "Top-10 goalie leaders by goals-against average, save percentage or shutouts in a season",
+    "verified": true
+   },
+   {
+    "name": "list-skater-stats",
+    "summary": "Skater summary stats report (GP, G, A, PTS, +/-, PPG, TOI and more), with filters, sorting and paging",
+    "verified": true
+   },
+   {
+    "name": "list-skater-time-on-ice",
+    "summary": "Skater time-on-ice report (total, EV, PP, SH, OT TOI and shifts), with filters, sorting and paging",
+    "verified": true
+   },
+   {
+    "name": "list-goalie-stats",
+    "summary": "Goalie summary stats report (W, L, GAA, SV%, SO), with filters, sorting and paging",
+    "verified": true
+   },
+   {
+    "name": "list-team-stats",
+    "summary": "Team summary stats (W, L, OTL, PTS, GF, GA, PP%, PK%) by season, or all-time totals with isAggregate=true",
+    "verified": true
+   },
+   {
+    "name": "search-players",
+    "summary": "Find players by (partial) name to get their player id",
+    "verified": true
+   },
+   {
+    "name": "get-player",
+    "summary": "Player profile header: name, team, position, number, age, height, weight and headshot",
+    "verified": true
+   },
+   {
+    "name": "get-player-stats",
+    "summary": "Player stat lines: current season, career and per-season totals with team ranks",
+    "verified": true
+   },
+   {
+    "name": "get-player-bio",
+    "summary": "Player biography: birth date and place, draft details, shoots/catches",
+    "verified": true
+   },
+   {
+    "name": "get-player-game-log",
+    "summary": "Player game-by-game log for a season and game type (regular season or playoffs)",
+    "verified": true
+   },
+   {
+    "name": "get-game",
+    "summary": "Game overview: teams, score, venue, scoring summary by period, three stars",
+    "verified": true
+   },
+   {
+    "name": "get-game-boxscore",
+    "summary": "Game box score: per-player stats (G, A, +/-, TOI, SOG, hits) for forwards, defense and goalies",
+    "verified": true
+   },
+   {
+    "name": "get-game-play-by-play",
+    "summary": "Full play-by-play event list for a game (shots, goals, penalties, faceoffs, with coordinates)",
+    "verified": true
+   },
+   {
+    "name": "get-game-details",
+    "summary": "Game side info: season series, officials, coaches, scratches, linescore by period, video ids",
+    "verified": true
+   },
+   {
+    "name": "get-game-recap-stories",
+    "summary": "NHL.com recap articles for a game (headline, summary, slug)",
+    "verified": true
+   },
+   {
+    "name": "get-standings",
+    "summary": "League standings as of a date (division, conference and wild-card ordering, records, points)",
+    "verified": true
+   },
+   {
+    "name": "list-standings-seasons",
+    "summary": "Seasons that have standings, with their date ranges and rules (ties, wild card, etc.)",
+    "verified": true
+   },
+   {
+    "name": "get-scores",
+    "summary": "All games and scores for a date (state, teams, score, goals)",
+    "verified": true
+   },
+   {
+    "name": "get-schedule",
+    "summary": "League schedule for the week starting on a date (games per day, teams, start times, broadcasts)",
+    "verified": true
+   },
+   {
+    "name": "get-schedule-calendar",
+    "summary": "Schedule calendar window for a date: start/end dates, previous/next week, and the list of teams",
+    "verified": true
+   },
+   {
+    "name": "list-seasons",
+    "summary": "All NHL seasons, newest first, with ids, dates, number of games and rules",
+    "verified": true
+   },
+   {
+    "name": "get-current-season",
+    "summary": "The season and game type the stats site currently defaults to",
+    "verified": true
+   },
+   {
+    "name": "list-franchises",
+    "summary": "All NHL franchises with ids (for franchiseId filters) and first/last seasons",
+    "verified": true
+   },
+   {
+    "name": "list-countries",
+    "summary": "Countries (and their states/provinces) usable as player nationality or birthplace filters",
+    "verified": true
+   },
+   {
+    "name": "list-drafts",
+    "summary": "NHL entry draft years and number of rounds",
+    "verified": true
+   },
+   {
+    "name": "get-glossary",
+    "summary": "Stats glossary: abbreviation, full name and definition of every stat",
+    "verified": true
+   }
+  ],
+  "verified": 27,
+  "writes": 0,
+  "dropped": [],
+  "blockers": [],
+  "loggedIn": false,
+  "seconds": 393,
+  "next": [
+   "clify nhl",
+   "clify nhl get-skater-leaders --stat \"points\""
+  ],
+  "installed": "/home/ubuntu/clify-runs/blaxel-w2/home/bin/nhl",
+  "explored": {
+   "steps": 30,
+   "recorded": 355,
+   "heldWrites": 10
+  }
+ },
+ "check": {
+  "on": "blaxel",
+  "node": "v24.22.0",
+  "seconds": 6,
+  "reads": 27,
+  "verified": 27,
+  "failed": [],
+  "results": [
+   {
+    "name": "get-skater-leaders",
+    "ok": true,
+    "ms": 175
+   },
+   {
+    "name": "get-goalie-leaders",
+    "ok": true,
+    "ms": 132
+   },
+   {
+    "name": "list-skater-stats",
+    "ok": true,
+    "ms": 88
+   },
+   {
+    "name": "list-skater-time-on-ice",
+    "ok": true,
+    "ms": 153
+   },
+   {
+    "name": "list-goalie-stats",
+    "ok": true,
+    "ms": 147
+   },
+   {
+    "name": "list-team-stats",
+    "ok": true,
+    "ms": 223
+   },
+   {
+    "name": "search-players",
+    "ok": true,
+    "ms": 958
+   },
+   {
+    "name": "get-player",
+    "ok": true,
+    "ms": 105
+   },
+   {
+    "name": "get-player-stats",
+    "ok": true,
+    "ms": 255
+   },
+   {
+    "name": "get-player-bio",
+    "ok": true,
+    "ms": 171
+   },
+   {
+    "name": "get-player-game-log",
+    "ok": true,
+    "ms": 153
+   },
+   {
+    "name": "get-game",
+    "ok": true,
+    "ms": 319
+   },
+   {
+    "name": "get-game-boxscore",
+    "ok": true,
+    "ms": 84
+   },
+   {
+    "name": "get-game-play-by-play",
+    "ok": true,
+    "ms": 83
+   },
+   {
+    "name": "get-game-details",
+    "ok": true,
+    "ms": 80
+   },
+   {
+    "name": "get-game-recap-stories",
+    "ok": true,
+    "ms": 120
+   },
+   {
+    "name": "get-standings",
+    "ok": true,
+    "ms": 15
+   },
+   {
+    "name": "list-standings-seasons",
+    "ok": true,
+    "ms": 76
+   },
+   {
+    "name": "get-scores",
+    "ok": true,
+    "ms": 16
+   },
+   {
+    "name": "get-schedule",
+    "ok": true,
+    "ms": 15
+   },
+   {
+    "name": "get-schedule-calendar",
+    "ok": true,
+    "ms": 99
+   },
+   {
+    "name": "list-seasons",
+    "ok": true,
+    "ms": 87
+   },
+   {
+    "name": "get-current-season",
+    "ok": true,
+    "ms": 82
+   },
+   {
+    "name": "list-franchises",
+    "ok": true,
+    "ms": 154
+   },
+   {
+    "name": "list-countries",
+    "ok": true,
+    "ms": 127
+   },
+   {
+    "name": "list-drafts",
+    "ok": true,
+    "ms": 92
+   },
+   {
+    "name": "get-glossary",
+    "ok": true,
+    "ms": 108
+   }
+  ]
+ },
+ "deleted": true,
+ "seconds": 402
+}

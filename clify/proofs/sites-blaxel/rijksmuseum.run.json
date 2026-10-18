@@ -1,0 +1,146 @@
+{
+ "url": "https://www.rijksmuseum.nl/en/collection",
+ "category": "culture",
+ "sandbox": "clify-www-rijksmuseum-nl-en-collection",
+ "startedAt": "2026-10-18T08:32:01.407Z",
+ "region": "us-pdx-1",
+ "chrome": "Chrome/148.0.7778.96",
+ "sandboxStartMs": 2541,
+ "addSeconds": 234,
+ "addExit": 0,
+ "add": {
+  "ok": true,
+  "site": "rijksmuseum",
+  "url": "https://www.rijksmuseum.nl/en/collection",
+  "commands": [
+   {
+    "name": "search-collection",
+    "summary": "Search Rijksmuseum artworks by keyword with optional sort and up to two facet filters (object type, century, maker/person, ...); 20 results per page",
+    "verified": true
+   },
+   {
+    "name": "search-library",
+    "summary": "Search Rijksmuseum library publications (books, articles) by keyword; 20 results per page",
+    "verified": true
+   },
+   {
+    "name": "autocomplete",
+    "summary": "Type-ahead suggestions for a search term: matching facet nodes (object types, places, people) and objects",
+    "verified": true
+   },
+   {
+    "name": "list-search-facets",
+    "summary": "List the filter groups (Maker, Object type, Century, Place, ...) with facet ids, relation types and counts for a search query",
+    "verified": true
+   },
+   {
+    "name": "search-facet-values",
+    "summary": "Search within one facet group (e.g. Object type, Maker, Place) for facet values matching text, scoped to a search query; returns facet ids and relation types for search-collection",
+    "verified": true
+   },
+   {
+    "name": "get-artwork",
+    "summary": "Get full details of an artwork: title, maker, dating, dimensions, materials, description, location, image id and the full data tab",
+    "verified": true
+   },
+   {
+    "name": "get-object-titles",
+    "summary": "Get an artwork's or publication's title in each available language (en, nl)",
+    "verified": true
+   },
+   {
+    "name": "get-node",
+    "summary": "Get a collection node page (person/maker, object type, topic, place): its title, type and featured artworks such as most viewed and works through the years",
+    "verified": true
+   },
+   {
+    "name": "get-facet-info",
+    "summary": "Resolve a facet/node id to its name and node type (e.g. Person 'Rachel Ruysch')",
+    "verified": true
+   },
+   {
+    "name": "get-library-item",
+    "summary": "Get details of a Rijksmuseum library publication: title, type, authors and properties, ISBN, and a link to the library catalogue",
+    "verified": true
+   }
+  ],
+  "verified": 10,
+  "writes": 0,
+  "dropped": [],
+  "blockers": [],
+  "loggedIn": false,
+  "seconds": 234,
+  "next": [
+   "clify rijksmuseum",
+   "clify rijksmuseum search-collection --query \"rembrandt\" --sort \"Popularity\""
+  ],
+  "installed": "/home/ubuntu/clify-runs/blaxel-w1/home/bin/rijksmuseum",
+  "explored": {
+   "steps": 29,
+   "recorded": 37,
+   "heldWrites": 0
+  }
+ },
+ "check": {
+  "on": "blaxel",
+  "node": "v24.22.0",
+  "seconds": 4,
+  "reads": 10,
+  "verified": 10,
+  "failed": [],
+  "results": [
+   {
+    "name": "search-collection",
+    "ok": true,
+    "ms": 281
+   },
+   {
+    "name": "search-library",
+    "ok": true,
+    "ms": 28
+   },
+   {
+    "name": "autocomplete",
+    "ok": true,
+    "ms": 691
+   },
+   {
+    "name": "list-search-facets",
+    "ok": true,
+    "ms": 181
+   },
+   {
+    "name": "search-facet-values",
+    "ok": true,
+    "ms": 168
+   },
+   {
+    "name": "get-artwork",
+    "ok": true,
+    "ms": 20
+   },
+   {
+    "name": "get-object-titles",
+    "ok": true,
+    "ms": 16
+   },
+   {
+    "name": "get-node",
+    "ok": true,
+    "ms": 63
+   },
+   {
+    "name": "get-facet-info",
+    "ok": true,
+    "ms": 171
+   },
+   {
+    "name": "get-library-item",
+    "ok": true,
+    "ms": 17
+   }
+  ]
+ },
+ "deleted": true,
+ "seconds": 241
+}

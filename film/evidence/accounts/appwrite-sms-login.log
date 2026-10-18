@@ -1,0 +1,15 @@
+06:48:41 🌐 login https://cloud.appwrite.io/console/login as clify-agent-b3d326@inkboxmail.com
+06:48:48 → goto {"url":"https://cloud.appwrite.io/console/login"}
+06:48:53 → click {"i":9,"intent":"Sign in"}
+06:48:56 → type {"i":6,"text":"{{email}}"}
+06:48:58 → type {"i":8,"text":"{{password}}","submit":true}
+06:49:01 → wait {"seconds":3}
+06:49:09 → click {"i":1,"intent":"Switch to phone method"}
+06:49:11 → check_sms {}
+06:49:14 → type_code_boxes {"i":3,"text":"{{code}}"}
+06:49:18 → click {"i":5,"intent":"Verify"}
+06:49:21 → wait {"seconds":3}
+06:49:28 → click {"i":6,"intent":"Open account menu"}
+06:49:31 → click {"i":39,"intent":"Open account page"}
+06:49:34 → done {"result":"logged_in","account_url":"https://appwrite.io/account","note":"Logged in with email+password; 2FA completed via phone/SMS code."}
+06:49:40 🔑 signed in, session saved to the vault

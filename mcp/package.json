@@ -1,0 +1,30 @@
+{
+  "name": "clify-mcp",
+  "type": "module",
+  "private": true,
+  "engines": {
+    "node": ">=22.22.2"
+  },
+  "version": "0.3.0",
+  "description": "clify as a hosted MCP server: 135 real websites (1,619 verified commands) as typed, JSON-first tools for agents, through 3 core tools plus a few direct shortcuts",
+  "license": "MIT",
+  "scripts": {
+    "sync-specs": "node scripts/sync-specs.mjs",
+    "build": "mcp-use build",
+    "dev": "mcp-use dev",
+    "start": "mcp-use start",
+    "deploy": "./scripts/deploy.sh",
+    "typecheck": "mcp-use typecheck",
+    "probe": "node scripts/probe.mjs",
+    "measure-tools": "node scripts/measure-tools.mjs"
+  },
+  "dependencies": {
+    "mcp-use": "2.10.1",
+    "node-html-parser": "^6.1.13",
+    "zod": "^4.4.3"
+  },
+  "devDependencies": {
+    "@types/node": "^22.20.0",
+    "typescript": "^7.0.2"
+  }
+}

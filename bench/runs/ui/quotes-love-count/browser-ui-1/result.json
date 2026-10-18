@@ -1,0 +1,32 @@
+{
+ "task": "quotes-love-count",
+ "site": "quotes",
+ "mode": "browser-ui",
+ "trial": 1,
+ "tag": "ui",
+ "ok": true,
+ "why": "all expected values present",
+ "answer": "14",
+ "expected": {
+  "number": 14
+ },
+ "wallMs": 17874,
+ "apiMs": 15249,
+ "turns": 6,
+ "toolCalls": 5,
+ "tokens": {
+  "input": 10,
+  "output": 752,
+  "cacheWrite": 10768,
+  "cacheRead": 59959,
+  "total": 71489
+ },
+ "costUsd": 0.0809118,
+ "models": [
+  "claude-opus-5-5"
+ ],
+ "exitCode": 0,
+ "timedOut": false,
+ "subtype": "success",
+ "startedAt": "2026-10-17T23:28:11.699Z"
+}

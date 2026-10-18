@@ -1,0 +1,291 @@
+{
+ "url": "https://www.yr.no/",
+ "category": "maps-weather",
+ "sandbox": "clify-www-yr-no",
+ "startedAt": "2026-10-18T09:04:05.006Z",
+ "region": "us-pdx-1",
+ "chrome": "Chrome/148.0.7778.96",
+ "sandboxStartMs": 1842,
+ "addSeconds": 264,
+ "addExit": 0,
+ "add": {
+  "ok": true,
+  "site": "yr",
+  "url": "https://www.yr.no/",
+  "commands": [
+   {
+    "name": "search-locations",
+    "summary": "Search places worldwide by name; returns location ids (e.g. 1-92416) used by all location commands",
+    "verified": true
+   },
+   {
+    "name": "get-location",
+    "summary": "Get details for a location id: name, coordinates, elevation, region, time zone and which data types are available (_links)",
+    "verified": true
+   },
+   {
+    "name": "get-forecast",
+    "summary": "Daily weather forecast (~9-10 days) for a location: symbols, min/max temperature, precipitation, wind",
+    "verified": true
+   },
+   {
+    "name": "get-current-weather",
+    "summary": "Weather for the current hour at a location: symbol, temperature, feels-like, precipitation, wind, UV index",
+    "verified": true
+   },
+   {
+    "name": "get-nowcast",
+    "summary": "Radar-based precipitation nowcast for the next 90 minutes in 5-minute steps (Nordic locations)",
+    "verified": true
+   },
+   {
+    "name": "get-long-range-forecast",
+    "summary": "21-day (3 weeks) long-range forecast for a location with daily temperature/precipitation percentiles and weekly summaries",
+    "verified": true
+   },
+   {
+    "name": "get-coast-forecast",
+    "summary": "Coastal/sea forecast for a coastal location: waves, currents, sea temperature plus wind and air temperature per day",
+    "verified": true
+   },
+   {
+    "name": "get-tide",
+    "summary": "Upcoming high and low tide times and levels (cm) for a Norwegian coastal location",
+    "verified": true
+   },
+   {
+    "name": "get-water-level",
+    "summary": "Hourly sea water level for ~9 days (astronomical prediction vs. weather-adjusted forecast, cm)",
+    "verified": true
+   },
+   {
+    "name": "get-air-quality",
+    "summary": "Hourly air quality forecast (index, severity, health description) for a Norwegian location",
+    "verified": true
+   },
+   {
+    "name": "get-aurora-forecast",
+    "summary": "Hourly northern lights (aurora) forecast: Kp index, aurora activity, darkness and cloud cover",
+    "verified": true
+   },
+   {
+    "name": "get-sun-moon-today",
+    "summary": "Today's sun and moon details: sunrise/sunset, day length, moon phase, illumination, next full/new moon and eclipses",
+    "verified": true
+   },
+   {
+    "name": "get-celestial-events",
+    "summary": "Sunrise/sunset and moonrise/moonset events for each day over ~13 days",
+    "verified": true
+   },
+   {
+    "name": "get-water-temperatures",
+    "summary": "Latest measured water/bathing temperatures at spots nearest to a location",
+    "verified": true
+   },
+   {
+    "name": "get-webcams",
+    "summary": "Webcams near a location with distance and image URLs",
+    "verified": true
+   },
+   {
+    "name": "list-observation-stations",
+    "summary": "Weather stations near a location with their last 24h observed temperature, precipitation and wind",
+    "verified": true
+   },
+   {
+    "name": "get-observation-history",
+    "summary": "Observed weather history from the nearest station: last year, last 30 days, last 25 hours, or a specific date",
+    "verified": true
+   },
+   {
+    "name": "get-location-warnings",
+    "summary": "Active and upcoming weather warnings (farevarsler) affecting a location; an empty list means no warnings",
+    "verified": true
+   },
+   {
+    "name": "list-warnings",
+    "summary": "All active weather warnings in Norway (land and marine): title, severity, event type, areas, validity",
+    "verified": true
+   },
+   {
+    "name": "list-regions",
+    "summary": "List the counties/regions of a country (used to filter warnings by county)",
+    "verified": true
+   },
+   {
+    "name": "list-mountain-passes",
+    "summary": "All Norwegian mountain passes with open/closed/convoy status, road number and message count (collection fjell-sor = south, fjell-nord = north)",
+    "verified": true
+   },
+   {
+    "name": "get-mountain-pass",
+    "summary": "Mountain pass detail: open/closed status, road messages (closures, roadworks), road cameras and forecast location ids along the route",
+    "verified": true
+   },
+   {
+    "name": "search-meteorologist-posts",
+    "summary": "Latest posts from yr's duty meteorologists (Meteorologene), optionally filtered by a keyword in the text, newest first",
+    "verified": true
+   },
+   {
+    "name": "get-meteorologist-post",
+    "summary": "Get one meteorologist post by its _id (full text, images, thread replies)",
+    "verified": true
+   }
+  ],
+  "verified": 24,
+  "writes": 0,
+  "dropped": [
+   {
+    "name": "get-location-extreme-warnings",
+    "reason": "empty list: the example args returned nothing or the selector/resultPath is wrong"
+   }
+  ],
+  "blockers": [],
+  "loggedIn": false,
+  "seconds": 263,
+  "next": [
+   "clify yr",
+   "clify yr search-locations --q \"Bergen\""
+  ],
+  "installed": "/home/ubuntu/clify-runs/blaxel-w1/home/bin/yr",
+  "explored": {
+   "steps": 30,
+   "recorded": 198,
+   "heldWrites": 57
+  }
+ },
+ "check": {
+  "on": "blaxel",
+  "node": "v24.22.0",
+  "seconds": 4,
+  "reads": 24,
+  "verified": 24,
+  "failed": [],
+  "results": [
+   {
+    "name": "search-locations",
+    "ok": true,
+    "ms": 114
+   },
+   {
+    "name": "get-location",
+    "ok": true,
+    "ms": 25
+   },
+   {
+    "name": "get-forecast",
+    "ok": true,
+    "ms": 34
+   },
+   {
+    "name": "get-current-weather",
+    "ok": true,
+    "ms": 181
+   },
+   {
+    "name": "get-nowcast",
+    "ok": true,
+    "ms": 165
+   },
+   {
+    "name": "get-long-range-forecast",
+    "ok": true,
+    "ms": 35
+   },
+   {
+    "name": "get-coast-forecast",
+    "ok": true,
+    "ms": 52
+   },
+   {
+    "name": "get-tide",
+    "ok": true,
+    "ms": 40
+   },
+   {
+    "name": "get-water-level",
+    "ok": true,
+    "ms": 36
+   },
+   {
+    "name": "get-air-quality",
+    "ok": true,
+    "ms": 44
+   },
+   {
+    "name": "get-aurora-forecast",
+    "ok": true,
+    "ms": 33
+   },
+   {
+    "name": "get-sun-moon-today",
+    "ok": true,
+    "ms": 29
+   },
+   {
+    "name": "get-celestial-events",
+    "ok": true,
+    "ms": 22
+   },
+   {
+    "name": "get-water-temperatures",
+    "ok": true,
+    "ms": 28
+   },
+   {
+    "name": "get-webcams",
+    "ok": true,
+    "ms": 32
+   },
+   {
+    "name": "list-observation-stations",
+    "ok": true,
+    "ms": 27
+   },
+   {
+    "name": "get-observation-history",
+    "ok": true,
+    "ms": 25
+   },
+   {
+    "name": "get-location-warnings",
+    "ok": true,
+    "ms": 158
+   },
+   {
+    "name": "list-warnings",
+    "ok": true,
+    "ms": 168
+   },
+   {
+    "name": "list-regions",
+    "ok": true,
+    "ms": 166
+   },
+   {
+    "name": "list-mountain-passes",
+    "ok": true,
+    "ms": 194
+   },
+   {
+    "name": "get-mountain-pass",
+    "ok": true,
+    "ms": 198
+   },
+   {
+    "name": "search-meteorologist-posts",
+    "ok": true,
+    "ms": 194
+   },
+   {
+    "name": "get-meteorologist-post",
+    "ok": true,
+    "ms": 181
+   }
+  ]
+ },
+ "deleted": true,
+ "seconds": 270
+}

@@ -1,0 +1,133 @@
+{
+ "url": "https://openlibrary.org/",
+ "category": "culture",
+ "sandbox": "clify-openlibrary-org",
+ "startedAt": "2026-10-18T08:29:22.803Z",
+ "region": "us-pdx-1",
+ "chrome": "Chrome/148.0.7778.96",
+ "sandboxStartMs": 2314,
+ "addSeconds": 154,
+ "addExit": 0,
+ "add": {
+  "ok": true,
+  "site": "openlibrary",
+  "url": "https://openlibrary.org/",
+  "commands": [
+   {
+    "name": "list-languages",
+    "summary": "List the book languages Open Library uses as search filters, ordered by number of books",
+    "verified": true
+   },
+   {
+    "name": "list-browse-genres",
+    "summary": "List the genre tiles in the home page's 'Browse the stacks' section (Featured, Crime, ...). Use these with get-genre-shelf.",
+    "verified": true
+   },
+   {
+    "name": "get-library-stats",
+    "summary": "Get Open Library's activity stats for the last month from the home page (new members, books read, ...) with the monthly change",
+    "verified": true
+   },
+   {
+    "name": "list-blog-posts",
+    "summary": "List the latest Open Library blog posts shown on the home page (title, link, date)",
+    "verified": true
+   },
+   {
+    "name": "get-edition",
+    "summary": "Get the JSON record of one book edition by its Open Library edition id (OL...M): title, authors, publishers, ISBNs, page count, work link",
+    "verified": true
+   }
+  ],
+  "verified": 5,
+  "writes": 0,
+  "dropped": [
+   {
+    "name": "get-genre-shelf",
+    "reason": "The endpoint returns JSON, but its only field ('partials') is a raw HTML fragment of placeholder markup. clify cannot run HTML selectors on a string inside JSON, so there is no structured data to return."
+   },
+   {
+    "name": "list-carousel-books",
+    "reason": "The book cards come back only as an HTML string inside the JSON 'partials' field. HTML extraction cannot run on a JSON string value, and there is no JSON form of the carousel to point at."
+   }
+  ],
+  "blockers": [
+   "captcha"
+  ],
+  "loggedIn": false,
+  "seconds": 153,
+  "next": [
+   "clify openlibrary",
+   "clify openlibrary list-languages --api_limit \"500\" --sort \"count\""
+  ],
+  "installed": "/home/ubuntu/clify-runs/blaxel-w1/home/bin/openlibrary",
+  "explored": {
+   "steps": 9,
+   "recorded": 35,
+   "heldWrites": 0
+  }
+ },
+ "check": {
+  "on": "blaxel",
+  "node": "v24.22.0",
+  "seconds": 2,
+  "reads": 5,
+  "verified": 0,
+  "failed": [
+   {
+    "name": "list-languages",
+    "reason": "request failed: fetch failed"
+   },
+   {
+    "name": "list-browse-genres",
+    "reason": "request failed: fetch failed"
+   },
+   {
+    "name": "get-library-stats",
+    "reason": "request failed: fetch failed"
+   },
+   {
+    "name": "list-blog-posts",
+    "reason": "request failed: fetch failed"
+   },
+   {
+    "name": "get-edition",
+    "reason": "request failed: fetch failed"
+   }
+  ],
+  "results": [
+   {
+    "name": "list-languages",
+    "ok": false,
+    "reason": "request failed: fetch failed",
+    "ms": 48
+   },
+   {
+    "name": "list-browse-genres",
+    "ok": false,
+    "reason": "request failed: fetch failed",
+    "ms": 38
+   },
+   {
+    "name": "get-library-stats",
+    "ok": false,
+    "reason": "request failed: fetch failed",
+    "ms": 37
+   },
+   {
+    "name": "list-blog-posts",
+    "ok": false,
+    "reason": "request failed: fetch failed",
+    "ms": 38
+   },
+   {
+    "name": "get-edition",
+    "ok": false,
+    "reason": "request failed: fetch failed",
+    "ms": 36
+   }
+  ]
+ },
+ "deleted": true,
+ "seconds": 159
+}

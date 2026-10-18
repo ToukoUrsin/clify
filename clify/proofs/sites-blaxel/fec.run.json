@@ -1,0 +1,358 @@
+{
+ "url": "https://www.fec.gov/data/",
+ "category": "gov-us",
+ "sandbox": "clify-www-fec-gov-data",
+ "startedAt": "2026-10-18T08:09:45.354Z",
+ "region": "us-pdx-1",
+ "chrome": "Chrome/148.0.7778.96",
+ "sandboxStartMs": 2633,
+ "addSeconds": 432,
+ "addExit": 0,
+ "add": {
+  "ok": true,
+  "site": "fec",
+  "url": "https://www.fec.gov/data/",
+  "commands": [
+   {
+    "name": "search-candidate-names",
+    "summary": "Autocomplete or search candidates by name and get their FEC candidate IDs",
+    "verified": true
+   },
+   {
+    "name": "search-committee-names",
+    "summary": "Autocomplete or search committees (campaigns, PACs, parties) by name and get their FEC committee IDs",
+    "verified": true
+   },
+   {
+    "name": "list-candidate-totals",
+    "summary": "Rank candidates by money raised, spent, or cash on hand for an election year, optionally filtered by office or state (raising/spending 'by the numbers')",
+    "verified": true
+   },
+   {
+    "name": "get-candidate-totals-aggregates",
+    "summary": "Get total receipts, disbursements and cash on hand summed across all candidates for an office, optionally broken down by party",
+    "verified": true
+   },
+   {
+    "name": "get-candidate-totals",
+    "summary": "Get a candidate's detailed financial totals (receipts, contributions, loans, spending, cash on hand) for an election",
+    "verified": true
+   },
+   {
+    "name": "get-candidate-committees",
+    "summary": "List a candidate's principal and authorized campaign committees for a cycle, with committee IDs, treasurer and address",
+    "verified": true
+   },
+   {
+    "name": "list-election-candidates",
+    "summary": "List the candidates in a specific race (President, a state's Senate seat, or a House district) with their receipts, spending and cash on hand",
+    "verified": true
+   },
+   {
+    "name": "search-elections",
+    "summary": "Find the federal races (office, state, district) for a cycle by state or ZIP code",
+    "verified": true
+   },
+   {
+    "name": "list-election-dates",
+    "summary": "List upcoming (or past) federal election dates by state, office and election type",
+    "verified": true
+   },
+   {
+    "name": "list-calendar-dates",
+    "summary": "List FEC calendar events (reporting deadlines, IE periods, elections, meetings) in a date range",
+    "verified": true
+   },
+   {
+    "name": "list-contributions-by-state",
+    "summary": "Break down a candidate's itemized individual contributions by contributor state (total and count per state)",
+    "verified": true
+   },
+   {
+    "name": "get-contributions-by-state-total",
+    "summary": "Get a candidate's total itemized individual contributions summed across all states",
+    "verified": true
+   },
+   {
+    "name": "list-contributions-by-size",
+    "summary": "Break down a candidate's individual contributions by contribution size bucket (0 = unitemized under $200, 200, 500, 1000, 2000)",
+    "verified": true
+   },
+   {
+    "name": "list-receipts",
+    "summary": "List itemized receipts (Schedule A, e.g. individual contributions) to a committee, newest first, with contributor name, employer and amount",
+    "verified": true
+   },
+   {
+    "name": "list-disbursements",
+    "summary": "List itemized disbursements (Schedule B) made by a committee, newest first, with recipient, purpose and amount",
+    "verified": true
+   },
+   {
+    "name": "list-disbursements-by-recipient",
+    "summary": "Aggregate a committee's spending by payee name (top vendors and recipients with totals and percentage of spending)",
+    "verified": true
+   },
+   {
+    "name": "list-disbursements-to-committees",
+    "summary": "Aggregate a committee's transfers and contributions to other registered committees by recipient committee ID",
+    "verified": true
+   },
+   {
+    "name": "list-filings",
+    "summary": "List processed FEC filings (reports, statements, notices) for a committee or candidate, with links to PDFs",
+    "verified": true
+   },
+   {
+    "name": "list-efile-filings",
+    "summary": "List raw electronic filings for a committee received since a date, including ones not yet processed, with PDF/CSV/.fec links",
+    "verified": true
+   },
+   {
+    "name": "list-independent-expenditures-by-candida",
+    "summary": "List outside spending (independent expenditures, Schedule E) supporting or opposing candidates, aggregated by spender, for a candidate or a whole race",
+    "verified": true
+   },
+   {
+    "name": "list-communication-costs-by-candidate",
+    "summary": "List communication costs (corporate or union internal communications) for or against candidates, aggregated by organization",
+    "verified": true
+   },
+   {
+    "name": "get-state-election-offices",
+    "summary": "Get a state's election offices (ballot access and campaign finance) with addresses, phones and websites",
+    "verified": true
+   },
+   {
+    "name": "get-advisory-opinion",
+    "summary": "Get an FEC advisory opinion's documents (date, title, PDF link) by AO number",
+    "verified": true
+   },
+   {
+    "name": "export-election-candidates",
+    "summary": "Queue a CSV export of a race's candidate financial totals. This creates a server-side download task.",
+    "verified": false,
+    "writes": true
+   }
+  ],
+  "verified": 23,
+  "writes": 1,
+  "dropped": [
+   {
+    "name": "list-electioneering-by-candidate",
+    "reason": "HTTP 429: rate limited by the site; wait a minute before retrying (HTTP 429)"
+   }
+  ],
+  "blockers": [
+   "captcha at https://www.fec.gov/data/",
+   "captcha at https://www.fec.gov/data/search/?search=Ossoff",
+   "captcha at https://www.fec.gov/data/candidate/S8GA00180/",
+   "captcha at https://www.fec.gov/data/candidate/S8GA00180/?tab=raising",
+   "captcha at https://www.fec.gov/data/committee/C00718866/?tab=spending",
+   "captcha at https://www.fec.gov/data/committee/C00718866/?cycle=2026&tab=filings",
+   "captcha at https://www.fec.gov/data/elections/senate/GA/2026/",
+   "captcha at https://www.fec.gov/data/elections/?cycle=2026&state=GA",
+   "captcha at https://www.fec.gov/data/elections/?cycle=2026&zip=90210",
+   "captcha at https://www.fec.gov/data/raising-bythenumbers/",
+   "captcha at https://www.fec.gov/data/raising-bythenumbers/?office=H",
+   "captcha at https://www.fec.gov/data/spending-bythenumbers/",
+   "captcha at https://www.fec.gov/data/candidate/H8NY15148/",
+   "captcha at https://www.fec.gov/data/candidate/H8NY15148/?tab=filings",
+   "captcha at https://www.fec.gov/data/candidate/H8NY15148/?tab=other-spending",
+   "captcha at https://www.fec.gov/search/?type=candidates&type=committees&type=site&query=contribution+limits",
+   "captcha at https://www.fec.gov/data/legal/search/?search_type=all&search=contribution%20limits",
+   "captcha at https://www.fec.gov/data/legal/advisory-opinions/2025-08/",
+   "captcha at https://www.fec.gov/calendar/"
+  ],
+  "loggedIn": false,
+  "seconds": 432,
+  "next": [
+   "clify fec",
+   "clify fec search-candidate-names --q \"Ossoff\""
+  ],
+  "installed": "/home/ubuntu/clify-runs/blaxel-w1/home/bin/fec",
+  "explored": {
+   "steps": 29,
+   "recorded": 86,
+   "heldWrites": 8
+  }
+ },
+ "check": {
+  "on": "blaxel",
+  "node": "v24.22.0",
+  "seconds": 77,
+  "reads": 23,
+  "verified": 14,
+  "failed": [
+   {
+    "name": "list-receipts",
+    "reason": "HTTP 429: rate limited by the site; wait a minute before retrying (HTTP 429)"
+   },
+   {
+    "name": "list-disbursements",
+    "reason": "HTTP 429: rate limited by the site; wait a minute before retrying (HTTP 429)"
+   },
+   {
+    "name": "list-disbursements-by-recipient",
+    "reason": "HTTP 429: rate limited by the site; wait a minute before retrying (HTTP 429)"
+   },
+   {
+    "name": "list-disbursements-to-committees",
+    "reason": "HTTP 429: rate limited by the site; wait a minute before retrying (HTTP 429)"
+   },
+   {
+    "name": "list-filings",
+    "reason": "HTTP 429: rate limited by the site; wait a minute before retrying (HTTP 429)"
+   },
+   {
+    "name": "list-efile-filings",
+    "reason": "HTTP 429: rate limited by the site; wait a minute before retrying (HTTP 429)"
+   },
+   {
+    "name": "list-independent-expenditures-by-candida",
+    "reason": "HTTP 429: rate limited by the site; wait a minute before retrying (HTTP 429)"
+   },
+   {
+    "name": "list-communication-costs-by-candidate",
+    "reason": "HTTP 429: rate limited by the site; wait a minute before retrying (HTTP 429)"
+   },
+   {
+    "name": "get-state-election-offices",
+    "reason": "HTTP 429: rate limited by the site; wait a minute before retrying (HTTP 429)"
+   }
+  ],
+  "results": [
+   {
+    "name": "search-candidate-names",
+    "ok": true,
+    "ms": 166
+   },
+   {
+    "name": "search-committee-names",
+    "ok": true,
+    "ms": 41
+   },
+   {
+    "name": "list-candidate-totals",
+    "ok": true,
+    "ms": 97
+   },
+   {
+    "name": "get-candidate-totals-aggregates",
+    "ok": true,
+    "ms": 196
+   },
+   {
+    "name": "get-candidate-totals",
+    "ok": true,
+    "ms": 47
+   },
+   {
+    "name": "get-candidate-committees",
+    "ok": true,
+    "ms": 199
+   },
+   {
+    "name": "list-election-candidates",
+    "ok": true,
+    "ms": 83
+   },
+   {
+    "name": "search-elections",
+    "ok": true,
+    "ms": 50
+   },
+   {
+    "name": "list-election-dates",
+    "ok": true,
+    "ms": 15
+   },
+   {
+    "name": "list-calendar-dates",
+    "ok": true,
+    "ms": 61
+   },
+   {
+    "name": "list-contributions-by-state",
+    "ok": true,
+    "ms": 44
+   },
+   {
+    "name": "get-contributions-by-state-total",
+    "ok": true,
+    "ms": 49
+   },
+   {
+    "name": "list-contributions-by-size",
+    "ok": true,
+    "ms": 46
+   },
+   {
+    "name": "list-receipts",
+    "ok": false,
+    "reason": "HTTP 429: rate limited by the site; wait a minute before retrying (HTTP 429)",
+    "ms": 8062
+   },
+   {
+    "name": "list-disbursements",
+    "ok": false,
+    "reason": "HTTP 429: rate limited by the site; wait a minute before retrying (HTTP 429)",
+    "ms": 8086
+   },
+   {
+    "name": "list-disbursements-by-recipient",
+    "ok": false,
+    "reason": "HTTP 429: rate limited by the site; wait a minute before retrying (HTTP 429)",
+    "ms": 8088
+   },
+   {
+    "name": "list-disbursements-to-committees",
+    "ok": false,
+    "reason": "HTTP 429: rate limited by the site; wait a minute before retrying (HTTP 429)",
+    "ms": 8085
+   },
+   {
+    "name": "list-filings",
+    "ok": false,
+    "reason": "HTTP 429: rate limited by the site; wait a minute before retrying (HTTP 429)",
+    "ms": 8083
+   },
+   {
+    "name": "list-efile-filings",
+    "ok": false,
+    "reason": "HTTP 429: rate limited by the site; wait a minute before retrying (HTTP 429)",
+    "ms": 8082
+   },
+   {
+    "name": "list-independent-expenditures-by-candida",
+    "ok": false,
+    "reason": "HTTP 429: rate limited by the site; wait a minute before retrying (HTTP 429)",
+    "ms": 8082
+   },
+   {
+    "name": "list-communication-costs-by-candidate",
+    "ok": false,
+    "reason": "HTTP 429: rate limited by the site; wait a minute before retrying (HTTP 429)",
+    "ms": 8148
+   },
+   {
+    "name": "get-state-election-offices",
+    "ok": false,
+    "reason": "HTTP 429: rate limited by the site; wait a minute before retrying (HTTP 429)",
+    "ms": 8083
+   },
+   {
+    "name": "get-advisory-opinion",
+    "ok": true,
+    "ms": 145
+   },
+   {
+    "name": "export-election-candidates",
+    "ok": true,
+    "reason": "write: dry-run preview only, not sent"
+   }
+  ]
+ },
+ "deleted": true,
+ "seconds": 512
+}

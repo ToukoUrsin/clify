@@ -1,0 +1,191 @@
+{
+ "url": "https://www.worldcubeassociation.org/",
+ "category": "sports-ent",
+ "sandbox": "clify-www-worldcubeassociation-org",
+ "startedAt": "2026-10-18T08:45:44.308Z",
+ "region": "us-pdx-1",
+ "chrome": "Chrome/148.0.7778.96",
+ "sandboxStartMs": 2570,
+ "addSeconds": 247,
+ "addExit": 0,
+ "add": {
+  "ok": true,
+  "site": "worldcubeassociation",
+  "url": "https://www.worldcubeassociation.org/",
+  "commands": [
+   {
+    "name": "search-competitions",
+    "summary": "Search WCA competitions like the /competitions page: keyword, event, country and date filters, sorted and paginated with 25 per page",
+    "verified": true
+   },
+   {
+    "name": "list-competitions",
+    "summary": "List competitions through the public API, filtered by country and a start/end date range, with sort and pagination",
+    "verified": true
+   },
+   {
+    "name": "get-competition",
+    "summary": "Get one competition's details: dates, venue, registration settings, fees and information",
+    "verified": true
+   },
+   {
+    "name": "get-competition-results",
+    "summary": "Get a competition's results for one event, round by round, with each competitor's position, best, average and attempts",
+    "verified": true
+   },
+   {
+    "name": "get-competition-scrambles",
+    "summary": "Get the official scrambles a competition used for one event, grouped by round",
+    "verified": true
+   },
+   {
+    "name": "get-competition-wcif",
+    "summary": "Get a competition's public WCIF: events, rounds, formats, time limits, cutoffs, schedule/venues and registered persons with their assignments",
+    "verified": true
+   },
+   {
+    "name": "list-competition-competitors",
+    "summary": "List the people who competed in or are registered for a competition",
+    "verified": true
+   },
+   {
+    "name": "search-persons",
+    "summary": "Search WCA competitors by name or WCA id; each result includes competition count and personal records with ranks",
+    "verified": true
+   },
+   {
+    "name": "get-person",
+    "summary": "Get a competitor's profile by WCA id: country, delegate status, teams, competition count and personal records (single/average with world, continent and country ranks)",
+    "verified": true
+   },
+   {
+    "name": "get-person-results",
+    "summary": "List every result a competitor has, one row per round: competition, event, round, position, best, average, attempts",
+    "verified": true
+   },
+   {
+    "name": "get-person-competitions",
+    "summary": "List the competitions a competitor has attended",
+    "verified": true
+   },
+   {
+    "name": "get-records",
+    "summary": "Get current world, continental and national records (single and average) for every event",
+    "verified": true
+   },
+   {
+    "name": "search-site",
+    "summary": "Site-wide search (the navbar omnisearch) that returns matching people and competitions",
+    "verified": true
+   },
+   {
+    "name": "list-posts",
+    "summary": "List WCA news and announcement posts, newest first, 10 per page",
+    "verified": true
+   }
+  ],
+  "verified": 14,
+  "writes": 0,
+  "dropped": [
+   {
+    "name": "get-competition-calendar",
+    "reason": "The .ics is an empty VCALENDAR with no VEVENT, so it has no competition data. The endpoint was guessed rather than recorded (source is the HTML page). get-competition already covers the dates and venue."
+   }
+  ],
+  "blockers": [],
+  "loggedIn": false,
+  "seconds": 247,
+  "next": [
+   "clify worldcubeassociation",
+   "clify worldcubeassociation search-competitions --q \"Open\" --ongoing_and_future \"2026-10-18\""
+  ],
+  "installed": "/home/ubuntu/clify-runs/blaxel-w1/home/bin/worldcubeassociation",
+  "explored": {
+   "steps": 30,
+   "recorded": 51,
+   "heldWrites": 2
+  }
+ },
+ "check": {
+  "on": "blaxel",
+  "node": "v24.22.0",
+  "seconds": 12,
+  "reads": 14,
+  "verified": 14,
+  "failed": [],
+  "results": [
+   {
+    "name": "search-competitions",
+    "ok": true,
+    "ms": 119
+   },
+   {
+    "name": "list-competitions",
+    "ok": true,
+    "ms": 177
+   },
+   {
+    "name": "get-competition",
+    "ok": true,
+    "ms": 5247
+   },
+   {
+    "name": "get-competition-results",
+    "ok": true,
+    "ms": 126
+   },
+   {
+    "name": "get-competition-scrambles",
+    "ok": true,
+    "ms": 67
+   },
+   {
+    "name": "get-competition-wcif",
+    "ok": true,
+    "ms": 87
+   },
+   {
+    "name": "list-competition-competitors",
+    "ok": true,
+    "ms": 549
+   },
+   {
+    "name": "search-persons",
+    "ok": true,
+    "ms": 1265
+   },
+   {
+    "name": "get-person",
+    "ok": true,
+    "ms": 78
+   },
+   {
+    "name": "get-person-results",
+    "ok": true,
+    "ms": 1484
+   },
+   {
+    "name": "get-person-competitions",
+    "ok": true,
+    "ms": 112
+   },
+   {
+    "name": "get-records",
+    "ok": true,
+    "ms": 41
+   },
+   {
+    "name": "search-site",
+    "ok": true,
+    "ms": 26
+   },
+   {
+    "name": "list-posts",
+    "ok": true,
+    "ms": 17
+   }
+  ]
+ },
+ "deleted": true,
+ "seconds": 262
+}

@@ -1,0 +1,6 @@
+On Scrape This Site (scrapethissite.com), the "Hockey Teams: Forms, Searching and Pagination" page has team season stats. How many wins did the Detroit Red Wings have in 1995?
+
+Start from https://www.scrapethissite.com/pages/. Work it out using only the tools you have, then end your reply with one final line exactly in the form:
+ANSWER: <short answer>
+
+The website is available as a command-line tool: run `clify scrapethis` to see its commands (JSON help), then call them. Use clify only; do not use curl, wget, Python HTTP or other network tools.

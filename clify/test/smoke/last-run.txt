@@ -1,0 +1,182 @@
+$ clify list
+[
+  {
+    "site": "demo",
+    "description": "Hand-written spec for the local static smoke fixture"
+  }
+]
+exit=0
+
+$ clify demo list-items --limit 2 --fields name,price
+{
+  "ok": true,
+  "status": 200,
+  "count": 3,
+  "data": [
+    {
+      "name": "Desk lamp",
+      "price": 49
+    },
+    {
+      "name": "Bookshelf",
+      "price": 180
+    }
+  ]
+}
+exit=0
+
+$ clify demo get-item --id 1
+{
+  "ok": true,
+  "status": 200,
+  "data": {
+    "id": 1,
+    "name": "Desk lamp",
+    "price": 49,
+    "description": "A small static fixture record."
+  }
+}
+exit=0
+
+$ clify demo get-item
+{
+  "ok": false,
+  "status": 0,
+  "url": "/item/{id}.json",
+  "data": null,
+  "error": "missing --id"
+}
+exit=1
+
+$ clify demo sort-items --sort colour
+{
+  "ok": false,
+  "status": 0,
+  "url": "/items.json",
+  "data": null,
+  "error": "--sort must be one of: name, price"
+}
+exit=1
+
+$ clify demo list-items --bogus 1
+{
+  "ok": false,
+  "status": 0,
+  "url": "/items.json",
+  "data": null,
+  "error": "unknown option --bogus; valid: --q"
+}
+exit=1
+
+$ clify demo missing
+{
+  "ok": false,
+  "status": 404,
+  "url": "http://127.0.0.1:18731/nope.json",
+  "data": "Error response Error code: 404 Message: File not found. Error code explanation: HTTPStatus.NOT_FOUND - Nothing matches the given URI.",
+  "error": "HTTP 404"
+}
+exit=1
+
+$ clify demo add-item --name Test lamp --price 10
+{
+  "ok": false,
+  "status": 0,
+  "url": "http://127.0.0.1:18731/items",
+  "data": null,
+  "needsConfirmation": true,
+  "preview": {
+    "method": "POST",
+    "url": "http://127.0.0.1:18731/items",
+    "body": {
+      "name": "Test lamp",
+      "price": 10
+    }
+  },
+  "error": "\"add-item\" changes data on 127.0.0.1. Nothing was sent. Check the preview, then re-run with --yes to send it."
+}
+exit=1
+
+POSTs seen by server after dry-run: 0
+$ clify demo add-item --name Test lamp --price 10 --yes
+{
+  "ok": true,
+  "status": 201,
+  "data": {
+    "created": true
+  }
+}
+exit=0
+
+POSTs seen by server after --yes: 1
+$ clify demo my-items
+{
+  "ok": false,
+  "status": 0,
+  "url": "http://127.0.0.1:18731/items.json",
+  "data": null,
+  "error": "\"my-items\" needs a login and no session is saved. Run: clify login demo"
+}
+exit=1
+
+$ clify demo my-items --limit 1
+{
+  "ok": true,
+  "status": 200,
+  "data": {
+    "items": [
+      {
+        "id": 1,
+        "name": "Desk lamp",
+        "price": 49
+      },
+      {
+        "id": 2,
+        "name": "Bookshelf",
+        "price": 180
+      },
+      {
+        "id": 3,
+        "name": "Stool",
+        "price": 120
+      }
+    ],
+    "total": 3
+  }
+}
+exit=0
+
+cookie on same-host (127.0.0.1) auth request: {"method": "GET", "host": "127.0.0.1:18731", "path": "/items.json", "cookie": "sid=smoke-secret"}
+$ clify demo other-host
+{
+  "ok": true,
+  "status": 200,
+  "data": {
+    "items": [
+      {
+        "id": 1,
+        "name": "Desk lamp",
+        "price": 49
+      },
+      {
+        "id": 2,
+        "name": "Bookshelf",
+        "price": 180
+      },
+      {
+        "id": 3,
+        "name": "Stool",
+        "price": 120
+      }
+    ],
+    "total": 3
+  }
+}
+exit=0
+
+cookie on localhost (other host) request: {"method": "GET", "host": "localhost:18731", "path": "/items.json", "cookie": null}
+$ MCP smoke
+tools: demo__list-items, demo__get-item, demo__sort-items, demo__add-item (writes), demo__my-items, demo__other-host, demo__missing
+demo__list-items isError=false: {"ok":true,"status":200,"data":[{"id":1,"name":"Desk lamp","price":49}]}
+demo__add-item isError=true: {"ok":false,"status":0,"url":"http://127.0.0.1:18731/items","data":null,"needsConfirmation":true,"preview":{"method":"POST","url":"http://127.0.0.1:18731/items","body":{"name":"MCP lamp"}},"error":"\"add-item\" changes data on 127.0.0.1. Nothing was sent. Check the preview, then re-run with confirm:true to send it."}
+POSTs seen by server after MCP dry-run: 1

@@ -1,0 +1,196 @@
+{
+ "url": "https://www.ons.gov.uk/",
+ "category": "gov-eu",
+ "sandbox": "clify-www-ons-gov-uk",
+ "startedAt": "2026-10-18T08:36:59.023Z",
+ "region": "us-pdx-1",
+ "chrome": "Chrome/148.0.7778.96",
+ "sandboxStartMs": 2333,
+ "addSeconds": 381,
+ "addExit": 0,
+ "add": {
+  "ok": true,
+  "site": "ons",
+  "url": "https://www.ons.gov.uk/",
+  "commands": [
+   {
+    "name": "search",
+    "summary": "Site-wide keyword search over ONS publications, bulletins, time series and datasets, with content-type and census topic filters, sorting and paging",
+    "verified": true
+   },
+   {
+    "name": "search-timeseries",
+    "summary": "Search the time series explorer (58k+ series) by keyword and/or topic path; each result shows the series ID (CDID) and dataset ID",
+    "verified": true
+   },
+   {
+    "name": "get-timeseries",
+    "summary": "Get time series metadata and its latest value (title, CDID, unit, latest period and value, release dates, source dataset) from the ONS content API",
+    "verified": true
+   },
+   {
+    "name": "get-timeseries-data",
+    "summary": "Get the monthly observations of a time series as a list of {date, value} (for quarterly or annual-only series use download-timeseries-csv)",
+    "verified": true
+   },
+   {
+    "name": "download-timeseries-csv",
+    "summary": "Download a time series as CSV with all frequencies (annual, quarterly, monthly) plus metadata rows; also works for a previous version",
+    "verified": true
+   },
+   {
+    "name": "list-timeseries-versions",
+    "summary": "List previous (superseded) versions of a time series with update date, label/reason and version uri (pass uri to download-timeseries-csv)",
+    "verified": true
+   },
+   {
+    "name": "get-bulletin",
+    "summary": "Get a statistical bulletin edition: title, summary, release and next-release dates, and its sections",
+    "verified": true
+   },
+   {
+    "name": "list-bulletin-releases",
+    "summary": "List all past editions of a bulletin series, newest first",
+    "verified": true
+   },
+   {
+    "name": "list-bulletin-related-data",
+    "summary": "List the datasets and data related to a bulletin edition",
+    "verified": true
+   },
+   {
+    "name": "get-dataset",
+    "summary": "Get a dataset page: title, description, release info, any correction notice and the current edition's file download link",
+    "verified": true
+   },
+   {
+    "name": "list-topic-data",
+    "summary": "List all published data (time series, datasets, user-requested data) for a topic, with keyword filter, sorting and paging",
+    "verified": true
+   },
+   {
+    "name": "list-topic-publications",
+    "summary": "List all publications (bulletins, articles and so on) for a topic, with keyword filter, sorting and paging",
+    "verified": true
+   },
+   {
+    "name": "list-topic-headline-series",
+    "summary": "List a topic page's headline (spotlight) time series uris, e.g. CPIH/CPI/RPI for inflation",
+    "verified": true
+   },
+   {
+    "name": "list-releases",
+    "summary": "List the release calendar (published, upcoming or cancelled releases) with keyword search, sorting and paging, read from the RSS feed",
+    "verified": true
+   },
+   {
+    "name": "get-release",
+    "summary": "Get a release calendar entry: title, release date and time, publication status and summary",
+    "verified": true
+   }
+  ],
+  "verified": 15,
+  "writes": 0,
+  "dropped": [],
+  "blockers": [],
+  "loggedIn": false,
+  "seconds": 380,
+  "next": [
+   "clify ons",
+   "clify ons search --q \"inflation\""
+  ],
+  "installed": "/home/ubuntu/clify-runs/blaxel-w1/home/bin/ons",
+  "explored": {
+   "steps": 30,
+   "recorded": 46,
+   "heldWrites": 0
+  }
+ },
+ "check": {
+  "on": "blaxel",
+  "node": "v24.22.0",
+  "seconds": 6,
+  "reads": 15,
+  "verified": 15,
+  "failed": [],
+  "results": [
+   {
+    "name": "search",
+    "ok": true,
+    "ms": 363
+   },
+   {
+    "name": "search-timeseries",
+    "ok": true,
+    "ms": 279
+   },
+   {
+    "name": "get-timeseries",
+    "ok": true,
+    "ms": 771
+   },
+   {
+    "name": "get-timeseries-data",
+    "ok": true,
+    "ms": 181
+   },
+   {
+    "name": "download-timeseries-csv",
+    "ok": true,
+    "ms": 19
+   },
+   {
+    "name": "list-timeseries-versions",
+    "ok": true,
+    "ms": 490
+   },
+   {
+    "name": "get-bulletin",
+    "ok": true,
+    "ms": 463
+   },
+   {
+    "name": "list-bulletin-releases",
+    "ok": true,
+    "ms": 61
+   },
+   {
+    "name": "list-bulletin-related-data",
+    "ok": true,
+    "ms": 64
+   },
+   {
+    "name": "get-dataset",
+    "ok": true,
+    "ms": 73
+   },
+   {
+    "name": "list-topic-data",
+    "ok": true,
+    "ms": 282
+   },
+   {
+    "name": "list-topic-publications",
+    "ok": true,
+    "ms": 257
+   },
+   {
+    "name": "list-topic-headline-series",
+    "ok": true,
+    "ms": 173
+   },
+   {
+    "name": "list-releases",
+    "ok": true,
+    "ms": 206
+   },
+   {
+    "name": "get-release",
+    "ok": true,
+    "ms": 30
+   }
+  ]
+ },
+ "deleted": true,
+ "seconds": 389
+}

@@ -1,0 +1,243 @@
+{
+ "name": "caniuse",
+ "startUrl": "https://caniuse.com/",
+ "origin": "https://caniuse.com",
+ "createdAt": "2026-10-18T09:08:53.518Z",
+ "description": "caniuse.com: browser support tables for web platform features (HTML, CSS, JS APIs). The CLI searches features, fetches per-browser support data, compares browser versions, reads the feature index, news, usage share and feature-suggestion list.",
+ "commands": [
+  {
+   "name": "search-features",
+   "summary": "Search caniuse features by keyword; returns matching feature IDs (caniuse, wf-* web-features and mdn-* BCD IDs)",
+   "method": "GET",
+   "urlTemplate": "/process/query.php",
+   "params": [
+    {
+     "name": "query",
+     "key": "search",
+     "in": "query",
+     "required": true,
+     "type": "string",
+     "description": "Search keyword, e.g. 'flexbox', 'grid', 'webp'",
+     "example": "flexbox"
+    }
+   ],
+   "responseType": "json",
+   "resultPath": "featureIds",
+   "mutates": false,
+   "example": {
+    "query": "flexbox"
+   },
+   "source": "E3 GET https://caniuse.com/process/query.php",
+   "verified": true
+  },
+  {
+   "name": "get-feature-support",
+   "summary": "Get full support data (title, description, spec, baseline status, per-browser per-version support stats) for one or more feature IDs",
+   "method": "POST",
+   "urlTemplate": "/process/get_feat_data.php",
+   "params": [
+    {
+     "name": "ids",
+     "key": "fullDataFeats",
+     "in": "body",
+     "required": true,
+     "type": "string",
+     "description": "Comma-separated feature IDs as returned by search-features, e.g. 'css-grid' or 'flexbox,flexbox-gap,wf-aspect-ratio'",
+     "example": "css-grid"
+    }
+   ],
+   "bodyTemplate": {
+    "type": "support-data",
+    "fullDataFeats": "{ids}"
+   },
+   "bodyEncoding": "form",
+   "responseType": "json",
+   "resultPath": "fullData",
+   "defaultFields": [
+    "id",
+    "title",
+    "description",
+    "spec",
+    "status",
+    "baseline_status.status",
+    "baseline_status.lowDate",
+    "baseline_status.highDate"
+   ],
+   "mutates": false,
+   "example": {
+    "ids": "css-grid"
+   },
+   "source": "E4 POST https://caniuse.com/process/get_feat_data.php",
+   "verified": true
+  },
+  {
+   "name": "compare-browsers",
+   "summary": "Compare feature support between browser versions; returns the raw comparison result (IDs of features whose support differs between the given versions)",
+   "method": "GET",
+   "urlTemplate": "/process/query.php",
+   "params": [
+    {
+     "name": "compare",
+     "in": "query",
+     "required": true,
+     "type": "string",
+     "description": "Comma-separated list of '<browser> <version>' pairs, e.g. 'chrome 120,firefox 120,safari 17'. Browser keys: chrome, firefox, safari, edge, opera, ios_saf, ie, etc. Versions must exist in caniuse data ",
+     "example": "chrome 120,firefox 120,safari 17"
+    },
+    {
+     "name": "cats",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Comma-separated feature categories to include (CSS, HTML5, JS, JS API, Other, Security, SVG)",
+     "default": "CSS,HTML5,JS,JS API,Other,Security,SVG"
+    }
+   ],
+   "responseType": "json",
+   "mutates": false,
+   "example": {
+    "compare": "chrome 120,firefox 120,safari 17"
+   },
+   "source": "E3",
+   "verified": true
+  },
+  {
+   "name": "get-feature-page",
+   "summary": "Get a feature's detail page summary: title, spec link and status, description and global usage percentages (works for caniuse IDs, wf-* and mdn-* IDs)",
+   "method": "GET",
+   "urlTemplate": "/{id}",
+   "params": [
+    {
+     "name": "id",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Feature ID, e.g. 'css-grid', 'webp', 'wf-aspect-ratio', 'mdn-css_properties_grid-template-columns'",
+     "example": "css-grid"
+    }
+   ],
+   "responseType": "html",
+   "extract": {
+    "fields": {
+     "title": "h3.feature-title",
+     "spec_url": "a.specification@href",
+     "spec_status": "a.specification@title",
+     "description": "div.feature-description",
+     "global_supported": "span.support",
+     "global_partial": "span.partial",
+     "global_total": "span.total"
+    }
+   },
+   "mutates": false,
+   "example": {
+    "id": "css-grid"
+   },
+   "source": "E9 E10 E17 E18 GET https://caniuse.com/css-grid",
+   "verified": true
+  },
+  {
+   "name": "list-features-index",
+   "summary": "List all features in the caniuse index (titles and links, grouped by category in page order: CSS, HTML5, ...); the feature ID is the last path segment of href (e.g. 'css-rrggbbaa')",
+   "method": "GET",
+   "urlTemplate": "/tpl/index.tpl.php",
+   "params": [],
+   "responseType": "html",
+   "extract": {
+    "list": "ol > li",
+    "fields": {
+     "title": "a",
+     "href": "a@href"
+    }
+   },
+   "defaultFields": [
+    "title",
+    "href"
+   ],
+   "mutates": false,
+   "source": "E7 E11",
+   "verified": true
+  },
+  {
+   "name": "list-news",
+   "summary": "List latest caniuse news / newly added features",
+   "method": "GET",
+   "urlTemplate": "/process/get_news.php",
+   "params": [],
+   "responseType": "json",
+   "defaultFields": [
+    "title",
+    "date",
+    "featIds",
+    "description"
+   ],
+   "mutates": false,
+   "source": "E6 GET https://caniuse.com/process/get_news.php",
+   "verified": true
+  },
+  {
+   "name": "get-usage-table",
+   "summary": "Get the browser usage-share table: per browser, the versions with their global usage percentage",
+   "method": "GET",
+   "urlTemplate": "/usage-table",
+   "params": [],
+   "responseType": "html",
+   "extract": {
+    "list": "div.support-list",
+    "fields": {
+     "browser": "h4.browser-heading",
+     "versions_usage": "ol"
+    }
+   },
+   "defaultFields": [
+    "browser",
+    "versions_usage"
+   ],
+   "mutates": false,
+   "source": "E13 GET https://caniuse.com/usage-table",
+   "verified": true
+  },
+  {
+   "name": "list-feature-suggestions",
+   "summary": "List the top suggested features not yet on caniuse, ranked by GitHub votes",
+   "method": "GET",
+   "urlTemplate": "/issue-list",
+   "params": [],
+   "responseType": "html",
+   "extract": {
+    "list": "tr",
+    "fields": {
+     "title": "a",
+     "url": "a@href",
+     "row": ""
+    }
+   },
+   "defaultFields": [
+    "title",
+    "url",
+    "row"
+   ],
+   "mutates": false,
+   "source": "E15 GET https://caniuse.com/issue-list",
+   "verified": true
+  }
+ ],
+ "blockers": [],
+ "notes": [
+  "Typical flow: search-features or compare-browsers returns feature IDs; pass them (comma-separated) to get-feature-support for full data, or to get-feature-page for global usage percentages.",
+  "Support stat codes in get-feature-support: y = supported, a = partial, n = not supported, p = polyfill available, u = unknown, x = needs a prefix, d = disabled by default; '#N' refers to note number N.",
+  "The stats object is large (every version of every browser). Request few IDs at a time.",
+  "list-feature-suggestions 'row' is the full row text, '<rank>. <title><votes>'. The trailing digits are the vote count. The first row is the table header.",
+  "In get-usage-table, versions_usage is the concatenated text '<version>:<pct>%' for each version of that browser.",
+  "The /ciu/filter page (category/baseline filters with group and sort) is rendered client-side and has no separate data endpoint, so it is not exposed. Use list-features-index plus get-feature-support (baseline_status) instead.",
+  "There is no pagination. Raw data is also published at github.com/Fyrd/caniuse. No login is needed."
+ ],
+ "dropped": [],
+ "generated": {
+  "by": "clify add",
+  "model": "claude-opus-5-5",
+  "exploredSteps": 11,
+  "recorded": 64,
+  "verifiedAt": "2026-10-18T09:10:06.909Z",
+  "seconds": 148
+ }
+}

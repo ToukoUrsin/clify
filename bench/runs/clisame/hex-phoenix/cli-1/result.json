@@ -1,0 +1,36 @@
+{
+ "task": "hex-phoenix",
+ "site": "hex",
+ "mode": "cli",
+ "trial": 1,
+ "tag": "clisame",
+ "ok": true,
+ "why": "all expected values present",
+ "answer": "1.8.15, MIT",
+ "expected": {
+  "expect": [
+   "1.8.15",
+   "MIT"
+  ],
+  "moves": true
+ },
+ "wallMs": 9010,
+ "apiMs": 8201,
+ "turns": 4,
+ "toolCalls": 3,
+ "tokens": {
+  "input": 8,
+  "output": 395,
+  "cacheWrite": 4380,
+  "cacheRead": 14859,
+  "total": 19642
+ },
+ "costUsd": 0.0328038,
+ "models": [
+  "claude-opus-5-5"
+ ],
+ "exitCode": 0,
+ "timedOut": false,
+ "subtype": "success",
+ "startedAt": "2026-10-18T12:51:39.024Z"
+}

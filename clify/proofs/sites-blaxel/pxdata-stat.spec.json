@@ -1,0 +1,448 @@
+{
+ "name": "pxdata-stat",
+ "startUrl": "https://pxdata.stat.fi/",
+ "origin": "https://pxdata.stat.fi",
+ "createdAt": "2026-10-18T08:20:26.489Z",
+ "description": "Statistics Finland's PxWeb statistical databases (StatFin, Paavo postal-code data, etc.). The CLI uses the public PxWeb API v1 to browse databases, subject areas and tables, search tables, read table metadata and query table data.",
+ "commands": [
+  {
+   "name": "list-databases",
+   "summary": "List all databases on the server (StatFin, Postinumeroalueittainen_avoin_tieto, Hyvinvointialueet, ...)",
+   "method": "GET",
+   "urlTemplate": "/PxWeb/api/v1/{lang}/",
+   "params": [
+    {
+     "name": "lang",
+     "in": "path",
+     "required": false,
+     "type": "string",
+     "description": "Language of texts",
+     "enum": [
+      "en",
+      "fi",
+      "sv"
+     ],
+     "default": "en",
+     "example": "en"
+    }
+   ],
+   "responseType": "json",
+   "defaultFields": [
+    "dbid",
+    "text"
+   ],
+   "mutates": false,
+   "example": {
+    "lang": "en"
+   },
+   "source": "E2 GET https://pxdata.stat.fi/PxWeb/api/v1/en/",
+   "verified": true
+  },
+  {
+   "name": "list-subject-areas",
+   "summary": "List the top-level subject areas (folders) of a database, e.g. StatFin subject areas like vaerak (population structure)",
+   "method": "GET",
+   "urlTemplate": "/PxWeb/api/v1/{lang}/{database}",
+   "params": [
+    {
+     "name": "lang",
+     "in": "path",
+     "required": false,
+     "type": "string",
+     "description": "Language of texts",
+     "enum": [
+      "en",
+      "fi",
+      "sv"
+     ],
+     "default": "en",
+     "example": "en"
+    },
+    {
+     "name": "database",
+     "in": "path",
+     "required": false,
+     "type": "string",
+     "description": "Database id (dbid from list-databases)",
+     "default": "StatFin",
+     "example": "StatFin"
+    }
+   ],
+   "responseType": "json",
+   "defaultFields": [
+    "id",
+    "type",
+    "text"
+   ],
+   "mutates": false,
+   "example": {
+    "lang": "en",
+    "database": "StatFin"
+   },
+   "source": "E1 E8 GET https://pxdata.stat.fi/PxWeb/api/v1/en/StatFin",
+   "verified": true
+  },
+  {
+   "name": "list-tables",
+   "summary": "List the tables (type 't') or sub-levels (type 'l') inside a subject area of a database",
+   "method": "GET",
+   "urlTemplate": "/PxWeb/api/v1/{lang}/{database}/{area}",
+   "params": [
+    {
+     "name": "lang",
+     "in": "path",
+     "required": false,
+     "type": "string",
+     "description": "Language of texts",
+     "enum": [
+      "en",
+      "fi",
+      "sv"
+     ],
+     "default": "en",
+     "example": "en"
+    },
+    {
+     "name": "database",
+     "in": "path",
+     "required": false,
+     "type": "string",
+     "description": "Database id",
+     "default": "StatFin",
+     "example": "StatFin"
+    },
+    {
+     "name": "area",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Subject area id from list-subject-areas, e.g. vaerak, kuol, matk (for Paavo: uusin or arkisto)",
+     "example": "vaerak"
+    }
+   ],
+   "responseType": "json",
+   "defaultFields": [
+    "id",
+    "type",
+    "text",
+    "updated"
+   ],
+   "mutates": false,
+   "example": {
+    "lang": "en",
+    "database": "StatFin",
+    "area": "vaerak"
+   },
+   "source": "E3 GET https://pxdata.stat.fi/PxWeb/api/v1/en/StatFin/vaerak",
+   "verified": true
+  },
+  {
+   "name": "search-tables",
+   "summary": "Search a database's tables by free text, title words or variable value codes; query=* with filter=* lists every table with publish dates",
+   "method": "GET",
+   "urlTemplate": "/PxWeb/api/v1/{lang}/{database}",
+   "params": [
+    {
+     "name": "lang",
+     "in": "path",
+     "required": false,
+     "type": "string",
+     "description": "Language of texts and of the search index",
+     "enum": [
+      "en",
+      "fi",
+      "sv"
+     ],
+     "default": "en",
+     "example": "en"
+    },
+    {
+     "name": "database",
+     "in": "path",
+     "required": false,
+     "type": "string",
+     "description": "Database id",
+     "default": "StatFin",
+     "example": "StatFin"
+    },
+    {
+     "name": "query",
+     "in": "query",
+     "required": true,
+     "type": "string",
+     "description": "Search text, a value code (e.g. KU091 municipality code), or * for all tables",
+     "example": "population"
+    },
+    {
+     "name": "filter",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Restrict where to match: title = table titles only, codes = variable value codes, * = everything (use with query=* to list all tables). Omit for default full-text search.",
+     "enum": [
+      "*",
+      "title",
+      "codes"
+     ],
+     "example": "title"
+    }
+   ],
+   "responseType": "json",
+   "defaultFields": [
+    "id",
+    "path",
+    "title",
+    "published",
+    "score"
+   ],
+   "mutates": false,
+   "example": {
+    "lang": "en",
+    "database": "StatFin",
+    "query": "population"
+   },
+   "source": "E1 E7 E9 GET https://pxdata.stat.fi/PxWeb/api/v1/en/StatFin",
+   "verified": true
+  },
+  {
+   "name": "get-table-metadata",
+   "summary": "Get a table's title and variables, with each variable's code, value codes and value texts (needed before querying data)",
+   "method": "GET",
+   "urlTemplate": "/PxWeb/api/v1/{lang}/{database}/{area}/{table}",
+   "params": [
+    {
+     "name": "lang",
+     "in": "path",
+     "required": false,
+     "type": "string",
+     "description": "Language of texts",
+     "enum": [
+      "en",
+      "fi",
+      "sv"
+     ],
+     "default": "en",
+     "example": "en"
+    },
+    {
+     "name": "database",
+     "in": "path",
+     "required": false,
+     "type": "string",
+     "description": "Database id",
+     "default": "StatFin",
+     "example": "StatFin"
+    },
+    {
+     "name": "area",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Subject area id. This is the search result 'path' without the leading slash, e.g. vaerak",
+     "example": "vaerak"
+    },
+    {
+     "name": "table",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Table id including the .px suffix, e.g. 11rc.px",
+     "example": "11rc.px"
+    }
+   ],
+   "responseType": "json",
+   "defaultFields": [
+    "title",
+    "variables"
+   ],
+   "mutates": false,
+   "example": {
+    "lang": "en",
+    "database": "StatFin",
+    "area": "vaerak",
+    "table": "11rc.px"
+   },
+   "source": "E4 E5 GET https://pxdata.stat.fi/PxWeb/api/v1/en/StatFin/vaerak/11rc.px",
+   "verified": true
+  },
+  {
+   "name": "get-table-data",
+   "summary": "Query a table's data values, selecting on one variable (e.g. latest N years with filter=top on timeperiod_y); all other variables return all values",
+   "method": "POST",
+   "urlTemplate": "/PxWeb/api/v1/{lang}/{database}/{area}/{table}",
+   "params": [
+    {
+     "name": "lang",
+     "in": "path",
+     "required": false,
+     "type": "string",
+     "description": "Language of texts",
+     "enum": [
+      "en",
+      "fi",
+      "sv"
+     ],
+     "default": "en",
+     "example": "en"
+    },
+    {
+     "name": "database",
+     "in": "path",
+     "required": false,
+     "type": "string",
+     "description": "Database id",
+     "default": "StatFin",
+     "example": "StatFin"
+    },
+    {
+     "name": "area",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Subject area id, e.g. vaerak",
+     "example": "vaerak"
+    },
+    {
+     "name": "table",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Table id including .px, e.g. 11rb.px",
+     "example": "11rb.px"
+    },
+    {
+     "name": "code",
+     "in": "body",
+     "required": false,
+     "type": "string",
+     "description": "Variable code to select on (from get-table-metadata variables[].code). StatFin tables use timeperiod_y for years.",
+     "default": "timeperiod_y",
+     "example": "timeperiod_y"
+    },
+    {
+     "name": "filter",
+     "in": "body",
+     "required": false,
+     "type": "string",
+     "description": "Selection type: item = a specific value code, top = latest N values (value is N), all = every value (value *)",
+     "enum": [
+      "item",
+      "top",
+      "all"
+     ],
+     "default": "all",
+     "example": "top"
+    },
+    {
+     "name": "value",
+     "in": "body",
+     "required": false,
+     "type": "string",
+     "description": "Value code for filter=item (e.g. 2024, SSS), a count for filter=top (e.g. 5), or * for filter=all",
+     "default": "*",
+     "example": "5"
+    },
+    {
+     "name": "format",
+     "in": "body",
+     "required": false,
+     "type": "string",
+     "description": "Response format. json gives columns plus data[{key:[codes], values:[...]}]; json-stat2 is the compact JSON-stat format",
+     "enum": [
+      "json",
+      "json-stat2",
+      "json-stat"
+     ],
+     "default": "json",
+     "example": "json"
+    }
+   ],
+   "bodyTemplate": {
+    "query": [
+     {
+      "code": "{code}",
+      "selection": {
+       "filter": "{filter}",
+       "values": [
+        "{value}"
+       ]
+      }
+     }
+    ],
+    "response": {
+     "format": "{format}"
+    }
+   },
+   "bodyEncoding": "json",
+   "responseType": "json",
+   "mutates": false,
+   "example": {
+    "lang": "en",
+    "database": "StatFin",
+    "area": "vaerak",
+    "table": "11rb.px",
+    "code": "timeperiod_y",
+    "filter": "top",
+    "value": "5",
+    "format": "json"
+   },
+   "source": "E4 GET https://pxdata.stat.fi/PxWeb/api/v1/en/StatFin/vaerak/11rc.px",
+   "verified": true
+  },
+  {
+   "name": "get-api-limits",
+   "summary": "Get the API's usage limits: max cells/values per query, max calls per time window, CORS",
+   "method": "GET",
+   "urlTemplate": "/PxWeb/api/v1/{lang}/?config",
+   "params": [
+    {
+     "name": "lang",
+     "in": "path",
+     "required": false,
+     "type": "string",
+     "description": "Language",
+     "enum": [
+      "en",
+      "fi",
+      "sv"
+     ],
+     "default": "fi",
+     "example": "fi"
+    }
+   ],
+   "responseType": "json",
+   "defaultFields": [
+    "maxValues",
+    "maxCells",
+    "maxCalls",
+    "timeWindow"
+   ],
+   "mutates": false,
+   "example": {
+    "lang": "fi"
+   },
+   "source": "E6 GET https://pxdata.stat.fi/PxWeb/api/v1/fi/",
+   "verified": true
+  }
+ ],
+ "blockers": [],
+ "notes": [
+  "Rate limits: at most 40 calls per 60 seconds and 120000 cells per data query. Space out calls and narrow your selections.",
+  "Typical workflow: search-tables (or list-subject-areas, then list-tables) to find a table; get-table-metadata for its variable codes; then get-table-data.",
+  "Search results return 'path' like '/vaerak'. Strip the leading slash and pass it as --area. Table ids keep the .px suffix (e.g. 11rb.px).",
+  "In list-subject-areas and list-tables, type 'l' is a folder/level you can open with list-tables, and type 't' is a table.",
+  "get-table-data was not captured in the recording. It follows the documented PxWeb API v1 POST query format, selects on one variable and returns all values of every other variable. Large tables (e.g. 11rc with age) can exceed the 120000-cell limit unless you narrow with filter=item or filter=top.",
+  "Variable codes and value codes are the same in every language; only the texts change with --lang. StatFin uses timeperiod_y for years and SSS for 'Total' in sex variables.",
+  "Human web page for a table: https://pxdata.stat.fi/PxWeb/pxweb/{lang}/StatFin/StatFin__{area}/{table}/",
+  "API documentation: https://pxdata.stat.fi/api1.html"
+ ],
+ "dropped": [],
+ "generated": {
+  "by": "clify add",
+  "model": "claude-opus-5-5",
+  "exploredSteps": 14,
+  "recorded": 22,
+  "verifiedAt": "2026-10-18T08:21:30.512Z",
+  "seconds": 191
+ }
+}

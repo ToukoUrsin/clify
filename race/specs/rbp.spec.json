@@ -1,0 +1,23 @@
+{
+  "name": "rbp",
+  "startUrl": "https://automationintesting.online/",
+  "origin": "https://automationintesting.online",
+  "createdAt": "2026-10-18T06:40:00Z",
+  "description": "Restful Booker Platform demo B&B (automationintesting.online, a site built for automation practice). Admin commands need a token: run login, then pass --cookie token=<token>.",
+  "commands": [
+    { "name": "login", "summary": "Admin login; returns a session token", "method": "POST", "urlTemplate": "/api/auth/login", "responseType": "json", "bodyEncoding": "json", "mutates": false,
+      "params": [ { "name": "username", "in": "body", "required": true, "type": "string" }, { "name": "password", "in": "body", "required": true, "type": "string" } ] },
+    { "name": "list-rooms", "summary": "All rooms (public)", "method": "GET", "urlTemplate": "/api/room", "responseType": "json", "resultPath": "rooms", "mutates": false, "params": [] },
+    { "name": "create-room", "summary": "Create a room (admin)", "method": "POST", "urlTemplate": "/api/room", "responseType": "json", "bodyEncoding": "json", "mutates": true,
+      "bodyTemplate": { "roomName": "{name}", "type": "{type}", "accessible": "{accessible}", "roomPrice": "{price}", "features": ["{feature}", "{feature2}"], "description": "{description}" },
+      "params": [
+        { "name": "cookie", "in": "header", "required": true, "type": "string", "description": "token=<token from login>" },
+        { "name": "name", "in": "body", "required": true, "type": "string", "description": "room name / number" },
+        { "name": "type", "in": "body", "required": true, "type": "string", "enum": ["Single", "Twin", "Double", "Family", "Suite"] },
+        { "name": "accessible", "in": "body", "required": false, "type": "boolean", "default": false },
+        { "name": "price", "in": "body", "required": true, "type": "number" },
+        { "name": "feature", "in": "body", "required": true, "type": "string", "enum": ["WiFi", "TV", "Radio", "Refreshments", "Safe", "Views"] },
+        { "name": "feature2", "in": "body", "required": true, "type": "string", "enum": ["WiFi", "TV", "Radio", "Refreshments", "Safe", "Views"], "description": "a second feature" },
+        { "name": "description", "in": "body", "required": false, "type": "string" } ] }
+  ]
+}

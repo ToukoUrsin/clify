@@ -1,0 +1,35 @@
+{
+ "task": "quotes-humor-author",
+ "site": "quotes",
+ "mode": "cli",
+ "trial": 2,
+ "tag": "clisame",
+ "ok": true,
+ "why": "all expected values present",
+ "answer": "Jane Austen, born December 16, 1775",
+ "expected": {
+  "expect": [
+   "Jane Austen",
+   "December 16 1775"
+  ]
+ },
+ "wallMs": 12297,
+ "apiMs": 11001,
+ "turns": 4,
+ "toolCalls": 3,
+ "tokens": {
+  "input": 8,
+  "output": 319,
+  "cacheWrite": 3611,
+  "cacheRead": 14141,
+  "total": 18079
+ },
+ "costUsd": 0.027295200000000002,
+ "models": [
+  "claude-opus-5-5"
+ ],
+ "exitCode": 0,
+ "timedOut": false,
+ "subtype": "success",
+ "startedAt": "2026-10-18T12:49:15.932Z"
+}

@@ -1,0 +1,7 @@
+[
+  {"tool":"goto","input":{"url":"/pages/ajax-javascript/","intent":"open Oscar films page"}},
+  {"tool":"click","input":{"selector":"a.year-link#\\32 015","intent":"load films for a year"}},
+  {"tool":"goto","input":{"url":"/pages/forms/","intent":"open hockey teams search"}},
+  {"tool":"type","input":{"selector":"input#q","text":"new york","submit":true,"intent":"search teams by name"}},
+  {"tool":"click","input":{"selector":"ul.pagination a[aria-label=Next]","intent":"next page of results"}}
+]

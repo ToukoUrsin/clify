@@ -1,0 +1,1792 @@
+{
+ "generatedAt": "2026-10-18T12:55:16.450Z",
+ "tags": [
+  "clisame"
+ ],
+ "model": [
+  "claude-opus-5-5"
+ ],
+ "setup": {
+  "browser": "Claude Code -p, Playwright MCP 0.0.83 (default tools) over CDP to headless Chromium; built-in tools disabled",
+  "browserUi": "same as browser, with browser_evaluate and browser_run_code_unsafe disabled (no page JavaScript)",
+  "cli": "Claude Code -p, Bash only, clify on PATH; told to use clify, no curl/WebFetch",
+  "curl": "Claude Code -p, Bash (curl, jq, python3) + WebFetch + WebSearch; no clify, no browser",
+  "grading": "every expected value must appear in the final ANSWER line; ground truth recomputed with clify right before each task"
+ },
+ "nTasks": 14,
+ "nSites": 7,
+ "browser": {
+  "n": 0,
+  "ok": 0,
+  "rate": null,
+  "medianSec": null,
+  "meanSec": 0,
+  "medianTokens": null,
+  "medianToolCalls": null,
+  "medianTurns": null,
+  "totalCostUsd": 0,
+  "medianCostUsd": null
+ },
+ "browserUi": {
+  "n": 0,
+  "ok": 0,
+  "rate": null,
+  "medianSec": null,
+  "meanSec": 0,
+  "medianTokens": null,
+  "medianToolCalls": null,
+  "medianTurns": null,
+  "totalCostUsd": 0,
+  "medianCostUsd": null
+ },
+ "cli": {
+  "n": 28,
+  "ok": 28,
+  "rate": 1,
+  "medianSec": 11.886500000000002,
+  "meanSec": 14.608571428571427,
+  "medianTokens": 18170,
+  "medianToolCalls": 3,
+  "medianTurns": 4,
+  "totalCostUsd": 0.9555052,
+  "medianCostUsd": 0.0318292
+ },
+ "curl": {
+  "n": 0,
+  "ok": 0,
+  "rate": null,
+  "medianSec": null,
+  "meanSec": 0,
+  "medianTokens": null,
+  "medianToolCalls": null,
+  "medianTurns": null,
+  "totalCostUsd": 0,
+  "medianCostUsd": null
+ },
+ "perTask": [
+  {
+   "task": "books-cheapest-first-5-pages",
+   "site": "books",
+   "browser": {
+    "n": 0,
+    "ok": 0,
+    "rate": null,
+    "medianSec": null,
+    "meanSec": 0,
+    "medianTokens": null,
+    "medianToolCalls": null,
+    "medianTurns": null,
+    "totalCostUsd": 0,
+    "medianCostUsd": null
+   },
+   "browserUi": {
+    "n": 0,
+    "ok": 0,
+    "rate": null,
+    "medianSec": null,
+    "meanSec": 0,
+    "medianTokens": null,
+    "medianToolCalls": null,
+    "medianTurns": null,
+    "totalCostUsd": 0,
+    "medianCostUsd": null
+   },
+   "cli": {
+    "n": 2,
+    "ok": 2,
+    "rate": 1,
+    "medianSec": 15.7975,
+    "meanSec": 15.7975,
+    "medianTokens": 19954.5,
+    "medianToolCalls": 3,
+    "medianTurns": 4,
+    "totalCostUsd": 0.06783259999999999,
+    "medianCostUsd": 0.033916299999999996
+   },
+   "curl": {
+    "n": 0,
+    "ok": 0,
+    "rate": null,
+    "medianSec": null,
+    "meanSec": 0,
+    "medianTokens": null,
+    "medianToolCalls": null,
+    "medianTurns": null,
+    "totalCostUsd": 0,
+    "medianCostUsd": null
+   }
+  },
+  {
+   "task": "books-mystery-max",
+   "site": "books",
+   "browser": {
+    "n": 0,
+    "ok": 0,
+    "rate": null,
+    "medianSec": null,
+    "meanSec": 0,
+    "medianTokens": null,
+    "medianToolCalls": null,
+    "medianTurns": null,
+    "totalCostUsd": 0,
+    "medianCostUsd": null
+   },
+   "browserUi": {
+    "n": 0,
+    "ok": 0,
+    "rate": null,
+    "medianSec": null,
+    "meanSec": 0,
+    "medianTokens": null,
+    "medianToolCalls": null,
+    "medianTurns": null,
+    "totalCostUsd": 0,
+    "medianCostUsd": null
+   },
+   "cli": {
+    "n": 2,
+    "ok": 2,
+    "rate": 1,
+    "medianSec": 11.51,
+    "meanSec": 11.51,
+    "medianTokens": 20102.5,
+    "medianToolCalls": 2.5,
+    "medianTurns": 3.5,
+    "totalCostUsd": 0.0927386,
+    "medianCostUsd": 0.0463693
+   },
+   "curl": {
+    "n": 0,
+    "ok": 0,
+    "rate": null,
+    "medianSec": null,
+    "meanSec": 0,
+    "medianTokens": null,
+    "medianToolCalls": null,
+    "medianTurns": null,
+    "totalCostUsd": 0,
+    "medianCostUsd": null
+   }
+  },
+  {
+   "task": "books-travel-over-40",
+   "site": "books",
+   "browser": {
+    "n": 0,
+    "ok": 0,
+    "rate": null,
+    "medianSec": null,
+    "meanSec": 0,
+    "medianTokens": null,
+    "medianToolCalls": null,
+    "medianTurns": null,
+    "totalCostUsd": 0,
+    "medianCostUsd": null
+   },
+   "browserUi": {
+    "n": 0,
+    "ok": 0,
+    "rate": null,
+    "medianSec": null,
+    "meanSec": 0,
+    "medianTokens": null,
+    "medianToolCalls": null,
+    "medianTurns": null,
+    "totalCostUsd": 0,
+    "medianCostUsd": null
+   },
+   "cli": {
+    "n": 2,
+    "ok": 2,
+    "rate": 1,
+    "medianSec": 9.346499999999999,
+    "meanSec": 9.346499999999999,
+    "medianTokens": 14171,
+    "medianToolCalls": 2,
+    "medianTurns": 3,
+    "totalCostUsd": 0.05873,
+    "medianCostUsd": 0.029365
+   },
+   "curl": {
+    "n": 0,
+    "ok": 0,
+    "rate": null,
+    "medianSec": null,
+    "meanSec": 0,
+    "medianTokens": null,
+    "medianToolCalls": null,
+    "medianTurns": null,
+    "totalCostUsd": 0,
+    "medianCostUsd": null
+   }
+  },
+  {
+   "task": "crates-serde-vs-tokio",
+   "site": "crates",
+   "browser": {
+    "n": 0,
+    "ok": 0,
+    "rate": null,
+    "medianSec": null,
+    "meanSec": 0,
+    "medianTokens": null,
+    "medianToolCalls": null,
+    "medianTurns": null,
+    "totalCostUsd": 0,
+    "medianCostUsd": null
+   },
+   "browserUi": {
+    "n": 0,
+    "ok": 0,
+    "rate": null,
+    "medianSec": null,
+    "meanSec": 0,
+    "medianTokens": null,
+    "medianToolCalls": null,
+    "medianTurns": null,
+    "totalCostUsd": 0,
+    "medianCostUsd": null
+   },
+   "cli": {
+    "n": 2,
+    "ok": 2,
+    "rate": 1,
+    "medianSec": 14.776,
+    "meanSec": 14.776,
+    "medianTokens": 16482,
+    "medianToolCalls": 2,
+    "medianTurns": 3,
+    "totalCostUsd": 0.063474,
+    "medianCostUsd": 0.031737
+   },
+   "curl": {
+    "n": 0,
+    "ok": 0,
+    "rate": null,
+    "medianSec": null,
+    "meanSec": 0,
+    "medianTokens": null,
+    "medianToolCalls": null,
+    "medianTurns": null,
+    "totalCostUsd": 0,
+    "medianCostUsd": null
+   }
+  },
+  {
+   "task": "crates-tokio",
+   "site": "crates",
+   "browser": {
+    "n": 0,
+    "ok": 0,
+    "rate": null,
+    "medianSec": null,
+    "meanSec": 0,
+    "medianTokens": null,
+    "medianToolCalls": null,
+    "medianTurns": null,
+    "totalCostUsd": 0,
+    "medianCostUsd": null
+   },
+   "browserUi": {
+    "n": 0,
+    "ok": 0,
+    "rate": null,
+    "medianSec": null,
+    "meanSec": 0,
+    "medianTokens": null,
+    "medianToolCalls": null,
+    "medianTurns": null,
+    "totalCostUsd": 0,
+    "medianCostUsd": null
+   },
+   "cli": {
+    "n": 2,
+    "ok": 2,
+    "rate": 1,
+    "medianSec": 24.8315,
+    "meanSec": 24.8315,
+    "medianTokens": 34574.5,
+    "medianToolCalls": 4,
+    "medianTurns": 5,
+    "totalCostUsd": 0.1109894,
+    "medianCostUsd": 0.0554947
+   },
+   "curl": {
+    "n": 0,
+    "ok": 0,
+    "rate": null,
+    "medianSec": null,
+    "meanSec": 0,
+    "medianTokens": null,
+    "medianToolCalls": null,
+    "medianTurns": null,
+    "totalCostUsd": 0,
+    "medianCostUsd": null
+   }
+  },
+  {
+   "task": "debian-nginx-bookworm",
+   "site": "debian",
+   "browser": {
+    "n": 0,
+    "ok": 0,
+    "rate": null,
+    "medianSec": null,
+    "meanSec": 0,
+    "medianTokens": null,
+    "medianToolCalls": null,
+    "medianTurns": null,
+    "totalCostUsd": 0,
+    "medianCostUsd": null
+   },
+   "browserUi": {
+    "n": 0,
+    "ok": 0,
+    "rate": null,
+    "medianSec": null,
+    "meanSec": 0,
+    "medianTokens": null,
+    "medianToolCalls": null,
+    "medianTurns": null,
+    "totalCostUsd": 0,
+    "medianCostUsd": null
+   },
+   "cli": {
+    "n": 2,
+    "ok": 2,
+    "rate": 1,
+    "medianSec": 13.721,
+    "meanSec": 13.721,
+    "medianTokens": 18106.5,
+    "medianToolCalls": 3,
+    "medianTurns": 4,
+    "totalCostUsd": 0.059349200000000005,
+    "medianCostUsd": 0.029674600000000002
+   },
+   "curl": {
+    "n": 0,
+    "ok": 0,
+    "rate": null,
+    "medianSec": null,
+    "meanSec": 0,
+    "medianTokens": null,
+    "medianToolCalls": null,
+    "medianTurns": null,
+    "totalCostUsd": 0,
+    "medianCostUsd": null
+   }
+  },
+  {
+   "task": "hex-phoenix",
+   "site": "hex",
+   "browser": {
+    "n": 0,
+    "ok": 0,
+    "rate": null,
+    "medianSec": null,
+    "meanSec": 0,
+    "medianTokens": null,
+    "medianToolCalls": null,
+    "medianTurns": null,
+    "totalCostUsd": 0,
+    "medianCostUsd": null
+   },
+   "browserUi": {
+    "n": 0,
+    "ok": 0,
+    "rate": null,
+    "medianSec": null,
+    "meanSec": 0,
+    "medianTokens": null,
+    "medianToolCalls": null,
+    "medianTurns": null,
+    "totalCostUsd": 0,
+    "medianCostUsd": null
+   },
+   "cli": {
+    "n": 2,
+    "ok": 2,
+    "rate": 1,
+    "medianSec": 9.3605,
+    "meanSec": 9.3605,
+    "medianTokens": 19670,
+    "medianToolCalls": 3,
+    "medianTurns": 4,
+    "totalCostUsd": 0.0665626,
+    "medianCostUsd": 0.0332813
+   },
+   "curl": {
+    "n": 0,
+    "ok": 0,
+    "rate": null,
+    "medianSec": null,
+    "meanSec": 0,
+    "medianTokens": null,
+    "medianToolCalls": null,
+    "medianTurns": null,
+    "totalCostUsd": 0,
+    "medianCostUsd": null
+   }
+  },
+  {
+   "task": "hockey-best-1990",
+   "site": "scrapethis",
+   "browser": {
+    "n": 0,
+    "ok": 0,
+    "rate": null,
+    "medianSec": null,
+    "meanSec": 0,
+    "medianTokens": null,
+    "medianToolCalls": null,
+    "medianTurns": null,
+    "totalCostUsd": 0,
+    "medianCostUsd": null
+   },
+   "browserUi": {
+    "n": 0,
+    "ok": 0,
+    "rate": null,
+    "medianSec": null,
+    "meanSec": 0,
+    "medianTokens": null,
+    "medianToolCalls": null,
+    "medianTurns": null,
+    "totalCostUsd": 0,
+    "medianCostUsd": null
+   },
+   "cli": {
+    "n": 2,
+    "ok": 2,
+    "rate": 1,
+    "medianSec": 18.932000000000002,
+    "meanSec": 18.932000000000002,
+    "medianTokens": 19320.5,
+    "medianToolCalls": 3.5,
+    "medianTurns": 4.5,
+    "totalCostUsd": 0.07025619999999999,
+    "medianCostUsd": 0.035128099999999995
+   },
+   "curl": {
+    "n": 0,
+    "ok": 0,
+    "rate": null,
+    "medianSec": null,
+    "meanSec": 0,
+    "medianTokens": null,
+    "medianToolCalls": null,
+    "medianTurns": null,
+    "totalCostUsd": 0,
+    "medianCostUsd": null
+   }
+  },
+  {
+   "task": "quotes-humor-author",
+   "site": "quotes",
+   "browser": {
+    "n": 0,
+    "ok": 0,
+    "rate": null,
+    "medianSec": null,
+    "meanSec": 0,
+    "medianTokens": null,
+    "medianToolCalls": null,
+    "medianTurns": null,
+    "totalCostUsd": 0,
+    "medianCostUsd": null
+   },
+   "browserUi": {
+    "n": 0,
+    "ok": 0,
+    "rate": null,
+    "medianSec": null,
+    "meanSec": 0,
+    "medianTokens": null,
+    "medianToolCalls": null,
+    "medianTurns": null,
+    "totalCostUsd": 0,
+    "medianCostUsd": null
+   },
+   "cli": {
+    "n": 2,
+    "ok": 2,
+    "rate": 1,
+    "medianSec": 20.320999999999998,
+    "meanSec": 20.320999999999998,
+    "medianTokens": 18152.5,
+    "medianToolCalls": 3,
+    "medianTurns": 4,
+    "totalCostUsd": 0.05488560000000001,
+    "medianCostUsd": 0.027442800000000003
+   },
+   "curl": {
+    "n": 0,
+    "ok": 0,
+    "rate": null,
+    "medianSec": null,
+    "meanSec": 0,
+    "medianTokens": null,
+    "medianToolCalls": null,
+    "medianTurns": null,
+    "totalCostUsd": 0,
+    "medianCostUsd": null
+   }
+  },
+  {
+   "task": "quotes-love-count",
+   "site": "quotes",
+   "browser": {
+    "n": 0,
+    "ok": 0,
+    "rate": null,
+    "medianSec": null,
+    "meanSec": 0,
+    "medianTokens": null,
+    "medianToolCalls": null,
+    "medianTurns": null,
+    "totalCostUsd": 0,
+    "medianCostUsd": null
+   },
+   "browserUi": {
+    "n": 0,
+    "ok": 0,
+    "rate": null,
+    "medianSec": null,
+    "meanSec": 0,
+    "medianTokens": null,
+    "medianToolCalls": null,
+    "medianTurns": null,
+    "totalCostUsd": 0,
+    "medianCostUsd": null
+   },
+   "cli": {
+    "n": 2,
+    "ok": 2,
+    "rate": 1,
+    "medianSec": 9.7165,
+    "meanSec": 9.7165,
+    "medianTokens": 13668,
+    "medianToolCalls": 2,
+    "medianTurns": 3,
+    "totalCostUsd": 0.055596599999999996,
+    "medianCostUsd": 0.027798299999999998
+   },
+   "curl": {
+    "n": 0,
+    "ok": 0,
+    "rate": null,
+    "medianSec": null,
+    "meanSec": 0,
+    "medianTokens": null,
+    "medianToolCalls": null,
+    "medianTurns": null,
+    "totalCostUsd": 0,
+    "medianCostUsd": null
+   }
+  },
+  {
+   "task": "quotes-top-author",
+   "site": "quotes",
+   "browser": {
+    "n": 0,
+    "ok": 0,
+    "rate": null,
+    "medianSec": null,
+    "meanSec": 0,
+    "medianTokens": null,
+    "medianToolCalls": null,
+    "medianTurns": null,
+    "totalCostUsd": 0,
+    "medianCostUsd": null
+   },
+   "browserUi": {
+    "n": 0,
+    "ok": 0,
+    "rate": null,
+    "medianSec": null,
+    "meanSec": 0,
+    "medianTokens": null,
+    "medianToolCalls": null,
+    "medianTurns": null,
+    "totalCostUsd": 0,
+    "medianCostUsd": null
+   },
+   "cli": {
+    "n": 2,
+    "ok": 2,
+    "rate": 1,
+    "medianSec": 25.361,
+    "meanSec": 25.361,
+    "medianTokens": 19957.5,
+    "medianToolCalls": 3,
+    "medianTurns": 4,
+    "totalCostUsd": 0.0729128,
+    "medianCostUsd": 0.0364564
+   },
+   "curl": {
+    "n": 0,
+    "ok": 0,
+    "rate": null,
+    "medianSec": null,
+    "meanSec": 0,
+    "medianTokens": null,
+    "medianToolCalls": null,
+    "medianTurns": null,
+    "totalCostUsd": 0,
+    "medianCostUsd": null
+   }
+  },
+  {
+   "task": "scrapethis-hockey-detroit-1995",
+   "site": "scrapethis",
+   "browser": {
+    "n": 0,
+    "ok": 0,
+    "rate": null,
+    "medianSec": null,
+    "meanSec": 0,
+    "medianTokens": null,
+    "medianToolCalls": null,
+    "medianTurns": null,
+    "totalCostUsd": 0,
+    "medianCostUsd": null
+   },
+   "browserUi": {
+    "n": 0,
+    "ok": 0,
+    "rate": null,
+    "medianSec": null,
+    "meanSec": 0,
+    "medianTokens": null,
+    "medianToolCalls": null,
+    "medianTurns": null,
+    "totalCostUsd": 0,
+    "medianCostUsd": null
+   },
+   "cli": {
+    "n": 2,
+    "ok": 2,
+    "rate": 1,
+    "medianSec": 9.502,
+    "meanSec": 9.502,
+    "medianTokens": 14959.5,
+    "medianToolCalls": 2,
+    "medianTurns": 3,
+    "totalCostUsd": 0.0635028,
+    "medianCostUsd": 0.0317514
+   },
+   "curl": {
+    "n": 0,
+    "ok": 0,
+    "rate": null,
+    "medianSec": null,
+    "meanSec": 0,
+    "medianTokens": null,
+    "medianToolCalls": null,
+    "medianTurns": null,
+    "totalCostUsd": 0,
+    "medianCostUsd": null
+   }
+  },
+  {
+   "task": "scrapethis-oscar-2012",
+   "site": "scrapethis",
+   "browser": {
+    "n": 0,
+    "ok": 0,
+    "rate": null,
+    "medianSec": null,
+    "meanSec": 0,
+    "medianTokens": null,
+    "medianToolCalls": null,
+    "medianTurns": null,
+    "totalCostUsd": 0,
+    "medianCostUsd": null
+   },
+   "browserUi": {
+    "n": 0,
+    "ok": 0,
+    "rate": null,
+    "medianSec": null,
+    "meanSec": 0,
+    "medianTokens": null,
+    "medianToolCalls": null,
+    "medianTurns": null,
+    "totalCostUsd": 0,
+    "medianCostUsd": null
+   },
+   "cli": {
+    "n": 2,
+    "ok": 2,
+    "rate": 1,
+    "medianSec": 9.0305,
+    "meanSec": 9.0305,
+    "medianTokens": 13799.5,
+    "medianToolCalls": 2,
+    "medianTurns": 3,
+    "totalCostUsd": 0.05244399999999999,
+    "medianCostUsd": 0.026221999999999995
+   },
+   "curl": {
+    "n": 0,
+    "ok": 0,
+    "rate": null,
+    "medianSec": null,
+    "meanSec": 0,
+    "medianTokens": null,
+    "medianToolCalls": null,
+    "medianTurns": null,
+    "totalCostUsd": 0,
+    "medianCostUsd": null
+   }
+  },
+  {
+   "task": "webscraper-laptop-max",
+   "site": "webscraper",
+   "browser": {
+    "n": 0,
+    "ok": 0,
+    "rate": null,
+    "medianSec": null,
+    "meanSec": 0,
+    "medianTokens": null,
+    "medianToolCalls": null,
+    "medianTurns": null,
+    "totalCostUsd": 0,
+    "medianCostUsd": null
+   },
+   "browserUi": {
+    "n": 0,
+    "ok": 0,
+    "rate": null,
+    "medianSec": null,
+    "meanSec": 0,
+    "medianTokens": null,
+    "medianToolCalls": null,
+    "medianTurns": null,
+    "totalCostUsd": 0,
+    "medianCostUsd": null
+   },
+   "cli": {
+    "n": 2,
+    "ok": 2,
+    "rate": 1,
+    "medianSec": 12.314,
+    "meanSec": 12.314,
+    "medianTokens": 18794,
+    "medianToolCalls": 3,
+    "medianTurns": 4,
+    "totalCostUsd": 0.0662308,
+    "medianCostUsd": 0.0331154
+   },
+   "curl": {
+    "n": 0,
+    "ok": 0,
+    "rate": null,
+    "medianSec": null,
+    "meanSec": 0,
+    "medianTokens": null,
+    "medianToolCalls": null,
+    "medianTurns": null,
+    "totalCostUsd": 0,
+    "medianCostUsd": null
+   }
+  }
+ ],
+ "runs": [
+  {
+   "task": "books-cheapest-first-5-pages",
+   "site": "books",
+   "mode": "cli",
+   "trial": 1,
+   "tag": "clisame",
+   "ok": true,
+   "why": "all expected values present",
+   "answer": "Patience — £10.16",
+   "expected": {
+    "expect": [
+     "Patience",
+     "10.16"
+    ]
+   },
+   "wallMs": 20381,
+   "apiMs": 14531,
+   "turns": 4,
+   "toolCalls": 3,
+   "tokens": {
+    "input": 8,
+    "output": 460,
+    "cacheWrite": 4887,
+    "cacheRead": 15580,
+    "total": 20935
+   },
+   "costUsd": 0.036782999999999996,
+   "models": [
+    "claude-opus-5-5"
+   ],
+   "exitCode": 0,
+   "timedOut": false,
+   "subtype": "success",
+   "startedAt": "2026-10-18T12:53:53.776Z",
+   "dir": "runs/clisame/books-cheapest-first-5-pages/cli-1"
+  },
+  {
+   "task": "books-cheapest-first-5-pages",
+   "site": "books",
+   "mode": "cli",
+   "trial": 2,
+   "tag": "clisame",
+   "ok": true,
+   "why": "all expected values present",
+   "answer": "Patience — £10.16",
+   "expected": {
+    "expect": [
+     "Patience",
+     "10.16"
+    ]
+   },
+   "wallMs": 11214,
+   "apiMs": 8026,
+   "turns": 4,
+   "toolCalls": 3,
+   "tokens": {
+    "input": 8,
+    "output": 414,
+    "cacheWrite": 3964,
+    "cacheRead": 14588,
+    "total": 18974
+   },
+   "costUsd": 0.031049600000000004,
+   "models": [
+    "claude-opus-5-5"
+   ],
+   "exitCode": 0,
+   "timedOut": false,
+   "subtype": "success",
+   "startedAt": "2026-10-18T12:54:14.158Z",
+   "dir": "runs/clisame/books-cheapest-first-5-pages/cli-2"
+  },
+  {
+   "task": "books-mystery-max",
+   "site": "books",
+   "mode": "cli",
+   "trial": 1,
+   "tag": "clisame",
+   "ok": true,
+   "why": "all expected values present",
+   "answer": "Boar Island (Anna Pigeon #19) — £59.48",
+   "expected": {
+    "expect": [
+     "Boar Island",
+     "59.48"
+    ]
+   },
+   "wallMs": 8324,
+   "apiMs": 6393,
+   "turns": 3,
+   "toolCalls": 2,
+   "tokens": {
+    "input": 6,
+    "output": 395,
+    "cacheWrite": 7538,
+    "cacheRead": 8337,
+    "total": 16276
+   },
+   "costUsd": 0.04728140000000001,
+   "models": [
+    "claude-opus-5-5"
+   ],
+   "exitCode": 0,
+   "timedOut": false,
+   "subtype": "success",
+   "startedAt": "2026-10-18T12:48:05.867Z",
+   "dir": "runs/clisame/books-mystery-max/cli-1"
+  },
+  {
+   "task": "books-mystery-max",
+   "site": "books",
+   "mode": "cli",
+   "trial": 2,
+   "tag": "clisame",
+   "ok": true,
+   "why": "all expected values present",
+   "answer": "Boar Island (Anna Pigeon #19) — £59.48",
+   "expected": {
+    "expect": [
+     "Boar Island",
+     "59.48"
+    ]
+   },
+   "wallMs": 14696,
+   "apiMs": 12769,
+   "turns": 4,
+   "toolCalls": 3,
+   "tokens": {
+    "input": 8,
+    "output": 495,
+    "cacheWrite": 6425,
+    "cacheRead": 17001,
+    "total": 23929
+   },
+   "costUsd": 0.0454572,
+   "models": [
+    "claude-opus-5-5"
+   ],
+   "exitCode": 0,
+   "timedOut": false,
+   "subtype": "success",
+   "startedAt": "2026-10-18T12:48:14.194Z",
+   "dir": "runs/clisame/books-mystery-max/cli-2"
+  },
+  {
+   "task": "books-travel-over-40",
+   "site": "books",
+   "mode": "cli",
+   "trial": 1,
+   "tag": "clisame",
+   "ok": true,
+   "why": "all expected values present",
+   "answer": "5",
+   "expected": {
+    "number": 5
+   },
+   "wallMs": 9356,
+   "apiMs": 8372,
+   "turns": 3,
+   "toolCalls": 2,
+   "tokens": {
+    "input": 6,
+    "output": 304,
+    "cacheWrite": 4252,
+    "cacheRead": 9605,
+    "total": 14167
+   },
+   "costUsd": 0.029285,
+   "models": [
+    "claude-opus-5-5"
+   ],
+   "exitCode": 0,
+   "timedOut": false,
+   "subtype": "success",
+   "startedAt": "2026-10-18T12:48:28.891Z",
+   "dir": "runs/clisame/books-travel-over-40/cli-1"
+  },
+  {
+   "task": "books-travel-over-40",
+   "site": "books",
+   "mode": "cli",
+   "trial": 2,
+   "tag": "clisame",
+   "ok": true,
+   "why": "all expected values present",
+   "answer": "5",
+   "expected": {
+    "number": 5
+   },
+   "wallMs": 9337,
+   "apiMs": 8362,
+   "turns": 3,
+   "toolCalls": 2,
+   "tokens": {
+    "input": 6,
+    "output": 312,
+    "cacheWrite": 4252,
+    "cacheRead": 9605,
+    "total": 14175
+   },
+   "costUsd": 0.029445,
+   "models": [
+    "claude-opus-5-5"
+   ],
+   "exitCode": 0,
+   "timedOut": false,
+   "subtype": "success",
+   "startedAt": "2026-10-18T12:48:38.248Z",
+   "dir": "runs/clisame/books-travel-over-40/cli-2"
+  },
+  {
+   "task": "crates-serde-vs-tokio",
+   "site": "crates",
+   "mode": "cli",
+   "trial": 1,
+   "tag": "clisame",
+   "ok": true,
+   "why": "all expected values present",
+   "answer": "serde",
+   "expected": {
+    "expect": [
+     "serde"
+    ]
+   },
+   "wallMs": 7572,
+   "apiMs": 5206,
+   "turns": 3,
+   "toolCalls": 2,
+   "tokens": {
+    "input": 6,
+    "output": 232,
+    "cacheWrite": 4984,
+    "cacheRead": 11265,
+    "total": 16487
+   },
+   "costUsd": 0.031837000000000004,
+   "models": [
+    "claude-opus-5-5"
+   ],
+   "exitCode": 0,
+   "timedOut": false,
+   "subtype": "success",
+   "startedAt": "2026-10-18T12:54:25.373Z",
+   "dir": "runs/clisame/crates-serde-vs-tokio/cli-1"
+  },
+  {
+   "task": "crates-serde-vs-tokio",
+   "site": "crates",
+   "mode": "cli",
+   "trial": 2,
+   "tag": "clisame",
+   "ok": true,
+   "why": "all expected values present",
+   "answer": "serde",
+   "expected": {
+    "expect": [
+     "serde"
+    ]
+   },
+   "wallMs": 21980,
+   "apiMs": 19824,
+   "turns": 3,
+   "toolCalls": 2,
+   "tokens": {
+    "input": 6,
+    "output": 222,
+    "cacheWrite": 4984,
+    "cacheRead": 11265,
+    "total": 16477
+   },
+   "costUsd": 0.031637,
+   "models": [
+    "claude-opus-5-5"
+   ],
+   "exitCode": 0,
+   "timedOut": false,
+   "subtype": "success",
+   "startedAt": "2026-10-18T12:54:32.946Z",
+   "dir": "runs/clisame/crates-serde-vs-tokio/cli-2"
+  },
+  {
+   "task": "crates-tokio",
+   "site": "crates",
+   "mode": "cli",
+   "trial": 1,
+   "tag": "clisame",
+   "ok": true,
+   "why": "all expected values present",
+   "answer": "1.53.3, MIT license",
+   "expected": {
+    "expect": [
+     "1.53.3",
+     "MIT"
+    ],
+    "moves": true
+   },
+   "wallMs": 18036,
+   "apiMs": 16855,
+   "turns": 4,
+   "toolCalls": 3,
+   "tokens": {
+    "input": 8,
+    "output": 513,
+    "cacheWrite": 6560,
+    "cacheRead": 17902,
+    "total": 24983
+   },
+   "costUsd": 0.0466724,
+   "models": [
+    "claude-opus-5-5"
+   ],
+   "exitCode": 0,
+   "timedOut": false,
+   "subtype": "success",
+   "startedAt": "2026-10-18T12:50:49.360Z",
+   "dir": "runs/clisame/crates-tokio/cli-1"
+  },
+  {
+   "task": "crates-tokio",
+   "site": "crates",
+   "mode": "cli",
+   "trial": 2,
+   "tag": "clisame",
+   "ok": true,
+   "why": "all expected values present",
+   "answer": "1.53.3, licensed MIT",
+   "expected": {
+    "expect": [
+     "1.53.3",
+     "MIT"
+    ],
+    "moves": true
+   },
+   "wallMs": 31627,
+   "apiMs": 29495,
+   "turns": 6,
+   "toolCalls": 5,
+   "tokens": {
+    "input": 12,
+    "output": 901,
+    "cacheWrite": 7833,
+    "cacheRead": 35420,
+    "total": 44166
+   },
+   "costUsd": 0.064317,
+   "models": [
+    "claude-opus-5-5"
+   ],
+   "exitCode": 0,
+   "timedOut": false,
+   "subtype": "success",
+   "startedAt": "2026-10-18T12:51:07.397Z",
+   "dir": "runs/clisame/crates-tokio/cli-2"
+  },
+  {
+   "task": "debian-nginx-bookworm",
+   "site": "debian",
+   "mode": "cli",
+   "trial": 1,
+   "tag": "clisame",
+   "ok": true,
+   "why": "all expected values present",
+   "answer": "1.22.1-9+deb12u10",
+   "expected": {
+    "expect": [
+     "1.22.1-9+deb12u10"
+    ],
+    "moves": true
+   },
+   "wallMs": 9552,
+   "apiMs": 8297,
+   "turns": 4,
+   "toolCalls": 3,
+   "tokens": {
+    "input": 8,
+    "output": 407,
+    "cacheWrite": 3694,
+    "cacheRead": 13990,
+    "total": 18099
+   },
+   "costUsd": 0.02944,
+   "models": [
+    "claude-opus-5-5"
+   ],
+   "exitCode": 0,
+   "timedOut": false,
+   "subtype": "success",
+   "startedAt": "2026-10-18T12:51:57.745Z",
+   "dir": "runs/clisame/debian-nginx-bookworm/cli-1"
+  },
+  {
+   "task": "debian-nginx-bookworm",
+   "site": "debian",
+   "mode": "cli",
+   "trial": 2,
+   "tag": "clisame",
+   "ok": true,
+   "why": "all expected values present",
+   "answer": "1.22.1-9+deb12u10",
+   "expected": {
+    "expect": [
+     "1.22.1-9+deb12u10"
+    ],
+    "moves": true
+   },
+   "wallMs": 17890,
+   "apiMs": 17000,
+   "turns": 4,
+   "toolCalls": 3,
+   "tokens": {
+    "input": 8,
+    "output": 432,
+    "cacheWrite": 3688,
+    "cacheRead": 13986,
+    "total": 18114
+   },
+   "costUsd": 0.0299092,
+   "models": [
+    "claude-opus-5-5"
+   ],
+   "exitCode": 0,
+   "timedOut": false,
+   "subtype": "success",
+   "startedAt": "2026-10-18T12:52:07.297Z",
+   "dir": "runs/clisame/debian-nginx-bookworm/cli-2"
+  },
+  {
+   "task": "hex-phoenix",
+   "site": "hex",
+   "mode": "cli",
+   "trial": 1,
+   "tag": "clisame",
+   "ok": true,
+   "why": "all expected values present",
+   "answer": "1.8.15, MIT",
+   "expected": {
+    "expect": [
+     "1.8.15",
+     "MIT"
+    ],
+    "moves": true
+   },
+   "wallMs": 9010,
+   "apiMs": 8201,
+   "turns": 4,
+   "toolCalls": 3,
+   "tokens": {
+    "input": 8,
+    "output": 395,
+    "cacheWrite": 4380,
+    "cacheRead": 14859,
+    "total": 19642
+   },
+   "costUsd": 0.0328038,
+   "models": [
+    "claude-opus-5-5"
+   ],
+   "exitCode": 0,
+   "timedOut": false,
+   "subtype": "success",
+   "startedAt": "2026-10-18T12:51:39.024Z",
+   "dir": "runs/clisame/hex-phoenix/cli-1"
+  },
+  {
+   "task": "hex-phoenix",
+   "site": "hex",
+   "mode": "cli",
+   "trial": 2,
+   "tag": "clisame",
+   "ok": true,
+   "why": "all expected values present",
+   "answer": "1.8.15, MIT",
+   "expected": {
+    "expect": [
+     "1.8.15",
+     "MIT"
+    ],
+    "moves": true
+   },
+   "wallMs": 9711,
+   "apiMs": 8883,
+   "turns": 4,
+   "toolCalls": 3,
+   "tokens": {
+    "input": 8,
+    "output": 440,
+    "cacheWrite": 4391,
+    "cacheRead": 14859,
+    "total": 19698
+   },
+   "costUsd": 0.0337588,
+   "models": [
+    "claude-opus-5-5"
+   ],
+   "exitCode": 0,
+   "timedOut": false,
+   "subtype": "success",
+   "startedAt": "2026-10-18T12:51:48.034Z",
+   "dir": "runs/clisame/hex-phoenix/cli-2"
+  },
+  {
+   "task": "hockey-best-1990",
+   "site": "scrapethis",
+   "mode": "cli",
+   "trial": 1,
+   "tag": "clisame",
+   "ok": true,
+   "why": "all expected values present",
+   "answer": "Chicago Blackhawks, 49 wins",
+   "expected": {
+    "expect": [
+     "Chicago Blackhawks"
+    ],
+    "number": 49
+   },
+   "wallMs": 24260,
+   "apiMs": 22155,
+   "turns": 5,
+   "toolCalls": 4,
+   "tokens": {
+    "input": 8,
+    "output": 612,
+    "cacheWrite": 4126,
+    "cacheRead": 14689,
+    "total": 19435
+   },
+   "costUsd": 0.0358398,
+   "models": [
+    "claude-opus-5-5"
+   ],
+   "exitCode": 0,
+   "timedOut": false,
+   "subtype": "success",
+   "startedAt": "2026-10-18T12:53:15.911Z",
+   "dir": "runs/clisame/hockey-best-1990/cli-1"
+  },
+  {
+   "task": "hockey-best-1990",
+   "site": "scrapethis",
+   "mode": "cli",
+   "trial": 2,
+   "tag": "clisame",
+   "ok": true,
+   "why": "all expected values present",
+   "answer": "Chicago Blackhawks, 49 wins",
+   "expected": {
+    "expect": [
+     "Chicago Blackhawks"
+    ],
+    "number": 49
+   },
+   "wallMs": 13604,
+   "apiMs": 11851,
+   "turns": 4,
+   "toolCalls": 3,
+   "tokens": {
+    "input": 8,
+    "output": 564,
+    "cacheWrite": 4037,
+    "cacheRead": 14597,
+    "total": 19206
+   },
+   "costUsd": 0.0344164,
+   "models": [
+    "claude-opus-5-5"
+   ],
+   "exitCode": 0,
+   "timedOut": false,
+   "subtype": "success",
+   "startedAt": "2026-10-18T12:53:40.171Z",
+   "dir": "runs/clisame/hockey-best-1990/cli-2"
+  },
+  {
+   "task": "quotes-humor-author",
+   "site": "quotes",
+   "mode": "cli",
+   "trial": 1,
+   "tag": "clisame",
+   "ok": true,
+   "why": "all expected values present",
+   "answer": "Jane Austen, born December 16, 1775",
+   "expected": {
+    "expect": [
+     "Jane Austen",
+     "December 16 1775"
+    ]
+   },
+   "wallMs": 28345,
+   "apiMs": 27031,
+   "turns": 4,
+   "toolCalls": 3,
+   "tokens": {
+    "input": 8,
+    "output": 314,
+    "cacheWrite": 3687,
+    "cacheRead": 14217,
+    "total": 18226
+   },
+   "costUsd": 0.0275904,
+   "models": [
+    "claude-opus-5-5"
+   ],
+   "exitCode": 0,
+   "timedOut": false,
+   "subtype": "success",
+   "startedAt": "2026-10-18T12:48:47.586Z",
+   "dir": "runs/clisame/quotes-humor-author/cli-1"
+  },
+  {
+   "task": "quotes-humor-author",
+   "site": "quotes",
+   "mode": "cli",
+   "trial": 2,
+   "tag": "clisame",
+   "ok": true,
+   "why": "all expected values present",
+   "answer": "Jane Austen, born December 16, 1775",
+   "expected": {
+    "expect": [
+     "Jane Austen",
+     "December 16 1775"
+    ]
+   },
+   "wallMs": 12297,
+   "apiMs": 11001,
+   "turns": 4,
+   "toolCalls": 3,
+   "tokens": {
+    "input": 8,
+    "output": 319,
+    "cacheWrite": 3611,
+    "cacheRead": 14141,
+    "total": 18079
+   },
+   "costUsd": 0.027295200000000002,
+   "models": [
+    "claude-opus-5-5"
+   ],
+   "exitCode": 0,
+   "timedOut": false,
+   "subtype": "success",
+   "startedAt": "2026-10-18T12:49:15.932Z",
+   "dir": "runs/clisame/quotes-humor-author/cli-2"
+  },
+  {
+   "task": "quotes-love-count",
+   "site": "quotes",
+   "mode": "cli",
+   "trial": 1,
+   "tag": "clisame",
+   "ok": true,
+   "why": "all expected values present",
+   "answer": "14",
+   "expected": {
+    "number": 14
+   },
+   "wallMs": 11173,
+   "apiMs": 7350,
+   "turns": 3,
+   "toolCalls": 2,
+   "tokens": {
+    "input": 6,
+    "output": 403,
+    "cacheWrite": 3774,
+    "cacheRead": 9559,
+    "total": 13742
+   },
+   "costUsd": 0.0288658,
+   "models": [
+    "claude-opus-5-5"
+   ],
+   "exitCode": 0,
+   "timedOut": false,
+   "subtype": "success",
+   "startedAt": "2026-10-18T12:49:28.230Z",
+   "dir": "runs/clisame/quotes-love-count/cli-1"
+  },
+  {
+   "task": "quotes-love-count",
+   "site": "quotes",
+   "mode": "cli",
+   "trial": 2,
+   "tag": "clisame",
+   "ok": true,
+   "why": "all expected values present",
+   "answer": "14",
+   "expected": {
+    "number": 14
+   },
+   "wallMs": 8260,
+   "apiMs": 6087,
+   "turns": 3,
+   "toolCalls": 2,
+   "tokens": {
+    "input": 6,
+    "output": 310,
+    "cacheWrite": 3719,
+    "cacheRead": 9559,
+    "total": 13594
+   },
+   "costUsd": 0.0267308,
+   "models": [
+    "claude-opus-5-5"
+   ],
+   "exitCode": 0,
+   "timedOut": false,
+   "subtype": "success",
+   "startedAt": "2026-10-18T12:49:39.404Z",
+   "dir": "runs/clisame/quotes-love-count/cli-2"
+  },
+  {
+   "task": "quotes-top-author",
+   "site": "quotes",
+   "mode": "cli",
+   "trial": 1,
+   "tag": "clisame",
+   "ok": true,
+   "why": "all expected values present",
+   "answer": "Albert Einstein, 10 quotes",
+   "expected": {
+    "expect": [
+     "Albert Einstein"
+    ],
+    "number": 10
+   },
+   "wallMs": 29573,
+   "apiMs": 22176,
+   "turns": 4,
+   "toolCalls": 3,
+   "tokens": {
+    "input": 8,
+    "output": 585,
+    "cacheWrite": 4623,
+    "cacheRead": 14941,
+    "total": 20157
+   },
+   "costUsd": 0.0378352,
+   "models": [
+    "claude-opus-5-5"
+   ],
+   "exitCode": 0,
+   "timedOut": false,
+   "subtype": "success",
+   "startedAt": "2026-10-18T12:52:25.187Z",
+   "dir": "runs/clisame/quotes-top-author/cli-1"
+  },
+  {
+   "task": "quotes-top-author",
+   "site": "quotes",
+   "mode": "cli",
+   "trial": 2,
+   "tag": "clisame",
+   "ok": true,
+   "why": "all expected values present",
+   "answer": "Albert Einstein, 10 quotes",
+   "expected": {
+    "expect": [
+     "Albert Einstein"
+    ],
+    "number": 10
+   },
+   "wallMs": 21149,
+   "apiMs": 13842,
+   "turns": 4,
+   "toolCalls": 3,
+   "tokens": {
+    "input": 8,
+    "output": 482,
+    "cacheWrite": 4490,
+    "cacheRead": 14778,
+    "total": 19758
+   },
+   "costUsd": 0.0350776,
+   "models": [
+    "claude-opus-5-5"
+   ],
+   "exitCode": 0,
+   "timedOut": false,
+   "subtype": "success",
+   "startedAt": "2026-10-18T12:52:54.761Z",
+   "dir": "runs/clisame/quotes-top-author/cli-2"
+  },
+  {
+   "task": "scrapethis-hockey-detroit-1995",
+   "site": "scrapethis",
+   "mode": "cli",
+   "trial": 1,
+   "tag": "clisame",
+   "ok": true,
+   "why": "all expected values present",
+   "answer": "62",
+   "expected": {
+    "number": 62
+   },
+   "wallMs": 6360,
+   "apiMs": 5606,
+   "turns": 3,
+   "toolCalls": 2,
+   "tokens": {
+    "input": 6,
+    "output": 226,
+    "cacheWrite": 5069,
+    "cacheRead": 9662,
+    "total": 14963
+   },
+   "costUsd": 0.0318214,
+   "models": [
+    "claude-opus-5-5"
+   ],
+   "exitCode": 0,
+   "timedOut": false,
+   "subtype": "success",
+   "startedAt": "2026-10-18T12:50:05.726Z",
+   "dir": "runs/clisame/scrapethis-hockey-detroit-1995/cli-1"
+  },
+  {
+   "task": "scrapethis-hockey-detroit-1995",
+   "site": "scrapethis",
+   "mode": "cli",
+   "trial": 2,
+   "tag": "clisame",
+   "ok": true,
+   "why": "all expected values present",
+   "answer": "62",
+   "expected": {
+    "number": 62
+   },
+   "wallMs": 12644,
+   "apiMs": 11861,
+   "turns": 3,
+   "toolCalls": 2,
+   "tokens": {
+    "input": 6,
+    "output": 219,
+    "cacheWrite": 5069,
+    "cacheRead": 9662,
+    "total": 14956
+   },
+   "costUsd": 0.0316814,
+   "models": [
+    "claude-opus-5-5"
+   ],
+   "exitCode": 0,
+   "timedOut": false,
+   "subtype": "success",
+   "startedAt": "2026-10-18T12:50:12.086Z",
+   "dir": "runs/clisame/scrapethis-hockey-detroit-1995/cli-2"
+  },
+  {
+   "task": "scrapethis-oscar-2012",
+   "site": "scrapethis",
+   "mode": "cli",
+   "trial": 1,
+   "tag": "clisame",
+   "ok": true,
+   "why": "all expected values present",
+   "answer": "Argo, 3 awards",
+   "expected": {
+    "expect": [
+     "Argo"
+    ],
+    "number": 3
+   },
+   "wallMs": 7585,
+   "apiMs": 6785,
+   "turns": 3,
+   "toolCalls": 2,
+   "tokens": {
+    "input": 6,
+    "output": 219,
+    "cacheWrite": 3920,
+    "cacheRead": 9640,
+    "total": 13785
+   },
+   "costUsd": 0.025931999999999997,
+   "models": [
+    "claude-opus-5-5"
+   ],
+   "exitCode": 0,
+   "timedOut": false,
+   "subtype": "success",
+   "startedAt": "2026-10-18T12:49:47.665Z",
+   "dir": "runs/clisame/scrapethis-oscar-2012/cli-1"
+  },
+  {
+   "task": "scrapethis-oscar-2012",
+   "site": "scrapethis",
+   "mode": "cli",
+   "trial": 2,
+   "tag": "clisame",
+   "ok": true,
+   "why": "all expected values present",
+   "answer": "Argo, 3 awards",
+   "expected": {
+    "expect": [
+     "Argo"
+    ],
+    "number": 3
+   },
+   "wallMs": 10476,
+   "apiMs": 9679,
+   "turns": 3,
+   "toolCalls": 2,
+   "tokens": {
+    "input": 6,
+    "output": 248,
+    "cacheWrite": 3920,
+    "cacheRead": 9640,
+    "total": 13814
+   },
+   "costUsd": 0.026511999999999997,
+   "models": [
+    "claude-opus-5-5"
+   ],
+   "exitCode": 0,
+   "timedOut": false,
+   "subtype": "success",
+   "startedAt": "2026-10-18T12:49:55.250Z",
+   "dir": "runs/clisame/scrapethis-oscar-2012/cli-2"
+  },
+  {
+   "task": "webscraper-laptop-max",
+   "site": "webscraper",
+   "mode": "cli",
+   "trial": 1,
+   "tag": "clisame",
+   "ok": true,
+   "why": "all expected values present",
+   "answer": "Asus ROG Strix SCAR Edition GL503VM-ED115T — $1799",
+   "expected": {
+    "expect": [
+     "Asus ROG Strix SCAR Edition GL503VM-ED115T",
+     "1799"
+    ]
+   },
+   "wallMs": 13152,
+   "apiMs": 12451,
+   "turns": 4,
+   "toolCalls": 3,
+   "tokens": {
+    "input": 8,
+    "output": 531,
+    "cacheWrite": 3838,
+    "cacheRead": 14361,
+    "total": 18738
+   },
+   "costUsd": 0.0327142,
+   "models": [
+    "claude-opus-5-5"
+   ],
+   "exitCode": 0,
+   "timedOut": false,
+   "subtype": "success",
+   "startedAt": "2026-10-18T12:50:24.730Z",
+   "dir": "runs/clisame/webscraper-laptop-max/cli-1"
+  },
+  {
+   "task": "webscraper-laptop-max",
+   "site": "webscraper",
+   "mode": "cli",
+   "trial": 2,
+   "tag": "clisame",
+   "ok": true,
+   "why": "all expected values present",
+   "answer": "Asus ROG Strix SCAR Edition GL503VM-ED115T — $1799",
+   "expected": {
+    "expect": [
+     "Asus ROG Strix SCAR Edition GL503VM-ED115T",
+     "1799"
+    ]
+   },
+   "wallMs": 11476,
+   "apiMs": 10800,
+   "turns": 4,
+   "toolCalls": 3,
+   "tokens": {
+    "input": 8,
+    "output": 535,
+    "cacheWrite": 3984,
+    "cacheRead": 14323,
+    "total": 18850
+   },
+   "costUsd": 0.0335166,
+   "models": [
+    "claude-opus-5-5"
+   ],
+   "exitCode": 0,
+   "timedOut": false,
+   "subtype": "success",
+   "startedAt": "2026-10-18T12:50:37.883Z",
+   "dir": "runs/clisame/webscraper-laptop-max/cli-2"
+  }
+ ],
+ "speedupMedian": 0,
+ "tokenRatioMedian": 0
+}

@@ -1,0 +1,203 @@
+{
+ "name": "ror",
+ "startUrl": "https://ror.org/",
+ "origin": "https://ror.org",
+ "createdAt": "2026-10-18T09:14:32.315Z",
+ "description": "ROR (Research Organization Registry): look up research organizations (universities, funders, hospitals, companies and others) and their persistent ROR IDs through the public ROR REST API v2 at api.ror.org. Search, filter, fetch details and match affiliation strings.",
+ "commands": [
+  {
+   "name": "search-organizations",
+   "summary": "Search ROR organizations by keyword or advanced field query, with optional filters (type, status, country, continent) and pagination (20 per page)",
+   "method": "GET",
+   "urlTemplate": "https://api.ror.org/v2/organizations",
+   "params": [
+    {
+     "name": "query",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Free-text keyword search across organization names, acronyms, aliases and IDs. Do not combine with --advanced.",
+     "example": "oxford"
+    },
+    {
+     "name": "advanced",
+     "key": "query.advanced",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Elasticsearch-style field query on ROR fields. Supports wildcards, ranges and AND/OR. Escape reserved characters such as / and : inside values with a backslash. Examples: names.value:Cornell*, locatio",
+     "example": "names.value:Cornell*"
+    },
+    {
+     "name": "filter",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Comma-separated field:value pairs. All pairs must match. Fields: types (education, funder, healthcare, company, archive, nonprofit, government, facility, other), status (active, inactive, withdrawn), ",
+     "example": "types:education,locations.geonames_details.country_code:GB"
+    },
+    {
+     "name": "page",
+     "in": "query",
+     "required": false,
+     "type": "number",
+     "description": "1-based results page. Each page holds 20 items.",
+     "default": 1
+    }
+   ],
+   "responseType": "json",
+   "resultPath": "items",
+   "defaultFields": [
+    "id",
+    "names",
+    "types",
+    "status",
+    "locations",
+    "established",
+    "links"
+   ],
+   "pagination": {
+    "type": "page",
+    "param": "page"
+   },
+   "mutates": false,
+   "example": {
+    "query": "oxford"
+   },
+   "source": "E1",
+   "verified": true
+  },
+  {
+   "name": "get-search-facets",
+   "summary": "Get the total match count and facet counts (types, countries, continents, statuses) for a ROR search, without the result items",
+   "method": "GET",
+   "urlTemplate": "https://api.ror.org/v2/organizations",
+   "params": [
+    {
+     "name": "query",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Free-text keyword search, same as in search-organizations. Do not combine with --advanced.",
+     "example": "oxford"
+    },
+    {
+     "name": "advanced",
+     "key": "query.advanced",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Elasticsearch-style field query, e.g. names.value:Cornell* or established:[1900 TO 1950]",
+     "example": "names.value:Cornell*"
+    },
+    {
+     "name": "filter",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Comma-separated field:value filters, all must match. Fields: types, status, locations.geonames_details.country_code, locations.geonames_details.continent_code. Example: status:active,types:funder or l",
+     "example": "status:active,types:funder"
+    }
+   ],
+   "responseType": "json",
+   "defaultFields": [
+    "number_of_results",
+    "meta"
+   ],
+   "mutates": false,
+   "example": {
+    "query": "oxford"
+   },
+   "source": "E1",
+   "verified": true
+  },
+  {
+   "name": "get-organization",
+   "summary": "Get the full ROR record for one organization by ROR ID: names, locations, external IDs (GRID, ISNI, Wikidata, FundRef), links and parent/child/related relationships",
+   "method": "GET",
+   "urlTemplate": "https://api.ror.org/v2/organizations/{id}",
+   "params": [
+    {
+     "name": "id",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "ROR ID: the 9-character suffix of the ROR URL, e.g. 052gg0110 for https://ror.org/052gg0110",
+     "example": "052gg0110"
+    }
+   ],
+   "responseType": "json",
+   "defaultFields": [
+    "id",
+    "names",
+    "types",
+    "status",
+    "established",
+    "locations",
+    "external_ids",
+    "relationships"
+   ],
+   "mutates": false,
+   "example": {
+    "id": "052gg0110"
+   },
+   "source": "",
+   "verified": true
+  },
+  {
+   "name": "match-affiliation",
+   "summary": "Match a free-text affiliation string (e.g. from a paper's author list) to ROR organizations; returns scored candidates with matching type and a 'chosen' flag for a confident match",
+   "method": "GET",
+   "urlTemplate": "https://api.ror.org/v2/organizations",
+   "params": [
+    {
+     "name": "affiliation",
+     "in": "query",
+     "required": true,
+     "type": "string",
+     "description": "Raw affiliation string, e.g. 'Department of Physics, University of Oxford, UK'",
+     "example": "University of Oxford, UK"
+    }
+   ],
+   "responseType": "json",
+   "resultPath": "items",
+   "defaultFields": [
+    "chosen",
+    "score",
+    "matching_type",
+    "substring",
+    "organization.id",
+    "organization.names",
+    "organization.locations"
+   ],
+   "mutates": false,
+   "example": {
+    "affiliation": "University of Oxford, UK"
+   },
+   "source": "",
+   "verified": true
+  }
+ ],
+ "blockers": [
+  "bot-check at https://ror.org/",
+  "bot-check at https://ror.org/search?query=oxford",
+  "captcha"
+ ],
+ "notes": [
+  "A Vercel Security Checkpoint bot check blocks the ror.org website. The only recorded request (E1, the challenge POST) is not usable, so every command calls the public ROR REST API v2 at https://api.ror.org instead. No login or API key is needed.",
+  "Organization 'id' values in responses are full URLs (https://ror.org/052gg0110). Pass only the last path segment to get-organization.",
+  "Search returns 20 items per page. Check number_of_results before paging; pages beyond the last one return an empty items list.",
+  "--query and --advanced are alternative search modes; use one or the other. --filter combines with either one.",
+  "In match-affiliation results, an item with chosen=true is ROR's confident single match. If no item is chosen, review the scores yourself.",
+  "The public API is rate-limited (roughly 2000 requests per 5 minutes per IP). Avoid tight loops."
+ ],
+ "dropped": [],
+ "generated": {
+  "by": "clify add",
+  "model": "claude-opus-5-5",
+  "exploredSteps": 5,
+  "recorded": 89,
+  "verifiedAt": "2026-10-18T09:15:28.599Z",
+  "seconds": 106
+ }
+}

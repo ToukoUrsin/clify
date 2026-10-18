@@ -1,0 +1,82 @@
+{
+ "ok": true,
+ "site": "ycombinator",
+ "url": "https://www.ycombinator.com/companies",
+ "commands": [
+  {
+   "name": "list-directory-categories",
+   "summary": "List the directory's industry and location categories with their URL slugs, plus links to hiring-by-location pages",
+   "verified": true
+  },
+  {
+   "name": "get-company",
+   "summary": "Get a YC company's profile page by slug (title/tagline and summary description with founders, team size, location, hiring)",
+   "verified": true
+  },
+  {
+   "name": "list-company-jobs",
+   "summary": "List the open job postings of a YC company",
+   "verified": true
+  },
+  {
+   "name": "get-job",
+   "summary": "Get a job posting (title, description, salary range, location, remote type, date posted) from its structured JobPosting data",
+   "verified": true
+  },
+  {
+   "name": "get-launch",
+   "summary": "Get a Launch YC post: title, tagline, upvote count, author, company link and posting date",
+   "verified": true
+  },
+  {
+   "name": "list-jobs",
+   "summary": "List featured jobs at YC startups from the Work at a Startup jobs board",
+   "verified": true
+  },
+  {
+   "name": "list-jobs-by-role",
+   "summary": "List jobs at YC startups for one role (e.g. product-manager, software-engineer)",
+   "verified": true
+  },
+  {
+   "name": "list-jobs-by-role-location",
+   "summary": "List jobs at YC startups for one role in a given location or remote",
+   "verified": true
+  },
+  {
+   "name": "list-people",
+   "summary": "List YC people (president, partners, staff) with short bios and profile links",
+   "verified": true
+  },
+  {
+   "name": "get-person",
+   "summary": "Get a YC person's profile (name, role, bio) by slug",
+   "verified": true
+  }
+ ],
+ "verified": 10,
+ "writes": 0,
+ "dropped": [
+  {
+   "name": "search-companies",
+   "reason": "Algolia rejects the request with 'Invalid Application-ID or API key'. The embedded API key is truncated or rotated. The full secured key lives in a JS variable on /companies, which selector-based CSRF extraction can't read reliably. No working replay without it."
+  },
+  {
+   "name": "list-company-facets",
+   "reason": "Uses the same invalid Algolia API key as search-companies (403 'Invalid Application-ID or API key'). Can't be replayed without a valid key."
+  }
+ ],
+ "blockers": [],
+ "loggedIn": false,
+ "seconds": 304,
+ "next": [
+  "clify ycombinator",
+  "clify ycombinator list-directory-categories --industry \"Developer Tools\""
+ ],
+ "installed": "/home/ubuntu/clify-runs/batch2/home/bin/ycombinator",
+ "explored": {
+  "steps": 29,
+  "recorded": 86,
+  "heldWrites": 21
+ }
+}

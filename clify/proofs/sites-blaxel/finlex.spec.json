@@ -1,0 +1,415 @@
+{
+ "name": "finlex",
+ "startUrl": "https://www.finlex.fi/",
+ "origin": "https://www.finlex.fi",
+ "createdAt": "2026-10-18T08:11:39.703Z",
+ "description": "Finlex, the Finnish government's free legal database (statutes, Statute Book, translations and Supreme Court case law). This CLI searches all datasets, lists Statute Book entries and Supreme Court precedents, and fetches statute, translation and precedent detail pages and translation PDFs.",
+ "commands": [
+  {
+   "name": "search",
+   "summary": "Keyword search across all Finlex data (legislation, government proposals, treaties, case law, officials). Returns hit count, category counts and hits as a Next.js server-action text stream.",
+   "method": "POST",
+   "urlTemplate": "/en/search?type=BASIC&sort={sort}",
+   "params": [
+    {
+     "name": "search",
+     "in": "body",
+     "required": true,
+     "type": "string",
+     "description": "Search words, e.g. 'employment contract'",
+     "example": "employment contract"
+    },
+    {
+     "name": "page",
+     "in": "body",
+     "required": false,
+     "type": "number",
+     "description": "Result page number, starting at 1",
+     "default": 1
+    },
+    {
+     "name": "api_limit",
+     "key": "limit",
+     "in": "body",
+     "required": false,
+     "type": "number",
+     "description": "Results per page. The UI offers 10, 20 or 50. Use 0 to get only the total and per-category counts.",
+     "default": 20
+    },
+    {
+     "name": "sort",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Sort order",
+     "enum": [
+      "relevance",
+      "newestFirst",
+      "oldestFirst"
+     ],
+     "default": "relevance"
+    }
+   ],
+   "bodyTemplate": [
+    {
+     "type": "BASIC",
+     "search": "{search}",
+     "firstWord": "$undefined",
+     "secondWord": "$undefined",
+     "phraseSlop": "$undefined",
+     "and": "$undefined",
+     "or": "$undefined",
+     "not": "$undefined",
+     "exact": "$undefined",
+     "page": "{page}",
+     "limit": "{api_limit}"
+    },
+    {
+     "aggregateByCategory": true
+    }
+   ],
+   "bodyEncoding": "json",
+   "headers": {
+    "accept": "text/x-component",
+    "content-type": "text/plain;charset=UTF-8",
+    "next-action": "601bcef390bfab95f73b662ff8f674e17071611992"
+   },
+   "responseType": "text",
+   "pagination": {
+    "type": "page",
+    "param": "page"
+   },
+   "mutates": false,
+   "example": {
+    "search": "employment contract",
+    "page": "1",
+    "api_limit": "20"
+   },
+   "source": "E1",
+   "verified": true
+  },
+  {
+   "name": "list-latest-statutes",
+   "summary": "List the latest statutes published in the Statute Book, as shown on the Finlex home page.",
+   "method": "GET",
+   "urlTemplate": "/en",
+   "params": [],
+   "responseType": "html",
+   "extract": {
+    "list": "h3.styles-module-scss-module__k0zOmW__h3",
+    "fields": {
+     "number": "a span",
+     "url": "a@href"
+    }
+   },
+   "defaultFields": [
+    "number",
+    "url"
+   ],
+   "mutates": false,
+   "source": "E11 GET https://www.finlex.fi/en",
+   "verified": true
+  },
+  {
+   "name": "get-statute",
+   "summary": "Get a statute by number and year, e.g. 55/2001 (Employment Contracts Act). Returns the title and statute text.",
+   "method": "GET",
+   "urlTemplate": "/en/legislation/{year}/{number}",
+   "params": [
+    {
+     "name": "year",
+     "in": "path",
+     "required": true,
+     "type": "number",
+     "description": "Statute year, e.g. 2001",
+     "example": "2001"
+    },
+    {
+     "name": "number",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Statute number within the year, e.g. 55. Some numbers have a suffix, e.g. 39-001 for the Criminal Code (1889).",
+     "example": "55"
+    }
+   ],
+   "responseType": "html",
+   "extract": {
+    "fields": {
+     "pageTitle": "title",
+     "number": "main#main h1",
+     "content": "div[hidden]"
+    }
+   },
+   "defaultFields": [
+    "pageTitle",
+    "number",
+    "content"
+   ],
+   "mutates": false,
+   "example": {
+    "year": "2001",
+    "number": "55"
+   },
+   "source": "E5",
+   "verified": true
+  },
+  {
+   "name": "get-statute-translation",
+   "summary": "Get the English translation page of a statute by year and number, including the translation PDF link.",
+   "method": "GET",
+   "urlTemplate": "/en/legislation/translations/{year}/eng/{number}",
+   "params": [
+    {
+     "name": "year",
+     "in": "path",
+     "required": true,
+     "type": "number",
+     "description": "Statute year, e.g. 2001",
+     "example": "2001"
+    },
+    {
+     "name": "number",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Statute number within the year, e.g. 55",
+     "example": "55"
+    }
+   ],
+   "responseType": "html",
+   "extract": {
+    "fields": {
+     "pageTitle": "title",
+     "heading": "main#main h1",
+     "pdfUrl": "a[href*='mainPdf']@href",
+     "content": "div[hidden]"
+    }
+   },
+   "defaultFields": [
+    "pageTitle",
+    "heading",
+    "pdfUrl",
+    "content"
+   ],
+   "mutates": false,
+   "example": {
+    "year": "2001",
+    "number": "55"
+   },
+   "source": "",
+   "verified": true
+  },
+  {
+   "name": "list-supreme-court-collections",
+   "summary": "List the Supreme Court material collections (precedents, rulings other than precedents, etc.) with last-update dates.",
+   "method": "GET",
+   "urlTemplate": "/en/case-law/supreme-court",
+   "params": [],
+   "responseType": "html",
+   "extract": {
+    "list": "section.styles-module-scss-module__cOBwLq__card",
+    "fields": {
+     "title": "h2 a span",
+     "url": "h2 a@href",
+     "description": "div p",
+     "lastUpdate": "time@datetime"
+    }
+   },
+   "defaultFields": [
+    "title",
+    "url",
+    "description",
+    "lastUpdate"
+   ],
+   "mutates": false,
+   "source": "E7 GET https://www.finlex.fi/en/case-law/supreme-court",
+   "verified": true
+  },
+  {
+   "name": "list-latest-precedents",
+   "summary": "List the latest Supreme Court precedents (KKO).",
+   "method": "GET",
+   "urlTemplate": "/en/case-law/supreme-court/precedents",
+   "params": [],
+   "responseType": "html",
+   "extract": {
+    "list": "section#content li",
+    "fields": {
+     "label": "a",
+     "url": "a@href",
+     "text": ""
+    }
+   },
+   "defaultFields": [
+    "label",
+    "url",
+    "text"
+   ],
+   "mutates": false,
+   "source": "E2 GET https://www.finlex.fi/en/case-law/supreme-court/precedents",
+   "verified": true
+  },
+  {
+   "name": "get-precedent",
+   "summary": "Get the full text of a Supreme Court precedent by year and number, e.g. KKO 2026:74.",
+   "method": "GET",
+   "urlTemplate": "/en/case-law/supreme-court/precedents/{year}/{number}",
+   "params": [
+    {
+     "name": "year",
+     "in": "path",
+     "required": true,
+     "type": "number",
+     "description": "Precedent year, e.g. 2026",
+     "example": "2026"
+    },
+    {
+     "name": "number",
+     "in": "path",
+     "required": true,
+     "type": "number",
+     "description": "Precedent number within the year, e.g. 74",
+     "example": "74"
+    }
+   ],
+   "responseType": "html",
+   "extract": {
+    "fields": {
+     "pageTitle": "title",
+     "date": "main#main h1",
+     "content": "div[hidden]"
+    }
+   },
+   "defaultFields": [
+    "pageTitle",
+    "date",
+    "content"
+   ],
+   "mutates": false,
+   "example": {
+    "year": "2026",
+    "number": "74"
+   },
+   "source": "E3",
+   "verified": true
+  }
+ ],
+ "blockers": [],
+ "notes": [
+  "The 'search' command calls a Next.js server action identified by the next-action header. The id was recorded from the current build and may change when Finlex redeploys; if the call fails, take the new id from the search page's POST request.",
+  "The 'search' response is a React Server Components text stream, not plain JSON. The line starting '1:' holds an Elasticsearch-style JSON object: hits.total.value, hits.hits and aggregations.category.buckets.",
+  "Only limit=0 was recorded; it returned just the total and the per-category counts (GOVERNMENT_PROPOSALS, LEGISLATION, TREATIES, OFFICIALS, CASE_LAW), with an empty hits.hits. Non-zero limits are expected to return hits but were not observed.",
+  "Sort is only carried in the search page URL, not in the action body, so it may not affect action results.",
+  "Statute titles are often in Finnish or Swedish even on the /en pages. English texts exist only for statutes that have a translation (get-statute-translation).",
+  "Statutes and precedents are addressed as number/year, e.g. statute 55/2001 \u2192 year=2001 number=55. Some statute numbers have suffixes like '39-001'.",
+  "Find translation PDF ids in the links on the translation page. The recorded '?timestamp=' query parameter is only cache-busting and can be omitted.",
+  "Finlex began returning HTTP errors (likely rate limiting) after many rapid requests, so space out calls. Because of this, the Statute Book collection detail, amendments, open-data and government-proposals pages were not recorded.",
+  "The amendment-history tab (/en/legislation/{year}/{number}/amendment-history/{id}) was also not captured with enough detail to define a command.",
+  "Listing extractors use generic 'section#content li' selectors because the result markup was not fully visible in the recording, so fields may need light post-processing."
+ ],
+ "dropped": [
+  {
+   "name": "download-translation-pdf",
+   "summary": "Download the PDF of a statute translation by its media id (the id appears in PDF links on the translation page, e.g. 725900).",
+   "method": "GET",
+   "urlTemplate": "/api/media/statute-foreign-language-translation/{id}/mainPdf/main.pdf",
+   "params": [
+    {
+     "name": "id",
+     "in": "path",
+     "required": true,
+     "type": "number",
+     "description": "Translation media id, taken from the PDF link on the translation page",
+     "example": "725900"
+    }
+   ],
+   "responseType": "text",
+   "mutates": false,
+   "example": {
+    "id": "725900"
+   },
+   "source": "E6 GET https://www.finlex.fi/api/media/statute-foreign-language-translation/{n}/mainPdf/main.pdf",
+   "verified": false,
+   "verifyNote": "Returns raw binary PDF bytes as text, which an agent can't use in JSON output. get-statute-translation now exposes the PDF URL instead."
+  },
+  {
+   "name": "list-statutes-by-year",
+   "summary": "List the statutes published in the Statute Book of Finland in a given year.",
+   "method": "GET",
+   "urlTemplate": "/en/legislation/collection/{year}",
+   "params": [
+    {
+     "name": "year",
+     "in": "path",
+     "required": true,
+     "type": "number",
+     "description": "Statute Book year, e.g. 2025",
+     "example": "2025"
+    }
+   ],
+   "responseType": "html",
+   "extract": {
+    "list": "div[hidden] a",
+    "fields": {
+     "label": "",
+     "url": "@href"
+    }
+   },
+   "defaultFields": [
+    "label",
+    "url"
+   ],
+   "mutates": false,
+   "example": {
+    "year": "2025"
+   },
+   "source": "E9",
+   "verified": false,
+   "verifyNote": "The statute list is not in the server HTML. The page renders it client-side or streams it as an RSC payload. section#content holds only the 'Statutes 2025' heading, and the only matching links are the year-navigation chips, so no static selector reliably returns the entries. The search and detail commands cover statutes."
+  },
+  {
+   "name": "list-precedents-by-year",
+   "summary": "List Supreme Court precedents (KKO) published in a given year.",
+   "method": "GET",
+   "urlTemplate": "/en/case-law/supreme-court/precedents/{year}",
+   "params": [
+    {
+     "name": "year",
+     "in": "path",
+     "required": true,
+     "type": "number",
+     "description": "Precedent year, e.g. 2025",
+     "example": "2025"
+    }
+   ],
+   "responseType": "html",
+   "extract": {
+    "list": "div[hidden] a",
+    "fields": {
+     "label": "",
+     "url": "@href"
+    }
+   },
+   "defaultFields": [
+    "label",
+    "url"
+   ],
+   "mutates": false,
+   "example": {
+    "year": "2025"
+   },
+   "source": "E8",
+   "verified": false,
+   "verifyNote": "Same problem as the statutes page: the precedent list is client-rendered or streamed. section#content holds only the 'Precedents 2025' heading, and the only repeated items are menu, footer and year chips, with no precedent entries to extract. The search and get-precedent commands cover precedents."
+  }
+ ],
+ "generated": {
+  "by": "clify add",
+  "model": "claude-opus-5-5",
+  "exploredSteps": 22,
+  "recorded": 14,
+  "verifiedAt": "2026-10-18T08:13:59.601Z",
+  "seconds": 250
+ }
+}

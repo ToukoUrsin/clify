@@ -1,0 +1,682 @@
+{
+ "name": "hub-docker",
+ "startUrl": "https://hub.docker.com/",
+ "origin": "https://hub.docker.com",
+ "createdAt": "2026-10-18T07:10:05.922Z",
+ "description": "Docker Hub (hub.docker.com), the public container image registry. This CLI searches images by category, lists tags and image layers, reads repository, publisher and organization info, browses the Docker MCP server catalog, and fetches Docker Scout vulnerability summaries.",
+ "commands": [
+  {
+   "name": "list-categories",
+   "summary": "List Docker Hub image categories. Their slugs are the --category values for search-category-images.",
+   "method": "GET",
+   "urlTemplate": "/search/list-categories.data?_routes=routes%2Fsearch.list-categories",
+   "params": [],
+   "responseType": "json",
+   "mutates": false,
+   "source": "E14 GET https://hub.docker.com/search/list-categories.data",
+   "verified": true
+  },
+  {
+   "name": "search-category-images",
+   "summary": "Search repositories within one category by keyword, with filters for product type and trust badge, a sort order and page number.",
+   "method": "GET",
+   "urlTemplate": "/categories/{category}.data?_routes=root%2Croutes%2F_layout.categories.%24category",
+   "params": [
+    {
+     "name": "category",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Category slug from list-categories, e.g. databases-and-storage, web-servers",
+     "example": "databases-and-storage"
+    },
+    {
+     "name": "q",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Keyword search within the category",
+     "example": "postgres"
+    },
+    {
+     "name": "sort",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Sort key. Omit for best match.",
+     "enum": [
+      "pull_count",
+      "updated_at"
+     ]
+    },
+    {
+     "name": "order",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Sort direction",
+     "enum": [
+      "desc",
+      "asc"
+     ]
+    },
+    {
+     "name": "type",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Product type filter",
+     "enum": [
+      "image",
+      "extension",
+      "plugin"
+     ]
+    },
+    {
+     "name": "badges",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Trust badge filter",
+     "enum": [
+      "official",
+      "verified_publisher",
+      "open_source"
+     ]
+    },
+    {
+     "name": "page",
+     "in": "query",
+     "required": false,
+     "type": "number",
+     "description": "1-based results page",
+     "default": 1
+    }
+   ],
+   "responseType": "json",
+   "pagination": {
+    "type": "page",
+    "param": "page"
+   },
+   "mutates": false,
+   "example": {
+    "category": "databases-and-storage",
+    "q": "postgres",
+    "sort": "pull_count",
+    "order": "desc"
+   },
+   "source": "E10 E23 GET https://hub.docker.com/categories/databases-and-storage.data",
+   "verified": true
+  },
+  {
+   "name": "get-official-image",
+   "summary": "Get details of a Docker Official Image (library/*), such as nginx: description, categories, pull count, stars, last updated date and full overview (full_description).",
+   "method": "GET",
+   "urlTemplate": "/v2/repositories/library/{image}/",
+   "params": [
+    {
+     "name": "image",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Official image name without namespace, e.g. nginx, postgres, alpine",
+     "example": "nginx"
+    }
+   ],
+   "headers": {
+    "x-docker-api-client": "hub-ui/fetchWithAuth-v8988"
+   },
+   "responseType": "json",
+   "defaultFields": [
+    "name",
+    "namespace",
+    "description",
+    "pull_count",
+    "star_count",
+    "last_updated",
+    "categories",
+    "date_registered"
+   ],
+   "mutates": false,
+   "example": {
+    "image": "nginx"
+   },
+   "source": "E25 E11",
+   "verified": true
+  },
+  {
+   "name": "list-official-image-tags",
+   "summary": "List the tags of a Docker Official Image, with a name filter, sort order and page number. Includes the tag digest, size, last update and per-architecture images (architecture, os, digest, size).",
+   "method": "GET",
+   "urlTemplate": "/v2/repositories/library/{image}/tags/",
+   "params": [
+    {
+     "name": "image",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Official image name, e.g. nginx",
+     "example": "nginx"
+    },
+    {
+     "name": "tag_name",
+     "key": "name",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Only tags whose name contains this text, e.g. alpine",
+     "example": "alpine"
+    },
+    {
+     "name": "ordering",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Sort order: name / -name (alphabetical) or last_updated / -last_updated (by recency). Omit for newest first.",
+     "enum": [
+      "name",
+      "-name",
+      "last_updated",
+      "-last_updated"
+     ]
+    },
+    {
+     "name": "page",
+     "in": "query",
+     "required": false,
+     "type": "number",
+     "description": "1-based page",
+     "default": 1
+    },
+    {
+     "name": "page_size",
+     "in": "query",
+     "required": false,
+     "type": "number",
+     "description": "Tags per page (max 100)",
+     "default": 25
+    }
+   ],
+   "headers": {
+    "x-docker-api-client": "hub-ui/fetchWithAuth-v8988"
+   },
+   "responseType": "json",
+   "resultPath": "results",
+   "defaultFields": [
+    "name",
+    "digest",
+    "last_updated",
+    "full_size",
+    "tag_status",
+    "images"
+   ],
+   "pagination": {
+    "type": "page",
+    "param": "page"
+   },
+   "mutates": false,
+   "example": {
+    "image": "nginx",
+    "tag_name": "alpine"
+   },
+   "source": "E11 E26",
+   "verified": true
+  },
+  {
+   "name": "get-repository",
+   "summary": "Get details of a community or verified-publisher repository such as grafana/grafana: description, pull count, stars, categories, last updated date and full overview (full_description).",
+   "method": "GET",
+   "urlTemplate": "/v2/repositories/{namespace}/{repo}/",
+   "params": [
+    {
+     "name": "namespace",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Repository owner (user or org), e.g. grafana",
+     "example": "grafana"
+    },
+    {
+     "name": "repo",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Repository name, e.g. grafana",
+     "example": "grafana"
+    }
+   ],
+   "headers": {
+    "x-docker-api-client": "hub-ui/fetchWithAuth-v8988"
+   },
+   "responseType": "json",
+   "defaultFields": [
+    "name",
+    "namespace",
+    "description",
+    "pull_count",
+    "star_count",
+    "last_updated",
+    "categories",
+    "date_registered"
+   ],
+   "mutates": false,
+   "example": {
+    "namespace": "grafana",
+    "repo": "grafana"
+   },
+   "source": "E27",
+   "verified": true
+  },
+  {
+   "name": "list-repository-tags",
+   "summary": "List the tags of a non-official repository (namespace/repo), with a name filter, sort order and page number. Includes digest, size, last update and per-architecture images.",
+   "method": "GET",
+   "urlTemplate": "/v2/repositories/{namespace}/{repo}/tags/",
+   "params": [
+    {
+     "name": "namespace",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Repository owner, e.g. grafana",
+     "example": "grafana"
+    },
+    {
+     "name": "repo",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Repository name, e.g. grafana",
+     "example": "grafana"
+    },
+    {
+     "name": "tag_name",
+     "key": "name",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Only tags whose name contains this text"
+    },
+    {
+     "name": "ordering",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Sort order",
+     "enum": [
+      "name",
+      "-name",
+      "last_updated",
+      "-last_updated"
+     ]
+    },
+    {
+     "name": "page",
+     "in": "query",
+     "required": false,
+     "type": "number",
+     "description": "1-based page",
+     "default": 1
+    },
+    {
+     "name": "page_size",
+     "in": "query",
+     "required": false,
+     "type": "number",
+     "description": "Tags per page (max 100)",
+     "default": 25
+    }
+   ],
+   "headers": {
+    "x-docker-api-client": "hub-ui/fetchWithAuth-v8988"
+   },
+   "responseType": "json",
+   "resultPath": "results",
+   "defaultFields": [
+    "name",
+    "digest",
+    "last_updated",
+    "full_size",
+    "tag_status",
+    "images"
+   ],
+   "pagination": {
+    "type": "page",
+    "param": "page"
+   },
+   "mutates": false,
+   "example": {
+    "namespace": "grafana",
+    "repo": "grafana"
+   },
+   "source": "E27 E11",
+   "verified": true
+  },
+  {
+   "name": "get-image-layers",
+   "summary": "Get details of one tag's image: per-architecture digests, sizes, last pulled date and the Dockerfile layer commands.",
+   "method": "GET",
+   "urlTemplate": "/layers/{namespace}/{repo}/{tag}/images/{digest}.data",
+   "params": [
+    {
+     "name": "namespace",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Namespace. Use 'library' for official images.",
+     "example": "library"
+    },
+    {
+     "name": "repo",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Repository name",
+     "example": "nginx"
+    },
+    {
+     "name": "tag",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Tag name, e.g. 1.31-alpine",
+     "example": "1.31-alpine"
+    },
+    {
+     "name": "digest",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Image digest with a dash instead of a colon: sha256-<hex>. Take it from the tag list (sha256:<hex>) and replace ':' with '-'.",
+     "example": "sha256-7ddef4fb1b16816185c5e3ca4c76086e2db0d37f2e9eee57b9a3fb5182cca562"
+    }
+   ],
+   "responseType": "json",
+   "mutates": false,
+   "example": {
+    "namespace": "library",
+    "repo": "nginx",
+    "tag": "1.31-alpine",
+    "digest": "sha256-7ddef4fb1b16816185c5e3ca4c76086e2db0d37f2e9eee57b9a3fb5182cca562"
+   },
+   "source": "E15 GET https://hub.docker.com/layers/library/nginx/1.31-alpine/images/sha256-7ddef4fb1b16816185c5e3ca4c76086e2db0d37f2e9eee57b9a3fb5182cca562.data",
+   "verified": true
+  },
+  {
+   "name": "get-image-vulnerabilities",
+   "summary": "Get the Docker Scout vulnerability counts (critical/high/medium/low/unspecified/total) and SBOM state for an image digest.",
+   "method": "POST",
+   "urlTemplate": "https://api.scout.docker.com/v1/graphql",
+   "params": [
+    {
+     "name": "digest",
+     "in": "body",
+     "required": true,
+     "type": "string",
+     "description": "Image digest in sha256:<hex> form",
+     "example": "sha256:c87fac26236ceccacc9a595dd0e0bb5c7e5c8ad9c5723bc3149a704933163ef2"
+    },
+    {
+     "name": "repoName",
+     "in": "body",
+     "required": true,
+     "type": "string",
+     "description": "Repository name as Scout knows it: bare name for official images (nginx), namespace/repo otherwise",
+     "example": "nginx"
+    }
+   ],
+   "bodyTemplate": {
+    "operationName": "imageSummariesByDigest",
+    "query": "query imageSummariesByDigest($context: Context!, $digests: [String!]!, $repository: ScRepositoryInput) {imageSummariesByDigest(context: $context,\ndigests: $digests,\nrepository: $repository)  {digest\nsbomState\nvulnerabilityReport  {critical\nhigh\nmedium\nlow\nunspecified\ntotal}}}",
+    "variables": {
+     "context": {},
+     "digests": [
+      "{digest}"
+     ],
+     "repository": {
+      "hostName": "hub.docker.com",
+      "repoName": "{repoName}"
+     }
+    }
+   },
+   "bodyEncoding": "json",
+   "headers": {
+    "x-docker-api-client": "hub-ui/fetchWithAuth-v8988"
+   },
+   "responseType": "json",
+   "resultPath": "data.imageSummariesByDigest",
+   "defaultFields": [
+    "digest",
+    "sbomState",
+    "vulnerabilityReport.critical",
+    "vulnerabilityReport.high",
+    "vulnerabilityReport.medium",
+    "vulnerabilityReport.low",
+    "vulnerabilityReport.total"
+   ],
+   "mutates": false,
+   "example": {
+    "digest": "sha256:c87fac26236ceccacc9a595dd0e0bb5c7e5c8ad9c5723bc3149a704933163ef2",
+    "repoName": "nginx"
+   },
+   "source": "E3 POST https://api.scout.docker.com/v1/graphql",
+   "verified": true
+  },
+  {
+   "name": "get-organization",
+   "summary": "Get public info for a Docker Hub organization or namespace: full name, company, location, website, join date and verified-publisher badge.",
+   "method": "GET",
+   "urlTemplate": "/v2/orgs/{namespace}/",
+   "params": [
+    {
+     "name": "namespace",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Org name, e.g. grafana, or library for Docker Official Images",
+     "example": "grafana"
+    }
+   ],
+   "headers": {
+    "x-docker-api-client": "hub-ui/fetchWithAuth-v8988"
+   },
+   "responseType": "json",
+   "defaultFields": [
+    "orgname",
+    "full_name",
+    "company",
+    "location",
+    "profile_url",
+    "date_joined",
+    "type",
+    "badge"
+   ],
+   "mutates": false,
+   "example": {
+    "namespace": "grafana"
+   },
+   "source": "E4 E5 GET https://hub.docker.com/v2/orgs/library/",
+   "verified": true
+  },
+  {
+   "name": "list-publisher-repositories",
+   "summary": "List the public repositories a publisher or user owns, with a name search, sort order and page number.",
+   "method": "GET",
+   "urlTemplate": "/v2/namespaces/{namespace}/repositories",
+   "params": [
+    {
+     "name": "namespace",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Publisher/user namespace, e.g. grafana",
+     "example": "grafana"
+    },
+    {
+     "name": "search",
+     "key": "name",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Filter repositories whose name contains this text",
+     "example": "loki"
+    },
+    {
+     "name": "ordering",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Sort order",
+     "enum": [
+      "name",
+      "-name",
+      "last_updated",
+      "-last_updated",
+      "pull_count",
+      "-pull_count"
+     ]
+    },
+    {
+     "name": "page",
+     "in": "query",
+     "required": false,
+     "type": "number",
+     "description": "1-based page",
+     "default": 1
+    },
+    {
+     "name": "page_size",
+     "in": "query",
+     "required": false,
+     "type": "number",
+     "description": "Repositories per page (max 100)",
+     "default": 25
+    }
+   ],
+   "headers": {
+    "x-docker-api-client": "hub-ui/fetchWithAuth-v8988"
+   },
+   "responseType": "json",
+   "resultPath": "results",
+   "defaultFields": [
+    "name",
+    "namespace",
+    "description",
+    "pull_count",
+    "star_count",
+    "last_updated",
+    "status_description"
+   ],
+   "pagination": {
+    "type": "page",
+    "param": "page"
+   },
+   "mutates": false,
+   "example": {
+    "namespace": "grafana",
+    "search": "loki"
+   },
+   "source": "E13 E28",
+   "verified": true
+  },
+  {
+   "name": "search-mcp-servers",
+   "summary": "Search the Docker MCP Catalog of containerized MCP servers by keyword, optionally filtered by category.",
+   "method": "GET",
+   "urlTemplate": "/mcp/explore.data",
+   "params": [
+    {
+     "name": "search",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Keyword, e.g. github",
+     "example": "github"
+    },
+    {
+     "name": "categories",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Catalog category filter, using the category value shown in the explore page"
+    }
+   ],
+   "responseType": "json",
+   "mutates": false,
+   "example": {
+    "search": "github"
+   },
+   "source": "E16 E29 GET https://hub.docker.com/mcp/explore.data",
+   "verified": true
+  },
+  {
+   "name": "get-mcp-server",
+   "summary": "Get details of an MCP catalog server: description, image, source repo, readme/tools URLs and config.",
+   "method": "GET",
+   "urlTemplate": "/mcp/server/{id}/overview.data",
+   "params": [
+    {
+     "name": "id",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "MCP server id from search-mcp-servers, e.g. github-official",
+     "example": "github-official"
+    }
+   ],
+   "responseType": "json",
+   "mutates": false,
+   "example": {
+    "id": "github-official"
+   },
+   "source": "E17 E18 GET https://hub.docker.com/mcp/server/github-official.data",
+   "verified": true
+  },
+  {
+   "name": "list-mcp-server-tools",
+   "summary": "List the tools an MCP catalog server exposes, with their names and descriptions.",
+   "method": "GET",
+   "urlTemplate": "/mcp/server/{id}/tools.data",
+   "params": [
+    {
+     "name": "id",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "MCP server id, e.g. github-official",
+     "example": "github-official"
+    }
+   ],
+   "responseType": "json",
+   "mutates": false,
+   "example": {
+    "id": "github-official"
+   },
+   "source": "E19 GET https://hub.docker.com/mcp/server/github-official/tools.data",
+   "verified": true
+  }
+ ],
+ "blockers": [
+  "bot-check at https://hub.docker.com/search?q=redis",
+  "bot-check at https://hub.docker.com/search?q=redis&type=image",
+  "captcha"
+ ],
+ "notes": [
+  "*.data endpoints are Remix single-fetch (turbo-stream) responses. They come back as one flat JSON array, not nested objects. Objects appear as {\"_K\": V}: K is the array index of the key-name string and V is the array index of the value. Negative numbers are sentinels: -5 means undefined and -7 means null. To read a value, follow the indices. Strings such as descriptions, tag names, digests and pull counts appear inline right after their key names, so scanning the array is often enough.",
+  "Global search (/search?q=) is behind a Cloudflare bot check. Use search-category-images (call list-categories first for the slugs) or list-publisher-repositories instead.",
+  "Official images use the 'library' namespace: /_/{image} on the site, and namespace=library for get-image-layers and get-organization. In Scout, repoName is the bare name (nginx).",
+  "Digest format differs by command: the tag list and Scout use sha256:<hex>, while get-image-layers needs sha256-<hex> (colon replaced by a dash).",
+  "The Scout GraphQL repoFeatures query returns 403 when not logged in. Whether imageSummariesByDigest works anonymously was not confirmed: only the repoFeatures 403 response was captured.",
+  "Sort values 'updated_at' and the badges/type values other than 'verified_publisher'/'image' come from the UI options; only pull_count, verified_publisher and image were confirmed in the recording.",
+  "list-repository-tags, get-official-image and get-repository use the matching Remix .data routes for pages that were recorded as HTML documents (/r/grafana/grafana, /_/nginx). Those exact .data URLs were not captured."
+ ],
+ "dropped": [],
+ "generated": {
+  "by": "clify add",
+  "model": "claude-opus-5-5",
+  "exploredSteps": 30,
+  "recorded": 175,
+  "verifiedAt": "2026-10-18T07:12:10.896Z",
+  "seconds": 271
+ }
+}

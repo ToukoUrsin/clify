@@ -1,0 +1,90 @@
+{
+ "url": "https://ror.org/",
+ "category": "science",
+ "sandbox": "clify-ror-org",
+ "startedAt": "2026-10-18T09:13:39.388Z",
+ "region": "us-pdx-1",
+ "chrome": "Chrome/148.0.7778.96",
+ "sandboxStartMs": 2448,
+ "addSeconds": 107,
+ "addExit": 0,
+ "add": {
+  "ok": true,
+  "site": "ror",
+  "url": "https://ror.org/",
+  "commands": [
+   {
+    "name": "search-organizations",
+    "summary": "Search ROR organizations by keyword or advanced field query, with optional filters (type, status, country, continent) and pagination (20 per page)",
+    "verified": true
+   },
+   {
+    "name": "get-search-facets",
+    "summary": "Get the total match count and facet counts (types, countries, continents, statuses) for a ROR search, without the result items",
+    "verified": true
+   },
+   {
+    "name": "get-organization",
+    "summary": "Get the full ROR record for one organization by ROR ID: names, locations, external IDs (GRID, ISNI, Wikidata, FundRef), links and parent/child/related relationships",
+    "verified": true
+   },
+   {
+    "name": "match-affiliation",
+    "summary": "Match a free-text affiliation string (e.g. from a paper's author list) to ROR organizations; returns scored candidates with matching type and a 'chosen' flag for a confident match",
+    "verified": true
+   }
+  ],
+  "verified": 4,
+  "writes": 0,
+  "dropped": [],
+  "blockers": [
+   "bot-check at https://ror.org/",
+   "bot-check at https://ror.org/search?query=oxford",
+   "captcha"
+  ],
+  "loggedIn": false,
+  "seconds": 106,
+  "next": [
+   "clify ror",
+   "clify ror search-organizations --query \"oxford\""
+  ],
+  "installed": "/home/ubuntu/clify-runs/blaxel-w2/home/bin/ror",
+  "explored": {
+   "steps": 5,
+   "recorded": 89,
+   "heldWrites": 29
+  }
+ },
+ "check": {
+  "on": "blaxel",
+  "node": "v24.22.0",
+  "seconds": 5,
+  "reads": 4,
+  "verified": 4,
+  "failed": [],
+  "results": [
+   {
+    "name": "search-organizations",
+    "ok": true,
+    "ms": 587
+   },
+   {
+    "name": "get-search-facets",
+    "ok": true,
+    "ms": 513
+   },
+   {
+    "name": "get-organization",
+    "ok": true,
+    "ms": 150
+   },
+   {
+    "name": "match-affiliation",
+    "ok": true,
+    "ms": 135
+   }
+  ]
+ },
+ "deleted": true,
+ "seconds": 114
+}

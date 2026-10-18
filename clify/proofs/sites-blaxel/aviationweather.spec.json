@@ -1,0 +1,437 @@
+{
+ "name": "aviationweather",
+ "startUrl": "https://aviationweather.gov/",
+ "origin": "https://aviationweather.gov",
+ "createdAt": "2026-10-18T08:35:56.575Z",
+ "description": "AviationWeather.gov (NOAA Aviation Weather Center) public Data API. The CLI fetches METARs, TAFs, PIREPs, SIGMETs/AIRMETs, international SIGMETs, winds aloft, and airport/station info. No login is needed.",
+ "commands": [
+  {
+   "name": "get-metars",
+   "summary": "Get decoded METAR observations by station ICAO ids or inside a lat/lon bounding box, optionally with hours of history",
+   "method": "GET",
+   "urlTemplate": "/api/data/metar?format=json",
+   "params": [
+    {
+     "name": "ids",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Comma-separated ICAO station ids, e.g. KORD,KJFK. Pass either ids or bbox.",
+     "example": "KORD,KJFK"
+    },
+    {
+     "name": "bbox",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Bounding box as minLat,minLon,maxLat,maxLon, e.g. 39,-106,41,-104. Use it instead of ids.",
+     "example": "39,-106,41,-104"
+    },
+    {
+     "name": "hours",
+     "in": "query",
+     "required": false,
+     "type": "number",
+     "description": "Hours of observations to return. 0 or omitted returns only the most recent report.",
+     "example": "6"
+    }
+   ],
+   "responseType": "json",
+   "defaultFields": [
+    "icaoId",
+    "name",
+    "reportTime",
+    "fltCat",
+    "temp",
+    "dewp",
+    "wdir",
+    "wspd",
+    "rawOb"
+   ],
+   "mutates": false,
+   "example": {
+    "ids": "KORD,KJFK",
+    "hours": "6"
+   },
+   "source": "E12 GET https://aviationweather.gov/api/data/metar",
+   "verified": true
+  },
+  {
+   "name": "get-tafs",
+   "summary": "Get TAF terminal forecasts for ICAO station ids, optionally with the latest METAR",
+   "method": "GET",
+   "urlTemplate": "/api/data/taf?format=json",
+   "params": [
+    {
+     "name": "ids",
+     "in": "query",
+     "required": true,
+     "type": "string",
+     "description": "Comma-separated ICAO station ids, e.g. KSEA,KLAX",
+     "example": "KSEA,KLAX"
+    },
+    {
+     "name": "metar",
+     "in": "query",
+     "required": false,
+     "type": "boolean",
+     "description": "Also include the latest METAR for each station"
+    }
+   ],
+   "responseType": "json",
+   "defaultFields": [
+    "icaoId",
+    "name",
+    "issueTime",
+    "validTimeFrom",
+    "validTimeTo",
+    "rawTAF"
+   ],
+   "mutates": false,
+   "example": {
+    "ids": "KORD,KJFK"
+   },
+   "source": "E13 GET https://aviationweather.gov/api/data/taf",
+   "verified": true
+  },
+  {
+   "name": "get-airport",
+   "summary": "Get airport details: name, location, elevation, runways and frequencies",
+   "method": "GET",
+   "urlTemplate": "/api/data/airport?format=json",
+   "params": [
+    {
+     "name": "ids",
+     "in": "query",
+     "required": true,
+     "type": "string",
+     "description": "Comma-separated airport ICAO ids, e.g. KDEN",
+     "example": "KDEN"
+    }
+   ],
+   "responseType": "json",
+   "defaultFields": [
+    "icaoId",
+    "iataId",
+    "name",
+    "state",
+    "country",
+    "lat",
+    "lon",
+    "elev",
+    "runways"
+   ],
+   "mutates": false,
+   "example": {
+    "ids": "KDEN"
+   },
+   "source": "E7 GET https://aviationweather.gov/api/data/airport",
+   "verified": true
+  },
+  {
+   "name": "get-station-info",
+   "summary": "Get weather station metadata: ICAO/IATA/WMO ids, site name, location, and product types (METAR/TAF)",
+   "method": "GET",
+   "urlTemplate": "/api/data/stationinfo?format=json",
+   "params": [
+    {
+     "name": "ids",
+     "in": "query",
+     "required": true,
+     "type": "string",
+     "description": "Comma-separated station ICAO ids, e.g. KSEA",
+     "example": "KSEA"
+    }
+   ],
+   "responseType": "json",
+   "defaultFields": [
+    "icaoId",
+    "iataId",
+    "wmoId",
+    "site",
+    "state",
+    "country",
+    "lat",
+    "lon",
+    "siteType"
+   ],
+   "mutates": false,
+   "example": {
+    "ids": "KSEA"
+   },
+   "source": "E8 GET https://aviationweather.gov/api/data/stationinfo",
+   "verified": true
+  },
+  {
+   "name": "search-pireps",
+   "summary": "Search pilot reports (PIREPs/AIREPs) near a station by distance and age, or inside a bounding box, optionally filtered by intensity",
+   "method": "GET",
+   "urlTemplate": "/api/data/pirep?format=geojson",
+   "params": [
+    {
+     "name": "id",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Center station ICAO id, e.g. KDEN. Use with distance.",
+     "example": "KDEN"
+    },
+    {
+     "name": "distance",
+     "in": "query",
+     "required": false,
+     "type": "number",
+     "description": "Radius around the station in statute miles, e.g. 200",
+     "example": "200"
+    },
+    {
+     "name": "age",
+     "in": "query",
+     "required": false,
+     "type": "number",
+     "description": "Maximum report age in hours, e.g. 1.5 or 6",
+     "example": "6"
+    },
+    {
+     "name": "bbox",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Bounding box as minLat,minLon,maxLat,maxLon, e.g. 20,-179,72,-44",
+     "example": "20,-179,72,-44"
+    },
+    {
+     "name": "inten",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Minimum turbulence/icing intensity",
+     "enum": [
+      "lgt",
+      "mod",
+      "sev"
+     ]
+    }
+   ],
+   "responseType": "json",
+   "resultPath": "features",
+   "defaultFields": [
+    "properties.icaoId",
+    "properties.airepType",
+    "properties.obsTime",
+    "properties.acType",
+    "properties.fltlvl",
+    "properties.tbInt1",
+    "properties.rawOb",
+    "geometry.coordinates"
+   ],
+   "mutates": false,
+   "example": {
+    "bbox": "20,-179,72,-44"
+   },
+   "source": "E1 GET https://aviationweather.gov/api/data/pirep",
+   "verified": true
+  },
+  {
+   "name": "list-sigmets",
+   "summary": "List active domestic (US) SIGMETs and convective SIGMETs, optionally filtered by hazard",
+   "method": "GET",
+   "urlTemplate": "/api/data/airsigmet?format=geojson",
+   "params": [
+    {
+     "name": "hazard",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Hazard type filter: conv (convective), turb (turbulence), ice (icing), ifr",
+     "enum": [
+      "conv",
+      "turb",
+      "ice",
+      "ifr"
+     ]
+    }
+   ],
+   "responseType": "json",
+   "resultPath": "features",
+   "defaultFields": [
+    "properties.seriesId",
+    "properties.airSigmetType",
+    "properties.hazard",
+    "properties.severity",
+    "properties.validTimeFrom",
+    "properties.validTimeTo",
+    "properties.altitudeHi1",
+    "properties.rawAirSigmet"
+   ],
+   "mutates": false,
+   "source": "E2",
+   "verified": true
+  },
+  {
+   "name": "list-gairmets",
+   "summary": "List current G-AIRMETs: sierra (IFR/mountain obscuration), tango (turbulence/wind/LLWS), zulu (icing/freezing level)",
+   "method": "GET",
+   "urlTemplate": "/api/data/gairmet?format=json",
+   "params": [
+    {
+     "name": "type",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "G-AIRMET product type: sierra, tango or zulu. The server may ignore it, so check the 'product' field of each result.",
+     "enum": [
+      "sierra",
+      "tango",
+      "zulu"
+     ]
+    },
+    {
+     "name": "hazard",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Hazard filter",
+     "enum": [
+      "turb-hi",
+      "turb-lo",
+      "llws",
+      "sfc_wind",
+      "ifr",
+      "mtn_obs",
+      "ice",
+      "fzlvl"
+     ]
+    }
+   ],
+   "responseType": "json",
+   "defaultFields": [
+    "tag",
+    "product",
+    "hazard",
+    "forecastHour",
+    "validTime",
+    "severity",
+    "level",
+    "due_to"
+   ],
+   "mutates": false,
+   "source": "E9",
+   "verified": true
+  },
+  {
+   "name": "list-international-sigmets",
+   "summary": "List active international SIGMETs by FIR (tropical cyclones, volcanic ash, turbulence, icing, thunderstorms)",
+   "method": "GET",
+   "urlTemplate": "/api/data/isigmet?format=json",
+   "params": [
+    {
+     "name": "hazard",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Optional hazard filter: turb or ice",
+     "enum": [
+      "turb",
+      "ice"
+     ]
+    }
+   ],
+   "responseType": "json",
+   "defaultFields": [
+    "icaoId",
+    "firName",
+    "hazard",
+    "qualifier",
+    "validTimeFrom",
+    "validTimeTo",
+    "top",
+    "rawSigmet"
+   ],
+   "mutates": false,
+   "source": "E10",
+   "verified": true
+  },
+  {
+   "name": "get-winds-aloft",
+   "summary": "Get the FD winds/temperatures aloft forecast text for a region, altitude band and forecast period",
+   "method": "GET",
+   "urlTemplate": "/api/data/windtemp",
+   "params": [
+    {
+     "name": "region",
+     "in": "query",
+     "required": true,
+     "type": "string",
+     "description": "Forecast region",
+     "enum": [
+      "all",
+      "bos",
+      "mia",
+      "chi",
+      "dfw",
+      "slc",
+      "sfo",
+      "alaska",
+      "hawaii",
+      "other_pac"
+     ],
+     "default": "all",
+     "example": "slc"
+    },
+    {
+     "name": "level",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Altitude band: low (3000-39000 ft) or high (FL450+)",
+     "enum": [
+      "low",
+      "high"
+     ],
+     "default": "low"
+    },
+    {
+     "name": "fcst",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Forecast period in hours",
+     "enum": [
+      "06",
+      "12",
+      "24"
+     ],
+     "default": "06"
+    }
+   ],
+   "responseType": "text",
+   "mutates": false,
+   "example": {
+    "region": "slc",
+    "level": "low",
+    "fcst": "06"
+   },
+   "source": "E14 GET https://aviationweather.gov/api/data/windtemp",
+   "verified": true
+  }
+ ],
+ "blockers": [],
+ "notes": [
+  "All endpoints are public and need no login. The site rate-limits requests, so keep queries small and infrequent.",
+  "Times are UTC. METAR/TAF/SIGMET times are ISO strings, while G-AIRMET and international SIGMET times are Unix epoch seconds.",
+  "get-metars needs either ids or bbox. bbox order is minLat,minLon,maxLat,maxLon.",
+  "Winds aloft come back as raw FD text. Each column is DDSS+TT (direction, speed in knots, temperature in \u00b0C); temperatures above 24000 ft are negative.",
+  "Not exposed as commands: /api/data/navaid (returned [] for DEN), /api/data/cwa (returned 204 when no center weather advisories were active), and /api/data/metar/dots (map-only flight-category dots, needs a timestamp).",
+  "The full OpenAPI spec is at /data/schema/openapi.yaml."
+ ],
+ "dropped": [],
+ "generated": {
+  "by": "clify add",
+  "model": "claude-opus-5-5",
+  "exploredSteps": 20,
+  "recorded": 50,
+  "verifiedAt": "2026-10-18T08:36:55.607Z",
+  "seconds": 237
+ }
+}

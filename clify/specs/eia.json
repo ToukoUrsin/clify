@@ -1,0 +1,784 @@
+{
+ "name": "eia",
+ "startUrl": "https://www.eia.gov/",
+ "origin": "https://www.eia.gov",
+ "createdAt": "2026-10-18T08:52:48.529Z",
+ "description": "U.S. Energy Information Administration (EIA): energy statistics through the public Open Data API v2 (routes, data queries, facets, legacy series IDs), dnav data tables, Today in Energy articles, daily and weekly fuel prices, glossary and FAQs.",
+ "commands": [
+  {
+   "name": "list-api-datasets",
+   "summary": "List the top-level EIA Open Data API v2 dataset categories (coal, electricity, natural-gas, petroleum, ...).",
+   "method": "GET",
+   "urlTemplate": "https://api.eia.gov/v2/?api_key=3zjKYxV86AqtJWSRoAECir1wQFscVu6lxXnRVKG8",
+   "params": [],
+   "responseType": "json",
+   "resultPath": "response.routes",
+   "defaultFields": [
+    "id",
+    "name",
+    "description"
+   ],
+   "mutates": false,
+   "source": "E3 GET https://api.eia.gov/v2/",
+   "verified": true
+  },
+  {
+   "name": "get-api-route",
+   "summary": "Get metadata for a top-level API v2 category (e.g. natural-gas, electricity): its child routes.",
+   "method": "GET",
+   "urlTemplate": "https://api.eia.gov/v2/{route}/?api_key=3zjKYxV86AqtJWSRoAECir1wQFscVu6lxXnRVKG8",
+   "params": [
+    {
+     "name": "route",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Single path segment category id from list-api-datasets, e.g. natural-gas, electricity, petroleum (multi-level paths containing '/' are not supported because the slash gets encoded)",
+     "example": "natural-gas"
+    }
+   ],
+   "responseType": "json",
+   "resultPath": "response",
+   "defaultFields": [
+    "id",
+    "name",
+    "description",
+    "routes",
+    "frequency",
+    "facets",
+    "data",
+    "startPeriod"
+   ],
+   "mutates": false,
+   "example": {
+    "route": "natural-gas"
+   },
+   "source": "E4 E5 E6",
+   "verified": true
+  },
+  {
+   "name": "list-api-facet-values",
+   "summary": "List the allowed values (id and name) of one facet of a two-level API v2 dataset, e.g. all stateid codes for electricity/retail-sales.",
+   "method": "GET",
+   "urlTemplate": "https://api.eia.gov/v2/{category}/{dataset}/facet/{facet}/?api_key=3zjKYxV86AqtJWSRoAECir1wQFscVu6lxXnRVKG8",
+   "params": [
+    {
+     "name": "category",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Top-level category id, e.g. electricity",
+     "example": "electricity"
+    },
+    {
+     "name": "dataset",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Leaf dataset id under the category (single segment), e.g. retail-sales",
+     "example": "retail-sales"
+    },
+    {
+     "name": "facet",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Facet id from the route metadata, e.g. stateid, sectorid",
+     "example": "stateid"
+    }
+   ],
+   "responseType": "json",
+   "resultPath": "response.facets",
+   "defaultFields": [
+    "id",
+    "name",
+    "alias"
+   ],
+   "mutates": false,
+   "example": {
+    "category": "electricity",
+    "dataset": "retail-sales",
+    "facet": "stateid"
+   },
+   "source": "E7",
+   "verified": true
+  },
+  {
+   "name": "get-data-table",
+   "summary": "Read a dnav summary data table (e.g. U.S. or state natural gas prices): one row per series with the latest values and a link to its history.",
+   "method": "GET",
+   "urlTemplate": "/dnav/{program}/{table}.htm",
+   "params": [
+    {
+     "name": "program",
+     "in": "path",
+     "required": false,
+     "type": "string",
+     "description": "dnav program directory",
+     "enum": [
+      "ng",
+      "pet"
+     ],
+     "default": "ng",
+     "example": "ng"
+    },
+    {
+     "name": "table",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Table id. The area and frequency are encoded in it, e.g. NG_PRI_SUM_DCU_NUS_M (U.S., monthly), ng_pri_sum_dcu_STX_m (Texas, monthly), ng_pri_sum_dcu_STX_a (Texas, annual)",
+     "example": "NG_PRI_SUM_DCU_NUS_M"
+    }
+   ],
+   "responseType": "html",
+   "extract": {
+    "list": "table.data1 tr.DataRow",
+    "fields": {
+     "series": "td.DataStub1",
+     "values": "",
+     "latest": "td.Current2",
+     "historyRange": "td.DataHist a.Hist",
+     "historyUrl": "td.DataHist a.Hist@href"
+    }
+   },
+   "defaultFields": [
+    "series",
+    "latest",
+    "values",
+    "historyRange",
+    "historyUrl"
+   ],
+   "mutates": false,
+   "example": {
+    "program": "ng",
+    "table": "NG_PRI_SUM_DCU_NUS_M"
+   },
+   "source": "E16 E17 E18 GET https://www.eia.gov/dnav/ng/NG_PRI_SUM_DCU_NUS_M.htm",
+   "verified": true
+  },
+  {
+   "name": "get-series-history-table",
+   "summary": "Read the full-history table of a dnav series, one row per decade (e.g. Texas natural gas wellhead price, annual).",
+   "method": "GET",
+   "urlTemplate": "/dnav/{program}/hist/{series}.htm",
+   "params": [
+    {
+     "name": "program",
+     "in": "path",
+     "required": false,
+     "type": "string",
+     "description": "dnav program directory",
+     "enum": [
+      "ng",
+      "pet"
+     ],
+     "default": "ng",
+     "example": "ng"
+    },
+    {
+     "name": "series",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "History page id from get-data-table historyUrl (without ./hist/ and .htm), e.g. na1140_stx_3a, n3010tx3m",
+     "example": "na1140_stx_3a"
+    }
+   ],
+   "responseType": "html",
+   "extract": {
+    "list": "table tr",
+    "fields": {
+     "decade": "td.B4",
+     "row": ""
+    }
+   },
+   "defaultFields": [
+    "decade",
+    "row"
+   ],
+   "mutates": false,
+   "example": {
+    "program": "ng",
+    "series": "na1140_stx_3a"
+   },
+   "source": "E19 GET https://www.eia.gov/dnav/ng/hist/na1140_stx_3a.htm",
+   "verified": true
+  },
+  {
+   "name": "list-recent-articles",
+   "summary": "List the latest Today in Energy articles with type, date, title, link and tags.",
+   "method": "GET",
+   "urlTemplate": "/todayinenergy/",
+   "params": [],
+   "responseType": "html",
+   "extract": {
+    "list": "div.tie-article",
+    "fields": {
+     "type": "div.article-type",
+     "date": "span.date",
+     "title": "h1 a",
+     "url": "h1 a@href",
+     "tags": "a.title_case"
+    }
+   },
+   "defaultFields": [
+    "date",
+    "title",
+    "url",
+    "type",
+    "tags"
+   ],
+   "mutates": false,
+   "source": "E23 GET https://www.eia.gov/todayinenergy/",
+   "verified": true
+  },
+  {
+   "name": "get-article",
+   "summary": "Get the full text of a Today in Energy article by id.",
+   "method": "GET",
+   "urlTemplate": "/todayinenergy/detail.php",
+   "params": [
+    {
+     "name": "id",
+     "in": "query",
+     "required": true,
+     "type": "string",
+     "description": "Article id (detail.php?id=...)",
+     "example": "68305"
+    }
+   ],
+   "responseType": "html",
+   "extract": {
+    "fields": {
+     "title": "div.tie-article h1",
+     "date": "div.tie-article span.date",
+     "type": "div.tie-article div.article-type",
+     "source": "div.tie-article div.source",
+     "body": "div.tie-article"
+    }
+   },
+   "defaultFields": [
+    "title",
+    "date",
+    "type",
+    "body"
+   ],
+   "mutates": false,
+   "example": {
+    "id": "68305"
+   },
+   "source": "E14 GET https://www.eia.gov/todayinenergy/detail.php",
+   "verified": true
+  },
+  {
+   "name": "list-articles-by-tag",
+   "summary": "List all Today in Energy articles that carry a tag (e.g. electricity, natural gas, solar).",
+   "method": "GET",
+   "urlTemplate": "/todayinenergy/index.php",
+   "params": [
+    {
+     "name": "tag",
+     "key": "tg",
+     "in": "query",
+     "required": true,
+     "type": "string",
+     "description": "Tag name as listed by list-article-tags, e.g. electricity, natural gas, liquid fuels",
+     "example": "electricity"
+    }
+   ],
+   "responseType": "html",
+   "extract": {
+    "list": "h2",
+    "fields": {
+     "title": "a",
+     "url": "a@href"
+    }
+   },
+   "defaultFields": [
+    "title",
+    "url"
+   ],
+   "mutates": false,
+   "example": {
+    "tag": "electricity"
+   },
+   "source": "E24 GET https://www.eia.gov/todayinenergy/index.php",
+   "verified": true
+  },
+  {
+   "name": "list-article-tags",
+   "summary": "List every Today in Energy article tag.",
+   "method": "GET",
+   "urlTemplate": "/todayinenergy/taglist.php",
+   "params": [],
+   "responseType": "html",
+   "extract": {
+    "list": "ul.tag-list li",
+    "fields": {
+     "tag": "a",
+     "url": "a@href"
+    }
+   },
+   "defaultFields": [
+    "tag",
+    "url"
+   ],
+   "mutates": false,
+   "source": "E26 GET https://www.eia.gov/todayinenergy/taglist.php",
+   "verified": true
+  },
+  {
+   "name": "list-article-archive",
+   "summary": "List Today in Energy articles for one year from the archive, grouped by month in the page.",
+   "method": "GET",
+   "urlTemplate": "/todayinenergy/archive.php",
+   "params": [
+    {
+     "name": "year",
+     "key": "my",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Year to list, e.g. 2025. Omit for the current year.",
+     "example": "2025"
+    }
+   ],
+   "responseType": "html",
+   "extract": {
+    "list": "div.accordion-content li",
+    "fields": {
+     "date": "span.date",
+     "title": "h2 a",
+     "url": "h2 a@href"
+    }
+   },
+   "defaultFields": [
+    "date",
+    "title",
+    "url"
+   ],
+   "mutates": false,
+   "example": {
+    "year": "2025"
+   },
+   "source": "E15 GET https://www.eia.gov/todayinenergy/archive.php",
+   "verified": true
+  },
+  {
+   "name": "get-daily-prices",
+   "summary": "Get Today in Energy daily prices: wholesale spot petroleum, natural gas and electricity, retail fuel, prompt-month futures and financial indicators.",
+   "method": "GET",
+   "urlTemplate": "/todayinenergy/prices.php",
+   "params": [],
+   "responseType": "html",
+   "extract": {
+    "list": "tr",
+    "fields": {
+     "product": "td.s1 || td.stub1",
+     "area": "td.s2",
+     "price": "td.d1",
+     "change": "td.up || td.dn || td.nc",
+     "heading": "b"
+    }
+   },
+   "defaultFields": [
+    "heading",
+    "product",
+    "area",
+    "price",
+    "change"
+   ],
+   "mutates": false,
+   "source": "E25 GET https://www.eia.gov/todayinenergy/prices.php",
+   "verified": true
+  },
+  {
+   "name": "get-gasoline-diesel-prices",
+   "summary": "Get the weekly U.S., regional and state retail prices for regular gasoline and on-highway diesel (Gasoline and Diesel Fuel Update).",
+   "method": "GET",
+   "urlTemplate": "/petroleum/gasdiesel/",
+   "params": [],
+   "responseType": "html",
+   "extract": {
+    "list": "tbody tr",
+    "fields": {
+     "area": "td",
+     "row": ""
+    }
+   },
+   "defaultFields": [
+    "area",
+    "row"
+   ],
+   "mutates": false,
+   "source": "E28 GET https://www.eia.gov/petroleum/gasdiesel/",
+   "verified": true
+  },
+  {
+   "name": "list-glossary-terms",
+   "summary": "List EIA glossary terms and definitions for a fuel topic or a starting letter.",
+   "method": "GET",
+   "urlTemplate": "/tools/glossary/",
+   "params": [
+    {
+     "name": "topic",
+     "key": "id",
+     "in": "query",
+     "required": true,
+     "type": "string",
+     "description": "Fuel topic or a single letter A-Z",
+     "enum": [
+      "alternative fuels",
+      "coal",
+      "electricity",
+      "natural gas",
+      "nuclear",
+      "petroleum",
+      "renewable"
+     ],
+     "example": "coal"
+    }
+   ],
+   "responseType": "html",
+   "extract": {
+    "list": "div.primary p",
+    "fields": {
+     "term": "strong",
+     "definition": ""
+    }
+   },
+   "defaultFields": [
+    "term",
+    "definition"
+   ],
+   "mutates": false,
+   "example": {
+    "topic": "coal"
+   },
+   "source": "E29 GET https://www.eia.gov/tools/glossary/",
+   "verified": true
+  },
+  {
+   "name": "search-glossary",
+   "summary": "Search EIA glossary terms by keyword (form POST; read-only).",
+   "method": "POST",
+   "urlTemplate": "/tools/glossary/index.php",
+   "params": [
+    {
+     "name": "query",
+     "key": "glossary",
+     "in": "body",
+     "required": true,
+     "type": "string",
+     "description": "Term to search for, e.g. capacity factor",
+     "example": "capacity factor"
+    }
+   ],
+   "bodyTemplate": {
+    "glossary": "{query}"
+   },
+   "bodyEncoding": "form",
+   "responseType": "html",
+   "extract": {
+    "list": "div.primary p",
+    "fields": {
+     "term": "strong",
+     "definition": ""
+    }
+   },
+   "defaultFields": [
+    "term",
+    "definition"
+   ],
+   "mutates": true,
+   "example": {
+    "query": "capacity factor"
+   },
+   "source": "E8 POST https://www.eia.gov/tools/glossary/index.php",
+   "verified": false,
+   "verifyNote": "write: dry-run preview only, not sent"
+  },
+  {
+   "name": "get-faq",
+   "summary": "Get an EIA FAQ answer and the related FAQs on the same topic.",
+   "method": "GET",
+   "urlTemplate": "/tools/faqs/faq.php",
+   "params": [
+    {
+     "name": "id",
+     "in": "query",
+     "required": true,
+     "type": "string",
+     "description": "FAQ id",
+     "example": "2"
+    },
+    {
+     "name": "t",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "FAQ topic id (from related FAQ links), e.g. 9 = Diesel",
+     "example": "9"
+    }
+   ],
+   "responseType": "html",
+   "extract": {
+    "fields": {
+     "question": "div.article-alt h1",
+     "answer": "div.article-alt",
+     "related": "ul.basic-list li a",
+     "relatedUrl": "ul.basic-list li a@href"
+    }
+   },
+   "defaultFields": [
+    "question",
+    "answer",
+    "related"
+   ],
+   "mutates": false,
+   "example": {
+    "id": "2",
+    "t": "9"
+   },
+   "source": "E30 GET https://www.eia.gov/tools/faqs/faq.php",
+   "verified": true
+  }
+ ],
+ "blockers": [],
+ "notes": [
+  "API v2 commands use EIA's public key, the one the site's API browser uses. API values come back as strings. A data query returns at most 5000 rows; page with offset/length.",
+  "Discover datasets top-down: list-api-datasets \u2192 get-api-route (route='natural-gas', then 'natural-gas/pri', and so on) \u2192 list-api-facet-values \u2192 query-api-data. Route paths contain slashes, e.g. 'electricity/retail-sales'.",
+  "query-api-data exposes common facets (stateid, sectorid, series, duoarea, process, product). Use only the facets the route's metadata lists.",
+  "dnav table ids encode area and frequency, e.g. ng_pri_sum_dcu_{AREA}_{m|a} with AREA like NUS (U.S.) or STX (Texas). get-data-table's historyUrl gives the id for get-series-history-table. The 'values' and 'row' fields hold the whole row text.",
+  "Article urls are relative (detail.php?id=N). Pass N to get-article.",
+  "search-glossary is a POST search form. It was not sent during exploration, so its result layout is assumed to match list-glossary-terms.",
+  "Site search goes to search.usa.gov and is not covered. The RSS XML feeds were blocked during recording."
+ ],
+ "dropped": [
+  {
+   "name": "query-api-data",
+   "summary": "Query data rows from a two-level API v2 dataset (e.g. electricity/retail-sales), with frequency, data columns, state/sector facets, date range, sort and offset paging (max 5000 rows per call).",
+   "method": "GET",
+   "urlTemplate": "https://api.eia.gov/v2/{category}/{dataset}/data/?api_key=3zjKYxV86AqtJWSRoAECir1wQFscVu6lxXnRVKG8",
+   "params": [
+    {
+     "name": "category",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Top-level category id from list-api-datasets, e.g. electricity",
+     "example": "electricity"
+    },
+    {
+     "name": "dataset",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Leaf dataset id under the category, a single path segment, e.g. retail-sales or electric-power-operational-data",
+     "example": "retail-sales"
+    },
+    {
+     "name": "frequency",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Frequency id from the route metadata, e.g. monthly, quarterly, annual",
+     "example": "monthly"
+    },
+    {
+     "name": "data",
+     "key": "data[0]",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Data column to return, e.g. price, revenue, sales, customers. Without it only facet columns come back.",
+     "example": "price"
+    },
+    {
+     "name": "data2",
+     "key": "data[1]",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Optional second data column, e.g. revenue"
+    },
+    {
+     "name": "facet_stateid",
+     "key": "facets[stateid][]",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Filter by the stateid facet (2-letter state or region code, e.g. TX, CA, US)",
+     "example": "TX"
+    },
+    {
+     "name": "facet_sectorid",
+     "key": "facets[sectorid][]",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Filter by the sectorid facet (e.g. RES, COM, IND, TRA, OTH, ALL)"
+    },
+    {
+     "name": "start",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Start period in the frequency's format, e.g. 2024-01 (monthly), 2024 (annual), 2024-Q1 (quarterly)"
+    },
+    {
+     "name": "end",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "End period in the frequency's format, e.g. 2026-07"
+    },
+    {
+     "name": "sort_column",
+     "key": "sort[0][column]",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Column to sort by, e.g. period",
+     "default": "period"
+    },
+    {
+     "name": "sort_direction",
+     "key": "sort[0][direction]",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Sort direction",
+     "enum": [
+      "asc",
+      "desc"
+     ],
+     "default": "desc"
+    },
+    {
+     "name": "offset",
+     "in": "query",
+     "required": false,
+     "type": "number",
+     "description": "Row offset for paging",
+     "default": 0
+    },
+    {
+     "name": "length",
+     "in": "query",
+     "required": false,
+     "type": "number",
+     "description": "Rows to return (max 5000)",
+     "default": 100
+    }
+   ],
+   "responseType": "json",
+   "resultPath": "response.data",
+   "defaultFields": [
+    "period",
+    "stateDescription",
+    "sectorName",
+    "price",
+    "sales",
+    "revenue",
+    "customers"
+   ],
+   "pagination": {
+    "type": "offset",
+    "param": "offset",
+    "step": 100
+   },
+   "mutates": false,
+   "example": {
+    "category": "electricity",
+    "dataset": "retail-sales",
+    "frequency": "monthly",
+    "data": "price",
+    "facet_stateid": "TX",
+    "length": "12"
+   },
+   "source": "E7",
+   "verified": false,
+   "verifyNote": "request failed: The operation was aborted due to timeout"
+  },
+  {
+   "name": "get-series",
+   "summary": "Get data for a legacy APIv1 series ID (e.g. NG.N3010TX3.M, the Texas residential natural gas price, monthly) through the v2 seriesid translator.",
+   "method": "GET",
+   "urlTemplate": "https://api.eia.gov/v2/seriesid/{series_id}?api_key=3zjKYxV86AqtJWSRoAECir1wQFscVu6lxXnRVKG8",
+   "params": [
+    {
+     "name": "series_id",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Legacy series id DATASET.SERIES.FREQ, e.g. NG.N3010TX3.M or NG.NA1140_STX_3.A",
+     "example": "NG.N3010TX3.M"
+    },
+    {
+     "name": "start",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Start period, e.g. 2020-01"
+    },
+    {
+     "name": "end",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "End period, e.g. 2026-07"
+    },
+    {
+     "name": "offset",
+     "in": "query",
+     "required": false,
+     "type": "number",
+     "description": "Row offset",
+     "default": 0
+    },
+    {
+     "name": "length",
+     "in": "query",
+     "required": false,
+     "type": "number",
+     "description": "Rows to return (max 5000)",
+     "default": 100
+    }
+   ],
+   "responseType": "json",
+   "resultPath": "response.data",
+   "defaultFields": [
+    "period",
+    "value",
+    "units",
+    "series",
+    "series-description",
+    "duoarea"
+   ],
+   "pagination": {
+    "type": "offset",
+    "param": "offset",
+    "step": 100
+   },
+   "mutates": false,
+   "example": {
+    "series_id": "NG.N3010TX3.M",
+    "start": "2024-01",
+    "length": "24"
+   },
+   "source": "E20",
+   "verified": false,
+   "verifyNote": "request failed: The operation was aborted due to timeout"
+  }
+ ],
+ "generated": {
+  "by": "clify add",
+  "model": "claude-opus-5-5",
+  "exploredSteps": 23,
+  "recorded": 98,
+  "verifiedAt": "2026-10-18T08:57:01.078Z",
+  "seconds": 550
+ }
+}

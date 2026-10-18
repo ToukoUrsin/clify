@@ -1,0 +1,64 @@
+09:41:16 🔭 exploring https://cloud.appwrite.io/console (logged in from the vault)
+09:41:17 🌐 https://cloud.appwrite.io/console
+09:41:19   ✉ write sent (--allow-writes) POST https://m.stripe.com/6
+09:41:23   ✉ write sent (--allow-writes) POST https://m.stripe.com/6
+09:41:25 → goto {"url":"https://cloud.appwrite.io/console/project-fra-6ad465aa0026dab1fac0/databases","intent":"list databases in project"}
+09:41:27   ✉ write sent (--allow-writes) POST https://m.stripe.com/6
+09:41:31   ✉ write sent (--allow-writes) POST https://m.stripe.com/6
+09:41:33 → click {"i":20,"intent":"open project overview"}
+09:41:41   ✗ locator.click: Timeout 8000ms exceeded.
+09:41:45 → goto {"url":"https://appwrite.io/projects/6ad465aa0026dab1fac0/databases","intent":"list databases in project"}
+09:41:47   ✉ write sent (--allow-writes) POST https://m.stripe.com/6
+09:41:48   ✉ write sent (--allow-writes) POST https://bzr.openai.com/v1/sdk/events?pid=CcDzUNounP4xmh6weGk33t&st=oaiq-web&sv=0.1.41&t=179231650833
+09:41:48   ✉ write sent (--allow-writes) PATCH https://cloud.appwrite.io/v1/projects/6ad465aa0026dab1fac0/console-access
+09:41:54 → click {"i":35,"intent":"open database and list tables"}
+09:41:56   ✉ write sent (--allow-writes) POST https://m.stripe.com/6
+09:41:58 → click {"i":44,"intent":"open create table form"}
+09:42:03 → type {"i":53,"text":"race-gen-1","intent":"enter table name"}
+09:42:08 → click {"i":56,"intent":"create table in database"}
+09:42:08   ✉ write sent (--allow-writes) POST https://fra.cloud.appwrite.io/v1/tablesdb/6ad471f2900e99d2b0e4/tables
+09:42:11   ✉ write sent (--allow-writes) POST https://m.stripe.com/6
+09:42:13 → goto {"url":"https://appwrite.io/projects/6ad465aa0026dab1fac0/databases/tablesdb/6ad471f2900e99d2b0e4/tables/6ad4947000260c96461e/columns","inte
+09:42:14   ✉ write sent (--allow-writes) POST https://m.stripe.com/6
+09:42:15   ✉ write sent (--allow-writes) POST https://bzr.openai.com/v1/sdk/events?pid=CcDzUNounP4xmh6weGk33t&st=oaiq-web&sv=0.1.41&t=179231653568
+09:42:16   ✉ write sent (--allow-writes) PATCH https://cloud.appwrite.io/v1/projects/6ad465aa0026dab1fac0/console-access
+09:42:22 → click {"i":52,"intent":"open create column menu"}
+09:42:27 → click {"i":70,"intent":"choose column type"}
+09:42:34 → click {"i":98,"intent":"select string column type"}
+09:42:39 → type {"i":68,"text":"race_gen_2","intent":"enter column key"}
+09:42:40 → type {"i":72,"text":"255","intent":"enter column size"}
+09:42:45 → click {"i":81,"intent":"create string column in table"}
+09:42:45   ✉ write sent (--allow-writes) POST https://fra.cloud.appwrite.io/v1/tablesdb/6ad471f2900e99d2b0e4/tables/6ad4947000260c96461e/columns/s
+09:42:50 → goto {"url":"https://appwrite.io/organizations/6ad465a90029cef9877f","intent":"list my projects"}
+09:42:52   ✉ write sent (--allow-writes) POST https://m.stripe.com/6
+09:42:53   ✉ write sent (--allow-writes) POST https://bzr.openai.com/v1/sdk/events?pid=CcDzUNounP4xmh6weGk33t&st=oaiq-web&sv=0.1.41&t=179231657314
+09:42:59 → type {"i":16,"text":"first","intent":"search projects by name","submit":true}
+09:43:04 → goto {"url":"https://appwrite.io/projects/6ad465aa0026dab1fac0/databases/tablesdb/6ad471f2900e99d2b0e4/tables/6ad4947000260c96461e/rows","intent"
+09:43:05   ✉ write sent (--allow-writes) POST https://m.stripe.com/6
+09:43:06   ✉ write sent (--allow-writes) POST https://bzr.openai.com/v1/sdk/events?pid=CcDzUNounP4xmh6weGk33t&st=oaiq-web&sv=0.1.41&t=179231658627
+09:43:06   ✉ write sent (--allow-writes) PATCH https://cloud.appwrite.io/v1/projects/6ad465aa0026dab1fac0/console-access
+09:43:13 → type {"i":30,"text":"race","intent":"search tables in database","submit":true}
+09:43:18 → click {"i":16,"intent":"list databases in project"}
+09:43:19   ✉ write sent (--allow-writes) POST https://m.stripe.com/6
+09:43:25 → type {"i":29,"text":"race","intent":"search databases by name","submit":true}
+09:43:29   ✉ write sent (--allow-writes) POST https://m.stripe.com/6
+09:43:34 → done {"summary":"Covered the goal flows on the Appwrite console. Endpoints are on cloud.appwrite.io/v1 for org-level calls and on the regional ho
+09:43:34 📼 recorded 355 calls, 0 held writes
+09:43:34 🧠 synthesizing from 42 endpoints (78k chars)
+09:44:42 🔎 verify round 0: list-projects, list-databases, list-tables, list-columns, create-table, create-string-column, list-organizations, get-database, get-table, list-indexes, list-rows, get-account, get-project
+09:44:43   ✓ list-projects (254 ms)
+09:44:43   ✓ list-databases (318 ms)
+09:44:43   ✓ list-tables (422 ms)
+09:44:43   ✓ list-columns (308 ms)
+09:44:43   ✓ create-table: write: dry-run preview only, not sent
+09:44:43   ✓ create-string-column: write: dry-run preview only, not sent
+09:44:43   ✓ list-organizations (235 ms)
+09:44:43   ✓ get-database (192 ms)
+09:44:43   ✓ get-table (191 ms)
+09:44:43   ✗ list-indexes: empty list: the example args returned nothing or the selector/resultPath is wrong (178 ms)
+09:44:43   ✗ list-rows: empty list: the example args returned nothing or the selector/resultPath is wrong (181 ms)
+09:44:43   ✓ get-account (209 ms)
+09:44:43   ✓ get-project (733 ms)
+09:44:52   ⚑ context projectId = 6ad465aa0026dab1fac0 (same value on every recorded request (list-databases, list-tables, list-columns))
+09:44:52   ⚑ context databaseId = 6ad471f2900e99d2b0e4 (same value on every recorded request (list-tables, list-columns, create-table))
+09:44:52   ⚑ context organizationId = 6ad465a90029cef9877f (the only item of list-organizations)

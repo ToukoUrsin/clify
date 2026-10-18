@@ -1,0 +1,27 @@
+{
+ "name": "digitalnz",
+ "startUrl": "https://digitalnz.org/",
+ "origin": "https://digitalnz.org",
+ "createdAt": "2026-10-18T09:07:50.813Z",
+ "description": "DigitalNZ (digitalnz.org) is a search portal for New Zealand cultural heritage collections. No commands are available because every recorded page was blocked by an AWS WAF bot challenge.",
+ "commands": [],
+ "blockers": [
+  "captcha"
+ ],
+ "notes": [
+  "Every digitalnz.org document request (/, /records?text=kauri, /developers) returned HTTP 202. Each response contained only an empty body > div#challenge-container plus the AWS WAF challenge script. No real page content or site data was ever served.",
+  "The only other traffic was the AWS WAF token flow: GET .../inputs?client=browser and POST .../mp_verify. These requests are anti-bot infrastructure, not site features. They require a browser-computed solution and fingerprint signals, so they were skipped.",
+  "No command was written for the HTML pages. Replaying them without a valid aws-waf-token cookie returns the same empty challenge page, so any extract would yield nothing and fail verification.",
+  "DigitalNZ is publicly known to offer a documented JSON API (api.digitalnz.org, e.g. /records.json?text=...&api_key=...). However, none of its requests appeared in this recording, so no command was invented for it.",
+  "To build a working CLI, re-run exploration so the WAF challenge completes, for example in a non-headless or stealth browser, or after waiting for the challenge to solve and the page to reload. A better option is to explore the developer API host directly, so that real search, record-detail and facet requests get recorded."
+ ],
+ "dropped": [],
+ "generated": {
+  "by": "clify add",
+  "model": "claude-opus-5-5",
+  "exploredSteps": 3,
+  "recorded": 9,
+  "verifiedAt": "2026-10-18T09:08:05.103Z",
+  "seconds": 28
+ }
+}

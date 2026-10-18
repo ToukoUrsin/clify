@@ -1,0 +1,24 @@
+{
+  "name": "updown",
+  "startUrl": "https://updown.io/checks",
+  "origin": "https://updown.io",
+  "createdAt": "2026-10-18T07:20:00Z",
+  "description": "updown.io uptime monitoring, signed in as the clify agent (saved session). Commands are the dashboard's own requests. To add a check: run form-token, then create-check --authenticity_token <token> ...",
+  "auth": { "headerNames": [] },
+  "commands": [
+    { "name": "list-checks", "summary": "Your checks (token is the last part of link, e.g. /checks/ab12 -> ab12)", "method": "GET", "urlTemplate": "/checks", "responseType": "html", "mutates": false, "auth": true, "params": [],
+      "extract": { "list": "li:not(.form)", "fields": { "link": "a.internal@href", "alias": ".alias", "url": "a.external@href", "interval": ".resolution" } }, "source": "GET https://updown.io/checks" },
+    { "name": "form-token", "summary": "CSRF token for the new-check form (needed by create-check)", "method": "GET", "urlTemplate": "/checks", "responseType": "html", "mutates": false, "auth": true, "params": [],
+      "extract": { "fields": { "authenticity_token": "#new_check input[name=authenticity_token]@value" } }, "source": "GET https://updown.io/checks" },
+    { "name": "create-check", "summary": "Add a check (the dashboard's new-check form). Returns your checks list afterwards.", "method": "POST", "urlTemplate": "/checks", "responseType": "html", "bodyEncoding": "form", "mutates": true, "auth": true,
+      "headers": { "origin": "https://updown.io", "referer": "https://updown.io/checks" },
+      "bodyTemplate": { "authenticity_token": "{authenticity_token}", "check[type]": "{type}", "check[url]": "{url}", "check[period]": "{period}", "check[alias]": "{alias}" },
+      "params": [
+        { "name": "authenticity_token", "in": "body", "required": true, "type": "string", "description": "from form-token" },
+        { "name": "url", "in": "body", "required": true, "type": "string", "description": "URL without the scheme, e.g. example.com/path (scheme goes in --type)" },
+        { "name": "type", "in": "body", "required": false, "type": "string", "default": "https", "enum": ["https", "http", "icmp", "pulse", "tcp", "tcps"] },
+        { "name": "period", "in": "body", "required": false, "type": "string", "default": "30", "enum": ["15", "30", "60", "120", "300", "600", "1800", "3600"], "description": "check interval in seconds" },
+        { "name": "alias", "in": "body", "required": false, "type": "string", "description": "display name" } ],
+      "extract": { "list": "li:not(.form)", "fields": { "link": "a.internal@href", "alias": ".alias", "url": "a.external@href", "interval": ".resolution" } }, "source": "POST https://updown.io/checks" }
+  ]
+}

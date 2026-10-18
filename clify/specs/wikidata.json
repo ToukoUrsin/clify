@@ -1,0 +1,413 @@
+{
+ "name": "wikidata",
+ "startUrl": "https://www.wikidata.org/",
+ "origin": "https://www.wikidata.org",
+ "createdAt": "2026-10-18T09:28:27.411Z",
+ "description": "Wikidata, the free knowledge graph run by the Wikimedia Foundation. This CLI searches items, properties, lexemes and EntitySchemas; fetches entity JSON and claims; exports RDF; checks constraint violations; parses and formats values; and sets statements through the MediaWiki/Wikibase API.",
+ "commands": [
+  {
+   "name": "search-entities",
+   "summary": "Search Wikidata entities (items, properties, lexemes or EntitySchemas) by label or alias. Returns matching IDs with label and description.",
+   "method": "GET",
+   "urlTemplate": "/w/api.php?action=wbsearchentities&format=json",
+   "params": [
+    {
+     "name": "search",
+     "in": "query",
+     "required": true,
+     "type": "string",
+     "description": "Text to search for in labels and aliases",
+     "example": "Douglas Adams"
+    },
+    {
+     "name": "type",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Entity type to search",
+     "enum": [
+      "item",
+      "property",
+      "lexeme",
+      "entity-schema"
+     ],
+     "default": "item"
+    },
+    {
+     "name": "language",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Language code to search labels in, e.g. en, de, fr",
+     "default": "en"
+    },
+    {
+     "name": "uselang",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Language for the returned labels and descriptions",
+     "default": "en"
+    },
+    {
+     "name": "api_limit",
+     "key": "limit",
+     "in": "query",
+     "required": false,
+     "type": "number",
+     "description": "Maximum results per page (max 50) (sent to the site as \"limit\"; clify's own --limit only shapes the output)",
+     "default": 10
+    },
+    {
+     "name": "continue",
+     "in": "query",
+     "required": false,
+     "type": "number",
+     "description": "Offset for the next page; use the 'search-continue' value from the previous response",
+     "default": 0
+    }
+   ],
+   "responseType": "json",
+   "resultPath": "search",
+   "defaultFields": [
+    "id",
+    "label",
+    "description",
+    "match.text",
+    "concepturi",
+    "url"
+   ],
+   "pagination": {
+    "type": "offset",
+    "param": "continue",
+    "step": 10
+   },
+   "mutates": false,
+   "example": {
+    "search": "Douglas Adams",
+    "type": "item"
+   },
+   "source": "E1 GET https://www.wikidata.org/w/api.php",
+   "verified": true
+  },
+  {
+   "name": "get-entity",
+   "summary": "Get the full JSON of one entity by ID: an item (Q42), property (P31), lexeme (L7) or other entity type. Includes labels, descriptions, aliases, claims, sitelinks, and lexeme forms/senses. Optionally f",
+   "method": "GET",
+   "urlTemplate": "/wiki/Special:EntityData/{id}.json",
+   "params": [
+    {
+     "name": "id",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Entity ID, e.g. Q42 (item), P31 (property), L7 (lexeme)",
+     "example": "Q42"
+    },
+    {
+     "name": "revision",
+     "in": "query",
+     "required": false,
+     "type": "number",
+     "description": "Specific revision ID to fetch (the entity's lastrevid by default)",
+     "example": "2557857485"
+    }
+   ],
+   "responseType": "json",
+   "resultPath": "entities",
+   "mutates": false,
+   "example": {
+    "id": "Q42"
+   },
+   "source": "E2 E3 E4 E5 GET https://www.wikidata.org/wiki/Special:EntityData/Q513.json",
+   "verified": true
+  },
+  {
+   "name": "get-entities",
+   "summary": "Batch-fetch one or more entities by ID through wbgetentities, limited to the chosen parts (claims, labels, descriptions, aliases, sitelinks, info) and languages.",
+   "method": "GET",
+   "urlTemplate": "/w/api.php?action=wbgetentities&format=json&errorformat=plaintext",
+   "params": [
+    {
+     "name": "ids",
+     "in": "query",
+     "required": true,
+     "type": "string",
+     "description": "Pipe-separated entity IDs (max 50), e.g. Q42|Q513|P31",
+     "example": "Q42|Q513"
+    },
+    {
+     "name": "props",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Pipe-separated parts to return: info, sitelinks, sitelinks/urls, aliases, labels, descriptions, claims, datatype",
+     "default": "labels|descriptions|claims"
+    },
+    {
+     "name": "languages",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Pipe-separated language codes to filter labels and descriptions, e.g. en|de",
+     "default": "en"
+    }
+   ],
+   "responseType": "json",
+   "resultPath": "entities",
+   "mutates": false,
+   "example": {
+    "ids": "Q42|Q513"
+   },
+   "source": "E1 GET https://www.wikidata.org/w/api.php",
+   "verified": true
+  },
+  {
+   "name": "export-entity-rdf",
+   "summary": "Export one entity as RDF, in Turtle (ttl) or N-Triples (nt).",
+   "method": "GET",
+   "urlTemplate": "/wiki/Special:EntityData/{id}.{format}",
+   "params": [
+    {
+     "name": "id",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Entity ID, e.g. Q42",
+     "example": "Q42"
+    },
+    {
+     "name": "format",
+     "in": "path",
+     "required": false,
+     "type": "string",
+     "description": "RDF serialization",
+     "enum": [
+      "ttl",
+      "nt"
+     ],
+     "default": "ttl"
+    }
+   ],
+   "responseType": "text",
+   "mutates": false,
+   "example": {
+    "id": "Q42",
+    "format": "ttl"
+   },
+   "source": "E12 GET https://www.wikidata.org/wiki/Special:EntityData/Q42.ttl",
+   "verified": true
+  },
+  {
+   "name": "check-constraints",
+   "summary": "Run Wikidata property constraint checks on an entity. Returns violations, warnings and suggestions per statement.",
+   "method": "GET",
+   "urlTemplate": "/w/api.php?action=wbcheckconstraints&format=json&formatversion=2",
+   "params": [
+    {
+     "name": "id",
+     "in": "query",
+     "required": true,
+     "type": "string",
+     "description": "Pipe-separated entity IDs to check, e.g. Q42 or P31",
+     "example": "Q42"
+    },
+    {
+     "name": "status",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Pipe-separated result statuses to include: violation, warning, suggestion, bad-parameters, compliance, exception, todo, not-in-scope, deprecated",
+     "default": "violation|warning|suggestion|bad-parameters"
+    },
+    {
+     "name": "uselang",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Language for constraint messages",
+     "default": "en"
+    }
+   ],
+   "responseType": "json",
+   "resultPath": "wbcheckconstraints",
+   "mutates": false,
+   "example": {
+    "id": "Q42"
+   },
+   "source": "E1 GET https://www.wikidata.org/w/api.php",
+   "verified": true
+  },
+  {
+   "name": "parse-value",
+   "summary": "Parse user-typed text (a date, quantity, coordinate, etc.) into a Wikibase datavalue JSON for a given datatype, the same way the statement editor does.",
+   "method": "GET",
+   "urlTemplate": "/w/api.php?action=wbparsevalue&format=json&formatversion=2&errorformat=plaintext",
+   "params": [
+    {
+     "name": "datatype",
+     "in": "query",
+     "required": true,
+     "type": "string",
+     "description": "Property datatype, e.g. time, quantity, string, globe-coordinate, wikibase-item, url, external-id, monolingualtext",
+     "example": "time"
+    },
+    {
+     "name": "values",
+     "in": "query",
+     "required": true,
+     "type": "string",
+     "description": "Pipe-separated raw input strings to parse, e.g. '1952' or '11 March 1952'",
+     "example": "11 March 1952"
+    },
+    {
+     "name": "validate",
+     "in": "query",
+     "required": false,
+     "type": "boolean",
+     "description": "Also validate the parsed values against the datatype"
+    },
+    {
+     "name": "uselang",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Language the input is written in",
+     "default": "en"
+    }
+   ],
+   "responseType": "json",
+   "resultPath": "results",
+   "mutates": false,
+   "example": {
+    "datatype": "time",
+    "values": "11 March 1952"
+   },
+   "source": "E1 GET https://www.wikidata.org/w/api.php",
+   "verified": true
+  },
+  {
+   "name": "format-value",
+   "summary": "Render a Wikibase datavalue JSON as human-readable text or HTML, e.g. resolve an item ID to its label.",
+   "method": "GET",
+   "urlTemplate": "/w/api.php?action=wbformatvalue&format=json&errorformat=plaintext",
+   "params": [
+    {
+     "name": "datavalue",
+     "in": "query",
+     "required": true,
+     "type": "string",
+     "description": "Datavalue JSON, e.g. {\"type\":\"wikibase-entityid\",\"value\":{\"id\":\"Q42\"}}",
+     "example": "{\"type\":\"wikibase-entityid\",\"value\":{\"entity-type\":\"item\",\"numeric-id\":42,\"id\":\"Q42\"}}"
+    },
+    {
+     "name": "datatype",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Property datatype of the value, e.g. wikibase-item, time, string",
+     "example": "wikibase-item"
+    },
+    {
+     "name": "generate",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Output format",
+     "enum": [
+      "text/plain",
+      "text/html",
+      "text/x-wiki"
+     ],
+     "default": "text/plain"
+    },
+    {
+     "name": "uselang",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Language for labels in the output",
+     "default": "en"
+    }
+   ],
+   "responseType": "json",
+   "mutates": false,
+   "example": {
+    "datavalue": "{\"type\":\"wikibase-entityid\",\"value\":{\"entity-type\":\"item\",\"numeric-id\":42,\"id\":\"Q42\"}}",
+    "datatype": "wikibase-item"
+   },
+   "source": "E1",
+   "verified": true
+  },
+  {
+   "name": "set-claim",
+   "summary": "Create or replace a whole statement (main value, qualifiers, references, rank) on an entity. This publishes a live, public edit to Wikidata.",
+   "method": "POST",
+   "urlTemplate": "/w/api.php?action=wbsetclaim",
+   "params": [
+    {
+     "name": "claim",
+     "in": "body",
+     "required": true,
+     "type": "string",
+     "description": "Full statement JSON. Include 'id' (e.g. L7$1252F6CD-...) to replace an existing statement; give a new GUID prefixed with the entity ID to create one.",
+     "example": "{\"type\":\"statement\",\"mainsnak\":{\"snaktype\":\"value\",\"property\":\"P1343\",\"datavalue\":{\"type\":\"wikibase-entityid\",\"value\":{\"id\":\"Q141515608\"}}},\"id\":\"L7$1252F6CD-6B37-4B09-914E-484E07367FE7\",\"qualifiers\":{\"P304\":[{\"snaktype\":\"value\",\"property\":\"P304\",\"datavalue\":{\"type\":\"string\",\"value\":\"211\"}}],\"P3903\":[{\"snaktype\":\"value\",\"property\":\"P3903\",\"datavalue\":{\"type\":\"string\",\"value\":\"2\"}}]},\"qualifiers-order\":[\"P304\",\"P3903\"],\"rank\":\"normal\"}"
+    },
+    {
+     "name": "baserevid",
+     "in": "body",
+     "required": false,
+     "type": "number",
+     "description": "The entity's lastrevid you based the edit on (from get-entity), used to detect edit conflicts",
+     "example": "2558055299"
+    },
+    {
+     "name": "summary",
+     "in": "body",
+     "required": false,
+     "type": "string",
+     "description": "Edit summary shown in the page history"
+    }
+   ],
+   "bodyTemplate": {
+    "format": "json",
+    "tags": "wikidata-ui",
+    "errorformat": "plaintext",
+    "uselang": "en"
+   },
+   "bodyEncoding": "form",
+   "responseType": "json",
+   "csrf": {
+    "from": "/w/api.php?action=query&meta=tokens&type=csrf&format=json",
+    "jsonPath": "query.tokens.csrftoken",
+    "field": "token"
+   },
+   "mutates": true,
+   "example": {
+    "claim": "{\"type\":\"statement\",\"mainsnak\":{\"snaktype\":\"value\",\"property\":\"P1343\",\"datavalue\":{\"type\":\"wikibase-entityid\",\"value\":{\"id\":\"Q141515608\"}}},\"id\":\"L7$1252F6CD-6B37-4B09-914E-484E07367FE7\",\"qualifiers\":{\"P304\":[{\"snaktype\":\"value\",\"property\":\"P304\",\"datavalue\":{\"type\":\"string\",\"value\":\"211\"}}],\"P3903\":[{\"snaktype\":\"value\",\"property\":\"P3903\",\"datavalue\":{\"type\":\"string\",\"value\":\"2\"}}]},\"qualifiers-order\":[\"P304\",\"P3903\"],\"rank\":\"normal\"}",
+    "baserevid": "2558055299"
+   },
+   "source": "E6 POST https://www.wikidata.org/w/api.php",
+   "verified": false,
+   "verifyNote": "write: dry-run preview only, not sent"
+  }
+ ],
+ "blockers": [],
+ "notes": [
+  "Entity ID prefixes: Q = item, P = property, L = lexeme. Lexeme forms and senses use IDs like L7-F4 and L7-S1. The 'entities' object in get-entity and get-entities is keyed by entity ID.",
+  "Full-text search (Special:Search), RecentChanges, WhatLinksHere and /w/index.php pages are blocked by robots.txt. Use search-entities, which matches labels and aliases only.",
+  "search-entities pagination: pass the 'search-continue' value from the response as --continue.",
+  "Use a statement's 'id' from get-entity claims to edit it with set-claim. Pass the entity's lastrevid as --baserevid to avoid overwriting concurrent edits.",
+  "set-claim makes a real, public edit to Wikidata. Without a logged-in session the edit is attributed to your IP address (the anonymous CSRF token is '+\\'). Follow Wikidata's editing and bot policies.",
+  "For complex queries (filtering or joining many entities), use the Wikidata Query Service SPARQL endpoint at https://query.wikidata.org/sparql. It is outside this recording."
+ ],
+ "dropped": [],
+ "generated": {
+  "by": "clify add",
+  "model": "claude-opus-5-5",
+  "exploredSteps": 22,
+  "recorded": 36,
+  "verifiedAt": "2026-10-18T09:29:47.183Z",
+  "seconds": 210
+ }
+}

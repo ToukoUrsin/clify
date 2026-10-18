@@ -1,0 +1,95 @@
+{
+ "ok": true,
+ "site": "lichess",
+ "url": "https://lichess.org/",
+ "commands": [
+  {
+   "name": "search-fide-players",
+   "summary": "Search or list FIDE-rated players, sortable by name or classical/rapid/blitz rating, paginated 30 per page",
+   "verified": true
+  },
+  {
+   "name": "list-fide-player-broadcasts",
+   "summary": "List recent broadcast tournaments a FIDE player took part in, newest first, paginated",
+   "verified": true
+  },
+  {
+   "name": "list-fide-federations",
+   "summary": "List FIDE federations with player counts and average top ratings, paginated 30 per page",
+   "verified": true
+  },
+  {
+   "name": "get-fide-federation-stats",
+   "summary": "Get a FIDE federation's world rank, top-10 average rating and player count for classical, rapid and blitz (one item per category)",
+   "verified": true
+  },
+  {
+   "name": "list-fide-federation-players",
+   "summary": "List the FIDE players of one federation, sortable by name or rating, paginated 30 per page",
+   "verified": true
+  },
+  {
+   "name": "search-broadcasts",
+   "summary": "Search official live tournament broadcasts by keyword, or list live/upcoming ones when q is omitted, 24 per page",
+   "verified": true
+  },
+  {
+   "name": "list-broadcast-calendar",
+   "summary": "List all broadcast tournaments scheduled in the current month's broadcast calendar",
+   "verified": true
+  },
+  {
+   "name": "list-leaderboards",
+   "summary": "List lichess's top-10 leaderboard for every rating category (bullet, blitz, rapid, classical, variants)",
+   "verified": true
+  },
+  {
+   "name": "list-online-players",
+   "summary": "List the strongest lichess players who are online right now, with their rating (username is the last path segment of url)",
+   "verified": true
+  },
+  {
+   "name": "list-tournament-winners",
+   "summary": "List recent winners of lichess's recurring arena tournaments (Elite, HyperBullet, Yearly, Monthly, Marathon...) by category",
+   "verified": true
+  },
+  {
+   "name": "get-tournament",
+   "summary": "Get a lichess arena tournament's name, format/time control, start time, description and winner profile url",
+   "verified": true
+  }
+ ],
+ "verified": 11,
+ "writes": 0,
+ "dropped": [
+  {
+   "name": "get-fide-player",
+   "reason": "HTTP 429: rate limited by the site; wait a minute before retrying (HTTP 429)"
+  },
+  {
+   "name": "get-top-players",
+   "reason": "the site answered with a bot check (HTTP 403); clify does not bypass these"
+  }
+ ],
+ "blockers": [
+  "bot-check at https://lichess.org/",
+  "bot-check at https://lichess.org/@/DrNykterstein",
+  "bot-check at https://lichess.org/@/cutemouse83",
+  "bot-check at https://lichess.org/broadcast/norway-chess-2026-open/round-10-armageddon/JRUqqpsa",
+  "bot-check at https://lichess.org/broadcast/calendar/2026/11",
+  "bot-check at https://lichess.org/team/search?text=chess",
+  "captcha"
+ ],
+ "loggedIn": false,
+ "seconds": 294,
+ "next": [
+  "clify lichess",
+  "clify lichess search-fide-players --q \"Kasparov\""
+ ],
+ "installed": "/home/ubuntu/clify-runs/batch2/home/bin/lichess",
+ "explored": {
+  "steps": 26,
+  "recorded": 30,
+  "heldWrites": 0
+ }
+}

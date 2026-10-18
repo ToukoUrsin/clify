@@ -1,0 +1,322 @@
+{
+ "name": "pypi",
+ "startUrl": "https://pypi.org/",
+ "origin": "https://pypi.org",
+ "createdAt": "2026-10-18T07:06:16.777Z",
+ "description": "PyPI (Python Package Index): look up Python packages and specific versions, read release, update and new-package RSS feeds, see top projects by size and index-wide totals, and fetch the GitHub repo stats and issues that PyPI project pages show.",
+ "commands": [
+  {
+   "name": "get-package",
+   "summary": "Get a package's PyPI page for its latest version: name and version, summary, pip install command, project links and metadata sidebar, and README text.",
+   "method": "GET",
+   "urlTemplate": "/project/{name}/",
+   "params": [
+    {
+     "name": "name",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Package name as it appears on PyPI, e.g. requests",
+     "example": "requests"
+    }
+   ],
+   "responseType": "html",
+   "extract": {
+    "fields": {
+     "name_version": "h1.project-header__name",
+     "summary": "p.project-header__summary",
+     "pip_command": "span#pip-command",
+     "sidebar": "div.project-description__sidebar",
+     "metadata": "div#metadata",
+     "description": "div.project-description__content"
+    }
+   },
+   "defaultFields": [
+    "name_version",
+    "summary",
+    "pip_command",
+    "sidebar",
+    "description"
+   ],
+   "mutates": false,
+   "example": {
+    "name": "requests"
+   },
+   "source": "E10 E13 GET https://pypi.org/project/requests/",
+   "verified": true
+  },
+  {
+   "name": "get-package-version",
+   "summary": "Get the PyPI page for one specific version of a package: header, summary, pinned pip command, metadata sidebar and the README as it was at that release.",
+   "method": "GET",
+   "urlTemplate": "/project/{name}/{version}/",
+   "params": [
+    {
+     "name": "name",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Package name, e.g. requests",
+     "example": "requests"
+    },
+    {
+     "name": "version",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Exact release version string, e.g. 2.31.0",
+     "example": "2.31.0"
+    }
+   ],
+   "responseType": "html",
+   "extract": {
+    "fields": {
+     "name_version": "h1.project-header__name",
+     "summary": "p.project-header__summary",
+     "pip_command": "span#pip-command",
+     "sidebar": "div.project-description__sidebar",
+     "metadata": "div#metadata",
+     "description": "div.project-description__content"
+    }
+   },
+   "defaultFields": [
+    "name_version",
+    "summary",
+    "pip_command",
+    "sidebar",
+    "description"
+   ],
+   "mutates": false,
+   "example": {
+    "name": "requests",
+    "version": "2.31.0"
+   },
+   "source": "E14 E11 GET https://pypi.org/project/requests/2.31.0/",
+   "verified": true
+  },
+  {
+   "name": "list-package-releases",
+   "summary": "List a package's recent releases (version, link, publish date) from its releases RSS feed.",
+   "method": "GET",
+   "urlTemplate": "/rss/project/{name}/releases.xml",
+   "params": [
+    {
+     "name": "name",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Package name, e.g. requests",
+     "example": "requests"
+    }
+   ],
+   "responseType": "json",
+   "resultPath": "rss.channel.item",
+   "defaultFields": [
+    "title",
+    "link",
+    "pubDate",
+    "description"
+   ],
+   "mutates": false,
+   "example": {
+    "name": "requests"
+   },
+   "source": "",
+   "verified": true
+  },
+  {
+   "name": "list-latest-updates",
+   "summary": "List the newest releases uploaded across all of PyPI (package + version, link, date) from the site-wide updates RSS feed.",
+   "method": "GET",
+   "urlTemplate": "/rss/updates.xml",
+   "params": [],
+   "responseType": "json",
+   "resultPath": "rss.channel.item",
+   "defaultFields": [
+    "title",
+    "link",
+    "pubDate",
+    "description"
+   ],
+   "mutates": false,
+   "source": "",
+   "verified": true
+  },
+  {
+   "name": "list-newest-packages",
+   "summary": "List projects newly created on PyPI (name, link, summary, date) from the newest-packages RSS feed.",
+   "method": "GET",
+   "urlTemplate": "/rss/packages.xml",
+   "params": [],
+   "responseType": "json",
+   "resultPath": "rss.channel.item",
+   "defaultFields": [
+    "title",
+    "link",
+    "pubDate",
+    "description"
+   ],
+   "mutates": false,
+   "source": "",
+   "verified": true
+  },
+  {
+   "name": "list-top-projects-by-size",
+   "summary": "List the top 100 PyPI projects ranked by the total size of their release files. The first row is the total for all of PyPI.",
+   "method": "GET",
+   "urlTemplate": "/stats/",
+   "params": [],
+   "responseType": "html",
+   "extract": {
+    "list": "tbody > tr",
+    "fields": {
+     "project": "th",
+     "total_size": "td"
+    }
+   },
+   "defaultFields": [
+    "project",
+    "total_size"
+   ],
+   "mutates": false,
+   "source": "E12",
+   "verified": true
+  },
+  {
+   "name": "get-index-totals",
+   "summary": "Get PyPI-wide totals shown on the homepage (number of projects, releases, files, users).",
+   "method": "GET",
+   "urlTemplate": "/",
+   "params": [],
+   "responseType": "html",
+   "extract": {
+    "list": "p.statistics-bar__statistic",
+    "fields": {
+     "statistic": ""
+    }
+   },
+   "defaultFields": [
+    "statistic"
+   ],
+   "mutates": false,
+   "source": "E15",
+   "verified": true
+  },
+  {
+   "name": "get-github-repo",
+   "summary": "Get the GitHub statistics PyPI shows for a project's source repo (stars, forks, open issues, description, last push), from the GitHub API.",
+   "method": "GET",
+   "urlTemplate": "https://api.github.com/repos/{owner}/{repo}",
+   "params": [
+    {
+     "name": "owner",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "GitHub user or organization that owns the repo (from the package's Source link), e.g. psf",
+     "example": "psf"
+    },
+    {
+     "name": "repo",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "GitHub repository name, e.g. requests",
+     "example": "requests"
+    }
+   ],
+   "responseType": "json",
+   "defaultFields": [
+    "full_name",
+    "description",
+    "stargazers_count",
+    "forks_count",
+    "open_issues_count",
+    "html_url",
+    "pushed_at",
+    "license.spdx_id"
+   ],
+   "mutates": false,
+   "example": {
+    "owner": "psf",
+    "repo": "requests"
+   },
+   "source": "E2 GET https://api.github.com/repos/psf/requests",
+   "verified": true
+  },
+  {
+   "name": "search-github-issues",
+   "summary": "Search GitHub issues and PRs with a GitHub query, e.g. the open issues of a package's repo, via the GitHub search API (the same call PyPI uses to show open-issue counts).",
+   "method": "GET",
+   "urlTemplate": "https://api.github.com/search/issues",
+   "params": [
+    {
+     "name": "q",
+     "in": "query",
+     "required": true,
+     "type": "string",
+     "description": "GitHub issue search query, e.g. 'repo:psf/requests type:issue state:open'",
+     "example": "repo:psf/requests type:issue state:open"
+    },
+    {
+     "name": "per_page",
+     "in": "query",
+     "required": false,
+     "type": "number",
+     "description": "Results per page (max 100)",
+     "default": 10
+    },
+    {
+     "name": "page",
+     "in": "query",
+     "required": false,
+     "type": "number",
+     "description": "Page number, starting at 1"
+    }
+   ],
+   "responseType": "json",
+   "resultPath": "items",
+   "defaultFields": [
+    "number",
+    "title",
+    "state",
+    "html_url",
+    "comments",
+    "created_at",
+    "updated_at",
+    "user.login"
+   ],
+   "pagination": {
+    "type": "page",
+    "param": "page"
+   },
+   "mutates": false,
+   "example": {
+    "q": "repo:psf/requests type:issue state:open",
+    "per_page": "5"
+   },
+   "source": "E3 GET https://api.github.com/search/issues",
+   "verified": true
+  }
+ ],
+ "blockers": [
+  "captcha"
+ ],
+ "notes": [
+  "Keyword search (/search/) is blocked by robots.txt and the JSON API (/pypi/{name}/json) is disallowed, so there is no search command. To find a package, use its exact name with get-package, or browse list-newest-packages / list-latest-updates.",
+  "PyPI sometimes answers HTML pages with a bot 'Client Challenge' page instead of content. This happened for /project/httpx/0.27.0/ and /user/{name}/ profile pages. If get-package or get-package-version returns empty fields, retry later or use the RSS commands.",
+  "User profile pages and /rss/user/{name}/packages.xml were not usable (challenge page / 404), so there is no user command.",
+  "list-package-releases uses the RSS feed, which only carries the most recent releases. Use get-package-version for a specific older version.",
+  "get-github-repo and search-github-issues call api.github.com directly. Unauthenticated requests are rate-limited (about 60 per hour for the REST API and 10 per minute for search). Get owner/repo from the 'Source' link in the get-package sidebar.",
+  "The first row of list-top-projects-by-size is the 'All of PyPI' total, not a project."
+ ],
+ "dropped": [],
+ "generated": {
+  "by": "clify add",
+  "model": "claude-opus-5-5",
+  "exploredSteps": 18,
+  "recorded": 39,
+  "verifiedAt": "2026-10-18T07:07:12.256Z",
+  "seconds": 140
+ }
+}

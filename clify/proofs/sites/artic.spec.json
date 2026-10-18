@@ -1,0 +1,750 @@
+{
+ "name": "artic",
+ "startUrl": "https://www.artic.edu/collection",
+ "origin": "https://www.artic.edu",
+ "createdAt": "2026-10-18T07:26:44.024Z",
+ "description": "Art Institute of Chicago collection. The CLI queries the museum's official public JSON API (api.artic.edu) for artworks, artists, exhibitions, events, articles, category terms and IIIF manifests, and adds the website's related-artworks lookup.",
+ "commands": [
+  {
+   "name": "search-artworks",
+   "summary": "Full-text search of the collection's artworks, with optional filters (public domain, on view, department, artist id), sort by date and pagination",
+   "method": "GET",
+   "urlTemplate": "https://api.artic.edu/api/v1/artworks/search",
+   "params": [
+    {
+     "name": "q",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Keyword query (title, artist, subject\u2026)",
+     "example": "monet"
+    },
+    {
+     "name": "public_domain",
+     "key": "query[bool][must][][term][is_public_domain]",
+     "in": "query",
+     "required": false,
+     "type": "boolean",
+     "description": "Only public-domain artworks (images free to reuse)",
+     "example": "true"
+    },
+    {
+     "name": "on_view",
+     "key": "query[bool][must][][term][is_on_view]",
+     "in": "query",
+     "required": false,
+     "type": "boolean",
+     "description": "Only artworks currently on view in the galleries",
+     "example": "true"
+    },
+    {
+     "name": "department",
+     "key": "query[bool][must][][term][department_title.keyword]",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Exact department title, e.g. 'Painting and Sculpture of Europe', 'Arts of the Americas', 'Prints and Drawings'",
+     "example": "Arts of the Americas"
+    },
+    {
+     "name": "artist_id",
+     "key": "query[bool][must][][term][artist_id]",
+     "in": "query",
+     "required": false,
+     "type": "number",
+     "description": "Restrict to one artist. Use the numeric id from search-artists.",
+     "example": "34996"
+    },
+    {
+     "name": "sort_date",
+     "key": "sort[date_start]",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Sort by start date instead of relevance",
+     "enum": [
+      "asc",
+      "desc"
+     ]
+    },
+    {
+     "name": "api_fields",
+     "key": "fields",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Comma-separated fields to return (sent to the site as \"fields\"; clify's own --fields only shapes the output)",
+     "default": "id,title,artist_title,artist_id,artist_display,date_display,medium_display,image_id,is_public_domain,is_on_view,department_title"
+    },
+    {
+     "name": "api_limit",
+     "key": "limit",
+     "in": "query",
+     "required": false,
+     "type": "number",
+     "description": "Results per page (max 100) (sent to the site as \"limit\"; clify's own --limit only shapes the output)",
+     "default": 10
+    },
+    {
+     "name": "page",
+     "in": "query",
+     "required": false,
+     "type": "number",
+     "description": "Page number (1-based)",
+     "default": 1
+    }
+   ],
+   "responseType": "json",
+   "resultPath": "data",
+   "defaultFields": [
+    "id",
+    "title",
+    "artist_title",
+    "date_display",
+    "medium_display",
+    "department_title",
+    "is_on_view",
+    "image_id"
+   ],
+   "pagination": {
+    "type": "page",
+    "param": "page"
+   },
+   "mutates": false,
+   "example": {
+    "q": "monet"
+   },
+   "source": "E1 GET https://api.artic.edu/api/v1/exhibitions/search",
+   "verified": true
+  },
+  {
+   "name": "facet-artworks",
+   "summary": "Get facet counts (aggregation buckets) over the whole artwork collection for a keyword field such as department, classification or artist",
+   "method": "GET",
+   "urlTemplate": "https://api.artic.edu/api/v1/artworks/search?limit=0",
+   "params": [
+    {
+     "name": "field",
+     "key": "aggs[facet][terms][field]",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Keyword field to bucket on, e.g. department_title.keyword, artist_title.keyword, classification_title.keyword, artwork_type_title.keyword, place_of_origin.keyword, style_title.keyword",
+     "default": "department_title.keyword"
+    },
+    {
+     "name": "size",
+     "key": "aggs[facet][terms][size]",
+     "in": "query",
+     "required": false,
+     "type": "number",
+     "description": "Number of buckets to return",
+     "default": 20
+    }
+   ],
+   "responseType": "json",
+   "resultPath": "aggregations.facet.buckets",
+   "defaultFields": [
+    "key",
+    "doc_count"
+   ],
+   "mutates": false,
+   "example": {
+    "field": "department_title.keyword"
+   },
+   "source": "E1",
+   "verified": true
+  },
+  {
+   "name": "get-artwork",
+   "summary": "Get full details of one artwork by numeric id (title, artist, date, medium, dimensions, credit line, gallery, description, image id)",
+   "method": "GET",
+   "urlTemplate": "https://api.artic.edu/api/v1/artworks/{id}",
+   "params": [
+    {
+     "name": "id",
+     "in": "path",
+     "required": true,
+     "type": "number",
+     "description": "Artwork id, e.g. 111628 (Nighthawks)",
+     "example": "111628"
+    },
+    {
+     "name": "api_fields",
+     "key": "fields",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Optional comma-separated subset of fields to return (default: all) (sent to the site as \"fields\"; clify's own --fields only shapes the output)"
+    }
+   ],
+   "responseType": "json",
+   "resultPath": "data",
+   "defaultFields": [
+    "id",
+    "title",
+    "artist_display",
+    "date_display",
+    "medium_display",
+    "dimensions",
+    "department_title",
+    "gallery_title",
+    "image_id",
+    "is_public_domain",
+    "credit_line",
+    "main_reference_number"
+   ],
+   "mutates": false,
+   "example": {
+    "id": "111628"
+   },
+   "source": "E1 E11 GET https://api.artic.edu/api/v1/exhibitions/search",
+   "verified": true
+  },
+  {
+   "name": "get-artworks",
+   "summary": "Fetch several artworks at once by a comma-separated list of ids",
+   "method": "GET",
+   "urlTemplate": "https://api.artic.edu/api/v1/artworks",
+   "params": [
+    {
+     "name": "ids",
+     "in": "query",
+     "required": true,
+     "type": "string",
+     "description": "Comma-separated artwork ids",
+     "example": "28560,111628"
+    },
+    {
+     "name": "api_fields",
+     "key": "fields",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Comma-separated fields to return (sent to the site as \"fields\"; clify's own --fields only shapes the output)",
+     "default": "id,title,artist_title,date_display,medium_display,image_id,is_on_view,department_title"
+    }
+   ],
+   "responseType": "json",
+   "resultPath": "data",
+   "defaultFields": [
+    "id",
+    "title",
+    "artist_title",
+    "date_display",
+    "medium_display",
+    "image_id",
+    "is_on_view",
+    "department_title"
+   ],
+   "mutates": false,
+   "example": {
+    "ids": "28560,111628"
+   },
+   "source": "E1 GET https://api.artic.edu/api/v1/exhibitions/search",
+   "verified": true
+  },
+  {
+   "name": "get-artwork-manifest",
+   "summary": "Get the IIIF Presentation manifest for an artwork (image service URLs, label, metadata)",
+   "method": "GET",
+   "urlTemplate": "https://api.artic.edu/api/v1/artworks/{id}/manifest.json",
+   "params": [
+    {
+     "name": "id",
+     "in": "path",
+     "required": true,
+     "type": "number",
+     "description": "Artwork id",
+     "example": "28560"
+    }
+   ],
+   "responseType": "json",
+   "defaultFields": [
+    "@id",
+    "label",
+    "description",
+    "metadata",
+    "sequences"
+   ],
+   "mutates": false,
+   "example": {
+    "id": "28560"
+   },
+   "source": "E1 GET https://api.artic.edu/api/v1/exhibitions/search",
+   "verified": true
+  },
+  {
+   "name": "search-artists",
+   "summary": "Search artists by name. The returned id works with get-artist and the artist_id filter of search-artworks.",
+   "method": "GET",
+   "urlTemplate": "https://api.artic.edu/api/v1/artists/search",
+   "params": [
+    {
+     "name": "q",
+     "in": "query",
+     "required": true,
+     "type": "string",
+     "description": "Artist name or keyword",
+     "example": "hopper"
+    },
+    {
+     "name": "api_fields",
+     "key": "fields",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Comma-separated fields to return (sent to the site as \"fields\"; clify's own --fields only shapes the output)",
+     "default": "id,title,birth_date,death_date,alt_titles,description"
+    },
+    {
+     "name": "api_limit",
+     "key": "limit",
+     "in": "query",
+     "required": false,
+     "type": "number",
+     "description": "Results per page (max 100) (sent to the site as \"limit\"; clify's own --limit only shapes the output)",
+     "default": 10
+    },
+    {
+     "name": "page",
+     "in": "query",
+     "required": false,
+     "type": "number",
+     "description": "Page number",
+     "default": 1
+    }
+   ],
+   "responseType": "json",
+   "resultPath": "data",
+   "defaultFields": [
+    "id",
+    "title",
+    "birth_date",
+    "death_date",
+    "alt_titles"
+   ],
+   "pagination": {
+    "type": "page",
+    "param": "page"
+   },
+   "mutates": false,
+   "example": {
+    "q": "hopper"
+   },
+   "source": "E1 E12 GET https://api.artic.edu/api/v1/exhibitions/search",
+   "verified": true
+  },
+  {
+   "name": "get-artist",
+   "summary": "Get details of one artist by id (name, alternate names, birth and death dates, biography)",
+   "method": "GET",
+   "urlTemplate": "https://api.artic.edu/api/v1/artists/{id}",
+   "params": [
+    {
+     "name": "id",
+     "in": "path",
+     "required": true,
+     "type": "number",
+     "description": "Artist id, e.g. 34996 (Edward Hopper)",
+     "example": "34996"
+    }
+   ],
+   "responseType": "json",
+   "resultPath": "data",
+   "defaultFields": [
+    "id",
+    "title",
+    "alt_titles",
+    "birth_date",
+    "death_date",
+    "description",
+    "is_artist"
+   ],
+   "mutates": false,
+   "example": {
+    "id": "34996"
+   },
+   "source": "E1 E12 GET https://api.artic.edu/api/v1/exhibitions/search",
+   "verified": true
+  },
+  {
+   "name": "search-exhibitions",
+   "summary": "Search museum exhibitions (current and past) by keyword",
+   "method": "GET",
+   "urlTemplate": "https://api.artic.edu/api/v1/exhibitions/search",
+   "params": [
+    {
+     "name": "q",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Keyword query",
+     "example": "cassatt"
+    },
+    {
+     "name": "api_fields",
+     "key": "fields",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Comma-separated fields to return (sent to the site as \"fields\"; clify's own --fields only shapes the output)",
+     "default": "id,title,status,aic_start_at,aic_end_at,web_url,image_url,short_description"
+    },
+    {
+     "name": "api_limit",
+     "key": "limit",
+     "in": "query",
+     "required": false,
+     "type": "number",
+     "description": "Results per page (sent to the site as \"limit\"; clify's own --limit only shapes the output)",
+     "default": 10
+    },
+    {
+     "name": "page",
+     "in": "query",
+     "required": false,
+     "type": "number",
+     "description": "Page number",
+     "default": 1
+    }
+   ],
+   "responseType": "json",
+   "resultPath": "data",
+   "defaultFields": [
+    "id",
+    "title",
+    "status",
+    "aic_start_at",
+    "aic_end_at",
+    "web_url",
+    "short_description"
+   ],
+   "pagination": {
+    "type": "page",
+    "param": "page"
+   },
+   "mutates": false,
+   "example": {
+    "q": "cassatt"
+   },
+   "source": "E1 GET https://api.artic.edu/api/v1/exhibitions/search",
+   "verified": true
+  },
+  {
+   "name": "get-exhibition",
+   "summary": "Get details of one exhibition by id (dates, gallery, description, artworks shown)",
+   "method": "GET",
+   "urlTemplate": "https://api.artic.edu/api/v1/exhibitions/{id}",
+   "params": [
+    {
+     "name": "id",
+     "in": "path",
+     "required": true,
+     "type": "number",
+     "description": "Exhibition id, e.g. 10487",
+     "example": "10487"
+    }
+   ],
+   "responseType": "json",
+   "resultPath": "data",
+   "defaultFields": [
+    "id",
+    "title",
+    "status",
+    "aic_start_at",
+    "aic_end_at",
+    "gallery_title",
+    "web_url",
+    "short_description",
+    "artwork_ids"
+   ],
+   "mutates": false,
+   "example": {
+    "id": "10487"
+   },
+   "source": "E1 GET https://api.artic.edu/api/v1/exhibitions/search",
+   "verified": true
+  },
+  {
+   "name": "search-events",
+   "summary": "Search museum events (tours, talks, programs) by keyword",
+   "method": "GET",
+   "urlTemplate": "https://api.artic.edu/api/v1/events/search",
+   "params": [
+    {
+     "name": "q",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Keyword query (omit to list events)"
+    },
+    {
+     "name": "api_fields",
+     "key": "fields",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Comma-separated fields to return (sent to the site as \"fields\"; clify's own --fields only shapes the output)",
+     "default": "id,title,start_date,end_date,location,short_description,image_url"
+    },
+    {
+     "name": "api_limit",
+     "key": "limit",
+     "in": "query",
+     "required": false,
+     "type": "number",
+     "description": "Results per page (sent to the site as \"limit\"; clify's own --limit only shapes the output)",
+     "default": 10
+    },
+    {
+     "name": "page",
+     "in": "query",
+     "required": false,
+     "type": "number",
+     "description": "Page number",
+     "default": 1
+    }
+   ],
+   "responseType": "json",
+   "resultPath": "data",
+   "defaultFields": [
+    "id",
+    "title",
+    "start_date",
+    "end_date",
+    "location",
+    "short_description"
+   ],
+   "pagination": {
+    "type": "page",
+    "param": "page"
+   },
+   "mutates": false,
+   "example": {
+    "api_limit": "5"
+   },
+   "source": "E1 GET https://api.artic.edu/api/v1/exhibitions/search",
+   "verified": true
+  },
+  {
+   "name": "search-articles",
+   "summary": "Search the museum's editorial articles by keyword",
+   "method": "GET",
+   "urlTemplate": "https://api.artic.edu/api/v1/articles/search",
+   "params": [
+    {
+     "name": "q",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Keyword query",
+     "example": "nighthawks"
+    },
+    {
+     "name": "api_fields",
+     "key": "fields",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Comma-separated fields to return (sent to the site as \"fields\"; clify's own --fields only shapes the output)",
+     "default": "id,title,copy,image_url,api_link"
+    },
+    {
+     "name": "api_limit",
+     "key": "limit",
+     "in": "query",
+     "required": false,
+     "type": "number",
+     "description": "Results per page (sent to the site as \"limit\"; clify's own --limit only shapes the output)",
+     "default": 10
+    },
+    {
+     "name": "page",
+     "in": "query",
+     "required": false,
+     "type": "number",
+     "description": "Page number",
+     "default": 1
+    }
+   ],
+   "responseType": "json",
+   "resultPath": "data",
+   "defaultFields": [
+    "id",
+    "title",
+    "image_url",
+    "api_link"
+   ],
+   "pagination": {
+    "type": "page",
+    "param": "page"
+   },
+   "mutates": false,
+   "example": {
+    "q": "nighthawks"
+   },
+   "source": "E1 E12 GET https://api.artic.edu/api/v1/exhibitions/search",
+   "verified": true
+  },
+  {
+   "name": "search-category-terms",
+   "summary": "Search category terms (styles, subjects, themes, classifications, materials, techniques, departments)",
+   "method": "GET",
+   "urlTemplate": "https://api.artic.edu/api/v1/category-terms/search",
+   "params": [
+    {
+     "name": "q",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Keyword query",
+     "example": "impressionism"
+    },
+    {
+     "name": "subtype",
+     "key": "query[term][subtype]",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Restrict to one kind of term",
+     "enum": [
+      "style",
+      "subject",
+      "theme",
+      "classification",
+      "material",
+      "technique",
+      "department"
+     ]
+    },
+    {
+     "name": "api_fields",
+     "key": "fields",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Comma-separated fields to return (sent to the site as \"fields\"; clify's own --fields only shapes the output)",
+     "default": "id,title,subtype,parent_id"
+    },
+    {
+     "name": "api_limit",
+     "key": "limit",
+     "in": "query",
+     "required": false,
+     "type": "number",
+     "description": "Results per page (sent to the site as \"limit\"; clify's own --limit only shapes the output)",
+     "default": 10
+    },
+    {
+     "name": "page",
+     "in": "query",
+     "required": false,
+     "type": "number",
+     "description": "Page number",
+     "default": 1
+    }
+   ],
+   "responseType": "json",
+   "resultPath": "data",
+   "defaultFields": [
+    "id",
+    "title",
+    "subtype",
+    "parent_id"
+   ],
+   "pagination": {
+    "type": "page",
+    "param": "page"
+   },
+   "mutates": false,
+   "example": {
+    "q": "impressionism"
+   },
+   "source": "E1 GET https://api.artic.edu/api/v1/exhibitions/search",
+   "verified": true
+  }
+ ],
+ "blockers": [
+  "bot-check at https://www.artic.edu/collection?q=monet",
+  "captcha"
+ ],
+ "notes": [
+  "The www.artic.edu collection search page is behind a bot check, so these commands use the official public API at api.artic.edu (CC0 data, docs at https://api.artic.edu/docs/). It needs no auth and accepts at most 100 results per page.",
+  "Build image URLs from image_id: https://www.artic.edu/iiif/2/{image_id}/full/843,/0/default.jpg. Smaller widths such as 400, also work.",
+  "search-artworks filters use Elasticsearch bool/must terms. They combine with AND, and you can pass any subset. department must match the exact title, which you can get from facet-artworks.",
+  "Artwork, artist and exhibition ids are numeric. Website URLs follow https://www.artic.edu/artworks/{id}/{slug}; the slug is optional.",
+  "get-related-artworks returns an HTML fragment string. Artwork links inside it look like /artworks/{id}/{slug}; pass those ids to get-artwork.",
+  "For heavy use the museum asks clients to send an AIC-User-Agent header containing a contact email."
+ ],
+ "dropped": [
+  {
+   "name": "get-related-artworks",
+   "summary": "Get the website's 'most similar' related artworks for an artwork (returned as an HTML fragment with artwork links)",
+   "method": "GET",
+   "urlTemplate": "/artworks/{id}/exploreFurther?ef-most-similar_ids=most-similar",
+   "params": [
+    {
+     "name": "id",
+     "in": "path",
+     "required": true,
+     "type": "number",
+     "description": "Artwork id",
+     "example": "28560"
+    }
+   ],
+   "headers": {
+    "X-Requested-With": "XMLHttpRequest"
+   },
+   "responseType": "json",
+   "resultPath": "html",
+   "mutates": false,
+   "example": {
+    "id": "28560"
+   },
+   "source": "E4 GET https://www.artic.edu/artworks/{n}/exploreFurther",
+   "verified": false,
+   "verifyNote": "The endpoint returns its data as an HTML fragment inside a JSON 'html' string. clify cannot run selectors on HTML embedded in JSON, so no structured fields can be extracted. search-artworks and get-artworks cover lookups."
+  },
+  {
+   "name": "autocomplete",
+   "summary": "Get autocomplete title suggestions for a partial query, optionally limited to resource types (artworks, agents, exhibitions, ...)",
+   "method": "GET",
+   "urlTemplate": "https://api.artic.edu/api/v1/autocomplete",
+   "params": [
+    {
+     "name": "q",
+     "in": "query",
+     "required": true,
+     "type": "string",
+     "description": "Partial text matched against the start of titles, e.g. 'Water Lil'",
+     "example": "Water Lilies"
+    },
+    {
+     "name": "resources",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Optional comma-separated resource types to suggest from, e.g. artworks, agents, exhibitions, articles, events. Omit to search all types.",
+     "example": "artworks"
+    }
+   ],
+   "responseType": "json",
+   "mutates": false,
+   "example": {
+    "q": "Water Lilies"
+   },
+   "source": "E5",
+   "verified": false,
+   "verifyNote": "HTTP 403: this endpoint needs a login or the site refused the request. (HTTP 403)"
+  }
+ ],
+ "generated": {
+  "by": "clify add",
+  "model": "claude-opus-5-5",
+  "exploredSteps": 15,
+  "recorded": 36,
+  "verifiedAt": "2026-10-18T07:28:37.789Z",
+  "seconds": 230
+ }
+}

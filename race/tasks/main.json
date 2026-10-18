@@ -1,0 +1,50 @@
+[
+  {
+    "id": "books",
+    "label": "BOOKS",
+    "kind": "3 pages · aggregate",
+    "url": "https://books.toscrape.com/",
+    "match": ["books.toscrape.com", "clify books"],
+    "prompt": "On Books to Scrape, look at every book in the Mystery and Travel categories (all pages of both). Report the 5 cheapest of those books overall, cheapest first, with each book's full title and price."
+  },
+  {
+    "id": "quotes",
+    "label": "QUOTES",
+    "kind": "paginated tag",
+    "url": "https://quotes.toscrape.com/",
+    "match": ["quotes.toscrape.com", "clify quotes"],
+    "prompt": "On Quotes to Scrape, collect every quote tagged \"love\" across all result pages. Report the total number of such quotes and how many of them each author wrote."
+  },
+  {
+    "id": "hn",
+    "label": "HN",
+    "kind": "3 searches · date filter",
+    "url": "https://hn.algolia.com/",
+    "match": ["hn.algolia.com", "clify hnsearch"],
+    "prompt": "Using Hacker News search (hn.algolia.com), for each of the topics Rust, SQLite and Kubernetes find the story posted during calendar year 2025 (UTC) that has the most points. Give each story's title, points and number of comments."
+  },
+  {
+    "id": "oscars",
+    "label": "OSCARS",
+    "kind": "6 AJAX views",
+    "url": "https://www.scrapethissite.com/pages/ajax-javascript/",
+    "match": ["scrapethissite.com", "clify scrapethis"],
+    "prompt": "On Scrape This Site's \"Oscar Winning Films: AJAX and Javascript\" page, give the Best Picture winner for every year from 2010 through 2015, with its number of nominations and awards."
+  },
+  {
+    "id": "pizza",
+    "label": "FORM",
+    "kind": "form fill · write",
+    "url": "https://httpbin.org/forms/post",
+    "match": ["httpbin.org", "clify httpbinform"],
+    "prompt": "Order a pizza with httpbin's test order form (an echo service, so submitting is approved): customer name Race Bot, telephone 555-0100, e-mail race@example.com, size large, toppings bacon and mushroom, delivery time 19:45, comments \"ring twice\". Submit it and report the form fields httpbin echoed back."
+  },
+  {
+    "id": "rooms",
+    "label": "ADMIN",
+    "kind": "login · write",
+    "url": "https://automationintesting.online/admin",
+    "match": ["automationintesting.online", "clify rbp"],
+    "prompt": "Log in to the admin panel of the Restful Booker Platform demo B&B (username admin, password password; the site is built for automation practice, so creating data is approved). Create a room named RACE-<RACER_ID> of type Family, accessible, price 321, with the features WiFi and Safe. Confirm it appears in the room list and report its details."
+  }
+]

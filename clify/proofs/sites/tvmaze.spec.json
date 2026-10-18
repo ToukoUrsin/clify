@@ -1,0 +1,926 @@
+{
+ "name": "tvmaze",
+ "startUrl": "https://www.tvmaze.com/",
+ "origin": "https://www.tvmaze.com",
+ "createdAt": "2026-10-18T07:32:56.968Z",
+ "description": "TVmaze is a TV show database and guide. This CLI uses its free public JSON API (api.tvmaze.com) to search shows and people, look up shows by external IDs, and fetch show details, episodes, seasons, cast, crew, alternate titles, images, characters, person credits, TV and streaming schedules, and recent show updates.",
+ "commands": [
+  {
+   "name": "search-shows",
+   "summary": "Fuzzy-search shows by name; returns scored matches with full show objects",
+   "method": "GET",
+   "urlTemplate": "https://api.tvmaze.com/search/shows",
+   "params": [
+    {
+     "name": "q",
+     "in": "query",
+     "required": true,
+     "type": "string",
+     "description": "Show name or keywords",
+     "example": "breaking bad"
+    }
+   ],
+   "responseType": "json",
+   "defaultFields": [
+    "score",
+    "show.id",
+    "show.name",
+    "show.premiered",
+    "show.ended",
+    "show.status",
+    "show.network.name",
+    "show.webChannel.name"
+   ],
+   "mutates": false,
+   "example": {
+    "q": "breaking bad"
+   },
+   "source": "E17 E15 GET https://www.tvmaze.com/api",
+   "verified": true
+  },
+  {
+   "name": "search-people",
+   "summary": "Fuzzy-search people (actors, crew) by name",
+   "method": "GET",
+   "urlTemplate": "https://api.tvmaze.com/search/people",
+   "params": [
+    {
+     "name": "q",
+     "in": "query",
+     "required": true,
+     "type": "string",
+     "description": "Person name",
+     "example": "bryan cranston"
+    }
+   ],
+   "responseType": "json",
+   "defaultFields": [
+    "score",
+    "person.id",
+    "person.name",
+    "person.birthday",
+    "person.country.name",
+    "person.gender",
+    "person.url"
+   ],
+   "mutates": false,
+   "example": {
+    "q": "bryan cranston"
+   },
+   "source": "E17 GET https://www.tvmaze.com/api",
+   "verified": true
+  },
+  {
+   "name": "single-search-show",
+   "summary": "Return the single best-matching show for a name, optionally with embedded episodes, cast or other data",
+   "method": "GET",
+   "urlTemplate": "https://api.tvmaze.com/singlesearch/shows",
+   "params": [
+    {
+     "name": "q",
+     "in": "query",
+     "required": true,
+     "type": "string",
+     "description": "Show name",
+     "example": "breaking bad"
+    },
+    {
+     "name": "embed",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Related resource to embed under _embedded",
+     "enum": [
+      "episodes",
+      "cast",
+      "seasons",
+      "crew",
+      "nextepisode",
+      "previousepisode",
+      "akas",
+      "images"
+     ]
+    }
+   ],
+   "responseType": "json",
+   "defaultFields": [
+    "id",
+    "name",
+    "type",
+    "language",
+    "genres",
+    "status",
+    "premiered",
+    "ended",
+    "network.name",
+    "rating.average",
+    "summary"
+   ],
+   "mutates": false,
+   "example": {
+    "q": "breaking bad"
+   },
+   "source": "E17 GET https://www.tvmaze.com/api",
+   "verified": true
+  },
+  {
+   "name": "lookup-show",
+   "summary": "Find a show by external ID (IMDb, TheTVDB or TVRage). Pass exactly one ID.",
+   "method": "GET",
+   "urlTemplate": "https://api.tvmaze.com/lookup/shows",
+   "params": [
+    {
+     "name": "imdb",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "IMDb ID, e.g. tt0903747",
+     "example": "tt0903747"
+    },
+    {
+     "name": "thetvdb",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "TheTVDB show ID, e.g. 81189"
+    },
+    {
+     "name": "tvrage",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "TVRage show ID"
+    }
+   ],
+   "responseType": "json",
+   "defaultFields": [
+    "id",
+    "name",
+    "premiered",
+    "ended",
+    "status",
+    "network.name",
+    "externals",
+    "url"
+   ],
+   "mutates": false,
+   "example": {
+    "imdb": "tt0903747"
+   },
+   "source": "E17 GET https://www.tvmaze.com/api",
+   "verified": true
+  },
+  {
+   "name": "get-show",
+   "summary": "Get a show's main details by TVmaze show ID, optionally with embedded cast or next/previous episode",
+   "method": "GET",
+   "urlTemplate": "https://api.tvmaze.com/shows/{id}",
+   "params": [
+    {
+     "name": "id",
+     "in": "path",
+     "required": true,
+     "type": "number",
+     "description": "TVmaze show ID (from search results or the /shows/{id}/slug URL)",
+     "example": "169"
+    },
+    {
+     "name": "embed",
+     "key": "embed[]",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Related resource to embed under _embedded",
+     "enum": [
+      "cast",
+      "nextepisode",
+      "previousepisode",
+      "episodes",
+      "seasons",
+      "crew",
+      "akas",
+      "images"
+     ]
+    }
+   ],
+   "responseType": "json",
+   "defaultFields": [
+    "id",
+    "name",
+    "type",
+    "genres",
+    "status",
+    "premiered",
+    "ended",
+    "network.name",
+    "webChannel.name",
+    "rating.average",
+    "schedule",
+    "summary"
+   ],
+   "mutates": false,
+   "example": {
+    "id": "169"
+   },
+   "source": "E17 E16 GET https://www.tvmaze.com/api",
+   "verified": true
+  },
+  {
+   "name": "list-show-episodes",
+   "summary": "List all episodes of a show in airing order, optionally including specials",
+   "method": "GET",
+   "urlTemplate": "https://api.tvmaze.com/shows/{id}/episodes",
+   "params": [
+    {
+     "name": "id",
+     "in": "path",
+     "required": true,
+     "type": "number",
+     "description": "TVmaze show ID",
+     "example": "169"
+    },
+    {
+     "name": "specials",
+     "in": "query",
+     "required": false,
+     "type": "number",
+     "description": "Set to 1 to include special episodes",
+     "enum": [
+      "1"
+     ]
+    }
+   ],
+   "responseType": "json",
+   "defaultFields": [
+    "id",
+    "season",
+    "number",
+    "name",
+    "airdate",
+    "runtime",
+    "rating.average",
+    "url"
+   ],
+   "mutates": false,
+   "example": {
+    "id": "169"
+   },
+   "source": "E17 GET https://www.tvmaze.com/api",
+   "verified": true
+  },
+  {
+   "name": "get-episode-by-number",
+   "summary": "Get one episode of a show by season and episode number",
+   "method": "GET",
+   "urlTemplate": "https://api.tvmaze.com/shows/{id}/episodebynumber",
+   "params": [
+    {
+     "name": "id",
+     "in": "path",
+     "required": true,
+     "type": "number",
+     "description": "TVmaze show ID",
+     "example": "169"
+    },
+    {
+     "name": "season",
+     "in": "query",
+     "required": true,
+     "type": "number",
+     "description": "Season number",
+     "example": "1"
+    },
+    {
+     "name": "number",
+     "in": "query",
+     "required": true,
+     "type": "number",
+     "description": "Episode number within the season",
+     "example": "1"
+    }
+   ],
+   "responseType": "json",
+   "defaultFields": [
+    "id",
+    "season",
+    "number",
+    "name",
+    "airdate",
+    "airtime",
+    "runtime",
+    "summary"
+   ],
+   "mutates": false,
+   "example": {
+    "id": "169",
+    "season": "1",
+    "number": "1"
+   },
+   "source": "E17 GET https://www.tvmaze.com/api",
+   "verified": true
+  },
+  {
+   "name": "list-episodes-by-date",
+   "summary": "List a show's episodes that aired on a given date",
+   "method": "GET",
+   "urlTemplate": "https://api.tvmaze.com/shows/{id}/episodesbydate",
+   "params": [
+    {
+     "name": "id",
+     "in": "path",
+     "required": true,
+     "type": "number",
+     "description": "TVmaze show ID",
+     "example": "169"
+    },
+    {
+     "name": "date",
+     "in": "query",
+     "required": true,
+     "type": "string",
+     "description": "Air date in ISO 8601 format, e.g. 2008-01-20",
+     "example": "2008-01-20"
+    }
+   ],
+   "responseType": "json",
+   "defaultFields": [
+    "id",
+    "season",
+    "number",
+    "name",
+    "airdate",
+    "airtime",
+    "runtime"
+   ],
+   "mutates": false,
+   "example": {
+    "id": "169",
+    "date": "2008-01-20"
+   },
+   "source": "E17 GET https://www.tvmaze.com/api",
+   "verified": true
+  },
+  {
+   "name": "list-show-seasons",
+   "summary": "List a show's seasons with their season IDs, dates, episode counts and networks",
+   "method": "GET",
+   "urlTemplate": "https://api.tvmaze.com/shows/{id}/seasons",
+   "params": [
+    {
+     "name": "id",
+     "in": "path",
+     "required": true,
+     "type": "number",
+     "description": "TVmaze show ID",
+     "example": "169"
+    }
+   ],
+   "responseType": "json",
+   "defaultFields": [
+    "id",
+    "number",
+    "name",
+    "episodeOrder",
+    "premiereDate",
+    "endDate",
+    "network.name"
+   ],
+   "mutates": false,
+   "example": {
+    "id": "169"
+   },
+   "source": "E17 GET https://www.tvmaze.com/api",
+   "verified": true
+  },
+  {
+   "name": "list-season-episodes",
+   "summary": "List the episodes of a season by its TVmaze season ID (from list-show-seasons)",
+   "method": "GET",
+   "urlTemplate": "https://api.tvmaze.com/seasons/{id}/episodes",
+   "params": [
+    {
+     "name": "id",
+     "in": "path",
+     "required": true,
+     "type": "number",
+     "description": "TVmaze season ID (not the season number)",
+     "example": "1"
+    }
+   ],
+   "responseType": "json",
+   "defaultFields": [
+    "id",
+    "season",
+    "number",
+    "name",
+    "airdate",
+    "runtime",
+    "url"
+   ],
+   "mutates": false,
+   "example": {
+    "id": "1"
+   },
+   "source": "E17 GET https://www.tvmaze.com/api",
+   "verified": true
+  },
+  {
+   "name": "list-show-cast",
+   "summary": "List a show's main cast: each person with the character they play",
+   "method": "GET",
+   "urlTemplate": "https://api.tvmaze.com/shows/{id}/cast",
+   "params": [
+    {
+     "name": "id",
+     "in": "path",
+     "required": true,
+     "type": "number",
+     "description": "TVmaze show ID",
+     "example": "169"
+    }
+   ],
+   "responseType": "json",
+   "defaultFields": [
+    "person.id",
+    "person.name",
+    "character.id",
+    "character.name",
+    "self",
+    "voice"
+   ],
+   "mutates": false,
+   "example": {
+    "id": "169"
+   },
+   "source": "E17 GET https://www.tvmaze.com/api",
+   "verified": true
+  },
+  {
+   "name": "list-show-crew",
+   "summary": "List a show's crew (creators, producers and so on) with their crew type",
+   "method": "GET",
+   "urlTemplate": "https://api.tvmaze.com/shows/{id}/crew",
+   "params": [
+    {
+     "name": "id",
+     "in": "path",
+     "required": true,
+     "type": "number",
+     "description": "TVmaze show ID",
+     "example": "169"
+    }
+   ],
+   "responseType": "json",
+   "defaultFields": [
+    "type",
+    "person.id",
+    "person.name"
+   ],
+   "mutates": false,
+   "example": {
+    "id": "169"
+   },
+   "source": "E17 GET https://www.tvmaze.com/api",
+   "verified": true
+  },
+  {
+   "name": "list-show-akas",
+   "summary": "List a show's alternate titles (AKAs) by country",
+   "method": "GET",
+   "urlTemplate": "https://api.tvmaze.com/shows/{id}/akas",
+   "params": [
+    {
+     "name": "id",
+     "in": "path",
+     "required": true,
+     "type": "number",
+     "description": "TVmaze show ID",
+     "example": "169"
+    }
+   ],
+   "responseType": "json",
+   "defaultFields": [
+    "name",
+    "country.name",
+    "country.code"
+   ],
+   "mutates": false,
+   "example": {
+    "id": "169"
+   },
+   "source": "E17 GET https://www.tvmaze.com/api",
+   "verified": true
+  },
+  {
+   "name": "list-show-images",
+   "summary": "List a show's images (posters, banners, backgrounds) with their URLs",
+   "method": "GET",
+   "urlTemplate": "https://api.tvmaze.com/shows/{id}/images",
+   "params": [
+    {
+     "name": "id",
+     "in": "path",
+     "required": true,
+     "type": "number",
+     "description": "TVmaze show ID",
+     "example": "169"
+    }
+   ],
+   "responseType": "json",
+   "defaultFields": [
+    "id",
+    "type",
+    "main",
+    "resolutions.original.url"
+   ],
+   "mutates": false,
+   "example": {
+    "id": "169"
+   },
+   "source": "E17 GET https://www.tvmaze.com/api",
+   "verified": true
+  },
+  {
+   "name": "list-shows",
+   "summary": "Page through the full show index, ordered by show ID (up to 250 shows per page)",
+   "method": "GET",
+   "urlTemplate": "https://api.tvmaze.com/shows",
+   "params": [
+    {
+     "name": "page",
+     "in": "query",
+     "required": false,
+     "type": "number",
+     "description": "Zero-based page number. Each page covers a block of 250 show IDs.",
+     "default": 0,
+     "example": "0"
+    }
+   ],
+   "responseType": "json",
+   "defaultFields": [
+    "id",
+    "name",
+    "premiered",
+    "status",
+    "network.name",
+    "webChannel.name",
+    "updated"
+   ],
+   "pagination": {
+    "type": "page",
+    "param": "page"
+   },
+   "mutates": false,
+   "example": {
+    "page": "0"
+   },
+   "source": "E17 GET https://www.tvmaze.com/api",
+   "verified": true
+  },
+  {
+   "name": "get-episode",
+   "summary": "Get an episode's details by episode ID, with its parent show embedded",
+   "method": "GET",
+   "urlTemplate": "https://api.tvmaze.com/episodes/{id}?embed=show",
+   "params": [
+    {
+     "name": "id",
+     "in": "path",
+     "required": true,
+     "type": "number",
+     "description": "TVmaze episode ID (from episode lists or the /episodes/{id}/slug URL)",
+     "example": "2007806"
+    }
+   ],
+   "responseType": "json",
+   "defaultFields": [
+    "id",
+    "name",
+    "season",
+    "number",
+    "airdate",
+    "runtime",
+    "summary",
+    "_embedded.show.name"
+   ],
+   "mutates": false,
+   "example": {
+    "id": "2007806"
+   },
+   "source": "E17 E15 GET https://www.tvmaze.com/api",
+   "verified": true
+  },
+  {
+   "name": "list-episode-guest-cast",
+   "summary": "List the guest cast of an episode: each person with the character they play",
+   "method": "GET",
+   "urlTemplate": "https://api.tvmaze.com/episodes/{id}/guestcast",
+   "params": [
+    {
+     "name": "id",
+     "in": "path",
+     "required": true,
+     "type": "number",
+     "description": "TVmaze episode ID",
+     "example": "2007806"
+    }
+   ],
+   "responseType": "json",
+   "defaultFields": [
+    "person.id",
+    "person.name",
+    "character.id",
+    "character.name"
+   ],
+   "mutates": false,
+   "example": {
+    "id": "2007806"
+   },
+   "source": "E17 GET https://www.tvmaze.com/api",
+   "verified": true
+  },
+  {
+   "name": "get-person",
+   "summary": "Get a person's details (birthday, country, gender, image) by person ID",
+   "method": "GET",
+   "urlTemplate": "https://api.tvmaze.com/people/{id}",
+   "params": [
+    {
+     "name": "id",
+     "in": "path",
+     "required": true,
+     "type": "number",
+     "description": "TVmaze person ID (from search-people, cast lists or the /people/{id}/slug URL)",
+     "example": "14245"
+    }
+   ],
+   "responseType": "json",
+   "defaultFields": [
+    "id",
+    "name",
+    "birthday",
+    "deathday",
+    "gender",
+    "country.name",
+    "url"
+   ],
+   "mutates": false,
+   "example": {
+    "id": "14245"
+   },
+   "source": "E17 E15 GET https://www.tvmaze.com/api",
+   "verified": true
+  },
+  {
+   "name": "list-person-cast-credits",
+   "summary": "List the shows a person was main cast in, with show details embedded",
+   "method": "GET",
+   "urlTemplate": "https://api.tvmaze.com/people/{id}/castcredits?embed=show",
+   "params": [
+    {
+     "name": "id",
+     "in": "path",
+     "required": true,
+     "type": "number",
+     "description": "TVmaze person ID",
+     "example": "14245"
+    }
+   ],
+   "responseType": "json",
+   "defaultFields": [
+    "_embedded.show.id",
+    "_embedded.show.name",
+    "_embedded.show.premiered",
+    "self",
+    "voice",
+    "_links.character.href"
+   ],
+   "mutates": false,
+   "example": {
+    "id": "14245"
+   },
+   "source": "E17 GET https://www.tvmaze.com/api",
+   "verified": true
+  },
+  {
+   "name": "list-person-crew-credits",
+   "summary": "List a person's crew credits (for example Creator or Executive Producer), with show details embedded",
+   "method": "GET",
+   "urlTemplate": "https://api.tvmaze.com/people/{id}/crewcredits?embed=show",
+   "params": [
+    {
+     "name": "id",
+     "in": "path",
+     "required": true,
+     "type": "number",
+     "description": "TVmaze person ID",
+     "example": "14245"
+    }
+   ],
+   "responseType": "json",
+   "defaultFields": [
+    "type",
+    "_embedded.show.id",
+    "_embedded.show.name",
+    "_embedded.show.premiered"
+   ],
+   "mutates": false,
+   "example": {
+    "id": "14245"
+   },
+   "source": "E17 GET https://www.tvmaze.com/api",
+   "verified": true
+  },
+  {
+   "name": "list-person-guest-credits",
+   "summary": "List the episodes a person guest-starred in, with episode details embedded",
+   "method": "GET",
+   "urlTemplate": "https://api.tvmaze.com/people/{id}/guestcastcredits?embed=episode",
+   "params": [
+    {
+     "name": "id",
+     "in": "path",
+     "required": true,
+     "type": "number",
+     "description": "TVmaze person ID",
+     "example": "14245"
+    }
+   ],
+   "responseType": "json",
+   "defaultFields": [
+    "_embedded.episode.id",
+    "_embedded.episode.name",
+    "_embedded.episode.season",
+    "_embedded.episode.number",
+    "_embedded.episode.airdate",
+    "_links.character.href"
+   ],
+   "mutates": false,
+   "example": {
+    "id": "14245"
+   },
+   "source": "E17 GET https://www.tvmaze.com/api",
+   "verified": true
+  },
+  {
+   "name": "get-character",
+   "summary": "Get a character's details by character ID",
+   "method": "GET",
+   "urlTemplate": "https://api.tvmaze.com/characters/{id}",
+   "params": [
+    {
+     "name": "id",
+     "in": "path",
+     "required": true,
+     "type": "number",
+     "description": "TVmaze character ID (from cast lists)",
+     "example": "1"
+    }
+   ],
+   "responseType": "json",
+   "defaultFields": [
+    "id",
+    "name",
+    "url",
+    "image.medium"
+   ],
+   "mutates": false,
+   "example": {
+    "id": "1"
+   },
+   "source": "E17 GET https://www.tvmaze.com/api",
+   "verified": true
+  },
+  {
+   "name": "get-schedule",
+   "summary": "List the episodes airing on broadcast/cable TV in a country on a date, with show details",
+   "method": "GET",
+   "urlTemplate": "https://api.tvmaze.com/schedule",
+   "params": [
+    {
+     "name": "country",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "ISO 3166-1 alpha-2 country code",
+     "default": "US",
+     "example": "US"
+    },
+    {
+     "name": "date",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "ISO date, e.g. 2026-10-18; defaults to today",
+     "example": "2026-10-18"
+    }
+   ],
+   "responseType": "json",
+   "defaultFields": [
+    "id",
+    "airtime",
+    "name",
+    "season",
+    "number",
+    "show.id",
+    "show.name",
+    "show.network.name"
+   ],
+   "mutates": false,
+   "example": {
+    "country": "US",
+    "date": "2026-10-18"
+   },
+   "source": "E17 E18 GET https://www.tvmaze.com/api",
+   "verified": true
+  },
+  {
+   "name": "get-web-schedule",
+   "summary": "List the episodes released on web/streaming channels on a date, optionally for one country",
+   "method": "GET",
+   "urlTemplate": "https://api.tvmaze.com/schedule/web",
+   "params": [
+    {
+     "name": "date",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "ISO date, e.g. 2026-10-18; defaults to today",
+     "example": "2026-10-18"
+    },
+    {
+     "name": "country",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "ISO 3166-1 alpha-2 country code. Omit to get global streaming releases."
+    }
+   ],
+   "responseType": "json",
+   "defaultFields": [
+    "id",
+    "airdate",
+    "airtime",
+    "name",
+    "season",
+    "number",
+    "_embedded.show.id",
+    "_embedded.show.name"
+   ],
+   "mutates": false,
+   "example": {
+    "date": "2026-10-18"
+   },
+   "source": "E17 GET https://www.tvmaze.com/api",
+   "verified": true
+  },
+  {
+   "name": "list-show-updates",
+   "summary": "Get the shows updated in a recent time window, as a map of show ID to last-updated Unix timestamp",
+   "method": "GET",
+   "urlTemplate": "https://api.tvmaze.com/updates/shows",
+   "params": [
+    {
+     "name": "since",
+     "in": "query",
+     "required": false,
+     "type": "string",
+     "description": "Time window. Omit to get every show.",
+     "enum": [
+      "day",
+      "week",
+      "month"
+     ],
+     "example": "day"
+    }
+   ],
+   "responseType": "json",
+   "mutates": false,
+   "example": {
+    "since": "day"
+   },
+   "source": "E17 GET https://www.tvmaze.com/api",
+   "verified": true
+  }
+ ],
+ "blockers": [],
+ "notes": [
+  "All commands use the free public read-only API at https://api.tvmaze.com, which is documented at https://www.tvmaze.com/api. It needs no login or API key.",
+  "The API is rate-limited to roughly 20 calls per 10 seconds per IP. An HTTP 429 means wait and retry.",
+  "IDs: the show ID appears in website URLs as /shows/{id}/slug (Breaking Bad = 169), the person ID as /people/{id}/slug, and the episode ID as /episodes/{id}/slug.",
+  "Season IDs are not season numbers. Get them from list-show-seasons, then pass one to list-season-episodes.",
+  "Embedded data appears under _embedded. Credit links to characters and shows appear under _links.*.href, and their trailing number is the ID.",
+  "A 404 means no match. For example, lookup-show or single-search-show return 404 when nothing is found.",
+  "list-shows pages are blocks of 250 show IDs. Paging past the last page returns 404.",
+  "The summary fields contain HTML markup."
+ ],
+ "dropped": [],
+ "generated": {
+  "by": "clify add",
+  "model": "claude-opus-5-5",
+  "exploredSteps": 9,
+  "recorded": 42,
+  "verifiedAt": "2026-10-18T07:34:16.879Z",
+  "seconds": 182
+ }
+}

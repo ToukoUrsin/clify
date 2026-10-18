@@ -1,0 +1,96 @@
+{
+ "url": "https://nominatim.openstreetmap.org/ui/search.html",
+ "category": "maps-weather",
+ "sandbox": "clify-nominatim-openstreetmap-org-ui-search-h",
+ "startedAt": "2026-10-18T08:20:06.096Z",
+ "region": "us-pdx-1",
+ "chrome": "Chrome/148.0.7778.96",
+ "sandboxStartMs": 3073,
+ "addSeconds": 119,
+ "addExit": 0,
+ "add": {
+  "ok": true,
+  "site": "nominatim-openstreetmap",
+  "url": "https://nominatim.openstreetmap.org/ui/search.html",
+  "commands": [
+   {
+    "name": "search-places",
+    "summary": "Free-text geocoding search for places, addresses or POIs by name. Returns matching OSM objects with coordinates.",
+    "verified": true
+   },
+   {
+    "name": "search-structured",
+    "summary": "Structured address/POI search using separate fields (amenity, street, city, county, state, country, postalcode). Can be restricted to a bounding box.",
+    "verified": true
+   },
+   {
+    "name": "get-place-details",
+    "summary": "Get full details of an OSM place by type and id: names, extratags (wikidata, population, website), address hierarchy, linked places, centroid. Optionally includes child places or search keywords.",
+    "verified": true
+   },
+   {
+    "name": "reverse-geocode",
+    "summary": "Reverse geocode a latitude/longitude to the nearest OSM object and its address, at a chosen detail level (zoom).",
+    "verified": true
+   },
+   {
+    "name": "get-status",
+    "summary": "Check Nominatim server status, software/database version and when the OSM data was last updated.",
+    "verified": true
+   }
+  ],
+  "verified": 5,
+  "writes": 0,
+  "dropped": [],
+  "blockers": [],
+  "loggedIn": false,
+  "seconds": 118,
+  "next": [
+   "clify nominatim-openstreetmap",
+   "clify nominatim-openstreetmap search-places --q \"Brandenburg Gate Berlin\""
+  ],
+  "installed": "/home/ubuntu/clify-runs/blaxel-w1/home/bin/nominatim-openstreetmap",
+  "explored": {
+   "steps": 13,
+   "recorded": 34,
+   "heldWrites": 0
+  }
+ },
+ "check": {
+  "on": "blaxel",
+  "node": "v24.22.0",
+  "seconds": 3,
+  "reads": 5,
+  "verified": 5,
+  "failed": [],
+  "results": [
+   {
+    "name": "search-places",
+    "ok": true,
+    "ms": 74
+   },
+   {
+    "name": "search-structured",
+    "ok": true,
+    "ms": 10
+   },
+   {
+    "name": "get-place-details",
+    "ok": true,
+    "ms": 8
+   },
+   {
+    "name": "reverse-geocode",
+    "ok": true,
+    "ms": 8
+   },
+   {
+    "name": "get-status",
+    "ok": true,
+    "ms": 8
+   }
+  ]
+ },
+ "deleted": true,
+ "seconds": 125
+}

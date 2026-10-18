@@ -1,0 +1,166 @@
+{
+ "url": "https://www.riksdagen.se/",
+ "category": "gov-nordic",
+ "sandbox": "clify-www-riksdagen-se",
+ "startedAt": "2026-10-18T09:06:25.129Z",
+ "region": "us-pdx-1",
+ "chrome": "Chrome/148.0.7778.96",
+ "sandboxStartMs": 1713,
+ "addSeconds": 415,
+ "addExit": 0,
+ "add": {
+  "ok": true,
+  "site": "riksdagen",
+  "url": "https://www.riksdagen.se/",
+  "commands": [
+   {
+    "name": "search",
+    "summary": "Search riksdagen.se by keyword. Filter by category (documents, members, web-TV, calendar, news, web pages), document type, party and riksm\u00f6te, sort the results, and page through them.",
+    "verified": true
+   },
+   {
+    "name": "list-members",
+    "summary": "List current members of parliament (ledam\u00f6ter), optionally filtered by party.",
+    "verified": true
+   },
+   {
+    "name": "get-member",
+    "summary": "Get a member of parliament's profile: party, constituency, assignments and recent activity (motions, speeches, questions).",
+    "verified": true
+   },
+   {
+    "name": "get-party",
+    "summary": "Get a party page: description, leadership and members.",
+    "verified": true
+   },
+   {
+    "name": "get-document",
+    "summary": "Get a parliamentary document's detail page (motion, bet\u00e4nkande/committee report, f\u00f6redragningslista, talarlista, etc.) including its proposals, case history, debate and decision.",
+    "verified": true
+   },
+   {
+    "name": "get-planned-chamber-items",
+    "summary": "Get the list of planned items (upcoming debates and decisions) for the Chamber (kammaren).",
+    "verified": true
+   },
+   {
+    "name": "get-webtv-video",
+    "summary": "Get a web-TV video (debate) detail: metadata, speaker list and related documents (talarlista, f\u00f6redragningslista).",
+    "verified": true
+   },
+   {
+    "name": "get-calendar",
+    "summary": "Get the parliament calendar page (upcoming chamber sessions, committee meetings and events).",
+    "verified": true
+   },
+   {
+    "name": "get-calendar-event",
+    "summary": "Get a single calendar event's detail (time, place, agenda, related documents).",
+    "verified": true
+   },
+   {
+    "name": "list-news",
+    "summary": "Get the latest news (Aktuellt) from the Riksdag.",
+    "verified": true
+   },
+   {
+    "name": "get-news-category",
+    "summary": "Get a news/theme page under Aktuellt, e.g. valet-2026 or allmanna-motionstiden.",
+    "verified": true
+   },
+   {
+    "name": "get-page",
+    "summary": "Generic fallback: fetch the CMS JSON for any riksdagen.se page path, e.g. a search URL with extra filters, an open-data documentation page, or a member page with an activity filter.",
+    "verified": true
+   }
+  ],
+  "verified": 12,
+  "writes": 0,
+  "dropped": [],
+  "blockers": [],
+  "loggedIn": false,
+  "seconds": 415,
+  "next": [
+   "clify riksdagen",
+   "clify riksdagen search --sok \"klimat\" --avd \"dokument\" --doktyp \"mot\""
+  ],
+  "installed": "/home/ubuntu/clify-runs/blaxel-w1/home/bin/riksdagen",
+  "explored": {
+   "steps": 30,
+   "recorded": 520,
+   "heldWrites": 156
+  }
+ },
+ "check": {
+  "on": "blaxel",
+  "node": "v24.22.0",
+  "seconds": 11,
+  "reads": 12,
+  "verified": 12,
+  "failed": [],
+  "results": [
+   {
+    "name": "search",
+    "ok": true,
+    "ms": 1570
+   },
+   {
+    "name": "list-members",
+    "ok": true,
+    "ms": 801
+   },
+   {
+    "name": "get-member",
+    "ok": true,
+    "ms": 685
+   },
+   {
+    "name": "get-party",
+    "ok": true,
+    "ms": 555
+   },
+   {
+    "name": "get-document",
+    "ok": true,
+    "ms": 345
+   },
+   {
+    "name": "get-planned-chamber-items",
+    "ok": true,
+    "ms": 426
+   },
+   {
+    "name": "get-webtv-video",
+    "ok": true,
+    "ms": 433
+   },
+   {
+    "name": "get-calendar",
+    "ok": true,
+    "ms": 2340
+   },
+   {
+    "name": "get-calendar-event",
+    "ok": true,
+    "ms": 421
+   },
+   {
+    "name": "list-news",
+    "ok": true,
+    "ms": 344
+   },
+   {
+    "name": "get-news-category",
+    "ok": true,
+    "ms": 294
+   },
+   {
+    "name": "get-page",
+    "ok": true,
+    "ms": 382
+   }
+  ]
+ },
+ "deleted": true,
+ "seconds": 428
+}

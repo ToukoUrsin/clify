@@ -1,0 +1,39 @@
+{
+ "task": "nodejs-latest-lts",
+ "site": "nodejs",
+ "mode": "browser",
+ "trial": 1,
+ "tag": "main",
+ "ok": true,
+ "why": "all expected values present",
+ "answer": "v24.22.0 (Krypton)",
+ "expected": {
+  "expect": [
+   "24.22.0",
+   "Krypton"
+  ],
+  "detail": {
+   "version": "v24.22.0",
+   "lts": "Krypton"
+  }
+ },
+ "wallMs": 13071,
+ "apiMs": 9614,
+ "turns": 4,
+ "toolCalls": 3,
+ "tokens": {
+  "input": 8,
+  "output": 557,
+  "cacheWrite": 6588,
+  "cacheRead": 43174,
+  "total": 50327
+ },
+ "costUsd": 0.0527468,
+ "models": [
+  "claude-opus-5-5"
+ ],
+ "exitCode": 0,
+ "timedOut": false,
+ "subtype": "success",
+ "startedAt": "2026-10-17T23:23:05.494Z"
+}

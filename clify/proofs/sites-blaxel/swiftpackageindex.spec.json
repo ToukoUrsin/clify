@@ -1,0 +1,691 @@
+{
+ "name": "swiftpackageindex",
+ "startUrl": "https://swiftpackageindex.com/",
+ "origin": "https://swiftpackageindex.com",
+ "createdAt": "2026-10-18T09:02:40.884Z",
+ "description": "Swift Package Index (swiftpackageindex.com) is a search engine and catalogue of Swift packages. This CLI searches packages, lists them by author, keyword or curated collection, and reads package details, README, releases, build compatibility results, build logs, DocC documentation, maintainer score info, recent builds and Swift 6 readiness stats.",
+ "commands": [
+  {
+   "name": "search-packages",
+   "summary": "Search Swift packages by keyword. Supports inline filters such as stars:>500, platform:ios,linux, last_activity:>2025-01-01 and product:library inside the query.",
+   "method": "GET",
+   "urlTemplate": "/search",
+   "params": [
+    {
+     "name": "query",
+     "in": "query",
+     "required": true,
+     "type": "string",
+     "description": "Search terms, optionally with inline filters, e.g. 'networking stars:>500 platform:ios,linux last_activity:>2025-01-01 product:library'. Filter keys: stars (e.g. stars:>500), platform (ios, macos, lin",
+     "example": "networking"
+    },
+    {
+     "name": "page",
+     "in": "query",
+     "required": false,
+     "type": "number",
+     "description": "Result page number, starting at 1. Each page has 20 packages.",
+     "example": "2"
+    }
+   ],
+   "responseType": "html",
+   "extract": {
+    "list": "ul#package-list > li",
+    "fields": {
+     "name": "h4",
+     "summary": "a > p",
+     "identifier": "li.identifier small",
+     "activity": "li.activity small",
+     "stars": "li.stars small",
+     "matchingKeywords": "ul.keywords.matching",
+     "url": "a@href"
+    }
+   },
+   "defaultFields": [
+    "identifier",
+    "name",
+    "summary",
+    "stars",
+    "activity",
+    "url"
+   ],
+   "pagination": {
+    "type": "page",
+    "param": "page"
+   },
+   "mutates": false,
+   "example": {
+    "query": "networking"
+   },
+   "source": "E2",
+   "verified": true
+  },
+  {
+   "name": "get-package",
+   "summary": "Get details for a package: summary, authors, history, activity, dependencies, license, stars, products, data race safety, latest stable version, default branch and keywords.",
+   "method": "GET",
+   "urlTemplate": "/{owner}/{repo}",
+   "params": [
+    {
+     "name": "owner",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Repository owner (GitHub user or org), e.g. apple",
+     "example": "apple"
+    },
+    {
+     "name": "repo",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Repository name, e.g. swift-nio",
+     "example": "swift-nio"
+    }
+   ],
+   "responseType": "html",
+   "extract": {
+    "fields": {
+     "name": "div.package-title h2",
+     "repository": "div.package-title small",
+     "summary": "p.summary",
+     "latestStable": "div.version span.stable",
+     "defaultBranch": "div.version span.branch",
+     "authors": "li.authors",
+     "history": "li.history",
+     "activity": "li.activity",
+     "dependencies": "li.dependencies div",
+     "collections": "li.custom-collections",
+     "license": "li.license",
+     "stars": "li.stars",
+     "libraries": "li.libraries",
+     "executables": "li.executables",
+     "plugins": "li.plugins",
+     "macros": "li.macros",
+     "dataRaceSafety": "li.data-race-safety span",
+     "keywords": "li.keywords ul.keywords"
+    }
+   },
+   "defaultFields": [
+    "name",
+    "summary",
+    "latestStable",
+    "stars",
+    "license",
+    "activity",
+    "dependencies",
+    "keywords"
+   ],
+   "mutates": false,
+   "example": {
+    "owner": "apple",
+    "repo": "swift-nio"
+   },
+   "source": "E6 E12 E13 E17 GET https://swiftpackageindex.com/Alamofire/Alamofire",
+   "verified": true
+  },
+  {
+   "name": "get-package-readme",
+   "summary": "Get the rendered README text of a package.",
+   "method": "GET",
+   "urlTemplate": "/{owner}/{repo}/readme",
+   "params": [
+    {
+     "name": "owner",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Repository owner, e.g. apple",
+     "example": "apple"
+    },
+    {
+     "name": "repo",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Repository name, e.g. swift-nio",
+     "example": "swift-nio"
+    }
+   ],
+   "headers": {
+    "turbo-frame": "readme_content"
+   },
+   "responseType": "html",
+   "extract": {
+    "fields": {
+     "readme": "turbo-frame#readme_content"
+    }
+   },
+   "defaultFields": [
+    "readme"
+   ],
+   "mutates": false,
+   "example": {
+    "owner": "apple",
+    "repo": "swift-nio"
+   },
+   "source": "E5 E8 GET https://swiftpackageindex.com/apple/swift-nio/readme",
+   "verified": true
+  },
+  {
+   "name": "get-package-releases",
+   "summary": "Get the release notes of a package, newest first: version, release date and changes.",
+   "method": "GET",
+   "urlTemplate": "/{owner}/{repo}/releases",
+   "params": [
+    {
+     "name": "owner",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Repository owner, e.g. Alamofire",
+     "example": "Alamofire"
+    },
+    {
+     "name": "repo",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Repository name, e.g. Alamofire",
+     "example": "Alamofire"
+    }
+   ],
+   "headers": {
+    "turbo-frame": "releases_content"
+   },
+   "responseType": "html",
+   "extract": {
+    "fields": {
+     "latestVersion": "turbo-frame#releases_content > a h2",
+     "latestReleaseUrl": "turbo-frame#releases_content > a@href",
+     "latestReleased": "turbo-frame#releases_content > small",
+     "releases": "turbo-frame#releases_content"
+    }
+   },
+   "defaultFields": [
+    "latestVersion",
+    "latestReleased",
+    "releases"
+   ],
+   "mutates": false,
+   "example": {
+    "owner": "Alamofire",
+    "repo": "Alamofire"
+   },
+   "source": "E4 E7 GET https://swiftpackageindex.com/apple/swift-nio/releases",
+   "verified": true
+  },
+  {
+   "name": "get-package-builds",
+   "summary": "Get a package's build compatibility matrix: one row per platform per Swift version, with results for the latest stable release and the default branch, plus build ids.",
+   "method": "GET",
+   "urlTemplate": "/{owner}/{repo}/builds",
+   "params": [
+    {
+     "name": "owner",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Repository owner, e.g. Alamofire",
+     "example": "Alamofire"
+    },
+    {
+     "name": "repo",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Repository name, e.g. Alamofire",
+     "example": "Alamofire"
+    }
+   ],
+   "responseType": "html",
+   "extract": {
+    "list": "ul.build-results > li.row",
+    "fields": {
+     "platform": "div.row-labels strong",
+     "stableVersion": "div.column-labels span.stable",
+     "branch": "div.column-labels span.branch",
+     "results": "div.results",
+     "firstBuildUrl": "div.results a@href"
+    }
+   },
+   "defaultFields": [
+    "platform",
+    "stableVersion",
+    "branch",
+    "results",
+    "firstBuildUrl"
+   ],
+   "mutates": false,
+   "example": {
+    "owner": "Alamofire",
+    "repo": "Alamofire"
+   },
+   "source": "E3 GET https://swiftpackageindex.com/Alamofire/Alamofire/builds",
+   "verified": true
+  },
+  {
+   "name": "get-build",
+   "summary": "Get one build's status, Swift version, platform, build command and full build log by build id (UUID).",
+   "method": "GET",
+   "urlTemplate": "/builds/{id}",
+   "params": [
+    {
+     "name": "id",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Build UUID, as found in build result or build monitor links (/builds/{id})",
+     "example": "166991FD-C368-433C-936F-43B8689BD33D"
+    }
+   ],
+   "responseType": "html",
+   "extract": {
+    "fields": {
+     "summary": "main div.inner p",
+     "status": "main div.inner p strong",
+     "package": "main div.inner p a",
+     "command": "main div.inner pre",
+     "log": "pre#build-log"
+    }
+   },
+   "defaultFields": [
+    "summary",
+    "status",
+    "package",
+    "command",
+    "log"
+   ],
+   "mutates": false,
+   "example": {
+    "id": "166991FD-C368-433C-936F-43B8689BD33D"
+   },
+   "source": "E9 GET https://swiftpackageindex.com/builds/{id}",
+   "verified": true
+  },
+  {
+   "name": "list-author-packages",
+   "summary": "List all packages by an author/owner as a JSON package collection (repo URL, summary, license, keywords, versions with verified compatibility).",
+   "method": "GET",
+   "urlTemplate": "/{owner}/collection.json",
+   "params": [
+    {
+     "name": "owner",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Author or organization name, e.g. Alamofire",
+     "example": "Alamofire"
+    }
+   ],
+   "responseType": "json",
+   "resultPath": "packages",
+   "defaultFields": [
+    "url",
+    "summary",
+    "license.name",
+    "keywords",
+    "readmeURL"
+   ],
+   "mutates": false,
+   "example": {
+    "owner": "Alamofire"
+   },
+   "source": "E1 E10 GET https://swiftpackageindex.com/Alamofire/collection.json",
+   "verified": true
+  },
+  {
+   "name": "list-keyword-packages",
+   "summary": "List packages tagged with a keyword/topic, e.g. networking, 20 per page.",
+   "method": "GET",
+   "urlTemplate": "/keywords/{keyword}",
+   "params": [
+    {
+     "name": "keyword",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Keyword slug, lowercase with hyphens, e.g. networking or http-networking",
+     "example": "networking"
+    },
+    {
+     "name": "page",
+     "in": "query",
+     "required": false,
+     "type": "number",
+     "description": "Page number, starting at 1",
+     "example": "2"
+    }
+   ],
+   "responseType": "html",
+   "extract": {
+    "list": "ul#package-list > li",
+    "fields": {
+     "name": "h4",
+     "summary": "a > p",
+     "identifier": "li.identifier small",
+     "activity": "li.activity small",
+     "stars": "li.stars small",
+     "hasDocumentation": "li.has-documentation small",
+     "url": "a@href"
+    }
+   },
+   "defaultFields": [
+    "identifier",
+    "name",
+    "summary",
+    "stars",
+    "activity",
+    "url"
+   ],
+   "pagination": {
+    "type": "page",
+    "param": "page"
+   },
+   "mutates": false,
+   "example": {
+    "keyword": "networking"
+   },
+   "source": "E16 GET https://swiftpackageindex.com/keywords/networking",
+   "verified": true
+  },
+  {
+   "name": "get-collection",
+   "summary": "List the packages in a curated custom package collection, e.g. sswg-graduated.",
+   "method": "GET",
+   "urlTemplate": "/collections/{slug}",
+   "params": [
+    {
+     "name": "slug",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Collection slug, e.g. sswg-graduated",
+     "example": "sswg-graduated"
+    },
+    {
+     "name": "page",
+     "in": "query",
+     "required": false,
+     "type": "number",
+     "description": "Page number, starting at 1"
+    }
+   ],
+   "responseType": "html",
+   "extract": {
+    "list": "ul#package-list > li",
+    "fields": {
+     "name": "h4",
+     "summary": "a > p",
+     "identifier": "li.identifier small",
+     "activity": "li.activity small",
+     "stars": "li.stars small",
+     "hasDocumentation": "li.has-documentation small",
+     "url": "a@href"
+    }
+   },
+   "defaultFields": [
+    "identifier",
+    "name",
+    "summary",
+    "stars",
+    "activity",
+    "url"
+   ],
+   "pagination": {
+    "type": "page",
+    "param": "page"
+   },
+   "mutates": false,
+   "example": {
+    "slug": "sswg-graduated"
+   },
+   "source": "E11 GET https://swiftpackageindex.com/collections/sswg-graduated",
+   "verified": true
+  },
+  {
+   "name": "get-documentation-index",
+   "summary": "Get the DocC documentation navigation index (modules, symbols, articles with paths) for a package version.",
+   "method": "GET",
+   "urlTemplate": "/{owner}/{repo}/{version}/index/index.json",
+   "params": [
+    {
+     "name": "owner",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Repository owner, e.g. apple",
+     "example": "apple"
+    },
+    {
+     "name": "repo",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Repository name, e.g. swift-nio",
+     "example": "swift-nio"
+    },
+    {
+     "name": "version",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Package version tag (e.g. 2.104.0), branch name, or '~' for the default documentation version",
+     "example": "2.104.0"
+    }
+   ],
+   "responseType": "json",
+   "resultPath": "interfaceLanguages.swift",
+   "defaultFields": [
+    "title",
+    "path",
+    "type",
+    "children"
+   ],
+   "mutates": false,
+   "example": {
+    "owner": "apple",
+    "repo": "swift-nio",
+    "version": "2.104.0"
+   },
+   "source": "E15 GET https://swiftpackageindex.com/apple/swift-nio/2.104.0/index/index.json",
+   "verified": true
+  },
+  {
+   "name": "get-documentation-page",
+   "summary": "Get a DocC documentation page as JSON (abstract, overview content, topic sections) for a module or symbol path in a package version.",
+   "method": "GET",
+   "urlTemplate": "/{owner}/{repo}/{version}/data/documentation/{path}.json",
+   "params": [
+    {
+     "name": "owner",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Repository owner, e.g. apple",
+     "example": "apple"
+    },
+    {
+     "name": "repo",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Repository name, e.g. swift-nio",
+     "example": "swift-nio"
+    },
+    {
+     "name": "version",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Package version tag (e.g. 2.104.0), branch name, or '~' for the default documentation version",
+     "example": "2.104.0"
+    },
+    {
+     "name": "path",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Lowercase documentation path after /documentation/, e.g. a module name 'nio' or a symbol path such as 'nioconcurrencyhelpers/atomic' (taken from get-documentation-index paths)",
+     "example": "nio"
+    }
+   ],
+   "responseType": "json",
+   "defaultFields": [
+    "metadata.title",
+    "metadata.roleHeading",
+    "abstract",
+    "topicSections",
+    "primaryContentSections"
+   ],
+   "mutates": false,
+   "example": {
+    "owner": "apple",
+    "repo": "swift-nio",
+    "version": "2.104.0",
+    "path": "nio"
+   },
+   "source": "E14 E18 GET https://swiftpackageindex.com/apple/swift-nio/2.104.0/data/documentation/nio.json",
+   "verified": true
+  },
+  {
+   "name": "get-package-score",
+   "summary": "Get a package's maintainer information: total package score and the per-trait score breakdown used for search ranking.",
+   "method": "GET",
+   "urlTemplate": "/{owner}/{repo}/information-for-package-maintainers",
+   "params": [
+    {
+     "name": "owner",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Repository owner, e.g. Alamofire",
+     "example": "Alamofire"
+    },
+    {
+     "name": "repo",
+     "in": "path",
+     "required": true,
+     "type": "string",
+     "description": "Repository name, e.g. Alamofire",
+     "example": "Alamofire"
+    }
+   ],
+   "responseType": "html",
+   "extract": {
+    "list": "div.package-score-breakdown > div.score-trait",
+    "fields": {
+     "trait": "p",
+     "detail": ""
+    }
+   },
+   "defaultFields": [
+    "trait",
+    "detail"
+   ],
+   "mutates": false,
+   "example": {
+    "owner": "Alamofire",
+    "repo": "Alamofire"
+   },
+   "source": "E20 GET https://swiftpackageindex.com/Alamofire/Alamofire/information-for-package-maintainers",
+   "verified": true
+  },
+  {
+   "name": "list-recent-builds",
+   "summary": "List the most recent builds across all packages (build monitor): package, author, status, time, reference, Swift version and platform.",
+   "method": "GET",
+   "urlTemplate": "/build-monitor",
+   "params": [],
+   "responseType": "html",
+   "extract": {
+    "list": "a[href^='/builds/']",
+    "fields": {
+     "package": "div.package-name h3",
+     "author": "div.package-name span",
+     "status": "div.status span",
+     "when": "div.status small",
+     "reference": "div.reference",
+     "summary": "",
+     "url": "@href"
+    }
+   },
+   "defaultFields": [
+    "package",
+    "status",
+    "when",
+    "reference",
+    "summary",
+    "url"
+   ],
+   "mutates": false,
+   "source": "E19 GET https://swiftpackageindex.com/build-monitor",
+   "verified": true
+  },
+  {
+   "name": "list-recent-activity",
+   "summary": "List recently added packages and recent package releases from the home page.",
+   "method": "GET",
+   "urlTemplate": "/",
+   "params": [],
+   "responseType": "html",
+   "extract": {
+    "list": "section.recent li",
+    "fields": {
+     "package": "a",
+     "version": "a small",
+     "text": "",
+     "url": "a@href"
+    }
+   },
+   "defaultFields": [
+    "package",
+    "version",
+    "text",
+    "url"
+   ],
+   "mutates": false,
+   "source": "E22 GET https://swiftpackageindex.com/",
+   "verified": true
+  },
+  {
+   "name": "get-swift6-readiness",
+   "summary": "Get the Ready for Swift 6 stats: time series of packages with zero data race safety errors and total errors, for all packages and subsets.",
+   "method": "GET",
+   "urlTemplate": "/ready-for-swift-6",
+   "params": [],
+   "responseType": "html",
+   "extract": {
+    "jsonScript": "script[type=\"application/json\"]"
+   },
+   "defaultFields": [
+    "id",
+    "name",
+    "total",
+    "values"
+   ],
+   "mutates": false,
+   "source": "E21 GET https://swiftpackageindex.com/ready-for-swift-6",
+   "verified": true
+  }
+ ],
+ "blockers": [],
+ "notes": [
+  "Packages are identified by owner/repo, the GitHub path, e.g. apple/swift-nio. Search and listing results return this as 'identifier' and as the relative 'url'.",
+  "Search filters go inside the query string itself, e.g. 'networking stars:>500 platform:ios,linux last_activity:>2025-01-01 product:library'. See /faq#search-filters.",
+  "get-package-builds rows are grouped by Swift version, newest first (6.4, 6.3, 6.2, ...), with one row per platform in each group. The 'results' text lists the stable result first and the default-branch result second. Pass the build UUID from a /builds/{id} link to get-build.",
+  "Build logs returned by get-build can be very large.",
+  "Documentation paths are lowercase. Use get-documentation-index to discover paths, then pass the part after '/documentation/' to get-documentation-page.",
+  "list-author-packages returns GitHub repository URLs. Strip 'https://github.com/' and '.git' to get the owner/repo for the other commands.",
+  "The badge API is disallowed by robots.txt and is not exposed. The site has no login, so every command is read-only and public."
+ ],
+ "dropped": [],
+ "generated": {
+  "by": "clify add",
+  "model": "claude-opus-5-5",
+  "exploredSteps": 21,
+  "recorded": 30,
+  "verifiedAt": "2026-10-18T09:04:11.145Z",
+  "seconds": 196
+ }
+}

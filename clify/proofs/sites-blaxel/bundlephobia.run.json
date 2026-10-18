@@ -1,0 +1,125 @@
+{
+ "url": "https://bundlephobia.com/",
+ "category": "dev",
+ "sandbox": "clify-bundlephobia-com",
+ "startedAt": "2026-10-18T09:39:03.208Z",
+ "region": "us-pdx-1",
+ "chrome": "Chrome/148.0.7778.96",
+ "sandboxStartMs": 1723,
+ "addSeconds": 158,
+ "addExit": 0,
+ "add": {
+  "ok": true,
+  "site": "bundlephobia",
+  "url": "https://bundlephobia.com/",
+  "commands": [
+   {
+    "name": "search-packages",
+    "summary": "Autocomplete/search npm package names (npms.io suggestions used by the Bundlephobia search box)",
+    "verified": true
+   },
+   {
+    "name": "get-package-size",
+    "summary": "Get minified and gzipped bundle size, dependency count and module flags for an npm package (optionally a specific version)",
+    "verified": true
+   },
+   {
+    "name": "get-package-history",
+    "summary": "List a package's recent versions with their bundle sizes and publish dates, plus major/minor release markers",
+    "verified": true
+   },
+   {
+    "name": "get-similar-packages",
+    "summary": "Find alternative or similar packages in the same category as a given package",
+    "verified": true
+   },
+   {
+    "name": "list-recent-searches",
+    "summary": "List packages recently searched on Bundlephobia by all users, keyed by package name",
+    "verified": true
+   },
+   {
+    "name": "compare-trends",
+    "summary": "Compare download, star and size trends over time for several packages (the data behind the /trends page)",
+    "verified": true
+   },
+   {
+    "name": "get-github-package-json",
+    "summary": "Fetch the package.json of a GitHub repo (default branch) to list its dependencies for scanning with get-package-size",
+    "verified": true
+   }
+  ],
+  "verified": 7,
+  "writes": 0,
+  "dropped": [
+   {
+    "name": "get-package-details",
+    "reason": "The server-rendered __NEXT_DATA__ returns initialResult: null for a valid package, so the page does not reliably embed the result. get-package-size covers the same data from /api/size."
+   },
+   {
+    "name": "get-package-exports",
+    "reason": "HTTP 503 (HTTP 503)"
+   }
+  ],
+  "blockers": [],
+  "loggedIn": false,
+  "seconds": 157,
+  "next": [
+   "clify bundlephobia",
+   "clify bundlephobia search-packages --q \"react\""
+  ],
+  "installed": "/home/ubuntu/clify-runs/blaxel-retry2/home/bin/bundlephobia",
+  "explored": {
+   "steps": 14,
+   "recorded": 64,
+   "heldWrites": 11
+  }
+ },
+ "check": {
+  "on": "blaxel",
+  "node": "v24.22.0",
+  "seconds": 3,
+  "reads": 7,
+  "verified": 7,
+  "failed": [],
+  "results": [
+   {
+    "name": "search-packages",
+    "ok": true,
+    "ms": 634
+   },
+   {
+    "name": "get-package-size",
+    "ok": true,
+    "ms": 81
+   },
+   {
+    "name": "get-package-history",
+    "ok": true,
+    "ms": 43
+   },
+   {
+    "name": "get-similar-packages",
+    "ok": true,
+    "ms": 32
+   },
+   {
+    "name": "list-recent-searches",
+    "ok": true,
+    "ms": 14
+   },
+   {
+    "name": "compare-trends",
+    "ok": true,
+    "ms": 48
+   },
+   {
+    "name": "get-github-package-json",
+    "ok": true,
+    "ms": 24
+   }
+  ]
+ },
+ "deleted": true,
+ "seconds": 163
+}
