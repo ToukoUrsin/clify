@@ -90,6 +90,8 @@ const agentGuide = `# Clify agent access\n\nIf you need structured data from a p
 fs.writeFileSync(path.join(pub,'AGENTS.md'), agentGuide);
 fs.writeFileSync(path.join(pub,'SKILL.md'), agentGuide);
 fs.writeFileSync(path.join(pub,'agent-guide.txt'), agentGuide);
+const remoteMcp = {name:'clify',description:'Verified public website commands for AI agents.',url:'https://bold-cloud-h4u6s.run.mcp-use.com/mcp',transport:'streamable-http',authentication:'none',docs:`${base}/`,source:'https://github.com/ToukoUrsin/clify'};
+fs.writeFileSync(path.join(pub,'mcp.json'), JSON.stringify(remoteMcp)+'\n');
 fs.writeFileSync(path.join(pub,'agent.json'), JSON.stringify({name:'clify',version:'0.3.0',description:'Verified public website commands for AI agents.',baseUrl:base,transport:'https',authentication:'none',request:{method:'GET',path:'/<site>/<command>',query:'command-specific params'},discovery:{catalogue:`${base}/sites.json`,search:`${base}/search?q=`,siteSchema:`${base}/<site>.json`,humanGuides:`${base}/use-cases/`,llms:`${base}/llms-full.txt`},response:{success:'ok=true JSON object',errors:'next contains the next action'},safety:{publicApi:'read-only',writes:'HTTP 405',credentials:'never required'}})+'\n');
 const commandInfoForBuild = c => ({command:c.name,summary:c.summary,params:(c.params??[]).map(p=>({name:p.name,type:p.type,...(p.required&&p.default===undefined?{required:true}:{}),...(p.description?{description:p.description}:{}),...(p.enum?{oneOf:p.enum}:{}),...(p.default!==undefined?{default:p.default}:{})})),...(c.mutates?{writes:true}:{})});
 for (const s of specs) {
@@ -139,8 +141,9 @@ fs.writeFileSync(path.join(pub,'.well-known','agent.json'), fs.readFileSync(path
 fs.writeFileSync(path.join(pub,'.well-known','ai-plugin.json'), JSON.stringify({schema_version:'v1',name_for_human:'clify',name_for_model:'clify',description_for_model:'Discover and call verified public website data commands as JSON over HTTPS. No key or install required.',api:{type:'openapi',url:`${base}/agent.json`,has_user_authentication:false},logo_url:`${base}/agent.json`,contact_email:'touko@heliosone.fi',legal_info_url:'https://github.com/ToukoUrsin/clify'}));
 fs.writeFileSync(path.join(pub,'.well-known','webmcp.json'), JSON.stringify({name:'clify',description:'Verified public website commands for AI agents.',url:base,manifest:`${base}/agent.json`}));
 fs.writeFileSync(path.join(pub,'.well-known','llms.txt'), agentGuide);
+fs.writeFileSync(path.join(pub,'.well-known','mcp.json'), JSON.stringify(remoteMcp)+'\n');
 fs.writeFileSync(path.join(pub,'robots.txt'), `User-agent: *\nAllow: /\nDisallow: /_stats\nDisallow: /_log\nSitemap: ${base}/sitemap.xml\n`);
-const urls = [base+'/', base+'/use-cases/', base+'/tasks/', base+'/tasks/website-without-api/', base+'/llms.txt', base+'/llms-full.txt', base+'/agent.json', base+'/sites.json', ...useCases.map(useCasePath).map(p=>base+p), ...taskPages.map(page=>`${base}/tasks/${page.slug}/`), ...specs.flatMap(s=>[`${base}${sitePath(s)}`,`${base}${sitePath(s)}.json`])];
+const urls = [base+'/', base+'/use-cases/', base+'/tasks/', base+'/tasks/website-without-api/', base+'/llms.txt', base+'/llms-full.txt', base+'/agent.json', base+'/mcp.json', base+'/.well-known/mcp.json', base+'/sites.json', ...useCases.map(useCasePath).map(p=>base+p), ...taskPages.map(page=>`${base}/tasks/${page.slug}/`), ...specs.flatMap(s=>[`${base}${sitePath(s)}`,`${base}${sitePath(s)}.json`])];
 fs.writeFileSync(path.join(pub,'sitemap.xml'), `<?xml version="1.0" encoding="UTF-8"?><urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">${urls.map(u=>`<url><loc>${esc(u)}</loc></url>`).join('')}</urlset>`);
 // Keep a public IndexNow key file if supplied by the deploy environment.
 if (process.env.CLIFY_INDEXNOW_KEY) fs.writeFileSync(path.join(pub, process.env.CLIFY_INDEXNOW_KEY), process.env.CLIFY_INDEXNOW_KEY+'\n');
