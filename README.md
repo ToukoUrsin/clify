@@ -19,7 +19,7 @@ curl https://clify-dev.netlify.app/search?q=rust+crates
 curl "https://clify-dev.netlify.app/crates/get-crate?name=serde"
 ```
 
-Use `/sites.json` for the catalogue, `/llms.txt` for the full agent guide, and `/<site>.json` for commands and verified example URLs.
+Use `/sites.json` for the catalogue, `/llms.txt` for the full agent guide, and `/<site>.json` for commands and verified example URLs. Task-specific entry points include [Finnish procurement notices](https://clify-dev.netlify.app/tasks/finnish-procurement-notices/), [Finnish library catalogue](https://clify-dev.netlify.app/tasks/finnish-library-catalogue/), [Finnish company lookup](https://clify-dev.netlify.app/tasks/finnish-company-registry/), [weather forecasts](https://clify-dev.netlify.app/tasks/weather-forecast-paris/), [PubMed](https://clify-dev.netlify.app/tasks/pubmed-crispr-search/), and [Python package metadata](https://clify-dev.netlify.app/tasks/python-package-lookup/). Machine-readable discovery manifests are at `/agent.json` and `/.well-known/webmcp.json`.
 
 ## Live demo: 6 browser agents vs 6 clify agents
 
