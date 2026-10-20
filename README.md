@@ -10,6 +10,17 @@
 
 Built for YC's *Make Something Agents Want* hackathon (Oct 17–18, 2026).
 
+## Use it with curl, nothing to install
+
+The public agent API is at https://clify-dev.netlify.app. It needs no install, key, or account:
+
+```bash
+curl https://clify-dev.netlify.app/search?q=rust+crates
+curl "https://clify-dev.netlify.app/crates/get-crate?name=serde"
+```
+
+Use `/sites.json` for the catalogue, `/llms.txt` for the full agent guide, and `/<site>.json` for commands and verified example URLs.
+
 ## Live demo: 6 browser agents vs 6 clify agents
 
 ![Live grid run: six Claude Code agents in a browser (left) and six with clify (right), one signed-in site each](race/artifacts/grid.png)

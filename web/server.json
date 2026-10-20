@@ -1,0 +1,8 @@
+{
+  "$schema": "https://static.modelcontextprotocol.io/schemas/2025-10-17/server.schema.json",
+  "name": "app.netlify.clify-dev/clify",
+  "description": "Verified websites as JSON commands for AI agents over plain curl or MCP.",
+  "repository": {"url": "https://github.com/ToukoUrsin/clify", "source": "github"},
+  "version": "0.3.0",
+  "remotes": [{"type": "streamable-http", "url": "https://bold-cloud-h4u6s.run.mcp-use.com/mcp"}]
+}

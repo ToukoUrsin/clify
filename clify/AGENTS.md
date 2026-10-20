@@ -78,3 +78,5 @@ Tools are `<site>__<command>` with JSON-schema params plus `fields`/`limit`; wri
 ## Rules clify enforces
 
 No CAPTCHA solving, no bot-detection evasion (honest `clify/<version>` user agent, headless Chrome as is), robots.txt obeyed while exploring, writes held during exploration unless allowed, sessions sent only to the site's own domain, credentials kept in an encrypted vault and never printed.
+
+Public curl API (no install/key/account): https://clify-dev.netlify.app

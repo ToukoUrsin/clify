@@ -1,0 +1,45 @@
+[build]
+  publish = "web/public"
+  functions = "web/functions"
+  command = "npm --prefix web run build"
+
+[functions]
+  node_bundler = "esbuild"
+
+[[redirects]]
+  from = "/sites.json"
+  to = "/.netlify/functions/api"
+  status = 200
+[[redirects]]
+  from = "/search"
+  to = "/.netlify/functions/api"
+  status = 200
+[[redirects]]
+  from = "/request"
+  to = "/.netlify/functions/api"
+  status = 200
+[[redirects]]
+  from = "/_stats"
+  to = "/.netlify/functions/api"
+  status = 200
+[[redirects]]
+  from = "/_log"
+  to = "/.netlify/functions/api"
+  status = 200
+[[redirects]]
+  from = "/:site"
+  to = "/.netlify/functions/api"
+  status = 200
+[[redirects]]
+  from = "/:site.json"
+  to = "/.netlify/functions/api"
+  status = 200
+[[redirects]]
+  from = "/:site/:command"
+  to = "/.netlify/functions/api"
+  status = 200
+
+[[redirects]]
+  from = "/*"
+  to = "/.netlify/functions/api"
+  status = 200

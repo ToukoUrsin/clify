@@ -38,3 +38,5 @@ Full guide with a troubleshooting table: [clify/AGENTS.md](clify/AGENTS.md). Acc
 - `clify/` is the product (TypeScript, run with tsx; `npm test` runs the offline suites). `mcp/` is the hosted MCP server and shares `clify/src/core.ts`. `race/`, `bench/`, `agent/` and `film/` are demos and evidence.
 - Live tests open headless Chrome only and run on a Linux machine; `test/real/run.sh` and `test/sites/run.sh` hit real sites, so keep them polite (they obey robots.txt and pace requests).
 - Keep the safety rules intact: no CAPTCHA solving, no bot evasion, writes need confirmation, sessions stay on their own domain.
+
+Public curl API (no install/key/account): https://clify-dev.netlify.app

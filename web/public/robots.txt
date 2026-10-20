@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://clify-dev.netlify.app/sitemap.xml

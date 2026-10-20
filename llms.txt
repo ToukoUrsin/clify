@@ -19,3 +19,5 @@
 - [mcp/README.md](mcp/README.md): hosted MCP server
 - [clify/proofs/](clify/proofs/): `clify add` on 160 unseen sites (133 of 160 sites with 3+ verified commands, 1,634 verified commands), agent handoff, cold start
 - [race/README.md](race/README.md), [bench/README.md](bench/README.md): browser agent vs clify agent
+
+Public curl API (no install/key/account): https://clify-dev.netlify.app
