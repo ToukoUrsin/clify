@@ -6551,7 +6551,9 @@ var handler = async (event) => {
     const rows2 = await allRows("logs/");
     if (path === "_log") {
       const since = q.since ? Date.parse(q.since) : 0;
-      return body(200, rows2.filter((r) => !since || Date.parse(r.ts) >= since).sort((a, b2) => a.ts.localeCompare(b2.ts)));
+      const out3 = body(200, rows2.filter((r) => !since || Date.parse(r.ts) >= since).sort((a, b2) => a.ts.localeCompare(b2.ts)));
+      await log(event, 200, true, void 0, void 0, { start });
+      return out3;
     }
     const organic = rows2.filter((r) => !r.test);
     const by = (xs, f) => xs.reduce((m, x) => {
@@ -6562,7 +6564,9 @@ var handler = async (event) => {
     const unique = [...new Set(organic.map((r) => r.hashedIp))];
     const counts = by(organic, (r) => r.hashedIp);
     const requests = await allRows("requests/");
-    return body(200, { ok: true, totalCalls: organic.length, testCalls: rows2.length - organic.length, byDay: by(organic, (r) => r.ts.slice(0, 10)), byUserAgent: by(organic, (r) => r.uaClass), bySiteCommand: by(organic, (r) => `${r.site ?? "none"}${r.command ? "/" + r.command : ""}`), uniqueHashedIps: unique.length, repeatUsers: Object.values(counts).filter((n) => n > 1).length, blobsContext: !!process.env.NETLIFY_BLOBS_CONTEXT, topUnmapped: requests.sort((a, b2) => (b2.count ?? 1) - (a.count ?? 1)).slice(0, 20) });
+    const out2 = body(200, { ok: true, totalCalls: organic.length, testCalls: rows2.length - organic.length, byDay: by(organic, (r) => r.ts.slice(0, 10)), byUserAgent: by(organic, (r) => r.uaClass), bySiteCommand: by(organic, (r) => `${r.site ?? "none"}${r.command ? "/" + r.command : ""}`), uniqueHashedIps: unique.length, repeatUsers: Object.values(counts).filter((n) => n > 1).length, blobsContext: !!process.env.NETLIFY_BLOBS_CONTEXT, topUnmapped: requests.sort((a, b2) => (b2.count ?? 1) - (a.count ?? 1)).slice(0, 20) });
+    await log(event, 200, true, void 0, void 0, { start });
+    return out2;
   }
   if (path === "request") {
     const url = q.url ?? "", why = q.why ?? "";
