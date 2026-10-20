@@ -9,6 +9,7 @@ Public JSON-over-curl API for AI agents. It exposes verified, read-only commands
 - Agent schema: https://clify-dev.netlify.app/agent.json
 - Full guide: https://clify-dev.netlify.app/llms-full.txt
 - Human-readable task guides: https://clify-dev.netlify.app/use-cases/
+- Official MCP Registry: https://registry.modelcontextprotocol.io/?q=app.netlify.clify-dev%2Fclify
 
 ## Request pattern
 GET https://clify-dev.netlify.app/<site>/<command>?<param>=<value>
