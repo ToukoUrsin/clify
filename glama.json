@@ -1,0 +1,8 @@
+{
+  "$schema": "https://glama.ai/mcp/schemas/server.json",
+  "maintainers": ["ToukoUrsin"],
+  "name": "Clify",
+  "description": "Read-only JSON APIs and a hosted MCP server for 135 public websites, with 1,619 live-verified commands.",
+  "repository": "https://github.com/ToukoUrsin/clify",
+  "url": "https://bold-cloud-h4u6s.run.mcp-use.com/mcp"
+}

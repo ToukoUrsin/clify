@@ -1,0 +1,9 @@
+/sites.json /.netlify/functions/api 200
+/search /.netlify/functions/api 200
+/request /.netlify/functions/api 200
+/_stats /.netlify/functions/api 200
+/_log /.netlify/functions/api 200
+/:site /.netlify/functions/api 200
+/:site.json /.netlify/functions/api 200
+/:site/:command /.netlify/functions/api 200
+/* /.netlify/functions/api 200
