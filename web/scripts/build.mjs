@@ -18,7 +18,7 @@ fs.writeFileSync(path.join(dataDir, 'specs.json'), JSON.stringify(specs));
 const esc = (s) => String(s ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const attr = esc;
 const base = 'https://clify-dev.netlify.app';
-const googleSiteVerification = process.env.CLIFY_GOOGLE_SITE_VERIFICATION || '';
+const googleSiteVerification = process.env.CLIFY_GOOGLE_SITE_VERIFICATION || 'ndUzoyRyIX3Ee3qqvEMeN_B6fkCIOJ7EQFN6MRb6u8U';
 const hostOf = s => new URL(s.origin).hostname.replace(/^www\./, '');
 const exampleArgs = c => {
   const out = {};
