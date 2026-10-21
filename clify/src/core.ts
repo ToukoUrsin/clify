@@ -329,7 +329,9 @@ export async function run(spec: SiteSpec, cmd: CommandSpec, raw: Record<string, 
   } catch (e) {
     return { ok: false, status: 0, url: cmd.urlTemplate, data: null, error: (e as Error).message, next: `clify ${spec.name} ${cmd.name} --help` };
   }
-  if (opts.sameSiteOnly && siteRoot(req.url.hostname) !== siteRoot(new URL(spec.origin).hostname)) {
+  const commandHost = new URL(cmd.urlTemplate.split("?")[0].replace(/\{(\w+)\}/g, "__P_$1__"), spec.origin).hostname;
+  const allowedRoots = new Set([siteRoot(new URL(spec.origin).hostname), siteRoot(commandHost)]);
+  if (opts.sameSiteOnly && !allowedRoots.has(siteRoot(req.url.hostname))) {
     return { ok: false, status: 0, url: req.url.toString(), data: null, error: `refusing request to ${req.url.hostname}: not ${spec.name}'s site` };
   }
   const confirmHint = opts.confirmHint ?? "--yes";

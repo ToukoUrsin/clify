@@ -6280,7 +6280,9 @@ async function run(spec, cmd, raw, opts = {}) {
   } catch (e) {
     return { ok: false, status: 0, url: cmd.urlTemplate, data: null, error: e.message, next: `clify ${spec.name} ${cmd.name} --help` };
   }
-  if (opts.sameSiteOnly && siteRoot(req.url.hostname) !== siteRoot(new URL(spec.origin).hostname)) {
+  const commandHost = new URL(cmd.urlTemplate.split("?")[0].replace(/\{(\w+)\}/g, "__P_$1__"), spec.origin).hostname;
+  const allowedRoots = /* @__PURE__ */ new Set([siteRoot(new URL(spec.origin).hostname), siteRoot(commandHost)]);
+  if (opts.sameSiteOnly && !allowedRoots.has(siteRoot(req.url.hostname))) {
     return { ok: false, status: 0, url: req.url.toString(), data: null, error: `refusing request to ${req.url.hostname}: not ${spec.name}'s site` };
   }
   const confirmHint = opts.confirmHint ?? "--yes";
@@ -6621,7 +6623,7 @@ var handler = async (event) => {
   for (const [k, v] of Object.entries(q)) if (!["fields", "limit", "key"].includes(k) && v !== void 0) args[k] = v;
   const fields = typeof q.fields === "string" ? q.fields.split(",").map((x) => x.trim()).filter(Boolean) : void 0;
   const limit = q.limit ? Number(q.limit) : void 0;
-  const result = await run(s, c, args, { sameSiteOnly: false, confirm: false, confirmHint: "public endpoint is read-only" });
+  const result = await run(s, c, args, { sameSiteOnly: true, confirm: false, confirmHint: "public endpoint is read-only" });
   if (!result.ok) {
     const missing = /missing --|unknown option|must be one of/.test(result.error ?? "");
     const e = { ok: false, error: result.error, next: `${base}/${s.name}.json`, help: commandInfo(s, c), exampleUrl: helpUrl(s, c) };

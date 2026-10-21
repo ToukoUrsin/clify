@@ -6280,7 +6280,9 @@ async function run(spec, cmd, raw, opts = {}) {
   } catch (e) {
     return { ok: false, status: 0, url: cmd.urlTemplate, data: null, error: e.message, next: `clify ${spec.name} ${cmd.name} --help` };
   }
-  if (opts.sameSiteOnly && siteRoot(req.url.hostname) !== siteRoot(new URL(spec.origin).hostname)) {
+  const commandHost = new URL(cmd.urlTemplate.split("?")[0].replace(/\{(\w+)\}/g, "__P_$1__"), spec.origin).hostname;
+  const allowedRoots = /* @__PURE__ */ new Set([siteRoot(new URL(spec.origin).hostname), siteRoot(commandHost)]);
+  if (opts.sameSiteOnly && !allowedRoots.has(siteRoot(req.url.hostname))) {
     return { ok: false, status: 0, url: req.url.toString(), data: null, error: `refusing request to ${req.url.hostname}: not ${spec.name}'s site` };
   }
   const confirmHint = opts.confirmHint ?? "--yes";
