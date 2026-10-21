@@ -1,0 +1,493 @@
+{
+  "name": "greenhouse",
+  "startUrl": "https://boards.greenhouse.io/",
+  "origin": "https://boards.greenhouse.io",
+  "createdAt": "2026-10-21T07:02:40.382Z",
+  "description": "Public Greenhouse job boards: list and search a company's open jobs, get job details with application questions and apply links, and browse company info, departments, offices and degree options.",
+  "commands": [
+    {
+      "name": "list-jobs",
+      "summary": "List all open jobs on a company's Greenhouse board, with title, location, apply link (absolute_url) and publish dates",
+      "method": "GET",
+      "urlTemplate": "https://boards-api.greenhouse.io/v1/boards/{boardToken}/jobs",
+      "params": [
+        {
+          "name": "boardToken",
+          "in": "path",
+          "required": true,
+          "type": "string",
+          "description": "Company board token, the slug in job-boards.greenhouse.io/{token}",
+          "example": "anthropic"
+        },
+        {
+          "name": "content",
+          "in": "query",
+          "required": false,
+          "type": "boolean",
+          "description": "true adds each job's description HTML, departments and offices. Output is much larger.",
+          "default": false
+        }
+      ],
+      "responseType": "json",
+      "resultPath": "jobs",
+      "defaultFields": [
+        "id",
+        "title",
+        "location.name",
+        "absolute_url",
+        "company_name",
+        "first_published",
+        "updated_at"
+      ],
+      "mutates": false,
+      "example": {
+        "boardToken": "anthropic"
+      },
+      "source": "",
+      "sample": "{\"id\":5456619008,\"title\":\"3P Revenue Accounting & Reporting\",\"location.name\":\"San Francisco, CA | Seattle, WA\",\"absolute_url\":\"https://job-boards.greenhouse.io/anthropic/jobs/5456619008\",\"company_name\":\"Anthropic\",\"first_published\":\"2026-10-19T11:17:24-04:00\",\"updated_at\":\"2026-10-19T11:17:24-04:00\"}",
+      "resultFields": [
+        "absolute_url",
+        "data_compliance",
+        "internal_job_id",
+        "location",
+        "metadata",
+        "id",
+        "updated_at",
+        "requisition_id",
+        "title",
+        "company_name",
+        "first_published",
+        "language",
+        "application_deadline"
+      ],
+      "verified": true
+    },
+    {
+      "name": "search-board-jobs",
+      "summary": "Search one company's job board by keyword, with optional department and office filters (50 jobs per page)",
+      "method": "GET",
+      "urlTemplate": "https://job-boards.greenhouse.io/{boardToken}?_data=routes%2F%24url_token",
+      "params": [
+        {
+          "name": "boardToken",
+          "in": "path",
+          "required": true,
+          "type": "string",
+          "description": "Company board token, e.g. anthropic",
+          "example": "anthropic"
+        },
+        {
+          "name": "keyword",
+          "in": "query",
+          "required": false,
+          "type": "string",
+          "description": "Free-text search over job titles and content",
+          "example": "engineer"
+        },
+        {
+          "name": "department",
+          "key": "departments[]",
+          "in": "query",
+          "required": false,
+          "type": "string",
+          "description": "Department id to filter by (from list-departments)",
+          "example": "4019632008"
+        },
+        {
+          "name": "office",
+          "key": "offices[]",
+          "in": "query",
+          "required": false,
+          "type": "string",
+          "description": "Office/location id to filter by (from list-offices)",
+          "example": "4001218008"
+        },
+        {
+          "name": "page",
+          "in": "query",
+          "required": false,
+          "type": "number",
+          "description": "Result page number, starting at 1",
+          "default": 1
+        }
+      ],
+      "responseType": "json",
+      "resultPath": "jobPosts.data",
+      "defaultFields": [
+        "id",
+        "title",
+        "location",
+        "department.name",
+        "absolute_url",
+        "published_at",
+        "updated_at"
+      ],
+      "pagination": {
+        "type": "page",
+        "param": "page"
+      },
+      "mutates": false,
+      "example": {
+        "boardToken": "anthropic",
+        "keyword": "engineer"
+      },
+      "source": "E3 E7 GET https://job-boards.greenhouse.io/anthropic",
+      "sample": "{\"id\":4610158008,\"title\":\"[Expression of Interest] Research Engineer / Scientist, Alignment - London\",\"location\":\"London, UK\",\"department.name\":\"AI Research & Engineering\",\"absolute_url\":\"https://job-boards.greenhouse.io/anthropic/jobs/4610158008\",\"published_at\":\"2025-03-31T14:08:49-04:00\",\"updated_at\":\"2026-10-21T02:21:30-04:00\"}",
+      "resultFields": [
+        "id",
+        "title",
+        "internal_job_id",
+        "updated_at",
+        "requisition_id",
+        "location",
+        "absolute_url",
+        "published_at",
+        "department",
+        "is_featured"
+      ],
+      "verified": true
+    },
+    {
+      "name": "get-job",
+      "summary": "Get one job post: description, location, departments, offices, apply link (absolute_url) and application form questions",
+      "method": "GET",
+      "urlTemplate": "https://boards-api.greenhouse.io/v1/boards/{boardToken}/jobs/{jobId}",
+      "params": [
+        {
+          "name": "boardToken",
+          "in": "path",
+          "required": true,
+          "type": "string",
+          "description": "Company board token",
+          "example": "anthropic"
+        },
+        {
+          "name": "jobId",
+          "in": "path",
+          "required": true,
+          "type": "string",
+          "description": "Job id (id from list-jobs / search-board-jobs)",
+          "example": "5283063008"
+        },
+        {
+          "name": "questions",
+          "in": "query",
+          "required": false,
+          "type": "boolean",
+          "description": "Include the application form questions",
+          "default": true
+        }
+      ],
+      "responseType": "json",
+      "defaultFields": [
+        "id",
+        "title",
+        "company_name",
+        "location.name",
+        "absolute_url",
+        "first_published",
+        "departments",
+        "questions"
+      ],
+      "mutates": false,
+      "example": {
+        "boardToken": "anthropic",
+        "jobId": "5283063008"
+      },
+      "source": "",
+      "sample": "{\"id\":5283063008,\"title\":\"Software Engineer, Research Productivity\",\"company_name\":\"Anthropic\",\"location.name\":\"San Francisco, CA | New York City, NY\",\"absolute_url\":\"https://job-boards.greenhouse.io/anthropic/jobs/5283063008\",\"first_published\":\"2026-07-06T10:30:35-04:00\",\"departments\":[{\"id\":4002061008,\"name\":\"AI Research & Engineering\",\"child_ids\":[],\"pare",
+      "resultFields": [
+        "absolute_url",
+        "data_compliance",
+        "internal_job_id",
+        "location",
+        "metadata",
+        "id",
+        "updated_at",
+        "requisition_id",
+        "title",
+        "company_name",
+        "first_published",
+        "language",
+        "application_deadline",
+        "content",
+        "departments",
+        "offices",
+        "ai_disclaimer",
+        "include_ai_disclaimer",
+        "ai_opt_out_request_url",
+        "compliance",
+        "demographic_questions",
+        "questions",
+        "location_questions"
+      ],
+      "verified": true
+    },
+    {
+      "name": "get-board",
+      "summary": "Get a company's job board info: company name and board description",
+      "method": "GET",
+      "urlTemplate": "https://boards-api.greenhouse.io/v1/boards/{boardToken}",
+      "params": [
+        {
+          "name": "boardToken",
+          "in": "path",
+          "required": true,
+          "type": "string",
+          "description": "Company board token",
+          "example": "anthropic"
+        }
+      ],
+      "responseType": "json",
+      "defaultFields": [
+        "name",
+        "content"
+      ],
+      "mutates": false,
+      "example": {
+        "boardToken": "anthropic"
+      },
+      "source": "",
+      "sample": "{\"name\":\"Anthropic\",\"content\":\"\"}",
+      "resultFields": [
+        "name",
+        "content"
+      ],
+      "verified": true
+    },
+    {
+      "name": "list-departments",
+      "summary": "List a company's departments (ids for the department filter), each with its open jobs",
+      "method": "GET",
+      "urlTemplate": "https://boards-api.greenhouse.io/v1/boards/{boardToken}/departments",
+      "params": [
+        {
+          "name": "boardToken",
+          "in": "path",
+          "required": true,
+          "type": "string",
+          "description": "Company board token",
+          "example": "anthropic"
+        }
+      ],
+      "responseType": "json",
+      "resultPath": "departments",
+      "defaultFields": [
+        "id",
+        "name",
+        "parent_id",
+        "child_ids"
+      ],
+      "mutates": false,
+      "example": {
+        "boardToken": "anthropic"
+      },
+      "source": "",
+      "sample": "{\"id\":4002061008,\"name\":\"AI Research & Engineering\",\"parent_id\":null,\"child_ids\":[]}",
+      "resultFields": [
+        "id",
+        "name",
+        "parent_id",
+        "child_ids",
+        "jobs"
+      ],
+      "verified": true
+    },
+    {
+      "name": "get-department",
+      "summary": "Get one department and its open jobs",
+      "method": "GET",
+      "urlTemplate": "https://boards-api.greenhouse.io/v1/boards/{boardToken}/departments/{departmentId}",
+      "params": [
+        {
+          "name": "boardToken",
+          "in": "path",
+          "required": true,
+          "type": "string",
+          "description": "Company board token",
+          "example": "anthropic"
+        },
+        {
+          "name": "departmentId",
+          "in": "path",
+          "required": true,
+          "type": "string",
+          "description": "Department id from list-departments",
+          "example": "4019632008"
+        }
+      ],
+      "responseType": "json",
+      "defaultFields": [
+        "id",
+        "name",
+        "parent_id",
+        "child_ids",
+        "jobs"
+      ],
+      "mutates": false,
+      "example": {
+        "boardToken": "anthropic",
+        "departmentId": "4019632008"
+      },
+      "source": "",
+      "sample": "{\"id\":4019632008,\"name\":\"Software Engineering - Infrastructure\",\"parent_id\":null,\"child_ids\":[],\"jobs\":[{\"absolute_url\":\"https://job-boards.greenhouse.io/anthropic/jobs/4641822008\",\"data_compliance\":[{\"type\":\"gdpr\",\"requires_consent\":false,\"requires_processing_consent\":false,\"requires_retention_consent\":false,\"retention_period\":null,\"demographic_data_consent",
+      "resultFields": [
+        "id",
+        "name",
+        "parent_id",
+        "child_ids",
+        "jobs"
+      ],
+      "verified": true
+    },
+    {
+      "name": "list-offices",
+      "summary": "List a company's offices/locations (ids for the office filter), with their departments and jobs",
+      "method": "GET",
+      "urlTemplate": "https://boards-api.greenhouse.io/v1/boards/{boardToken}/offices",
+      "params": [
+        {
+          "name": "boardToken",
+          "in": "path",
+          "required": true,
+          "type": "string",
+          "description": "Company board token",
+          "example": "anthropic"
+        }
+      ],
+      "responseType": "json",
+      "resultPath": "offices",
+      "defaultFields": [
+        "id",
+        "name",
+        "location",
+        "parent_id",
+        "child_ids"
+      ],
+      "mutates": false,
+      "example": {
+        "boardToken": "anthropic"
+      },
+      "source": "",
+      "sample": "{\"id\":4051957008,\"name\":\"Bangalore, India\",\"location\":\"Bengaluru, Karnataka, India\",\"parent_id\":null,\"child_ids\":[]}",
+      "resultFields": [
+        "id",
+        "name",
+        "location",
+        "parent_id",
+        "child_ids",
+        "departments"
+      ],
+      "verified": true
+    },
+    {
+      "name": "get-office",
+      "summary": "Get one office/location with its departments and open jobs",
+      "method": "GET",
+      "urlTemplate": "https://boards-api.greenhouse.io/v1/boards/{boardToken}/offices/{officeId}",
+      "params": [
+        {
+          "name": "boardToken",
+          "in": "path",
+          "required": true,
+          "type": "string",
+          "description": "Company board token",
+          "example": "anthropic"
+        },
+        {
+          "name": "officeId",
+          "in": "path",
+          "required": true,
+          "type": "string",
+          "description": "Office id from list-offices",
+          "example": "4001218008"
+        }
+      ],
+      "responseType": "json",
+      "defaultFields": [
+        "id",
+        "name",
+        "location",
+        "departments"
+      ],
+      "mutates": false,
+      "example": {
+        "boardToken": "anthropic",
+        "officeId": "4001218008"
+      },
+      "source": "",
+      "sample": "{\"id\":4001218008,\"name\":\"San Francisco, CA\",\"location\":\"San Francisco, California, United States\",\"departments\":[{\"id\":4002061008,\"name\":\"AI Research & Engineering\",\"parent_id\":null,\"child_ids\":[],\"jobs\":[{\"absolute_url\":\"https://job-boards.greenhouse.io/anthropic/jobs/4017331008\",\"data_compliance\":[\"{…}\"],\"internal_job_id\":4011572008,\"location\":\"{…}\",\"metad",
+      "resultFields": [
+        "id",
+        "name",
+        "location",
+        "parent_id",
+        "child_ids",
+        "departments"
+      ],
+      "verified": true
+    },
+    {
+      "name": "list-degrees",
+      "summary": "List degree options used in Greenhouse application education questions",
+      "method": "GET",
+      "urlTemplate": "https://boards-api.greenhouse.io/v1/boards/{boardToken}/education/degrees",
+      "params": [
+        {
+          "name": "boardToken",
+          "in": "path",
+          "required": true,
+          "type": "string",
+          "description": "Company board token",
+          "example": "anthropic"
+        },
+        {
+          "name": "page",
+          "in": "query",
+          "required": false,
+          "type": "number",
+          "description": "Page number, starting at 1"
+        }
+      ],
+      "responseType": "json",
+      "resultPath": "items",
+      "defaultFields": [
+        "id",
+        "text"
+      ],
+      "pagination": {
+        "type": "page",
+        "param": "page"
+      },
+      "mutates": false,
+      "example": {
+        "boardToken": "anthropic"
+      },
+      "source": "",
+      "sample": "{\"id\":4518872008,\"text\":\"Associate's Degree\"}",
+      "resultFields": [
+        "id",
+        "text"
+      ],
+      "verified": true
+    }
+  ],
+  "blockers": [],
+  "notes": [
+    "Every company has its own board: boardToken is the slug in job-boards.greenhouse.io/{token} or boards.greenhouse.io/{token} (e.g. anthropic, vercel).",
+    "absolute_url on a job is its public page and application link; applications must be submitted in a browser.",
+    "Use list-departments / list-offices to get ids for the department and office filters of search-board-jobs.",
+    "There is no public cross-company search; query each company's board separately."
+  ],
+  "dropped": [],
+  "generated": {
+    "by": "clify add",
+    "model": "claude-opus-5-5",
+    "exploredSteps": 19,
+    "recorded": 66,
+    "verifiedAt": "2026-10-21T07:03:24.879Z",
+    "seconds": 209,
+    "importedFrom": "~/.clify/sites/boards-greenhouse",
+    "importedAt": "2026-10-21T07:24:44.780Z"
+  }
+}

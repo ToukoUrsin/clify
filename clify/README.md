@@ -27,7 +27,7 @@ npx playwright install chromium               # for `clify add` / `repair` / log
 export PATH="$PWD/bin:$HOME/.clify/bin:$PATH" # or: npm install -g .
 export ANTHROPIC_API_KEY=...                  # only for `clify add` / `repair`
 npm test                                      # offline suites
-clify list                                    # 132 verified site CLIs ship built in (specs/)
+clify list                                    # 153 verified site CLIs ship built in (specs/)
 ```
 
 ## How `clify add` works

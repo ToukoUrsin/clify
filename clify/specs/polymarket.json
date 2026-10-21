@@ -1,0 +1,1171 @@
+{
+  "name": "polymarket",
+  "startUrl": "https://polymarket.com/",
+  "origin": "https://polymarket.com",
+  "createdAt": "2026-10-21T07:18:01.735Z",
+  "description": "Polymarket prediction markets: search and list events and markets with live prices, volume, liquidity and end dates; price history, biggest movers, holders, comments, resolution status, and public trader profiles, positions and activity.",
+  "commands": [
+    {
+      "name": "search-markets",
+      "summary": "Full-text search of prediction events and their markets (current Yes/No prices, volume); sort by volume, liquidity, ending soon or competitive; active or resolved.",
+      "method": "POST",
+      "urlTemplate": "/api/search/execute",
+      "params": [
+        {
+          "name": "query",
+          "in": "body",
+          "required": true,
+          "type": "string",
+          "description": "Search keywords, e.g. bitcoin",
+          "example": "bitcoin"
+        },
+        {
+          "name": "status",
+          "in": "body",
+          "required": false,
+          "type": "string",
+          "description": "Market status filter",
+          "enum": [
+            "active",
+            "resolved"
+          ],
+          "default": "active"
+        },
+        {
+          "name": "sort",
+          "in": "body",
+          "required": false,
+          "type": "string",
+          "description": "Sort order: volume, liquidity, ending_soon (nearest resolution date first), competitive (closest odds)",
+          "enum": [
+            "volume",
+            "liquidity",
+            "ending_soon",
+            "competitive"
+          ],
+          "default": "volume"
+        },
+        {
+          "name": "page",
+          "in": "body",
+          "required": false,
+          "type": "number",
+          "description": "Result page number, starting at 1",
+          "default": 1
+        }
+      ],
+      "bodyTemplate": {
+        "params": {
+          "searchMode": "query",
+          "query": "{query}",
+          "filters": {
+            "status": "{status}",
+            "sort": "{sort}"
+          },
+          "showFavorites": false,
+          "optimized": false
+        },
+        "pageParam": "{page}",
+        "locale": "en"
+      },
+      "bodyEncoding": "json",
+      "responseType": "json",
+      "resultPath": "results",
+      "defaultFields": [
+        "id",
+        "title",
+        "slug",
+        "volume",
+        "closed",
+        "breadcrumbs.category.label",
+        "markets"
+      ],
+      "pagination": {
+        "type": "page",
+        "param": "page"
+      },
+      "mutates": false,
+      "example": {
+        "query": "bitcoin",
+        "sort": "volume"
+      },
+      "source": "E10 POST https://polymarket.com/api/search/execute",
+      "sample": "{\"id\":\"89502\",\"title\":\"What price will Bitcoin hit in 2026?\",\"slug\":\"what-price-will-bitcoin-hit-before-2027\",\"volume\":76872561.23,\"closed\":false,\"breadcrumbs.category.label\":\"Crypto\",\"markets\":[{\"id\":\"1345531\",\"slug\":\"will-bitcoin-reach-90000-by-december-31-2026-113-862-581-343\",\"question\":\"Will Bitcoin reach $90,000 by December 31, 2026?\",\"outcomes\":[\"Yes\"",
+      "resultFields": [
+        "id",
+        "title",
+        "slug",
+        "image",
+        "closed",
+        "archived",
+        "volume",
+        "commentCount",
+        "eventCreators",
+        "seriesSlug",
+        "breadcrumbs",
+        "tags",
+        "markets"
+      ],
+      "verified": true
+    },
+    {
+      "name": "list-events",
+      "summary": "List events from the public Gamma API by category tag, ordered by volume or another field, with end dates, volume and liquidity; cursor paginated.",
+      "method": "GET",
+      "urlTemplate": "https://gamma-api.polymarket.com/events/keyset",
+      "params": [
+        {
+          "name": "tag_slug",
+          "in": "query",
+          "required": false,
+          "type": "string",
+          "description": "Category or topic tag slug, e.g. crypto, sports, politics, esports, israel-election (see list-tags)",
+          "example": "sports"
+        },
+        {
+          "name": "closed",
+          "in": "query",
+          "required": false,
+          "type": "boolean",
+          "description": "false = open events only, true = closed or resolved events",
+          "default": false
+        },
+        {
+          "name": "order",
+          "in": "query",
+          "required": false,
+          "type": "string",
+          "description": "Field to order by, e.g. volume, volume24hr, liquidity, endDate, startDate",
+          "default": "volume"
+        },
+        {
+          "name": "ascending",
+          "in": "query",
+          "required": false,
+          "type": "boolean",
+          "description": "Sort ascending (true) or descending (false)",
+          "default": false
+        },
+        {
+          "name": "api_limit",
+          "key": "limit",
+          "in": "query",
+          "required": false,
+          "type": "number",
+          "description": "Events per page (max 100) (sent to the site as \"limit\"; clify's own --limit only shapes the output)",
+          "default": 50
+        },
+        {
+          "name": "after_cursor",
+          "in": "query",
+          "required": false,
+          "type": "string",
+          "description": "Cursor from the previous page's next_cursor"
+        }
+      ],
+      "responseType": "json",
+      "resultPath": "events",
+      "defaultFields": [
+        "id",
+        "slug",
+        "title",
+        "endDate",
+        "volume",
+        "volume24hr",
+        "liquidity",
+        "closed"
+      ],
+      "pagination": {
+        "type": "cursor",
+        "param": "after_cursor",
+        "nextPath": "next_cursor"
+      },
+      "mutates": false,
+      "example": {
+        "tag_slug": "sports"
+      },
+      "source": "E5 GET https://gamma-api.polymarket.com/events/keyset",
+      "sample": "{\"id\":\"100371\",\"slug\":\"2026-f1-drivers-champion\",\"title\":\"F1 Drivers' Champion\",\"endDate\":\"2027-04-01T03:59:00Z\",\"volume\":204538311.67647105,\"volume24hr\":32981.178215,\"liquidity\":1856712.6161,\"closed\":false}",
+      "resultFields": [
+        "id",
+        "ticker",
+        "slug",
+        "title",
+        "description",
+        "resolutionSource",
+        "startDate",
+        "creationDate",
+        "endDate",
+        "image",
+        "icon",
+        "active",
+        "closed",
+        "archived",
+        "new",
+        "featured",
+        "restricted",
+        "liquidity",
+        "volume",
+        "openInterest",
+        "sortBy",
+        "createdAt",
+        "updatedAt",
+        "competitive",
+        "volume24hr",
+        "volume1wk",
+        "volume1mo",
+        "volume1yr",
+        "enableOrderBook",
+        "liquidityClob",
+        "negRisk",
+        "negRiskMarketID",
+        "commentCount",
+        "markets",
+        "tags",
+        "cyom",
+        "showAllOutcomes",
+        "showMarketImages",
+        "enableNegRisk",
+        "automaticallyActive"
+      ],
+      "verified": true
+    },
+    {
+      "name": "get-event",
+      "summary": "Get one event by its slug (from /event/<slug> URLs) with all its markets: outcome prices, token ids, condition ids, volume, liquidity, end date.",
+      "method": "GET",
+      "urlTemplate": "https://gamma-api.polymarket.com/events/slug/{slug}",
+      "params": [
+        {
+          "name": "slug",
+          "in": "path",
+          "required": true,
+          "type": "string",
+          "description": "Event slug, e.g. what-price-will-bitcoin-hit-before-2027",
+          "example": "what-price-will-bitcoin-hit-before-2027"
+        }
+      ],
+      "responseType": "json",
+      "defaultFields": [
+        "id",
+        "slug",
+        "title",
+        "endDate",
+        "volume",
+        "liquidity",
+        "closed",
+        "markets"
+      ],
+      "mutates": false,
+      "example": {
+        "slug": "what-price-will-bitcoin-hit-before-2027"
+      },
+      "source": "E5 E275 GET https://gamma-api.polymarket.com/events/keyset",
+      "sample": "{\"id\":\"89502\",\"slug\":\"what-price-will-bitcoin-hit-before-2027\",\"title\":\"What price will Bitcoin hit in 2026?\",\"endDate\":\"2027-01-01T05:00:00Z\",\"volume\":76872746.747037,\"liquidity\":3550392.15084,\"closed\":false,\"markets\":[{\"id\":\"2463838\",\"question\":\"Will Bitcoin dip to $60,000 by December 31, 2026?\",\"conditionId\":\"0x47914796a763d4429b6e45febe439a6652a3435a2671",
+      "resultFields": [
+        "$schema",
+        "id",
+        "ticker",
+        "slug",
+        "title",
+        "description",
+        "resolutionSource",
+        "startDate",
+        "creationDate",
+        "endDate",
+        "image",
+        "icon",
+        "active",
+        "closed",
+        "archived",
+        "new",
+        "featured",
+        "restricted",
+        "liquidity",
+        "volume",
+        "openInterest",
+        "sortBy",
+        "createdAt",
+        "updatedAt",
+        "competitive",
+        "volume24hr",
+        "volume1wk",
+        "volume1mo",
+        "volume1yr",
+        "enableOrderBook",
+        "liquidityClob",
+        "negRisk",
+        "commentCount",
+        "markets",
+        "series",
+        "tags",
+        "cyom",
+        "showAllOutcomes",
+        "showMarketImages",
+        "enableNegRisk"
+      ],
+      "verified": true
+    },
+    {
+      "name": "get-market",
+      "summary": "Get a single market by its market slug (second path segment of /event/<event>/<market>): outcomes, prices, CLOB token ids, condition id, end date, volume, liquidity.",
+      "method": "GET",
+      "urlTemplate": "https://gamma-api.polymarket.com/markets",
+      "params": [
+        {
+          "name": "slug",
+          "in": "query",
+          "required": true,
+          "type": "string",
+          "description": "Market slug, e.g. will-anthropic-ipo-by-november-30-2026",
+          "example": "will-anthropic-ipo-by-november-30-2026"
+        }
+      ],
+      "responseType": "json",
+      "defaultFields": [
+        "question",
+        "conditionId",
+        "outcomes",
+        "outcomePrices",
+        "clobTokenIds",
+        "endDate",
+        "volume",
+        "liquidity"
+      ],
+      "mutates": false,
+      "example": {
+        "slug": "will-anthropic-ipo-by-november-30-2026"
+      },
+      "source": "E23 GET https://gamma-api.polymarket.com/markets",
+      "sample": "{\"question\":\"Will Anthropic IPO by November 30, 2026?\",\"conditionId\":\"0x5ba72dca702ddf6ac8ce0b992b521dd3b080109e39a5f022827ffda3ac8a60f6\",\"outcomes\":\"[\\\"Yes\\\", \\\"No\\\"]\",\"outcomePrices\":\"[\\\"0.635\\\", \\\"0.365\\\"]\",\"clobTokenIds\":\"[\\\"93607174427076648497970085679890464224074212453553954883931612093962256690262\\\", \\\"100639319958801657045544531687338137611395882877",
+      "resultFields": [
+        "id",
+        "question",
+        "conditionId",
+        "slug",
+        "resolutionSource",
+        "endDate",
+        "liquidity",
+        "startDate",
+        "image",
+        "icon",
+        "description",
+        "outcomes",
+        "outcomePrices",
+        "volume",
+        "active",
+        "closed",
+        "marketMakerAddress",
+        "createdAt",
+        "updatedAt",
+        "new",
+        "featured",
+        "archived",
+        "resolvedBy",
+        "restricted",
+        "groupItemTitle",
+        "groupItemThreshold",
+        "questionID",
+        "enableOrderBook",
+        "orderPriceMinTickSize",
+        "orderMinSize",
+        "volumeNum",
+        "liquidityNum",
+        "endDateIso",
+        "startDateIso",
+        "hasReviewedDates",
+        "volume24hr",
+        "volume1wk",
+        "volume1mo",
+        "volume1yr",
+        "clobTokenIds"
+      ],
+      "verified": true
+    },
+    {
+      "name": "quick-search",
+      "summary": "Fast search returning matching events (with endDate, volume, volume24hr, liquidity and market prices), matching tags and trader profiles (name and proxyWallet address).",
+      "method": "POST",
+      "urlTemplate": "/api/search-autocomplete",
+      "params": [
+        {
+          "name": "query",
+          "in": "body",
+          "required": true,
+          "type": "string",
+          "description": "Search text, e.g. bitcoin, or a trader name",
+          "example": "bitcoin"
+        }
+      ],
+      "bodyTemplate": {
+        "query": "{query}",
+        "locale": "en"
+      },
+      "bodyEncoding": "json",
+      "responseType": "json",
+      "defaultFields": [
+        "events",
+        "tags",
+        "profiles"
+      ],
+      "mutates": false,
+      "example": {
+        "query": "bitcoin"
+      },
+      "source": "E21 POST https://polymarket.com/api/search-autocomplete",
+      "sample": "{\"events\":[{\"id\":\"89502\",\"active\":true,\"archived\":false,\"closed\":false,\"endDate\":\"2027-01-01T05:00:00.000Z\",\"ended\":false,\"image\":\"https://polymarket-upload.s3.us-east-2.amazonaws.com/BTC+fullsize.png\",\"slug\":\"what-price-will-bitcoin-hit-before-2027\",\"startDate\":\"2025-11-24T19:07:12.848Z\",\"title\":\"What price will Bitcoin hit in 2026?\",\"tags\":[{\"id\":\"\",\"label",
+      "resultFields": [
+        "events",
+        "tags",
+        "profiles",
+        "pagination"
+      ],
+      "verified": true
+    },
+    {
+      "name": "get-price-history",
+      "summary": "Price history (probability 0-1 over time) of one outcome token; token ids come from a market's clobTokenIds.",
+      "method": "GET",
+      "urlTemplate": "https://data-api.polymarket.com/v2/prices-history",
+      "params": [
+        {
+          "name": "token_id",
+          "in": "query",
+          "required": true,
+          "type": "string",
+          "description": "CLOB outcome token id (long decimal string from clobTokenIds)",
+          "example": "93607174427076648497970085679890464224074212453553954883931612093962256690262"
+        },
+        {
+          "name": "interval",
+          "in": "query",
+          "required": false,
+          "type": "string",
+          "description": "Time window",
+          "enum": [
+            "1h",
+            "6h",
+            "1d",
+            "1w",
+            "1m",
+            "max"
+          ],
+          "default": "max"
+        },
+        {
+          "name": "bucket_seconds",
+          "in": "query",
+          "required": false,
+          "type": "number",
+          "description": "Bucket size in seconds, e.g. 300 for 5-minute points (the UI uses it with interval 1d)"
+        }
+      ],
+      "responseType": "json",
+      "resultPath": "data",
+      "defaultFields": [
+        "timestamp",
+        "price"
+      ],
+      "mutates": false,
+      "example": {
+        "token_id": "93607174427076648497970085679890464224074212453553954883931612093962256690262",
+        "interval": "max"
+      },
+      "source": "E3 GET https://data-api.polymarket.com/v2/prices-history",
+      "sample": "{\"timestamp\":1788739200,\"price\":0.495}",
+      "resultFields": [
+        "timestamp",
+        "price",
+        "resolution_seconds"
+      ],
+      "verified": true
+    },
+    {
+      "name": "list-biggest-movers",
+      "summary": "Markets whose price moved the most in the last 24 hours (the Breaking page), optionally limited to one category.",
+      "method": "GET",
+      "urlTemplate": "/api/biggest-movers",
+      "params": [
+        {
+          "name": "category",
+          "in": "query",
+          "required": false,
+          "type": "string",
+          "description": "Category filter",
+          "enum": [
+            "crypto",
+            "world",
+            "sports",
+            "politics",
+            "finance",
+            "tech",
+            "culture"
+          ],
+          "example": "crypto"
+        }
+      ],
+      "responseType": "json",
+      "resultPath": "markets",
+      "defaultFields": [
+        "id",
+        "slug",
+        "question",
+        "outcomePrices",
+        "currentPrice",
+        "oneDayPriceChange",
+        "events.0.slug",
+        "events.0.volume"
+      ],
+      "mutates": false,
+      "example": {
+        "category": "crypto"
+      },
+      "source": "E27 GET https://polymarket.com/api/biggest-movers",
+      "sample": "{\"id\":\"5691245\",\"slug\":\"will-ethereum-reach-2500-in-october-2026-from-october-14\",\"question\":\"Will Ethereum reach $2,500 in October?\",\"outcomePrices\":[\"0.765\",\"0.235\"],\"currentPrice\":0.765,\"oneDayPriceChange\":0.195,\"events.0.slug\":\"what-price-will-ethereum-hit-in-october-2026\",\"events.0.volume\":2367686.823236}",
+      "resultFields": [
+        "id",
+        "slug",
+        "question",
+        "image",
+        "outcomePrices",
+        "oneDayPriceChange",
+        "events",
+        "clobTokenIds",
+        "history",
+        "currentPrice",
+        "livePriceChange",
+        "closed"
+      ],
+      "verified": true
+    },
+    {
+      "name": "list-tags",
+      "summary": "Currently trending topic tags with their slugs and active event counts, for use as tag_slug in list-events.",
+      "method": "GET",
+      "urlTemplate": "/api/tags/filteredBySlug?tag=all&status=active",
+      "params": [],
+      "responseType": "json",
+      "defaultFields": [
+        "id",
+        "label",
+        "slug",
+        "activeEventsCount"
+      ],
+      "mutates": false,
+      "source": "E9 GET https://polymarket.com/api/tags/filteredBySlug",
+      "sample": "{\"id\":\"106330\",\"label\":\"LoL Worlds 2026\",\"slug\":\"lol-worlds-2026\",\"activeEventsCount\":33}",
+      "resultFields": [
+        "id",
+        "label",
+        "slug",
+        "forceShow",
+        "createdAt",
+        "updatedAt",
+        "activeEventsCount"
+      ],
+      "example": {},
+      "verified": true
+    },
+    {
+      "name": "get-market-holders",
+      "summary": "Top holders of each outcome of a market, by condition id (conditionId from get-market or get-event).",
+      "method": "GET",
+      "urlTemplate": "https://data-api.polymarket.com/v2/holders",
+      "params": [
+        {
+          "name": "condition",
+          "in": "query",
+          "required": true,
+          "type": "string",
+          "description": "Market condition id (0x… hex)",
+          "example": "0xa7d7ed69cfd6107e5e005556730dcf45727c1cdd1001f0378f5e471526181c47"
+        },
+        {
+          "name": "api_limit",
+          "key": "limit",
+          "in": "query",
+          "required": false,
+          "type": "number",
+          "description": "Holders per outcome (sent to the site as \"limit\"; clify's own --limit only shapes the output)",
+          "default": 20
+        }
+      ],
+      "responseType": "json",
+      "resultPath": "data",
+      "defaultFields": [
+        "token_id",
+        "holders"
+      ],
+      "mutates": false,
+      "example": {
+        "condition": "0xa7d7ed69cfd6107e5e005556730dcf45727c1cdd1001f0378f5e471526181c47"
+      },
+      "source": "E17 GET https://data-api.polymarket.com/v2/holders",
+      "sample": "{\"token_id\":\"185713…\",\"holders\":[{\"proxy_wallet\":\"0xfa394a598dbf573202a8286b45f512c7a383977f\",\"bio\":\"\",\"token_id\":\"185713…\",\"pseudonym\":\"\",\"amount\":165895.781165,\"display_username_public\":false,\"outcome_index\":0,\"name\":\"",
+      "resultFields": [
+        "token_id",
+        "holders"
+      ],
+      "verified": true
+    },
+    {
+      "name": "get-event-resolutions",
+      "summary": "On-chain (UMA) resolution status of every market in an event (posed, proposed, disputed, resolved) by numeric event id.",
+      "method": "GET",
+      "urlTemplate": "/api/event/resolutions/{eventId}",
+      "params": [
+        {
+          "name": "eventId",
+          "in": "path",
+          "required": true,
+          "type": "string",
+          "description": "Numeric event id (id from get-event or search-markets)",
+          "example": "89502"
+        }
+      ],
+      "responseType": "json",
+      "resultPath": "resolutions",
+      "defaultFields": [
+        "conditionId",
+        "data.status",
+        "data.wasDisputed",
+        "data.proposedPrice",
+        "data.lastUpdateTimestamp"
+      ],
+      "mutates": false,
+      "example": {
+        "eventId": "89502"
+      },
+      "source": "E16 GET https://polymarket.com/api/event/resolutions/{n}",
+      "sample": "{\"conditionId\":\"0x024b68f77bfc019341ee3db8f57c103334e4b9430bba4746d8c94aafd8b36fee\",\"data.status\":\"posed\",\"data.wasDisputed\":false,\"data.proposedPrice\":\"69\",\"data.lastUpdateTimestamp\":\"1764011189\"}",
+      "resultFields": [
+        "conditionId",
+        "data"
+      ],
+      "verified": true
+    },
+    {
+      "name": "list-related-events",
+      "summary": "Events related to a given event slug, with their markets, prices, volume and end dates.",
+      "method": "GET",
+      "urlTemplate": "https://api.defi.polymarket.com/internal/view/events/{slug}/related?locale=en",
+      "params": [
+        {
+          "name": "slug",
+          "in": "path",
+          "required": true,
+          "type": "string",
+          "description": "Event slug",
+          "example": "what-price-will-bitcoin-hit-before-2027"
+        }
+      ],
+      "responseType": "json",
+      "resultPath": "items",
+      "defaultFields": [
+        "id",
+        "slug",
+        "title",
+        "endDate",
+        "volume",
+        "volume24hr",
+        "closed"
+      ],
+      "mutates": false,
+      "example": {
+        "slug": "what-price-will-bitcoin-hit-before-2027"
+      },
+      "source": "E24 E26 GET https://api.defi.polymarket.com/internal/view/events/what-price-will-bitcoin-hit-before-2027/related",
+      "sample": "{\"id\":\"89554\",\"slug\":\"what-price-will-dogecoin-hit-before-2027\",\"title\":\"What price will Dogecoin hit in 2026?\",\"endDate\":\"2027-01-01T05:00:00Z\",\"volume\":\"128919.27\",\"volume24hr\":\"536.75\",\"closed\":false}",
+      "resultFields": [
+        "id",
+        "slug",
+        "title",
+        "image",
+        "icon",
+        "active",
+        "closed",
+        "negRisk",
+        "startDate",
+        "startTime",
+        "endDate",
+        "seriesSlug",
+        "volume",
+        "volume24hr",
+        "primaryTag",
+        "tags",
+        "markets"
+      ],
+      "verified": true
+    },
+    {
+      "name": "list-comments",
+      "summary": "Latest comments on an event or series, newest first.",
+      "method": "GET",
+      "urlTemplate": "https://gamma-api.polymarket.com/comments?get_positions=true&get_reports=true&holders_only=false&order=createdAt&ascending=false",
+      "params": [
+        {
+          "name": "parent_entity_type",
+          "in": "query",
+          "required": false,
+          "type": "string",
+          "description": "What the id refers to",
+          "enum": [
+            "Event",
+            "Series"
+          ],
+          "default": "Event"
+        },
+        {
+          "name": "parent_entity_id",
+          "in": "query",
+          "required": true,
+          "type": "string",
+          "description": "Numeric event id (or series id when type is Series)",
+          "example": "549019"
+        },
+        {
+          "name": "api_limit",
+          "key": "limit",
+          "in": "query",
+          "required": false,
+          "type": "number",
+          "description": "Comments per page (sent to the site as \"limit\"; clify's own --limit only shapes the output)",
+          "default": 10
+        },
+        {
+          "name": "offset",
+          "in": "query",
+          "required": false,
+          "type": "number",
+          "description": "Number of comments to skip",
+          "default": 0
+        }
+      ],
+      "responseType": "json",
+      "defaultFields": [
+        "id",
+        "body",
+        "profile.name",
+        "userAddress",
+        "createdAt",
+        "reactionCount"
+      ],
+      "pagination": {
+        "type": "offset",
+        "param": "offset",
+        "step": 10
+      },
+      "mutates": false,
+      "example": {
+        "parent_entity_type": "Event",
+        "parent_entity_id": "549019"
+      },
+      "source": "E15 GET https://gamma-api.polymarket.com/comments",
+      "sample": "{\"id\":\"3271941\",\"body\":\"This year ?\",\"profile.name\":\"singkhamx\",\"userAddress\":\"0xa6baaa485c37d96e8d0eecec0660226faca2c986\",\"createdAt\":\"2026-09-27T03:40:38.60677Z\",\"reactionCount\":0}",
+      "resultFields": [
+        "id",
+        "body",
+        "parentEntityType",
+        "parentEntityID",
+        "userAddress",
+        "createdAt",
+        "updatedAt",
+        "profile",
+        "reportCount",
+        "reactionCount"
+      ],
+      "verified": true
+    },
+    {
+      "name": "get-trader-profile",
+      "summary": "Public trader profile (name, pseudonym, join date, tier) by proxy wallet address.",
+      "method": "GET",
+      "urlTemplate": "/api/profile/userData",
+      "params": [
+        {
+          "name": "address",
+          "in": "query",
+          "required": true,
+          "type": "string",
+          "description": "Trader proxy wallet address (0x…), e.g. proxyWallet from quick-search profiles",
+          "example": "0xcdcccd0f2d86e450d973da415ad2430e5cc7935a"
+        }
+      ],
+      "responseType": "json",
+      "defaultFields": [
+        "id",
+        "name",
+        "pseudonym",
+        "proxyWallet",
+        "createdAt",
+        "takerTierName",
+        "verifiedBadge"
+      ],
+      "mutates": false,
+      "example": {
+        "address": "0xcdcccd0f2d86e450d973da415ad2430e5cc7935a"
+      },
+      "source": "E18 GET https://polymarket.com/api/profile/userData",
+      "sample": "{\"id\":\"9969910\",\"name\":\"joseph00677\",\"pseudonym\":\"Worthwhile-Cenotaph-Headphones\",\"proxyWallet\":\"0xcdcccd0f2d86e450d973da415ad2430e5cc7935a\",\"createdAt\":\"2026-10-05T18:22:34.090553Z\",\"takerTierName\":\"Diamond\",\"verifiedBadge\":false}",
+      "resultFields": [
+        "id",
+        "createdAt",
+        "proxyWallet",
+        "displayUsernamePublic",
+        "pseudonym",
+        "name",
+        "users",
+        "verifiedBadge",
+        "takerTier",
+        "takerTierName"
+      ],
+      "verified": true
+    },
+    {
+      "name": "get-trader-stats",
+      "summary": "A trader's all-time stats: trade count, biggest win, profit/loss, volume, profile views.",
+      "method": "GET",
+      "urlTemplate": "https://data-api.polymarket.com/v2/user-stats",
+      "params": [
+        {
+          "name": "user",
+          "in": "query",
+          "required": true,
+          "type": "string",
+          "description": "Trader proxy wallet address (0x…)",
+          "example": "0xcdcccd0f2d86e450d973da415ad2430e5cc7935a"
+        }
+      ],
+      "responseType": "json",
+      "resultPath": "data",
+      "defaultFields": [
+        "proxy_wallet",
+        "trades",
+        "biggest_win",
+        "views",
+        "join_date",
+        "all_time_pnl.realized_pnl",
+        "all_time_pnl.volume",
+        "all_time_pnl.trade_count"
+      ],
+      "mutates": false,
+      "example": {
+        "user": "0xcdcccd0f2d86e450d973da415ad2430e5cc7935a"
+      },
+      "source": "E19 GET https://data-api.polymarket.com/v2/user-stats",
+      "sample": "{\"proxy_wallet\":\"0xcdcccd0f2d86e450d973da415ad2430e5cc7935a\",\"trades\":22,\"biggest_win\":1586082.96,\"views\":19645,\"join_date\":1791224554,\"all_time_pnl.realized_pnl\":6949617.177803,\"all_time_pnl.volume\":44111176.520919,\"all_time_pnl.trade_count\":712}",
+      "resultFields": [
+        "proxy_wallet",
+        "trades",
+        "biggest_win",
+        "views",
+        "join_date",
+        "all_time_pnl"
+      ],
+      "verified": true
+    },
+    {
+      "name": "list-trader-positions",
+      "summary": "A trader's open or closed positions with size, average price, current value and PnL.",
+      "method": "GET",
+      "urlTemplate": "https://data-api.polymarket.com/v2/positions?filter_type=TOKENS",
+      "params": [
+        {
+          "name": "user",
+          "in": "query",
+          "required": true,
+          "type": "string",
+          "description": "Trader proxy wallet address (0x…)",
+          "example": "0xcdcccd0f2d86e450d973da415ad2430e5cc7935a"
+        },
+        {
+          "name": "status",
+          "in": "query",
+          "required": false,
+          "type": "string",
+          "description": "Open or closed positions",
+          "enum": [
+            "OPEN",
+            "CLOSED"
+          ],
+          "default": "OPEN"
+        },
+        {
+          "name": "sort_by",
+          "in": "query",
+          "required": false,
+          "type": "string",
+          "description": "Sort field (the UI uses CURRENT_VALUE for open, REALIZED_PNL for closed)",
+          "enum": [
+            "CURRENT_VALUE",
+            "REALIZED_PNL"
+          ],
+          "default": "CURRENT_VALUE"
+        },
+        {
+          "name": "sort_direction",
+          "in": "query",
+          "required": false,
+          "type": "string",
+          "description": "Sort direction",
+          "enum": [
+            "DESC",
+            "ASC"
+          ],
+          "default": "DESC"
+        },
+        {
+          "name": "filter_amount",
+          "in": "query",
+          "required": false,
+          "type": "number",
+          "description": "Hide positions smaller than this many tokens",
+          "default": 0
+        },
+        {
+          "name": "api_limit",
+          "key": "limit",
+          "in": "query",
+          "required": false,
+          "type": "number",
+          "description": "Max positions returned (sent to the site as \"limit\"; clify's own --limit only shapes the output)",
+          "default": 30
+        }
+      ],
+      "responseType": "json",
+      "resultPath": "data",
+      "defaultFields": [
+        "title",
+        "event_slug",
+        "outcome",
+        "current_size",
+        "avg_price",
+        "current_value",
+        "total_pnl",
+        "status"
+      ],
+      "mutates": false,
+      "example": {
+        "user": "0xcdcccd0f2d86e450d973da415ad2430e5cc7935a",
+        "status": "CLOSED",
+        "sort_by": "REALIZED_PNL"
+      },
+      "source": "E14 GET https://data-api.polymarket.com/v2/positions",
+      "sample": "{\"title\":\"Will Arsenal FC win on 2026-10-18?\",\"event_slug\":\"epl-not-ars-2026-10-18\",\"outcome\":\"Yes\",\"current_size\":0,\"avg_price\":0.6556,\"current_value\":0,\"total_pnl\":1586082.96,\"status\":\"CLOSED\"}",
+      "resultFields": [
+        "proxy_wallet",
+        "token_id",
+        "condition_id",
+        "current_size",
+        "avg_price",
+        "entry_cost_usdc",
+        "entry_fees_usdc",
+        "total_cost_usdc",
+        "current_price",
+        "current_value",
+        "total_size",
+        "realized_pnl",
+        "unrealized_pnl",
+        "total_pnl",
+        "percent_pnl",
+        "percent_realized_pnl",
+        "status",
+        "redeemable",
+        "mergeable",
+        "negative_risk",
+        "archived",
+        "title",
+        "slug",
+        "icon",
+        "event_id",
+        "event_slug",
+        "outcome",
+        "outcome_index",
+        "opposite_outcome",
+        "opposite_token_id",
+        "end_date",
+        "last_event_at",
+        "first_entry_at",
+        "name",
+        "profile_image",
+        "verified"
+      ],
+      "verified": true
+    },
+    {
+      "name": "list-trader-activity",
+      "summary": "A trader's recent on-chain activity (trades, redemptions, rebates), newest first.",
+      "method": "GET",
+      "urlTemplate": "https://data-api.polymarket.com/v2/activity",
+      "params": [
+        {
+          "name": "user",
+          "in": "query",
+          "required": true,
+          "type": "string",
+          "description": "Trader proxy wallet address (0x…)",
+          "example": "0xcdcccd0f2d86e450d973da415ad2430e5cc7935a"
+        },
+        {
+          "name": "api_limit",
+          "key": "limit",
+          "in": "query",
+          "required": false,
+          "type": "number",
+          "description": "Max items returned (sent to the site as \"limit\"; clify's own --limit only shapes the output)",
+          "default": 30
+        },
+        {
+          "name": "start",
+          "in": "query",
+          "required": false,
+          "type": "number",
+          "description": "Only activity after this Unix timestamp (seconds)"
+        }
+      ],
+      "responseType": "json",
+      "resultPath": "data",
+      "defaultFields": [
+        "timestamp",
+        "type",
+        "side",
+        "title",
+        "outcome",
+        "price",
+        "size",
+        "usdc_size"
+      ],
+      "mutates": false,
+      "example": {
+        "user": "0xcdcccd0f2d86e450d973da415ad2430e5cc7935a"
+      },
+      "source": "E30 GET https://data-api.polymarket.com/v2/activity",
+      "sample": "{\"timestamp\":1792496841,\"type\":\"TAKER_REBATE\",\"side\":\"\",\"title\":\"\",\"outcome\":\"\",\"price\":0,\"size\":252.063,\"usdc_size\":252.063}",
+      "resultFields": [
+        "proxy_wallet",
+        "timestamp",
+        "condition_id",
+        "type",
+        "size",
+        "usdc_size",
+        "transaction_hash",
+        "price",
+        "token_id",
+        "side",
+        "outcome_index",
+        "title",
+        "slug",
+        "icon",
+        "event_slug",
+        "outcome",
+        "name",
+        "pseudonym",
+        "bio",
+        "profile_image",
+        "profile_image_optimized"
+      ],
+      "verified": true
+    },
+    {
+      "name": "get-trader-pnl",
+      "summary": "A trader's profit/loss time series over a window.",
+      "method": "GET",
+      "urlTemplate": "https://data-api.polymarket.com/v2/user-pnl",
+      "params": [
+        {
+          "name": "user",
+          "in": "query",
+          "required": true,
+          "type": "string",
+          "description": "Trader proxy wallet address (0x…)",
+          "example": "0xcdcccd0f2d86e450d973da415ad2430e5cc7935a"
+        },
+        {
+          "name": "interval",
+          "in": "query",
+          "required": false,
+          "type": "string",
+          "description": "Time window",
+          "enum": [
+            "1w",
+            "1m"
+          ],
+          "default": "1w"
+        },
+        {
+          "name": "fidelity",
+          "in": "query",
+          "required": false,
+          "type": "string",
+          "description": "Point spacing, e.g. 3h for 1w, 18h for 1m",
+          "default": "3h"
+        }
+      ],
+      "responseType": "json",
+      "resultPath": "data.points",
+      "defaultFields": [
+        "timestamp",
+        "realized_pnl",
+        "unrealized_pnl",
+        "volume",
+        "trade_count"
+      ],
+      "mutates": false,
+      "example": {
+        "user": "0xcdcccd0f2d86e450d973da415ad2430e5cc7935a",
+        "interval": "1w",
+        "fidelity": "3h"
+      },
+      "source": "E20 GET https://data-api.polymarket.com/v2/user-pnl",
+      "sample": "{\"timestamp\":1791968400,\"realized_pnl\":2825104.235624,\"unrealized_pnl\":-328.768902,\"volume\":15768388.41301,\"trade_count\":183}",
+      "resultFields": [
+        "timestamp",
+        "source_block",
+        "realized_market_pnl",
+        "realized_lp_pnl",
+        "realized_combo_pnl",
+        "unrealized_pnl",
+        "fees_refunded",
+        "maker_rebate",
+        "taker_rebate",
+        "reward_income",
+        "yield_income",
+        "referral_income",
+        "deposits",
+        "withdrawals",
+        "realized_pnl",
+        "wallet_income",
+        "position_pnl",
+        "settled_pnl",
+        "economic_pnl",
+        "trade_pnl",
+        "sponsored_income",
+        "fees",
+        "fees_paid",
+        "cashflow_net",
+        "volume",
+        "volume_usdc",
+        "trade_count"
+      ],
+      "verified": true
+    }
+  ],
+  "blockers": [],
+  "notes": [
+    "Prices are probabilities from 0 to 1 (0.56 = 56% chance of Yes); outcomePrices line up with outcomes.",
+    "An event (slug in /event/<slug>) groups several markets; use get-event for its markets, then conditionId for get-market-holders and clobTokenIds entries for get-price-history.",
+    "endDate is the scheduled resolution date; get-event-resolutions shows the actual on-chain resolution status.",
+    "Gamma returns outcomes, outcomePrices and clobTokenIds as JSON-encoded strings; parse them before use."
+  ],
+  "dropped": [],
+  "generated": {
+    "by": "clify add",
+    "model": "claude-opus-5-5",
+    "exploredSteps": 29,
+    "recorded": 16217,
+    "verifiedAt": "2026-10-21T07:19:31.719Z",
+    "seconds": 364,
+    "importedFrom": "~/.clify/sites/polymarket",
+    "importedAt": "2026-10-21T07:24:44.785Z"
+  }
+}

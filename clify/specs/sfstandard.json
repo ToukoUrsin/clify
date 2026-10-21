@@ -1,0 +1,504 @@
+{
+  "name": "sfstandard",
+  "startUrl": "https://sfstandard.com/",
+  "origin": "https://sfstandard.com",
+  "createdAt": "2026-10-21T07:17:08.362Z",
+  "description": "The San Francisco Standard (sfstandard.com), a San Francisco local news site. This CLI searches articles and lists the latest, tag, section, topic-series and author stories with dates and URLs, and reads full articles.",
+  "commands": [
+    {
+      "name": "search-articles",
+      "summary": "Keyword search across all SF Standard articles (tech, housing, transit, city news). Returns headline, date and URL; sort by relevance or newest, filter by date range, section or author.",
+      "method": "GET",
+      "urlTemplate": "https://cms.sfstandard.com/api/trpc/post.publicSearch?batch=1&input=%7B%220%22%3A%7B%22json%22%3A%7B%22query%22%3A%22{query}%22%2C%22dateRange%22%3A{dateRange}%2C%22sectionIds%22%3A%5B{sectionId}%5D%2C%22authorIds%22%3A%5B{authorId}%5D%2C%22sortBy%22%3A%5B%7B%22key%22%3A%22{sortBy}%22%2C%22direction%22%3A%22desc%22%7D%5D%2C%22pageSize%22%3A{pageSize}%2C%22page%22%3A{page}%7D%7D%7D",
+      "params": [
+        {
+          "name": "query",
+          "in": "query",
+          "required": true,
+          "type": "string",
+          "description": "Search keywords, e.g. housing, Muni, AI",
+          "example": "housing"
+        },
+        {
+          "name": "sortBy",
+          "in": "query",
+          "required": false,
+          "type": "string",
+          "description": "Sort order: relevance (best match) or date (newest first)",
+          "enum": [
+            "relevance",
+            "date"
+          ],
+          "default": "relevance"
+        },
+        {
+          "name": "dateRange",
+          "in": "query",
+          "required": false,
+          "type": "string",
+          "description": "Date filter written as a JSON value. Use null for any time, or a quoted range code such as \"1m\" (past month). The UI also offers past 7 days and past year.",
+          "default": "null",
+          "example": "\"1m\""
+        },
+        {
+          "name": "sectionId",
+          "in": "query",
+          "required": false,
+          "type": "string",
+          "description": "Optional section filter: a quoted section UUID, e.g. \"ffcbb756-8c8f-4da5-9c82-27d319cf6487\" (News). Leave empty for all sections."
+        },
+        {
+          "name": "authorId",
+          "in": "query",
+          "required": false,
+          "type": "string",
+          "description": "Optional author filter: a quoted author UUID (authors[].id in results). Leave empty for all authors."
+        },
+        {
+          "name": "pageSize",
+          "in": "query",
+          "required": false,
+          "type": "number",
+          "description": "Results per page (the site uses 5)",
+          "default": 5
+        },
+        {
+          "name": "page",
+          "in": "query",
+          "required": false,
+          "type": "number",
+          "description": "Page number, starting at 1",
+          "default": 1
+        }
+      ],
+      "responseType": "json",
+      "resultPath": "0.result.data.json.items",
+      "defaultFields": [
+        "id",
+        "headline",
+        "url",
+        "publishDateTime",
+        "authors.0.name",
+        "subhead.0.children.0.content.text"
+      ],
+      "pagination": {
+        "type": "page",
+        "param": "page"
+      },
+      "mutates": false,
+      "example": {
+        "query": "housing"
+      },
+      "source": "E7 GET https://cms.sfstandard.com/api/trpc/post.publicSearch",
+      "sample": "{\"id\":\"39a52298-043b-4534-b47e-fa8ffa06631d\",\"headline\":\"Supervisors’ preview: Housing, housing and more housing\",\"url\":\"https://sfstandard.com/2022/07/25/supervisors-preview-housing-housing-and-more-housing/\",\"publishDateTime\":\"2022-07-25T21:58:50.000Z\",\"authors.0.name\":\"Mike Ege\",\"subhead.0.children.0.content.text\":\"Two key votes show where and how the boa",
+      "resultFields": [
+        "id",
+        "publishDateTime",
+        "updateDateTime",
+        "url",
+        "type",
+        "headline",
+        "subhead",
+        "kicker",
+        "kickerId",
+        "kickerDetails",
+        "kickerExpiresIn",
+        "kickerExpiresAt",
+        "websiteImage",
+        "authors",
+        "sections",
+        "primarySection",
+        "meta",
+        "commentsEnabled",
+        "commentsCount",
+        "commentersCount",
+        "articleAccessLevel"
+      ],
+      "verified": true
+    },
+    {
+      "name": "list-latest-articles",
+      "summary": "Newest articles across the whole site (the Latest feed), newest first, with dates and URLs.",
+      "method": "GET",
+      "urlTemplate": "https://cms.sfstandard.com/api/trpc/post.retrieveArchive?batch=1&input=%7B%220%22%3A%7B%22json%22%3A%7B%22filter%22%3A%7B%7D%2C%22limit%22%3A{api_limit}%2C%22direction%22%3A%22forward%22%7D%7D%7D",
+      "params": [
+        {
+          "name": "api_limit",
+          "in": "path",
+          "required": false,
+          "type": "number",
+          "description": "Number of articles to return (the site loads 10). clify's own --limit only shapes the output.",
+          "default": 10,
+          "example": "10"
+        }
+      ],
+      "responseType": "json",
+      "resultPath": "0.result.data.json.items",
+      "defaultFields": [
+        "id",
+        "headline",
+        "url",
+        "publishDateTime",
+        "authors.0.name",
+        "subhead.0.children.0.content.text"
+      ],
+      "mutates": false,
+      "example": {
+        "api_limit": "10"
+      },
+      "source": "E6",
+      "sample": "{\"id\":\"89c2b229-6fa8-4cb3-9ddc-9e9f1083492a\",\"headline\":\"PG&E outlined its $22.5B price tag for a public power takeover\",\"url\":\"https://sfstandard.com/2026/10/20/pge-public-utility-takeover-appraisal/\",\"publishDateTime\":\"2026-10-21T01:55:45.530Z\",\"authors.0.name\":\"Garrett Leahy\",\"subhead.0.children.0.content.text\":\"The utility giant appraised its assets and ",
+      "resultFields": [
+        "id",
+        "publishDateTime",
+        "updateDateTime",
+        "url",
+        "type",
+        "headline",
+        "subhead",
+        "kicker",
+        "kickerId",
+        "kickerDetails",
+        "kickerExpiresIn",
+        "kickerExpiresAt",
+        "websiteImage",
+        "authors",
+        "sections",
+        "primarySection",
+        "meta",
+        "commentsEnabled",
+        "commentsCount",
+        "commentersCount",
+        "articleAccessLevel"
+      ],
+      "verified": true
+    },
+    {
+      "name": "list-tag-articles",
+      "summary": "Latest articles for a topic tag such as tech, transportation, criminal-justice or housing, with dates and URLs.",
+      "method": "GET",
+      "urlTemplate": "/tag/{slug}/",
+      "params": [
+        {
+          "name": "slug",
+          "in": "path",
+          "required": true,
+          "type": "string",
+          "description": "Tag slug from /tag/<slug>/, e.g. tech, transportation, criminal-justice",
+          "example": "tech"
+        }
+      ],
+      "responseType": "html",
+      "resultPath": "props.pageProps.posts.items",
+      "extract": {
+        "jsonScript": "script#__NEXT_DATA__"
+      },
+      "defaultFields": [
+        "id",
+        "headline",
+        "url",
+        "publishDateTime",
+        "authors.0.name",
+        "subhead.0.children.0.content.text"
+      ],
+      "mutates": false,
+      "example": {
+        "slug": "tech"
+      },
+      "source": "E24 E25 E26 GET https://sfstandard.com/tag/criminal-justice/",
+      "sample": "{\"id\":\"df15ba65-ca6f-47f4-8354-237965ae8472\",\"headline\":\"Everyone in San Francisco has an AI agent now. Privacy be damned\",\"url\":\"https://sfstandard.com/2026/10/19/ai-agent-craze-takes-over-sf/\",\"publishDateTime\":\"2026-10-19T13:00:00.000Z\",\"authors.0.name\":\"Natallie Rocha\",\"subhead.0.children.0.content.text\":\"It’s cute, helpful, and wants your credit card in",
+      "resultFields": [
+        "id",
+        "publishDateTime",
+        "updateDateTime",
+        "url",
+        "type",
+        "headline",
+        "subhead",
+        "kicker",
+        "kickerId",
+        "kickerDetails",
+        "kickerExpiresIn",
+        "kickerExpiresAt",
+        "websiteImage",
+        "authors",
+        "sections",
+        "primarySection",
+        "meta",
+        "commentsEnabled",
+        "commentsCount",
+        "commentersCount",
+        "articleAccessLevel"
+      ],
+      "verified": true
+    },
+    {
+      "name": "get-article",
+      "summary": "Full article by its URL parts (/YYYY/MM/DD/slug/): headline, description, publish date, authors, section, keywords and full body text.",
+      "method": "GET",
+      "urlTemplate": "/{year}/{month}/{day}/{slug}/",
+      "params": [
+        {
+          "name": "year",
+          "in": "path",
+          "required": true,
+          "type": "string",
+          "description": "4-digit year from the article URL",
+          "example": "2026"
+        },
+        {
+          "name": "month",
+          "in": "path",
+          "required": true,
+          "type": "string",
+          "description": "2-digit month from the article URL",
+          "example": "10"
+        },
+        {
+          "name": "day",
+          "in": "path",
+          "required": true,
+          "type": "string",
+          "description": "2-digit day from the article URL",
+          "example": "20"
+        },
+        {
+          "name": "slug",
+          "in": "path",
+          "required": true,
+          "type": "string",
+          "description": "Article slug, the last segment of the article URL",
+          "example": "mall-data-center-sf-downtown"
+        }
+      ],
+      "responseType": "html",
+      "extract": {
+        "jsonScript": "script[type=\"application/ld+json\"]"
+      },
+      "defaultFields": [
+        "headline",
+        "url",
+        "datePublished",
+        "author.0.name",
+        "articleSection",
+        "keywords",
+        "description",
+        "articleBody"
+      ],
+      "mutates": false,
+      "example": {
+        "year": "2026",
+        "month": "10",
+        "day": "20",
+        "slug": "mall-data-center-sf-downtown"
+      },
+      "source": "E22 E23 GET https://sfstandard.com/{n}/{n}/{n}/mall-data-center-sf-downtown/",
+      "sample": "{\"headline\":\"Could a data center be the answer to the dead mall — and help revive downtown?\",\"url\":\"https://sfstandard.com/2026/10/20/mall-data-center-sf-downtown/\",\"datePublished\":\"2026-10-20T06:00:00-07:00\",\"author.0.name\":\"Jessica Blough\",\"articleSection\":[\"Business\",\"News\"],\"keywords\":[\"Boom loop\",\"Data Centers\",\"Small Business\",\"Market Street\",\"Westfiel",
+      "resultFields": [
+        "@context",
+        "@type",
+        "@id",
+        "url",
+        "headline",
+        "description",
+        "dateModified",
+        "articleBody",
+        "datePublished",
+        "inLanguage",
+        "thumbnailUrl",
+        "keywords",
+        "articleSection",
+        "author",
+        "wordCount",
+        "publisher",
+        "image",
+        "isAccessibleForFree"
+      ],
+      "verified": true
+    },
+    {
+      "name": "list-section-articles",
+      "summary": "Top and recent stories on a section front page such as news or business, with dates and URLs.",
+      "method": "GET",
+      "urlTemplate": "/{section}/",
+      "params": [
+        {
+          "name": "section",
+          "in": "path",
+          "required": true,
+          "type": "string",
+          "description": "Section slug, e.g. news, business",
+          "example": "news"
+        }
+      ],
+      "responseType": "html",
+      "extract": {
+        "list": "div.Item_container__tzXV_, article.w-full.flex",
+        "fields": {
+          "headline": "h2.grid-item-title a || h3 a",
+          "url": "h2.grid-item-title a@href || h3 a@href",
+          "date": "time@datetime",
+          "summary": "p.paragraph-block"
+        }
+      },
+      "defaultFields": [
+        "headline",
+        "url",
+        "date",
+        "summary"
+      ],
+      "mutates": false,
+      "example": {
+        "section": "news"
+      },
+      "source": "E27 E31 GET https://sfstandard.com/news/",
+      "sample": "{\"headline\":\"PG&E outlined its $22.5B price tag for a public power takeover\",\"url\":\"https://sfstandard.com/2026/10/20/pge-public-utility-takeover-appraisal/\",\"date\":\"2026-10-21T01:55:45.530Z\",\"summary\":\"The utility giant appraised its assets and revenue amid calls for the forced liquidation of its San Francisco business.\"}",
+      "resultFields": [
+        "headline",
+        "url",
+        "date",
+        "summary"
+      ],
+      "verified": true
+    },
+    {
+      "name": "list-obsession-articles",
+      "summary": "Articles in a topic series (\"obsession\") such as real-estate, boom-loop, crisis-in-streets, artificial-intelligence or school-wars.",
+      "method": "GET",
+      "urlTemplate": "/obsession/{slug}/",
+      "params": [
+        {
+          "name": "slug",
+          "in": "path",
+          "required": true,
+          "type": "string",
+          "description": "Series slug from /obsession/<slug>/, e.g. real-estate, boom-loop, artificial-intelligence",
+          "example": "real-estate"
+        }
+      ],
+      "responseType": "html",
+      "extract": {
+        "list": "article.w-full.flex",
+        "fields": {
+          "headline": "h3 a",
+          "url": "h3 a@href",
+          "date": "time@datetime",
+          "summary": "p.paragraph-block"
+        }
+      },
+      "defaultFields": [
+        "headline",
+        "url",
+        "date",
+        "summary"
+      ],
+      "mutates": false,
+      "example": {
+        "slug": "real-estate"
+      },
+      "source": "E28 E8 GET https://sfstandard.com/obsession/real-estate/",
+      "sample": "{\"headline\":\"Supervisors clear way to auction Sea Cliff house at center of alleged deed-fraud scheme\",\"url\":\"https://sfstandard.com/2026/10/20/sea-cliff-squatter-house-police-complaint-auction-vote/\",\"date\":\"2026-10-21T06:15:04.238Z\",\"summary\":\"The treasurer’s office says a sale could come before year’s end; the city attorney’s injunction hearing is set for ",
+      "resultFields": [
+        "headline",
+        "url",
+        "date",
+        "summary"
+      ],
+      "verified": true
+    },
+    {
+      "name": "list-author-articles",
+      "summary": "Recent articles by one reporter, looked up by author slug.",
+      "method": "GET",
+      "urlTemplate": "/author/{slug}/",
+      "params": [
+        {
+          "name": "slug",
+          "in": "path",
+          "required": true,
+          "type": "string",
+          "description": "Author slug from /author/<slug>/ (authors[].slug in results)",
+          "example": "garrett-leahy"
+        }
+      ],
+      "responseType": "html",
+      "extract": {
+        "list": "article.w-full.flex",
+        "fields": {
+          "headline": "h3 a",
+          "url": "h3 a@href",
+          "date": "time@datetime"
+        }
+      },
+      "defaultFields": [
+        "headline",
+        "url",
+        "date"
+      ],
+      "mutates": false,
+      "example": {
+        "slug": "garrett-leahy"
+      },
+      "source": "E29 E8 GET https://sfstandard.com/author/garrett-leahy/",
+      "sample": "{\"headline\":\"PG&E outlined its $22.5B price tag for a public power takeover\",\"url\":\"https://sfstandard.com/2026/10/20/pge-public-utility-takeover-appraisal/\",\"date\":\"2026-10-21T08:55:45.530Z\"}",
+      "resultFields": [
+        "headline",
+        "url",
+        "date"
+      ],
+      "verified": true
+    },
+    {
+      "name": "get-article-comments-info",
+      "summary": "Comment status and counts for an article, looked up by its article id (the id field in search and list results).",
+      "method": "GET",
+      "urlTemplate": "/api/coral-trpc/comments.getStory?batch=1&input=%7B%220%22%3A%7B%22json%22%3A%7B%22storyID%22%3A%22{storyId}%22%7D%7D%7D",
+      "params": [
+        {
+          "name": "storyId",
+          "in": "query",
+          "required": true,
+          "type": "string",
+          "description": "Article UUID (id field from search or list results)",
+          "example": "b50c25ea-6978-4436-8dbb-63c828decda0"
+        }
+      ],
+      "responseType": "json",
+      "resultPath": "0.result.data.json.story",
+      "defaultFields": [
+        "id",
+        "isClosed",
+        "commentCounts"
+      ],
+      "mutates": false,
+      "example": {
+        "storyId": "b50c25ea-6978-4436-8dbb-63c828decda0"
+      },
+      "source": "E9 GET https://sfstandard.com/api/coral-trpc/comments.getStory",
+      "sample": "{\"id\":\"b50c25ea-6978-4436-8dbb-63c828decda0\",\"isClosed\":false,\"commentCounts\":{\"tags\":{\"FEATURED\":0},\"totalPublished\":1}}",
+      "resultFields": [
+        "id",
+        "isClosed",
+        "commentCounts"
+      ],
+      "verified": true
+    }
+  ],
+  "blockers": [],
+  "notes": [
+    "Article URLs have the form /YYYY/MM/DD/slug/; split one into year/month/day/slug to call get-article.",
+    "search-articles returns 5 results per page by default; the response also carries pagination.totalItems and totalPages.",
+    "In search-articles, dateRange, sectionId and authorId are raw JSON values: wrap codes and UUIDs in double quotes, e.g. \"1m\"."
+  ],
+  "dropped": [],
+  "generated": {
+    "by": "clify add",
+    "model": "claude-opus-5-5",
+    "exploredSteps": 20,
+    "recorded": 283,
+    "verifiedAt": "2026-10-21T07:18:48.879Z",
+    "seconds": 321,
+    "importedFrom": "~/.clify/sites/sfstandard",
+    "importedAt": "2026-10-21T07:24:44.784Z"
+  }
+}

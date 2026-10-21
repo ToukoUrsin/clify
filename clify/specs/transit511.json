@@ -1,0 +1,680 @@
+{
+  "name": "transit511",
+  "startUrl": "https://511.org/",
+  "origin": "https://511.org",
+  "createdAt": "2026-10-21T07:08:09.899Z",
+  "description": "511.org is the San Francisco Bay Area traveler information site. This CLI reads its public transit and traffic data without an API key: transit and traffic alerts, agencies, transit centers, bike share, carpool spots, road speeds and the stop-ID finder.",
+  "commands": [
+    {
+      "name": "list-transit-alerts",
+      "summary": "List current Bay Area transit service alerts for all agencies. Filter the output yourself by ServiceAlertEntities[].AgencyId (e.g. BA=BART, SC=VTA, CT=Caltrain, AC=AC Transit).",
+      "method": "GET",
+      "urlTemplate": "https://webapi.511.org/api-proxy/api/v1/transit/alerts/",
+      "params": [],
+      "responseType": "json",
+      "resultPath": "Alerts",
+      "defaultFields": [
+        "Id",
+        "HeaderText",
+        "DescriptionText",
+        "ServiceAlertEntities.0.AgencyId",
+        "ServiceAlertEntities.0.RouteShortName",
+        "StartDateTime",
+        "EndDateTime",
+        "Url"
+      ],
+      "mutates": false,
+      "source": "E13 GET https://webapi.511.org/api-proxy/api/v1/transit/alerts/",
+      "sample": "{\"Id\":\"1178639065\",\"HeaderText\":\"ENJOY LIVE MUSIC THURSDAYS 5 TO 7 PM ON THE NORTH PLAZA BY FORT POINT BEER GARDEN\",\"DescriptionText\":\"\",\"ServiceAlertEntities.0.AgencyId\":\"5F\",\"ServiceAlertEntities.0.RouteShortName\":null,\"StartDateTime\":1792566000,\"EndDateTime\":1792738740,\"Url\":\"\"}",
+      "resultFields": [
+        "Id",
+        "StartDateTime",
+        "EndDateTime",
+        "Cause",
+        "Effect",
+        "Url",
+        "HeaderText",
+        "DescriptionText",
+        "Published",
+        "CreatedDate",
+        "EditedBy",
+        "EditedDate",
+        "ServiceAlertEntities",
+        "SeverityLevel",
+        "TtsHeaderText",
+        "TtsDescriptionText"
+      ],
+      "example": {},
+      "verified": true
+    },
+    {
+      "name": "list-traffic-events",
+      "summary": "List active Bay Area traffic events (incidents, construction, closures) with road, direction, severity and schedule.",
+      "method": "GET",
+      "urlTemplate": "https://webapi.511.org/api-proxy/api/v1/traffic/events/?extended=true",
+      "params": [
+        {
+          "name": "road_segments",
+          "in": "query",
+          "required": false,
+          "type": "boolean",
+          "description": "Include road segment geometry/details for events"
+        },
+        {
+          "name": "road_closed",
+          "in": "query",
+          "required": false,
+          "type": "boolean",
+          "description": "Include road-closure events (the map sends true together with road_segments)"
+        }
+      ],
+      "responseType": "json",
+      "resultPath": "Events",
+      "defaultFields": [
+        "source_id.#text",
+        "headline",
+        "event_type",
+        "severity",
+        "status",
+        "roads.0.name",
+        "roads.0.direction",
+        "updated"
+      ],
+      "mutates": false,
+      "source": "E8 GET https://webapi.511.org/api-proxy/api/v1/traffic/events/",
+      "sample": "{\"source_id.#text\":\"TM-C116HA-0002-2025-09-23-21-01-00-1401827\",\"headline\":\"Caltrans : Long-term construction on CA-116 Eastbound and Westbound east of Bohemian Hwy (Monte Rio). Lane closed. One way traffic control in effect. From 9:00 PM Tuesday, September 23, 2025 to 9:00 AM Monday, November 30, 2026.\",\"event_type\":\"CONSTRUCTION\",\"severity\":\"Unknown\",\"stat",
+      "resultFields": [
+        "status",
+        "headline",
+        "event_type",
+        "event_subtypes",
+        "severity",
+        "created",
+        "updated",
+        "areas",
+        "geography",
+        "source_type",
+        "source_id",
+        "roads",
+        "schedule",
+        "extension"
+      ],
+      "example": {},
+      "verified": true
+    },
+    {
+      "name": "get-alert-ticker",
+      "summary": "Get the site-wide alert ticker: the current critical alerts and major closures shown at the top of 511.org.",
+      "method": "GET",
+      "urlTemplate": "https://webapi.511.org/api-proxy/api/v1/common/ticker/",
+      "params": [],
+      "responseType": "json",
+      "resultPath": "Ticker",
+      "defaultFields": [
+        "MessageID",
+        "MessageText",
+        "StartDate",
+        "LastUpdate",
+        "Url"
+      ],
+      "mutates": false,
+      "source": "E1 GET https://webapi.511.org/api-proxy/api/v1/common/ticker/",
+      "sample": "{\"MessageID\":\"39450\",\"MessageText\":\"Caltrans Scheduled Full Closures of El Camino Real (CA-82) in Burlingame, 10/19 - 10/27\",\"StartDate\":\"10/20/2026 20:00:00\",\"LastUpdate\":\"10/20/2026 07:57:26 PM\",\"Url\":\"https://511.org/alerts/critical\"}",
+      "resultFields": [
+        "MessageID",
+        "MessageText",
+        "StartDate",
+        "Url",
+        "Status",
+        "LastUpdate"
+      ],
+      "example": {},
+      "verified": true
+    },
+    {
+      "name": "list-traffic-news",
+      "summary": "List breaking traffic news and scheduled closure announcements, with descriptions and expiry dates.",
+      "method": "GET",
+      "urlTemplate": "https://webapi.511.org/api-proxy/api/v1/traffic/news/",
+      "params": [],
+      "responseType": "json",
+      "resultPath": "News",
+      "defaultFields": [
+        "Type",
+        "Title",
+        "Date",
+        "Expires",
+        "Description",
+        "Link"
+      ],
+      "mutates": false,
+      "source": "E9 GET https://webapi.511.org/api-proxy/api/v1/traffic/news/",
+      "sample": "{\"Type\":\"Breaking News\",\"Title\":\"Caltrans Scheduled Lane Closures on Westbound I-580 Richmond-San Rafael Bridge, 9/14 - 11/19\",\"Date\":\"10/20/2026 20:00:00\",\"Expires\":\"11/19/2026 06:00:00\",\"Description\":\"Caltrans has scheduled lane closures on the westbound I-580 Richmond-San Rafael Bridge from Monday, September 14, through Thursday, November 19, due to bridg",
+      "resultFields": [
+        "Type",
+        "Date",
+        "Title",
+        "Description",
+        "Expires",
+        "Link"
+      ],
+      "example": {},
+      "verified": true
+    },
+    {
+      "name": "list-transit-agencies",
+      "summary": "Search Bay Area transit agencies by name and mode. Returns description, modes, the detail-page URL (slug), the stop-ID finder link and the transit-centers link (which carries the agency filter id).",
+      "method": "GET",
+      "urlTemplate": "/travel/transit/agencies",
+      "params": [
+        {
+          "name": "title",
+          "in": "query",
+          "required": false,
+          "type": "string",
+          "description": "Agency name contains, e.g. transit",
+          "example": "transit"
+        },
+        {
+          "name": "train",
+          "key": "field_agency_modes_value[Train]",
+          "in": "query",
+          "required": false,
+          "type": "string",
+          "description": "Pass Train to limit to train agencies",
+          "enum": [
+            "Train"
+          ]
+        },
+        {
+          "name": "bus",
+          "key": "field_agency_modes_value[Bus]",
+          "in": "query",
+          "required": false,
+          "type": "string",
+          "description": "Pass Bus to limit to bus agencies",
+          "enum": [
+            "Bus"
+          ]
+        },
+        {
+          "name": "ferry",
+          "key": "field_agency_modes_value[Ferry]",
+          "in": "query",
+          "required": false,
+          "type": "string",
+          "description": "Pass Ferry to limit to ferry agencies",
+          "enum": [
+            "Ferry"
+          ]
+        },
+        {
+          "name": "shuttle",
+          "key": "field_agency_modes_value[Shuttle]",
+          "in": "query",
+          "required": false,
+          "type": "string",
+          "description": "Pass Shuttle to limit to shuttle agencies",
+          "enum": [
+            "Shuttle"
+          ]
+        },
+        {
+          "name": "subway",
+          "key": "field_agency_modes_value[Subway]",
+          "in": "query",
+          "required": false,
+          "type": "string",
+          "description": "Pass Subway to limit to subway agencies (e.g. BART)",
+          "enum": [
+            "Subway"
+          ]
+        },
+        {
+          "name": "sort",
+          "key": "sort_bef_combine",
+          "in": "query",
+          "required": false,
+          "type": "string",
+          "description": "Sort by name ascending or descending",
+          "enum": [
+            "title_ASC",
+            "title_DESC"
+          ],
+          "default": "title_ASC"
+        }
+      ],
+      "responseType": "html",
+      "extract": {
+        "list": "div.view-content > div.views-row",
+        "fields": {
+          "name": "h2 span.field--name-title",
+          "description": "div.text-formatted p",
+          "modes": "div.field--name-field-agency-modes",
+          "url": "a.read-more-link@href",
+          "stopIdUrl": "a.find-stop-id@href",
+          "centersUrl": "a.find-transit-centers@href",
+          "website": "a.ext@href"
+        }
+      },
+      "defaultFields": [
+        "name",
+        "url",
+        "modes",
+        "stopIdUrl",
+        "centersUrl",
+        "website"
+      ],
+      "mutates": false,
+      "example": {
+        "title": "transit"
+      },
+      "source": "E29 GET https://511.org/travel/transit/agencies",
+      "sample": "{\"name\":\"AC Transit\",\"url\":\"https://511.org/travel/transit/agencies/ac-transit\",\"modes\":\"Bus\",\"stopIdUrl\":\"https://511.org/travel/transit/stop-id?agency=AC\",\"centersUrl\":\"https://511.org/travel/transit/centers?field_agencies_served_target_id_verf=146\",\"website\":\"https://www.actransit.org\"}",
+      "resultFields": [
+        "name",
+        "description",
+        "modes",
+        "url",
+        "stopIdUrl",
+        "centersUrl",
+        "website"
+      ],
+      "verified": true
+    },
+    {
+      "name": "list-transit-agency-codes",
+      "summary": "List every transit agency with its 2-letter agency code (used in alerts' AgencyId and in the stop-ID finder) and whether it has real-time data.",
+      "method": "GET",
+      "urlTemplate": "/map-data/transit-agencies",
+      "params": [],
+      "responseType": "json",
+      "resultPath": "data",
+      "defaultFields": [
+        "agency_code",
+        "agency_name",
+        "has_rtt"
+      ],
+      "mutates": false,
+      "source": "E11 GET https://511.org/map-data/transit-agencies",
+      "sample": "{\"agency_code\":\"VC\",\"agency_name\":\"Vacaville City Coach\",\"has_rtt\":false}",
+      "resultFields": [
+        "type",
+        "agency_name",
+        "agency_code",
+        "has_rtt",
+        "agency_logo"
+      ],
+      "example": {},
+      "verified": true
+    },
+    {
+      "name": "search-transit-centers",
+      "summary": "Search transit centers and stations by name and/or the agency serving them. Returns names and detail URLs (slug), 10 per page.",
+      "method": "GET",
+      "urlTemplate": "/travel/transit/centers",
+      "params": [
+        {
+          "name": "title",
+          "in": "query",
+          "required": false,
+          "type": "string",
+          "description": "Center name contains, e.g. BART",
+          "example": "BART"
+        },
+        {
+          "name": "agency",
+          "key": "field_agencies_served_target_id_verf",
+          "in": "query",
+          "required": false,
+          "type": "string",
+          "description": "Numeric agency filter id or All. Take it from the centersUrl of list-transit-agencies, e.g. 146 = AC Transit",
+          "default": "All"
+        },
+        {
+          "name": "page",
+          "in": "query",
+          "required": false,
+          "type": "number",
+          "description": "Zero-based page number"
+        }
+      ],
+      "responseType": "html",
+      "extract": {
+        "list": "div.view-transit-centers div.item-list li",
+        "fields": {
+          "name": "span.field--name-title",
+          "url": "a@href"
+        }
+      },
+      "defaultFields": [
+        "name",
+        "url"
+      ],
+      "pagination": {
+        "type": "page",
+        "param": "page"
+      },
+      "mutates": false,
+      "example": {
+        "title": "BART"
+      },
+      "source": "E30 GET https://511.org/travel/transit/centers",
+      "sample": "{\"name\":\"12th Street Oakland City Center BART Station\",\"url\":\"https://511.org/travel/transit/centers/12th-street-oakland-city-center-bart-station\"}",
+      "resultFields": [
+        "name",
+        "url"
+      ],
+      "verified": true
+    },
+    {
+      "name": "list-all-transit-centers",
+      "summary": "Get all transit centers in one JSON list, with address, coordinates, agencies served and shuttles.",
+      "method": "GET",
+      "urlTemplate": "/map-data/transit-centers",
+      "params": [],
+      "responseType": "json",
+      "resultPath": "data",
+      "defaultFields": [
+        "nid",
+        "attributes.title",
+        "attributes.field_address_line_1",
+        "attributes.field_city",
+        "attributes.field_agencies_served",
+        "attributes.field_shuttles",
+        "attributes.field_map_location.0.lat",
+        "attributes.field_map_location.0.lng"
+      ],
+      "mutates": false,
+      "source": "E14 GET https://511.org/map-data/transit-centers",
+      "sample": "{\"nid\":\"1\",\"attributes.title\":\"Salesforce Transit Center\",\"attributes.field_address_line_1\":\"425 Mission St\",\"attributes.field_city\":\"San Francisco\",\"attributes.field_agencies_served\":[\"AC Transit\",\"Golden Gate Transit\",\"SFMTA (Muni)\",\"SamTrans\",\"WestCAT\"],\"attributes.field_shuttles\":\"Mission Bay Shuttle\",\"attributes.field_map_location.0.lat\":\"37.7898\",\"attr",
+      "resultFields": [
+        "type",
+        "nid",
+        "attributes"
+      ],
+      "example": {},
+      "verified": true
+    },
+    {
+      "name": "get-transit-agency",
+      "summary": "Get a transit agency's detail page: description, website, address, phone, modes, paratransit link and how many transit centers it serves.",
+      "method": "GET",
+      "urlTemplate": "/travel/transit/agencies/{slug}",
+      "params": [
+        {
+          "name": "slug",
+          "in": "path",
+          "required": true,
+          "type": "string",
+          "description": "Agency slug from the list-transit-agencies url, e.g. bart, caltrain, ac-transit",
+          "example": "bart"
+        }
+      ],
+      "responseType": "html",
+      "extract": {
+        "fields": {
+          "name": "h2 span.field--name-title",
+          "description": "div.agency-info-card div.text-formatted p",
+          "website": "div.field--name-field-agency-website a@href",
+          "address": "div.field--name-field-address p.address",
+          "phone": "div.field--name-field-agency-phone a",
+          "modes": "div.field--name-field-agency-modes div.field__items",
+          "transitCenters": "div.field--name-field-transit-centers div.results-summary p",
+          "paratransitLink": "div.field--name-field-paratransit-link a@href"
+        }
+      },
+      "defaultFields": [
+        "name",
+        "description",
+        "website",
+        "phone",
+        "address",
+        "modes",
+        "transitCenters"
+      ],
+      "mutates": false,
+      "example": {
+        "slug": "bart"
+      },
+      "source": "E32 GET https://511.org/travel/transit/agencies/bart",
+      "sample": "{\"name\":\"BART\",\"description\":\"The San Francisco Bay Area Rapid Transit District (BART) is the region's main subway and elevated rail system, connecting the San Francisco Peninsula with communities in the East Bay and South Bay. BART service currently extends as far as Millbrae, Richmond, Antioch, Dublin/Pleasanton, and Berryessa/North San José. BART operates",
+      "resultFields": [
+        "name",
+        "description",
+        "website",
+        "address",
+        "phone",
+        "modes",
+        "transitCenters",
+        "paratransitLink"
+      ],
+      "verified": true
+    },
+    {
+      "name": "get-transit-center",
+      "summary": "Get a transit center's detail page: name, address, agencies and info text, including links to route/stop/schedule maps.",
+      "method": "GET",
+      "urlTemplate": "/travel/transit/centers/{slug}",
+      "params": [
+        {
+          "name": "slug",
+          "in": "path",
+          "required": true,
+          "type": "string",
+          "description": "Transit center slug from the search-transit-centers url, e.g. millbrae-transit-center",
+          "example": "embarcadero-bart-station"
+        }
+      ],
+      "responseType": "html",
+      "extract": {
+        "fields": {
+          "name": "h2 span.field--name-title",
+          "address": "p.address || span.address-line1",
+          "info": "div.center-info-wrapper"
+        }
+      },
+      "defaultFields": [
+        "name",
+        "address",
+        "info"
+      ],
+      "mutates": false,
+      "example": {
+        "slug": "embarcadero-bart-station"
+      },
+      "source": "E33 GET https://511.org/travel/transit/centers/embarcadero-bart-station",
+      "sample": "{\"name\":\"Embarcadero BART Station\",\"address\":\"298 Market St San Francisco, CA 94105 United States\",\"info\":\"37.891146168303, -122.29754091044 Address 298 Market St San Francisco, CA 94105 United States Agencies Served SamTrans BART SFMTA (Muni) Golden Gate Transit Shuttles Presidio Go\"}",
+      "resultFields": [
+        "name",
+        "address",
+        "info"
+      ],
+      "verified": true
+    },
+    {
+      "name": "list-bikeshare-stations",
+      "summary": "List Bay Wheels bike share stations with live counts of available bikes and docks.",
+      "method": "GET",
+      "urlTemplate": "https://webapi.511.org/api-proxy/api/v1/bikeshare/ford_stations/",
+      "params": [],
+      "responseType": "json",
+      "resultPath": "BikeShareStations",
+      "defaultFields": [
+        "id",
+        "stationName",
+        "availableBikes",
+        "availableDocks",
+        "capacity",
+        "statusValue",
+        "latitude",
+        "longitude"
+      ],
+      "mutates": false,
+      "source": "E6 GET https://webapi.511.org/api-proxy/api/v1/bikeshare/ford_stations/",
+      "sample": "{\"id\":\"68c89d1f-407a-4550-a2b7-ecf0ad7ee422\",\"stationName\":\"San Carlos St at Meridian Ave\",\"availableBikes\":4,\"availableDocks\":15,\"capacity\":19,\"statusValue\":\"In Service\",\"latitude\":37.3233446905968,\"longitude\":-121.91349685192107}",
+      "resultFields": [
+        "altitude",
+        "availableBikes",
+        "availableDocks",
+        "capacity",
+        "city",
+        "disabledBikes",
+        "disabledDocks",
+        "eightd_has_available_keys",
+        "eightd_has_key_dispenser",
+        "id",
+        "is_installed",
+        "is_renting",
+        "is_returning",
+        "landMark",
+        "lastCommunicationTime",
+        "latitude",
+        "location",
+        "longitude",
+        "postalCode",
+        "region_id",
+        "rental_methods",
+        "short_name",
+        "stAddress1",
+        "stAddress2",
+        "stationName",
+        "statusKey",
+        "statusValue",
+        "testStation",
+        "totalDocks"
+      ],
+      "example": {},
+      "verified": true
+    },
+    {
+      "name": "list-casual-carpool-locations",
+      "summary": "List casual carpool pickup and drop-off locations with address, description and coordinates.",
+      "method": "GET",
+      "urlTemplate": "/map-data/casual-carpool-locations",
+      "params": [],
+      "responseType": "json",
+      "resultPath": "data",
+      "defaultFields": [
+        "nid",
+        "attributes.title",
+        "attributes.field_description",
+        "attributes.field_address_line_1",
+        "attributes.field_city",
+        "attributes.field_map_location.0.lat",
+        "attributes.field_map_location.0.lng"
+      ],
+      "mutates": false,
+      "source": "E5 GET https://511.org/map-data/casual-carpool-locations",
+      "sample": "{\"nid\":\"420\",\"attributes.title\":\"Morning Casual Carpool Drop Off\",\"attributes.field_description\":\"South side of Howard St. b/w First & Fremont\\r\\n\",\"attributes.field_address_line_1\":\"400 Block of Howard Street\",\"attributes.field_city\":\"San Francisco\",\"attributes.field_map_location.0.lat\":\"37.788675078312\",\"attributes.field_map_location.0.lng\":\"-122.395801639",
+      "resultFields": [
+        "type",
+        "nid",
+        "attributes"
+      ],
+      "example": {},
+      "verified": true
+    },
+    {
+      "name": "get-traffic-speeds",
+      "summary": "Get live traffic flow (speeds, jam factor) for road segments inside a bounding box.",
+      "method": "GET",
+      "urlTemplate": "https://webapi.511.org/api-proxy/api/v1/here?locationReferencing=shape&in=bbox:{bbox}&functionalClasses={functionalClasses}",
+      "params": [
+        {
+          "name": "bbox",
+          "in": "path",
+          "required": true,
+          "type": "string",
+          "description": "Bounding box west,south,east,north in degrees, e.g. -123.3,36.9,-122.4,37.8",
+          "example": "-123.3,36.9,-122.4,37.8"
+        },
+        {
+          "name": "functionalClasses",
+          "in": "path",
+          "required": false,
+          "type": "string",
+          "description": "Comma-separated road classes, 1 = major highways up to 5 = local streets",
+          "default": "1,2"
+        }
+      ],
+      "responseType": "json",
+      "resultPath": "results",
+      "defaultFields": [
+        "location.description",
+        "location.length",
+        "currentFlow.speed",
+        "currentFlow.freeFlow",
+        "currentFlow.jamFactor"
+      ],
+      "mutates": false,
+      "example": {
+        "bbox": "-123.3,36.9,-122.4,37.8"
+      },
+      "source": "E7 GET https://webapi.511.org/api-proxy/api/v1/here",
+      "sample": "{\"location.description\":\"Lincoln Way/Golden Gate Park\",\"location.length\":669,\"currentFlow.speed\":15,\"currentFlow.freeFlow\":13.611112,\"currentFlow.jamFactor\":0}",
+      "resultFields": [
+        "location",
+        "currentFlow"
+      ],
+      "verified": true
+    },
+    {
+      "name": "search-site",
+      "summary": "Full-text search of 511.org pages (schedules, agency info, transit centers, programs). Returns page titles and URLs.",
+      "method": "GET",
+      "urlTemplate": "/search",
+      "params": [
+        {
+          "name": "search",
+          "in": "query",
+          "required": true,
+          "type": "string",
+          "description": "Search text, e.g. Caltrain schedule",
+          "example": "Caltrain schedule"
+        }
+      ],
+      "responseType": "html",
+      "extract": {
+        "list": "div.view-content div.views-row",
+        "fields": {
+          "title": "h3 || h2 || a",
+          "url": "a@href"
+        }
+      },
+      "defaultFields": [
+        "title",
+        "url"
+      ],
+      "mutates": false,
+      "example": {
+        "search": "Caltrain schedule"
+      },
+      "source": "E42",
+      "sample": "{\"title\":\"4th & King Caltrain Station\",\"url\":\"https://511.org/travel/transit/centers/4th-king-caltrain-station\"}",
+      "resultFields": [
+        "title",
+        "url"
+      ],
+      "verified": true
+    }
+  ],
+  "blockers": [],
+  "notes": [
+    "No API key is needed. Live departures and stop predictions are not available without one; for those the official 511 open-data API needs a free token.",
+    "Agency codes such as BA (BART), CT (Caltrain), AC (AC Transit) and SC (VTA) link alerts, the stop-ID finder and list-transit-agency-codes.",
+    "Transit alert times (StartDateTime and EndDateTime) are Unix seconds. Ticker and news dates are MM/DD/YYYY HH:MM:SS local time.",
+    "Detail commands take the slug, which is the last path segment of a list result's url."
+  ],
+  "dropped": [],
+  "generated": {
+    "by": "clify add",
+    "model": "claude-opus-5-5",
+    "exploredSteps": 28,
+    "recorded": 149,
+    "verifiedAt": "2026-10-21T07:09:36.195Z",
+    "seconds": 248,
+    "importedFrom": "~/.clify/sites/511",
+    "importedAt": "2026-10-21T07:24:44.776Z"
+  }
+}

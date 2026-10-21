@@ -1,0 +1,771 @@
+{
+  "name": "sfmta",
+  "startUrl": "https://www.sfmta.com/",
+  "origin": "https://www.sfmta.com",
+  "createdAt": "2026-10-21T07:08:05.854Z",
+  "description": "SFMTA (San Francisco Muni): look up routes, stops, real-time arrival predictions, vehicle locations, trip updates, service alerts and stop relocations through the JSON APIs behind sfmta.com.",
+  "commands": [
+    {
+      "name": "list-routes",
+      "summary": "List all Muni routes from the GTFS feed: route id, number, name, hours description and color.",
+      "method": "GET",
+      "urlTemplate": "https://sfmta.gtfs.media/gtfs/api/v2/feeds/sfmta/agencies/SFMTA/routes",
+      "params": [],
+      "responseType": "json",
+      "resultPath": "data",
+      "defaultFields": [
+        "route_id",
+        "route_short_name",
+        "route_long_name",
+        "route_desc",
+        "route_type",
+        "route_url"
+      ],
+      "mutates": false,
+      "source": "E21 GET https://sfmta.gtfs.media/gtfs/api/v2/feeds/sfmta/agencies/SFMTA/routes/{n}",
+      "sample": "{\"route_id\":\"1\",\"route_short_name\":\"1\",\"route_long_name\":\"CALIFORNIA\",\"route_desc\":\"5am-12 midnight daily\",\"route_type\":\"3\",\"route_url\":\"http://www.sfmta.com/1\"}",
+      "resultFields": [
+        "label",
+        "route_id",
+        "agency_id",
+        "route_short_name",
+        "route_long_name",
+        "route_desc",
+        "route_type",
+        "route_url",
+        "route_color",
+        "route_text_color",
+        "route_sort_order",
+        "continuous_pickup",
+        "continuous_drop_off",
+        "network_id",
+        "links"
+      ],
+      "example": {},
+      "verified": true
+    },
+    {
+      "name": "list-muni-alerts",
+      "summary": "List recent Muni service alerts (delays, reroutes, all-clears) with publish time and affected route tags.",
+      "method": "GET",
+      "urlTemplate": "https://safitwebapps.blob.core.windows.net/$web/muni/muniAlerts/posts_prod.json",
+      "params": [],
+      "responseType": "json",
+      "resultPath": "posts",
+      "defaultFields": [
+        "object.id",
+        "object.published",
+        "object.contentMap.en",
+        "object.tags",
+        "object.inReplyTo"
+      ],
+      "mutates": false,
+      "source": "E33 GET https://safitwebapps.blob.core.windows.net/$web/muni/muniAlerts/posts_prod.json",
+      "sample": "{\"object.id\":\"MZ7\",\"object.published\":\"2026-06-30T19:20:38.924Z\",\"object.contentMap.en\":\"FINAL UPDATE: Muni involved collision on Kirkwood has cleared. Inbound/Outbound 15 has resumed regular route.\",\"object.tags\":[{\"type\":\"Campaign\",\"id\":\"701t0000000G9szAAC\",\"name\":\"15 Bayview Hunters Point Express - Midday (9:30 am - 4 pm)\"}],\"object.inReplyTo\":\"LtU\"}",
+      "resultFields": [
+        "actor",
+        "object"
+      ],
+      "example": {},
+      "verified": true
+    },
+    {
+      "name": "get-stop-predictions",
+      "summary": "Real-time arrival predictions (minutes, vehicle, direction, occupancy) for every route serving a stop, by public 5-digit stop code.",
+      "method": "GET",
+      "urlTemplate": "https://webservices.umoiq.com/api/pub/v1/agencies/sfmta-cis/stopcodes/{stopCode}/predictions?key=0be8ebd0284ce712a63f29dcaf7798c4",
+      "params": [
+        {
+          "name": "stopCode",
+          "in": "path",
+          "required": true,
+          "type": "string",
+          "description": "Public 5-digit stop code shown at the stop and in URLs, e.g. 17954 (GTFS stop_code)",
+          "example": "17954"
+        }
+      ],
+      "responseType": "json",
+      "defaultFields": [
+        "route.id",
+        "route.title",
+        "stop.name",
+        "stop.code",
+        "values"
+      ],
+      "mutates": false,
+      "example": {
+        "stopCode": "17954"
+      },
+      "source": "E20 GET https://webservices.umoiq.com/api/pub/v1/agencies/sfmta-cis/stopcodes/{n}/predictions",
+      "sample": "{\"route.id\":\"38\",\"route.title\":\"38 Geary\",\"stop.name\":\"Geary Blvd & Fillmore St/Japantown\",\"stop.code\":\"17954\",\"values\":[{\"timestamp\":1792567469314,\"minutes\":15,\"affectedByLayover\":false,\"isDeparture\":false,\"occupancyStatus\":0,\"occupancyDescription\":\"Empty\",\"vehiclesInConsist\":1,\"linkedVehicleIds\":\"6523\",\"vehicleId\":\"6523\",\"vehicleType\":\"Motor Coach_MC60\",\"d",
+      "resultFields": [
+        "serverTimestamp",
+        "nxbs2RedirectUrl",
+        "agency",
+        "route",
+        "stop",
+        "values"
+      ],
+      "verified": true
+    },
+    {
+      "name": "get-route-vehicles",
+      "summary": "Live vehicle positions on a route: vehicle id, direction, lat/lon, speed, occupancy and time since last report.",
+      "method": "GET",
+      "urlTemplate": "https://webservices.umoiq.com/api/pub/v1/agencies/sfmta-cis/routes/{routeId}/vehicles?key=0be8ebd0284ce712a63f29dcaf7798c4",
+      "params": [
+        {
+          "name": "routeId",
+          "in": "path",
+          "required": true,
+          "type": "string",
+          "description": "Route id (short name), e.g. 38, 38R, 22, N, KT",
+          "example": "38"
+        }
+      ],
+      "responseType": "json",
+      "defaultFields": [
+        "id",
+        "route.id",
+        "dir.dirNameShort",
+        "lat",
+        "lon",
+        "kph",
+        "occupancyDescription",
+        "secsSinceReport"
+      ],
+      "mutates": false,
+      "example": {
+        "routeId": "38"
+      },
+      "source": "E12 E14 GET https://webservices.umoiq.com/api/pub/v1/agencies/sfmta-cis/routes/{n}/vehicles",
+      "sample": "{\"id\":\"8711\",\"route.id\":\"38\",\"dir.dirNameShort\":\"Lands End - 48th Avenue\",\"lat\":37.7798,\"lon\":-122.504723,\"kph\":29,\"occupancyDescription\":\"Empty\",\"secsSinceReport\":58}",
+      "resultFields": [
+        "id",
+        "vehicleType",
+        "lat",
+        "lon",
+        "jobTag",
+        "tripTag",
+        "scheduledAdherenceSec",
+        "scheduledHeadwaySec",
+        "heading",
+        "kph",
+        "secsSinceReport",
+        "predictable",
+        "breakpointing",
+        "route",
+        "dir",
+        "occupancyStatus",
+        "occupancyDescription",
+        "vehiclesInConsist",
+        "linkedVehicleIds",
+        "detourId",
+        "gpsTime",
+        "avlTime",
+        "lastDepot",
+        "vehiclePosition",
+        "runId",
+        "predUsingNavigationTm",
+        "deadheadingBusYard"
+      ],
+      "verified": true
+    },
+    {
+      "name": "get-route",
+      "summary": "Get GTFS details of one route: number, name, service hours description, type, color and links.",
+      "method": "GET",
+      "urlTemplate": "https://sfmta.gtfs.media/gtfs/api/v2/feeds/sfmta/agencies/SFMTA/routes/{routeId}",
+      "params": [
+        {
+          "name": "routeId",
+          "in": "path",
+          "required": true,
+          "type": "string",
+          "description": "Route id (short name), e.g. 22, 38R",
+          "example": "22"
+        }
+      ],
+      "responseType": "json",
+      "resultPath": "data",
+      "defaultFields": [
+        "route_id",
+        "route_short_name",
+        "route_long_name",
+        "route_desc",
+        "route_type",
+        "route_color",
+        "route_url"
+      ],
+      "mutates": false,
+      "example": {
+        "routeId": "22"
+      },
+      "source": "E21 E29 GET https://sfmta.gtfs.media/gtfs/api/v2/feeds/sfmta/agencies/SFMTA/routes/{n}",
+      "sample": "{\"route_id\":\"22\",\"route_short_name\":\"22\",\"route_long_name\":\"FILLMORE\",\"route_desc\":\"24 hour service daily\",\"route_type\":\"3\",\"route_color\":\"005B95\",\"route_url\":\"http://www.sfmta.com/22\"}",
+      "resultFields": [
+        "label",
+        "route_id",
+        "agency_id",
+        "route_short_name",
+        "route_long_name",
+        "route_desc",
+        "route_type",
+        "route_url",
+        "route_color",
+        "route_text_color",
+        "route_sort_order",
+        "continuous_pickup",
+        "continuous_drop_off",
+        "network_id"
+      ],
+      "verified": true
+    },
+    {
+      "name": "get-route-stops",
+      "summary": "List all stops served by a route with stop id, public stop code, name and coordinates.",
+      "method": "GET",
+      "urlTemplate": "https://sfmta.gtfs.media/gtfs/api/v2/feeds/sfmta/agencies/SFMTA/routes/{routeId}/stops",
+      "params": [
+        {
+          "name": "routeId",
+          "in": "path",
+          "required": true,
+          "type": "string",
+          "description": "Route id (short name), e.g. 22, 38R",
+          "example": "22"
+        }
+      ],
+      "responseType": "json",
+      "resultPath": "data",
+      "defaultFields": [
+        "stop_id",
+        "stop_code",
+        "stop_name",
+        "stop_lat",
+        "stop_lon",
+        "wheelchair_boarding"
+      ],
+      "mutates": false,
+      "example": {
+        "routeId": "22"
+      },
+      "source": "E24 E13 GET https://sfmta.gtfs.media/gtfs/api/v2/feeds/sfmta/agencies/SFMTA/routes/{n}/stops",
+      "sample": "{\"stop_id\":\"5017\",\"stop_code\":\"15017\",\"stop_name\":\"Hermann St & Fillmore St\",\"stop_lat\":\"37.770300\",\"stop_lon\":\"-122.429900\",\"wheelchair_boarding\":\"0\"}",
+      "resultFields": [
+        "label",
+        "stop_id",
+        "stop_code",
+        "stop_name",
+        "stop_desc",
+        "stop_lat",
+        "stop_lon",
+        "zone_id",
+        "stop_url",
+        "location_type",
+        "parent_station",
+        "stop_timezone",
+        "wheelchair_boarding",
+        "platform_code",
+        "tts_stop_name",
+        "level_id",
+        "links"
+      ],
+      "verified": true
+    },
+    {
+      "name": "get-route-directions",
+      "summary": "Route configuration with its directions (inbound/outbound names and ordered stop ids) and all stops with codes and coordinates.",
+      "method": "GET",
+      "urlTemplate": "https://webservices.umoiq.com/api/pub/v1/agencies/sfmta-cis/routes/{routeId}?key=0be8ebd0284ce712a63f29dcaf7798c4",
+      "params": [
+        {
+          "name": "routeId",
+          "in": "path",
+          "required": true,
+          "type": "string",
+          "description": "Route id (short name), e.g. 38, 38R",
+          "example": "38R"
+        }
+      ],
+      "responseType": "json",
+      "defaultFields": [
+        "id",
+        "title",
+        "description",
+        "directions",
+        "stops"
+      ],
+      "mutates": false,
+      "example": {
+        "routeId": "38R"
+      },
+      "source": "E18 E32 GET https://webservices.umoiq.com/api/pub/v1/agencies/sfmta-cis/routes/{n}",
+      "sample": "{\"id\":\"38R\",\"title\":\"38R Geary Rapid\",\"description\":\"Weekdays 5am-10pm Weekends 6am-9pm\",\"directions\":[{\"id\":\"38R_0_var0\",\"shortName\":\"48th Avenue\",\"name\":\"48th Avenue\",\"useForUi\":true,\"stops\":[\"7915\",\"4725\",\"5689\",\"5684\",\"4301\",\"4766\",\"4757\",\"4303\",\"4768\",\"4304\",\"4295\",\"4293\",\"4758\",\"7854\",\"4257\",\"4755\",\"4265\",\"4269\",\"4278\",\"4280\",\"4282\",\"6109\",\"6111\",\"6129",
+      "resultFields": [
+        "id",
+        "rev",
+        "title",
+        "description",
+        "color",
+        "textColor",
+        "hidden",
+        "boundingBox",
+        "stops",
+        "directions",
+        "paths",
+        "timestamp"
+      ],
+      "verified": true
+    },
+    {
+      "name": "find-stop",
+      "summary": "Look up a stop by public stop code: title, sfmta.com page URL, location, internal stop id and the routes serving it with their direction names.",
+      "method": "GET",
+      "urlTemplate": "/find-a-stop/query",
+      "params": [
+        {
+          "name": "stopCode",
+          "key": "include_stops",
+          "in": "query",
+          "required": true,
+          "type": "string",
+          "description": "Public 5-digit stop code, e.g. 17954",
+          "example": "17954"
+        }
+      ],
+      "responseType": "json",
+      "resultPath": "stops",
+      "defaultFields": [
+        "stop_id",
+        "internal_stop_id",
+        "title",
+        "url",
+        "location",
+        "routes"
+      ],
+      "mutates": false,
+      "example": {
+        "stopCode": "17954"
+      },
+      "source": "E17 GET https://www.sfmta.com/find-a-stop/query",
+      "sample": "{\"stop_id\":\"17954\",\"internal_stop_id\":\"7954\",\"title\":\"Geary Blvd & Fillmore St (#17954)\",\"url\":\"/stops/geary-blvd-fillmore-st-17954\",\"location\":[-122.432144,37.784272],\"routes\":{\"38\":{\"title\":\"38 Geary\",\"route_short_name\":\"38\",\"outbound_stops_title\":\"The Richmond\",\"inbound_stops_title\":\"Downtown\",\"color\":\"#005b95\",\"textColor\":\"#ffffff\",\"destination\":\"Downtow",
+      "resultFields": [
+        "title",
+        "url",
+        "distance",
+        "location",
+        "stop_id",
+        "internal_stop_id",
+        "routes"
+      ],
+      "verified": true
+    },
+    {
+      "name": "get-stop",
+      "summary": "Get GTFS details of a stop by internal stop id (stop code without the leading 1): name, code, coordinates, wheelchair boarding.",
+      "method": "GET",
+      "urlTemplate": "https://sfmta.gtfs.media/gtfs/api/v2/feeds/sfmta/stops/{stopId}",
+      "params": [
+        {
+          "name": "stopId",
+          "in": "path",
+          "required": true,
+          "type": "string",
+          "description": "Internal GTFS stop_id, usually 4 digits (e.g. 7954 for stop code 17954)",
+          "example": "7954"
+        }
+      ],
+      "responseType": "json",
+      "resultPath": "data",
+      "defaultFields": [
+        "stop_id",
+        "stop_code",
+        "stop_name",
+        "stop_lat",
+        "stop_lon",
+        "wheelchair_boarding",
+        "stop_url"
+      ],
+      "mutates": false,
+      "example": {
+        "stopId": "7954"
+      },
+      "source": "E8 GET https://sfmta.gtfs.media/gtfs/api/v2/feeds/sfmta/stops/{n}",
+      "sample": "{\"stop_id\":\"7954\",\"stop_code\":\"17954\",\"stop_name\":\"Geary Blvd & Fillmore St/Japantown\",\"stop_lat\":\"37.784400\",\"stop_lon\":\"-122.432100\",\"wheelchair_boarding\":\"0\",\"stop_url\":\"https://www.sfmta.com/17954\"}",
+      "resultFields": [
+        "label",
+        "stop_id",
+        "stop_code",
+        "stop_name",
+        "stop_desc",
+        "stop_lat",
+        "stop_lon",
+        "zone_id",
+        "stop_url",
+        "location_type",
+        "parent_station",
+        "stop_timezone",
+        "wheelchair_boarding",
+        "platform_code",
+        "tts_stop_name",
+        "level_id"
+      ],
+      "verified": true
+    },
+    {
+      "name": "get-stop-routes",
+      "summary": "List the routes that serve a stop (by internal stop id), with route names and service hours.",
+      "method": "GET",
+      "urlTemplate": "https://sfmta.gtfs.media/gtfs/api/v2/feeds/sfmta/stops/{stopId}/routes",
+      "params": [
+        {
+          "name": "stopId",
+          "in": "path",
+          "required": true,
+          "type": "string",
+          "description": "Internal GTFS stop_id, usually 4 digits (e.g. 7954)",
+          "example": "7954"
+        }
+      ],
+      "responseType": "json",
+      "resultPath": "data",
+      "defaultFields": [
+        "route_id",
+        "route_short_name",
+        "route_long_name",
+        "route_desc",
+        "route_url",
+        "route_map_image_url"
+      ],
+      "mutates": false,
+      "example": {
+        "stopId": "7954"
+      },
+      "source": "E11 GET https://sfmta.gtfs.media/gtfs/api/v2/feeds/sfmta/stops/{n}/routes",
+      "sample": "{\"route_id\":\"38\",\"route_short_name\":\"38\",\"route_long_name\":\"GEARY\",\"route_desc\":\"24 hour service daily\",\"route_url\":\"http://www.sfmta.com/38\",\"route_map_image_url\":\"https://sfmta.gtfs.media/sites/default/files/gtfs/route-map/38_weekdays%2Bevenings_08052019_v1_crop_covid_3.png\"}",
+      "resultFields": [
+        "label",
+        "route_id",
+        "agency_id",
+        "route_short_name",
+        "route_long_name",
+        "route_desc",
+        "route_type",
+        "route_url",
+        "route_color",
+        "route_text_color",
+        "route_sort_order",
+        "continuous_pickup",
+        "continuous_drop_off",
+        "network_id",
+        "links",
+        "route_map_image_url",
+        "agency_logo_url"
+      ],
+      "verified": true
+    },
+    {
+      "name": "get-trip-updates",
+      "summary": "GTFS-realtime trip updates (vehicle, headsign, per-stop predicted arrival times and delays in seconds) for a public stop code or a route id.",
+      "method": "GET",
+      "urlTemplate": "https://sfmta.gtfs.media/gtfs/api/v2/rt/tripupdates/{id}",
+      "params": [
+        {
+          "name": "id",
+          "in": "path",
+          "required": true,
+          "type": "string",
+          "description": "Public 5-digit stop code (e.g. 17954) or route id (e.g. 22, 38R)",
+          "example": "17954"
+        }
+      ],
+      "responseType": "json",
+      "resultPath": "data",
+      "defaultFields": [
+        "trip.tripId",
+        "trip.routeId",
+        "trip.directionId",
+        "trip.tripHeadsign",
+        "vehicle.id",
+        "stopTimeUpdate"
+      ],
+      "mutates": false,
+      "example": {
+        "id": "17954"
+      },
+      "source": "E2 E28 GET https://sfmta.gtfs.media/gtfs/api/v2/rt/tripupdates/{n}",
+      "sample": "{\"trip.tripId\":\"12122377_M11\",\"trip.routeId\":\"38\",\"trip.directionId\":1,\"trip.tripHeadsign\":\"Transit Center\",\"vehicle.id\":\"6523\",\"stopTimeUpdate\":[{\"stopSequence\":5,\"stopId\":\"14281\",\"arrival\":{\"delay\":151,\"time\":\"1792566342\"}},{\"stopSequence\":6,\"stopId\":\"14279\",\"arrival\":{\"delay\":151,\"time\":\"1792566391\"}},{\"stopSequence\":7,\"stopId\":\"14275\",\"arrival\":{\"delay\":",
+      "resultFields": [
+        "trip",
+        "vehicle",
+        "stopTimeUpdate",
+        "timestamp"
+      ],
+      "verified": true
+    },
+    {
+      "name": "get-route-alerts",
+      "summary": "Active GTFS-realtime service alerts affecting a route (empty list when none).",
+      "method": "GET",
+      "urlTemplate": "https://sfmta.gtfs.media/gtfs/api/v2/rt/alerts/route/{routeId}?_format=json&agency_id=SF",
+      "params": [
+        {
+          "name": "routeId",
+          "in": "path",
+          "required": true,
+          "type": "string",
+          "description": "Route id (short name), e.g. 14, 22, 38R",
+          "example": "14"
+        }
+      ],
+      "responseType": "json",
+      "resultPath": "data",
+      "mutates": false,
+      "example": {
+        "routeId": "14"
+      },
+      "source": "E23 E31",
+      "sample": "{\"id\":\"SF_16172\",\"header\":\"14, 49 STOP TEMP. MOVED Board at Mision/Plum\",\"description\":\"14, 49 STOP TEMP. MOVED Board at Mision/Plum\",\"severity\":null,\"effect\":null,\"informedEntity\":[{\"agencyId\":\"SF\",\"routeId\":\"14\",\"stopId\":\"15546\"},{\"agencyId\":\"SF\",\"routeId\":\"49\",\"stopId\":\"15546\"}]}",
+      "resultFields": [
+        "id",
+        "header",
+        "description",
+        "severity",
+        "effect",
+        "informedEntity"
+      ],
+      "verified": true
+    },
+    {
+      "name": "get-stop-alerts",
+      "summary": "Active GTFS-realtime service alerts affecting a stop, by public stop code (empty list when none).",
+      "method": "GET",
+      "urlTemplate": "https://sfmta.gtfs.media/gtfs/api/v2/rt/alerts/stop/{stopCode}?_format=json&agency_id=SF",
+      "params": [
+        {
+          "name": "stopCode",
+          "in": "path",
+          "required": true,
+          "type": "string",
+          "description": "Public 5-digit stop code, e.g. 15623",
+          "example": "15623"
+        }
+      ],
+      "responseType": "json",
+      "resultPath": "data",
+      "mutates": false,
+      "example": {
+        "stopCode": "15623"
+      },
+      "source": "E9",
+      "sample": "{\"id\":\"SF_13513\",\"header\":\"14 STOP TEMP. MOVED Board at Mission/Beale OR Steuart/Mission\",\"description\":\"14 STOP TEMP. MOVED Board at Mission/Beale OR Steuart/Mission\",\"severity\":null,\"effect\":null,\"informedEntity\":[{\"agencyId\":\"SF\",\"routeId\":\"14\",\"stopId\":\"15623\"}]}",
+      "resultFields": [
+        "id",
+        "header",
+        "description",
+        "severity",
+        "effect",
+        "informedEntity"
+      ],
+      "verified": true
+    },
+    {
+      "name": "get-route-annotations",
+      "summary": "Route notes posted by SFMTA (service hours, frequency, special notices) as HTML snippets.",
+      "method": "GET",
+      "urlTemplate": "https://sfmta.gtfs.media/gtfs/api/v2/display/annotations/route/{routeId}?_format=json",
+      "params": [
+        {
+          "name": "routeId",
+          "in": "path",
+          "required": true,
+          "type": "string",
+          "description": "Route id (short name), e.g. 38R",
+          "example": "38R"
+        }
+      ],
+      "responseType": "json",
+      "resultPath": "data",
+      "defaultFields": [
+        "id",
+        "annotation_type",
+        "entity_type",
+        "entity_id",
+        "secondary_entity_id",
+        "body",
+        "active"
+      ],
+      "mutates": false,
+      "example": {
+        "routeId": "38R"
+      },
+      "source": "E22 E30 GET https://sfmta.gtfs.media/gtfs/api/v2/display/annotations/route/{n}",
+      "sample": "{\"id\":11,\"annotation_type\":\"comment\",\"entity_type\":\"stop\",\"entity_id\":\"7915\",\"secondary_entity_id\":\"38R\",\"body\":\"<p>Weekdays - 5 am to 10 pm, every 8 to 12 minutes</p>\\n<p>Weekends - 6 am to 9&nbsp;pm, every 10&nbsp;to 12 minutes</p>\\n<p>All other times – Use&nbsp;38 Geary</p>\\n\",\"active\":true}",
+      "resultFields": [
+        "id",
+        "annotation_type",
+        "entity_type",
+        "entity_id",
+        "secondary_entity_type",
+        "secondary_entity_id",
+        "body",
+        "override_entity_id",
+        "active"
+      ],
+      "verified": true
+    },
+    {
+      "name": "get-stop-annotations",
+      "summary": "Stop notes posted by SFMTA (relocations, closures, notices) for an internal stop id.",
+      "method": "GET",
+      "urlTemplate": "https://sfmta.gtfs.media/gtfs/api/v2/display/annotations/stop/{stopId}?_format=json",
+      "params": [
+        {
+          "name": "stopId",
+          "in": "path",
+          "required": true,
+          "type": "string",
+          "description": "Internal GTFS stop_id, usually 4 digits (stop code without leading 1), e.g. 7915",
+          "example": "7915"
+        }
+      ],
+      "responseType": "json",
+      "resultPath": "data",
+      "defaultFields": [
+        "id",
+        "annotation_type",
+        "entity_id",
+        "secondary_entity_id",
+        "body",
+        "active"
+      ],
+      "mutates": false,
+      "example": {
+        "stopId": "7915"
+      },
+      "source": "E10",
+      "sample": "{\"id\":7,\"annotation_type\":\"comment\",\"entity_id\":\"7915\",\"secondary_entity_id\":\"714\",\"body\":\"<p>Temporarily until further notice, the 714 Route has one trip Monday through Friday at 4:45 am.</p>\\n<p>All other times, please use 14 or 14R on Mission at 1st.</p>\\n\",\"active\":false}",
+      "resultFields": [
+        "id",
+        "annotation_type",
+        "entity_type",
+        "entity_id",
+        "secondary_entity_type",
+        "secondary_entity_id",
+        "body",
+        "override_entity_id",
+        "active"
+      ],
+      "verified": true
+    },
+    {
+      "name": "get-latest-alert",
+      "summary": "The single most recent Muni service alert plus the count of alerts in the last two days.",
+      "method": "GET",
+      "urlTemplate": "https://safitwebapps.blob.core.windows.net/$web/muni/muniAlerts/latest_prod.json",
+      "params": [],
+      "responseType": "json",
+      "defaultFields": [
+        "post.object.id",
+        "post.object.published",
+        "post.object.contentMap.en",
+        "post.object.tags",
+        "postCountLastTwoDays",
+        "last_modified"
+      ],
+      "mutates": false,
+      "source": "E1 GET https://safitwebapps.blob.core.windows.net/$web/muni/muniAlerts/latest_prod.json",
+      "sample": "{\"post.object.id\":\"eLy\",\"post.object.published\":\"2026-10-21T03:30:17.141Z\",\"post.object.contentMap.en\":\"FINAL UPDATE: Delay at Mission and 23rd has cleared. Inbound 14, 14R, and 49 resuming regular service.\",\"post.object.tags\":[{\"type\":\"Campaign\",\"id\":\"701t0000000iMiCAAU\",\"name\":\"14 Mission - Night (7 pm - 12 am)\"},{\"type\":\"Campaign\",\"id\":\"701t0000000iMiGAAU",
+      "resultFields": [
+        "post",
+        "last_modified",
+        "postCountLastTwoDays"
+      ],
+      "example": {},
+      "verified": true
+    },
+    {
+      "name": "get-route-geojson",
+      "summary": "Route shape as a GeoJSON MultiLineString feature (coordinates as [lon, lat]) with route properties.",
+      "method": "GET",
+      "urlTemplate": "https://sfmta.gtfs.media/gtfs/api/v2/feeds/sfmta/agencies/SFMTA/routes/{routeId}/geojson",
+      "params": [
+        {
+          "name": "routeId",
+          "in": "path",
+          "required": true,
+          "type": "string",
+          "description": "Route id (short name), e.g. 38, 38R",
+          "example": "38"
+        }
+      ],
+      "responseType": "json",
+      "resultPath": "data",
+      "mutates": false,
+      "example": {
+        "routeId": "38"
+      },
+      "source": "E3 E7 GET https://sfmta.gtfs.media/gtfs/api/v2/feeds/sfmta/agencies/SFMTA/routes/{n}/geojson",
+      "sample": "{\"type\":\"Feature\",\"properties\":{\"route_id\":\"38\",\"route_short_name\":\"38\",\"route_long_name\":\"GEARY\",\"route_type\":\"3\",\"route_color\":\"005B95\",\"route_text_color\":\"FFFFFF\",\"route_url\":\"http://www.sfmta.com/38\"},\"geometry\":{\"type\":\"MultiLineString\",\"coordinates\":[[[-122.3953,37.7899],[-122.3957,37.7897],[-122.3967,37.7905],[-122.3982,37.7916],[-122.3983,37.7917],[-",
+      "resultFields": [
+        "type",
+        "properties",
+        "geometry"
+      ],
+      "verified": true
+    },
+    {
+      "name": "list-stop-relocations",
+      "summary": "Feed of temporary Muni bus stop relocations/closures (stop, routes affected, dates, alternate stop).",
+      "method": "GET",
+      "urlTemplate": "https://safitwebapps.blob.core.windows.net/$web/muni/stopRelocation/BSRRecordsFeedForList.json",
+      "params": [],
+      "responseType": "json",
+      "resultPath": "stopRelocationData",
+      "defaultFields": [
+        "StopID",
+        "StopName",
+        "Routes",
+        "TemporaryStop",
+        "Dates",
+        "Workdays",
+        "Hours",
+        "Status"
+      ],
+      "mutates": false,
+      "source": "E107",
+      "sample": "{\"StopID\":\"15623\",\"StopName\":\"Mission St & Spear St   \",\"Routes\":\"Outbound: 14\",\"TemporaryStop\":\"Board On: Misison & Beale\",\"Dates\":\"Jan 1 - Dec 31\",\"Workdays\":\"Mon; Tues; Wed; Thurs; Fri; Sat; Sun\",\"Hours\":\"12:00 am - 11:59 pm\",\"Status\":\"Currently Closed\"}",
+      "resultFields": [
+        "StopName",
+        "StopID",
+        "Routes",
+        "TemporaryStop",
+        "Dates",
+        "Workdays",
+        "Hours",
+        "Applicant",
+        "Status"
+      ],
+      "example": {},
+      "verified": true
+    }
+  ],
+  "blockers": [],
+  "notes": [
+    "Stops have two ids: the public 5-digit stopCode (on signs and sfmta.com URLs) and the internal GTFS stopId, which is the code without the leading 1. find-stop maps a code to its internal id.",
+    "Route ids are the route short names as shown on vehicles (e.g. 22, 38R, N, KT); use list-routes to discover them.",
+    "Real-time times are Unix timestamps (seconds in GTFS trip updates, milliseconds in umoiq predictions and vehicles); delay values are in seconds."
+  ],
+  "dropped": [],
+  "generated": {
+    "by": "clify add",
+    "model": "claude-opus-5-5",
+    "exploredSteps": 22,
+    "recorded": 263,
+    "verifiedAt": "2026-10-21T07:09:28.004Z",
+    "seconds": 240,
+    "importedFrom": "~/.clify/sites/sfmta",
+    "importedAt": "2026-10-21T07:24:44.781Z"
+  }
+}

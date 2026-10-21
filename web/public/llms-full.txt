@@ -4,6 +4,14 @@
 
 Public JSON-over-curl API for AI agents. It exposes verified, read-only commands for public websites. No key, account, install, or browser is required for the hosted API.
 
+## Start with San Francisco and U.S. tasks
+- Task guide: https://clify-dev.netlify.app/use-cases/sf-and-us-agent-tasks/
+- Events: Luma, Eventbrite and Funcheap event listings
+- Hiring: YC Work at a Startup, Ashby, Greenhouse and Lever boards
+- Transit: BART, SFMTA Muni, 511 Bay Area and Caltrain departures and alerts
+- Local data and research: DataSF, SFPL, Craigslist, SF Standard, TechCrunch, GitHub Trending and Hugging Face Papers
+- Markets: Polymarket and Kalshi public market data
+
 ## Machine-readable entry points
 - Catalogue: https://clify-dev.netlify.app/sites.json
 - Search by task or topic: https://clify-dev.netlify.app/search?q=what+you+need
@@ -32,10 +40,13 @@ Use /search for a natural-language task, then open the returned site page or .js
 - artic: artic.edu — Art Institute of Chicago collection.
 - artifacthub: artifacthub.io — Artifact Hub (artifacthub.io) is the CNCF hub for cloud-native packages such as Helm charts, operators, kubectl/krew plugins and policies.
 - arxiv: arxiv.org — arXiv.org, the open-access preprint archive.
+- ashby: jobs.ashbyhq.com — Ashby-hosted startup job boards (jobs.ashbyhq.com/{org}): list a company's open roles with locations, compensation and apply links, browse its departments, read company info, and fetch full job details.
 - aviationweather: aviationweather.gov — AviationWeather.gov (NOAA Aviation Weather Center) public Data API.
 - avoindata-prh: avoindata.prh.fi — PRH (Finnish Patent and Registration Office) open-data APIs: search and look up Finnish companies (YTJ), browse trade register notices, and fetch digital (XBRL) financial statements.
+- bart: bart.gov — BART (Bay Area Rapid Transit) website.
 - bbc: bbc.com — BBC (www.bbc.com): read BBC News and Sport from the command line.
 - bundlephobia: bundlephobia.com — Bundlephobia shows the bundle-size cost of npm packages.
+- caltrain: caltrain.com — Caltrain (San Francisco Peninsula commuter rail): real-time departures per station, GTFS-realtime trip updates and vehicle positions, service alerts, routes, station pages and site search as JSON commands.
 - caniuse: caniuse.com — caniuse.com: browser support tables for web platform features (HTML, CSS, JS APIs).
 - catalog-data: catalog.data.gov — catalog.data.gov is the U.S.
 - central-sonatype: central.sonatype.com — Maven Central (central.sonatype.com): search Maven components, browse namespaces and categories, and look up artifact details, versions, dependencies and dependents via the site's internal JSON API.
@@ -47,6 +58,7 @@ Use /search for a natural-language task, then open the returned site page or .js
 - collections-vam: collections.vam.ac.uk — V&A Explore the Collections: a JSON CLI over the Victoria and Albert Museum's public collections API.
 - company-information-service: find-and-update.company-information.service.gov.uk — Companies House public register (UK): search companies, officers and disqualified directors, and read company profiles, filing history, officers, PSCs, charges, officer appointments, dissolved and alphabetical company searches, name availability, advanced search with CSV export, and filing document PDFs.
 - cordis-europa: cordis.europa.eu — CORDIS (EU research results portal): look up EU-funded research projects and their reports, deliverables, OpenAIRE publications, Results-in-Brief and news articles, browse news and domain-of-application listings, and run keyword searches over the Projects Map data.
+- craigslist: sfbay.craigslist.org — San Francisco Bay Area Craigslist: search listings by keyword, category, area, price, distance and other filters through Craigslist's JSON search API, look up postings by id, and get category counts and search suggestions.
 - crates: crates.io — crates.io, the Rust package registry.
 - ctan: ctan.org — CTAN (Comprehensive TeX Archive Network): browse TeX/LaTeX packages, topics, contributors, announcements, licenses, archive directories, ratings and comments from the public ctan.org web pages and their XHR endpoints.
 - data-cdc: data.cdc.gov — data.cdc.gov is the CDC's open-data portal (Socrata).
@@ -56,6 +68,7 @@ Use /search for a natural-language task, then open the returned site page or .js
 - data-norge: data.norge.no — data.norge.no (Felles datakatalog) is Norway's national data portal.
 - data-police: data.police.uk — data.police.uk is the UK's open police data API.
 - dataportal: dataportal.se — Sveriges dataportal (dataportal.se), Sweden's national open-data catalogue.
+- datasf: data.sfgov.org — San Francisco Open Data portal (data.sfgov.org, now served from data.sf.gov on Socrata): search the city's dataset catalog, read dataset metadata and columns, and query, export or map dataset records with SoQL.
 - dev-to: dev.to — DEV Community (dev.to) is a developer blogging platform.
 - devdocs: devdocs.io — DevDocs (devdocs.io) is a single site that bundles many API documentation sets.
 - developer-mozilla: developer.mozilla.org — MDN Web Docs (developer.mozilla.org) is Mozilla's web developer documentation.
@@ -71,19 +84,24 @@ Use /search for a natural-language task, then open the returned site page or .js
 - eia: eia.gov — U.S.
 - endoflife: endoflife.date — endoflife.date is a public catalog of end-of-life dates and support lifecycles for software products.
 - ensembl: ensembl.org — Ensembl (ensembl.org) genome browser: search thousands of genome assemblies, read genome metadata and stats, look up genes, transcripts, proteins, homologues, external references and variants (with predicted consequences), and fetch reference sequence through Ensembl's public JSON and GraphQL APIs.
+- eventbrite: eventbrite.com — Eventbrite: discover public events by city, category and date, with venues, prices, event URLs, ticket info and organizer listings.
 - fec: fec.gov — FEC.gov campaign finance data (via the public OpenFEC API at api.open.fec.gov/v1).
 - federalregister: federalregister.gov — Federal Register (federalregister.gov): search and read U.S.
 - finlex: finlex.fi — Finlex, the Finnish government's free legal database (statutes, Statute Book, translations and Supreme Court case law).
 - finna: finna.fi — Finna.fi is the Finnish national search service for libraries, archives and museums.
 - formulae-brew: formulae.brew.sh — Homebrew Formulae (formulae.brew.sh), the official Homebrew package index.
 - fred-stlouisfed: fred.stlouisfed.org — FRED (Federal Reserve Economic Data, St.
+- funcheap: sf.funcheap.com — Funcheap SF (sf.funcheap.com): hand-picked free and cheap San Francisco Bay Area events.
 - geonames: geonames.org — GeoNames (geonames.org) is an open world gazetteer with about 13M places.
+- githubtrending: github.com — GitHub (github.com): list trending repositories and developers by language and period, browse topic repositories, and read repository metadata such as languages, contributors, releases, latest commit, branches and README.
 - govinfo: govinfo.gov — GovInfo (U.S.
 - grants: grants.gov — Grants.gov / Simpler.Grants.gov: US federal grant opportunities.
+- greenhouse: boards.greenhouse.io — Public Greenhouse job boards: list and search a company's open jobs, get job details with application questions and apply links, and browse company info, departments, offices and degree options.
 - gutenberg: gutenberg.org — Project Gutenberg, a free public-domain eBook library.
 - hackage-haskell: hackage.haskell.org — Hackage, the Haskell community's package archive: search packages, read package metadata, versions, dependencies, reverse dependencies, changelogs, documentation indexes, tags, categories, recent uploads, deprecated and candidate packages, and maintainer profiles.
 - hankintailmoitukset: hankintailmoitukset.fi — Hilma (hankintailmoitukset.fi) is Finland's public procurement notice service.
 - hex: hex.pm — Hex (hex.pm), the package registry for the Erlang/Elixir/Gleam ecosystem.
+- hfpapers: huggingface.co — Hugging Face Papers (huggingface.co/papers): search AI research papers by topic, browse daily, weekly, monthly and trending paper lists, and get paper details (authors, abstract, AI summary, GitHub and project links, linked models and spaces) or the full text as markdown.
 - hub-docker: hub.docker.com — Docker Hub (hub.docker.com), the public container image registry.
 - huggingface: huggingface.co — Hugging Face Hub (huggingface.co): search and inspect public models, datasets, Spaces and organizations, read model/dataset metadata, file listings, security scans and dataset statistics, without logging in.
 - images-nasa: images.nasa.gov — NASA Image and Video Library (images.nasa.gov): search NASA's public image, video and audio archive, browse albums and the popular/recent feeds, and get asset files, technical metadata and video captions for any item.
@@ -92,8 +110,11 @@ Use /search for a natural-language task, then open the returned site page or .js
 - ipac-caltech: exoplanetarchive.ipac.caltech.edu — NASA Exoplanet Archive (IPAC/Caltech).
 - jsdelivr: jsdelivr.com — jsDelivr is a free open-source CDN for npm and GitHub.
 - jsr: jsr.io — JSR (jsr.io), the open-source JavaScript/TypeScript package registry.
+- kalshi: kalshi.com — Kalshi prediction-market exchange: search public markets and read prices, volume, order books, trades, price history and close dates from Kalshi's public v1 API (no login needed).
+- lever: jobs.lever.co — Lever-hosted company job boards (jobs.lever.co/{company}): list and filter a company's open postings by location, team, work type and workplace type, and fetch posting details with apply links via Lever's public postings API.
 - lichess: lichess.org — Lichess.org (free open-source chess server): read-only CLI over its server-rendered pages for FIDE player and federation data, broadcast search and calendar, rating leaderboards, online players, and tournament winners and details.
 - loc: loc.gov — Library of Congress (loc.gov): read the homepage's featured stories, trending content, top searches and gallery highlights, and fetch WebVTT captions for LOC webcast videos.
+- luma: lu.ma — Luma (lu.ma / luma.com) event discovery: search public events by city, category or keyword, browse community calendars, and get event details, dates, venues and URLs through Luma's JSON API.
 - musicbrainz: musicbrainz.org — MusicBrainz (open music encyclopedia): browse genres, instruments, artists, release groups, statistics and relationship types from the public musicbrainz.org web pages and their JSON helper endpoints.
 - ndbc-noaa: ndbc.noaa.gov — NOAA National Data Buoy Center (NDBC): marine buoy and C-MAN weather observations.
 - news-ycombinator: news.ycombinator.com — Hacker News (news.ycombinator.com): read front page, new, past, Ask, Show and jobs listings, stories with comment trees, comment feeds, user profiles, submissions, comments and favorites, and post comments.
@@ -113,6 +134,8 @@ Use /search for a natural-language task, then open the returned site page or .js
 - openverse: openverse.org — Openverse (openverse.org) is a search engine for openly licensed images and audio.
 - packagist: packagist.org — Packagist.org is the main PHP/Composer package repository.
 - pkg-go: pkg.go.dev — pkg.go.dev is the Go package and module index.
+- polymarket: polymarket.com — Polymarket prediction markets: search and list events and markets with live prices, volume, liquidity and end dates; price history, biggest movers, holders, comments, resolution status, and public trader profiles, positions and activity.
+- producthunt: producthunt.com — Product Hunt (producthunt.com), a site where new tech products launch daily.
 - pub: pub.dev — pub.dev is the official registry for Dart and Flutter packages.
 - pubchem-ncbi: pubchem.ncbi.nlm.nih.gov — PubChem (NCBI) open chemistry database.
 - pubmed-ncbi: pubmed.ncbi.nlm.nih.gov — PubMed (NCBI biomedical literature database): search articles by keyword, author or field-tagged query, with filters, sorting and pagination, and fetch full abstract records, MEDLINE text exports and PMID lists.
@@ -127,6 +150,9 @@ Use /search for a natural-language task, then open the returned site page or .js
 - rnz: rnz.co.nz — RNZ (Radio New Zealand): search and read NZ news, tag, section and author listings, Life articles, podcasts and episodes, radio schedules, RSS feeds and video metadata.
 - ror: ror.org — ROR (Research Organization Registry): look up research organizations (universities, funders, hospitals, companies and others) and their persistent ROR IDs through the public ROR REST API v2 at api.ror.org.
 - semanticscholar: semanticscholar.org — Semantic Scholar, an AI-powered search engine for scientific literature.
+- sfmta: sfmta.com — SFMTA (San Francisco Muni): look up routes, stops, real-time arrival predictions, vehicle locations, trip updates, service alerts and stop relocations through the JSON APIs behind sfmta.com.
+- sfpl: sfpl.org — San Francisco Public Library (sfpl.org): search the catalog, databases and site content, find branches and their hours, and browse library events.
+- sfstandard: sfstandard.com — The San Francisco Standard (sfstandard.com), a San Francisco local news site.
 - slashdot: slashdot.org — Slashdot (tech news and discussion).
 - smhi: smhi.se — SMHI (Swedish Meteorological and Hydrological Institute): look up places, get current weather, 10-day forecasts and recent observed weather, see active weather warnings, search SMHI's open-data catalog, download station observations from the open metobs API, and search or read knowledge-bank and news articles.
 - ssb: ssb.no — Statistics Norway (SSB, ssb.no): search articles and statistics, read statistic, article and topic pages, and query Statbank (PxWebApi v2) tables, metadata and data, plus Klass classifications.
@@ -135,10 +161,12 @@ Use /search for a natural-language task, then open the returned site page or .js
 - swiftpackageindex: swiftpackageindex.com — Swift Package Index (swiftpackageindex.com) is a search engine and catalogue of Swift packages.
 - swpc-noaa: swpc.noaa.gov — NOAA Space Weather Prediction Center (SWPC): a CLI for live space-weather data.
 - tagesschau: tagesschau.de — tagesschau.de is the ARD-aktuell German news site.
+- techcrunch: techcrunch.com — TechCrunch tech and startup news.
 - theguardian: theguardian.com — The Guardian (theguardian.com) news site.
 - themoviedb: themoviedb.org — The Movie Database (TMDB), a community database of movies, TV shows and people.
 - thesportsdb: thesportsdb.com — TheSportsDB: an open, crowd-sourced sports database.
 - tidesandcurrents-noaa: tidesandcurrents.noaa.gov — NOAA Tides & Currents (CO-OPS): find tide, current and observation stations and fetch tide predictions, water levels, weather, current predictions, datums, harmonic constituents, sea level trends and storm surge alerts through NOAA's public metadata and data APIs.
+- transit511: 511.org — 511.org is the San Francisco Bay Area traveler information site.
 - tvmaze: tvmaze.com — TVmaze is a TV show database and guide.
 - tyomarkkinatori: tyomarkkinatori.fi — Työmarkkinatori (tyomarkkinatori.fi), the Finnish public employment services portal.
 - uniprot: uniprot.org — UniProt, the Universal Protein Resource.
@@ -147,6 +175,7 @@ Use /search for a natural-language task, then open the returned site page or .js
 - waterdata-usgs: waterdata.usgs.gov — USGS Water Data for the Nation: find stream, lake and groundwater monitoring locations and fetch their real-time readings, field measurements, time-series metadata, daily statistics, basins and flowlines using the public USGS Water Data APIs.
 - weather: weather.gov — National Weather Service (weather.gov / api.weather.gov): look up US forecasts by lat/lon or NWS grid point, active alerts, weather stations and their latest observations, forecast-office text products (e.g.
 - wikidata: wikidata.org — Wikidata, the free knowledge graph run by the Wikimedia Foundation.
+- workatastartup: workatastartup.com — Y Combinator's Work at a Startup job board: search YC startup jobs by keyword and location, browse role and location listings, and read job and company pages including application links.
 - world-openfoodfacts: world.openfoodfacts.org — Open Food Facts (world.openfoodfacts.org) is an open, crowd-sourced food products database.
 - worldcubeassociation: worldcubeassociation.org — World Cube Association (speedcubing) public data: search competitions and fetch their results, scrambles, schedules (WCIF) and competitors; look up competitors' profiles, personal records and results; get current world, continental and national records and news posts.
 - ycombinator: ycombinator.com — Y Combinator public site (ycombinator.com): search the YC startup directory (via YC's Algolia index), look up companies, their jobs and job postings, Launch YC posts, the jobs board, and YC people.

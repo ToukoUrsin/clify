@@ -1,0 +1,258 @@
+{
+  "name": "lever",
+  "startUrl": "https://jobs.lever.co/",
+  "origin": "https://jobs.lever.co",
+  "createdAt": "2026-10-21T07:02:40.452Z",
+  "description": "Lever-hosted company job boards (jobs.lever.co/{company}): list and filter a company's open postings by location, team, work type and workplace type, and fetch posting details with apply links via Lever's public postings API.",
+  "commands": [
+    {
+      "name": "list-postings",
+      "summary": "List a company's open job postings on Lever, optionally filtered by location, team, department, commitment (work type) or workplace type; returns title, location, team, apply link.",
+      "method": "GET",
+      "urlTemplate": "https://api.lever.co/v0/postings/{company}?mode=json",
+      "params": [
+        {
+          "name": "company",
+          "in": "path",
+          "required": true,
+          "type": "string",
+          "description": "Company slug as in jobs.lever.co/{company}, e.g. palantir, spotify. A 404 means the company doesn't use Lever.",
+          "example": "palantir"
+        },
+        {
+          "name": "location",
+          "in": "query",
+          "required": false,
+          "type": "string",
+          "description": "Exact location label as shown on the board, e.g. 'New York, NY'. Take values from categories.location in unfiltered results.",
+          "example": "New York, NY"
+        },
+        {
+          "name": "team",
+          "in": "query",
+          "required": false,
+          "type": "string",
+          "description": "Exact team label, e.g. 'Software Engineering'. Take values from categories.team.",
+          "example": "Software Engineering"
+        },
+        {
+          "name": "department",
+          "in": "query",
+          "required": false,
+          "type": "string",
+          "description": "Exact department label (categories.department)."
+        },
+        {
+          "name": "commitment",
+          "in": "query",
+          "required": false,
+          "type": "string",
+          "description": "Work type label, e.g. Full-time, Internship, Fixed-Term, Permanent (varies by company; see categories.commitment).",
+          "example": "Full-time"
+        },
+        {
+          "name": "workplaceType",
+          "in": "query",
+          "required": false,
+          "type": "string",
+          "description": "Workplace type.",
+          "enum": [
+            "onsite",
+            "hybrid",
+            "remote"
+          ]
+        },
+        {
+          "name": "api_limit",
+          "key": "limit",
+          "in": "query",
+          "required": false,
+          "type": "number",
+          "description": "Max postings per page. (sent to the site as \"limit\"; clify's own --limit only shapes the output)",
+          "default": 100
+        },
+        {
+          "name": "skip",
+          "in": "query",
+          "required": false,
+          "type": "number",
+          "description": "Number of postings to skip (offset for paging)."
+        }
+      ],
+      "responseType": "json",
+      "defaultFields": [
+        "id",
+        "text",
+        "categories.location",
+        "categories.team",
+        "categories.commitment",
+        "workplaceType",
+        "hostedUrl",
+        "applyUrl"
+      ],
+      "pagination": {
+        "type": "offset",
+        "param": "skip",
+        "step": 100
+      },
+      "mutates": false,
+      "example": {
+        "company": "palantir"
+      },
+      "source": "E10 GET https://jobs.lever.co/palantir",
+      "sample": "{\"id\":\"6ed76ce8-4156-4b60-b120-403538bd66cd\",\"text\":\"Administrative Business Partner\",\"categories.location\":\"Singapore, Singapore\",\"categories.team\":\"Administrative\",\"categories.commitment\":\"Full-time\",\"workplaceType\":\"hybrid\",\"hostedUrl\":\"https://jobs.lever.co/palantir/6ed76ce8-4156-4b60-b120-403538bd66cd\",\"applyUrl\":\"https://jobs.lever.co/palantir/6ed76ce8",
+      "resultFields": [
+        "additionalPlain",
+        "additional",
+        "categories",
+        "createdAt",
+        "descriptionPlain",
+        "description",
+        "id",
+        "lists",
+        "text",
+        "country",
+        "workplaceType",
+        "opening",
+        "openingPlain",
+        "descriptionBody",
+        "descriptionBodyPlain",
+        "hostedUrl",
+        "applyUrl"
+      ],
+      "verified": true
+    },
+    {
+      "name": "get-posting",
+      "summary": "Get full details of one Lever job posting (title, location, team, commitment, workplace type, plain-text description, hosted and apply URLs).",
+      "method": "GET",
+      "urlTemplate": "https://api.lever.co/v0/postings/{company}/{postingId}?mode=json",
+      "params": [
+        {
+          "name": "company",
+          "in": "path",
+          "required": true,
+          "type": "string",
+          "description": "Company slug as in jobs.lever.co/{company}.",
+          "example": "palantir"
+        },
+        {
+          "name": "postingId",
+          "in": "path",
+          "required": true,
+          "type": "string",
+          "description": "Posting UUID (the id field from list-postings).",
+          "example": "ac978161-6f46-4f6b-ad9e-a258e642751c"
+        }
+      ],
+      "responseType": "json",
+      "defaultFields": [
+        "id",
+        "text",
+        "categories.location",
+        "categories.team",
+        "categories.commitment",
+        "workplaceType",
+        "descriptionPlain",
+        "applyUrl"
+      ],
+      "mutates": false,
+      "example": {
+        "company": "palantir",
+        "postingId": "ac978161-6f46-4f6b-ad9e-a258e642751c"
+      },
+      "source": "E11 E13 GET https://jobs.lever.co/palantir/{id}",
+      "sample": "{\"id\":\"ac978161-6f46-4f6b-ad9e-a258e642751c\",\"text\":\"Administrative Business Partner\",\"categories.location\":\"London, United Kingdom\",\"categories.team\":\"Administrative\",\"categories.commitment\":\"Full-time\",\"workplaceType\":\"hybrid\",\"descriptionPlain\":\"A World-Changing Company\\n \\nPalantir builds the world’s leading software for data-driven decisions and operati",
+      "resultFields": [
+        "additionalPlain",
+        "additional",
+        "categories",
+        "createdAt",
+        "descriptionPlain",
+        "description",
+        "id",
+        "lists",
+        "text",
+        "country",
+        "workplaceType",
+        "opening",
+        "openingPlain",
+        "descriptionBody",
+        "descriptionBodyPlain",
+        "hostedUrl",
+        "applyUrl"
+      ],
+      "verified": true
+    },
+    {
+      "name": "get-posting-schema",
+      "summary": "Get a posting's schema.org JobPosting data from its public job page (hiring organization, location address, employment type, date posted, HTML description).",
+      "method": "GET",
+      "urlTemplate": "/{company}/{postingId}",
+      "params": [
+        {
+          "name": "company",
+          "in": "path",
+          "required": true,
+          "type": "string",
+          "description": "Company slug as in jobs.lever.co/{company}.",
+          "example": "spotify"
+        },
+        {
+          "name": "postingId",
+          "in": "path",
+          "required": true,
+          "type": "string",
+          "description": "Posting UUID (the id field from list-postings).",
+          "example": "223f9722-3579-4ff2-b123-e4cc7b0c1a64"
+        }
+      ],
+      "responseType": "html",
+      "extract": {
+        "jsonScript": "script[type=\"application/ld+json\"]"
+      },
+      "defaultFields": [
+        "title",
+        "hiringOrganization.name",
+        "jobLocation.address.addressLocality",
+        "employmentType",
+        "datePosted"
+      ],
+      "mutates": false,
+      "example": {
+        "company": "spotify",
+        "postingId": "223f9722-3579-4ff2-b123-e4cc7b0c1a64"
+      },
+      "source": "E13 E11 GET https://jobs.lever.co/spotify/{id}",
+      "sample": "{\"title\":\"Art Director - Mexico\",\"hiringOrganization.name\":\"Spotify\",\"jobLocation.address.addressLocality\":\"Mexico City\",\"employmentType\":\"Permanent\",\"datePosted\":\"2026-10-09\"}",
+      "resultFields": [
+        "@context",
+        "@type",
+        "title",
+        "hiringOrganization",
+        "jobLocation",
+        "employmentType",
+        "datePosted",
+        "description"
+      ],
+      "verified": true
+    }
+  ],
+  "blockers": [],
+  "notes": [
+    "There is no cross-company search: every command needs a company slug (jobs.lever.co/{company}); a 404 means that company doesn't use Lever.",
+    "Filter values (location, team, commitment, department) must match the board's labels exactly; list without filters first to see them.",
+    "Applying is done by the user at applyUrl (jobs.lever.co/{company}/{postingId}/apply); the CLI does not submit applications."
+  ],
+  "dropped": [],
+  "generated": {
+    "by": "clify add",
+    "model": "claude-opus-5-5",
+    "exploredSteps": 19,
+    "recorded": 26,
+    "verifiedAt": "2026-10-21T07:03:09.096Z",
+    "seconds": 193,
+    "importedFrom": "~/.clify/sites/jobs-lever",
+    "importedAt": "2026-10-21T07:24:44.780Z"
+  }
+}

@@ -1,0 +1,927 @@
+{
+  "name": "kalshi",
+  "startUrl": "https://kalshi.com/",
+  "origin": "https://kalshi.com",
+  "createdAt": "2026-10-21T07:19:19.735Z",
+  "description": "Kalshi prediction-market exchange: search public markets and read prices, volume, order books, trades, price history and close dates from Kalshi's public v1 API (no login needed).",
+  "commands": [
+    {
+      "name": "search-markets",
+      "summary": "Search or browse prediction markets (series/events with their markets, prices and volume) by keyword, category, status and frequency, sorted by relevance, trending, volume, newest or closing soon.",
+      "method": "GET",
+      "urlTemplate": "https://api.elections.kalshi.com/v1/search/series?with_milestones=true",
+      "params": [
+        {
+          "name": "query",
+          "in": "query",
+          "required": false,
+          "type": "string",
+          "description": "Keyword search text, e.g. bitcoin, fed, senate. Omit to browse everything.",
+          "example": "bitcoin"
+        },
+        {
+          "name": "order_by",
+          "in": "query",
+          "required": false,
+          "type": "string",
+          "description": "Sort order: querymatch (relevance, use with query), trending, volume, event-volume, newest-event, price-delta (top movers), closing (closing soonest).",
+          "enum": [
+            "querymatch",
+            "trending",
+            "volume",
+            "event-volume",
+            "newest-event",
+            "price-delta",
+            "closing"
+          ],
+          "default": "querymatch"
+        },
+        {
+          "name": "status",
+          "in": "query",
+          "required": false,
+          "type": "string",
+          "description": "Market status filter.",
+          "enum": [
+            "open",
+            "unopened",
+            "closed"
+          ]
+        },
+        {
+          "name": "frequency",
+          "in": "query",
+          "required": false,
+          "type": "string",
+          "description": "Comma-separated series frequencies: one_off, one_time, daily, weekly, monthly, quarterly, annual, custom.",
+          "example": "daily"
+        },
+        {
+          "name": "category",
+          "in": "query",
+          "required": false,
+          "type": "string",
+          "description": "Category filter, e.g. Economics, Elections, Crypto, Sports, Politics.",
+          "example": "Economics"
+        },
+        {
+          "name": "excluded_categories",
+          "in": "query",
+          "required": false,
+          "type": "string",
+          "description": "Comma-separated categories to exclude, e.g. Sports."
+        },
+        {
+          "name": "page_size",
+          "in": "query",
+          "required": false,
+          "type": "number",
+          "description": "Results per page (max 100).",
+          "default": 24
+        },
+        {
+          "name": "cursor",
+          "in": "query",
+          "required": false,
+          "type": "string",
+          "description": "Pagination cursor from the previous response's next_cursor."
+        }
+      ],
+      "responseType": "json",
+      "resultPath": "current_page",
+      "defaultFields": [
+        "series_ticker",
+        "event_ticker",
+        "event_title",
+        "event_subtitle",
+        "category",
+        "total_volume",
+        "total_series_volume",
+        "markets"
+      ],
+      "pagination": {
+        "type": "cursor",
+        "param": "cursor",
+        "nextPath": "next_cursor"
+      },
+      "mutates": false,
+      "example": {
+        "query": "bitcoin",
+        "order_by": "querymatch"
+      },
+      "source": "E15 GET https://api.elections.kalshi.com/v1/search/series",
+      "sample": "{\"series_ticker\":\"KXBTC15M\",\"event_ticker\":\"KXBTC15M-26OCT210330\",\"event_title\":\"BTC 15 min · $82,730.04 target\",\"event_subtitle\":\"Oct 21 - 3:15AM EDT to 3:30AM EDT\",\"category\":\"Crypto\",\"total_volume\":438294,\"total_series_volume\":301715816,\"markets\":[{\"ticker\":\"KXBTC15M-26OCT210330-30\",\"yes_subtitle\":\"Target Price: $82,730.04\",\"no_subtitle\":\"\",\"yes_bid\":27,\"",
+      "resultFields": [
+        "type",
+        "series_ticker",
+        "series_title",
+        "event_ticker",
+        "event_subtitle",
+        "event_title",
+        "category",
+        "product_metadata",
+        "product_metadata_derived",
+        "total_series_volume",
+        "total_volume",
+        "total_market_count",
+        "active_market_count",
+        "markets",
+        "is_trending",
+        "is_new",
+        "is_closing",
+        "is_price_delta",
+        "search_score",
+        "fee_type",
+        "fee_multiplier",
+        "tags",
+        "milestone_id"
+      ],
+      "verified": true
+    },
+    {
+      "name": "get-event",
+      "summary": "Get an event and all its markets: title, rules, settlement sources, and per-market bid/ask/last price, volume, open interest, open/close/expiration dates and status. Comma-separate several event ticke",
+      "method": "GET",
+      "urlTemplate": "https://api.elections.kalshi.com/v1/cached/events/",
+      "params": [
+        {
+          "name": "eventTicker",
+          "key": "tickers",
+          "in": "query",
+          "required": true,
+          "type": "string",
+          "description": "Event ticker(s), comma-separated, e.g. CONTROLH-2026 (the last path segment of a kalshi.com/markets/... URL, uppercased).",
+          "example": "CONTROLH-2026"
+        }
+      ],
+      "responseType": "json",
+      "resultPath": "events",
+      "defaultFields": [
+        "ticker",
+        "series_ticker",
+        "title",
+        "sub_title",
+        "category",
+        "target_datetime",
+        "settle_details",
+        "markets"
+      ],
+      "mutates": false,
+      "example": {
+        "eventTicker": "CONTROLH-2026"
+      },
+      "source": "E19",
+      "sample": "{\"ticker\":\"CONTROLH-2026\",\"series_ticker\":\"CONTROLH\",\"title\":\"Which party will win the U.S. House?\",\"sub_title\":\"In 2026\",\"category\":\"Elections\",\"target_datetime\":\"2027-02-01T15:00:00Z\",\"settle_details\":\"This market may be determined early based on a consensus of media calls projecting control of the U.S. House. See full rules for details. Otherwise, victory",
+      "resultFields": [
+        "id",
+        "ticker",
+        "series_ticker",
+        "target_datetime",
+        "mutually_exclusive",
+        "mutually_exclusive_side",
+        "collateral_return_type",
+        "title",
+        "category",
+        "tags",
+        "keywords",
+        "min_tick_size",
+        "settle_details",
+        "settlement_sources",
+        "description_context",
+        "underlying",
+        "metrics_tags",
+        "mini_title",
+        "sub_title",
+        "markets",
+        "max_close_ts",
+        "min_open_ts",
+        "product_metadata",
+        "product_metadata_derived",
+        "header_title",
+        "employment_collection_required",
+        "exchange_shard"
+      ],
+      "verified": true
+    },
+    {
+      "name": "get-market",
+      "summary": "Get one market's current price (yes bid/ask/last in dollars), volume, open interest, status and open/close/expiration dates by market ticker.",
+      "method": "GET",
+      "urlTemplate": "https://api.elections.kalshi.com/v1/cached/markets_by_ticker/{marketTicker}",
+      "params": [
+        {
+          "name": "marketTicker",
+          "in": "path",
+          "required": true,
+          "type": "string",
+          "description": "Market ticker (event ticker + outcome suffix), e.g. CONTROLH-2026-D or KXBTCD-26OCT2117-T82749.99.",
+          "example": "CONTROLH-2026-D"
+        }
+      ],
+      "responseType": "json",
+      "resultPath": "market",
+      "defaultFields": [
+        "ticker_name",
+        "title",
+        "status",
+        "yes_bid_dollars",
+        "yes_ask_dollars",
+        "last_price_dollars",
+        "volume",
+        "close_date"
+      ],
+      "mutates": false,
+      "example": {
+        "marketTicker": "CONTROLH-2026-D"
+      },
+      "source": "E20 E23 E36 E44 GET https://api.elections.kalshi.com/v1/cached/markets_by_ticker/CONTROLH-2026-D",
+      "sample": "{\"ticker_name\":\"CONTROLH-2026-D\",\"title\":\"Will Democrats win the House in 2026?\",\"status\":\"active\",\"yes_bid_dollars\":\"0.9070\",\"yes_ask_dollars\":\"0.9080\",\"last_price_dollars\":\"0.9070\",\"volume\":41105019,\"close_date\":\"2027-02-01T15:00:00Z\"}",
+      "resultFields": [
+        "id",
+        "title",
+        "image_url",
+        "ticker_name",
+        "create_date",
+        "list_date",
+        "open_date",
+        "close_date",
+        "expiration_date",
+        "settlement_timer_seconds",
+        "status",
+        "expiration_value",
+        "expected_expiration_date",
+        "created_time",
+        "latest_expiration_time",
+        "expected_expiration_time",
+        "yes_bid",
+        "yes_ask",
+        "last_price",
+        "prev_period_price",
+        "previous_hour_price",
+        "previous_day_price",
+        "previous_week_price",
+        "yes_bid_dollars",
+        "yes_ask_dollars",
+        "last_price_dollars",
+        "prev_period_price_dollars",
+        "previous_hour_price_dollars",
+        "previous_day_price_dollars",
+        "previous_week_price_dollars",
+        "volume",
+        "recent_volume",
+        "open_interest",
+        "volume_fp",
+        "recent_volume_fp",
+        "open_interest_fp",
+        "dollar_volume",
+        "dollar_recent_volume",
+        "dollar_open_interest",
+        "volume_contracts_fp"
+      ],
+      "verified": true
+    },
+    {
+      "name": "get-event-summary",
+      "summary": "Compact card view of an event: series/event titles, total event and series volume, and each market's title, ticker, yes bid/ask, price, open and close dates.",
+      "method": "GET",
+      "urlTemplate": "https://api.elections.kalshi.com/v1/bff/cards",
+      "params": [
+        {
+          "name": "eventTicker",
+          "key": "event_tickers",
+          "in": "query",
+          "required": true,
+          "type": "string",
+          "description": "Event ticker(s), comma-separated, e.g. CONTROLH-2026.",
+          "example": "CONTROLH-2026"
+        }
+      ],
+      "responseType": "json",
+      "resultPath": "cards",
+      "defaultFields": [
+        "event_ticker",
+        "event_title",
+        "series_title",
+        "category",
+        "total_event_volume",
+        "recent_event_volume",
+        "milestone_id",
+        "markets"
+      ],
+      "mutates": false,
+      "example": {
+        "eventTicker": "CONTROLH-2026"
+      },
+      "source": "E25 GET https://api.elections.kalshi.com/v1/bff/cards",
+      "sample": "{\"event_ticker\":\"CONTROLH-2026\",\"event_title\":\"Which party will win the U.S. House?\",\"series_title\":\"House winner\",\"category\":\"Elections\",\"total_event_volume\":62937377,\"recent_event_volume\":1539870,\"milestone_id\":\"fa891339-a321-48fb-bbcc-186fa3acf525\",\"markets\":[{\"title\":\"Democratic Party\",\"yes_bid\":90,\"yes_ask\":90,\"ticker\":\"CONTROLH-2026-D\",\"image_url\":\"htt",
+      "resultFields": [
+        "type",
+        "series_ticker",
+        "series_title",
+        "event_ticker",
+        "event_subtitle",
+        "event_title",
+        "total_series_volume",
+        "total_event_volume",
+        "recent_event_volume",
+        "category",
+        "milestone_id",
+        "milestone_volume",
+        "milestone_event_tickers",
+        "markets",
+        "keyword_ids",
+        "fee_type",
+        "fee_multiplier",
+        "tags",
+        "product_metadata"
+      ],
+      "verified": true
+    },
+    {
+      "name": "get-order-book",
+      "summary": "Get the live order book (yes and no price levels with resting quantity, prices in dollars) for one or more markets.",
+      "method": "GET",
+      "urlTemplate": "https://api.elections.kalshi.com/v1/markets/order_books",
+      "params": [
+        {
+          "name": "marketTicker",
+          "key": "market_tickers",
+          "in": "query",
+          "required": true,
+          "type": "string",
+          "description": "Market ticker(s), comma-separated, e.g. CONTROLH-2026-D.",
+          "example": "CONTROLH-2026-D"
+        }
+      ],
+      "responseType": "json",
+      "resultPath": "order_books_fp",
+      "mutates": false,
+      "example": {
+        "marketTicker": "CONTROLH-2026-D"
+      },
+      "source": "E21 GET https://api.elections.kalshi.com/v1/markets/order_books",
+      "sample": "{\"yes_dollars\":[[\"0.0010\",\"1000.00\"],[\"0.0100\",\"3897114.90\"],[\"0.0110\",\"400000.00\"],[\"0.0200\",\"614.36\"],[\"0.0300\",\"406522.00\"],[\"0.0400\",\"62072.00\"],[\"0.0500\",\"135641.65\"],[\"0.0530\",\"200000.00\"],[\"0.0600\",\"2318.15\"],[\"0.0700\",\"133911.00\"],[\"0.1000\",\"15959.80\"],[\"0.1100\",\"476540.72\"],[\"0.1300\",\"559.87\"],[\"0.1400\",\"70.47\"],[\"0.1500\",\"176295.29\"],[\"0.1600\",\"550",
+      "resultFields": [
+        "yes_dollars",
+        "no_dollars"
+      ],
+      "verified": true
+    },
+    {
+      "name": "list-trades",
+      "summary": "List recent public trades in a series: market ticker, price, contract count, taker side and time.",
+      "method": "GET",
+      "urlTemplate": "https://api.elections.kalshi.com/v1/social/trades",
+      "params": [
+        {
+          "name": "seriesTicker",
+          "key": "series_ticker",
+          "in": "query",
+          "required": true,
+          "type": "string",
+          "description": "Series ticker (event ticker prefix before the first dash), e.g. CONTROLH, KXBTCD.",
+          "example": "CONTROLH"
+        }
+      ],
+      "responseType": "json",
+      "resultPath": "trades",
+      "defaultFields": [
+        "ticker",
+        "price_dollars",
+        "count_fp",
+        "taker_side",
+        "taker_action",
+        "create_date"
+      ],
+      "mutates": false,
+      "example": {
+        "seriesTicker": "CONTROLH"
+      },
+      "source": "E17 GET https://api.elections.kalshi.com/v1/social/trades",
+      "sample": "{\"ticker\":\"CONTROLH-2026-D\",\"price_dollars\":\"0.9070\",\"count_fp\":\"0.56\",\"taker_side\":\"no\",\"taker_action\":\"sell\",\"create_date\":\"2026-10-21T07:19:39.192654Z\"}",
+      "resultFields": [
+        "trade_id",
+        "market_id",
+        "ticker",
+        "price",
+        "price_dollars",
+        "count",
+        "count_fp",
+        "taker_side",
+        "taker_action",
+        "maker_nickname",
+        "taker_nickname",
+        "create_date"
+      ],
+      "verified": true
+    },
+    {
+      "name": "get-event-forecast-history",
+      "summary": "Chart history of an event's forecast (implied probability or implied value) over a time range at a chosen candle interval.",
+      "method": "GET",
+      "urlTemplate": "https://api.elections.kalshi.com/v1/series/{seriesTicker}/events/{eventTicker}/forecast_history",
+      "params": [
+        {
+          "name": "seriesTicker",
+          "in": "path",
+          "required": true,
+          "type": "string",
+          "description": "Series ticker, e.g. KXBTCD.",
+          "example": "KXBTCD"
+        },
+        {
+          "name": "eventTicker",
+          "in": "path",
+          "required": true,
+          "type": "string",
+          "description": "Event ticker, e.g. KXBTCD-26OCT2117.",
+          "example": "KXBTCD-26OCT2117"
+        },
+        {
+          "name": "start_ts",
+          "in": "query",
+          "required": true,
+          "type": "number",
+          "description": "Range start, Unix seconds.",
+          "example": "1792530000"
+        },
+        {
+          "name": "end_ts",
+          "in": "query",
+          "required": true,
+          "type": "number",
+          "description": "Range end, Unix seconds.",
+          "example": "1792569600"
+        },
+        {
+          "name": "period_interval",
+          "in": "query",
+          "required": false,
+          "type": "number",
+          "description": "Candle length in minutes: 1, 60 or 1440 (daily).",
+          "enum": [
+            "1",
+            "60",
+            "1440"
+          ],
+          "default": 60
+        }
+      ],
+      "responseType": "json",
+      "resultPath": "forecast_history",
+      "defaultFields": [
+        "market_ticker",
+        "numerical_forecast",
+        "formatted_forecast",
+        "end_period_ts"
+      ],
+      "mutates": false,
+      "example": {
+        "seriesTicker": "KXBTCD",
+        "eventTicker": "KXBTCD-26OCT2117",
+        "start_ts": "1792530000",
+        "end_ts": "1792569600",
+        "period_interval": "1"
+      },
+      "source": "E43 GET https://api.elections.kalshi.com/v1/series/KXBTCD/events/{id}/forecast_history",
+      "sample": "{\"market_ticker\":\"KXBTCD-26OCT2117-T73249.99\",\"numerical_forecast\":82718.74,\"formatted_forecast\":\"82,718.74\",\"end_period_ts\":1792530000}",
+      "resultFields": [
+        "market_ticker",
+        "event_ticker",
+        "raw_numerical_forecast",
+        "numerical_forecast",
+        "formatted_forecast",
+        "end_period_ts",
+        "period_interval"
+      ],
+      "verified": true
+    },
+    {
+      "name": "get-market-price-history",
+      "summary": "Price/probability history of a single market (by market UUID 'id' from get-event or get-market) over a time range.",
+      "method": "GET",
+      "urlTemplate": "https://api.elections.kalshi.com/v1/cached/series/{seriesTicker}/markets/{marketId}/forecast_history?candlestick_function=mean_price",
+      "params": [
+        {
+          "name": "seriesTicker",
+          "in": "path",
+          "required": true,
+          "type": "string",
+          "description": "Series ticker, e.g. CONTROLS.",
+          "example": "CONTROLS"
+        },
+        {
+          "name": "marketId",
+          "in": "path",
+          "required": true,
+          "type": "string",
+          "description": "Market UUID (the 'id' field of a market, not its ticker).",
+          "example": "028a3af5-3b39-4e37-942f-35f7c7d1d48e"
+        },
+        {
+          "name": "start_ts",
+          "in": "query",
+          "required": true,
+          "type": "number",
+          "description": "Range start, Unix seconds.",
+          "example": "1730908800"
+        },
+        {
+          "name": "end_ts",
+          "in": "query",
+          "required": true,
+          "type": "number",
+          "description": "Range end, Unix seconds.",
+          "example": "1792656000"
+        },
+        {
+          "name": "period_interval",
+          "in": "query",
+          "required": false,
+          "type": "number",
+          "description": "Candle length in minutes: 1, 60 or 1440 (daily).",
+          "enum": [
+            "1",
+            "60",
+            "1440"
+          ],
+          "default": 1440
+        }
+      ],
+      "responseType": "json",
+      "resultPath": "forecast_history",
+      "defaultFields": [
+        "market_ticker",
+        "numerical_forecast",
+        "formatted_forecast",
+        "end_period_ts"
+      ],
+      "mutates": false,
+      "example": {
+        "seriesTicker": "CONTROLS",
+        "marketId": "028a3af5-3b39-4e37-942f-35f7c7d1d48e",
+        "start_ts": "1730908800",
+        "end_ts": "1792656000",
+        "period_interval": "1440"
+      },
+      "source": "E31 GET https://api.elections.kalshi.com/v1/cached/series/CONTROLS/markets/{id}/forecast_history",
+      "sample": "{\"market_ticker\":\"CONTROLS-2026-D\",\"numerical_forecast\":24,\"formatted_forecast\":\"24.00%\",\"end_period_ts\":1730955600}",
+      "resultFields": [
+        "market_ticker",
+        "event_ticker",
+        "raw_numerical_forecast",
+        "numerical_forecast",
+        "formatted_forecast",
+        "end_period_ts",
+        "period_interval"
+      ],
+      "verified": true
+    },
+    {
+      "name": "get-series",
+      "summary": "Get series metadata: title, category, frequency, tags, total series volume, fee type, settlement sources and contract rules URL. Comma-separate several tickers.",
+      "method": "GET",
+      "urlTemplate": "https://api.elections.kalshi.com/v1/series/",
+      "params": [
+        {
+          "name": "seriesTicker",
+          "key": "series_tickers",
+          "in": "query",
+          "required": true,
+          "type": "string",
+          "description": "Series ticker(s), comma-separated, e.g. CONTROLS,KXFEDDECISION.",
+          "example": "CONTROLS,KXMLB,KXFEDDECISION"
+        }
+      ],
+      "responseType": "json",
+      "resultPath": "series",
+      "defaultFields": [
+        "ticker",
+        "title",
+        "category",
+        "frequency",
+        "series_volume",
+        "tags",
+        "contract_url",
+        "fee_type"
+      ],
+      "mutates": false,
+      "example": {
+        "seriesTicker": "CONTROLS,KXMLB,KXFEDDECISION"
+      },
+      "source": "E12 GET https://api.elections.kalshi.com/v1/series/",
+      "sample": "{\"ticker\":\"CONTROLS\",\"title\":\"Senate winner\",\"category\":\"Elections\",\"frequency\":\"custom\",\"series_volume\":18100007,\"tags\":[\"US Elections\"],\"contract_url\":\"https://assets.kalshi.com/regulatory/product-certifications/CONTROL.pdf\",\"fee_type\":\"quadratic\"}",
+      "resultFields": [
+        "ticker",
+        "frequency",
+        "title",
+        "event_phrase_template",
+        "market_phrase_template",
+        "market_description_yes_template",
+        "market_description_no_template",
+        "category",
+        "tags",
+        "keywords",
+        "settlement_sources",
+        "contract_url",
+        "image_url",
+        "product_metadata",
+        "discrete_underlying_unit",
+        "forecast_unit",
+        "forecast_formatting_rule",
+        "maximum_value",
+        "minimum_value",
+        "series_volume",
+        "fee_type",
+        "fee_multiplier",
+        "contract_ticker",
+        "additional_prohibitions",
+        "exchange_shard"
+      ],
+      "verified": true
+    },
+    {
+      "name": "list-related-markets",
+      "summary": "List series/events related to a given event ticker (recommendations), with their markets, prices and volume.",
+      "method": "GET",
+      "urlTemplate": "https://api.elections.kalshi.com/v1/search/related_series?use_event_recommendations=true",
+      "params": [
+        {
+          "name": "eventTicker",
+          "key": "ticker",
+          "in": "query",
+          "required": true,
+          "type": "string",
+          "description": "Event ticker, e.g. KXBTCD-26OCT2117.",
+          "example": "KXBTCD-26OCT2117"
+        },
+        {
+          "name": "api_limit",
+          "key": "limit",
+          "in": "query",
+          "required": false,
+          "type": "number",
+          "description": "Max related series. (sent to the site as \"limit\"; clify's own --limit only shapes the output)",
+          "default": 10
+        }
+      ],
+      "responseType": "json",
+      "resultPath": "related_series",
+      "defaultFields": [
+        "series_ticker",
+        "series_title",
+        "event_ticker",
+        "event_title",
+        "category",
+        "total_volume",
+        "markets"
+      ],
+      "mutates": false,
+      "example": {
+        "eventTicker": "KXBTCD-26OCT2117"
+      },
+      "source": "E41 GET https://api.elections.kalshi.com/v1/search/related_series",
+      "sample": "{\"series_ticker\":\"KXBTCD\",\"series_title\":\"Bitcoin price Above/below\",\"event_ticker\":\"KXBTCD-26OCT2104\",\"event_title\":\"BTC price today at 4am EDT?\",\"category\":\"Crypto\",\"total_volume\":270978,\"markets\":[{\"ticker\":\"KXBTCD-26OCT2104-T82699.99\",\"yes_subtitle\":\"$82,700 or above\",\"no_subtitle\":\"\",\"yes_bid\":45,\"yes_ask\":46,\"last_price\":48,\"yes_bid_dollars\":\"0.4500\",\"",
+      "resultFields": [
+        "type",
+        "recent_volume",
+        "series_ticker",
+        "series_title",
+        "event_ticker",
+        "event_subtitle",
+        "event_title",
+        "category",
+        "product_metadata",
+        "product_metadata_derived",
+        "total_series_volume",
+        "total_volume",
+        "total_market_count",
+        "active_market_count",
+        "markets",
+        "is_trending",
+        "is_new",
+        "is_closing",
+        "is_price_delta",
+        "search_score",
+        "fee_type",
+        "fee_multiplier",
+        "tags",
+        "milestone_id"
+      ],
+      "verified": true
+    },
+    {
+      "name": "get-milestone-volume",
+      "summary": "Total dollar volume of a milestone (a group of related events, e.g. an election or Fed meeting) broken down per event; milestone_id comes from get-event-summary.",
+      "method": "GET",
+      "urlTemplate": "https://api.elections.kalshi.com/v1/milestones/{milestoneId}/volume",
+      "params": [
+        {
+          "name": "milestoneId",
+          "in": "path",
+          "required": true,
+          "type": "string",
+          "description": "Milestone UUID.",
+          "example": "fa891339-a321-48fb-bbcc-186fa3acf525"
+        }
+      ],
+      "responseType": "json",
+      "defaultFields": [
+        "milestone_id",
+        "dollar_volume",
+        "events"
+      ],
+      "mutates": false,
+      "example": {
+        "milestoneId": "fa891339-a321-48fb-bbcc-186fa3acf525"
+      },
+      "source": "E16 GET https://api.elections.kalshi.com/v1/milestones/{id}/volume",
+      "sample": "{\"milestone_id\":\"fa891339-a321-48fb-bbcc-186fa3acf525\",\"dollar_volume\":119712331,\"events\":[{\"event_ticker\":\"CONTROLH-2026\",\"dollar_volume\":62937500},{\"event_ticker\":\"KXHOUSEPOPVOTEMARGIN-27NOV03\",\"dollar_volume\":2872229},{\"event_ticker\":\"KXHOUSETURNOUT-26NOV03\",\"dollar_volume\":115822},{\"event_ticker\":\"KXDHOUSESEATS-27\",\"dollar_volume\":3414937},{\"event_ticker",
+      "resultFields": [
+        "milestone_id",
+        "dollar_volume",
+        "events"
+      ],
+      "verified": true
+    },
+    {
+      "name": "get-live-data",
+      "summary": "Live real-world data for milestones (e.g. election vote counts, reporting %, race call status, game scores) shown on the calendar.",
+      "method": "GET",
+      "urlTemplate": "https://api.elections.kalshi.com/v1/live_data/batch",
+      "params": [
+        {
+          "name": "milestoneId",
+          "key": "milestone_ids",
+          "in": "query",
+          "required": true,
+          "type": "string",
+          "description": "Milestone UUID.",
+          "example": "ec826780-20ba-4d06-9a52-f6010c39da3c"
+        }
+      ],
+      "responseType": "json",
+      "resultPath": "live_datas",
+      "defaultFields": [
+        "milestone_id",
+        "type",
+        "details"
+      ],
+      "mutates": false,
+      "example": {
+        "milestoneId": "ec826780-20ba-4d06-9a52-f6010c39da3c"
+      },
+      "source": "E18 GET https://api.elections.kalshi.com/v1/live_data/batch",
+      "sample": "{\"milestone_id\":\"ec826780-20ba-4d06-9a52-f6010c39da3c\",\"type\":\"political_race\",\"details\":{\"candidates\":{\"3b07fd8c-f1fe-493c-94f1-ba5906cf4890\":{\"count\":727758,\"name\":\"Haley Stevens\",\"percentage\":\"47.5\"},\"51b3ba95-e4f8-49a3-86db-e13d3a88a689\":{\"count\":743455,\"name\":\"Abdul El-Sayed\",\"percentage\":\"48.5\"},\"664b6dfc-8ab4-4cd1-8e05-4b24b56f4d6d\":{\"count\":61407,\"na",
+      "resultFields": [
+        "type",
+        "details",
+        "milestone_id"
+      ],
+      "verified": true
+    },
+    {
+      "name": "list-perps",
+      "summary": "List active perpetual/margin markets (crypto etc.) with bid, ask, price, 24h volume, open interest and leverage.",
+      "method": "GET",
+      "urlTemplate": "https://api.elections.kalshi.com/v1/margin/markets?status=active",
+      "params": [],
+      "responseType": "json",
+      "resultPath": "markets",
+      "defaultFields": [
+        "ticker",
+        "title",
+        "price",
+        "bid",
+        "ask",
+        "volume_24h_notional_value_dollars",
+        "open_interest",
+        "status"
+      ],
+      "mutates": false,
+      "source": "E32 GET https://api.elections.kalshi.com/v1/margin/markets",
+      "sample": "{\"ticker\":\"KXAAVEPERP\",\"title\":\"0.01 AAVE\",\"price\":\"1.5505\",\"bid\":\"1.5494\",\"ask\":\"1.5510\",\"volume_24h_notional_value_dollars\":\"911826.374300\",\"open_interest\":\"66762.00\",\"status\":\"active\"}",
+      "resultFields": [
+        "ask",
+        "bid",
+        "contract_size",
+        "credit_long_leverage_estimates",
+        "credit_short_leverage_estimates",
+        "daily_volatility_bps",
+        "fractional_trading_enabled",
+        "leverage_estimate",
+        "leverage_estimates",
+        "liquidation_mark_price",
+        "long_leverage_estimates",
+        "market_version",
+        "open_interest",
+        "open_interest_notional_value_dollars",
+        "price",
+        "reference_price",
+        "schedule",
+        "settlement_mark_price",
+        "short_leverage_estimates",
+        "status",
+        "tick_size",
+        "ticker",
+        "title",
+        "underlying_ticker",
+        "volume",
+        "volume_24h",
+        "volume_24h_notional_value_dollars",
+        "volume_notional_value_dollars"
+      ],
+      "example": {},
+      "verified": true
+    },
+    {
+      "name": "list-topics",
+      "summary": "List topic keywords (tags) with how many events each covers; useful for discovering search terms.",
+      "method": "GET",
+      "urlTemplate": "https://api.elections.kalshi.com/v1/keywords/",
+      "params": [
+        {
+          "name": "api_limit",
+          "key": "limit",
+          "in": "query",
+          "required": false,
+          "type": "number",
+          "description": "Keywords per page. (sent to the site as \"limit\"; clify's own --limit only shapes the output)",
+          "default": 50
+        },
+        {
+          "name": "cursor",
+          "in": "query",
+          "required": false,
+          "type": "string",
+          "description": "Pagination cursor from the previous response."
+        }
+      ],
+      "responseType": "json",
+      "resultPath": "keywords",
+      "defaultFields": [
+        "id",
+        "keyword",
+        "event_count",
+        "status"
+      ],
+      "pagination": {
+        "type": "cursor",
+        "param": "cursor",
+        "nextPath": "cursor"
+      },
+      "mutates": false,
+      "example": {
+        "api_limit": "50"
+      },
+      "source": "E34 GET https://api.elections.kalshi.com/v1/keywords/",
+      "sample": "{\"id\":\"6f49068a-f109-4c6e-80d7-45b054b56bb6\",\"keyword\":\"AI\",\"event_count\":1210,\"status\":\"active\"}",
+      "resultFields": [
+        "id",
+        "keyword",
+        "status",
+        "description",
+        "image_url",
+        "event_count",
+        "parent",
+        "updated_at"
+      ],
+      "verified": true
+    },
+    {
+      "name": "get-exchange-status",
+      "summary": "Check whether the Kalshi exchange and trading are currently active.",
+      "method": "GET",
+      "urlTemplate": "https://api.elections.kalshi.com/v1/exchange/status",
+      "params": [],
+      "responseType": "json",
+      "mutates": false,
+      "source": "E14 GET https://api.elections.kalshi.com/v1/exchange/status",
+      "sample": "{\"exchange_active\":true,\"trading_active\":true}",
+      "resultFields": [
+        "exchange_active",
+        "trading_active"
+      ],
+      "example": {},
+      "verified": true
+    }
+  ],
+  "blockers": [],
+  "notes": [
+    "Ticker hierarchy: series (CONTROLH) > event (CONTROLH-2026) > market (CONTROLH-2026-D). Site URLs /markets/{series}/{slug}/{event} map to these, uppercased.",
+    "Prices: integer fields (yes_bid, last_price) are cents (0-100 = implied % probability); *_dollars fields are the same price as dollar strings.",
+    "close_date is when trading stops; expiration_date / expected_expiration_time is when the market settles and pays out.",
+    "All data is public; no login needed."
+  ],
+  "dropped": [],
+  "generated": {
+    "by": "clify add",
+    "model": "claude-opus-5-5",
+    "exploredSteps": 29,
+    "recorded": 719,
+    "verifiedAt": "2026-10-21T07:20:35.358Z",
+    "seconds": 428,
+    "importedFrom": "~/.clify/sites/kalshi",
+    "importedAt": "2026-10-21T07:24:44.785Z"
+  }
+}

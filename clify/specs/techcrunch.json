@@ -1,0 +1,280 @@
+{
+  "name": "techcrunch",
+  "startUrl": "https://techcrunch.com/",
+  "origin": "https://techcrunch.com",
+  "createdAt": "2026-10-21T07:17:08.662Z",
+  "description": "TechCrunch tech and startup news. This CLI lists recent articles from the site's RSS feeds by topic category, tag, or author, and looks up single articles. Each result includes title, date, author and URL.",
+  "commands": [
+    {
+      "name": "list-category-articles",
+      "summary": "List the newest articles in a TechCrunch category, such as AI or startups, via its RSS feed. Returns title, link, author, pubDate and categories.",
+      "method": "GET",
+      "urlTemplate": "/category/{category}/feed/",
+      "params": [
+        {
+          "name": "category",
+          "in": "path",
+          "required": true,
+          "type": "string",
+          "description": "Category slug, e.g. artificial-intelligence, startups, venture, fintech, fundraising, enterprise, robotics",
+          "example": "artificial-intelligence"
+        },
+        {
+          "name": "page",
+          "key": "paged",
+          "in": "query",
+          "required": false,
+          "type": "number",
+          "description": "Feed page number; 2 = older items",
+          "example": "2"
+        }
+      ],
+      "responseType": "json",
+      "resultPath": "rss.channel.item",
+      "defaultFields": [
+        "title",
+        "link",
+        "dc:creator",
+        "pubDate",
+        "category"
+      ],
+      "pagination": {
+        "type": "page",
+        "param": "page"
+      },
+      "mutates": false,
+      "example": {
+        "category": "artificial-intelligence"
+      },
+      "source": "E75 E84 GET https://techcrunch.com/category/artificial-intelligence/feed/",
+      "sample": "{\"title\":\"Anthropic pitches AI safety bill that may block a model if 50+ people could be killed\",\"link\":\"https://techcrunch.com/2026/10/20/anthropic-pitches-ai-safety-bill-that-may-block-a-model-if-50-people-could-be-killed/\",\"dc:creator\":\"Lucas Ropek\",\"pubDate\":\"Tue, 20 Oct 2026 23:01:23 +0000\",\"category\":[\"AI\",\"Anthropic\"]}",
+      "resultFields": [
+        "title",
+        "link",
+        "dc:creator",
+        "pubDate",
+        "category",
+        "guid",
+        "description"
+      ],
+      "verified": true
+    },
+    {
+      "name": "list-tag-articles",
+      "summary": "List the newest articles carrying a TechCrunch tag, such as san-francisco or generative-ai, via the tag's RSS feed. Returns title, link, author and pubDate.",
+      "method": "GET",
+      "urlTemplate": "/tag/{tag}/feed/",
+      "params": [
+        {
+          "name": "tag",
+          "in": "path",
+          "required": true,
+          "type": "string",
+          "description": "Tag slug, e.g. san-francisco, generative-ai, ai-assistant, unicorn",
+          "example": "san-francisco"
+        },
+        {
+          "name": "page",
+          "key": "paged",
+          "in": "query",
+          "required": false,
+          "type": "number",
+          "description": "Feed page number; 2 = older items",
+          "example": "2"
+        }
+      ],
+      "responseType": "json",
+      "resultPath": "rss.channel.item",
+      "defaultFields": [
+        "title",
+        "link",
+        "dc:creator",
+        "pubDate",
+        "category"
+      ],
+      "pagination": {
+        "type": "page",
+        "param": "page"
+      },
+      "mutates": false,
+      "example": {
+        "tag": "san-francisco"
+      },
+      "source": "E76 GET https://techcrunch.com/tag/san-francisco/feed/",
+      "sample": "{\"title\":\"San Francisco’s housing market has lost its mind\",\"link\":\"https://techcrunch.com/2026/05/08/san-franciscos-housing-market-has-lost-its-mind/\",\"dc:creator\":\"Connie Loizos\",\"pubDate\":\"Fri, 08 May 2026 22:32:31 +0000\",\"category\":[\"TC\",\"Real estate\",\"San Francisco\"]}",
+      "resultFields": [
+        "title",
+        "link",
+        "dc:creator",
+        "pubDate",
+        "category",
+        "guid",
+        "description"
+      ],
+      "verified": true
+    },
+    {
+      "name": "list-latest-articles",
+      "summary": "List the latest TechCrunch articles across the whole site via the main RSS feed. Returns title, link, author, pubDate and categories.",
+      "method": "GET",
+      "urlTemplate": "/feed/",
+      "params": [
+        {
+          "name": "page",
+          "key": "paged",
+          "in": "query",
+          "required": false,
+          "type": "number",
+          "description": "Feed page number; 2 = older items",
+          "example": "2"
+        }
+      ],
+      "responseType": "json",
+      "resultPath": "rss.channel.item",
+      "defaultFields": [
+        "title",
+        "link",
+        "dc:creator",
+        "pubDate",
+        "category"
+      ],
+      "pagination": {
+        "type": "page",
+        "param": "page"
+      },
+      "mutates": false,
+      "source": "E83",
+      "sample": "{\"title\":\"Anthropic pitches AI safety bill that may block a model if 50+ people could be killed\",\"link\":\"https://techcrunch.com/2026/10/20/anthropic-pitches-ai-safety-bill-that-may-block-a-model-if-50-people-could-be-killed/\",\"dc:creator\":\"Lucas Ropek\",\"pubDate\":\"Tue, 20 Oct 2026 23:01:23 +0000\",\"category\":[\"AI\",\"Anthropic\"]}",
+      "resultFields": [
+        "title",
+        "link",
+        "dc:creator",
+        "pubDate",
+        "category",
+        "guid",
+        "description"
+      ],
+      "example": {},
+      "verified": true
+    },
+    {
+      "name": "list-author-articles",
+      "summary": "List the newest articles by one TechCrunch author via the author's RSS feed.",
+      "method": "GET",
+      "urlTemplate": "/author/{author}/feed/",
+      "params": [
+        {
+          "name": "author",
+          "in": "path",
+          "required": true,
+          "type": "string",
+          "description": "Author slug from /author/{slug}/ links",
+          "example": "dominic-madori-davis"
+        },
+        {
+          "name": "page",
+          "key": "paged",
+          "in": "query",
+          "required": false,
+          "type": "number",
+          "description": "Feed page number; 2 = older items",
+          "example": "2"
+        }
+      ],
+      "responseType": "json",
+      "resultPath": "rss.channel.item",
+      "defaultFields": [
+        "title",
+        "link",
+        "dc:creator",
+        "pubDate",
+        "category"
+      ],
+      "pagination": {
+        "type": "page",
+        "param": "page"
+      },
+      "mutates": false,
+      "example": {
+        "author": "dominic-madori-davis"
+      },
+      "source": "E85 GET https://techcrunch.com/author/dominic-madori-davis/feed/",
+      "sample": "{\"title\":\"Ex-Nvidia-turned-VC Amulya Vishwanath: ‘Physical AI is in its LEGO era’\",\"link\":\"https://techcrunch.com/2026/10/20/ex-nvidia-turned-vc-amulya-vishwanath-physical-ai-is-in-its-lego-era/\",\"dc:creator\":\"Dominic-Madori Davis\",\"pubDate\":\"Tue, 20 Oct 2026 16:20:06 +0000\",\"category\":[\"AI\",\"Robotics\",\"equitypod\"]}",
+      "resultFields": [
+        "title",
+        "link",
+        "dc:creator",
+        "pubDate",
+        "category",
+        "guid",
+        "description"
+      ],
+      "verified": true
+    },
+    {
+      "name": "get-article",
+      "summary": "Get one TechCrunch article by its slug (the last path segment of the article URL). Returns title, author, published date, description and canonical URL.",
+      "method": "GET",
+      "urlTemplate": "/",
+      "params": [
+        {
+          "name": "slug",
+          "key": "name",
+          "in": "query",
+          "required": true,
+          "type": "string",
+          "description": "Article slug, i.e. the last segment of /YYYY/MM/DD/{slug}/",
+          "example": "ai-assistant-startup-town-nabs-unicorn-valuation-four-months-after-launch"
+        }
+      ],
+      "responseType": "html",
+      "extract": {
+        "fields": {
+          "title": "meta[property=og:title]@content || h1",
+          "url": "link[rel=canonical]@href || meta[property=og:url]@content",
+          "published": "meta[property=article:published_time]@content || time@datetime",
+          "author": "meta[name=author]@content || a[rel=author]",
+          "description": "meta[name=description]@content || meta[property=og:description]@content"
+        }
+      },
+      "defaultFields": [
+        "title",
+        "url",
+        "published",
+        "author",
+        "description"
+      ],
+      "mutates": false,
+      "example": {
+        "slug": "ai-assistant-startup-town-nabs-unicorn-valuation-four-months-after-launch"
+      },
+      "source": "E82 E73 GET https://techcrunch.com/{n}/{n}/{n}/ai-assistant-startup-town-nabs-unicorn-valuation-four-months-after-launch/",
+      "sample": "{\"title\":\"AI assistant startup Town nabs unicorn valuation 4 months after launch | TechCrunch\",\"url\":\"https://techcrunch.com/2026/10/19/ai-assistant-startup-town-nabs-unicorn-valuation-four-months-after-launch/\",\"published\":\"2026-10-19T18:00:39+00:00\",\"author\":\"Dominic-Madori Davis\",\"description\":\"AI assistant startup Town nabbed a unicorn valuation on Monda",
+      "resultFields": [
+        "title",
+        "url",
+        "published",
+        "author",
+        "description"
+      ],
+      "verified": true
+    }
+  ],
+  "blockers": [],
+  "notes": [
+    "TechCrunch has no keyword search, and /?s= and /wp-json are blocked. To search, merge list-category-articles (artificial-intelligence, startups) with list-tag-articles (san-francisco), then filter titles and categories yourself.",
+    "Feed items: title, link (article URL), dc:creator (author), pubDate (RFC 822 date), category (tags). Add --page 2 for older items.",
+    "The slug for get-article is the last path segment of an item's link."
+  ],
+  "dropped": [],
+  "generated": {
+    "by": "clify add",
+    "model": "claude-opus-5-5",
+    "exploredSteps": 20,
+    "recorded": 763,
+    "verifiedAt": "2026-10-21T07:17:46.569Z",
+    "seconds": 259,
+    "importedFrom": "~/.clify/sites/techcrunch",
+    "importedAt": "2026-10-21T07:24:44.784Z"
+  }
+}

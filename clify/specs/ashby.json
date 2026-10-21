@@ -1,0 +1,283 @@
+{
+  "name": "ashby",
+  "startUrl": "https://jobs.ashbyhq.com/",
+  "origin": "https://jobs.ashbyhq.com",
+  "createdAt": "2026-10-21T07:01:15.637Z",
+  "description": "Ashby-hosted startup job boards (jobs.ashbyhq.com/{org}): list a company's open roles with locations, compensation and apply links, browse its departments, read company info, and fetch full job details.",
+  "commands": [
+    {
+      "name": "list-jobs",
+      "summary": "List every open job on a company's Ashby board, with title, department, location, workplace/employment type, job URL and apply URL (public Job Postings API).",
+      "method": "GET",
+      "urlTemplate": "https://api.ashbyhq.com/posting-api/job-board/{org}",
+      "params": [
+        {
+          "name": "org",
+          "in": "path",
+          "required": true,
+          "type": "string",
+          "description": "Company board slug, the path segment in jobs.ashbyhq.com/{org}, e.g. ramp, notion, linear",
+          "example": "ramp"
+        },
+        {
+          "name": "includeCompensation",
+          "in": "query",
+          "required": false,
+          "type": "boolean",
+          "description": "Include salary/equity compensation data for each job",
+          "default": true
+        }
+      ],
+      "responseType": "json",
+      "resultPath": "jobs",
+      "defaultFields": [
+        "id",
+        "title",
+        "department",
+        "location",
+        "workplaceType",
+        "employmentType",
+        "jobUrl",
+        "applyUrl"
+      ],
+      "mutates": false,
+      "example": {
+        "org": "ramp"
+      },
+      "source": "",
+      "sample": "{\"id\":\"34413f8d-26bf-4bbc-8ade-eb309a0e2245\",\"title\":\" Security Engineer, Cloud\",\"department\":\"Engineering\",\"location\":\"New York, NY (HQ)\",\"workplaceType\":\"Hybrid\",\"employmentType\":\"FullTime\",\"jobUrl\":\"https://jobs.ashbyhq.com/ramp/34413f8d-26bf-4bbc-8ade-eb309a0e2245\",\"applyUrl\":\"https://jobs.ashbyhq.com/ramp/34413f8d-26bf-4bbc-8ade-eb309a0e2245/application",
+      "resultFields": [
+        "id",
+        "title",
+        "department",
+        "team",
+        "employmentType",
+        "location",
+        "shouldDisplayCompensationOnJobPostings",
+        "secondaryLocations",
+        "publishedAt",
+        "isListed",
+        "isRemote",
+        "workplaceType",
+        "address",
+        "jobUrl",
+        "applyUrl",
+        "descriptionHtml",
+        "descriptionPlain",
+        "compensation"
+      ],
+      "verified": true
+    },
+    {
+      "name": "get-job",
+      "summary": "Get one job posting's full details: title, department, teams, location(s), workplace/employment type, compensation tiers and HTML description.",
+      "method": "POST",
+      "urlTemplate": "/api/non-user-graphql?op=ApiJobPosting",
+      "params": [
+        {
+          "name": "org",
+          "key": "organizationHostedJobsPageName",
+          "in": "body",
+          "required": true,
+          "type": "string",
+          "description": "Company board slug, e.g. ramp",
+          "example": "ramp"
+        },
+        {
+          "name": "jobId",
+          "key": "jobPostingId",
+          "in": "body",
+          "required": true,
+          "type": "string",
+          "description": "Job posting UUID (id from list-jobs)",
+          "example": "f564dcf9-9390-4a3f-896f-8047a5086040"
+        }
+      ],
+      "bodyTemplate": {
+        "operationName": "ApiJobPosting",
+        "variables": {
+          "organizationHostedJobsPageName": "{org}",
+          "jobPostingId": "{jobId}"
+        },
+        "query": "query ApiJobPosting($organizationHostedJobsPageName: String!, $jobPostingId: String!) {\n  jobPosting(\n    organizationHostedJobsPageName: $organizationHostedJobsPageName\n    jobPostingId: $jobPostingId\n  ) {\n    id\n    title\n    departmentName\n    departmentExternalName\n    locationName\n    locationAddress\n    workplaceType\n    employmentType\n    descriptionHtml\n    isListed\n    isConfidential\n    teamNames\n    secondaryLocationNames\n    compensationTierSummary\n    compensationTiers {\n      id\n      title\n      tierSummary\n      __typename\n    }\n    __typename\n  }\n}"
+      },
+      "bodyEncoding": "json",
+      "headers": {
+        "apollographql-client-name": "frontend_non_user",
+        "apollographql-client-version": "0.1.0"
+      },
+      "responseType": "json",
+      "resultPath": "data.jobPosting",
+      "defaultFields": [
+        "id",
+        "title",
+        "departmentName",
+        "locationName",
+        "secondaryLocationNames",
+        "workplaceType",
+        "employmentType",
+        "compensationTierSummary"
+      ],
+      "mutates": false,
+      "example": {
+        "org": "ramp",
+        "jobId": "f564dcf9-9390-4a3f-896f-8047a5086040"
+      },
+      "source": "E3 POST https://jobs.ashbyhq.com/api/non-user-graphql (GraphQL operation ApiJobPosting)",
+      "sample": "{\"id\":\"f564dcf9-9390-4a3f-896f-8047a5086040\",\"title\":\"Mobile Engineer, Android\",\"departmentName\":\"Engineering\",\"locationName\":\"New York, NY (HQ)\",\"secondaryLocationNames\":[\"Remote (Canada)\",\"San Francisco, CA\",\"Remote (US)\"],\"workplaceType\":\"Hybrid\",\"employmentType\":\"FullTime\",\"compensationTierSummary\":\"$189K – $330K • Offers Equity\"}",
+      "resultFields": [
+        "id",
+        "title",
+        "departmentName",
+        "departmentExternalName",
+        "locationName",
+        "locationAddress",
+        "workplaceType",
+        "employmentType",
+        "descriptionHtml",
+        "isListed",
+        "isConfidential",
+        "teamNames",
+        "secondaryLocationNames",
+        "compensationTierSummary",
+        "compensationTiers",
+        "__typename"
+      ],
+      "verified": true
+    },
+    {
+      "name": "list-teams",
+      "summary": "List a company's departments/teams (id, name, parentTeamId hierarchy) as used by the board's department filter.",
+      "method": "POST",
+      "urlTemplate": "/api/non-user-graphql?op=ApiJobBoardWithTeams",
+      "params": [
+        {
+          "name": "org",
+          "key": "organizationHostedJobsPageName",
+          "in": "body",
+          "required": true,
+          "type": "string",
+          "description": "Company board slug, e.g. ramp",
+          "example": "ramp"
+        }
+      ],
+      "bodyTemplate": {
+        "operationName": "ApiJobBoardWithTeams",
+        "variables": {
+          "organizationHostedJobsPageName": "{org}"
+        },
+        "query": "query ApiJobBoardWithTeams($organizationHostedJobsPageName: String!) {\n  jobBoard: jobBoardWithTeams(\n    organizationHostedJobsPageName: $organizationHostedJobsPageName\n  ) {\n    teams {\n      id\n      name\n      externalName\n      parentTeamId\n      __typename\n    }\n    jobPostings {\n      id\n      title\n      teamId\n      locationId\n      locationName\n      workplaceType\n      employmentType\n      secondaryLocations {\n        ...JobPostingSecondaryLocationParts\n        __typename\n      }\n      compensationTierSummary\n      __typename\n    }\n    __typename\n  }\n}\n\nfragment JobPostingSecondaryLocationParts on JobPostingSecondaryLocation {\n  locationId\n  locationName\n  __typename\n}"
+      },
+      "bodyEncoding": "json",
+      "headers": {
+        "apollographql-client-name": "frontend_non_user",
+        "apollographql-client-version": "0.1.0"
+      },
+      "responseType": "json",
+      "resultPath": "data.jobBoard.teams",
+      "defaultFields": [
+        "id",
+        "name",
+        "externalName",
+        "parentTeamId"
+      ],
+      "mutates": false,
+      "example": {
+        "org": "ramp"
+      },
+      "source": "E2 POST https://jobs.ashbyhq.com/api/non-user-graphql (GraphQL operation ApiJobBoardWithTeams)",
+      "sample": "{\"id\":\"baa9ccf5-274b-43e7-a810-1b50545f0745\",\"name\":\"Sales\",\"externalName\":null,\"parentTeamId\":null}",
+      "resultFields": [
+        "id",
+        "name",
+        "externalName",
+        "parentTeamId",
+        "__typename"
+      ],
+      "verified": true
+    },
+    {
+      "name": "get-company",
+      "summary": "Get company info for a job board slug: name, organization id, public website, custom careers page URL and privacy policy URL.",
+      "method": "POST",
+      "urlTemplate": "/api/non-user-graphql?op=ApiOrganizationFromHostedJobsPageName",
+      "params": [
+        {
+          "name": "org",
+          "key": "organizationHostedJobsPageName",
+          "in": "body",
+          "required": true,
+          "type": "string",
+          "description": "Company board slug, e.g. ramp",
+          "example": "ramp"
+        }
+      ],
+      "bodyTemplate": {
+        "operationName": "ApiOrganizationFromHostedJobsPageName",
+        "variables": {
+          "organizationHostedJobsPageName": "{org}",
+          "searchContext": "JobBoard"
+        },
+        "query": "query ApiOrganizationFromHostedJobsPageName($organizationHostedJobsPageName: String!, $searchContext: OrganizationSearchContext) {\n  organization: organizationFromHostedJobsPageName(\n    organizationHostedJobsPageName: $organizationHostedJobsPageName\n    searchContext: $searchContext\n  ) {\n    ...OrganizationParts\n    __typename\n  }\n}\n\nfragment OrganizationParts on Organization {\n  organizationId\n  name\n  publicWebsite\n  customJobsPageUrl\n  hostedJobsPageSlug\n  allowJobPostIndexing\n  isDemoOrg\n  theme {\n    colors\n    showJobFilters\n    showLocationAddress\n    showTeams\n    showAutofillApplicationsBox\n    logoWordmarkImageUrl\n    logoSquareImageUrl\n    applicationSubmittedSuccessMessage\n    jobBoardTopDescriptionHtml\n    jobBoardBottomDescriptionHtml\n    jobPostingBackUrl\n    __typename\n  }\n  appConfirmationTrackingPixelHtml\n  recruitingPrivacyPolicyUrl\n  activeFeatureFlags\n  timezone\n  candidateScheduleCancellationReasonRequirementStatus\n  showCookieBanner\n  __typename\n}"
+      },
+      "bodyEncoding": "json",
+      "headers": {
+        "apollographql-client-name": "frontend_non_user",
+        "apollographql-client-version": "0.1.0"
+      },
+      "responseType": "json",
+      "resultPath": "data.organization",
+      "defaultFields": [
+        "organizationId",
+        "name",
+        "hostedJobsPageSlug",
+        "publicWebsite",
+        "customJobsPageUrl",
+        "recruitingPrivacyPolicyUrl",
+        "timezone",
+        "theme.logoSquareImageUrl"
+      ],
+      "mutates": false,
+      "example": {
+        "org": "ramp"
+      },
+      "source": "E1 POST https://jobs.ashbyhq.com/api/non-user-graphql (GraphQL operation ApiOrganizationFromHostedJobsPageName)",
+      "sample": "{\"organizationId\":\"7a158cac-9866-4881-95a8-bc946d3dca79\",\"name\":\"Ramp\",\"hostedJobsPageSlug\":\"ramp\",\"publicWebsite\":\"https://ramp.com\",\"customJobsPageUrl\":null,\"recruitingPrivacyPolicyUrl\":\"https://ramp.com/legal/applicant-privacy-notice\",\"timezone\":\"America/New_York\",\"theme.logoSquareImageUrl\":\"https://app.ashbyhq.com/api/images/org-theme-logo/7a158cac-9866-",
+      "resultFields": [
+        "organizationId",
+        "name",
+        "publicWebsite",
+        "customJobsPageUrl",
+        "hostedJobsPageSlug",
+        "allowJobPostIndexing",
+        "isDemoOrg",
+        "theme",
+        "appConfirmationTrackingPixelHtml",
+        "recruitingPrivacyPolicyUrl",
+        "activeFeatureFlags",
+        "timezone",
+        "candidateScheduleCancellationReasonRequirementStatus",
+        "showCookieBanner",
+        "__typename"
+      ],
+      "verified": true
+    }
+  ],
+  "blockers": [],
+  "notes": [
+    "Every command needs a company board slug (the {org} in jobs.ashbyhq.com/{org}). There is no search across companies.",
+    "Boards return all jobs at once, with no paging or sorting. Filter by department, location, workplaceType (OnSite/Hybrid/Remote) or employmentType (FullTime etc.) on the client side.",
+    "Job page: https://jobs.ashbyhq.com/{org}/{jobId}. Application form: append /application. list-jobs also returns jobUrl and applyUrl."
+  ],
+  "dropped": [],
+  "generated": {
+    "by": "clify add",
+    "model": "claude-opus-5-5",
+    "exploredSteps": 16,
+    "recorded": 43,
+    "verifiedAt": "2026-10-21T07:02:11.218Z",
+    "seconds": 135,
+    "importedFrom": "~/.clify/sites/jobs-ashbyhq",
+    "importedAt": "2026-10-21T07:24:44.779Z"
+  }
+}

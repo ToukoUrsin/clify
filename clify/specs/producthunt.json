@@ -1,0 +1,77 @@
+{
+  "name": "producthunt",
+  "startUrl": "https://www.producthunt.com/",
+  "origin": "https://www.producthunt.com",
+  "createdAt": "2026-10-21T07:00:42.615Z",
+  "description": "Product Hunt (producthunt.com), a site where new tech products launch daily. This CLI reads Product Hunt's public Atom feed of the latest featured launches, optionally filtered by topic, and returns each launch's post id, launch date, product name, tagline, product page URL and author.",
+  "commands": [
+    {
+      "name": "list-launches",
+      "summary": "List the latest featured Product Hunt launches, newest first, optionally filtered by topic slug. Each entry has the post id, launch date, product name, tagline, product page URL and author.",
+      "method": "GET",
+      "urlTemplate": "/feed",
+      "params": [
+        {
+          "name": "category",
+          "in": "query",
+          "required": false,
+          "type": "string",
+          "description": "Topic slug to filter launches by, as it appears in Product Hunt topic URLs (lowercase, hyphenated), e.g. productivity, developer-tools, artificial-intelligence. Omit to get all featured launches.",
+          "example": "productivity"
+        }
+      ],
+      "responseType": "json",
+      "resultPath": "feed.entry",
+      "defaultFields": [
+        "id",
+        "title",
+        "published",
+        "link.@href",
+        "author.name",
+        "content.#text",
+        "updated"
+      ],
+      "mutates": false,
+      "example": {
+        "category": "productivity"
+      },
+      "source": "E1 GET https://www.producthunt.com/feed",
+      "sample": "{\"id\":\"tag:www.producthunt.com,2005:Post/1277933\",\"title\":\"yggy\",\"published\":\"2026-10-12T07:56:55-07:00\",\"link.@href\":\"https://www.producthunt.com/products/yggy\",\"author.name\":\"Dominik Müller\",\"content.#text\":\"<p>\\n            The AI knowledge graph that builds itself\\n          </p>\\n          <p>\\n            <a href=\\\"https://www.producthunt.com/products/",
+      "resultFields": [
+        "id",
+        "published",
+        "updated",
+        "link",
+        "title",
+        "content",
+        "author"
+      ],
+      "verified": true
+    }
+  ],
+  "blockers": [
+    "bot-check at https://www.producthunt.com/",
+    "bot-check at https://www.producthunt.com/topics/productivity",
+    "bot-check at https://www.producthunt.com/products/composio",
+    "bot-check at https://www.producthunt.com/v2/docs",
+    "bot-check at https://www.producthunt.com/leaderboard/daily/2026/10/19",
+    "captcha"
+  ],
+  "notes": [
+    "Data comes from the public Atom feed. HTML pages, search and the API are blocked by Cloudflare, so there is no keyword search, vote count or ranking beyond feed order.",
+    "id looks like 'tag:www.producthunt.com,2005:Post/<postId>'. published is the launch date (ISO 8601 with offset). link.@href is the product page (/products/<slug>).",
+    "content.#text is HTML holding the tagline and links. The outbound product website link is the /r/p/<postId> redirect inside it.",
+    "The feed returns about 30-35 recent entries with no pagination."
+  ],
+  "dropped": [],
+  "generated": {
+    "by": "clify add",
+    "model": "claude-opus-5-5",
+    "exploredSteps": 7,
+    "recorded": 10,
+    "verifiedAt": "2026-10-21T07:00:56.671Z",
+    "seconds": 60,
+    "importedFrom": "~/.clify/sites/producthunt",
+    "importedAt": "2026-10-21T07:24:44.786Z"
+  }
+}

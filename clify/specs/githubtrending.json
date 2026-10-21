@@ -1,0 +1,660 @@
+{
+  "name": "githubtrending",
+  "startUrl": "https://github.com/trending",
+  "origin": "https://github.com",
+  "createdAt": "2026-10-21T07:14:40.061Z",
+  "description": "GitHub (github.com): list trending repositories and developers by language and period, browse topic repositories, and read repository metadata such as languages, contributors, releases, latest commit, branches and README.",
+  "commands": [
+    {
+      "name": "list-trending-repos",
+      "summary": "List GitHub trending repositories for a period (daily/weekly/monthly) and programming language, with description, language, total stars, forks and stars gained in the period.",
+      "method": "GET",
+      "urlTemplate": "/trending/{language}",
+      "params": [
+        {
+          "name": "language",
+          "in": "path",
+          "required": true,
+          "type": "string",
+          "description": "Programming language slug as used in GitHub URLs, lowercase, e.g. python, javascript, rust, c%23 for C#.",
+          "example": "python"
+        },
+        {
+          "name": "since",
+          "in": "query",
+          "required": false,
+          "type": "string",
+          "description": "Trending period",
+          "enum": [
+            "daily",
+            "weekly",
+            "monthly"
+          ],
+          "default": "daily",
+          "example": "weekly"
+        },
+        {
+          "name": "spoken_language_code",
+          "in": "query",
+          "required": false,
+          "type": "string",
+          "description": "Filter by spoken language of the repo, ISO 639-1 code, e.g. en, zh"
+        }
+      ],
+      "responseType": "html",
+      "extract": {
+        "list": "article.Box-row",
+        "fields": {
+          "name": "h2 a",
+          "url": "h2 a@href",
+          "description": "p",
+          "language": "span[itemprop=programmingLanguage]",
+          "stars": "a.Link--muted",
+          "forks": "a.Link--muted ~ a.Link--muted",
+          "starsInPeriod": "span.float-sm-right"
+        }
+      },
+      "defaultFields": [
+        "name",
+        "url",
+        "description",
+        "language",
+        "stars",
+        "forks",
+        "starsInPeriod"
+      ],
+      "mutates": false,
+      "example": {
+        "since": "daily",
+        "language": "python"
+      },
+      "source": "E20",
+      "sample": "{\"name\":\"MadsLorentzen / ai-job-search\",\"url\":\"https://github.com/MadsLorentzen/ai-job-search\",\"description\":\"The job search that runs on your machine. AI job application framework built on Claude Code: evaluate postings, tailor CVs, write cover letters, prep interviews. Fork it and own it.\",\"language\":\"Python\",\"stars\":\"https://github.com/trending/61,467\",\"f",
+      "resultFields": [
+        "name",
+        "url",
+        "description",
+        "language",
+        "stars",
+        "forks",
+        "starsInPeriod"
+      ],
+      "verified": true
+    },
+    {
+      "name": "list-trending-developers",
+      "summary": "List GitHub trending developers for a period and programming language, with their most popular repository.",
+      "method": "GET",
+      "urlTemplate": "/trending/developers/{language}",
+      "params": [
+        {
+          "name": "language",
+          "in": "path",
+          "required": true,
+          "type": "string",
+          "description": "Programming language slug, lowercase, e.g. python, go.",
+          "example": "python"
+        },
+        {
+          "name": "since",
+          "in": "query",
+          "required": false,
+          "type": "string",
+          "description": "Trending period",
+          "enum": [
+            "daily",
+            "weekly",
+            "monthly"
+          ],
+          "default": "daily"
+        }
+      ],
+      "responseType": "html",
+      "extract": {
+        "list": "article.Box-row",
+        "fields": {
+          "name": "h1.h3 a",
+          "url": "h1.h3 a@href",
+          "login": "p.f4 a",
+          "popularRepo": "h1.h4 a",
+          "popularRepoUrl": "h1.h4 a@href",
+          "popularRepoDescription": "div.f6.mt-1"
+        }
+      },
+      "defaultFields": [
+        "name",
+        "login",
+        "url",
+        "popularRepo",
+        "popularRepoUrl",
+        "popularRepoDescription"
+      ],
+      "mutates": false,
+      "example": {
+        "language": "python"
+      },
+      "source": "E17",
+      "sample": "{\"name\":\"Quentin Kaiser\",\"login\":\"qkaiser\",\"url\":\"https://github.com/qkaiser\",\"popularRepo\":\"broadcom-wps\",\"popularRepoUrl\":\"https://github.com/qkaiser/broadcom-wps\",\"popularRepoDescription\":\"Tools to fingerprint WiFi Access Points running the Broadcom SDK and a list of known affected devices.\"}",
+      "resultFields": [
+        "name",
+        "url",
+        "login",
+        "popularRepo",
+        "popularRepoUrl",
+        "popularRepoDescription"
+      ],
+      "verified": true
+    },
+    {
+      "name": "list-topic-repos",
+      "summary": "List repositories tagged with a GitHub topic, sortable by stars, forks or last update.",
+      "method": "GET",
+      "urlTemplate": "/topics/{topic}",
+      "params": [
+        {
+          "name": "topic",
+          "in": "path",
+          "required": true,
+          "type": "string",
+          "description": "Topic slug, e.g. python, machine-learning",
+          "example": "python"
+        },
+        {
+          "name": "s",
+          "in": "query",
+          "required": false,
+          "type": "string",
+          "description": "Sort key",
+          "enum": [
+            "stars",
+            "forks",
+            "updated"
+          ]
+        },
+        {
+          "name": "o",
+          "in": "query",
+          "required": false,
+          "type": "string",
+          "description": "Sort order",
+          "enum": [
+            "desc",
+            "asc"
+          ]
+        },
+        {
+          "name": "page",
+          "in": "query",
+          "required": false,
+          "type": "number",
+          "description": "Page number, starting at 1"
+        }
+      ],
+      "responseType": "html",
+      "extract": {
+        "list": "article.border",
+        "fields": {
+          "name": "h3 a.text-bold",
+          "url": "h3 a.text-bold@href",
+          "owner": "h3 a",
+          "description": "p",
+          "stars": "span#repo-stars-counter-star@title"
+        }
+      },
+      "defaultFields": [
+        "name",
+        "owner",
+        "url",
+        "description",
+        "stars"
+      ],
+      "pagination": {
+        "type": "page",
+        "param": "page"
+      },
+      "mutates": false,
+      "example": {
+        "topic": "python",
+        "s": "updated",
+        "o": "desc"
+      },
+      "source": "E16 GET https://github.com/topics/python",
+      "sample": "{\"name\":\"ATS-DocGen-AI\",\"owner\":\"osmanadamaddoma\",\"url\":\"https://github.com/osmanadamaddoma/ATS-DocGen-AI\",\"description\":\"⚡ AI reads 500-page CAT/Perkins manuals in 30s | Predicts failure 72h ahead | Live Demo + WhatsApp Work Orders\",\"stars\":\"1\"}",
+      "resultFields": [
+        "name",
+        "url",
+        "owner",
+        "description",
+        "stars"
+      ],
+      "verified": true
+    },
+    {
+      "name": "get-repo-overview",
+      "summary": "Get repository sidebar data: latest release, contributor count and top contributors, language breakdown, dependents count and sponsors.",
+      "method": "GET",
+      "urlTemplate": "/{owner}/{repo}/_sidebar",
+      "params": [
+        {
+          "name": "owner",
+          "in": "path",
+          "required": true,
+          "type": "string",
+          "description": "Repository owner (user or org) login",
+          "example": "vllm-project"
+        },
+        {
+          "name": "repo",
+          "in": "path",
+          "required": true,
+          "type": "string",
+          "description": "Repository name",
+          "example": "vllm"
+        }
+      ],
+      "headers": {
+        "accept": "application/json",
+        "x-requested-with": "XMLHttpRequest",
+        "github-verified-fetch": "true"
+      },
+      "responseType": "json",
+      "defaultFields": [
+        "releases.latestRelease",
+        "contributors.contributorCount",
+        "languages.languages",
+        "usedBy.dependentCount",
+        "contributors.contributors"
+      ],
+      "mutates": false,
+      "example": {
+        "owner": "vllm-project",
+        "repo": "vllm"
+      },
+      "source": "E6 E15 GET https://github.com/Comfy-Org/ComfyUI/_sidebar",
+      "sample": "{\"releases.latestRelease\":{\"name\":\"v0.32.0\",\"path\":\"/vllm-project/vllm/releases/tag/v0.32.0\",\"publishedAt\":\"2026-10-18T06:50:48Z\"},\"contributors.contributorCount\":3757,\"languages.languages\":[{\"name\":\"Python\",\"percentage\":85.4,\"color\":\"#3572A5\",\"searchAlias\":\"python\"},{\"name\":\"Rust\",\"percentage\":6.4,\"color\":\"#dea584\",\"searchAlias\":\"rust\"},{\"name\":\"Cuda\",\"perc",
+      "resultFields": [
+        "releases",
+        "sponsors",
+        "usedBy",
+        "contributors",
+        "languages",
+        "deployments",
+        "packages",
+        "suggestedWorkflows",
+        "configCallToAction"
+      ],
+      "verified": true
+    },
+    {
+      "name": "get-repo-readme",
+      "summary": "Get the repository README (rendered HTML) and other overview files for a branch.",
+      "method": "GET",
+      "urlTemplate": "/{owner}/{repo}/overview-files/{branch}",
+      "params": [
+        {
+          "name": "owner",
+          "in": "path",
+          "required": true,
+          "type": "string",
+          "description": "Repository owner login",
+          "example": "vllm-project"
+        },
+        {
+          "name": "repo",
+          "in": "path",
+          "required": true,
+          "type": "string",
+          "description": "Repository name",
+          "example": "vllm"
+        },
+        {
+          "name": "branch",
+          "in": "path",
+          "required": true,
+          "type": "string",
+          "description": "Branch name, usually the default branch (main or master; see list-repo-refs)",
+          "example": "main"
+        }
+      ],
+      "headers": {
+        "accept": "application/json",
+        "x-requested-with": "XMLHttpRequest",
+        "github-verified-fetch": "true"
+      },
+      "responseType": "json",
+      "resultPath": "files",
+      "defaultFields": [
+        "displayName",
+        "path",
+        "refName",
+        "tabName",
+        "richText"
+      ],
+      "mutates": false,
+      "example": {
+        "owner": "vllm-project",
+        "repo": "vllm",
+        "branch": "main"
+      },
+      "source": "E7 E14 GET https://github.com/Comfy-Org/ComfyUI/overview-files/master",
+      "sample": "{\"displayName\":\"README.md\",\"path\":\"README.md\",\"refName\":\"main\",\"tabName\":\"README\",\"richText\":\"<article class=\\\"markdown-body entry-content container-lg\\\" itemprop=\\\"text\\\">\\n<p align=\\\"center\\\" dir=\\\"auto\\\">\\n  <themed-picture data-catalyst-inline=\\\"true\\\"><picture>\\n    <source media=\\\"(prefers-color-scheme: dark)\\\" srcset=\\\"https://raw.githubusercontent.co",
+      "resultFields": [
+        "displayName",
+        "repoName",
+        "refName",
+        "path",
+        "preferredFileType",
+        "tabName",
+        "richText",
+        "loaded",
+        "timedOut",
+        "errorMessage",
+        "headerInfo"
+      ],
+      "verified": true
+    },
+    {
+      "name": "get-latest-commit",
+      "summary": "Get the latest commit on a repository's default branch: sha, date, author, message and CI status.",
+      "method": "GET",
+      "urlTemplate": "/{owner}/{repo}/latest-commit",
+      "params": [
+        {
+          "name": "owner",
+          "in": "path",
+          "required": true,
+          "type": "string",
+          "description": "Repository owner login",
+          "example": "vllm-project"
+        },
+        {
+          "name": "repo",
+          "in": "path",
+          "required": true,
+          "type": "string",
+          "description": "Repository name",
+          "example": "vllm"
+        }
+      ],
+      "headers": {
+        "accept": "application/json",
+        "x-requested-with": "XMLHttpRequest",
+        "github-verified-fetch": "true"
+      },
+      "responseType": "json",
+      "defaultFields": [
+        "oid",
+        "url",
+        "date",
+        "author.login",
+        "author.displayName",
+        "bodyMessageHtml",
+        "status"
+      ],
+      "mutates": false,
+      "example": {
+        "owner": "vllm-project",
+        "repo": "vllm"
+      },
+      "source": "E3 E10 GET https://github.com/Comfy-Org/ComfyUI/latest-commit",
+      "sample": "{\"oid\":\"a9bf45ed8a856a0b1839197152d0d26fabb6599c\",\"url\":\"/vllm-project/vllm/commit/a9bf45ed8a856a0b1839197152d0d26fabb6599c\",\"date\":\"2026-10-21T14:53:29.000+08:00\",\"author.login\":\"hyukjlee\",\"author.displayName\":\"Hyukjoon Lee\",\"bodyMessageHtml\":\"Signed-off-by: hyukjlee &lt;hyukjlee@amd.com&gt;\\nCo-authored-by: Claude Opus 5.5 &lt;noreply@anthropic.com&gt;\\nCo",
+      "resultFields": [
+        "oid",
+        "url",
+        "date",
+        "shortMessageHtmlLink",
+        "bodyMessageHtml",
+        "author",
+        "authors",
+        "committerAttribution",
+        "committer",
+        "showPusherAttribution",
+        "pusher",
+        "pushedDate",
+        "status",
+        "statusChecksAliveChannel",
+        "isSpoofed"
+      ],
+      "verified": true
+    },
+    {
+      "name": "list-repo-refs",
+      "summary": "List all branch or tag names of a repository.",
+      "method": "GET",
+      "urlTemplate": "/{owner}/{repo}/refs",
+      "params": [
+        {
+          "name": "owner",
+          "in": "path",
+          "required": true,
+          "type": "string",
+          "description": "Repository owner login",
+          "example": "vllm-project"
+        },
+        {
+          "name": "repo",
+          "in": "path",
+          "required": true,
+          "type": "string",
+          "description": "Repository name",
+          "example": "vllm"
+        },
+        {
+          "name": "type",
+          "in": "query",
+          "required": false,
+          "type": "string",
+          "description": "Kind of ref to list",
+          "enum": [
+            "branch",
+            "tag"
+          ],
+          "default": "branch"
+        }
+      ],
+      "headers": {
+        "accept": "application/json"
+      },
+      "responseType": "json",
+      "resultPath": "refs",
+      "mutates": false,
+      "example": {
+        "owner": "vllm-project",
+        "repo": "vllm",
+        "type": "branch"
+      },
+      "source": "E5 E12 GET https://github.com/Comfy-Org/ComfyUI/refs",
+      "sample": "\"main\"",
+      "verified": true
+    },
+    {
+      "name": "get-branch-tag-count",
+      "summary": "Get the number of branches and tags in a repository.",
+      "method": "GET",
+      "urlTemplate": "/{owner}/{repo}/branch-and-tag-count",
+      "params": [
+        {
+          "name": "owner",
+          "in": "path",
+          "required": true,
+          "type": "string",
+          "description": "Repository owner login",
+          "example": "vllm-project"
+        },
+        {
+          "name": "repo",
+          "in": "path",
+          "required": true,
+          "type": "string",
+          "description": "Repository name",
+          "example": "vllm"
+        }
+      ],
+      "headers": {
+        "accept": "application/json",
+        "x-requested-with": "XMLHttpRequest",
+        "github-verified-fetch": "true"
+      },
+      "responseType": "json",
+      "defaultFields": [
+        "branches",
+        "tags"
+      ],
+      "mutates": false,
+      "example": {
+        "owner": "vllm-project",
+        "repo": "vllm"
+      },
+      "source": "E1 E9 GET https://github.com/Comfy-Org/ComfyUI/branch-and-tag-count",
+      "sample": "{\"branches\":461,\"tags\":214}",
+      "resultFields": [
+        "branches",
+        "tags"
+      ],
+      "verified": true
+    },
+    {
+      "name": "get-tree-commit-info",
+      "summary": "Get the last commit (sha, date, message) for each top-level file and folder of a repository.",
+      "method": "GET",
+      "urlTemplate": "/{owner}/{repo}/tree-commit-info",
+      "params": [
+        {
+          "name": "owner",
+          "in": "path",
+          "required": true,
+          "type": "string",
+          "description": "Repository owner login",
+          "example": "vllm-project"
+        },
+        {
+          "name": "repo",
+          "in": "path",
+          "required": true,
+          "type": "string",
+          "description": "Repository name",
+          "example": "vllm"
+        }
+      ],
+      "headers": {
+        "accept": "application/json",
+        "x-requested-with": "XMLHttpRequest",
+        "github-verified-fetch": "true",
+        "x-github-ui-experience": "code_view_repo"
+      },
+      "responseType": "json",
+      "resultPath": "entries",
+      "mutates": false,
+      "example": {
+        "owner": "vllm-project",
+        "repo": "vllm"
+      },
+      "source": "E4 E11 GET https://github.com/Comfy-Org/ComfyUI/tree-commit-info",
+      "sample": "{\"README.md\":{\"oid\":\"29e4d2d42e1333da6bded6f28dd5bff03573af7c\",\"url\":\"/vllm-project/vllm/commit/29e4d2d42e1333da6bded6f28dd5bff03573af7c\",\"date\":\"2026-10-09T21:22:35.000-07:00\",\"shortMessageHtmlLink\":{\"value\":\"<a data-pjax=\\\"true\\\" title=\\\"[Frontend][Build] Add `vllm download-kernels` for FlashInfer precompiled kernels (#58765)\\n\\nSigned-off-by: mgoin &lt;mg",
+      "resultFields": [
+        "README.md",
+        "csrc",
+        ".readthedocs.yaml",
+        "MANIFEST.in",
+        ".buildkite",
+        ".git-blame-ignore-revs",
+        "docs",
+        "tools",
+        "requirements",
+        "cmake",
+        ".pre-commit-config.yaml",
+        "pyproject.toml",
+        ".claude/skills",
+        "DCO",
+        "vllm",
+        ".agents/skills",
+        ".github",
+        "examples",
+        "tests",
+        "docker",
+        ".gitignore",
+        "mkdocs.yaml",
+        "benchmarks",
+        "LICENSE",
+        ".dockerignore",
+        "setup.py",
+        ".clang-format",
+        "CMakeLists.txt",
+        "rust",
+        "AGENTS.md",
+        "rust-toolchain.toml",
+        "SECURITY.md",
+        "recipes"
+      ],
+      "verified": true
+    },
+    {
+      "name": "get-repo-sponsors",
+      "summary": "Get a repository's sponsorable accounts and external funding links.",
+      "method": "GET",
+      "urlTemplate": "/{owner}/{repo}/_sidebar/sponsors",
+      "params": [
+        {
+          "name": "owner",
+          "in": "path",
+          "required": true,
+          "type": "string",
+          "description": "Repository owner login",
+          "example": "vllm-project"
+        },
+        {
+          "name": "repo",
+          "in": "path",
+          "required": true,
+          "type": "string",
+          "description": "Repository name",
+          "example": "vllm"
+        }
+      ],
+      "headers": {
+        "accept": "application/json",
+        "x-requested-with": "XMLHttpRequest",
+        "github-verified-fetch": "true"
+      },
+      "responseType": "json",
+      "defaultFields": [
+        "sponsorables",
+        "externalFundingLinks",
+        "sponsorsPath",
+        "sponsorableCount"
+      ],
+      "mutates": false,
+      "example": {
+        "owner": "vllm-project",
+        "repo": "vllm"
+      },
+      "source": "E13 GET https://github.com/vllm-project/vllm/_sidebar/sponsors",
+      "sample": "{\"sponsorables\":[{\"login\":\"vllm-project\",\"displayName\":\"vLLM\",\"profilePath\":\"/vllm-project\",\"avatarUrl\":\"https://avatars.githubusercontent.com/u/136984999?s=64&v=4\",\"isSponsoredByViewer\":false}],\"externalFundingLinks\":[{\"platform\":\"open_collective\",\"url\":\"https://opencollective.com/vllm\",\"iconUrl\":\"https://github.githubassets.com/assets/open_collective-0a706",
+      "resultFields": [
+        "sponsorables",
+        "externalFundingLinks",
+        "sponsorsPath",
+        "sponsorsLearnMorePath",
+        "sponsorableCount"
+      ],
+      "verified": true
+    }
+  ],
+  "blockers": [],
+  "notes": [
+    "Repository URLs from trending/topic lists are relative paths of the form /owner/repo; split them into --owner and --repo for the repo commands.",
+    "Trending lists are scraped from server-rendered HTML; names and counts may contain extra whitespace and comma-formatted numbers.",
+    "Language and period filters on trending pages were not exercised in the recording; use lowercase language slugs as in github.com/trending/<language>."
+  ],
+  "dropped": [],
+  "generated": {
+    "by": "clify add",
+    "model": "claude-opus-5-5",
+    "exploredSteps": 11,
+    "recorded": 23,
+    "verifiedAt": "2026-10-21T07:15:55.100Z",
+    "seconds": 147,
+    "importedFrom": "~/.clify/sites/github",
+    "importedAt": "2026-10-21T07:24:44.786Z"
+  }
+}

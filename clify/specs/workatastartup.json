@@ -1,0 +1,286 @@
+{
+  "name": "workatastartup",
+  "startUrl": "https://www.workatastartup.com/",
+  "origin": "https://www.workatastartup.com",
+  "createdAt": "2026-10-21T07:01:21.586Z",
+  "description": "Y Combinator's Work at a Startup job board: search YC startup jobs by keyword and location, browse role and location listings, and read job and company pages including application links.",
+  "commands": [
+    {
+      "name": "search-jobs",
+      "summary": "Search YC startup jobs with a plain-language query, e.g. 'backend engineer in San Francisco'. Returns job id, title, company, location, salary, type and apply link.",
+      "method": "GET",
+      "urlTemplate": "/jobs/search",
+      "params": [
+        {
+          "name": "q",
+          "in": "query",
+          "required": true,
+          "type": "string",
+          "description": "Plain-language search over role, title, skills and location. Put the location in the text to filter by it, e.g. 'product manager San Francisco' or 'remote software engineer'. All matches come back in ",
+          "example": "backend engineer in San Francisco"
+        }
+      ],
+      "responseType": "json",
+      "resultPath": "jobs",
+      "defaultFields": [
+        "id",
+        "title",
+        "companyName",
+        "companySlug",
+        "location",
+        "salary",
+        "jobType",
+        "applyUrl"
+      ],
+      "mutates": false,
+      "example": {
+        "q": "backend engineer in San Francisco"
+      },
+      "source": "E2",
+      "sample": "{\"id\":94307,\"title\":\"Design Engineer - SF\",\"companyName\":\"OpenWork\",\"companySlug\":\"openwork\",\"location\":\"San Francisco, CA, US\",\"salary\":\"$130K - $200K\",\"jobType\":\"Full-time\",\"applyUrl\":\"https://account.ycombinator.com/authenticate?continue=https%3A%2F%2Fwww.workatastartup.com%2Fapplication%3Fcode%3D61f9414b-d38a-47c8-a0d2-687fa5aa689e%26signup_job_id%3D9430",
+      "resultFields": [
+        "id",
+        "title",
+        "jobType",
+        "location",
+        "roleType",
+        "salary",
+        "companyName",
+        "companySlug",
+        "companyBatch",
+        "companyOneLiner",
+        "companyLogoUrl",
+        "companyLastActiveAt",
+        "applyUrl"
+      ],
+      "verified": true
+    },
+    {
+      "name": "get-job",
+      "summary": "Get a job's page text: company, title, location, type, salary, equity, experience, visa and description. Use the id from search-jobs.",
+      "method": "GET",
+      "urlTemplate": "/jobs/{jobId}",
+      "params": [
+        {
+          "name": "jobId",
+          "in": "path",
+          "required": true,
+          "type": "number",
+          "description": "Numeric job id (the id field from search-jobs)",
+          "example": "92623"
+        }
+      ],
+      "responseType": "html",
+      "extract": {
+        "fields": {
+          "title": "title",
+          "text": "body"
+        }
+      },
+      "mutates": false,
+      "example": {
+        "jobId": "92623"
+      },
+      "source": "E4 GET https://www.workatastartup.com/jobs/{n}",
+      "sample": "{\"title\":\"Founding Creative Strategist / CSM at GetCrux | Y Combinator's Work at a Startup\",\"text\":\"!function(t,e){var o,n,p,r;e.__SV||(window.posthog=e,e._i=[],e.init=function(i,s,a){function g(t,e){var o=e.split(\\\".\\\");2==o.length&&(t=t[o[0]],e=o[1]),t[e]=function(){t.push([e].concat(Array.prototype.slice.call(arguments,0)))}}(p=t.createElement(\\\"script\\\")",
+      "resultFields": [
+        "title",
+        "text"
+      ],
+      "verified": true
+    },
+    {
+      "name": "get-company",
+      "summary": "Get a YC company's profile page text, including its batch and open jobs. Use the companySlug from search-jobs.",
+      "method": "GET",
+      "urlTemplate": "/companies/{companySlug}",
+      "params": [
+        {
+          "name": "companySlug",
+          "in": "path",
+          "required": true,
+          "type": "string",
+          "description": "Company slug (the companySlug field from search-jobs), e.g. getcrux",
+          "example": "getcrux"
+        }
+      ],
+      "responseType": "html",
+      "extract": {
+        "fields": {
+          "title": "title",
+          "text": "body"
+        }
+      },
+      "mutates": false,
+      "example": {
+        "companySlug": "getcrux"
+      },
+      "source": "E8 E9 GET https://www.workatastartup.com/companies/talentpluto",
+      "sample": "{\"title\":\"Jobs at GetCrux (W24) | Y Combinator's Work at a Startup\",\"text\":\"!function(t,e){var o,n,p,r;e.__SV||(window.posthog=e,e._i=[],e.init=function(i,s,a){function g(t,e){var o=e.split(\\\".\\\");2==o.length&&(t=t[o[0]],e=o[1]),t[e]=function(){t.push([e].concat(Array.prototype.slice.call(arguments,0)))}}(p=t.createElement(\\\"script\\\")).type=\\\"text/javascript",
+      "resultFields": [
+        "title",
+        "text"
+      ],
+      "verified": true
+    }
+  ],
+  "blockers": [],
+  "notes": [
+    "search-jobs is the only structured JSON source; to filter by San Francisco (or any location), include the city in q.",
+    "applyUrl goes through account.ycombinator.com login; applying needs a YC account and cannot be done from this CLI.",
+    "Listing, job and company commands return page title plus full page text because those pages are rendered on the server."
+  ],
+  "dropped": [
+    {
+      "name": "list-location-role-jobs",
+      "summary": "List the server-rendered job page for a city and role, e.g. San Francisco software engineer jobs. Returns the page title and full page text.",
+      "method": "GET",
+      "urlTemplate": "/jobs/{location}/{role}",
+      "params": [
+        {
+          "name": "location",
+          "in": "path",
+          "required": true,
+          "type": "string",
+          "description": "City slug, e.g. san-francisco",
+          "example": "san-francisco"
+        },
+        {
+          "name": "role",
+          "in": "path",
+          "required": true,
+          "type": "string",
+          "description": "Role slug, e.g. software-engineer or product-manager",
+          "example": "software-engineer"
+        }
+      ],
+      "responseType": "html",
+      "extract": {
+        "fields": {
+          "title": "title",
+          "text": "body"
+        }
+      },
+      "mutates": false,
+      "example": {
+        "location": "san-francisco",
+        "role": "software-engineer"
+      },
+      "source": "E7 E10 GET https://www.workatastartup.com/jobs/san-francisco/software-engineer",
+      "verified": false,
+      "verifyNote": "Raw page dump whose body text starts with inline analytics JS. search-jobs already covers role and location with structured results."
+    },
+    {
+      "name": "list-jobs-by-role",
+      "summary": "List the server-rendered job listing page for one role area such as eng, product, design or sales. Returns the page title and full page text.",
+      "method": "GET",
+      "urlTemplate": "/jobs/v2",
+      "params": [
+        {
+          "name": "role",
+          "in": "query",
+          "required": false,
+          "type": "string",
+          "description": "Role area to filter by",
+          "enum": [
+            "eng",
+            "design",
+            "recruiting",
+            "science",
+            "product",
+            "operations",
+            "sales",
+            "marketing",
+            "legal",
+            "finance"
+          ],
+          "example": "product"
+        }
+      ],
+      "responseType": "html",
+      "extract": {
+        "fields": {
+          "title": "title",
+          "text": "body"
+        }
+      },
+      "mutates": false,
+      "example": {
+        "role": "product"
+      },
+      "source": "E6 GET https://www.workatastartup.com/jobs/v2",
+      "verified": false,
+      "verifyNote": "Raw page dump whose body text starts with inline posthog JS, not job data. search-jobs covers role queries with structured output."
+    },
+    {
+      "name": "list-remote-jobs",
+      "summary": "List the server-rendered page of remote jobs for a role slug. Returns the page title and full page text.",
+      "method": "GET",
+      "urlTemplate": "/jobs/r/{role}",
+      "params": [
+        {
+          "name": "role",
+          "in": "path",
+          "required": true,
+          "type": "string",
+          "description": "Role slug, e.g. software-engineer",
+          "example": "software-engineer"
+        }
+      ],
+      "responseType": "html",
+      "extract": {
+        "fields": {
+          "title": "title",
+          "text": "body"
+        }
+      },
+      "mutates": false,
+      "example": {
+        "role": "software-engineer"
+      },
+      "source": "E11 GET https://www.workatastartup.com/jobs/r/software-engineer",
+      "verified": false,
+      "verifyNote": "Raw page dump whose body text starts with inline JS. search-jobs with 'remote <role>' gives structured results."
+    },
+    {
+      "name": "list-role-category-jobs",
+      "summary": "List the server-rendered page of jobs in a role category, e.g. sales-manager. Returns the page title and full page text.",
+      "method": "GET",
+      "urlTemplate": "/jobs/l/{role}",
+      "params": [
+        {
+          "name": "role",
+          "in": "path",
+          "required": true,
+          "type": "string",
+          "description": "Role category slug, e.g. sales-manager",
+          "example": "sales-manager"
+        }
+      ],
+      "responseType": "html",
+      "extract": {
+        "fields": {
+          "title": "title",
+          "text": "body"
+        }
+      },
+      "mutates": false,
+      "example": {
+        "role": "sales-manager"
+      },
+      "source": "E12 GET https://www.workatastartup.com/jobs/l/sales-manager",
+      "verified": false,
+      "verifyNote": "Raw page dump whose body text starts with inline JS. It duplicates search-jobs."
+    }
+  ],
+  "generated": {
+    "by": "clify add",
+    "model": "claude-opus-5-5",
+    "exploredSteps": 13,
+    "recorded": 36,
+    "verifiedAt": "2026-10-21T07:02:09.255Z",
+    "seconds": 133,
+    "importedFrom": "~/.clify/sites/workatastartup",
+    "importedAt": "2026-10-21T07:24:44.778Z"
+  }
+}

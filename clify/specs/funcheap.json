@@ -1,0 +1,576 @@
+{
+  "name": "funcheap",
+  "startUrl": "https://sf.funcheap.com/",
+  "origin": "https://sf.funcheap.com",
+  "createdAt": "2026-10-21T07:02:46.769Z",
+  "description": "Funcheap SF (sf.funcheap.com): hand-picked free and cheap San Francisco Bay Area events. This CLI lists events by date, today or weekend, category, region or neighborhood, venue and recurring series, and fetches event details. Each result has title, date/time, cost, venue and URL.",
+  "commands": [
+    {
+      "name": "list-events-by-date",
+      "summary": "List events happening on a specific calendar date (WordPress date archive). The details field holds date, time, cost and venue text.",
+      "method": "GET",
+      "urlTemplate": "/{year}/{month}/{day}/",
+      "params": [
+        {
+          "name": "year",
+          "in": "path",
+          "required": true,
+          "type": "string",
+          "description": "4-digit year, e.g. 2026",
+          "example": "2026"
+        },
+        {
+          "name": "month",
+          "in": "path",
+          "required": true,
+          "type": "string",
+          "description": "2-digit month, e.g. 10",
+          "example": "10"
+        },
+        {
+          "name": "day",
+          "in": "path",
+          "required": true,
+          "type": "string",
+          "description": "2-digit day of month, e.g. 24",
+          "example": "24"
+        }
+      ],
+      "responseType": "html",
+      "extract": {
+        "list": "div.tanbox.left",
+        "fields": {
+          "title": "a",
+          "url": "a@href",
+          "details": "",
+          "image": "img@src"
+        }
+      },
+      "defaultFields": [
+        "title",
+        "url",
+        "details"
+      ],
+      "mutates": false,
+      "example": {
+        "year": "2026",
+        "month": "10",
+        "day": "24"
+      },
+      "source": "E15 GET https://sf.funcheap.com/today/",
+      "sample": "{\"title\":\"Oakland Halloween + Día de los Muertos: Tricks, Treats & Traditions in the Laurel (2026)\",\"url\":\"https://sf.funcheap.com/oakland-halloween-da-de-los-muertos-tricks-treats-traditions-laurel-2026/\",\"details\":\"Oakland Halloween + Día de los Muertos: Tricks, Treats & Traditions in the Laurel (2026) Saturday, October 24 – 12:00 pm - Ends at 3:00 pm | Co",
+      "resultFields": [
+        "title",
+        "url",
+        "details",
+        "image"
+      ],
+      "verified": true
+    },
+    {
+      "name": "list-events-by-region",
+      "summary": "List upcoming events in a region or neighborhood, e.g. san-francisco, east-bay, peninsula, south-bay, north-bay, soma-san-francisco. Paginated.",
+      "method": "GET",
+      "urlTemplate": "/region/{region}/page/{page}/",
+      "params": [
+        {
+          "name": "region",
+          "in": "path",
+          "required": true,
+          "type": "string",
+          "description": "Region or neighborhood slug as in /region/{slug}/, e.g. soma-san-francisco, mission-san-francisco, san-francisco, east-bay, peninsula, south-bay, north-bay",
+          "example": "soma-san-francisco"
+        },
+        {
+          "name": "page",
+          "in": "path",
+          "required": false,
+          "type": "number",
+          "description": "Result page number (10 events per page)",
+          "default": 1,
+          "example": "2"
+        }
+      ],
+      "responseType": "html",
+      "extract": {
+        "list": "div.tanbox.left",
+        "fields": {
+          "title": "a",
+          "url": "a@href",
+          "details": "",
+          "image": "img@src"
+        }
+      },
+      "defaultFields": [
+        "title",
+        "url",
+        "details"
+      ],
+      "pagination": {
+        "type": "page",
+        "param": "page"
+      },
+      "mutates": false,
+      "example": {
+        "region": "soma-san-francisco",
+        "page": "2"
+      },
+      "source": "E10 GET https://sf.funcheap.com/region/soma-san-francisco/page/{n}/",
+      "sample": "{\"title\":\"“Sqream” Oasis’ Wild + Immersive ’90s Drag Horror Musical (Halloween 2026)\",\"url\":\"https://sf.funcheap.com/sqream-oasis-wild-immersive-90s-drag-horror-musical-halloween-2026/\",\"details\":\"“Sqream” Oasis’ Wild + Immersive ’90s Drag Horror Musical (Halloween 2026) Saturday, October 31 – 6:30 pm - Ends at 9:00 pm | Cost: $50 | Oasis <img src=\\\"https://",
+      "resultFields": [
+        "title",
+        "url",
+        "details",
+        "image"
+      ],
+      "verified": true
+    },
+    {
+      "name": "list-events-by-category",
+      "summary": "List upcoming events in an event-type category such as live music, comedy, eating & drinking, art & museums or movies. Paginated.",
+      "method": "GET",
+      "urlTemplate": "/category/event/event-types/{category}/page/{page}/",
+      "params": [
+        {
+          "name": "category",
+          "in": "path",
+          "required": true,
+          "type": "string",
+          "description": "Event-type category slug, e.g. live-music-event, comedy-event-types-event, eating-drinking, art-museums, movies",
+          "example": "live-music-event"
+        },
+        {
+          "name": "page",
+          "in": "path",
+          "required": false,
+          "type": "number",
+          "description": "Result page number (10 events per page)",
+          "default": 1,
+          "example": "2"
+        }
+      ],
+      "responseType": "html",
+      "extract": {
+        "list": "div.tanbox.left",
+        "fields": {
+          "title": "a",
+          "url": "a@href",
+          "details": "",
+          "image": "img@src"
+        }
+      },
+      "defaultFields": [
+        "title",
+        "url",
+        "details"
+      ],
+      "pagination": {
+        "type": "page",
+        "param": "page"
+      },
+      "mutates": false,
+      "example": {
+        "category": "live-music-event",
+        "page": "2"
+      },
+      "source": "E9 GET https://sf.funcheap.com/category/event/event-types/live-music-event/page/{n}/",
+      "sample": "{\"title\":\"SF’s 44th Annual Sandcastle Classic Contest at Ocean Beach (2026)\",\"url\":\"https://sf.funcheap.com/leap-arts-annual-sandcastle-classic/\",\"details\":\"SF’s 44th Annual Sandcastle Classic Contest at Ocean Beach (2026) Saturday, October 24 – 11:00 am - Ends at 3:30 pm | Cost: FREE | Ocean Beach <img src=\\\"https://cdn.shortpixel.ai/spai/q_lossy+ret_img+to",
+      "resultFields": [
+        "title",
+        "url",
+        "details",
+        "image"
+      ],
+      "verified": true
+    },
+    {
+      "name": "list-today-events",
+      "summary": "List events happening today in San Francisco and the Bay Area.",
+      "method": "GET",
+      "urlTemplate": "/today/",
+      "params": [],
+      "responseType": "html",
+      "extract": {
+        "list": "div.tanbox.left",
+        "fields": {
+          "title": "a",
+          "url": "a@href",
+          "details": "",
+          "image": "img@src"
+        }
+      },
+      "defaultFields": [
+        "title",
+        "url",
+        "details"
+      ],
+      "mutates": false,
+      "source": "E15 GET https://sf.funcheap.com/today/",
+      "sample": "{\"title\":\"$1 Margaritas & “Disco Taco Tuesday” at Underdogs (SoMa)\",\"url\":\"https://sf.funcheap.com/1-margaritas-disco-taco-tuesday-at-underdogs-soma-119/\",\"details\":\"$1 Margaritas & “Disco Taco Tuesday” at Underdogs (SoMa) Tuesday, October 20 – 7:30 pm - Ends at 10:00 pm | Cost: FREE* *No admission charge | Underdogs Cantina <img src=\\\"https://cdn.shortpixel",
+      "resultFields": [
+        "title",
+        "url",
+        "details",
+        "image"
+      ],
+      "example": {},
+      "verified": true
+    },
+    {
+      "name": "list-weekend-events",
+      "summary": "List events for this weekend. Pass --next 1 for the following weekend.",
+      "method": "GET",
+      "urlTemplate": "/weekend/",
+      "params": [
+        {
+          "name": "next",
+          "in": "query",
+          "required": false,
+          "type": "number",
+          "description": "Set to 1 to get next weekend instead of this weekend",
+          "enum": [
+            "1"
+          ],
+          "example": "1"
+        }
+      ],
+      "responseType": "html",
+      "extract": {
+        "list": "div.tanbox.left",
+        "fields": {
+          "title": "a",
+          "url": "a@href",
+          "details": "",
+          "image": "img@src"
+        }
+      },
+      "defaultFields": [
+        "title",
+        "url",
+        "details"
+      ],
+      "mutates": false,
+      "source": "E7 GET https://sf.funcheap.com/weekend/",
+      "sample": "{\"title\":\"Westbrae Pumpkin Patch 2026 in North Berkeley (Sept. 18 – Oct. 31)\",\"url\":\"https://sf.funcheap.com/westbrae-pumpkin-patch-2026-in-north-berkeley-sept-18-oct-31-4/\",\"details\":\"Westbrae Pumpkin Patch 2026 in North Berkeley (Sept. 18 – Oct. 31) Friday, October 23 – 9:30 am - Ends at 5:30 pm | Cost: FREE* *Free to browse, pumpkins $5-35 to purchase | W",
+      "resultFields": [
+        "title",
+        "url",
+        "details",
+        "image"
+      ],
+      "example": {},
+      "verified": true
+    },
+    {
+      "name": "list-free-events",
+      "summary": "List upcoming free events in San Francisco and the Bay Area.",
+      "method": "GET",
+      "urlTemplate": "/free-events/",
+      "params": [],
+      "responseType": "html",
+      "extract": {
+        "list": "div.tanbox.left",
+        "fields": {
+          "title": "a",
+          "url": "a@href",
+          "details": "",
+          "image": "img@src"
+        }
+      },
+      "defaultFields": [
+        "title",
+        "url",
+        "details"
+      ],
+      "mutates": false,
+      "source": "E12 GET https://sf.funcheap.com/free-events/",
+      "sample": "{\"title\":\"$1 Wing Wednesdays at Underdogs Cantina (SoMa)\",\"url\":\"https://sf.funcheap.com/1-wing-wednesdays-at-underdogs-cantina-soma-69/\",\"details\":\"$1 Wing Wednesdays at Underdogs Cantina (SoMa) Wednesday, October 21 – 4:30 pm - Ends at 10:00 pm | Cost: FREE* *No admission charge. Wings are $1 each. | Underdogs Cantina <img decoding=\\\"async\\\" src=\\\"https://",
+      "resultFields": [
+        "title",
+        "url",
+        "details",
+        "image"
+      ],
+      "example": {},
+      "verified": true
+    },
+    {
+      "name": "list-top-picks",
+      "summary": "List the editors' *Top Pick* events of the week.",
+      "method": "GET",
+      "urlTemplate": "/category/event/top-pick/",
+      "params": [],
+      "responseType": "html",
+      "extract": {
+        "list": "div.tanbox.left",
+        "fields": {
+          "title": "a",
+          "url": "a@href",
+          "details": "",
+          "image": "img@src"
+        }
+      },
+      "defaultFields": [
+        "title",
+        "url",
+        "details"
+      ],
+      "mutates": false,
+      "source": "E14 GET https://sf.funcheap.com/category/event/top-pick/",
+      "sample": "{\"title\":\"$1 Margaritas & “Disco Taco Tuesday” at Underdogs (SoMa)\",\"url\":\"https://sf.funcheap.com/1-margaritas-disco-taco-tuesday-at-underdogs-soma-119/\",\"details\":\"$1 Margaritas & “Disco Taco Tuesday” at Underdogs (SoMa) Tuesday, October 20 – 7:30 pm - Ends at 10:00 pm | Cost: FREE* *No admission charge | Underdogs Cantina <img src=\\\"https://cdn.shortpixel",
+      "resultFields": [
+        "title",
+        "url",
+        "details",
+        "image"
+      ],
+      "example": {},
+      "verified": true
+    },
+    {
+      "name": "list-calendar-events",
+      "summary": "Day-by-day calendar of upcoming events for a calendar region (san-francisco, east-bay). Rows without a url are date headings. Paginated.",
+      "method": "GET",
+      "urlTemplate": "/events/{calendar}/page/{page}/",
+      "params": [
+        {
+          "name": "calendar",
+          "in": "path",
+          "required": true,
+          "type": "string",
+          "description": "Calendar slug from /events/{slug}/",
+          "enum": [
+            "san-francisco",
+            "east-bay"
+          ],
+          "example": "san-francisco"
+        },
+        {
+          "name": "page",
+          "in": "path",
+          "required": false,
+          "type": "number",
+          "description": "Calendar page number",
+          "default": 1,
+          "example": "2"
+        }
+      ],
+      "responseType": "html",
+      "extract": {
+        "list": "tr",
+        "fields": {
+          "title": "a",
+          "url": "a@href",
+          "details": ""
+        }
+      },
+      "defaultFields": [
+        "title",
+        "url",
+        "details"
+      ],
+      "pagination": {
+        "type": "page",
+        "param": "page"
+      },
+      "mutates": false,
+      "example": {
+        "calendar": "san-francisco",
+        "page": "2"
+      },
+      "source": "E8 E6 GET https://sf.funcheap.com/events/san-francisco/page/{n}/",
+      "sample": "{\"details\":\"Thursday, October 29, 2026\"}",
+      "resultFields": [
+        "details"
+      ],
+      "verified": true
+    },
+    {
+      "name": "get-event",
+      "summary": "Get an event's detail page metadata (name, description, URL, image) by its slug, the path segment of an event url.",
+      "method": "GET",
+      "urlTemplate": "/{slug}/",
+      "params": [
+        {
+          "name": "slug",
+          "in": "path",
+          "required": true,
+          "type": "string",
+          "description": "Event slug from a listing url, e.g. https://sf.funcheap.com/{slug}/",
+          "example": "chowder-fest-sfs-clam-chowder-showdown-fishermans-wharf"
+        }
+      ],
+      "responseType": "html",
+      "resultPath": "@graph",
+      "extract": {
+        "jsonScript": "script[type=\"application/ld+json\"]"
+      },
+      "defaultFields": [
+        "@type",
+        "name",
+        "url",
+        "description",
+        "datePublished",
+        "thumbnailUrl"
+      ],
+      "mutates": false,
+      "example": {
+        "slug": "chowder-fest-sfs-clam-chowder-showdown-fishermans-wharf"
+      },
+      "source": "E2 GET https://maps.googleapis.com/maps/api/mapsjs/gen_204",
+      "sample": "{\"@type\":\"Article\",\"datePublished\":\"2026-09-25T13:36:21+00:00\",\"thumbnailUrl\":\"https://cdn.funcheap.com/wp-content/uploads/2026/09/Untitled-Design.png\"}",
+      "resultFields": [
+        "@type",
+        "@id",
+        "isPartOf",
+        "author",
+        "headline",
+        "datePublished",
+        "dateModified",
+        "mainEntityOfPage",
+        "wordCount",
+        "publisher",
+        "image",
+        "thumbnailUrl",
+        "articleSection",
+        "inLanguage"
+      ],
+      "verified": true
+    },
+    {
+      "name": "list-venue-events",
+      "summary": "List upcoming events at a venue, by venue slug (from /venue/{slug}/ links).",
+      "method": "GET",
+      "urlTemplate": "/venue/{venue}/",
+      "params": [
+        {
+          "name": "venue",
+          "in": "path",
+          "required": true,
+          "type": "string",
+          "description": "Venue slug, e.g. underdogs-cantina",
+          "example": "underdogs-cantina"
+        }
+      ],
+      "responseType": "html",
+      "extract": {
+        "list": "div.tanbox.left",
+        "fields": {
+          "title": "a",
+          "url": "a@href",
+          "details": "",
+          "image": "img@src"
+        }
+      },
+      "defaultFields": [
+        "title",
+        "url",
+        "details"
+      ],
+      "mutates": false,
+      "example": {
+        "venue": "underdogs-cantina"
+      },
+      "source": "E11 GET https://sf.funcheap.com/venue/underdogs-cantina/",
+      "sample": "{\"title\":\"$1 Wing Wednesdays at Underdogs Cantina (SoMa)\",\"url\":\"https://sf.funcheap.com/1-wing-wednesdays-at-underdogs-cantina-soma-69/\",\"details\":\"$1 Wing Wednesdays at Underdogs Cantina (SoMa) Wednesday, October 21 – 4:30 pm - Ends at 10:00 pm | Cost: FREE* *No admission charge. Wings are $1 each. | Underdogs Cantina <img src=\\\"https://cdn.shortpixel.ai/s",
+      "resultFields": [
+        "title",
+        "url",
+        "details",
+        "image"
+      ],
+      "verified": true
+    },
+    {
+      "name": "list-series-dates",
+      "summary": "List all upcoming dates of a recurring event series, by series slug (from /event-series/{slug}/ links).",
+      "method": "GET",
+      "urlTemplate": "/event-series/{series}/",
+      "params": [
+        {
+          "name": "series",
+          "in": "path",
+          "required": true,
+          "type": "string",
+          "description": "Event series slug",
+          "example": "1-wing-wednesdays-underdogs-cantina"
+        }
+      ],
+      "responseType": "html",
+      "extract": {
+        "list": "div.tanbox.left",
+        "fields": {
+          "title": "a",
+          "url": "a@href",
+          "details": "",
+          "image": "img@src"
+        }
+      },
+      "defaultFields": [
+        "title",
+        "url",
+        "details"
+      ],
+      "mutates": false,
+      "example": {
+        "series": "1-wing-wednesdays-underdogs-cantina"
+      },
+      "source": "E13 GET https://sf.funcheap.com/event-series/1-wing-wednesdays-underdogs-cantina/",
+      "sample": "{\"title\":\"$1 Wing Wednesdays at Underdogs Cantina (SoMa)\",\"url\":\"https://sf.funcheap.com/1-wing-wednesdays-at-underdogs-cantina-soma-69/\",\"details\":\"$1 Wing Wednesdays at Underdogs Cantina (SoMa) Wednesday, October 21 – 4:30 pm - Ends at 10:00 pm | Cost: FREE* *No admission charge. Wings are $1 each. | Underdogs Cantina <img src=\\\"https://cdn.shortpixel.ai/s",
+      "resultFields": [
+        "title",
+        "url",
+        "details",
+        "image"
+      ],
+      "verified": true
+    },
+    {
+      "name": "list-new-events",
+      "summary": "RSS feed of recently added events, site-wide only (per-region feeds redirect here), with title, link, publish date and categories.",
+      "method": "GET",
+      "urlTemplate": "/feed/",
+      "params": [],
+      "responseType": "json",
+      "resultPath": "rss.channel.item",
+      "defaultFields": [
+        "title",
+        "link",
+        "pubDate",
+        "category"
+      ],
+      "mutates": false,
+      "source": "E16 GET https://sf.funcheap.com/feed/",
+      "sample": "{\"title\":\"10/25/26: “The Great Elephant Migration” 27 Elephant Sculptures Take Over Livermore (Oct. 10 – Dec. 6) - FREE\",\"link\":\"https://sf.funcheap.com/the-great-elephant-migration-27-elephant-sculptures-take-over-livermor-oct-10-dec-6/\",\"pubDate\":\"Tue, 20 Oct 2026 23:17:26 +0000\",\"category\":[\"*Top Pick*\",\"Art & Museums\",\"Community\",\"In Person\",\"Kids & Fami",
+      "resultFields": [
+        "title",
+        "link",
+        "dc:creator",
+        "pubDate",
+        "category",
+        "guid",
+        "description",
+        "content:encoded"
+      ],
+      "example": {},
+      "verified": true
+    }
+  ],
+  "blockers": [],
+  "notes": [
+    "Listing results give title, url and a details text line: 'Day, Month D – start time - Ends at end time | Cost: X | Venue'.",
+    "The event slug for get-event is the path of a result url (https://sf.funcheap.com/{slug}/).",
+    "Keyword search is not available (blocked by robots.txt); browse by date, region, category or venue instead."
+  ],
+  "dropped": [],
+  "generated": {
+    "by": "clify add",
+    "model": "claude-opus-5-5",
+    "exploredSteps": 14,
+    "recorded": 66,
+    "verifiedAt": "2026-10-21T07:03:57.082Z",
+    "seconds": 241,
+    "importedFrom": "~/.clify/sites/sf-funcheap",
+    "importedAt": "2026-10-21T07:24:44.778Z"
+  }
+}

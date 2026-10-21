@@ -1,0 +1,810 @@
+{
+  "name": "luma",
+  "startUrl": "https://lu.ma/",
+  "origin": "https://lu.ma",
+  "createdAt": "2026-10-21T07:02:54.613Z",
+  "description": "Luma (lu.ma / luma.com) event discovery: search public events by city, category or keyword, browse community calendars, and get event details, dates, venues and URLs through Luma's JSON API.",
+  "commands": [
+    {
+      "name": "search-events",
+      "summary": "List or keyword-search upcoming public events in a Luma city (default San Francisco) or a category such as ai/tech, with dates, area and event URL slug",
+      "method": "GET",
+      "urlTemplate": "https://api.luma.com/discover/get-paginated-events",
+      "params": [
+        {
+          "name": "placeId",
+          "key": "discover_place_api_id",
+          "in": "query",
+          "required": false,
+          "type": "string",
+          "description": "Discover place id (city). San Francisco is discplace-BDj7GNbGlsF7Cka; other ids come from list-places. Omit when searching a category via --slug.",
+          "example": "discplace-BDj7GNbGlsF7Cka"
+        },
+        {
+          "name": "query",
+          "in": "query",
+          "required": false,
+          "type": "string",
+          "description": "Keyword to search event names, e.g. AI, hackathon, agents",
+          "example": "AI"
+        },
+        {
+          "name": "slug",
+          "in": "query",
+          "required": false,
+          "type": "string",
+          "description": "Category slug (from list-categories), e.g. ai, tech. Use with --latitude/--longitude to center results.",
+          "example": "ai"
+        },
+        {
+          "name": "categoryId",
+          "key": "discover_category_api_id",
+          "in": "query",
+          "required": false,
+          "type": "string",
+          "description": "Category id, e.g. cat-ai (alternative to --slug)",
+          "example": "cat-ai"
+        },
+        {
+          "name": "latitude",
+          "in": "query",
+          "required": false,
+          "type": "number",
+          "description": "Latitude to center category results, e.g. 37.7749 for San Francisco"
+        },
+        {
+          "name": "longitude",
+          "in": "query",
+          "required": false,
+          "type": "number",
+          "description": "Longitude to center category results, e.g. -122.4194 for San Francisco"
+        },
+        {
+          "name": "api_limit",
+          "key": "pagination_limit",
+          "in": "query",
+          "required": false,
+          "type": "number",
+          "description": "Results per page (sent to the site as \"limit\"; clify's own --limit only shapes the output)",
+          "default": 25
+        },
+        {
+          "name": "cursor",
+          "key": "pagination_cursor",
+          "in": "query",
+          "required": false,
+          "type": "string",
+          "description": "Pagination cursor from the previous page's next_cursor"
+        }
+      ],
+      "headers": {
+        "x-luma-client-type": "luma-web"
+      },
+      "responseType": "json",
+      "resultPath": "entries",
+      "defaultFields": [
+        "event.api_id",
+        "event.name",
+        "event.start_at",
+        "event.end_at",
+        "event.url",
+        "event.geo_address_info.city_state",
+        "event.geo_address_info.sublocality",
+        "calendar.name"
+      ],
+      "mutates": false,
+      "example": {
+        "placeId": "discplace-BDj7GNbGlsF7Cka",
+        "query": "AI"
+      },
+      "source": "E2 GET https://api.luma.com/discover/get-paginated-events",
+      "sample": "{\"event.api_id\":\"evt-zK5H9iq3UujkOHB\",\"event.name\":\"Durable AI (October Edition)\",\"event.start_at\":\"2026-10-22T00:30:00.000Z\",\"event.end_at\":\"2026-10-22T03:00:00.000Z\",\"event.url\":\"durable-ai-october\",\"event.geo_address_info.city_state\":\"San Francisco, CA\",\"event.geo_address_info.sublocality\":\"Financial District\",\"calendar.name\":\"Temporal Community\"}",
+      "resultFields": [
+        "api_id",
+        "event",
+        "cover_image",
+        "calendar",
+        "start_at",
+        "hosts",
+        "guest_count",
+        "ticket_count",
+        "ticket_info",
+        "registration_availability",
+        "featured_guests",
+        "manager_info",
+        "guest_info",
+        "host_info",
+        "waitlist_active",
+        "featured_city"
+      ],
+      "verified": true
+    },
+    {
+      "name": "list-calendar-events",
+      "summary": "List upcoming or past events of a community calendar (e.g. an SF AI meetup group), optionally filtered by tag or keyword",
+      "method": "GET",
+      "urlTemplate": "https://api.luma.com/calendar/get-items",
+      "params": [
+        {
+          "name": "calendarId",
+          "key": "calendar_api_id",
+          "in": "query",
+          "required": true,
+          "type": "string",
+          "description": "Calendar id (cal-...). Get it from resolve-url with the calendar's URL slug, or from list-place-calendars",
+          "example": "cal-S7gDcd9Akzu62RD"
+        },
+        {
+          "name": "period",
+          "in": "query",
+          "required": false,
+          "type": "string",
+          "description": "Upcoming or past events",
+          "enum": [
+            "future",
+            "past"
+          ],
+          "default": "future",
+          "example": "past"
+        },
+        {
+          "name": "query",
+          "in": "query",
+          "required": false,
+          "type": "string",
+          "description": "Keyword search within the calendar, e.g. hackathon"
+        },
+        {
+          "name": "tagId",
+          "key": "tag_api_ids",
+          "in": "query",
+          "required": false,
+          "type": "string",
+          "description": "Calendar tag id to filter by (tag-...)"
+        },
+        {
+          "name": "api_limit",
+          "key": "pagination_limit",
+          "in": "query",
+          "required": false,
+          "type": "number",
+          "description": "Results per page (sent to the site as \"limit\"; clify's own --limit only shapes the output)",
+          "default": 20
+        },
+        {
+          "name": "cursor",
+          "key": "pagination_cursor",
+          "in": "query",
+          "required": false,
+          "type": "string",
+          "description": "Pagination cursor from the previous page's next_cursor"
+        }
+      ],
+      "headers": {
+        "x-luma-client-type": "luma-web"
+      },
+      "responseType": "json",
+      "resultPath": "entries",
+      "defaultFields": [
+        "event.api_id",
+        "event.name",
+        "event.start_at",
+        "event.end_at",
+        "event.url",
+        "event.geo_address_info.address",
+        "event.location_type",
+        "calendar.name"
+      ],
+      "mutates": false,
+      "example": {
+        "calendarId": "cal-S7gDcd9Akzu62RD",
+        "period": "past"
+      },
+      "source": "E5 GET https://api.luma.com/calendar/get-items",
+      "sample": "{\"event.api_id\":\"evt-9KKKwh38NqA0K1K\",\"event.name\":\"San Francisco | Claude Code Build Night: Research with Web Data\",\"event.start_at\":\"2026-10-21T00:30:00.000Z\",\"event.end_at\":\"2026-10-21T03:30:00.000Z\",\"event.url\":\"claude-9gt7\",\"event.geo_address_info.address\":\"San Francisco, CA, USA\",\"event.location_type\":\"offline\",\"calendar.name\":\"Claude Community Events\"",
+      "resultFields": [
+        "api_id",
+        "event",
+        "cover_image",
+        "calendar",
+        "start_at",
+        "hosts",
+        "guest_count",
+        "ticket_count",
+        "ticket_info",
+        "registration_availability",
+        "featured_guests",
+        "manager_info",
+        "guest_info",
+        "host_info",
+        "waitlist_active",
+        "featured_city",
+        "calendar_api_id",
+        "is_manager",
+        "platform",
+        "status",
+        "submitted_by_user_api_id",
+        "tags"
+      ],
+      "verified": true
+    },
+    {
+      "name": "get-event",
+      "summary": "Get full details of one event: name, start/end time, timezone, venue/address info, location type, host calendar and URL slug",
+      "method": "GET",
+      "urlTemplate": "https://api.luma.com/event/get",
+      "params": [
+        {
+          "name": "eventId",
+          "key": "event_api_id",
+          "in": "query",
+          "required": true,
+          "type": "string",
+          "description": "Event id (evt-...) from search-events or list-calendar-events",
+          "example": "evt-hDW5fCJ4INPvyVy"
+        }
+      ],
+      "headers": {
+        "x-luma-client-type": "luma-web"
+      },
+      "responseType": "json",
+      "defaultFields": [
+        "event.api_id",
+        "event.name",
+        "event.start_at",
+        "event.end_at",
+        "event.timezone",
+        "event.url",
+        "event.geo_address_info",
+        "calendar.name"
+      ],
+      "mutates": false,
+      "example": {
+        "eventId": "evt-hDW5fCJ4INPvyVy"
+      },
+      "source": "E10 GET https://api.luma.com/event/get",
+      "sample": "{\"event.api_id\":\"evt-hDW5fCJ4INPvyVy\",\"event.name\":\"AI Remote Hackathon (1 Week for Building)\",\"event.start_at\":\"2026-10-24T01:30:00.000Z\",\"event.end_at\":\"2026-10-31T01:30:00.000Z\",\"event.timezone\":\"America/Los_Angeles\",\"event.url\":\"hackersquad-online-hackathon\",\"event.geo_address_info\":null,\"calendar.name\":\"[SF] HackerSquad\"}",
+      "resultFields": [
+        "api_id",
+        "accepts_usdc_for_usd",
+        "calendar",
+        "meta_pixel_id",
+        "coupon",
+        "google_measurement_id",
+        "stripe_account_id",
+        "payment_methods",
+        "tax_config",
+        "event",
+        "start_at",
+        "guest_data",
+        "featured_guests",
+        "has_available_ticket_types",
+        "refund_policy",
+        "guest_count",
+        "ticket_count",
+        "hosts",
+        "referred_by",
+        "cover_image",
+        "cover_video",
+        "social_image",
+        "social_video",
+        "sessions",
+        "ticket_types",
+        "featured_infos",
+        "categories",
+        "ticket_info",
+        "registration_availability",
+        "subscribed_to_calendar",
+        "event_invite",
+        "manager_info",
+        "guest_info",
+        "host_info",
+        "sold_out",
+        "locale",
+        "theme_meta",
+        "ticket_transfer_enabled",
+        "tint_color",
+        "can_register_for_multiple_tickets"
+      ],
+      "verified": true
+    },
+    {
+      "name": "resolve-url",
+      "summary": "Resolve a luma.com URL slug (city like sf, category like ai, calendar like genai-sf, or event slug) to its kind and ids plus embedded data",
+      "method": "GET",
+      "urlTemplate": "https://api.luma.com/url",
+      "params": [
+        {
+          "name": "url",
+          "in": "query",
+          "required": true,
+          "type": "string",
+          "description": "Path slug after luma.com/, e.g. sf, ai, sf-hackersquad",
+          "example": "sf-hackersquad"
+        }
+      ],
+      "headers": {
+        "x-luma-client-type": "luma-web"
+      },
+      "responseType": "json",
+      "defaultFields": [
+        "kind",
+        "data.calendar.api_id",
+        "data.calendar.name",
+        "data.place.api_id",
+        "data.place.name",
+        "data.event.api_id",
+        "data.event.name"
+      ],
+      "mutates": false,
+      "example": {
+        "url": "sf-hackersquad"
+      },
+      "source": "E3 GET https://api.luma.com/url",
+      "sample": "{\"kind\":\"calendar\",\"data.calendar.api_id\":\"cal-S7gDcd9Akzu62RD\",\"data.calendar.name\":\"[SF] HackerSquad\"}",
+      "resultFields": [
+        "kind",
+        "data"
+      ],
+      "verified": true
+    },
+    {
+      "name": "list-categories",
+      "summary": "List Luma discovery categories (AI, Tech, Crypto, ...) with slugs, ids and upcoming event counts",
+      "method": "GET",
+      "urlTemplate": "https://api.luma.com/discover/category/list-categories",
+      "params": [
+        {
+          "name": "api_limit",
+          "key": "pagination_limit",
+          "in": "query",
+          "required": false,
+          "type": "number",
+          "description": "Max categories (sent to the site as \"limit\"; clify's own --limit only shapes the output)",
+          "default": 20
+        }
+      ],
+      "headers": {
+        "x-luma-client-type": "luma-web"
+      },
+      "responseType": "json",
+      "resultPath": "entries",
+      "defaultFields": [
+        "api_id",
+        "category.slug",
+        "category.name",
+        "event_count",
+        "subscriber_count"
+      ],
+      "mutates": false,
+      "source": "E6 GET https://api.luma.com/discover/category/list-categories",
+      "sample": "{\"api_id\":\"cat-family\",\"category.slug\":\"family\",\"category.name\":\"Family\",\"event_count\":689,\"subscriber_count\":1821}",
+      "resultFields": [
+        "api_id",
+        "category",
+        "event_count",
+        "num_upcoming_events",
+        "subscriber_count",
+        "is_subscriber"
+      ],
+      "example": {},
+      "verified": true
+    },
+    {
+      "name": "get-category",
+      "summary": "Get a category page (e.g. ai, tech): description, event count and featured timeline calendars such as conference side-event calendars",
+      "method": "GET",
+      "urlTemplate": "https://api.luma.com/discover/category/get-page",
+      "params": [
+        {
+          "name": "slug",
+          "in": "query",
+          "required": true,
+          "type": "string",
+          "description": "Category slug, e.g. ai, tech",
+          "example": "ai"
+        }
+      ],
+      "headers": {
+        "x-luma-client-type": "luma-web"
+      },
+      "responseType": "json",
+      "defaultFields": [
+        "category.api_id",
+        "category.name",
+        "category.slug",
+        "category.event_count",
+        "category.description",
+        "timeline_calendars"
+      ],
+      "mutates": false,
+      "example": {
+        "slug": "ai"
+      },
+      "source": "E11 GET https://api.luma.com/discover/category/get-page",
+      "sample": "{\"category.api_id\":\"cat-ai\",\"category.name\":\"AI\",\"category.slug\":\"ai\",\"category.event_count\":4029,\"category.description\":\"Join a hackathon, learn about LLMs and prompt engineering, or connect with other AI practitioners.\",\"timeline_calendars\":[{\"api_id\":\"disccal-hS94xqBn0SDe1Wj\",\"start_date\":\"2026-10-20\",\"end_date\":\"2026-10-21\",\"position\":null,\"auto_submit_e",
+      "resultFields": [
+        "category",
+        "is_subscriber",
+        "timeline_calendars",
+        "featured_calendars",
+        "num_upcoming_events",
+        "subscriber_count"
+      ],
+      "verified": true
+    },
+    {
+      "name": "list-place-calendars",
+      "summary": "List featured community calendars (organizer groups) for a city, with slug, description and website",
+      "method": "GET",
+      "urlTemplate": "https://api.luma.com/discover/get-calendars",
+      "params": [
+        {
+          "name": "placeId",
+          "key": "discover_place_api_id",
+          "in": "query",
+          "required": true,
+          "type": "string",
+          "description": "Discover place id; San Francisco is discplace-BDj7GNbGlsF7Cka",
+          "example": "discplace-BDj7GNbGlsF7Cka"
+        }
+      ],
+      "headers": {
+        "x-luma-client-type": "luma-web"
+      },
+      "responseType": "json",
+      "resultPath": "calendars",
+      "defaultFields": [
+        "api_id",
+        "name",
+        "slug",
+        "description_short",
+        "website",
+        "location.city"
+      ],
+      "mutates": false,
+      "example": {
+        "placeId": "discplace-BDj7GNbGlsF7Cka"
+      },
+      "source": "E7 GET https://api.luma.com/discover/get-calendars",
+      "sample": "{\"api_id\":\"cal-twiOosdGMMY66DI\",\"name\":\"tiat (the intersection of art & technology)\",\"slug\":\"tiat\",\"description_short\":\"creative technology in sf\",\"website\":\"https://tiat.place/\",\"location.city\":\"San Francisco\"}",
+      "resultFields": [
+        "access_level",
+        "api_id",
+        "avatar_url",
+        "coordinate",
+        "cover_image_url",
+        "description_short",
+        "end_date",
+        "event_submission_restriction",
+        "google_measurement_id",
+        "instagram_handle",
+        "is_blocked",
+        "is_verified",
+        "launch_status",
+        "linkedin_handle",
+        "location",
+        "luma_plan",
+        "luma_plus_active",
+        "meta_pixel_id",
+        "name",
+        "personal_user_api_id",
+        "refund_policy",
+        "sends_unlocked_at",
+        "slug",
+        "social_image_url",
+        "start_date",
+        "stripe_account_id",
+        "tax_config",
+        "tiktok_handle",
+        "tint_color",
+        "track_meta_ads_from_luma",
+        "twitter_handle",
+        "website",
+        "youtube_handle",
+        "is_personal",
+        "personal_user",
+        "timezone"
+      ],
+      "verified": true
+    },
+    {
+      "name": "list-calendar-map-events",
+      "summary": "List a calendar's events with name, start time, coordinates and full luma.com event URL (href)",
+      "method": "GET",
+      "urlTemplate": "https://api.luma.com/calendar/get-map-pins",
+      "params": [
+        {
+          "name": "calendarId",
+          "key": "calendar_api_id",
+          "in": "query",
+          "required": true,
+          "type": "string",
+          "description": "Calendar id (cal-...)",
+          "example": "cal-S7gDcd9Akzu62RD"
+        },
+        {
+          "name": "period",
+          "in": "query",
+          "required": false,
+          "type": "string",
+          "description": "Upcoming or past events",
+          "enum": [
+            "future",
+            "past"
+          ],
+          "default": "future"
+        },
+        {
+          "name": "api_limit",
+          "key": "pagination_limit",
+          "in": "query",
+          "required": false,
+          "type": "number",
+          "description": "Max events (sent to the site as \"limit\"; clify's own --limit only shapes the output)",
+          "default": 100
+        }
+      ],
+      "headers": {
+        "x-luma-client-type": "luma-web"
+      },
+      "responseType": "json",
+      "resultPath": "entries",
+      "defaultFields": [
+        "event_api_id",
+        "name",
+        "start_at",
+        "href",
+        "coordinate"
+      ],
+      "mutates": false,
+      "example": {
+        "calendarId": "cal-S7gDcd9Akzu62RD"
+      },
+      "source": "E9 GET https://api.luma.com/calendar/get-map-pins",
+      "sample": "{\"event_api_id\":\"evt-xF13FD4hLQMu3Cb\",\"name\":\"ClawMax.ai Build Night Silicon Valley\",\"start_at\":\"2026-10-23T00:00:00.000Z\",\"href\":\"https://luma.com/clawmax-build-night-sv-1\",\"coordinate\":{\"longitude\":-121.98482680000001,\"latitude\":37.3745242}}",
+      "resultFields": [
+        "name",
+        "start_at",
+        "timezone",
+        "cover_url",
+        "coordinate",
+        "href",
+        "api_id",
+        "platform",
+        "event_api_id"
+      ],
+      "verified": true
+    },
+    {
+      "name": "get-map-events",
+      "summary": "List a city's events inside a map bounding box (north/south/east/west) with name, start time and coordinates",
+      "method": "GET",
+      "urlTemplate": "https://api.luma.com/discover/get-map-pins",
+      "params": [
+        {
+          "name": "placeId",
+          "key": "discover_place_api_id",
+          "in": "query",
+          "required": true,
+          "type": "string",
+          "description": "Discover place id; San Francisco is discplace-BDj7GNbGlsF7Cka",
+          "example": "discplace-BDj7GNbGlsF7Cka"
+        },
+        {
+          "name": "north",
+          "in": "query",
+          "required": true,
+          "type": "number",
+          "description": "North latitude of box",
+          "example": "37.83806629645812"
+        },
+        {
+          "name": "south",
+          "in": "query",
+          "required": true,
+          "type": "number",
+          "description": "South latitude of box",
+          "example": "37.72858084335202"
+        },
+        {
+          "name": "east",
+          "in": "query",
+          "required": true,
+          "type": "number",
+          "description": "East longitude of box",
+          "example": "-122.33619373515201"
+        },
+        {
+          "name": "west",
+          "in": "query",
+          "required": true,
+          "type": "number",
+          "description": "West longitude of box",
+          "example": "-122.48450916484798"
+        }
+      ],
+      "headers": {
+        "x-luma-client-type": "luma-web"
+      },
+      "responseType": "json",
+      "resultPath": "entries",
+      "defaultFields": [
+        "event_api_id",
+        "name",
+        "start_at",
+        "timezone",
+        "coordinate"
+      ],
+      "mutates": false,
+      "example": {
+        "placeId": "discplace-BDj7GNbGlsF7Cka",
+        "north": "37.83806629645812",
+        "south": "37.72858084335202",
+        "east": "-122.33619373515201",
+        "west": "-122.48450916484798"
+      },
+      "source": "E12 GET https://api.luma.com/discover/get-map-pins",
+      "sample": "{\"event_api_id\":\"evt-XURzKN3Ntsfpfpb\",\"name\":\"Flow State Lounge [after hours] | Boundless\",\"start_at\":\"2026-10-21T03:00:00.000Z\",\"timezone\":\"America/Los_Angeles\",\"coordinate\":{\"latitude\":37.77514612163292,\"longitude\":-122.40023197469745}}",
+      "resultFields": [
+        "api_id",
+        "platform",
+        "event_api_id",
+        "name",
+        "start_at",
+        "timezone",
+        "cover_url",
+        "coordinate"
+      ],
+      "verified": true
+    },
+    {
+      "name": "get-place",
+      "summary": "Get a discovery city's details: name, slug, description, timezone, event count and featured event ids",
+      "method": "GET",
+      "urlTemplate": "https://api.luma.com/discover/get-place",
+      "params": [
+        {
+          "name": "placeId",
+          "key": "discover_place_api_id",
+          "in": "query",
+          "required": true,
+          "type": "string",
+          "description": "Discover place id; San Francisco is discplace-BDj7GNbGlsF7Cka",
+          "example": "discplace-BDj7GNbGlsF7Cka"
+        }
+      ],
+      "headers": {
+        "x-luma-client-type": "luma-web"
+      },
+      "responseType": "json",
+      "resultPath": "place",
+      "defaultFields": [
+        "api_id",
+        "name",
+        "slug",
+        "event_count",
+        "timezone",
+        "featured_event_api_ids"
+      ],
+      "mutates": false,
+      "example": {
+        "placeId": "discplace-BDj7GNbGlsF7Cka"
+      },
+      "source": "E8 GET https://api.luma.com/discover/get-place",
+      "sample": "{\"api_id\":\"discplace-BDj7GNbGlsF7Cka\",\"name\":\"San Francisco\",\"slug\":\"sf\",\"event_count\":62,\"timezone\":\"America/Los_Angeles\",\"featured_event_api_ids\":[\"evt-XURzKN3Ntsfpfpb\",\"evt-neSdW0i3Dr6eCBn\",\"evt-zK5H9iq3UujkOHB\",\"evt-U30Rm28Vmo12XoD\",\"evt-hNagV2uPIUmDUAi\",\"evt-MRC98t7QRTWc7WC\",\"evt-NjDJdhyNBorejA8\",\"evt-W00JDgYIpafTfuv\",\"evt-nBWEHCp5abyyLks\"]}",
+      "resultFields": [
+        "api_id",
+        "coordinate",
+        "description",
+        "event_count",
+        "featured_event_api_ids",
+        "geo_continent",
+        "hero_image_desktop_url",
+        "hero_image_mobile_url",
+        "hero_image_square_url",
+        "icon_url",
+        "is_launched",
+        "locales",
+        "name",
+        "publication_name",
+        "slug",
+        "social_image_url",
+        "timezone",
+        "tint_color",
+        "geo_continent_name"
+      ],
+      "verified": true
+    },
+    {
+      "name": "list-places",
+      "summary": "List Luma discovery cities (nearest first) with place ids, slugs and event counts",
+      "method": "GET",
+      "urlTemplate": "https://api.luma.com/discover/bootstrap-page",
+      "params": [
+        {
+          "name": "featuredPlaceId",
+          "key": "featured_place_api_id",
+          "in": "query",
+          "required": false,
+          "type": "string",
+          "description": "Place id to feature first, e.g. discplace-BDj7GNbGlsF7Cka (San Francisco)"
+        }
+      ],
+      "headers": {
+        "x-luma-client-type": "luma-web"
+      },
+      "responseType": "json",
+      "resultPath": "places",
+      "defaultFields": [
+        "place.api_id",
+        "place.name",
+        "place.slug",
+        "event_count",
+        "place.timezone"
+      ],
+      "mutates": false,
+      "source": "E1 GET https://api.luma.com/discover/bootstrap-page",
+      "sample": "{\"place.api_id\":\"discplace-BDj7GNbGlsF7Cka\",\"place.name\":\"San Francisco\",\"place.slug\":\"sf\",\"event_count\":62,\"place.timezone\":\"America/Los_Angeles\"}",
+      "resultFields": [
+        "place",
+        "num_events",
+        "event_count",
+        "is_subscriber",
+        "distance_km"
+      ],
+      "example": {},
+      "verified": true
+    },
+    {
+      "name": "list-featured-calendars",
+      "summary": "List major featured calendars on the Luma homepage (e.g. tech/climate weeks) with dates and slugs",
+      "method": "GET",
+      "urlTemplate": "https://api.luma.com/discover/get-landing-calendars",
+      "params": [],
+      "headers": {
+        "x-luma-client-type": "luma-web"
+      },
+      "responseType": "json",
+      "resultPath": "major_calendars",
+      "defaultFields": [
+        "calendar.api_id",
+        "calendar.name",
+        "calendar.slug",
+        "start_date",
+        "end_date",
+        "calendar.location.city"
+      ],
+      "mutates": false,
+      "source": "E20 GET https://api.luma.com/discover/get-landing-calendars",
+      "sample": "{\"calendar.api_id\":\"cal-aMP2Ol0OrQcB8z0\",\"calendar.name\":\"Barcelona Climate Week 2026\",\"calendar.slug\":\"BCN-CW-2026\",\"start_date\":\"2026-10-13\",\"end_date\":\"2026-10-20\",\"calendar.location.city\":\"Barcelona\"}",
+      "resultFields": [
+        "is_subscriber",
+        "is_admin",
+        "start_date",
+        "end_date",
+        "membership_info",
+        "calendar"
+      ],
+      "example": {},
+      "verified": true
+    }
+  ],
+  "blockers": [],
+  "notes": [
+    "Event web URL = https://luma.com/{event.url}; event ids look like evt-..., calendar ids cal-..., city ids discplace-... (San Francisco: discplace-BDj7GNbGlsF7Cka).",
+    "Times are ISO UTC (start_at/end_at); convert with the event's timezone field. Exact addresses are often obfuscated until RSVP (geo_address_info.mode).",
+    "To browse a calendar by its URL slug (luma.com/<slug>), call resolve-url first to get its cal- id."
+  ],
+  "dropped": [],
+  "generated": {
+    "by": "clify add",
+    "model": "claude-opus-5-5",
+    "exploredSteps": 25,
+    "recorded": 296,
+    "verifiedAt": "2026-10-21T07:03:55.813Z",
+    "seconds": 240,
+    "importedFrom": "~/.clify/sites/lu",
+    "importedAt": "2026-10-21T07:24:44.777Z"
+  }
+}

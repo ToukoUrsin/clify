@@ -1,0 +1,463 @@
+{
+  "name": "sfpl",
+  "startUrl": "https://sfpl.org/",
+  "origin": "https://sfpl.org",
+  "createdAt": "2026-10-21T07:10:49.370Z",
+  "description": "San Francisco Public Library (sfpl.org): search the catalog, databases and site content, find branches and their hours, and browse library events.",
+  "commands": [
+    {
+      "name": "search-events",
+      "summary": "Search and filter upcoming library events by keyword, branch location, topic and audience; returns event titles, dates, branches and /events/YYYY/MM/DD/slug links",
+      "method": "GET",
+      "urlTemplate": "/events",
+      "params": [
+        {
+          "name": "keys",
+          "in": "query",
+          "required": false,
+          "type": "string",
+          "description": "Keyword search in event titles and descriptions",
+          "example": "book club"
+        },
+        {
+          "name": "location",
+          "key": "field_event_location_target_id",
+          "in": "query",
+          "required": false,
+          "type": "string",
+          "description": "Branch location ID (taxonomy term number, e.g. 31 = Main Library). Get it from list-locations locationTerm (taxonomy-term-N → N)",
+          "example": "31"
+        },
+        {
+          "name": "topic",
+          "key": "field_event_topic_target_id",
+          "in": "query",
+          "required": false,
+          "type": "string",
+          "description": "Event topic term ID",
+          "example": "394"
+        },
+        {
+          "name": "audience",
+          "key": "field_event_audience_target_id",
+          "in": "query",
+          "required": false,
+          "type": "string",
+          "description": "Audience term ID (e.g. adults, teens, kids)",
+          "example": "25"
+        },
+        {
+          "name": "sort_order",
+          "in": "query",
+          "required": false,
+          "type": "string",
+          "description": "Date sort direction",
+          "enum": [
+            "ASC",
+            "DESC"
+          ]
+        },
+        {
+          "name": "page",
+          "in": "query",
+          "required": false,
+          "type": "number",
+          "description": "Zero-based result page"
+        }
+      ],
+      "responseType": "html",
+      "extract": {
+        "list": ".views-row",
+        "fields": {
+          "title": "h3",
+          "url": "a@href",
+          "date": "time",
+          "location": ".location"
+        }
+      },
+      "defaultFields": [
+        "title",
+        "url",
+        "date",
+        "location"
+      ],
+      "pagination": {
+        "type": "page",
+        "param": "page"
+      },
+      "mutates": false,
+      "example": {
+        "keys": "book club"
+      },
+      "source": "E4",
+      "sample": "{\"title\":\"Main\",\"url\":\"https://sfpl.org/locations/main-library\",\"location\":\"Main Address 100 Larkin Street San Francisco, CA 94102 United States Contact Telephone 415-557-4400 Sun 12 - 6 Mon 9 - 6 Tue 9 - 8 Wed 9 - 8 Thu 9 - 8 Fri 12 - 6 Sat 10 - 6 Branch Page View All\"}",
+      "resultFields": [
+        "title",
+        "url",
+        "location"
+      ],
+      "verified": true
+    },
+    {
+      "name": "list-locations",
+      "summary": "List all SFPL branches with their weekly opening hours, today's hours, branch page URL and location ID",
+      "method": "GET",
+      "urlTemplate": "/locations",
+      "params": [],
+      "responseType": "html",
+      "extract": {
+        "list": "div.view-locations-table div.views-row",
+        "fields": {
+          "name": "div.views-field-field-short-name a",
+          "url": "div.views-field-field-short-name a@href",
+          "locationTerm": "div.views-field-rendered-entity span.field-content > div@id",
+          "todayHours": "div.office-hours__item--today span.office-hours__item-slots",
+          "hours": "div.office-hours"
+        }
+      },
+      "defaultFields": [
+        "name",
+        "url",
+        "locationTerm",
+        "todayHours",
+        "hours"
+      ],
+      "mutates": false,
+      "source": "E13 GET https://sfpl.org/locations",
+      "sample": "{\"name\":\"Main\",\"url\":\"https://sfpl.org/locations/main-library\",\"locationTerm\":\"taxonomy-term-31\",\"todayHours\":\"9 - 8\",\"hours\":\"Sun 12 - 6 Mon 9 - 6 Tue 9 - 8 Wed 9 - 8 Thu 9 - 8 Fri 12 - 6 Sat 10 - 6\"}",
+      "resultFields": [
+        "name",
+        "url",
+        "locationTerm",
+        "todayHours",
+        "hours"
+      ],
+      "example": {},
+      "verified": true
+    },
+    {
+      "name": "search-locations",
+      "summary": "Search branches by keyword and optionally only those open right now; returns branch name, URL, location ID, today's hours and weekly hours",
+      "method": "GET",
+      "urlTemplate": "/locations",
+      "params": [
+        {
+          "name": "search_keys",
+          "in": "query",
+          "required": false,
+          "type": "string",
+          "description": "Branch name or neighborhood keyword",
+          "example": "mission"
+        },
+        {
+          "name": "open_now",
+          "key": "field_hours_open_now",
+          "in": "query",
+          "required": false,
+          "type": "string",
+          "description": "Set to 1 to show only branches open right now",
+          "enum": [
+            "1"
+          ]
+        },
+        {
+          "name": "sort_by",
+          "in": "query",
+          "required": false,
+          "type": "string",
+          "description": "Sort field (weight = the site's default order)",
+          "default": "weight"
+        },
+        {
+          "name": "sort_order",
+          "in": "query",
+          "required": false,
+          "type": "string",
+          "description": "Sort direction",
+          "enum": [
+            "ASC",
+            "DESC"
+          ],
+          "default": "ASC"
+        }
+      ],
+      "responseType": "html",
+      "extract": {
+        "list": "div.view-locations-table div.views-row",
+        "fields": {
+          "name": "div.views-field-field-short-name a",
+          "url": "div.views-field-field-short-name a@href",
+          "locationTerm": "div.views-field-rendered-entity span.field-content > div@id",
+          "todayHours": "div.office-hours__item--today span.office-hours__item-slots",
+          "hours": "div.office-hours"
+        }
+      },
+      "defaultFields": [
+        "name",
+        "url",
+        "locationTerm",
+        "todayHours",
+        "hours"
+      ],
+      "mutates": false,
+      "example": {
+        "search_keys": "mission"
+      },
+      "source": "E4 E13",
+      "sample": "{\"name\":\"Main\",\"url\":\"https://sfpl.org/locations/main-library\",\"locationTerm\":\"taxonomy-term-31\",\"todayHours\":\"9 - 8\",\"hours\":\"Sun 12 - 6 Mon 9 - 6 Tue 9 - 8 Wed 9 - 8 Thu 9 - 8 Fri 12 - 6 Sat 10 - 6\"}",
+      "resultFields": [
+        "name",
+        "url",
+        "locationTerm",
+        "todayHours",
+        "hours"
+      ],
+      "verified": true
+    },
+    {
+      "name": "get-event-ics",
+      "summary": "Download an event as an iCalendar (ICS) text: title, start/end time, location and description",
+      "method": "GET",
+      "urlTemplate": "/sfpl-events/add-to-calendar/{nid}",
+      "params": [
+        {
+          "name": "nid",
+          "in": "path",
+          "required": true,
+          "type": "string",
+          "description": "Event node ID",
+          "example": "165338"
+        }
+      ],
+      "responseType": "text",
+      "mutates": false,
+      "example": {
+        "nid": "165338"
+      },
+      "source": "E17 GET https://sfpl.org/events/{n}/{n}/{n}/book-club-susanna-kwans-awake-floating-city",
+      "sample": "\"BEGIN:VCALENDAR\\nVERSION:2.0\\nPRODID:SFPL Web Calendar\\nBEGIN:VEVENT\\nUID:165338@sfpl.org\\nDTSTAMP:20261210T020000Z\\nDTSTART:20261210T020000Z\\nDTEND:20261210T030000Z\\nSUMMARY:Book Club: Susanna Kwan's Awake in the Floating City\\nDESCRIPTION:<p>Discuss Susanna Kwan’s <a href=\\\"https://sfpl.bibliocommons.com/v2/record/S93C6880363\\\"><i>Awake in the Floating Ci",
+      "verified": true
+    },
+    {
+      "name": "get-event-page",
+      "summary": "Resolve an event page URL (/events/YYYY/MM/DD/slug) to its node ID; path.currentPath is 'node/N', and N is used by get-event and get-event-ics",
+      "method": "GET",
+      "urlTemplate": "/events/{year}/{month}/{day}/{slug}",
+      "params": [
+        {
+          "name": "year",
+          "in": "path",
+          "required": true,
+          "type": "string",
+          "description": "Event year, e.g. 2026",
+          "example": "2026"
+        },
+        {
+          "name": "month",
+          "in": "path",
+          "required": true,
+          "type": "string",
+          "description": "Two-digit month, e.g. 12",
+          "example": "12"
+        },
+        {
+          "name": "day",
+          "in": "path",
+          "required": true,
+          "type": "string",
+          "description": "Two-digit day, e.g. 09",
+          "example": "09"
+        },
+        {
+          "name": "slug",
+          "in": "path",
+          "required": true,
+          "type": "string",
+          "description": "Event URL slug",
+          "example": "book-club-susanna-kwans-awake-floating-city"
+        }
+      ],
+      "responseType": "html",
+      "resultPath": "path",
+      "extract": {
+        "jsonScript": "script[type=\"application/json\"]"
+      },
+      "defaultFields": [
+        "currentPath"
+      ],
+      "mutates": false,
+      "example": {
+        "year": "2026",
+        "month": "12",
+        "day": "09",
+        "slug": "book-club-susanna-kwans-awake-floating-city"
+      },
+      "source": "E17 GET https://sfpl.org/events/{n}/{n}/{n}/book-club-susanna-kwans-awake-floating-city",
+      "sample": "{\"currentPath\":\"node/165338\"}",
+      "resultFields": [
+        "baseUrl",
+        "pathPrefix",
+        "currentPath",
+        "currentPathIsAdmin",
+        "isFront",
+        "currentLanguage"
+      ],
+      "verified": true
+    },
+    {
+      "name": "get-location",
+      "summary": "Look up a branch page by slug and get its location ID; path.currentPath is 'taxonomy/term/N', and N is the location filter for search-events",
+      "method": "GET",
+      "urlTemplate": "/locations/{slug}",
+      "params": [
+        {
+          "name": "slug",
+          "in": "path",
+          "required": true,
+          "type": "string",
+          "description": "Branch slug from list-locations url, e.g. main-library, mission-bay",
+          "example": "mission-bay"
+        }
+      ],
+      "responseType": "html",
+      "resultPath": "path",
+      "extract": {
+        "jsonScript": "script[type=\"application/json\"]"
+      },
+      "defaultFields": [
+        "currentPath"
+      ],
+      "mutates": false,
+      "example": {
+        "slug": "mission-bay"
+      },
+      "source": "E15 E20 GET https://sfpl.org/locations/mission-bay",
+      "sample": "{\"currentPath\":\"taxonomy/term/32\"}",
+      "resultFields": [
+        "baseUrl",
+        "pathPrefix",
+        "currentPath",
+        "currentPathIsAdmin",
+        "isFront",
+        "currentLanguage"
+      ],
+      "verified": true
+    }
+  ],
+  "blockers": [],
+  "notes": [
+    "search-catalog, search-events, search-locations and get-book-list return rendered HTML fragments (Drupal AJAX); parse links and text from them.",
+    "Location IDs for event filters are taxonomy term numbers: list-locations locationTerm 'taxonomy-term-31' → 31 (Main Library).",
+    "The direct Bibliocommons catalog (sfpl.bibliocommons.com) is behind a bot check; use search-catalog for catalog records."
+  ],
+  "dropped": [
+    {
+      "name": "get-book-list",
+      "summary": "Get a staff-curated Bibliocommons book list carousel (titles, covers, item links) as an HTML fragment",
+      "method": "POST",
+      "urlTemplate": "/sfpl-bibliocommons/ajax/book-list/{listId}/{page}?_wrapper_format=drupal_ajax",
+      "params": [
+        {
+          "name": "listId",
+          "in": "path",
+          "required": true,
+          "type": "string",
+          "description": "Bibliocommons list ID",
+          "example": "3101198577"
+        },
+        {
+          "name": "page",
+          "in": "path",
+          "required": false,
+          "type": "number",
+          "description": "List page number",
+          "default": 1
+        }
+      ],
+      "bodyTemplate": {
+        "js": "true",
+        "_drupal_ajax": "1",
+        "ajax_page_state[theme]": "sfpl_2019"
+      },
+      "bodyEncoding": "form",
+      "headers": {
+        "X-Requested-With": "XMLHttpRequest"
+      },
+      "responseType": "json",
+      "resultPath": "0.data",
+      "mutates": false,
+      "example": {
+        "listId": "3101198577",
+        "page": "1"
+      },
+      "source": "E10 POST https://sfpl.org/sfpl-bibliocommons/ajax/book-list/{n}/{n}",
+      "verified": false,
+      "verifyNote": "Drupal ajax endpoint returns 500 and there is no evidence of what it needs. Low value."
+    },
+    {
+      "name": "search-catalog",
+      "summary": "Search SFPL catalog records (Bibliocommons items), EBSCO articles/databases and sfpl.org content; returns the results HTML fragment with item links like sfpl.bibliocommons.com/item/show/{id}",
+      "method": "POST",
+      "urlTemplate": "/ajax/search-page?_wrapper_format=drupal_ajax",
+      "params": [
+        {
+          "name": "keys",
+          "in": "query",
+          "required": true,
+          "type": "string",
+          "description": "Search keywords",
+          "example": "climate change"
+        },
+        {
+          "name": "type",
+          "in": "query",
+          "required": false,
+          "type": "string",
+          "description": "What to search: all = catalog + articles/databases + site content; this_site = sfpl.org pages only; articles_databases = EBSCO articles/databases",
+          "enum": [
+            "all",
+            "this_site",
+            "articles_databases"
+          ],
+          "default": "all"
+        },
+        {
+          "name": "page",
+          "in": "query",
+          "required": false,
+          "type": "string",
+          "description": "Zero-based page. For type=all, give one comma-separated index per result section, e.g. 0,0,1 advances one section to its next page. For this_site, give a single number, e.g. 1"
+        }
+      ],
+      "bodyTemplate": {
+        "js": "true",
+        "_drupal_ajax": "1",
+        "ajax_page_state[theme]": "sfpl_2019"
+      },
+      "bodyEncoding": "form",
+      "headers": {
+        "X-Requested-With": "XMLHttpRequest"
+      },
+      "responseType": "json",
+      "resultPath": "0.data",
+      "mutates": false,
+      "example": {
+        "keys": "climate change",
+        "type": "all"
+      },
+      "source": "E6",
+      "verified": false,
+      "verifyNote": "The Drupal AJAX search endpoint returns HTTP 500 when replayed. It likely needs a page form build/state that this request does not provide. The plain search page probably loads its results over AJAX, so there is no reliable endpoint to switch to."
+    }
+  ],
+  "generated": {
+    "by": "clify add",
+    "model": "claude-opus-5-5",
+    "exploredSteps": 29,
+    "recorded": 60,
+    "verifiedAt": "2026-10-21T07:12:55.008Z",
+    "seconds": 447,
+    "importedFrom": "~/.clify/sites/sfpl",
+    "importedAt": "2026-10-21T07:24:44.784Z"
+  }
+}

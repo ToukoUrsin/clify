@@ -1,0 +1,529 @@
+{
+  "name": "bart",
+  "startUrl": "https://www.bart.gov/",
+  "origin": "https://www.bart.gov",
+  "createdAt": "2026-10-21T07:08:09.825Z",
+  "description": "BART (Bay Area Rapid Transit) website. The CLI lists stations and returns real-time departures, station timetables, service and elevator/escalator alerts, planned advisories, accessibility options, and routes, trips and fares from BART's public API.",
+  "commands": [
+    {
+      "name": "get-departures",
+      "summary": "Real-time departures (ETD) for a station: next trains per destination with minutes, platform, direction, length and line color (official BART API).",
+      "method": "GET",
+      "urlTemplate": "https://api.bart.gov/api/etd.aspx?cmd=etd&key=MW9S-E7SL-26DU-VV8V&json=y",
+      "params": [
+        {
+          "name": "station",
+          "key": "orig",
+          "in": "query",
+          "required": true,
+          "type": "string",
+          "description": "Uppercase 4-letter BART station code, e.g. EMBR, MONT, SFIA, 12TH",
+          "example": "EMBR"
+        },
+        {
+          "name": "platform",
+          "key": "plat",
+          "in": "query",
+          "required": false,
+          "type": "string",
+          "description": "Only departures from this platform number (1-4)",
+          "enum": [
+            "1",
+            "2",
+            "3",
+            "4"
+          ]
+        },
+        {
+          "name": "direction",
+          "key": "dir",
+          "in": "query",
+          "required": false,
+          "type": "string",
+          "description": "Only northbound (n) or southbound (s) trains",
+          "enum": [
+            "n",
+            "s"
+          ]
+        }
+      ],
+      "responseType": "json",
+      "resultPath": "root.station.0.etd",
+      "defaultFields": [
+        "destination",
+        "abbreviation",
+        "limited",
+        "estimate"
+      ],
+      "mutates": false,
+      "example": {
+        "station": "EMBR"
+      },
+      "source": "E7 E6 E84",
+      "sample": "{\"destination\":\"Antioch\",\"abbreviation\":\"ANTC\",\"limited\":\"0\",\"estimate\":[{\"minutes\":\"25\",\"platform\":\"2\",\"direction\":\"North\",\"length\":\"9\",\"color\":\"YELLOW\",\"hexcolor\":\"#ffff33\",\"bikeflag\":\"1\",\"delay\":\"103\",\"cancelflag\":\"0\",\"dynamicflag\":\"0\"}]}",
+      "resultFields": [
+        "destination",
+        "abbreviation",
+        "limited",
+        "estimate"
+      ],
+      "verified": true
+    },
+    {
+      "name": "list-stations",
+      "summary": "List all BART stations with name and station page URL. The slug in the URL (e.g. embr) is the station code.",
+      "method": "GET",
+      "urlTemplate": "/stations",
+      "params": [],
+      "responseType": "html",
+      "extract": {
+        "list": "div.views-row",
+        "fields": {
+          "name": "div.views-field-title a",
+          "url": "div.views-field-title a@href"
+        }
+      },
+      "defaultFields": [
+        "name",
+        "url"
+      ],
+      "mutates": false,
+      "source": "E75 GET https://www.bart.gov/stations",
+      "sample": "{\"name\":\"12th St./Oakland City Center\",\"url\":\"https://www.bart.gov/stations/12th\"}",
+      "resultFields": [
+        "name",
+        "url"
+      ],
+      "example": {},
+      "verified": true
+    },
+    {
+      "name": "plan-trip",
+      "summary": "Plan a BART trip between two stations: departure/arrival times, travel time, fare and legs (official BART API).",
+      "method": "GET",
+      "urlTemplate": "https://api.bart.gov/api/sched.aspx?cmd=depart&key=MW9S-E7SL-26DU-VV8V&json=y",
+      "params": [
+        {
+          "name": "orig",
+          "in": "query",
+          "required": true,
+          "type": "string",
+          "description": "Origin station code, e.g. EMBR",
+          "example": "EMBR"
+        },
+        {
+          "name": "dest",
+          "in": "query",
+          "required": true,
+          "type": "string",
+          "description": "Destination station code, e.g. SFIA",
+          "example": "SFIA"
+        },
+        {
+          "name": "date",
+          "in": "query",
+          "required": false,
+          "type": "string",
+          "description": "Travel date mm/dd/yyyy, or 'now'",
+          "default": "now"
+        },
+        {
+          "name": "time",
+          "in": "query",
+          "required": false,
+          "type": "string",
+          "description": "Departure time h:mm+am/pm, e.g. 8:00am, or 'now'",
+          "default": "now"
+        },
+        {
+          "name": "before",
+          "key": "b",
+          "in": "query",
+          "required": false,
+          "type": "number",
+          "description": "Number of trips before the given time (0-4)",
+          "default": 0
+        },
+        {
+          "name": "after",
+          "key": "a",
+          "in": "query",
+          "required": false,
+          "type": "number",
+          "description": "Number of trips after the given time (1-4)",
+          "default": 4
+        }
+      ],
+      "responseType": "json",
+      "resultPath": "root.schedule.request.trip",
+      "defaultFields": [
+        "@origin",
+        "@destination",
+        "@origTimeMin",
+        "@destTimeMin",
+        "@tripTime",
+        "@fare",
+        "leg"
+      ],
+      "mutates": false,
+      "example": {
+        "orig": "EMBR",
+        "dest": "SFIA"
+      },
+      "source": "E84 GET https://www.bart.gov/schedules/developers/api",
+      "sample": "{\"@origin\":\"EMBR\",\"@destination\":\"SFIA\",\"@origTimeMin\":\"12:20 AM\",\"@destTimeMin\":\"12:54 AM\",\"@tripTime\":\"34\",\"@fare\":\"11.80\",\"leg\":[{\"@order\":\"1\",\"@origin\":\"EMBR\",\"@destination\":\"SFIA\",\"@origTimeMin\":\"12:20 AM\",\"@origTimeDate\":\"10/21/2026\",\"@destTimeMin\":\"12:54 AM\",\"@destTimeDate\":\"10/21/2026\",\"@originPlatform\":\"PL 1\",\"@destinationPlatform\":\"PL 1\",\"@line\":\"R",
+      "resultFields": [
+        "@origin",
+        "@destination",
+        "@fare",
+        "@origTimeMin",
+        "@origTimeDate",
+        "@destTimeMin",
+        "@destTimeDate",
+        "@clipper",
+        "@tripTime",
+        "fares",
+        "leg"
+      ],
+      "verified": true
+    },
+    {
+      "name": "get-fare",
+      "summary": "Fare between two BART stations (Clipper, cash and discount fares) from the official BART API.",
+      "method": "GET",
+      "urlTemplate": "https://api.bart.gov/api/sched.aspx?cmd=fare&key=MW9S-E7SL-26DU-VV8V&json=y",
+      "params": [
+        {
+          "name": "orig",
+          "in": "query",
+          "required": true,
+          "type": "string",
+          "description": "Origin station code, e.g. EMBR",
+          "example": "EMBR"
+        },
+        {
+          "name": "dest",
+          "in": "query",
+          "required": true,
+          "type": "string",
+          "description": "Destination station code, e.g. SFIA",
+          "example": "SFIA"
+        }
+      ],
+      "responseType": "json",
+      "resultPath": "root",
+      "mutates": false,
+      "example": {
+        "orig": "EMBR",
+        "dest": "SFIA"
+      },
+      "source": "E84 E18 GET https://www.bart.gov/schedules/developers/api",
+      "sample": "{\"uri\":{\"#cdata-section\":\"http://api.bart.gov/api/sched.aspx?cmd=fare&json=y&orig=EMBR&dest=SFIA\"},\"origin\":\"EMBR\",\"destination\":\"SFIA\",\"trip\":{\"fare\":\"11.80\",\"discount\":{\"clipper\":\"4.40\"}},\"fares\":{\"@level\":\"normal\",\"fare\":[{\"@amount\":\"11.80\",\"@class\":\"clipper\",\"@name\":\"Clipper\"},{\"@amount\":\"5.90\",\"@class\":\"start\",\"@name\":\"Clipper START\"},{\"@amount\":\"4.40\",",
+      "resultFields": [
+        "uri",
+        "origin",
+        "destination",
+        "trip",
+        "fares",
+        "message"
+      ],
+      "verified": true
+    },
+    {
+      "name": "list-routes",
+      "summary": "List BART routes/lines with route number, name, abbreviation and color (official BART API).",
+      "method": "GET",
+      "urlTemplate": "https://api.bart.gov/api/route.aspx?cmd=routes&key=MW9S-E7SL-26DU-VV8V&json=y",
+      "params": [],
+      "responseType": "json",
+      "resultPath": "root.routes.route",
+      "defaultFields": [
+        "routeID",
+        "number",
+        "name",
+        "abbr",
+        "color",
+        "hexcolor"
+      ],
+      "mutates": false,
+      "source": "E84 GET https://www.bart.gov/schedules/developers/api",
+      "sample": "{\"routeID\":\"ROUTE 12\",\"number\":\"12\",\"name\":\"Daly City to Dublin/Pleasanton\",\"abbr\":\"DALY-DUBL\",\"color\":\"BLUE\",\"hexcolor\":\"#0099CC\"}",
+      "resultFields": [
+        "name",
+        "abbr",
+        "routeID",
+        "number",
+        "hexcolor",
+        "color",
+        "direction"
+      ],
+      "example": {},
+      "verified": true
+    },
+    {
+      "name": "get-station",
+      "summary": "Station details: name, address, description and lines serving the station.",
+      "method": "GET",
+      "urlTemplate": "/stations/{station}",
+      "params": [
+        {
+          "name": "station",
+          "in": "path",
+          "required": true,
+          "type": "string",
+          "description": "Lowercase station slug from list-stations, e.g. embr, sfia, 12th",
+          "example": "embr"
+        }
+      ],
+      "responseType": "html",
+      "extract": {
+        "fields": {
+          "name": "h1.node-fieldgroup--left",
+          "address": "div.field--field-station-address a",
+          "description": "div.field--field-body p",
+          "lines": "div.station-schedules div.schedule-platform ul",
+          "firstLine": "span.schedule-route-title"
+        }
+      },
+      "mutates": false,
+      "example": {
+        "station": "embr"
+      },
+      "source": "E76 E77 GET https://www.bart.gov/stations/embr",
+      "sample": "{\"name\":\"Embarcadero Station\",\"address\":\"298 Market Street, San Francisco, CA 94111\",\"description\":\"Located in San Francisco's Financial District at the foot of Market Street, Embarcadero Station is close to the Ferry Building, Embarcadero Center, Salesforce Transit Center and the California Street cable car. Public restrooms are available.\",\"lines\":\"Dublin/",
+      "resultFields": [
+        "name",
+        "address",
+        "description",
+        "lines",
+        "firstLine"
+      ],
+      "verified": true
+    },
+    {
+      "name": "get-station-schedule",
+      "summary": "Full-day timetable of train departures from a station: line, train head station, departure time (official BART API).",
+      "method": "GET",
+      "urlTemplate": "https://api.bart.gov/api/sched.aspx?cmd=stnsched&key=MW9S-E7SL-26DU-VV8V&json=y",
+      "params": [
+        {
+          "name": "station",
+          "key": "orig",
+          "in": "query",
+          "required": true,
+          "type": "string",
+          "description": "Uppercase station code, e.g. EMBR",
+          "example": "EMBR"
+        },
+        {
+          "name": "date",
+          "in": "query",
+          "required": false,
+          "type": "string",
+          "description": "Date mm/dd/yyyy, or 'today'/'now'",
+          "default": "now"
+        }
+      ],
+      "responseType": "json",
+      "resultPath": "root.station.item",
+      "defaultFields": [
+        "@line",
+        "@trainHeadStation",
+        "@origTime",
+        "@destTime",
+        "@trainIdx",
+        "@bikeflag"
+      ],
+      "mutates": false,
+      "example": {
+        "station": "EMBR"
+      },
+      "source": "E10 E11 E84",
+      "sample": "{\"@line\":\"ROUTE 6\",\"@trainHeadStation\":\"OAK Airport / Berryessa\",\"@origTime\":\"04:58 AM\",\"@bikeflag\":\"1\"}",
+      "resultFields": [
+        "@line",
+        "@trainHeadStation",
+        "@origTime",
+        "@bikeflag",
+        "@load",
+        "@platform"
+      ],
+      "verified": true
+    },
+    {
+      "name": "get-current-advisories",
+      "summary": "Current BART service advisories (delays, disruptions) from the official BART API.",
+      "method": "GET",
+      "urlTemplate": "https://api.bart.gov/api/bsa.aspx?cmd=bsa&key=MW9S-E7SL-26DU-VV8V&json=y",
+      "params": [],
+      "responseType": "json",
+      "resultPath": "root.bsa",
+      "defaultFields": [
+        "station",
+        "type",
+        "description",
+        "sms_text",
+        "posted",
+        "expires"
+      ],
+      "mutates": false,
+      "source": "E8 E84",
+      "sample": "{\"station\":\"BART\",\"type\":\"DELAY\",\"description\":{\"#cdata-section\":\"Expect 30-minute delays starting at 9pm each night on Sunday-Thursday for riders traveling between Millbrae, SFO, and Daly City stations due to planned train control modernization construction work. \"},\"sms_text\":{\"#cdata-section\":\"Expect 30 min delays starting at 9pm each night on sunday-thur",
+      "resultFields": [
+        "@id",
+        "station",
+        "type",
+        "description",
+        "sms_text",
+        "posted",
+        "expires"
+      ],
+      "aliases": [
+        "list-elevator-outages"
+      ],
+      "example": {},
+      "verified": true
+    },
+    {
+      "name": "list-planned-advisories",
+      "summary": "Planned service advisories (track work, bus bridges, line cancellations) from the RSS feed, with links to the full articles.",
+      "method": "GET",
+      "urlTemplate": "/rss/news/planned-service-advisories.xml",
+      "params": [],
+      "responseType": "json",
+      "resultPath": "rss.channel.item",
+      "defaultFields": [
+        "title",
+        "link",
+        "pubDate",
+        "description"
+      ],
+      "mutates": false,
+      "source": "E73 GET https://www.bart.gov/schedules/advisories",
+      "sample": "{\"title\":\"Single Tracking Alert: Late night rail work on the Yellow Line in Contra Costa County (next work dates: October 22-24)\",\"link\":\"https://www.bart.gov/news/articles/2025/news20250326-1?rss\",\"pubDate\":\"10.19.26\",\"description\":\"BART is performing rail destressing on the Yellow Line in Contra Costa County. To create a safe work space for our crews, BART",
+      "resultFields": [
+        "title",
+        "link",
+        "description",
+        "author",
+        "guid",
+        "pubDate"
+      ],
+      "example": {},
+      "verified": true
+    },
+    {
+      "name": "get-station-accessibility",
+      "summary": "Elevator outage options and accessible paths for a station: what to do if you can't enter or exit.",
+      "method": "GET",
+      "urlTemplate": "/stations/{station}/accessible",
+      "params": [
+        {
+          "name": "station",
+          "in": "path",
+          "required": true,
+          "type": "string",
+          "description": "Uppercase station code, e.g. EMBR",
+          "example": "EMBR"
+        }
+      ],
+      "responseType": "html",
+      "extract": {
+        "fields": {
+          "title": "div.field--field-entering-station h2",
+          "options": "div.field--field-entering-station"
+        }
+      },
+      "mutates": false,
+      "example": {
+        "station": "EMBR"
+      },
+      "source": "E78 GET https://www.bart.gov/stations/EMBR/accessible",
+      "sample": "{\"title\":\"Elevator Outage Options - Embarcadero Station\",\"options\":\"Elevator Outage Options - Embarcadero StationIn case of an elevator outage, use the following options or contact the station agent for assistance. Agents can arrange a ride to a different station in an accessible van if needed. STREET ELEVATOR Can't enter station: Use the Montgomery Station ",
+      "resultFields": [
+        "title",
+        "options"
+      ],
+      "verified": true
+    },
+    {
+      "name": "get-news-article",
+      "summary": "Full text of a BART news article or planned service advisory, using the year and slug from its /news/articles/{year}/{slug} link.",
+      "method": "GET",
+      "urlTemplate": "/news/articles/{year}/{slug}",
+      "params": [
+        {
+          "name": "year",
+          "in": "path",
+          "required": true,
+          "type": "string",
+          "description": "Year segment of the article URL, e.g. 2026",
+          "example": "2026"
+        },
+        {
+          "name": "slug",
+          "in": "path",
+          "required": true,
+          "type": "string",
+          "description": "Article slug from the URL, e.g. news20261015",
+          "example": "news20261015"
+        }
+      ],
+      "responseType": "html",
+      "extract": {
+        "fields": {
+          "title": "article h1 span || article h1",
+          "date": "div.field--field-news-date time@datetime",
+          "body": "div.field--field-primary-content"
+        }
+      },
+      "mutates": false,
+      "example": {
+        "year": "2026",
+        "slug": "news20261015"
+      },
+      "source": "E74 GET https://www.bart.gov/news/articles/{n}/news20261015",
+      "sample": "{\"title\":\"Bus Bridge and Green Line Cancellation Alert: Free buses replace trains between 24th St. Mission and Daly City on the weekend of November 14 & 15 for work on new train control system\",\"date\":\"2026-10-15T12:00:00Z\",\"body\":\"BART crews will be in the trackway between 24th St. Mission and Daly City stations to enable crews to install critical component",
+      "resultFields": [
+        "title",
+        "date",
+        "body"
+      ],
+      "verified": true
+    }
+  ],
+  "blockers": [],
+  "notes": [
+    "Station codes are 4 characters (EMBR, SFIA, 12TH). Real-time, schedule and accessibility commands take uppercase codes; get-station takes the lowercase slug from list-stations.",
+    "Several www.bart.gov endpoints return {\"html\": \"...\"}, so their output is an HTML fragment you need to read for times and destinations.",
+    "plan-trip, get-fare and list-routes call api.bart.gov using the public key published on bart.gov's developer pages."
+  ],
+  "dropped": [
+    {
+      "name": "list-escalator-outages",
+      "summary": "Current escalator outages by station as an HTML fragment in 'html'.",
+      "method": "GET",
+      "urlTemplate": "/schedules/advisories_table/bart_escalator_service_advisories",
+      "params": [],
+      "headers": {
+        "X-Requested-With": "XMLHttpRequest"
+      },
+      "responseType": "json",
+      "resultPath": "html",
+      "mutates": false,
+      "source": "E3 E82 GET https://www.bart.gov/schedules/advisories_table/bart_escalator_service_advisories",
+      "verified": false,
+      "verifyNote": "Returns only an HTML fragment inside JSON, which the CLI can't extract from, and the official BART API has no escalator status feed"
+    }
+  ],
+  "generated": {
+    "by": "clify add",
+    "model": "claude-opus-5-5",
+    "exploredSteps": 29,
+    "recorded": 111,
+    "verifiedAt": "2026-10-21T07:09:38.652Z",
+    "seconds": 250,
+    "importedFrom": "~/.clify/sites/bart",
+    "importedAt": "2026-10-21T07:24:44.782Z"
+  }
+}

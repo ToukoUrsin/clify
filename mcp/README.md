@@ -3,7 +3,7 @@
 clify turns websites into typed, JSON-first commands for agents. This is the
 hosted MCP version, built with [mcp-use](https://docs.mcp-use.com) (TypeScript
 v2) and deployed on Manufact Cloud. It serves clify's whole verified catalogue:
-**135 real sites, 1,619 live-verified commands**, through 3 core tools (+4 shortcuts),
+**156 real sites, 1,802 live-verified commands**, through 3 core tools (+4 shortcuts),
 2.5k tokens for the whole tool list.
 
 **Live endpoint:** `https://bold-cloud-h4u6s.run.mcp-use.com/mcp` (server name `clify`, streamable HTTP, no auth)

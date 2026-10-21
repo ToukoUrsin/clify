@@ -1,0 +1,289 @@
+{
+  "name": "caltrain",
+  "startUrl": "https://www.caltrain.com/",
+  "origin": "https://www.caltrain.com",
+  "createdAt": "2026-10-21T07:08:57.107Z",
+  "description": "Caltrain (San Francisco Peninsula commuter rail): real-time departures per station, GTFS-realtime trip updates and vehicle positions, service alerts, routes, station pages and site search as JSON commands.",
+  "commands": [
+    {
+      "name": "get-station-departures",
+      "summary": "Real-time departure predictions for one Caltrain station, with metadata for the routes serving it (Local, Limited, Express, South County).",
+      "method": "GET",
+      "urlTemplate": "/gtfs/stops/{stopId}/predictions",
+      "params": [
+        {
+          "name": "stopId",
+          "in": "path",
+          "required": true,
+          "type": "string",
+          "description": "Station stop id in lowercase snake_case, e.g. san_francisco, palo_alto, sj_diridon. This is not the same as the station page slug.",
+          "example": "palo_alto"
+        }
+      ],
+      "responseType": "json",
+      "mutates": false,
+      "example": {
+        "stopId": "palo_alto"
+      },
+      "source": "E7 E5 E11 GET https://www.caltrain.com/gtfs/stops/palo_alto/predictions",
+      "sample": "{\"meta\":{\"routes\":{\"Limited\":{\"nid\":[\"{…}\"],\"type\":[\"{…}\"],\"title\":[\"{…}\"],\"moderation_state\":[],\"path\":[\"{…}\"],\"node_read_time\":[[]],\"field_agency_id\":[\"{…}\"],\"field_body\":[],\"field_map\":[],\"field_price\":[],\"field_route_color\":[\"{…}\"],\"field_route_id\":[\"{…}\"],\"field_route_short_name\":[],\"field_route_sub_type\":[],\"field_schedule\":[],\"field_service_descriptio",
+      "resultFields": [
+        "meta",
+        "data"
+      ],
+      "verified": true
+    },
+    {
+      "name": "list-service-alerts",
+      "summary": "Current Caltrain service alerts: delays, disruptions and notices, with their active periods.",
+      "method": "GET",
+      "urlTemplate": "/gtfs/api/v1/servicealerts/Caltrain",
+      "params": [],
+      "responseType": "json",
+      "defaultFields": [
+        "Id",
+        "Alert.HeaderText.Translation.0.Text",
+        "Alert.DescriptionText.Translation.0.Text",
+        "Alert.ActivePeriod",
+        "Alert.InformedEntity",
+        "Source"
+      ],
+      "mutates": false,
+      "source": "E3 GET https://www.caltrain.com/gtfs/api/v1/servicealerts/Caltrain",
+      "sample": "{\"Id\":9582,\"Alert.HeaderText.Translation.0.Text\":\"\",\"Alert.DescriptionText.Translation.0.Text\":\"Pets allowed on Caltrain in an enclosed carrier. More info: caltrain.com/code. \",\"Alert.ActivePeriod\":[{\"Start\":1792410120}],\"Alert.InformedEntity\":[{\"AgencyId\":\"CT\"}],\"Source\":\"PADS\"}",
+      "resultFields": [
+        "Id",
+        "Alert",
+        "Source"
+      ],
+      "example": {},
+      "verified": true
+    },
+    {
+      "name": "get-trip-updates",
+      "summary": "GTFS-realtime trip updates for trains currently running: trip id, route, direction and predicted arrival/departure per stop.",
+      "method": "GET",
+      "urlTemplate": "/files/rt/tripupdates/CT.json",
+      "params": [],
+      "responseType": "json",
+      "resultPath": "Entities",
+      "defaultFields": [
+        "Id",
+        "TripUpdate.Trip.TripId",
+        "TripUpdate.Trip.RouteId",
+        "TripUpdate.Trip.DirectionId",
+        "TripUpdate.StopTimeUpdate",
+        "TripUpdate.Timestamp"
+      ],
+      "mutates": false,
+      "source": "E1 GET https://www.caltrain.com/files/rt/tripupdates/CT.json",
+      "sample": "{\"Id\":\"172\",\"TripUpdate.Trip.TripId\":\"172\",\"TripUpdate.Trip.RouteId\":\"Local Weekday\",\"TripUpdate.Trip.DirectionId\":1,\"TripUpdate.StopTimeUpdate\":[{\"StopId\":\"70242\",\"Arrival\":{\"Time\":1792566530},\"Departure\":{\"Time\":1792566590}},{\"StopId\":\"70262\",\"Arrival\":{\"Time\":1792566819},\"Departure\":{\"Time\":1792566879}}],\"TripUpdate.Timestamp\":1792566371}",
+      "resultFields": [
+        "Id",
+        "TripUpdate"
+      ],
+      "example": {},
+      "verified": true
+    },
+    {
+      "name": "list-routes",
+      "summary": "All Caltrain routes/service types (Local Weekday, Limited, Express, South County…) with route id, color and path.",
+      "method": "GET",
+      "urlTemplate": "/gtfs/routes/all",
+      "params": [],
+      "responseType": "json",
+      "defaultFields": [
+        "nid.0.value",
+        "title.0.value",
+        "field_route_id.0.value",
+        "field_route_short_name.0.value",
+        "field_route_color.0.value",
+        "path.0.alias"
+      ],
+      "mutates": false,
+      "source": "E6 GET https://www.caltrain.com/gtfs/routes/all",
+      "sample": "{\"nid.0.value\":\"11220\",\"title.0.value\":\"Limited\",\"field_route_id.0.value\":\"Limited\",\"field_route_color.0.value\":\"99d7dc\",\"path.0.alias\":\"/caltrain/routes-2\"}",
+      "resultFields": [
+        "nid",
+        "type",
+        "title",
+        "moderation_state",
+        "path",
+        "node_read_time",
+        "field_agency_id",
+        "field_body",
+        "field_map",
+        "field_price",
+        "field_route_color",
+        "field_route_id",
+        "field_route_short_name",
+        "field_route_sub_type",
+        "field_schedule",
+        "field_service_description",
+        "field_stops",
+        "field_text_color",
+        "field_transit_connections",
+        "field_url",
+        "field_weight",
+        "geojson"
+      ],
+      "example": {},
+      "verified": true
+    },
+    {
+      "name": "get-station",
+      "summary": "Station detail page (address, parking, amenities, zone) by station slug.",
+      "method": "GET",
+      "urlTemplate": "/station/{slug}",
+      "params": [
+        {
+          "name": "slug",
+          "in": "path",
+          "required": true,
+          "type": "string",
+          "description": "Station page slug with no separators, e.g. paloalto, sanfrancisco, sjdiridon",
+          "example": "paloalto"
+        }
+      ],
+      "responseType": "html",
+      "extract": {
+        "fields": {
+          "name": "h1",
+          "title": "title"
+        }
+      },
+      "mutates": false,
+      "example": {
+        "slug": "paloalto"
+      },
+      "source": "E79 E80 E83 GET https://www.caltrain.com/station/paloalto",
+      "sample": "{\"name\":\"Palo Alto Station\",\"title\":\"Palo Alto | SMCTD\"}",
+      "resultFields": [
+        "name",
+        "title"
+      ],
+      "verified": true
+    }
+  ],
+  "blockers": [],
+  "notes": [
+    "Two id styles: departures use snake_case stop ids (palo_alto); station pages use slugs with no separators (paloalto).",
+    "GTFS-realtime timestamps are Unix seconds; StopId values are GTFS platform ids (e.g. 70262).",
+    "Trip planning on the site redirects to Google Maps and is not available here."
+  ],
+  "dropped": [
+    {
+      "name": "search-site",
+      "summary": "Keyword search of caltrain.com pages (schedules, stations, fares, news). Returns the search results page.",
+      "method": "GET",
+      "urlTemplate": "/search",
+      "params": [
+        {
+          "name": "search",
+          "in": "query",
+          "required": true,
+          "type": "string",
+          "description": "Search keywords",
+          "example": "parking"
+        },
+        {
+          "name": "type",
+          "in": "query",
+          "required": false,
+          "type": "string",
+          "description": "Content type filter offered by the search page (optional)"
+        },
+        {
+          "name": "page",
+          "in": "query",
+          "required": false,
+          "type": "number",
+          "description": "Result page, 0-based as used by the site (page=1 is the second page)"
+        }
+      ],
+      "responseType": "html",
+      "pagination": {
+        "type": "page",
+        "param": "page"
+      },
+      "mutates": false,
+      "example": {
+        "search": "parking"
+      },
+      "source": "E77 GET https://www.caltrain.com/search",
+      "verified": false,
+      "verifyNote": "The page outline shows no search-result elements. The only repeated items are schedule timetable rows from the shared page template, so no selector yields search results."
+    },
+    {
+      "name": "list-stations-zones",
+      "summary": "Stations & Zones page: every Caltrain station and its fare zone, plus the schedule explorer.",
+      "method": "GET",
+      "urlTemplate": "/stations-zones",
+      "params": [],
+      "responseType": "html",
+      "mutates": false,
+      "source": "E78 GET https://www.caltrain.com/stations-zones",
+      "verified": false,
+      "verifyNote": "No station or zone list is identifiable in the HTML. The repeated rows are the shared schedule tables, and the embedded JSON is only WebPage metadata."
+    },
+    {
+      "name": "list-schedule-pdfs",
+      "summary": "Page listing downloadable PDF timetables.",
+      "method": "GET",
+      "urlTemplate": "/schedules/pdfs",
+      "params": [],
+      "responseType": "html",
+      "mutates": false,
+      "source": "E81 GET https://www.caltrain.com/schedules/pdfs",
+      "verified": false,
+      "verifyNote": "No PDF link list is identifiable. The repeated items are the shared schedule tables, and the ld+json holds only page metadata."
+    },
+    {
+      "name": "get-holiday-schedules",
+      "summary": "Holiday service schedules: which service runs on holidays.",
+      "method": "GET",
+      "urlTemplate": "/schedules/holiday-service-schedules",
+      "params": [],
+      "responseType": "html",
+      "mutates": false,
+      "source": "E82 GET https://www.caltrain.com/schedules/holiday-service-schedules",
+      "verified": false,
+      "verifyNote": "Only template content appears (nav, trip planner, schedule tables). No holiday schedule data is extractable."
+    },
+    {
+      "name": "get-fares",
+      "summary": "Fares page: fare types, zone-based prices and passes.",
+      "method": "GET",
+      "urlTemplate": "/fares",
+      "params": [],
+      "responseType": "html",
+      "mutates": false,
+      "source": "E84 GET https://www.caltrain.com/fares",
+      "verified": false,
+      "verifyNote": "No fare table or price elements appear in the outline. The output would be template, nav and schedule text."
+    },
+    {
+      "name": "get-vehicle-positions",
+      "summary": "GTFS-realtime live train positions as shown on the live map. The list can be empty when no trains are reporting.",
+      "method": "GET",
+      "urlTemplate": "/files/rt/vehiclepositions/CT.json",
+      "params": [],
+      "responseType": "json",
+      "resultPath": "Entities",
+      "mutates": false,
+      "source": "E2 GET https://www.caltrain.com/files/rt/vehiclepositions/CT.json",
+      "verified": false,
+      "verifyNote": "empty list: the example args returned nothing or the selector/resultPath is wrong"
+    }
+  ],
+  "generated": {
+    "by": "clify add",
+    "model": "claude-opus-5-5",
+    "exploredSteps": 27,
+    "recorded": 139,
+    "verifiedAt": "2026-10-21T07:10:02.606Z",
+    "seconds": 274,
+    "importedFrom": "~/.clify/sites/caltrain",
+    "importedAt": "2026-10-21T07:24:44.783Z"
+  }
+}

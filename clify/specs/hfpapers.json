@@ -1,0 +1,356 @@
+{
+  "name": "hfpapers",
+  "startUrl": "https://huggingface.co/papers",
+  "origin": "https://huggingface.co",
+  "createdAt": "2026-10-21T07:16:28.782Z",
+  "description": "Hugging Face Papers (huggingface.co/papers): search AI research papers by topic, browse daily, weekly, monthly and trending paper lists, and get paper details (authors, abstract, AI summary, GitHub and project links, linked models and spaces) or the full text as markdown.",
+  "commands": [
+    {
+      "name": "search-papers",
+      "summary": "Search Hugging Face papers by topic or keywords; returns title, authors, abstract, AI summary, keywords, GitHub repo, upvotes and publish date.",
+      "method": "GET",
+      "urlTemplate": "/api/papers/search",
+      "params": [
+        {
+          "name": "q",
+          "in": "query",
+          "required": true,
+          "type": "string",
+          "description": "Topic or keywords to search for, e.g. 'diffusion language models'",
+          "example": "diffusion language models"
+        },
+        {
+          "name": "api_limit",
+          "key": "limit",
+          "in": "query",
+          "required": false,
+          "type": "number",
+          "description": "Maximum number of results to return (sent to the site as \"limit\"; clify's own --limit only shapes the output)",
+          "example": "10"
+        }
+      ],
+      "responseType": "json",
+      "defaultFields": [
+        "paper.id",
+        "paper.title",
+        "paper.authors.name",
+        "paper.publishedAt",
+        "paper.summary",
+        "paper.ai_summary",
+        "paper.githubRepo",
+        "paper.upvotes"
+      ],
+      "mutates": false,
+      "example": {
+        "q": "reinforcement learning agents",
+        "api_limit": "10"
+      },
+      "source": "E2 GET https://huggingface.co/api/papers/search",
+      "sample": "{\"paper.id\":\"2105.14039\",\"paper.title\":\"Towards mental time travel: a hierarchical memory for reinforcement\\n  learning agents\",\"paper.authors.name\":[\"Andrew Kyle Lampinen\",\"Stephanie C. Y. Chan\",\"Andrea Banino\",\"Felix Hill\"],\"paper.publishedAt\":\"2021-05-28T18:12:28.000Z\",\"paper.summary\":\"Reinforcement learning agents often forget details of the past, especi",
+      "resultFields": [
+        "paper",
+        "publishedAt",
+        "title",
+        "summary",
+        "thumbnail",
+        "numComments",
+        "upvoted",
+        "isAuthorParticipating",
+        "highlightedTitle",
+        "highlightedSummary"
+      ],
+      "verified": true
+    },
+    {
+      "name": "list-daily-papers",
+      "summary": "List curated Daily Papers. Use date for one day, week for a week or month for a month; sort=trending ranks by trend. Pages with p.",
+      "method": "GET",
+      "urlTemplate": "/api/daily_papers",
+      "params": [
+        {
+          "name": "date",
+          "in": "query",
+          "required": false,
+          "type": "string",
+          "description": "Day to list, ISO date YYYY-MM-DD, e.g. 2026-10-20. Omit for the latest papers.",
+          "example": "2026-10-20"
+        },
+        {
+          "name": "week",
+          "in": "query",
+          "required": false,
+          "type": "string",
+          "description": "ISO week to list, YYYY-Www, e.g. 2026-W43",
+          "example": "2026-W43"
+        },
+        {
+          "name": "month",
+          "in": "query",
+          "required": false,
+          "type": "string",
+          "description": "Month to list, YYYY-MM, e.g. 2026-10",
+          "example": "2026-10"
+        },
+        {
+          "name": "sort",
+          "in": "query",
+          "required": false,
+          "type": "string",
+          "description": "Sort order. Use 'trending' to rank by trend. Omit for the default order.",
+          "example": "trending"
+        },
+        {
+          "name": "api_limit",
+          "key": "limit",
+          "in": "query",
+          "required": false,
+          "type": "number",
+          "description": "Results per page (sent to the site as \"limit\"; clify's own --limit only shapes the output)",
+          "default": 20,
+          "example": "20"
+        },
+        {
+          "name": "p",
+          "in": "query",
+          "required": false,
+          "type": "number",
+          "description": "Page number (0-based; 1 is the second page)",
+          "example": "1"
+        }
+      ],
+      "responseType": "json",
+      "defaultFields": [
+        "paper.id",
+        "paper.title",
+        "paper.authors.name",
+        "paper.publishedAt",
+        "paper.summary",
+        "paper.ai_summary",
+        "paper.githubRepo",
+        "paper.upvotes"
+      ],
+      "pagination": {
+        "type": "page",
+        "param": "p"
+      },
+      "mutates": false,
+      "example": {
+        "api_limit": "20"
+      },
+      "source": "E6 GET https://huggingface.co/api/daily_papers",
+      "sample": "{\"paper.id\":\"2610.24944\",\"paper.title\":\"Epi: Towards a Persistent, Self-Improving Agent for Autonomous Research\",\"paper.authors.name\":[\"Yue Huang\",\"Zhangchen Xu\",\"Xiaonan Luo\",\"Zheyuan Liu\",\"Lichi Li\",\"Yiping Wang\",\"Peiyang Song\",\"Eric Gabriel Ramos\",\"Enze Xie\",\"Olexandr Isayev\",\"Paul Liang\",\"Nouha Dziri\",\"Huan Sun\",\"Jianfeng Gao\",\"Ying Liu\",\"Misha Sra\",\"Xia",
+      "resultFields": [
+        "paper",
+        "publishedAt",
+        "title",
+        "summary",
+        "thumbnail",
+        "numComments",
+        "submittedBy",
+        "organization",
+        "isAuthorParticipating"
+      ],
+      "verified": true
+    },
+    {
+      "name": "list-papers",
+      "summary": "List recent papers from the papers index, optionally filtered by a keyword query; returns id, title, authors, abstract, upvotes and publish date.",
+      "method": "GET",
+      "urlTemplate": "/api/papers",
+      "params": [
+        {
+          "name": "q",
+          "in": "query",
+          "required": false,
+          "type": "string",
+          "description": "Keyword filter, e.g. 'multimodal agents'",
+          "example": "multimodal agents"
+        },
+        {
+          "name": "api_limit",
+          "key": "limit",
+          "in": "query",
+          "required": false,
+          "type": "number",
+          "description": "Maximum number of papers to return (sent to the site as \"limit\"; clify's own --limit only shapes the output)",
+          "example": "10"
+        }
+      ],
+      "responseType": "json",
+      "defaultFields": [
+        "id",
+        "title",
+        "authors.name",
+        "publishedAt",
+        "summary",
+        "upvotes"
+      ],
+      "mutates": false,
+      "example": {
+        "q": "multimodal agents",
+        "api_limit": "10"
+      },
+      "source": "E9 GET https://huggingface.co/api/papers",
+      "sample": "{\"id\":\"2610.28630\",\"title\":\"SolarRenderer: Few-Step Generative Reference Rendering\",\"authors.name\":[\"Guian Fang\",\"Shengju Qian\",\"Dongyue Lu\",\"Junchao Huang\",\"Lutao Jiang\",\"Xin Wang\",\"Yiren Song\",\"Li Jiang\",\"Mike Zheng Shou\"],\"publishedAt\":\"2026-10-20T00:00:00.000Z\",\"summary\":\"Game engines and coding agents can specify the layout, motion, and camera of a scen",
+      "resultFields": [
+        "id",
+        "title",
+        "thumbnailUrl",
+        "upvotes",
+        "publishedAt",
+        "authors",
+        "summary",
+        "projectPage",
+        "githubRepo",
+        "ai_summary",
+        "organization"
+      ],
+      "verified": true
+    },
+    {
+      "name": "get-paper",
+      "summary": "Get one paper by arXiv id: title, authors, abstract, AI summary and keywords, project page, GitHub repo and stars, organization, and linked models, datasets and spaces.",
+      "method": "GET",
+      "urlTemplate": "/api/papers/{paperId}",
+      "params": [
+        {
+          "name": "paperId",
+          "in": "path",
+          "required": true,
+          "type": "string",
+          "description": "arXiv id of the paper, e.g. 2511.03276",
+          "example": "2511.03276"
+        }
+      ],
+      "responseType": "json",
+      "defaultFields": [
+        "id",
+        "title",
+        "authors.name",
+        "publishedAt",
+        "summary",
+        "ai_summary",
+        "ai_keywords",
+        "githubRepo",
+        "projectPage",
+        "upvotes"
+      ],
+      "mutates": false,
+      "example": {
+        "paperId": "2511.03276"
+      },
+      "source": "E7 GET https://huggingface.co/api/papers/2511.03276",
+      "sample": "{\"id\":\"2511.03276\",\"title\":\"Diffusion Language Models are Super Data Learners\",\"authors.name\":[\"Jinjie Ni\",\"Qian Liu\",\"Longxu Dou\",\"Chao Du\",\"Zili Wang\",\"Hang Yan\",\"Tianyu Pang\",\"Michael Qizhe Shieh\"],\"publishedAt\":\"2025-11-05T08:17:42.000Z\",\"summary\":\"Under strictly controlled pre-training settings, we observe a Crossover: when\\nunique data is limited, diff",
+      "resultFields": [
+        "id",
+        "authors",
+        "mediaUrls",
+        "publishedAt",
+        "submittedOnDailyAt",
+        "title",
+        "submittedOnDailyBy",
+        "summary",
+        "upvotes",
+        "discussionId",
+        "projectPage",
+        "githubRepo",
+        "githubRepoAddedBy",
+        "ai_summary",
+        "ai_keywords",
+        "ai_summary_model",
+        "githubStars",
+        "organization",
+        "linkedModels",
+        "numTotalModels",
+        "linkedDatasets",
+        "numTotalDatasets",
+        "linkedSpaces",
+        "numTotalSpaces"
+      ],
+      "verified": true
+    },
+    {
+      "name": "get-paper-markdown",
+      "summary": "Get the full text of a paper as markdown (title, authors, abstract, body), by arXiv id.",
+      "method": "GET",
+      "urlTemplate": "/papers/{paperId}.md",
+      "params": [
+        {
+          "name": "paperId",
+          "in": "path",
+          "required": true,
+          "type": "string",
+          "description": "arXiv id of the paper, e.g. 2512.22234",
+          "example": "2512.22234"
+        }
+      ],
+      "responseType": "text",
+      "mutates": false,
+      "example": {
+        "paperId": "2512.22234"
+      },
+      "source": "E17 GET https://huggingface.co/papers/2512.22234.md",
+      "sample": "\"Title: DiRL: An Efficient Post-Training Framework for Diffusion Language Models\\n\\nURL Source: https://arxiv.org/html/2512.22234\\n\\nMarkdown Content:\\nYing Zhu 1,2,3, Jiaxin Wan 2, Xiaoran Liu 1,2,3, Siyang He 1,2,3, Qiqi Wang 1,2,3, \\n\\nXu Guo 1,2, Tianyi Liang 2,3, Zengfeng Huang 1,2, Ziwei He 2,3†, Xipeng Qiu 1,2†\\n\\n1 Fudan University, 2 Shanghai Innova",
+      "verified": true
+    },
+    {
+      "name": "list-trending-papers",
+      "summary": "List currently trending papers with title, short summary, organization, publish date, upvotes, and GitHub and arXiv links.",
+      "method": "GET",
+      "urlTemplate": "/papers/trending",
+      "params": [],
+      "responseType": "html",
+      "extract": {
+        "list": "article.relative.overflow-hidden",
+        "fields": {
+          "title": "h3 > a",
+          "url": "h3 > a@href",
+          "summary": "p.line-clamp-2",
+          "organization": "a.inline-flex.min-w-0 span",
+          "upvotes": "div.font-semibold.text-orange-500",
+          "github": "a.btn.flex[href^=\"https://github.com\"]@href",
+          "arxiv": "a.btn.flex[href^=\"https://arxiv.org\"]@href"
+        }
+      },
+      "defaultFields": [
+        "title",
+        "url",
+        "summary",
+        "organization",
+        "upvotes",
+        "github",
+        "arxiv"
+      ],
+      "mutates": false,
+      "source": "E15 GET https://huggingface.co/papers/trending",
+      "sample": "{\"title\":\"Harness^2: Recursive Agent Harnessing for an Open World\",\"url\":\"https://huggingface.co/papers/2610.14224\",\"summary\":\"Harness² improves agent execution harnesses through recursive task-level refinement and continual harness-level learning, boosting performance across benchmarks without ground-truth verifiers.\",\"organization\":\"Google\",\"upvotes\":\"115\"",
+      "resultFields": [
+        "title",
+        "url",
+        "summary",
+        "organization",
+        "upvotes",
+        "github",
+        "arxiv"
+      ],
+      "example": {},
+      "verified": true
+    }
+  ],
+  "blockers": [],
+  "notes": [
+    "Papers are identified by arXiv id (e.g. 2512.22234). Page: https://huggingface.co/papers/<id>; arXiv: https://arxiv.org/abs/<id>; PDF: https://arxiv.org/pdf/<id>.",
+    "To find papers by topic, use search-papers. For recent curated papers, use list-daily-papers (date/week/month). For the abstract and links of one paper, use get-paper; for its full text, use get-paper-markdown."
+  ],
+  "dropped": [],
+  "generated": {
+    "by": "clify add",
+    "model": "claude-opus-5-5",
+    "exploredSteps": 16,
+    "recorded": 50,
+    "verifiedAt": "2026-10-21T07:17:07.045Z",
+    "seconds": 219,
+    "importedFrom": "~/.clify/sites/huggingface",
+    "importedAt": "2026-10-21T07:24:44.786Z"
+  }
+}

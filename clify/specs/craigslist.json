@@ -1,0 +1,447 @@
+{
+  "name": "craigslist",
+  "startUrl": "https://sfbay.craigslist.org/",
+  "origin": "https://sfbay.craigslist.org",
+  "createdAt": "2026-10-21T07:08:19.288Z",
+  "description": "San Francisco Bay Area Craigslist: search listings by keyword, category, area, price, distance and other filters through Craigslist's JSON search API, look up postings by id, and get category counts and search suggestions.",
+  "commands": [
+    {
+      "name": "search-listings",
+      "summary": "Search SF Bay Area Craigslist listings by keyword, category, area/subarea/city, price range, zip+distance, sort and category-specific filters. Returns the first batch of compact results plus decode ta",
+      "method": "GET",
+      "urlTemplate": "https://sapi.craigslist.org/web/v8/postings/search/full?batch=0-0-360-0-0&lang=en&cc=us",
+      "params": [
+        {
+          "name": "query",
+          "in": "query",
+          "required": false,
+          "type": "string",
+          "description": "Keywords to search for",
+          "example": "bicycle"
+        },
+        {
+          "name": "cat",
+          "in": "query",
+          "required": false,
+          "type": "string",
+          "description": "Category abbreviation, e.g. sss (all for sale), bia (bicycles), apa (apartments), cta (cars+trucks), sof (software jobs). Use get-category-counts to discover more.",
+          "default": "sss",
+          "example": "sss"
+        },
+        {
+          "name": "searchPath",
+          "in": "query",
+          "required": false,
+          "type": "string",
+          "description": "Location scope: area/sfbay (whole Bay Area), subarea/<abbr> where abbr is sfc, eby, sby, pen, nby or scz, or city/<slug>, e.g. city/oakland-ca",
+          "default": "area/sfbay",
+          "example": "area/sfbay"
+        },
+        {
+          "name": "min_price",
+          "in": "query",
+          "required": false,
+          "type": "number",
+          "description": "Minimum price in USD",
+          "example": "100"
+        },
+        {
+          "name": "max_price",
+          "in": "query",
+          "required": false,
+          "type": "number",
+          "description": "Maximum price in USD",
+          "example": "800"
+        },
+        {
+          "name": "postal",
+          "in": "query",
+          "required": false,
+          "type": "string",
+          "description": "ZIP code to search around (use with radius)",
+          "example": "94110"
+        },
+        {
+          "name": "radius",
+          "key": "search_distance",
+          "in": "query",
+          "required": false,
+          "type": "number",
+          "description": "Distance in miles from the postal ZIP code"
+        },
+        {
+          "name": "sort",
+          "in": "query",
+          "required": false,
+          "type": "string",
+          "description": "Sort order: date (newest), rel (relevance), priceasc, pricedsc, dist (needs postal)",
+          "example": "priceasc"
+        },
+        {
+          "name": "hasPic",
+          "in": "query",
+          "required": false,
+          "type": "number",
+          "description": "1 = only listings that have photos"
+        },
+        {
+          "name": "purveyor",
+          "in": "query",
+          "required": false,
+          "type": "string",
+          "description": "Seller type for for-sale categories",
+          "enum": [
+            "owner",
+            "dealer"
+          ]
+        },
+        {
+          "name": "min_bedrooms",
+          "in": "query",
+          "required": false,
+          "type": "number",
+          "description": "Minimum bedrooms (housing categories such as apa)"
+        },
+        {
+          "name": "no_smoking",
+          "in": "query",
+          "required": false,
+          "type": "number",
+          "description": "1 = non-smoking only (housing)"
+        },
+        {
+          "name": "auto_make_model",
+          "in": "query",
+          "required": false,
+          "type": "string",
+          "description": "Car make/model filter for cta, e.g. 'toyota tacoma' (see suggest-make-model)"
+        },
+        {
+          "name": "userpostingid",
+          "in": "query",
+          "required": false,
+          "type": "string",
+          "description": "Posting id to find more ads by the same seller"
+        }
+      ],
+      "responseType": "json",
+      "resultPath": "data",
+      "mutates": false,
+      "example": {
+        "query": "bicycle",
+        "cat": "sss",
+        "searchPath": "area/sfbay"
+      },
+      "source": "E1 GET https://sapi.craigslist.org/web/v8/postings/search/full",
+      "sample": "{\"areas\":{\"1\":{\"areaUnits\":\"ft\",\"currency\":\"USD\",\"distanceUnits\":\"mi\",\"name\":\"sfbay\"}},\"bundleDups\":0,\"cacheTs\":1792566560,\"canonicalUrl\":\"//www.craigslist.org/search/area/sfbay?cat=sss&query=bicycle\",\"categoryAbbr\":\"sss\",\"decode\":{\"locationDescriptions\":[0,\"Corte madera\",\"Concord\",\"east bay area\",\"fremont / union city / newark\",\"belmont\",\"peninsula\",\"santa ",
+      "resultFields": [
+        "areas",
+        "bundleDups",
+        "cacheTs",
+        "canonicalUrl",
+        "categoryAbbr",
+        "decode",
+        "detailsOrder",
+        "filterButtons",
+        "filters",
+        "hubLinks",
+        "humanReadableParams",
+        "items",
+        "lang",
+        "location",
+        "pageTitle",
+        "params",
+        "relatedSearches",
+        "resultsOrder",
+        "totalResultCount",
+        "updated",
+        "vicinity"
+      ],
+      "verified": true
+    },
+    {
+      "name": "search-listings-more",
+      "summary": "Fetch the next batch of results for a search already run with search-listings (the site has no page 2; it loads more batches as you scroll).",
+      "method": "GET",
+      "urlTemplate": "https://sapi.craigslist.org/web/v8/postings/search/batch?lang=en&cc=us",
+      "params": [
+        {
+          "name": "batch",
+          "in": "query",
+          "required": true,
+          "type": "string",
+          "description": "Batch spec '0-<offset>-1080-6-0-<ts1>-<ts2>'. Raise the offset by 1080 for each batch and keep the other parts as the site sent them.",
+          "example": "0-1080-1080-6-0-1792566210-1792566336"
+        },
+        {
+          "name": "cacheId",
+          "in": "query",
+          "required": true,
+          "type": "string",
+          "description": "cacheId returned by the search-listings response for this search",
+          "example": "MToBizevob6RIBxqY6JQ22iOs2AaYUg7mb8KBWJVniCnn6oTSgxpoO34H2aBNcMUXihn3uRwyrJ_zjH_NPwvgOrS25SME_clhB8CeFPy4Suo4t2FaOn3BlXjdOt_QRckIPX5XVbN4WqUnhH80U82LgHzjHKkv-qBbS_hCriBXP5bLPvM_sTCIoDPSC3y1G8"
+        }
+      ],
+      "responseType": "json",
+      "resultPath": "data",
+      "mutates": false,
+      "example": {
+        "batch": "0-1080-1080-6-0-1792566210-1792566336",
+        "cacheId": "MToBizevob6RIBxqY6JQ22iOs2AaYUg7mb8KBWJVniCnn6oTSgxpoO34H2aBNcMUXihn3uRwyrJ_zjH_NPwvgOrS25SME_clhB8CeFPy4Suo4t2FaOn3BlXjdOt_QRckIPX5XVbN4WqUnhH80U82LgHzjHKkv-qBbS_hCriBXP5bLPvM_sTCIoDPSC3y1G8"
+      },
+      "source": "E4 GET https://sapi.craigslist.org/web/v8/postings/search/batch",
+      "sample": "{\"batch\":[[27012814,\"Scooter Bag for Electric Scooter Bike Bicycle Xiaomi Segway Ninebot\",[\"3:00I0I_ldLUhs968fhz_0lM0t2\",\"3:00b0b_4ZhRUT4Q82tz_0lM0t2\",\"3:00h0h_63FjTnyjdTDz_0lM0t2\"],[6,\"alameda-scooter-bag-for-electric\"],[13,\"dXwpTNLCXYhZGrbtLBYzTK\"],[10,\"$20\"]],[30680039,\"Cannondale Treadwell 2 StepThru\",[\"3:00d0d_cVtfun175kc_0t20CI\",\"3:00I0I_8kvBEL8veaT_0t",
+      "resultFields": [
+        "batch",
+        "minPostingId"
+      ],
+      "verified": true
+    },
+    {
+      "name": "get-postings",
+      "summary": "Look up full posting records (title, price, location, neighborhood, images, seo slug, posted date) by posting id. This is how the site loads the favorites list.",
+      "method": "GET",
+      "urlTemplate": "https://sapi.craigslist.org/web/v8/postings/find_by_ids?area_id=1&lang=en&cc=us",
+      "params": [
+        {
+          "name": "ids",
+          "in": "query",
+          "required": true,
+          "type": "string",
+          "description": "Base64 of 'items:<postingId>', e.g. 'items:7986972918' becomes aXRlbXM6Nzk4Njk3MjkxOA==",
+          "example": "aXRlbXM6Nzk4Njk3MjkxOA=="
+        }
+      ],
+      "responseType": "json",
+      "resultPath": "data.items",
+      "defaultFields": [
+        "postingId",
+        "title",
+        "priceString",
+        "seo",
+        "categoryAbbr",
+        "location.neighborhood",
+        "location.subareaAbbr",
+        "postedDate"
+      ],
+      "mutates": false,
+      "example": {
+        "ids": "aXRlbXM6Nzk4Njk3MjkxOA=="
+      },
+      "source": "E10 GET https://sapi.craigslist.org/web/v8/postings/find_by_ids",
+      "sample": "{\"postingId\":7986972918,\"title\":\"Parkside Studio\",\"priceString\":\"$2,000\",\"seo\":\"san-francisco-parkside-studio\",\"categoryAbbr\":\"apa\",\"location.neighborhood\":\"sunset / parkside\",\"location.subareaAbbr\":\"sfc\",\"postedDate\":1792529264}",
+      "resultFields": [
+        "bedrooms",
+        "categoryAbbr",
+        "categoryId",
+        "dedupeKey",
+        "images",
+        "location",
+        "postedDate",
+        "postingId",
+        "postingUuid",
+        "price",
+        "priceString",
+        "seo",
+        "title"
+      ],
+      "verified": true
+    },
+    {
+      "name": "get-category-counts",
+      "summary": "Count matching listings per category for a Craigslist search URL. Useful to pick a category abbreviation (cat) for a query.",
+      "method": "GET",
+      "urlTemplate": "https://sapi.craigslist.org/web/v8/categories/counts-for-search-url?lang=en&cc=us",
+      "params": [
+        {
+          "name": "searchUrl",
+          "key": "url",
+          "in": "query",
+          "required": true,
+          "type": "string",
+          "description": "Craigslist search URL, e.g. https://www.craigslist.org/search/area/sfbay?cat=sss&query=bicycle",
+          "example": "https://www.craigslist.org/search/area/sfbay?cat=sss&query=bicycle"
+        },
+        {
+          "name": "include_types",
+          "in": "query",
+          "required": false,
+          "type": "number",
+          "description": "1 = also include category types"
+        }
+      ],
+      "responseType": "json",
+      "resultPath": "data.items",
+      "defaultFields": [
+        "abbreviation",
+        "label",
+        "count"
+      ],
+      "mutates": false,
+      "example": {
+        "searchUrl": "https://www.craigslist.org/search/area/sfbay?cat=sss&query=bicycle"
+      },
+      "source": "E2 GET https://sapi.craigslist.org/web/v8/categories/counts-for-search-url",
+      "sample": "{\"abbreviation\":\"bia\",\"label\":\"bicycles\",\"count\":5637}",
+      "resultFields": [
+        "abbreviation",
+        "count",
+        "label"
+      ],
+      "verified": true
+    },
+    {
+      "name": "suggest-search",
+      "summary": "Autocomplete search keywords for the SF Bay Area, optionally within one category.",
+      "method": "GET",
+      "urlTemplate": "https://sapi.craigslist.org/web/v8/suggest/search?area_id=1&type=search&lang=en&cc=us",
+      "params": [
+        {
+          "name": "query",
+          "in": "query",
+          "required": true,
+          "type": "string",
+          "description": "Partial search text",
+          "example": "bicycle"
+        },
+        {
+          "name": "cat",
+          "key": "catabbr",
+          "in": "query",
+          "required": false,
+          "type": "string",
+          "description": "Category abbreviation to scope suggestions, e.g. cta"
+        }
+      ],
+      "responseType": "json",
+      "resultPath": "data.items",
+      "mutates": false,
+      "example": {
+        "query": "bicycle"
+      },
+      "source": "E5 GET https://sapi.craigslist.org/web/v8/suggest/search",
+      "sample": "\"bicycle\"",
+      "verified": true
+    },
+    {
+      "name": "get-likely-categories",
+      "summary": "Guess which category abbreviations (cat) best match a keyword query in the SF Bay Area.",
+      "method": "GET",
+      "urlTemplate": "https://sapi.craigslist.org/web/v8/categories/likely-categories?areaId=1&lang=en&cc=us",
+      "params": [
+        {
+          "name": "query",
+          "in": "query",
+          "required": true,
+          "type": "string",
+          "description": "Search keywords",
+          "example": "bicycle"
+        }
+      ],
+      "responseType": "json",
+      "resultPath": "data.items",
+      "mutates": false,
+      "example": {
+        "query": "bicycle"
+      },
+      "source": "E6",
+      "sample": "\"sss\"",
+      "verified": true
+    },
+    {
+      "name": "suggest-make-model",
+      "summary": "Autocomplete car make/model names for the auto_make_model filter of search-listings (cars+trucks).",
+      "method": "GET",
+      "urlTemplate": "https://sapi.craigslist.org/web/v8/suggest/makemodel?area_id=1&catabbr=cta&type=makemodel&lang=en&cc=us",
+      "params": [
+        {
+          "name": "query",
+          "in": "query",
+          "required": true,
+          "type": "string",
+          "description": "Partial make/model, e.g. 'toyota tacoma'",
+          "example": "toyota tacoma"
+        }
+      ],
+      "responseType": "json",
+      "resultPath": "data.items",
+      "mutates": false,
+      "example": {
+        "query": "toyota tacoma"
+      },
+      "source": "E9 GET https://sapi.craigslist.org/web/v8/suggest/makemodel",
+      "sample": "\"toyota tacoma\"",
+      "verified": true
+    }
+  ],
+  "blockers": [],
+  "notes": [
+    "Search results come as compact arrays. The number at item[0] is an offset added to data.decode.minPostingId to get the posting id. [6,slug] holds the seo slug and [10,price] the price string.",
+    "Listing URL: https://sfbay.craigslist.org/view/d/{slug}/{postingId}. Use get-postings for structured details.",
+    "Location scopes: area/sfbay, subarea/{sfc|eby|sby|pen|nby|scz}, city/<slug> (e.g. city/oakland-ca).",
+    "Replying to a listing requires an hCaptcha and is not supported."
+  ],
+  "dropped": [
+    {
+      "name": "get-price-histogram",
+      "summary": "Get the price distribution (histogram values) for a Craigslist search URL, as shown on the site's price slider.",
+      "method": "GET",
+      "urlTemplate": "https://www.craigslist.org/search/field/price",
+      "params": [
+        {
+          "name": "searchUrl",
+          "key": "cl_url",
+          "in": "query",
+          "required": true,
+          "type": "string",
+          "description": "Craigslist search URL, e.g. https://www.craigslist.org/search/area/sfbay?cat=sss&query=bicycle",
+          "example": "https://www.craigslist.org/search/area/sfbay?cat=sss&query=bicycle"
+        }
+      ],
+      "responseType": "json",
+      "resultPath": "data",
+      "mutates": false,
+      "example": {
+        "searchUrl": "https://www.craigslist.org/search/area/sfbay?cat=sss&query=bicycle"
+      },
+      "source": "E3 GET https://www.craigslist.org/search/field/price",
+      "verified": false,
+      "verifyNote": "Returns a 9,319-item array of bucket counts, all zeros in the live sample, with no bucket boundaries or prices. An agent cannot interpret it; the price slider is UI-only data."
+    },
+    {
+      "name": "favorite-posting",
+      "summary": "Tell Craigslist that a posting was favorited (a favorite signal on the posting). The favorites list itself is stored only in the browser, not in any account.",
+      "method": "GET",
+      "urlTemplate": "https://rapi.craigslist.org/web/v8/advise/posting/favorite/{postingId}",
+      "params": [
+        {
+          "name": "postingId",
+          "in": "path",
+          "required": true,
+          "type": "string",
+          "description": "Numeric posting id",
+          "example": "7986972918"
+        }
+      ],
+      "responseType": "json",
+      "resultPath": "data",
+      "mutates": false,
+      "example": {
+        "postingId": "7986972918"
+      },
+      "source": "E8 GET https://rapi.craigslist.org/web/v8/advise/posting/favorite/{n}",
+      "verified": false,
+      "verifyNote": "This is a fire-and-forget favorite tracking signal with a side effect. It returns no data (empty items), and favorites live only in the browser."
+    }
+  ],
+  "generated": {
+    "by": "clify add",
+    "model": "claude-opus-5-5",
+    "exploredSteps": 22,
+    "recorded": 92,
+    "verifiedAt": "2026-10-21T07:09:37.004Z",
+    "seconds": 249,
+    "importedFrom": "~/.clify/sites/sfbay-craigslist",
+    "importedAt": "2026-10-21T07:24:44.784Z"
+  }
+}
